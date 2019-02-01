@@ -20,7 +20,7 @@ const standard_item = [{
     value: '.3',
     label: '.3',
   }],
-}, 
+},
 {
   value: 'G2',
   label: 'G2',
@@ -121,22 +121,37 @@ const evalActs = [
 ]
 class RegistrationForm extends Component {
   state = {
-    confirmDirty: false,
-    autoCompleteResult: [],
-  };
+    standardSelectedItem : [],
+   
+  }
+  
+  onChange = (value) => {
+    var newArray = this.state.standardSelectedItem.slice();    
+    newArray.push(value[0]+value[1]);   
+    this.setState({standardSelectedItem:newArray}); 
+  }
+  toString = () => {
+    let temp = '';
+    for(let i = 0 ; i < this.state.standardSelectedItem.length ; i++){
+      temp += this.state.standardSelectedItem[i] + ' , ';
+    }
+    console.log(temp);
+    return temp ;
+  }
 
   render() {
     const childrenTeachingActs = [];
-    const childrenEvalActs = []; 
+    const childrenEvalActs = [];
 
     function handleChange(value) {
       console.log(`selected ${value}`);
     }
-    function init(){
-      for(let i = 0 ; i < teachingActs.length ; i++){
+
+    function init() {
+      for (let i = 0; i < teachingActs.length; i++) {
         childrenTeachingActs.push(<Option key={teachingActs[i]}>{teachingActs[i]}</Option>)
       }
-      for(let i = 0 ; i < evalActs.length ; i++){
+      for (let i = 0; i < evalActs.length; i++) {
         childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
       }
     }
@@ -153,7 +168,17 @@ class RegistrationForm extends Component {
         sm: { span: 16 },
       },
     };
-    
+    const formDynamicItemLayout = {
+      labelCol: {
+        xs: { span: 24 },
+        sm: { span: 8 },
+      },
+      wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 3  },
+      },
+    };
+
     const tailFormItemLayout = {
       wrapperCol: {
         xs: {
@@ -171,7 +196,7 @@ class RegistrationForm extends Component {
         <Form onSubmit={this.handleSubmit}>
           <Form.Item
             {...formItemLayout}
-            label= "Tên chủ đề"
+            label="Tên chủ đề"
           >
             {getFieldDecorator('topic_name', {
               rules: [{ required: true, message: 'Vui lòng nhập tên chủ đề', whitespace: true }],
@@ -181,8 +206,8 @@ class RegistrationForm extends Component {
           </Form.Item>
 
           <Form.Item
-             {...formItemLayout}
-             label="Hoạt động dạy"
+            {...formItemLayout}
+            label="Hoạt động dạy"
           >
             <Select
               mode="multiple"
@@ -194,13 +219,13 @@ class RegistrationForm extends Component {
               {childrenTeachingActs}
             </Select>
           </Form.Item>
-      
+
           <Form.Item
-            {...formItemLayout}
+            {...formDynamicItemLayout}
             label={(
               <span>
-                Chuẩn đầu ra&nbsp;
-              <Tooltip title="Tham khảo mục chuẩn đầu ra để chọn">
+                Chọn chuẩn đầu ra&nbsp;
+                <Tooltip title="Tham khảo mục chuẩn đầu ra để chọn">
                   <Icon type="question-circle-o" />
                 </Tooltip>
               </span>
@@ -210,13 +235,22 @@ class RegistrationForm extends Component {
               initialValue: ['G1', '.1'],
               rules: [{ type: 'array', required: true, message: 'Vui lòng chọn ít nhất 1 chuẩn đầu ra' }],
             })(
-              <Cascader options={standard_item} />
+             
+                <Cascader options={standard_item} onChange={this.onChange} />
             )}
+             
           </Form.Item>
 
           <Form.Item
              {...formItemLayout}
-             label="Hoạt động đánh giá"
+             label="Kết quả chuẩn đầu ra"
+             >
+             <Input disabled value={this.toString()} />
+          </Form.Item>
+
+          <Form.Item
+            {...formItemLayout}
+            label="Hoạt động đánh giá"
           >
             <Select
               mode="multiple"

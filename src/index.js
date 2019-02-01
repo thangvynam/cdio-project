@@ -5,9 +5,8 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from "react-redux";
 import store1 from './Store/Store';
-
 ReactDOM.render(
-    <Provider store={store1}>
+<Provider store={store1}>
     <App/>
 </Provider>, document.getElementById('root'));
 

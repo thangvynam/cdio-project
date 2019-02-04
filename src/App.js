@@ -1,8 +1,5 @@
 import React, { Component } from 'react';
-import './App.css';
-import RegistrationForm from './Component/Right-Layout/RegistrationForm'
-import { Form } from 'antd';
-const WrappedRegistrationForm = Form.create({ name: 'register' })(RegistrationForm); 
+import MainForm from './Component/Main/MainForm';
 
 class App extends Component {
   render() {
@@ -13,7 +10,8 @@ class App extends Component {
             
           </div>
           <div class="col-sm-10" >
-            <WrappedRegistrationForm />
+          
+            <MainForm/>
           </div>
         </div>
       </div>

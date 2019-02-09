@@ -6,7 +6,6 @@ const itemMenuInitialState = {
 const itemMenuReducer = (state = itemMenuInitialState, action) => {
     switch (action.type) {
         case ADD_DATA:
-        console.log(state.previewInfo)
             return {
                 ...state,
                 previewInfo: [...state.previewInfo, JSON.parse(action.item)]

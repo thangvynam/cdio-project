@@ -285,13 +285,12 @@ class ItemMenu extends Component {
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
-    let abc = '';
+    let title = '';
     let teachingActs = ['Thuyết giảng', 'Thảo luận và thể hiện trên bảng'];
     let evalActs = ['BTVN', 'DAMH'];
     return {
         handleInputChange: (event) => {
-            abc = event.target.value;
-            console.log(abc)
+            title = event.target.value;
         },
         handleChangeTeachingAct: (value) => {
             teachingActs = value;
@@ -306,7 +305,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             myObj.evalActs = evalActs;
             myObj.standardOutput = temp;
             const myObjStr = JSON.stringify(myObj);
-            console.log(myObjStr)
+        
             dispatch({ type: ADD_DATA, item: myObjStr });
             ownProps.nextStep();
         },

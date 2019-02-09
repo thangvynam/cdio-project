@@ -3,6 +3,8 @@ import {
     Form, Input, Tooltip, Icon, Cascader, Select, Button
 } from 'antd';
 import 'antd/dist/antd.css';
+import { connect } from 'react-redux';
+import { ADD_DATA } from '../../Constant/ActionType';
 
 const { Option } = Select;
 const standard_item = [{
@@ -119,56 +121,50 @@ const evalActs = [
     'DAMH',
     'Bài đọc thêm và viết báo cáo',
 ]
-
+const myObj = {
+    titleName: '',
+    teachingActs: '',
+    standardOutput: '',
+    evalActs: ''
+};
+let temp = [];
 class ItemMenu extends Component {
     state = {
         standardSelectedItem: [],
+        previewInfo: []
     }
     onChange = (value) => {
         var newArray = this.state.standardSelectedItem.slice();
         newArray.push(value[0] + value[1]);
         this.setState({ standardSelectedItem: newArray });
+        temp = newArray;
     }
     toString = () => {
         let temp = '';
         for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
             temp += this.state.standardSelectedItem[i] + ' , ';
         }
-        console.log(temp);
         return temp;
     }
-    saveAndContinue = (e) => {
+    back = (e) => {
         e.preventDefault();
-        console.log(this.props.nextStep());
-
+        this.props.prevStep();
     }
-    back  = (e) => {
-        e.preventDefault();
-        console.log(this.props.prevStep());
-    }
-    renderBackButton(){
-        if(this.props.step !== 1){
+    renderBackButton() {
+        if (this.props.step !== 0) {
             return (
                 <Button type="primary" onClick={this.back}>
-                    <Icon type="left"/>Back
+                    <Icon type="left" />Back
                 </Button>
             )
         }
         return null;
-    }
-    input = (e) => {
-        console.log(e.target.value)
     }
 
 
     render() {
         const childrenTeachingActs = [];
         const childrenEvalActs = [];
-
-        function handleChange(value) {
-            console.log(`selected ${value}`);
-        }
-
         function init() {
             for (let i = 0; i < teachingActs.length; i++) {
                 childrenTeachingActs.push(<Option key={teachingActs[i]}>{teachingActs[i]}</Option>)
@@ -179,7 +175,6 @@ class ItemMenu extends Component {
         }
 
         init();
-        const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
             labelCol: {
                 xs: { span: 24 },
@@ -214,17 +209,14 @@ class ItemMenu extends Component {
             },
         };
         return (
-            <div style={{ border: "2px solid", borderRadius: "12px",marginLeft:"10em" }}>
+            <div style={{ border: "2px solid", borderRadius: "12px" }}>
+                <div style={{ marginTop: "10px" }}></div>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item
                         {...formItemLayout}
                         label="Tên chủ đề"
-                    >   
-                        {getFieldDecorator('topic_name', {
-                            rules: [{ required: true, message: 'Vui lòng nhập tên chủ đề', whitespace: true }],
-                        })(
-                            <Input onChange={this.input}/>
-                        )}
+                    >
+                        <Input onChange={(event) => this.props.handleInputChange(event)} />
                     </Form.Item>
 
                     <Form.Item
@@ -236,7 +228,7 @@ class ItemMenu extends Component {
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             defaultValue={['Thuyết giảng', 'Thảo luận và thể hiện trên bảng']}
-                            onChange={handleChange}
+                            onChange={(value) => this.props.handleChangeTeachingAct(value)}
                         >
                             {childrenTeachingActs}
                         </Select>
@@ -247,20 +239,13 @@ class ItemMenu extends Component {
                         label={(
                             <span>
                                 Chọn chuẩn đầu ra&nbsp;
-                  <Tooltip title="Tham khảo mục chuẩn đầu ra để chọn">
+                        <Tooltip title="Tham khảo mục chuẩn đầu ra để chọn">
                                     <Icon type="question-circle-o" />
                                 </Tooltip>
                             </span>
                         )}
                     >
-                        {getFieldDecorator('standard_output', {
-                            initialValue: ['G1', '.1'],
-                            rules: [{ type: 'array', required: true, message: 'Vui lòng chọn ít nhất 1 chuẩn đầu ra' }],
-                        })(
-
-                            <Cascader options={standard_item} onChange={this.onChange} />
-                        )}
-
+                        <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />   
                     </Form.Item>
 
                     <Form.Item
@@ -279,25 +264,52 @@ class ItemMenu extends Component {
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             defaultValue={['BTVN', 'DAMH']}
-                            onChange={handleChange}
+                            onChange={(value) => this.props.handleChangeEvalActs(value)}
                         >
                             {childrenEvalActs}
                         </Select>
                     </Form.Item>
-                   
+
                     <Form.Item {...tailFormItemLayout}>
                         <div>
                             {this.renderBackButton()}
-                            <Button type="primary" onClick={this.saveAndContinue} style={{marginLeft:"2em"}}>
+                            <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
                                 Continue<Icon type="right" />
                             </Button>
+                            <p>{this.props.step}</p>
                         </div>
-                       
                     </Form.Item>
                 </Form>
             </div>
         );
     }
 }
+const mapDispatchToProps = (dispatch, ownProps) => {
+    let abc = '';
+    let teachingActs = ['Thuyết giảng', 'Thảo luận và thể hiện trên bảng'];
+    let evalActs = ['BTVN', 'DAMH'];
+    return {
+        handleInputChange: (event) => {
+            abc = event.target.value;
+            console.log(abc)
+        },
+        handleChangeTeachingAct: (value) => {
+            teachingActs = value;
+        },
+        handleChangeEvalActs: (value) => {
+            evalActs = value;
+        },
+        saveAndContinue: () => {
 
-export default ItemMenu;
+            myObj.titleName = abc;
+            myObj.teachingActs = teachingActs;
+            myObj.evalActs = evalActs;
+            myObj.standardOutput = temp;
+            const myObjStr = JSON.stringify(myObj);
+            console.log(myObjStr)
+            dispatch({ type: ADD_DATA, item: myObjStr });
+            ownProps.nextStep();
+        },
+    }
+}
+export default connect(null, mapDispatchToProps)(ItemMenu);

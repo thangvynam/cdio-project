@@ -1,21 +1,24 @@
 import React, { Component } from 'react';
 import MainForm from './Component/Main/MainForm';
+import TableItem from './Component/Table/TableItem';
 
 class App extends Component {
   render() {
     return (
-      <div class="container">
-        <div class="row">
-          <div class="col-sm-2" >
-            
+      <div className="container">
+        <div className="row">
+          <div className="col-sm-2" >
           </div>
-          <div class="col-sm-10" >
-          
-            <MainForm/>
+          <div className="col-sm-10" >
+            <MainForm />
+            <br/>
+            <h1>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h1>
+            <br/>
+            <TableItem/>
           </div>
         </div>
       </div>
-     
+
     );
   }
 }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { Element } from 'react-scroll';
+
 import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';
 
@@ -14,7 +16,9 @@ class App extends Component {
             <br/>
             <h1>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h1>
             <br/>
-            <TableItem/>
+            <Element name="test1" className="element" >
+              <TableItem/>
+            </Element>
           </div>
         </div>
       </div>

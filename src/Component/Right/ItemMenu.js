@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
-    Form, Input, Tooltip, Icon, Cascader, Select, Button
+    Form, Input, Tooltip, Icon, Cascader, Select, Button, message
 } from 'antd';
+import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
 import { ADD_DATA } from '../../Constant/ActionType';
@@ -128,6 +129,7 @@ const myObj = {
     evalActs: ''
 };
 let temp = [];
+let titleName = '';
 class ItemMenu extends Component {
     state = {
         standardSelectedItem: [],
@@ -153,16 +155,17 @@ class ItemMenu extends Component {
     renderBackButton() {
         if (this.props.step !== 0) {
             return (
-                <Button type="primary" onClick={this.back}>
-                    <Icon type="left" />Back
-                </Button>
+                <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link>
             )
         }
         return null;
     }
-
-
+    handleInputChange = (e) => {
+        titleName = e.target.value;
+    }
     render() {
+        const { getFieldDecorator } = this.props.form;
+
         const childrenTeachingActs = [];
         const childrenEvalActs = [];
         function init() {
@@ -216,7 +219,14 @@ class ItemMenu extends Component {
                         {...formItemLayout}
                         label="Tên chủ đề"
                     >
-                        <Input onChange={(event) => this.props.handleInputChange(event)} />
+                        {getFieldDecorator('name', {
+                            rules: [ {
+                                required: true, message: 'Vui lòng nhập tên chủ đề',
+                            }],
+                        })(
+                            <Input onChange={this.handleInputChange} />
+                        )}
+                        
                     </Form.Item>
 
                     <Form.Item
@@ -245,7 +255,7 @@ class ItemMenu extends Component {
                             </span>
                         )}
                     >
-                        <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />   
+                        <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />
                     </Form.Item>
 
                     <Form.Item
@@ -276,7 +286,8 @@ class ItemMenu extends Component {
                             <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
                                 Continue<Icon type="right" />
                             </Button>
-                            <p>{this.props.step}</p>
+                            <br/>
+                            <b>Số lượng : {this.props.step}</b>
                         </div>
                     </Form.Item>
                 </Form>
@@ -285,13 +296,10 @@ class ItemMenu extends Component {
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
-    let title = '';
+    
     let teachingActs = ['Thuyết giảng', 'Thảo luận và thể hiện trên bảng'];
     let evalActs = ['BTVN', 'DAMH'];
     return {
-        handleInputChange: (event) => {
-            title = event.target.value;
-        },
         handleChangeTeachingAct: (value) => {
             teachingActs = value;
         },
@@ -299,15 +307,27 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             evalActs = value;
         },
         saveAndContinue: () => {
-
-            myObj.titleName = title;
+            ownProps.form.resetFields()
+            myObj.titleName = titleName;
             myObj.teachingActs = teachingActs;
             myObj.evalActs = evalActs;
             myObj.standardOutput = temp;
-            const myObjStr = JSON.stringify(myObj);
-        
-            dispatch({ type: ADD_DATA, item: myObjStr });
-            ownProps.nextStep();
+
+           
+            
+            if (titleName === '' || temp.length === 0) {
+                message.error("Vui lòng điền đầy đủ thông tin");
+            }
+            else {
+                const myObjStr = JSON.stringify(myObj);
+                //reset
+                teachingActs = ['Thuyết giảng', 'Thảo luận và thể hiện trên bảng'];
+                evalActs = ['BTVN', 'DAMH'];
+                titleName = '';
+                dispatch({ type: ADD_DATA, item: myObjStr });
+                ownProps.nextStep();      
+            }
+            temp.splice(0, temp.length);
         },
     }
 }

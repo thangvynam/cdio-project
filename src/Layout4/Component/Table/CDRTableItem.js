@@ -28,9 +28,9 @@ const columns = [{
   key: 'action',
   render: (text, record) => (
     <span>
-      <a href="javascript:;">Edit</a>
+      <a href="#a">Edit</a>
       <Divider type="vertical" />
-      <a href="javascript:;">Delete</a>
+      <a href="#b">Delete</a>
     </span>
   ),
 }];

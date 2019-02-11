@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Form, Select,
   Button,  Checkbox,
-  Row, Col, Input, Icon, message
+   Input, message
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';

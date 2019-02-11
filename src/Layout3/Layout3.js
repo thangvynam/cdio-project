@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Element } from 'react-scroll';
 
 import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';

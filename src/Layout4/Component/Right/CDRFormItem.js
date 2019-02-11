@@ -91,7 +91,9 @@ class CDRFormItem extends Component {
             }
           }
           index++;
+          let uniqueKey = this.props.cdrdata.length++;
           var data = {
+            key: `${uniqueKey}`,
             cdr: `${this.props.cdrdata.cdr}.${index}`,
             description: this.props.cdrdata.description,
             levels: this.props.cdrdata.levels
@@ -106,7 +108,7 @@ class CDRFormItem extends Component {
   render() {
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {
-      return <Option value={CDRData[key]}>{CDRData[key]}</Option>
+      return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>
     });
     return (
       <div style={{ border: "2px solid", borderRadius: "12px" }}>

@@ -10,9 +10,9 @@ class App extends Component {
     return (
       // <Layout2/>
       // <Layout3/>
-      // <Layout4/>
+       <Layout4/>
       // <Layout5/>
-      <Layout9/>
+      //<Layout9/>
     );
   }
 }

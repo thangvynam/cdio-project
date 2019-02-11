@@ -4,9 +4,8 @@
   "private": true,
   "dependencies": {
     "antd": "^3.13.0",
-    "prop-types": "^15.6.2",
-    "react": "^16.7.0",
-    "react-animated-tree": "^1.0.10",
+
+    "react": "^16.7.0",         
     "react-dom": "^16.7.0",
     "react-motion": "^0.5.2",
     "react-redux": "^6.0.0",

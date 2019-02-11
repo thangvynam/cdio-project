@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
 import MenuMucTieu from '../Right/MenuMucTieu';
-
 const WrappedRegistrationForm = Form.create({ name: 'register' })(MenuMucTieu); 
+
 class MainForm extends Component {
     state = {
         step : 0

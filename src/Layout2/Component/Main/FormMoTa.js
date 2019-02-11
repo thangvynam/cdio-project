@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import { Form } from 'antd';
-import ItemMenu from '../Right/ItemMenu';
+import MenuMota from '../Right/MenuMoTa';
 
-const WrappedRegistrationForm = Form.create({ name: 'register' })(ItemMenu); 
-class MainForm extends Component {
+const WrappedRegistrationForm = Form.create({ name: 'register' })(MenuMota); 
+class FormMoTa extends Component {
     state = {
         step : 0
     }
@@ -29,13 +29,9 @@ class MainForm extends Component {
                             nextStep={this.nextStep} 
                             prevStep={this.prevStep}
                             step={step}
-                            // handleChange = {this.handleChange}
-                            //values={values}
                             />
-          
-            
         }
     }
 }
 
-export default MainForm;
+export default FormMoTa;

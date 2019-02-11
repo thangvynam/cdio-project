@@ -25,7 +25,7 @@ const staActs = [
     '2.2',
     '2.3',
 ]
-class ItemMenu extends Component {
+class MenuMucTieu extends Component {
     state = {
         standItems: [],
     }
@@ -170,4 +170,4 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
     }
 }
-export default connect(null, mapDispatchToProps)(ItemMenu);
+export default connect(null, mapDispatchToProps)(MenuMucTieu);

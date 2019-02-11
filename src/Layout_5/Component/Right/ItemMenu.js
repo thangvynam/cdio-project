@@ -5,7 +5,7 @@ import {
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA } from '../../Constant/ActionType';
+import { ADD_DATA } from '../../../Constant/ActionType';
 
 const { Option } = Select;
 const standard_item = [{

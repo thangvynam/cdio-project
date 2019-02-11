@@ -180,8 +180,8 @@ class ItemMenu extends Component {
         init();
         const formItemLayout = {
             labelCol: {
-                xs: { span: 24 },
-                sm: { span: 8 },
+                xs: { span: 12 },
+                sm: { span: 5 },
             },
             wrapperCol: {
                 xs: { span: 24 },
@@ -190,8 +190,8 @@ class ItemMenu extends Component {
         };
         const formDynamicItemLayout = {
             labelCol: {
-                xs: { span: 24 },
-                sm: { span: 8 },
+                xs: { span: 12 },
+                sm: { span: 5 },
             },
             wrapperCol: {
                 xs: { span: 24 },
@@ -234,7 +234,7 @@ class ItemMenu extends Component {
                         label="Hoạt động dạy"
                     >
                         <Select
-                            mode="multiple"
+                            mode="tags"
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             defaultValue={['Thuyết giảng', 'Thảo luận và thể hiện trên bảng']}
@@ -270,7 +270,7 @@ class ItemMenu extends Component {
                         label="Hoạt động đánh giá"
                     >
                         <Select
-                            mode="multiple"
+                            mode="tags"
                             style={{ width: '100%' }}
                             placeholder="Please select"
                             defaultValue={['BTVN', 'DAMH']}
@@ -307,14 +307,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             evalActs = value;
         },
         saveAndContinue: () => {
-            ownProps.form.resetFields()
+           
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs;
             myObj.evalActs = evalActs;
             myObj.standardOutput = temp;
 
-           
-            
             if (titleName === '' || temp.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
             }
@@ -325,6 +323,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 evalActs = ['BTVN', 'DAMH'];
                 titleName = '';
                 dispatch({ type: ADD_DATA, item: myObjStr });
+                ownProps.form.resetFields();
                 ownProps.nextStep();      
             }
             temp.splice(0, temp.length);

@@ -10,11 +10,11 @@ class Layout5 extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-sm-1" >
+                    <div className="" >
                     </div>
                     <div className="col-sm-11" >
-                        <br />
-                        <h2><center>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</center></h2>
+                        <br/>
+                        <h2 style={{textAlign: "center"}}>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h2>
                         <MainForm />
                         <br />
                         <Tooltip placement="topLeft">

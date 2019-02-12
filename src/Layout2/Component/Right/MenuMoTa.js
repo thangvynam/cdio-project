@@ -1,14 +1,11 @@
 import React, { Component } from 'react';
 import {
-    Form, Input, Tooltip, Icon, Cascader, Select, Button, message
+    Form, Icon, Button, message
 } from 'antd';
-import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
 import { ADD_DATA_LAYOUT_2 } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
-
-const { Option } = Select;
 
 let description = '';
 

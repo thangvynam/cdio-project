@@ -144,9 +144,9 @@ class ItemMenu extends Component {
     toString = () => {
         let temp = '';
         for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
-            temp += this.state.standardSelectedItem[i] + ' , ';
+                temp += this.state.standardSelectedItem[i] + ' , ';
         }
-        return temp;
+        return temp.replace('NaN','');
     }
     back = (e) => {
         e.preventDefault();

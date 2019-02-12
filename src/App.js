@@ -9,11 +9,6 @@ class App extends Component {
       <Switch>
         <Route exact path='/de-cuong-mon-hoc/:type' component={Dashboard} />
       </Switch>
-      // <Layout2/>
-      // <Layout3/>
-      // <Layout4/>
-      // <Layout5/>
-      // <Layout9/>
     );
   }
 }

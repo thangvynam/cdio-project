@@ -1,16 +1,11 @@
 import React, { Component } from 'react'
-// import { Tooltip } from 'antd';
 import {
-  Form, Input, Tooltip, Card, Button
+  Form, Input, Card, Button
 } from 'antd';
 
 import './thong-tin-chung.css'
-const FormItem = Form.Item;
-const Search = Input.Search;
-
-
 class ThongTinChung extends Component {
-  
+
   render() {
     const formItemLayout = {
       labelCol: {
@@ -20,18 +15,6 @@ class ThongTinChung extends Component {
       wrapperCol: {
         xs: { span: 24 },
         sm: { span: 10 },
-      },
-    };
-    const tailFormItemLayout = {
-      wrapperCol: {
-        xs: {
-          span: 24,
-          offset: 0,
-        },
-        sm: {
-          span: 16,
-          offset: 8,
-        },
       },
     };
     return (
@@ -69,7 +52,7 @@ class ThongTinChung extends Component {
                     <Input type='text' />
                 </Form.Item>
                 <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
-                            Submit
+                        Submit
                 </Button>
             </Card>
           </div>

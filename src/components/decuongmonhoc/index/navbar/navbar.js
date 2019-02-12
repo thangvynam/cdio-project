@@ -1,10 +1,6 @@
 import React, { Component } from 'react';
-import { Menu, Icon, Button, Switch } from 'antd';
-import { Link } from 'react-router-dom';
+import { Menu, Icon, Switch } from 'antd';
 import "./navbar_css.css"
-const SubMenu = Menu.SubMenu;
-const MenuItemGroup = Menu.ItemGroup;
-
 
 class NavBar extends Component {
     state = {
@@ -26,7 +22,7 @@ class NavBar extends Component {
                 mode="horizontal"
             >
                 <Menu.Item key="1">
-                    <a onClick={this.props.updateCollapse} >
+                    <a href="#a" onClick={this.props.updateCollapse} >
                         <span>
                             <Icon type={this.props.isCollapse ? 'menu-unfold' : 'menu-fold'} />
                         </span>

@@ -10,16 +10,18 @@ class Layout5 extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-sm-2" >
+                    <div className="col-sm-1" >
                     </div>
-                    <div className="col-sm-10" >
+                    <div className="col-sm-11" >
+                        <br/>
+                        <h2>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h2>
                         <MainForm />
-                        <br />
-                        <h1>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h1>
+                        <br/>
                         <Tooltip placement="topLeft">
-                            <Button style={{color: "red", margin: "auto", width: "100%", height: "50px"}}>(Hướng dẫn: Mô tả chi tiết quá trình giảng dạy theo từng chủ đề: tên chủ đề, danh sách các chuẩn đầu
+                            <Button style={{ color: "red", margin: "auto", width: "100%", height: "50px" }}>(Hướng dẫn: Mô tả chi tiết quá trình giảng dạy theo từng chủ đề: tên chủ đề, danh sách các chuẩn đầu
 ra chi tiết tương ứng với mỗi chủ đề, <br /> các hoạt động dạy và học gợi ý, các hoạt động đánh giá nếu có)</Button>
                         </Tooltip>
+                        <br/>
                         <Element name="test1" className="element" >
                             <TableItem />
                         </Element>

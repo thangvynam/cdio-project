@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { Menu, Icon, Button } from 'antd';
+import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
-import {MENUITEM} from './../../../../config/chuan-dau-ra';
+import {MENUITEM} from './../../../../Constant/ActionType';
 import "./menu_css.css"
-const SubMenu = Menu.SubMenu;
-
 
 class MenuLeft extends Component {
     render() {

@@ -287,7 +287,6 @@ class ItemMenu extends Component {
                                 Continue<Icon type="right" />
                             </Button>
                             <br/>
-                            <b>Số lượng : {this.props.step}</b>
                         </div>
                     </Form.Item>
                 </Form>

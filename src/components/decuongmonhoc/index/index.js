@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Button, Icon, Switch, Menu } from 'antd';
+import { Row, Col } from 'antd';
 import './index.css';
 import Content from './content/content';
 import MenuLeft from './menu/menu';

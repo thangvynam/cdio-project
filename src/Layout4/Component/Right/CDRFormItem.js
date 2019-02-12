@@ -100,7 +100,8 @@ class CDRFormItem extends Component {
           }
           var newData = this.props.cdrtable.concat(data);
           this.props.onAddCDRData(newData);
-          message.info("Thêm thành công!")
+          message.info("Thêm thành công!");
+          this.props.form.resetFields();
         }
       }
     }

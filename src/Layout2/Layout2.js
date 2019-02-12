@@ -14,7 +14,7 @@ class Layout2 extends Component {
                         <FormMoTa />
                         <br />
                         <h1 style={{textAlign: "center"}}>MÔ TẢ MÔN HỌC</h1>
-                        <Tooltip placement="topLeft" title="Tooltip">
+                        <Tooltip placement="topLeft" >
                             <Button style={{color: "red", margin: "auto", width: "100%"}}>(Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)</Button>
                         </Tooltip>
                         <Tooltip title="Nội dung mô tả">

@@ -1,0 +1,15 @@
+.card_TTC {
+    margin: 3%;
+}
+
+.input_number{
+    width: 25%;
+}
+
+.submit_TTC{
+    text-align: center;
+    width: 100px;
+    position: relative; 
+    margin-left: 50%;
+    right: 50px;
+}

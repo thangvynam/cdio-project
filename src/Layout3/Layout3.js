@@ -16,7 +16,7 @@ class Layout3 extends Component {
                         <MainForm />
                         <br />
                         <h1 style={{textAlign: "center"}}>MỤC TIÊU MÔN HỌC</h1>
-                        <Tooltip placement="topLeft" title="Tooltip">
+                        <Tooltip placement="topLeft">
                             <Button style={{color: "red", margin: "auto", width: "100%", height: "50px"}}>
                                 <span>(Hướng dẫn: Liệt kê các mục tiêu môn học, từ 5-8 mục tiêu ở mức độ tổng quát. Sử dụng động từ
 Bloom ở mức độ nhóm. <br/>Mỗi mục tiêu môn học được mapping với chuẩn đầu ra cấp chương trình)

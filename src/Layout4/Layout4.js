@@ -14,7 +14,7 @@ class Layout4 extends Component {
             <CDRForm />
             <br/>
             <h1 style={{textAlign: "center"}}>CHUẨN ĐẦU RA MÔN HỌC</h1>
-            <Tooltip placement="topLeft" title="Tooltip">
+            <Tooltip placement="topLeft" >
               <Button style={{color: "red", margin: "auto", width: "100%", height: "100px"}}>(Hướng dẫn: Mô tả chi tiết các chuẩn đầu ra của môn học. Ứng với mỗi mục tiêu ở mục phía trên có
 thể có 1 hay nhiều chuẩn đầu ra chi tiết. <br />Đánh mã số chuẩn đầu ra môn học ở cấp 2 tương ứng với mỗi
 mục tiêu môn học. Mức độ được thể hiện bằng các ký hiệu I-Introduce, T-Teach <br />và U-Utilize. Các động

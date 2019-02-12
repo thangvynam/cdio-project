@@ -11,6 +11,7 @@ const allReducers = redux.combineReducers({
     cdrdata: changeCDRDataReducer,
     itemLayout2Reducer: itemLayout2Reducer,
     itemLayout3Reducer: itemLayout3Reducer,
+    
 })
 var store1 = redux.createStore(allReducers);
 export default store1;

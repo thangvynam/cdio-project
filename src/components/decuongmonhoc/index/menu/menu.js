@@ -3,6 +3,7 @@ import { Menu, Icon } from 'antd';
 import { Link } from 'react-router-dom';
 import {MENUITEM} from './../../../../Constant/ActionType';
 import "./menu_css.css"
+import MenuItem from 'antd/lib/menu/MenuItem';
 
 class MenuLeft extends Component {
     render() {
@@ -21,13 +22,13 @@ class MenuLeft extends Component {
                     </Link>
                 </Menu.Item>
                 <Menu.Item key="2">
-                    <Link to={"/"} >
+                    <Link to={MENUITEM.MO_TA_MON_HOC} >
                         <Icon type="pay-circle" />
                         <span>MÔ TẢ MÔN HỌC</span>
                     </Link>
                 </Menu.Item>
                 <Menu.Item key="3">
-                    <Link to={"/"}>
+                    <Link to={MENUITEM.MUC_TIEU_MON_HOC}>
                         <Icon type="inbox" />
                         <span>MỤC TIÊU MÔN HỌC</span>
                     </Link>

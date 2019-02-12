@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Form, Input, Tooltip, Icon, Cascader, Select, Button, message
+    Form, Input, Icon, Select, Button, message
 } from 'antd';
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
@@ -139,7 +139,6 @@ class MenuMucTieu extends Component {
                                 Continue<Icon type="right" />
                             </Button>
                             <br/>
-                            <b>Số lượng : {this.props.step}</b>
                         </div>
                     </Form.Item>
                 </Form>

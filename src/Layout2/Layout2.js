@@ -8,12 +8,13 @@ class Layout2 extends Component {
         return (
             <div className="container">
                 <div className="row">
-                    <div className="col-sm-2" >
+                    <div className="" >
                     </div>
-                    <div className="col-sm-10" >
-                        <FormMoTa />
+                    <div className="col-sm-11" >
                         <br />
                         <h1 style={{textAlign: "center"}}>MÔ TẢ MÔN HỌC</h1>
+                        <FormMoTa />
+                        <br />
                         <Tooltip placement="topLeft" >
                             <Button style={{color: "red", margin: "auto", width: "100%"}}>(Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)</Button>
                         </Tooltip>

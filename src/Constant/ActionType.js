@@ -3,6 +3,7 @@ export const ADD_DATA_LAYOUT_2 = 'ADD_DATA_LAYOUT_2';
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
 export const ADD_CDRDATA = 'ADD_CDRDATA';
 export const CHANGE_CDRDATA = 'CHANGE_CDRDATA';
+export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 
 export function addCDRData(newCDRData) {
     return {
@@ -14,6 +15,13 @@ export function changeCDRData(newCDRData) {
     return {
         type: CHANGE_CDRDATA,
         data: newCDRData
+    };
+}
+
+export function AddItemKHGDTH(newItem){
+    return{
+        type: ADD_ITEM_KHGDTH,
+        data: newItem,
     };
 }
 

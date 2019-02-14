@@ -5,6 +5,7 @@ import Layout2 from '../../../../Layout2/Layout2';
 import Layout3 from '../../../../Layout3/Layout3';
 import Layout4 from '../../../../Layout4/Layout4';
 import Layout5 from '../../../../Layout5/Layout5';
+import Layout6 from '../../../../Layout6/Layout6';
 export default class Content extends Component {
     render() {
         let content_layout;
@@ -43,7 +44,14 @@ export default class Content extends Component {
                         <Layout5 />
                     </React.Fragment>
                 );
-            }            
+            }   
+            case MENUITEM.GIANG_DAY_THUC_HANH: {
+                return content_layout = (
+                    <React.Fragment>
+                        <Layout6/>
+                    </React.Fragment>
+                );
+            }             
             case MENUITEM.TAI_NGUYEN_MON_HOC: {
                 return content_layout = (
                     <React.Fragment>

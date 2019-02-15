@@ -191,7 +191,7 @@ class ItemMenu extends Component {
   };
 
   handleTitleChange = e => {
-    this.state.titleName = e.target.value;
+    this.setState({ titleName: e.target.value });
   };
 
   handleChangeTeachingAct(value) {

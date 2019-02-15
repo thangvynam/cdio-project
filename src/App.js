@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Route, Switch } from 'react-router-dom';
 
-import Dashboard from './components/decuongmonhoc/index'; 
-import Index from './Index/Index';
+import Dashboard from './frontend/components/decuongmonhoc/index/index'; 
+import Index from './frontend/Index/Index';
                           
 class App extends Component {
   render() {

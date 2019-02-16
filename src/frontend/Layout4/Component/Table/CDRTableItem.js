@@ -387,6 +387,7 @@ class CDRTableItem extends Component {
           }),
         };
       });
+
       const CDRTable = this.props.cdrtable;
       for(let i = 0;i < CDRTable.length - 1;i++){
         for(let j = i + 1;j < CDRTable.length;j++){

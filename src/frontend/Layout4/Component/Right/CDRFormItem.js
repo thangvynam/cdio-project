@@ -31,7 +31,7 @@ class CDRFormItem extends Component {
     a = b;
     b = temp;
   }
-  
+
   onCDRChange = (value) => {
     this.props.onChangeCDRData(
       {
@@ -94,6 +94,7 @@ class CDRFormItem extends Component {
           }
           index++;
           let uniqueKey = this.props.cdrtable.length + 1;
+
           var data = {
             key: `${uniqueKey}`,
             cdr: `${this.props.cdrdata.cdr}.${index}`,

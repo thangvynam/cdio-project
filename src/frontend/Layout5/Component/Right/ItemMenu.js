@@ -301,12 +301,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         handleChangeTeachingAct: (value) => {
             teachingActs = value;
+            
         },
         handleChangeEvalActs: (value) => {
             evalActs = value;
         },
         saveAndContinue: () => {
-           
+            console.log(teachingActs)
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs;
             myObj.evalActs = evalActs;

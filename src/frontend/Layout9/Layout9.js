@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MainForm from '../Layout9/Component/MainForm/MainForm';
+import MainForm from './Component/MainForm/RuleForm';
 
 class Layout9 extends Component {
     render() {
@@ -9,10 +9,9 @@ class Layout9 extends Component {
                     <div className="col-sm-2" >
                     </div>
                     <div className="col-sm-10" >
-                        <MainForm/>
-                        <br />
                         <h1>CÁC QUY ĐỊNH CHUNG</h1>
                         <br />
+                        <MainForm/>
                     </div>
                 </div>
             </div>

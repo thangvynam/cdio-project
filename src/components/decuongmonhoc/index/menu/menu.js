@@ -3,7 +3,6 @@ import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
 import { MENUITEM } from "./../../../../Constant/ActionType";
 import "./menu_css.css";
-import MenuItem from "antd/lib/menu/MenuItem";
 
 class MenuLeft extends Component {
   render() {

@@ -19,6 +19,7 @@ const EditableFormRow = Form.create()(EditableRow);
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const levelsOptions = ["I", "T", "U"];
+const CDRData = ["G1", "G2", "G3", "G4", "G5"];
 
 class EditableCell extends Component {
 
@@ -309,23 +310,31 @@ class CDRTableItem extends Component {
             message.info("Chuẩn đầu ra không hợp lệ!");
           }
           else {
+            if(row.cdr.split("G")[1].split(".")[0] > CDRData.length)
+            {
+              message.info("Chuẩn đầu ra không tồn tại!");
+            } 
+            else {
               if(this.checkIndex(row.cdr, cdrtable, key - 1)){
                 message.info("Chuẩn đầu ra quá lớn!");
-                return;
               }
               else {
                 let isExist = this.checkExist(row.cdr, cdrtable);
                 if(isExist !== -1){
-                  let temp = cdrtable[key - 1].cdr;
-                  cdrtable[key - 1].cdr = row.cdr;
-                  cdrtable[isExist].cdr = temp;
-                }
-                else {
+                  
+                  let cdrType = cdrtable[isExist].cdr.split(".")[0];
+                  for(let i = isExist;i < cdrtable.length - 1;i++){
+                    if(cdrtable[i].cdr.split(".")[0] === cdrType){                     
+                      let index = parseInt(cdrtable[i].cdr.split(".")[1] , 10 ) + 1;
+                      cdrtable[i].cdr = cdrtable[i].cdr.split(".")[0] + "." + index;
+                    }
+                  }
+                  
                   if(key === cdrtable.length){
                     cdrtable.splice(cdrtable.length - 1, 1);
                   }
                   else {
-                    var cdrType = cdrtable[key - 1].cdr.split(".")[0];
+                    let cdrType = cdrtable[key - 1].cdr.split(".")[0];
                     for(let i = key - 1;i < cdrtable.length - 1;i++){
                       if(cdrtable[i + 1].cdr.split(".")[0] === cdrType){
                         cdrtable[i].description = cdrtable[i + 1].description;
@@ -339,20 +348,40 @@ class CDRTableItem extends Component {
                     }
                     cdrtable.splice(cdrtable.length - 1, 1);
                   }
-                  var data = {
-                    key: (cdrtable.length + 1).toString(),
-                    cdr: row.cdr,
-                    description: row.description,
-                    levels: row.levels
-                  }
-                  cdrtable.push(data);
-                  
-                  this.props.onAddCDRData(cdrtable);
-                  this.props.onSelectCDRItem([]);
                 }
+                else {
+                  if(key === cdrtable.length){
+                    cdrtable.splice(cdrtable.length - 1, 1);
+                  }
+                  else {
+                    let cdrType = cdrtable[key - 1].cdr.split(".")[0];
+                    for(let i = key - 1;i < cdrtable.length - 1;i++){
+                      if(cdrtable[i + 1].cdr.split(".")[0] === cdrType){
+                        cdrtable[i].description = cdrtable[i + 1].description;
+                        cdrtable[i].levels = cdrtable[i + 1].levels;
+                      }
+                      else {
+                        cdrtable[i].cdr = cdrtable[i + 1].cdr;
+                        cdrtable[i].description = cdrtable[i + 1].description;
+                        cdrtable[i].levels = cdrtable[i + 1].levels;
+                      }
+                    }
+                    cdrtable.splice(cdrtable.length - 1, 1);
+                  }
+                }
+                let data = {
+                  key: (cdrtable.length + 1).toString(),
+                  cdr: row.cdr,
+                  description: row.description,
+                  levels: row.levels
+                }
+                cdrtable.push(data);
+                
+                this.props.onAddCDRData(cdrtable);
+                this.props.onSelectCDRItem([]);
                 this.setState({ editingKey: '' });
               }
-            
+            }
           }
       }
       
@@ -387,6 +416,7 @@ class CDRTableItem extends Component {
           }),
         };
       });
+
       const CDRTable = this.props.cdrtable;
       for(let i = 0;i < CDRTable.length - 1;i++){
         for(let j = i + 1;j < CDRTable.length;j++){

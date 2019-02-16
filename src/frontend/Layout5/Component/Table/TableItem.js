@@ -6,15 +6,18 @@ const columns = [{
   title: 'Tên chủ đề',
   dataIndex: 'titleName',
   key: 'titleName',
+  width: 150
 }, {
   title: 'Hoạt động giảng dạy ',
   dataIndex: 'teachingActs',
   key: 'teachingActs',
+  width: 150,
   render: teachingActs => (
     <span>
       {teachingActs.map(  tag => {
         let color = 'green';
         return <Tag color={color} key={tag}>{tag.toUpperCase()}</Tag>;
+        
       })}
     </span>
   ),
@@ -57,7 +60,10 @@ const columns = [{
 class TableItem extends Component {
     render() {
         return (
-            <Table columns={columns} dataSource={this.props.itemMenuReducer.previewInfo} />
+          <div>
+            <Table columns={columns} dataSource={this.props.itemMenuReducer.previewInfo} pagination={{ pageSize: 50 }} scroll={{ y: 240, }}/>
+          </div>
+           
         );
     }
 }

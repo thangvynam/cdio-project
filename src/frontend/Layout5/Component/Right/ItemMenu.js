@@ -307,7 +307,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             evalActs = value;
         },
         saveAndContinue: () => {
-            console.log(teachingActs)
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs;
             myObj.evalActs = evalActs;

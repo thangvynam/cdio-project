@@ -2,8 +2,9 @@ import React, { Component } from 'react';
 import {
   Form, Select,
   Button, Checkbox,
-  Input, message
+  Input, message, Icon
 } from 'antd';
+import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeCDRData, addCDRData } from '../../../Constant/ActionType';
@@ -30,6 +31,7 @@ class CDRFormItem extends Component {
     a = b;
     b = temp;
   }
+
   onCDRChange = (value) => {
     this.props.onChangeCDRData(
       {
@@ -91,7 +93,8 @@ class CDRFormItem extends Component {
             }
           }
           index++;
-          let uniqueKey = this.props.cdrdata.length++;
+          let uniqueKey = this.props.cdrtable.length + 1;
+
           var data = {
             key: `${uniqueKey}`,
             cdr: `${this.props.cdrdata.cdr}.${index}`,
@@ -101,6 +104,11 @@ class CDRFormItem extends Component {
           var newData = this.props.cdrtable.concat(data);
           this.props.onAddCDRData(newData);
           message.info("Thêm thành công!");
+          this.props.onChangeCDRData({
+            cdr: "",
+            description: "",
+            levels: []
+        });
           this.props.form.resetFields();
         }
       }
@@ -161,7 +169,10 @@ class CDRFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div>
-              <Button type="primary" size="large" icon="plus" onClick={this.addCDRData}>Thêm</Button>
+              {this.props.cdrtable.length > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
+              <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
+              Continue<Icon type="right" />
+              </Button>
             </div>
           </Form.Item>
         </Form>

@@ -328,6 +328,7 @@ class CDRTableItem extends Component {
         return;
       }
       const newData = this.props.cdrtable;
+      
       const index = newData.findIndex(item => key === item.key);
       if (index > -1) {
         const item = newData[index];
@@ -338,6 +339,16 @@ class CDRTableItem extends Component {
       } else {
         newData.push(row);
       }
+      for(let i = 0;i < newData[key - 1].levels.length - 1;i++){
+        for (let j = i + 1; j < newData[key - 1].levels.length; j++) {
+          if (newData[key - 1].levels[j] < newData[key - 1].levels[i]) {
+            let temp = newData[key - 1].levels[j];
+            newData[key - 1].levels[j] = newData[key - 1].levels[i];
+            newData[key - 1].levels[i] = temp;
+          }
+        }
+      
+    }
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');

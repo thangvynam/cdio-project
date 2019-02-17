@@ -51,7 +51,7 @@ class MenuLeft extends Component {
           </Link>
         </Menu.Item>
         <Menu.Item key="7">
-          <Link to={"/"}>
+          <Link to={MENUITEM.DANH_GIA}>
             <Icon type="file-text" />
             <span>ĐÁNH GIÁ</span>
           </Link>

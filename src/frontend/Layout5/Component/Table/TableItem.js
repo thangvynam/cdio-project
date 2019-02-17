@@ -11,16 +11,15 @@ const columns = [{
   title: 'Hoạt động giảng dạy ',
   dataIndex: 'teachingActs',
   key: 'teachingActs',
-  width: 150,
   render: teachingActs => (
     <span>
       {teachingActs.map(  tag => {
         let color = 'green';
         return <Tag color={color} key={tag}>{tag.toUpperCase()}</Tag>;
-        
       })}
     </span>
   ),
+  width:200
 }, {
   title: 'Chuẩn đầu ra ',
   dataIndex: 'standardOutput',
@@ -33,6 +32,7 @@ const columns = [{
       })}
     </span>
   ),
+  width:200
 }, {
   title: 'Hoạt động đánh giá',
   key: 'evalActs',

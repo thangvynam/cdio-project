@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     Form, Input, Tooltip, Icon, Cascader, Select, Button, message
 } from 'antd';
+import { Redirect } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
@@ -133,7 +134,8 @@ let titleName = '';
 class ItemMenu extends Component {
     state = {
         standardSelectedItem: [],
-        previewInfo: []
+        previewInfo: [],
+        redirectTab7: false
     }
     onChange = (value) => {
         var newArray = this.state.standardSelectedItem.slice();
@@ -144,9 +146,9 @@ class ItemMenu extends Component {
     toString = () => {
         let temp = '';
         for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
-                temp += this.state.standardSelectedItem[i] + ' , ';
+            temp += this.state.standardSelectedItem[i] + ' , ';
         }
-        return temp.replace('NaN','');
+        return temp.replace('NaN', '');
     }
     back = (e) => {
         e.preventDefault();
@@ -163,7 +165,18 @@ class ItemMenu extends Component {
     handleInputChange = (e) => {
         titleName = e.target.value;
     }
+    moveTab7 = () => {
+        this.setState({ redirectTab7: true });
+    }
+    redirect() {
+        if (this.state.redirectTab7) {
+            return (
+                <Redirect to="/de-cuong-mon-hoc/danh-gia" />
+            );
+        }
+    }
     render() {
+
         const { getFieldDecorator } = this.props.form;
 
         const childrenTeachingActs = [];
@@ -212,96 +225,115 @@ class ItemMenu extends Component {
             },
         };
         return (
-            <div style={{ border: "2px solid", borderRadius: "12px" }}>
-                <div style={{ marginTop: "10px" }}></div>
-                <Form onSubmit={this.handleSubmit}>
-                    <Form.Item
-                        {...formItemLayout}
-                        label="Tên chủ đề"
-                    >
-                        {getFieldDecorator('name', {
-                            rules: [ {
-                                required: true, message: 'Vui lòng nhập tên chủ đề',
-                            }],
-                        })(
-                            <Input onChange={this.handleInputChange} />
-                        )}
-                        
-                    </Form.Item>
-
-                    <Form.Item
-                        {...formItemLayout}
-                        label="Hoạt động dạy"
-                    >
-                        <Select
-                            mode="tags"
-                            style={{ width: '100%' }}
-                            placeholder="Please select"
-                            defaultValue={['Thuyết giảng', 'Thảo luận và thể hiện trên bảng']}
-                            onChange={(value) => this.props.handleChangeTeachingAct(value)}
+            <div>
+                {this.redirect()}
+                <div style={{ border: "2px solid", borderRadius: "12px" }}>
+                    <div style={{ marginTop: "10px" }}></div>
+                    <Form onSubmit={this.handleSubmit}>
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Tên chủ đề"
                         >
-                            {childrenTeachingActs}
-                        </Select>
-                    </Form.Item>
+                            {getFieldDecorator('name', {
+                                rules: [{
+                                    required: true, message: 'Vui lòng nhập tên chủ đề',
+                                }],
+                            })(
+                                <Input onChange={this.handleInputChange} />
+                            )}
 
-                    <Form.Item
-                        {...formDynamicItemLayout}
-                        label={(
-                            <span>
-                                Chọn chuẩn đầu ra&nbsp;
-                        <Tooltip title="Tham khảo mục chuẩn đầu ra để chọn">
-                                    <Icon type="question-circle-o" />
-                                </Tooltip>
-                            </span>
-                        )}
-                    >
-                        <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />
-                    </Form.Item>
+                        </Form.Item>
 
-                    <Form.Item
-                        {...formItemLayout}
-                        label="Kết quả chuẩn đầu ra"
-                    >
-                        <Input disabled value={this.toString()} />
-                    </Form.Item>
-
-                    <Form.Item
-                        {...formItemLayout}
-                        label="Hoạt động đánh giá"
-                    >
-                        <Select
-                            mode="tags"
-                            style={{ width: '100%' }}
-                            placeholder="Please select"
-                            defaultValue={['BTVN', 'DAMH']}
-                            onChange={(value) => this.props.handleChangeEvalActs(value)}
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Hoạt động dạy"
                         >
-                            {childrenEvalActs}
-                        </Select>
-                    </Form.Item>
+                            <Select
+                                mode="tags"
+                                style={{ width: '100%' }}
+                                placeholder="Please select"
+                                defaultValue={['Thuyết giảng', 'Thảo luận và thể hiện trên bảng']}
+                                onChange={(value) => this.props.handleChangeTeachingAct(value)}
+                            >
+                                {childrenTeachingActs}
+                            </Select>
+                        </Form.Item>
 
-                    <Form.Item {...tailFormItemLayout}>
-                        <div>
-                            {this.renderBackButton()}
-                            <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
-                                Continue<Icon type="right" />
-                            </Button>
-                            <br/>
-                        </div>
-                    </Form.Item>
-                </Form>
+                        <Form.Item
+                            {...formDynamicItemLayout}
+                            label={(
+                                <span>
+                                    Chọn chuẩn đầu ra&nbsp;
+                            <Tooltip title="Tham khảo mục chuẩn đầu ra để chọn">
+                                        <Icon type="question-circle-o" />
+                                    </Tooltip>
+                                </span>
+                            )}
+                        >
+                            <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />
+                        </Form.Item>
+
+                        <Form.Item
+                            {...formItemLayout}
+                            label="Kết quả chuẩn đầu ra"
+                        >
+                            <Input disabled value={this.toString()} />
+                        </Form.Item>
+
+                        <Form.Item
+                            {...formItemLayout}
+                            label={(
+                                <span>
+                                    Hoạt động đánh giá&nbsp;
+                            <Tooltip title="Có thể nhập thêm hoạt động đánh giá ">
+                                        <Icon type="question-circle-o" />
+                                    </Tooltip>
+                                </span>
+                            )}
+                        >
+                            <div style={{ float: "left", width: '76%' }}>
+                                <Select
+                                    mode="tags"
+                                    style={{ width: '100%' }}
+                                    placeholder="Please select"
+                                    defaultValue={['BTVN', 'DAMH']}
+                                    onChange={(value) => this.props.handleChangeEvalActs(value)}
+                                >
+                                    {childrenEvalActs}
+                                </Select>
+
+                            </div>
+                            <div style={{ float: "left" }}>
+                                <Button type="primary" onClick={this.moveTab7}>
+                                    Nhập đánh giá <Icon type="right" />
+                                </Button>
+                            </div>
+
+                        </Form.Item>
+
+                        <Form.Item {...tailFormItemLayout}>
+                            <div>
+                                {this.renderBackButton()}
+                                <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
+                                    Continue<Icon type="right" />
+                                </Button>
+                                <br />
+                            </div>
+                        </Form.Item>
+                    </Form>
+                </div>
             </div>
         );
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
-    
+
     let teachingActs = ['Thuyết giảng', 'Thảo luận và thể hiện trên bảng'];
     let evalActs = ['BTVN', 'DAMH'];
     return {
+
         handleChangeTeachingAct: (value) => {
             teachingActs = value;
-            
         },
         handleChangeEvalActs: (value) => {
             evalActs = value;
@@ -323,7 +355,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 titleName = '';
                 dispatch({ type: ADD_DATA, item: myObjStr });
                 ownProps.form.resetFields();
-                ownProps.nextStep();      
+                ownProps.nextStep();
             }
             temp.splice(0, temp.length);
         },

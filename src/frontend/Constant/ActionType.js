@@ -4,6 +4,7 @@ export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
 export const ADD_CDRDATA = 'ADD_CDRDATA';
 export const CHANGE_CDRDATA = 'CHANGE_CDRDATA';
 export const SELECTED_CDRITEM = 'SELECT_CDRITEM';
+export const CHANGE_EDITSTATE = 'CHANGE_EDITSTATE';
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
@@ -26,6 +27,13 @@ export function selectedCDRItem(newCDRItem) {
     return {
         type: SELECTED_CDRITEM,
         item: newCDRItem
+    };
+}
+
+export function changeEditState(newEditState) {
+    return {
+        type: CHANGE_EDITSTATE,
+        editstate: newEditState
     };
 }
 

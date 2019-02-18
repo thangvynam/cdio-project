@@ -6,6 +6,8 @@ export const CHANGE_CDRDATA = 'CHANGE_CDRDATA';
 export const SELECTED_CDRITEM = 'SELECT_CDRITEM';
 export const CHANGE_EDITSTATE = 'CHANGE_EDITSTATE';
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
+export const ADD_DGDATA = 'ADD_DGDATA';
+export const CHANGE_DGDATA = 'CHANGE_DGDATA';
 
 export function addCDRData(newCDRData) {
     return {
@@ -39,6 +41,19 @@ export function AddItemKHGDTH(newItem){
     return{
         type: ADD_ITEM_KHGDTH,
         data: newItem,
+    };
+}
+
+export function addDGData(newDGData){
+    return{
+        type: ADD_DGDATA,
+        data: newDGData
+    };
+}
+export function changeDGData(newDGData){
+    return{
+        type: CHANGE_DGDATA,
+        data: newDGData
     };
 }
 

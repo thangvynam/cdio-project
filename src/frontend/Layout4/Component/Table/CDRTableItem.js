@@ -238,8 +238,7 @@ class CDRTableItem extends Component {
     this.props.onSelectCDRItem(selectedRowKeys);
   }
 
-  handleDelete = (key) => {
-    var cdrtable = this.props.cdrtable;
+  OnDelete = (cdrtable, key) => {
     if(key === cdrtable.length){
       cdrtable.splice(cdrtable.length - 1, 1);
     }
@@ -258,6 +257,10 @@ class CDRTableItem extends Component {
       }
       cdrtable.splice(cdrtable.length - 1, 1);
     }
+  }
+  handleDelete = (key) => {
+    var cdrtable = this.props.cdrtable;
+    this.OnDelete(cdrtable, key);
     this.props.onAddCDRData(cdrtable);
     this.props.onSelectCDRItem([]);
   }
@@ -362,34 +365,22 @@ class CDRTableItem extends Component {
   moveRow = (dragIndex, hoverIndex) => {
 
     const data  = this.props.cdrtable;
-    const dragTemp = {
-      key: data[dragIndex].key,
-      cdr: data[dragIndex].cdr,
-      description: data[hoverIndex].description,
-      levels: data[hoverIndex].levels
-    };
-    const hoverTemp = {
-      key: data[hoverIndex].key,
-      cdr: data[hoverIndex].cdr,
+    const temp = {
       description: data[dragIndex].description,
       levels: data[dragIndex].levels
-    };
-    data.splice(dragIndex, 1);
-    if(dragIndex > hoverIndex){
-      data.splice(hoverIndex, 1);
     }
-    else {
-      data.splice(hoverIndex - 1, 1);
-    }
-    // data.splice(data.length, 0, dragTemp);
-    // data.splice(data.length, 0, hoverTemp);
-    data.push(dragTemp);
-    data.push(hoverTemp);
+    data[dragIndex].description = data[hoverIndex].description;
+    data[dragIndex].levels= data[hoverIndex].levels;
+
+    data[hoverIndex].description = temp.description;
+    data[hoverIndex].levels= temp.levels;
+
     this.props.onAddCDRData(data);
     this.props.onSelectCDRItem([]);
   }
 
     render() {
+      console.log(this.props.cdrtable)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {

@@ -10,6 +10,14 @@ const columns = [{
   title: 'Mô tả',
   dataIndex: 'description',
   key: 'description',
+  width: '500px',
+  onCell: () => {
+    return {
+      style: {
+        maxWidth: 250,
+      }
+    }
+  },
 }, {
   title: 'CĐR CDIO của chương trình',
   dataIndex: 'standActs',
@@ -37,7 +45,7 @@ const columns = [{
 class TableItem extends Component {
     render() {
         return (
-            <Table columns={columns} dataSource={this.props.itemLayout3Reducer.previewInfo} />
+            <Table columns={columns} dataSource={this.props.itemLayout3Reducer.previewInfo} style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}} />
         );
     }
 }

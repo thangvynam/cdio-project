@@ -4,7 +4,6 @@ export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
 export const ADD_CDRDATA = 'ADD_CDRDATA';
 export const CHANGE_CDRDATA = 'CHANGE_CDRDATA';
 export const SELECTED_CDRITEM = 'SELECT_CDRITEM';
-export const CHANGE_EDITSTATE = 'CHANGE_EDITSTATE';
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
@@ -27,13 +26,6 @@ export function selectedCDRItem(newCDRItem) {
     return {
         type: SELECTED_CDRITEM,
         item: newCDRItem
-    };
-}
-
-export function changeEditState(newEditState) {
-    return {
-        type: CHANGE_EDITSTATE,
-        editstate: newEditState
     };
 }
 
@@ -66,5 +58,6 @@ export const MENUITEM = {
     GIANG_DAY_THUC_HANH: 'giang-day-thuc-hanh',
     MUC_TIEU_MON_HOC: 'muc-tieu-mon-hoc',
     QUY_DINH_CHUNG: 'quy-dinh-chung',
-    TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc'
+    TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc',
+    XUAT_FILE_PDF:'xuat-file'
 };

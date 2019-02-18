@@ -4,10 +4,8 @@
   "private": true,
   "dependencies": {
     "antd": "^3.13.0",
-    "immutability-helper": "^3.0.0",
+    "axios": "^0.18.0",
     "react": "^16.7.0",
-    "react-dnd": "^7.0.2",
-    "react-dnd-html5-backend": "^7.0.2",
     "react-dom": "^16.7.0",
     "react-motion": "^0.5.2",
     "react-redux": "^6.0.0",
@@ -30,5 +28,6 @@
     "not dead",
     "not ie <= 11",
     "not op_mini all"
-  ]
+  ],
+  "proxy": "http://localhost:3002"
 }

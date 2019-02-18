@@ -19,7 +19,7 @@ class Layout2 extends Component {
                             <Button style={{color: "red", margin: "auto", width: "100%"}}>(Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)</Button>
                         </Tooltip>
                         <Tooltip title="Nội dung mô tả">
-                            <span style={{fontSize: "24px"}}>{this.props.itemLayout2Reducer.description}</span>
+                            <span style={{fontSize: "24px", wordWrap: "break-word", whiteSpace: 'pre-line'}}>{this.props.itemLayout2Reducer.description}</span>
                         </Tooltip>
                     </div>
                 </div>

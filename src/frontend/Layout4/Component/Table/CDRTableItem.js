@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import { Table, Divider, Tag, Button,
    Popconfirm, Modal, Form, Checkbox,
-   Input } from 'antd';
+   Input, message } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState } from '../../../Constant/ActionType';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
+import { selectedCDRItem, addCDRData } from '../../../Constant/ActionType';
 
 const EditableContext = React.createContext();
 
@@ -21,17 +19,18 @@ const EditableFormRow = Form.create()(EditableRow);
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const levelsOptions = ["I", "T", "U"];
+const CDRData = ["G1", "G2", "G3", "G4", "G5"];
 
 class EditableCell extends Component {
-  
+
   getInput = () => {
 
     if (this.props.inputType === 'choice') {
-      return <Checkbox.Group options={levelsOptions} style={{ width: "100%" }}/>;
+      return <Checkbox.Group options={levelsOptions}  style={{ width: "100%" }}/>;
     }
     else if(this.props.inputType === 'select'){
       return <div>
-          <Input disabled={true} style={{ width: '100%' }} placeholder={this.props.record[this.props.dataIndex]}/>
+          <Input style={{ width: '100%' }} placeholder="CDR"/>
       </div>
 
 
@@ -53,113 +52,31 @@ class EditableCell extends Component {
     return (
       <EditableContext.Consumer>
         {(form) => {
-        const  { getFieldDecorator } = form;
-        return (
-          <td {...restProps}>
-            {editing ? (
-              <FormItem style={{ margin: 0 }}>
-                {getFieldDecorator(dataIndex, {
-                  rules: [{
-                    required: true,
-                    message: `Thiếu thông tin!`,
-                  }],
-                  initialValue: record[dataIndex],
-                })(this.getInput())}
-              </FormItem>
-            ) : restProps.children}
-          </td>
-        );
-      }}
+          const  { getFieldDecorator } = form;
+          return (
+            <td {...restProps}>
+              {editing ? (
+                <FormItem style={{ margin: 0 }}>
+                  {getFieldDecorator(dataIndex, {
+                    rules: [{
+                      required: true,
+                      message: `Thiếu thông tin!`,
+                    }],
+                    initialValue: record[dataIndex],
+                  })(this.getInput())}
+                </FormItem>
+              ) : restProps.children}
+            </td>
+          );
+        }}
       </EditableContext.Consumer>
     );
   }
 }
 
-let dragingIndex = -1;
-
-class BodyRow extends React.Component {
-  render() {
-    const {
-      isOver,
-      connectDragSource,
-      connectDropTarget,
-      moveRow,
-      ...restProps
-    } = this.props;
-    const style = { ...restProps.style, cursor: 'move' };
-
-    let className = restProps.className;
-    if (isOver) {
-      if (restProps.index > dragingIndex) {
-        className += ' drop-over-downward';
-      }
-      if (restProps.index < dragingIndex) {
-        className += ' drop-over-upward';
-      }
-    }
-
-    return connectDragSource(
-      connectDropTarget(
-        <tr
-          {...restProps}
-          className={className}
-          style={style}
-        />
-      )
-    );
-  }
-}
-
-const rowSource = {
-  beginDrag(props) {
-    dragingIndex = props.index;
-    return {
-      index: props.index,
-    };
-  },
-};
-
-const rowTarget = {
-  drop(props, monitor) {
-    const dragIndex = monitor.getItem().index;
-    const hoverIndex = props.index;
-
-    // Don't replace items with themselves
-    if (dragIndex === hoverIndex) {
-      return;
-    }
-
-    // Time to actually perform the action
-    props.moveRow(dragIndex, hoverIndex);
-
-    // Note: we're mutating the monitor item here!
-    // Generally it's better to avoid mutations,
-    // but it's good here for the sake of performance
-    // to avoid expensive index searches.
-    monitor.getItem().index = hoverIndex;
-  },
-};
-
-const DragableBodyRow = DropTarget(
-  'row',
-  rowTarget,
-  (connect, monitor) => ({
-    connectDropTarget: connect.dropTarget(),
-    isOver: monitor.isOver(),
-  }),
-)(
-  DragSource(
-    'row',
-    rowSource,
-    (connect) => ({
-      connectDragSource: connect.dragSource(),
-    }),
-  )(BodyRow),
-);
-
 class CDRTableItem extends Component {
 
-  state = { visible: false}
+  state = { visible: false, editingKey: '' }
 
   constructor(props){
     super(props);
@@ -315,11 +232,66 @@ class CDRTableItem extends Component {
   }
 
   // Edit
+  checkDuplicate = (str) => {
+    var arr = Array.from(str);
+    let count = 0;
+    for(let i = 0;i < arr.length;i++){
+      if(arr[i] === "."){
+        count++;
+      }
+      if(count === 2){
+        return true;
+      }
+    }
+    return false;
+  }
+
+  checkNumber = (str) => {
+    if(str === "" || str === null || str === undefined){
+      return true;
+    }
+    var arr = Array.from(str);
+    for(let i = 0;i < arr.length;i++){
+      if(arr[0] === "0"){
+        return true;
+      }
+      if(isNaN(arr[i])){
+        return true;
+      }
+    }
+    return false;
+  }
   
-  isEditing = record => record.key === this.props.cdreditstate;
+  checkExist = (cdr, cdrtable) => {
+    for(let i = 0;i < cdrtable.length;i++){
+      if(cdr === cdrtable[i].cdr){
+        return i;
+      }
+    }
+    return -1;
+  }
+  
+  checkIndex = (str, cdrtable, key) => {
+    console.log(cdrtable)
+    let count = 0;
+    for(let i = 0;i < cdrtable.length;i++){
+      if(str.split("G")[1].split(".")[0] === cdrtable[i].cdr.split("G")[1].split(".")[0]){
+        count++;
+      }
+    }
+    if((str.split("G")[1].split(".")[1] - count >= 1) && str.split("G")[1].split(".")[0] === cdrtable[key].cdr.split("G")[1].split(".")[0]){
+      return true;
+    }
+    if((str.split("G")[1].split(".")[1] - count >= 2) && str.split("G")[1].split(".")[0] !== cdrtable[key].cdr.split("G")[1].split(".")[0]){
+      return true;
+    }
+    return false;
+  }
+
+  isEditing = record => record.key === this.state.editingKey;
 
   cancel = () => {
-    this.props.onChangeEditState('');
+    this.setState({ editingKey: '' });
   };
 
   save(form, key) {
@@ -327,82 +299,107 @@ class CDRTableItem extends Component {
       if (error) {
         return;
       }
-      const newData = this.props.cdrtable;
-      
-      const index = newData.findIndex(item => key === item.key);
-      if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });   
-      } else {
-        newData.push(row);
-      }
-      for(let i = 0;i < newData[key - 1].levels.length - 1;i++){
-        for (let j = i + 1; j < newData[key - 1].levels.length; j++) {
-          if (newData[key - 1].levels[j] < newData[key - 1].levels[i]) {
-            let temp = newData[key - 1].levels[j];
-            newData[key - 1].levels[j] = newData[key - 1].levels[i];
-            newData[key - 1].levels[i] = temp;
-          }
+        const cdrtable = this.props.cdrtable.slice();
+        if(row.cdr.charAt(0) !== "G"){
+          message.info("Chuẩn đầu ra không hợp lệ!");
         }
+        else {
+          if(this.checkNumber(row.cdr.split("G")[1].split(".")[0]) || 
+          this.checkNumber(row.cdr.split("G")[1].split(".")[1]) || 
+          this.checkDuplicate(row.cdr)){
+            message.info("Chuẩn đầu ra không hợp lệ!");
+          }
+          else {
+            if(row.cdr.split("G")[1].split(".")[0] > CDRData.length)
+            {
+              message.info("Chuẩn đầu ra không tồn tại!");
+            } 
+            else {
+              if(this.checkIndex(row.cdr, cdrtable, key - 1)){
+                message.info("Chuẩn đầu ra quá lớn!");
+              }
+              else {
+                let isExist = this.checkExist(row.cdr, cdrtable);
+                if(isExist !== -1){
+                  
+                  let cdrType = cdrtable[isExist].cdr.split(".")[0];
+                  for(let i = isExist;i < cdrtable.length - 1;i++){
+                    if(cdrtable[i].cdr.split(".")[0] === cdrType){                     
+                      let index = parseInt(cdrtable[i].cdr.split(".")[1] , 10 ) + 1;
+                      cdrtable[i].cdr = cdrtable[i].cdr.split(".")[0] + "." + index;
+                    }
+                  }
+                  
+                  if(key === cdrtable.length){
+                    cdrtable.splice(cdrtable.length - 1, 1);
+                  }
+                  else {
+                    let cdrType = cdrtable[key - 1].cdr.split(".")[0];
+                    for(let i = key - 1;i < cdrtable.length - 1;i++){
+                      if(cdrtable[i + 1].cdr.split(".")[0] === cdrType){
+                        cdrtable[i].description = cdrtable[i + 1].description;
+                        cdrtable[i].levels = cdrtable[i + 1].levels;
+                      }
+                      else {
+                        cdrtable[i].cdr = cdrtable[i + 1].cdr;
+                        cdrtable[i].description = cdrtable[i + 1].description;
+                        cdrtable[i].levels = cdrtable[i + 1].levels;
+                      }
+                    }
+                    cdrtable.splice(cdrtable.length - 1, 1);
+                  }
+                }
+                else {
+                  if(key === cdrtable.length){
+                    cdrtable.splice(cdrtable.length - 1, 1);
+                  }
+                  else {
+                    let cdrType = cdrtable[key - 1].cdr.split(".")[0];
+                    for(let i = key - 1;i < cdrtable.length - 1;i++){
+                      if(cdrtable[i + 1].cdr.split(".")[0] === cdrType){
+                        cdrtable[i].description = cdrtable[i + 1].description;
+                        cdrtable[i].levels = cdrtable[i + 1].levels;
+                      }
+                      else {
+                        cdrtable[i].cdr = cdrtable[i + 1].cdr;
+                        cdrtable[i].description = cdrtable[i + 1].description;
+                        cdrtable[i].levels = cdrtable[i + 1].levels;
+                      }
+                    }
+                    cdrtable.splice(cdrtable.length - 1, 1);
+                  }
+                }
+                let data = {
+                  key: (cdrtable.length + 1).toString(),
+                  cdr: row.cdr,
+                  description: row.description,
+                  levels: row.levels
+                }
+                cdrtable.push(data);
+                
+                this.props.onAddCDRData(cdrtable);
+                this.props.onSelectCDRItem([]);
+                this.setState({ editingKey: '' });
+              }
+            }
+          }
+      }
       
-    }
-      this.props.onAddCDRData(newData);
-      this.props.onSelectCDRItem([]);
-      this.props.onChangeEditState('');
     });
   }
 
   edit(key) {
-    this.props.onChangeEditState(key);
-  }
-
-  moveRow = (dragIndex, hoverIndex) => {
-
-    const data  = this.props.cdrtable;
-    const dragTemp = {
-      key: data[dragIndex].key,
-      cdr: data[dragIndex].cdr,
-      description: data[hoverIndex].description,
-      levels: data[hoverIndex].levels
-    };
-    const hoverTemp = {
-      key: data[hoverIndex].key,
-      cdr: data[hoverIndex].cdr,
-      description: data[dragIndex].description,
-      levels: data[dragIndex].levels
-    };
-    data.splice(dragIndex, 1);
-    if(dragIndex > hoverIndex){
-      data.splice(hoverIndex, 1);
-    }
-    else {
-      data.splice(hoverIndex - 1, 1);
-    }
-    // data.splice(data.length, 0, dragTemp);
-    // data.splice(data.length, 0, hoverTemp);
-    data.push(dragTemp);
-    data.push(hoverTemp);
-    this.props.onAddCDRData(data);
-    this.props.onSelectCDRItem([]);
+    this.setState({ editingKey: key });
   }
 
     render() {
-      var components = {};
-      this.props.cdreditstate !== '' ?
-      components = {
+      
+      const components = {
         body: {
-          row:  EditableFormRow,
-          cell: EditableCell
+          row: EditableFormRow,
+          cell: EditableCell,
         },
-      } : 
-      components = {
-        body: {
-          row:  DragableBodyRow
-        },
-      }
+      };
 
       const columns = this.columns.map((col) => {
         if (!col.editable) {
@@ -477,14 +474,8 @@ class CDRTableItem extends Component {
             <Table bordered 
             components={components}
             rowSelection={rowSelection} 
-            columns={this.props.cdreditstate === '' ? this.columns : columns} 
+            columns={columns} 
             dataSource={CDRTable}
-            onRow={
-              this.props.cdreditstate === '' ?
-              (record, index) => ({
-              index,
-              moveRow: this.moveRow,
-            }) : null}
              />
             </div>
         )
@@ -493,15 +484,13 @@ class CDRTableItem extends Component {
 const mapStateToProps = (state) => {
     return {
         cdrtable: state.cdrtable,
-        cdrselecteditem: state.cdrselecteditem,
-        cdreditstate: state.cdreditstate
+        cdrselecteditem: state.cdrselecteditem
     }
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onAddCDRData: addCDRData,
     onSelectCDRItem: selectedCDRItem,
-    onChangeEditState: changeEditState
   }, dispatch);
 }
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));
+export default connect(mapStateToProps, mapDispatchToProps)(CDRTableItem);

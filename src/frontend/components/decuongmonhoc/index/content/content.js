@@ -6,6 +6,7 @@ import Layout3 from '../../../../Layout3/Layout3';
 import Layout4 from '../../../../Layout4/Layout4';
 import Layout5 from '../../../../Layout5/Layout5';
 import Layout6 from '../../../../Layout6/Layout6';
+import ExportFile from '../../../../ExportFIle/ExportFile';
 export default class Content extends Component {
     render() {
         let content_layout;
@@ -56,6 +57,13 @@ export default class Content extends Component {
                 return content_layout = (
                     <React.Fragment>
                     
+                    </React.Fragment>
+                );
+            }
+            case MENUITEM.XUAT_FILE_PDF:{
+                return content_layout = (
+                    <React.Fragment>
+                        <ExportFile/>
                     </React.Fragment>
                 );
             }

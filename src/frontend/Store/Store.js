@@ -5,7 +5,6 @@ import addCDRDataReducer from '../Reducers/addCDRDataReducer';
 import changeCDRDataReducer from '../Reducers/changeCDRDataReducer';
 import itemKHGDTHReducer from '../Reducers/ItemKHGDTHReducer';
 import selecteCDRItemReducer from '../Reducers/selectedCDRItem';
-import changeEditStateReducer from '../Reducers/changeEditStateReducer';
 
 var redux = require("redux");
 
@@ -14,7 +13,6 @@ const allReducers = redux.combineReducers({
     cdrtable: addCDRDataReducer,
     cdrdata: changeCDRDataReducer,
     cdrselecteditem: selecteCDRItemReducer,
-    cdreditstate: changeEditStateReducer,
     itemLayout2Reducer: itemLayout2Reducer,
     itemLayout3Reducer: itemLayout3Reducer,
     itemKHGDTHReducer:itemKHGDTHReducer,

@@ -6,7 +6,11 @@ import Layout3 from '../../../../Layout3/Layout3';
 import Layout4 from '../../../../Layout4/Layout4';
 import Layout5 from '../../../../Layout5/Layout5';
 import Layout6 from '../../../../Layout6/Layout6';
+<<<<<<< HEAD
+import Layout7 from '../../../../Layout7/Layout7';
+=======
 import ExportFile from '../../../../ExportFIle/ExportFile';
+>>>>>>> a7573703d54ac192e921022d43d9c175c5d8181e
 export default class Content extends Component {
     render() {
         let content_layout;
@@ -53,6 +57,13 @@ export default class Content extends Component {
                     </React.Fragment>
                 );
             }             
+            case MENUITEM.DANH_GIA:{
+                return content_layout = (
+                    <React.Fragment>
+                        <Layout7/>
+                    </React.Fragment>
+                )
+            }   
             case MENUITEM.TAI_NGUYEN_MON_HOC: {
                 return content_layout = (
                     <React.Fragment>

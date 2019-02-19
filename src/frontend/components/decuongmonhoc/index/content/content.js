@@ -73,6 +73,9 @@ export default class Content extends Component {
                 return content_layout = (
                     <React.Fragment>
                     <Layout9/>
+                    </React.Fragment>
+                    );
+            }
 
             case MENUITEM.XUAT_FILE_PDF:{
                 return content_layout = (

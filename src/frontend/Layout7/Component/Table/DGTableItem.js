@@ -33,6 +33,17 @@ const columns = [{
   title: 'Tỉ lệ',
   dataIndex: 'tile',
   key: 'tile',
+},
+{
+  title: 'Action',
+  key: 'action',
+  render: (text, record) => (
+    <span>
+      <a href="#a">Edit {record.name}</a>
+      <Divider type="vertical" />
+      <a href="#b">Delete</a>
+    </span>
+  ),
 }];
 
 class DGTableItem extends Component {
@@ -66,7 +77,8 @@ class DGTableItem extends Component {
         if(!isExist(checkedValues[i].mathanhphan)){
            checkedValues[i].mathanhphan = '\xa0\xa0\xa0' + checkedValues[i].mathanhphan; 
         }
-      }  
+      }
+        
   }
   sortValues(this.props.dgtable)
     return (

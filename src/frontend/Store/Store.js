@@ -9,6 +9,8 @@ import itemRuleReducer from '../Reducers/ItemRuleReducer';
 import changeEditStateReducer from '../Reducers/changeEditStateReducer';
 import addDGDataReducer from '../Reducers/addDGDataReducer';
 import changeDGDataReducer from '../Reducers/changeDGDataReducer';
+import addTNDataReducer from '../Reducers/addTNDataReducer';
+import changeTNDataReducer from '../Reducers/changeTNDataReducer';
 
 var redux = require("redux");
 
@@ -24,6 +26,8 @@ const allReducers = redux.combineReducers({
     itemRuleReducer:itemRuleReducer,   
     dgtable : addDGDataReducer,
     dgdata: changeDGDataReducer,
+    tntable: addTNDataReducer,
+    tndata: changeTNDataReducer,
 })
 var store1 = redux.createStore(allReducers);
 export default store1;

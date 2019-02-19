@@ -12,6 +12,7 @@ let description = '';
 class MenuMota extends Component {
     handleDesInputChange = (e) => {
         description = e.target.value;
+        description.replace('\n', '<br/>')
     }
     render() {
         const { getFieldDecorator } = this.props.form;

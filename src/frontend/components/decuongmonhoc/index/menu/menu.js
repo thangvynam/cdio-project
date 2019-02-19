@@ -68,6 +68,12 @@ class MenuLeft extends Component {
             <span>CÁC QUY ĐỊNH CHUNG</span>
           </Link>
         </Menu.Item>
+        <Menu.Item key="10">
+          <Link to={MENUITEM.XUAT_FILE_PDF}>
+            <Icon type="file-pdf" />
+            <span>XUẤT FILE PDF</span>
+          </Link>
+        </Menu.Item>
       </Menu>
     );
   }

@@ -7,6 +7,8 @@ import Layout4 from '../../../../Layout4/Layout4';
 import Layout5 from '../../../../Layout5/Layout5';
 import Layout6 from '../../../../Layout6/Layout6';
 import Layout9 from '../../../../Layout9/Layout9';
+import Layout7 from '../../../../Layout7/Layout7';
+import ExportFile from '../../../../ExportFIle/ExportFile';
 export default class Content extends Component {
     render() {
         let content_layout;
@@ -53,6 +55,13 @@ export default class Content extends Component {
                     </React.Fragment>
                 );
             }             
+            case MENUITEM.DANH_GIA:{
+                return content_layout = (
+                    <React.Fragment>
+                        <Layout7/>
+                    </React.Fragment>
+                )
+            }   
             case MENUITEM.TAI_NGUYEN_MON_HOC: {
                 return content_layout = (
                     <React.Fragment>
@@ -64,6 +73,11 @@ export default class Content extends Component {
                 return content_layout = (
                     <React.Fragment>
                     <Layout9/>
+
+            case MENUITEM.XUAT_FILE_PDF:{
+                return content_layout = (
+                    <React.Fragment>
+                        <ExportFile/>
                     </React.Fragment>
                 );
             }

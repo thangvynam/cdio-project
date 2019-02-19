@@ -9,7 +9,8 @@ export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
-
+export const DELETE_ITEM_RULE = 'DELETE_ITEM_RULE';
+export const UPDATE_RULES = 'UPDATE_RULES';
 
 export function addCDRData(newCDRData) {
     return {
@@ -50,6 +51,18 @@ export function AddItemRule(newItem){
         type: ADD_ITEM_RULE,
         data: newItem,
     };
+}
+export function DeleteItemRule(index){
+    return{
+        type: DELETE_ITEM_RULE,
+        data: index,
+    }
+}
+export function UpdateRules(newRules){
+    return{
+        type: UPDATE_RULES,
+        data: newRules,
+    }
 }
 
 

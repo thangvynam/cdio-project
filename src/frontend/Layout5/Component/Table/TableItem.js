@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Divider, Tag } from 'antd';
+import { Table, Divider, Tag, Button } from 'antd';
 import { connect } from 'react-redux';
+import axios from 'axios';
 
 const columns = [{
   title: 'Tên chủ đề',
@@ -58,10 +59,23 @@ const columns = [{
 }];
 
 class TableItem extends Component {
+  constructor(props){
+    super(props)
+    this.exportData = this.exportData.bind(this);
+  }
+  
+  exportData (){
+    console.log(this.props.itemMenuReducer.previewInfo)
+    axios.post("/", {exportData: this.props.itemMenuReducer.previewInfo})
+      .then(res => {
+        console.log(res)
+      })
+  }
     render() {
         return (
           <div>
             <Table columns={columns} dataSource={this.props.itemMenuReducer.previewInfo} pagination={{ pageSize: 50 }} scroll={{ y: 240, }}/>
+            <Button style={{float: "right"}} onClick={this.exportData}>Export PDF</Button>
           </div>
            
         );

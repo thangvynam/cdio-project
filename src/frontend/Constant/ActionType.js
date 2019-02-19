@@ -5,6 +5,7 @@ export const ADD_CDRDATA = 'ADD_CDRDATA';
 export const CHANGE_CDRDATA = 'CHANGE_CDRDATA';
 export const SELECTED_CDRITEM = 'SELECT_CDRITEM';
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
+export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
 
 export function addCDRData(newCDRData) {
     return {
@@ -33,7 +34,12 @@ export function AddItemKHGDTH(newItem){
         data: newItem,
     };
 }
-
+export function AddItemRule(newItem){
+    return{
+        type: ADD_ITEM_RULE,
+        data: newItem,
+    };
+}
 export const MENUITEM = {
     THONG_TIN_CHUNG: 'thong-tin-chung',
     MO_TA_MON_HOC: 'mo-ta-mon-hoc',

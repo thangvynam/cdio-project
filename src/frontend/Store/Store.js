@@ -5,6 +5,7 @@ import addCDRDataReducer from '../Reducers/addCDRDataReducer';
 import changeCDRDataReducer from '../Reducers/changeCDRDataReducer';
 import itemKHGDTHReducer from '../Reducers/ItemKHGDTHReducer';
 import selecteCDRItemReducer from '../Reducers/selectedCDRItem';
+import itemRuleReducer from '../Reducers/ItemRuleReducer';
 
 var redux = require("redux");
 
@@ -16,7 +17,7 @@ const allReducers = redux.combineReducers({
     itemLayout2Reducer: itemLayout2Reducer,
     itemLayout3Reducer: itemLayout3Reducer,
     itemKHGDTHReducer:itemKHGDTHReducer,
-    
+    itemRuleReducer:itemRuleReducer,   
 })
 var store1 = redux.createStore(allReducers);
 export default store1;

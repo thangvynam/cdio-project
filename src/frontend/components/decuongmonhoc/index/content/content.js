@@ -8,6 +8,7 @@ import Layout5 from '../../../../Layout5/Layout5';
 import Layout6 from '../../../../Layout6/Layout6';
 import Layout9 from '../../../../Layout9/Layout9';
 import Layout7 from '../../../../Layout7/Layout7';
+import Layout8 from '../../../../Layout8/Layout8';
 import ExportFile from '../../../../ExportFIle/ExportFile';
 export default class Content extends Component {
     render() {
@@ -65,7 +66,7 @@ export default class Content extends Component {
             case MENUITEM.TAI_NGUYEN_MON_HOC: {
                 return content_layout = (
                     <React.Fragment>
-                    
+                        <Layout8/>
                     </React.Fragment>
                 );
             }

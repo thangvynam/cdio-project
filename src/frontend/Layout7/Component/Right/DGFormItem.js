@@ -118,7 +118,7 @@ const tenchude_item = [{
 }
 ]
 
-var temp = [];
+var temp = '';
 var temp1 = [];
 
 class DGFormItem extends Component {
@@ -166,11 +166,11 @@ class DGFormItem extends Component {
     })
   }
   toString = () => {
-    let temp = '';
+    let temp2 = '';
     for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
-      temp += this.state.standardSelectedItem[i] + ' , ';
+      temp2 += this.state.standardSelectedItem[i] + ' , ';
     }
-    return temp.replace('NaN', '');
+    return temp2.replace('NaN', '');
   }
   onChange = (value) => {
     let newArray = this.state.standardSelectedItem.slice();
@@ -187,11 +187,12 @@ class DGFormItem extends Component {
     })
   }
   onChange1 = (value) => {
-    temp1 = value[0];
+    temp1 = value;
   }
 
   addDGData = () => {
-    if (temp1 === "" || temp1 === undefined) {
+    console.log(temp1);
+    if (temp1.length === 0 || temp1 === undefined) {
       message.error("Chọn tên chủ đề")
     }
     else {

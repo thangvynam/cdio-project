@@ -1,4 +1,4 @@
- .col-left-inline .ant-menu-inline-collapsed {
+.col-left-inline .ant-menu-inline-collapsed {
     width: 100%;
 }
 
@@ -7,10 +7,14 @@
     position: fixed;
 } */
 
-.col-left{
+.ant-col-5.col-left{
     height: 100%;
     float: left;
     position: fixed;
+}
+
+.ant-col-19.col-right {
+    float: right;
 }
 
 .col-right{

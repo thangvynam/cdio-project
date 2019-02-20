@@ -1,5 +1,8 @@
 .card_TTC {
+    border: 2px solid; border-radius: 12px;
     margin: 3%;
+    padding-bottom: 1%;
+    padding-top: 1%;
 }
 
 .input_number{
@@ -12,4 +15,8 @@
     position: relative; 
     margin-left: 50%;
     right: 50px;
+}
+
+.card_TTC input.inputNumber {
+    width: 30%;
 }

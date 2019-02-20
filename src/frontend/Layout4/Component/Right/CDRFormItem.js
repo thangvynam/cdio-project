@@ -1,14 +1,16 @@
 import React, { Component } from 'react';
 import {
+  Row, Col,
   Form, Select,
   Button, Checkbox,
-  Input, message, Icon
+  Input, message, Icon,
+  Cascader
 } from 'antd';
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeCDRData, addCDRData } from '../../../Constant/ActionType';
-
+import './1.css';
 const formItemLayout = {
   labelCol: {
     xs: { span: 12 },
@@ -24,7 +26,49 @@ const { Option } = Select;
 const CDRData = ["G1", "G2", "G3", "G4", "G5"];
 const levelsOptions = ["I", "T", "U"];
 
+const options = [{
+  value: 'skill',
+  label: 'skill',
+  children: [
+    {
+      value: 'Đạt được',
+      label: 'Đạt được',
+    },
+    {
+      value: '1.2',
+      label: '1.2',
+    }
+  ],
+}, {
+  value: 'attitude',
+  label: 'attitude',
+  children: [{
+    value: 'nanjing',
+    label: 'Nanjing',
+  }],
+}];
+
 class CDRFormItem extends Component {
+
+  constructor(props) {
+    super(props)
+    this.state = {
+      typeDes: '',
+      contentDes: ''
+    }
+  }
+
+  displayRender = (label) => {
+    return label[0];
+  }
+
+  onChange = (value) => {
+    this.setState({
+      typeDes: value[0],
+      contentDes: value[value.length - 1]
+    })
+  }
+
 
   swapLevels = (a, b) => {
     let temp = a;
@@ -108,13 +152,14 @@ class CDRFormItem extends Component {
             cdr: "",
             description: "",
             levels: []
-        });
+          });
           this.props.form.resetFields();
         }
       }
     }
   }
   render() {
+
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {
       return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>
@@ -138,17 +183,46 @@ class CDRFormItem extends Component {
             )}
           </Form.Item>
 
-          <Form.Item {...formItemLayout} label="Mô tả (Mức chi tiết - hành động)">
-            {getFieldDecorator('username', {
-              rules: [{
-                required: true,
-                message: 'Mô tả không được rỗng',
-              }],
-            })(
-              <TextArea onChange={this.onDescriptionChange} rows={4} placeholder="Mô tả" />
-            )}
-          </Form.Item>
+          <Row className="aa">
+            <Col className="aaa" span={10}>
+              <Form.Item {...formItemLayout} label="Chọn mức độ: ">
+                <Cascader
+                  options={options}
+                  expandTrigger="hover"
+                  displayRender={this.displayRender}
+                  onChange={this.onChange}
+                />
+              </Form.Item>
+            </Col>
+            <Col span={5}>
+              <Form.Item {...formItemLayout} >
+                {getFieldDecorator('verb',
+                  {
+                    initialValue: `${this.state.contentDes}`,
+                    rules: [{
+                      required: true,
+                      message: 'Mô tả không được rỗng',
 
+                    }],
+                  })(
+                    <Input/>
+                  )}
+              </Form.Item>
+            </Col>
+          </Row>
+
+          <Form.Item {...formItemLayout} label="Mô tả (Mức chi tiết - hành động)">
+            {getFieldDecorator('username',
+              {
+                rules: [{
+                  required: true,
+                  message: 'Mô tả không được rỗng',
+
+                }],
+              })(
+                <TextArea onChange={this.onDescriptionChange} rows={4} placeholder="Mô tả" />
+              )}
+          </Form.Item>
 
           <Form.Item {...formItemLayout} label="Mức độ (I/T/U)"
           >
@@ -171,7 +245,7 @@ class CDRFormItem extends Component {
             <div>
               {this.props.cdrtable.length > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
               <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
-              Continue<Icon type="right" />
+                Continue<Icon type="right" />
               </Button>
             </div>
           </Form.Item>

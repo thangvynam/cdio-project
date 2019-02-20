@@ -222,7 +222,7 @@ class CDRTableItem extends Component {
                 <a href="#a" onClick={() => this.edit(record.key)}>Edit</a>
               )}
           <Divider type="vertical" />
-          {this.props.cdrtable.length >= 1
+          {this.props.cdreditstate === ''
               ? (
                 <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.handleDelete(record.key)}>
                   <a href="#a">Xóa</a>

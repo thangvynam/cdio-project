@@ -2,10 +2,13 @@ export const ADD_DATA = 'ADD_DATA';
 export const ADD_DATA_LAYOUT_2 = 'ADD_DATA_LAYOUT_2';
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
 export const DELETE_DATA_LAYOUT_3 = 'DELETE_DATA_LAYOUT_3';
+// layout4
 export const ADD_CDRDATA = 'ADD_CDRDATA';
 export const CHANGE_CDRDATA = 'CHANGE_CDRDATA';
 export const SELECTED_CDRITEM = 'SELECT_CDRITEM';
 export const CHANGE_EDITSTATE = 'CHANGE_EDITSTATE';
+export const SELECTED_VERB = 'SELECTED_VERB';
+
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
 export const ADD_DGDATA = 'ADD_DGDATA';
@@ -40,6 +43,13 @@ export function changeEditState(newEditState) {
     return {
         type: CHANGE_EDITSTATE,
         editstate: newEditState
+    };
+}
+
+export function selectedVerb(newVerb) {
+    return {
+        type: SELECTED_VERB,
+        verb: newVerb
     };
 }
 

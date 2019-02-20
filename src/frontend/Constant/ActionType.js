@@ -10,14 +10,10 @@ export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
-<<<<<<< Updated upstream
 export const DELETE_ITEM_RULE = 'DELETE_ITEM_RULE';
 export const UPDATE_RULES = 'UPDATE_RULES';
-=======
 export const ADD_TNDATA = 'ADD_TNDATA';
 export const CHANGE_TNDATA = 'CHANGE_TNDATA';
-
->>>>>>> Stashed changes
 
 export function addCDRData(newCDRData) {
     return {

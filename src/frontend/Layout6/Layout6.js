@@ -34,6 +34,7 @@ class Layout6 extends Component {
               </Button>
             </Tooltip>
             <br />
+            <br/>
             <Element name="test1" className="element">
               <TableItem />
             </Element>

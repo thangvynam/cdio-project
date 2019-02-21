@@ -14,6 +14,7 @@ import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { AddItemKHGDTH } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
+import { Redirect } from 'react-router-dom';
 
 const { Option } = Select;
 const standard_item = [
@@ -142,8 +143,11 @@ class ItemMenu extends Component {
       titleName: "",
       teachingActs: [],
       standardOutput: [],
-      evalActs: []
+      evalActs: [],
+      isRedirectTab7: false,
     };
+
+    this.isSubmit = false;
   }
 
   onChangeStandar = value => {
@@ -173,21 +177,28 @@ class ItemMenu extends Component {
   };
 
   handleSubmit = () => {
-    let previewData = this.state;
 
     if (
-      previewData.titleName === "" ||
-      previewData.teachingActs.length === 0 ||
-      previewData.standardOutput.length === 0 ||
-      previewData.evalActs.length === 0
+      this.state.titleName === "" ||
+      this.state.teachingActs.length === 0 ||
+      this.state.standardOutput.length === 0 ||
+      this.state.evalActs.length === 0
     ) {
       message.error("Vui lòng điền đầy đủ thông tin", 0.75);
       return;
     }
+    let previewData = {};
+    previewData.key = this.props.itemKHGDTH.previewInfo.length + 1;
+    previewData.titleName = this.state.titleName;
+    previewData.teachingActs = this.state.teachingActs;
+    previewData.standardOutput = this.state.standardOutput;
+    previewData.evalActs = this.state.evalActs;
+    
     this.props.onAddItemKHGDTH(JSON.stringify(previewData));
     this.props.nextStep();
     this.resetPreviewData();
     this.props.form.resetFields();
+    this.isSubmit = true;
   };
 
   handleTitleChange = e => {
@@ -220,6 +231,25 @@ class ItemMenu extends Component {
       );
     }
     return null;
+  }
+
+  moveLayout7 = ()=>{
+    this.setState({isRedirectTab7:true});
+  }
+
+  checkRedirect = () =>{
+    if(this.state.isRedirectTab7)
+      return ( <Redirect to="/de-cuong-mon-hoc/danh-gia" />);
+  }
+
+
+  displayRender = (label) =>{
+    if(this.isSubmit){
+      this.isSubmit = false;
+      return null;
+    }
+    if(label.length>0)
+      return label[0] + label [1];
   }
 
   render() {
@@ -274,6 +304,10 @@ class ItemMenu extends Component {
       }
     };
     return (
+
+      <div>
+      {this.checkRedirect()}
+
       <div style={{ border: "2px solid", borderRadius: "12px" }}>
         <div style={{ marginTop: "10px" }} />
         <Form onSubmit={this.handleSubmit}>
@@ -294,7 +328,7 @@ class ItemMenu extends Component {
               value={previewData.teachingActs}
               mode="tags"
               style={{ width: "100%" }}
-              placeholder="Please select"
+              placeholder="Chọn hoạt động"
               //  defaultValue={['Thuyết giảng']}
               onChange={value => this.handleChangeTeachingAct(value)}
             >
@@ -317,6 +351,7 @@ class ItemMenu extends Component {
               options={standard_item}
               onChange={this.onChangeStandar}
               placeholder="Chọn chuẩn đầu ra"
+              displayRender = {this.displayRender}
             />
           </Form.Item>
 
@@ -324,17 +359,31 @@ class ItemMenu extends Component {
             <Input disabled value={this.showStandard()} />
           </Form.Item>
 
-          <Form.Item {...formItemLayout} label="Hoạt động đánh giá">
+          <Form.Item {...formItemLayout}  label={(
+                                <span>
+                                    Hoạt động đánh giá&nbsp;
+                            <Tooltip title="Có thể nhập thêm hoạt động đánh giá ">
+                                        <Icon type="question-circle-o" />
+                                    </Tooltip>
+                                </span>
+                            )}>
+                              <div style={{ float: "left", width: '74%' }}>
             <Select
               value={previewData.evalActs}
               mode="tags"
               style={{ width: "100%" }}
-              placeholder="Please select"
-              //  defaultValue={['BTVN']}
+              placeholder="Chọn hoạt động"
               onChange={value => this.handleChangeEvalActs(value)}
+              
             >
               {childrenEvalActs}
             </Select>
+            </div>
+            <div style={{ float: "left" }}>
+                                <Button type="primary" onClick={this.moveLayout7}>
+                                    Nhập đánh giá <Icon type="right" />
+                                </Button>
+                            </div>
           </Form.Item>
 
           <Form.Item {...tailFormItemLayout}>
@@ -355,9 +404,17 @@ class ItemMenu extends Component {
           </Form.Item>
         </Form>
       </div>
+      </div>
     );
   }
 }
+
+
+const mapStateToProps = (state) => {
+  return {
+    itemKHGDTH: state.itemKHGDTHReducer
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
@@ -368,6 +425,6 @@ const mapDispatchToProps = dispatch => {
   );
 };
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ItemMenu);

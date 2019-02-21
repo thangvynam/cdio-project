@@ -3,7 +3,7 @@ import { Button } from 'antd/lib/radio';
 import axios from 'axios';
 class ExportFile extends Component {
     export = () => {
-        axios.get('/export-file').then(res => {
+        axios.post('/exportfile').then(res => {
           console.log(res);
         })
     }

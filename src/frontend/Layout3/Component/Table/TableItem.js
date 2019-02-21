@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm, Tag } from 'antd';
+import { Table, Popconfirm, Tag, Button } from 'antd';
 import { connect } from 'react-redux';
 import { DELETE_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
+import axios from 'axios';
 
 class TableItem extends Component {
   constructor(props){
     super(props)
+    this.exportData = this.exportData.bind(this);
     let dataSource = [];
     this.columns = [{
       title: 'Mục tiêu',
@@ -45,14 +47,20 @@ class TableItem extends Component {
         ),
     }];
   }
-  // handleDelete = (key) => {
-  //   this.dataSource = [...this.props.itemLayout3Reducer.previewInfo];
-  //   this.dataSource = this.dataSource.filter(item => item.key !== key)
-  // }
+  exportData (){
+    console.log(this.props.itemLayout3Reducer.previewInfo)
+    axios.post("/exportfile", {exportData: this.props.itemLayout3Reducer.previewInfo})
+      .then(res => {
+        console.log(res)
+      })
+  }
     render() {
         return (
+          <div>
             <Table columns={this.columns} dataSource={this.props.itemLayout3Reducer.previewInfo} style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}} />
-        );
+            <Button style={{float: "right"}} onClick={this.exportData}>Export PDF</Button>
+          </div>
+          );
     }
 }
 const mapStateToProps = (state, ownProps) => {

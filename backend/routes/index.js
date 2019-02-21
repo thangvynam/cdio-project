@@ -16,13 +16,16 @@ hbs.registerHelper('dateFormat',function(value,format){
 });
 
 /* GET export file page. */
-router.get('/export-file', function(req, res, next) {
+router.post('/exportfile', function(req, res, next) {
 
+  
   (async function(){
     try{
+      let body = await req.body
+
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
-      const content =await compile('test',null);
+      const content =await compile('test',body);
 
       await page.setContent(content);
       await page.emulateMedia('screen');

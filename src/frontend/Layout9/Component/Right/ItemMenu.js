@@ -1,10 +1,11 @@
 import React, { Component } from "react";
-import { Form, Input, Icon, Button, message } from "antd";
+import { Form, Icon, Button, message } from "antd";
 import { Link } from "react-scroll";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { AddItemRule } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
+import TextArea from "antd/lib/input/TextArea";
 
 class ItemMenu extends Component {
   constructor(props) {
@@ -44,6 +45,7 @@ class ItemMenu extends Component {
     this.props.onAddItemRule(JSON.stringify(rule));
     this.props.nextStep();
     this.props.form.resetFields();
+    this.setState({ content: "" });
   };
   handleContentChange = e => {
     this.state.content = e.target.value;
@@ -84,7 +86,7 @@ class ItemMenu extends Component {
                   message: "Vui lòng nhập nội dung"
                 }
               ]
-            })(<Input onChange={this.handleContentChange} />)}
+            })(<TextArea onChange={this.handleContentChange} />)}
           </Form.Item>
 
           <Form.Item {...tailFormItemLayout}>

@@ -88,11 +88,15 @@
                         <th>Mô tả (mức tổng quát )</th>
                         <th>CĐR CDIO của chương trình</th>
                     </tr>
-                    <tr>
-                        <td>Alfreds Futterkiste</td>
-                        <td>Maria Anders</td>
-                        <td>Germany</td>
-                    </tr>
+                    {{#each exportData}}
+                    <tbody>
+                        <tr>
+                            <td>{{this.objectName}}</td>
+                            <td>{{this.description}}</td>
+                            <td>{{this.standActs}}</td>
+                        </tr>
+                    </tbody>
+                    {{/each}}
                 </table>
             </div>
         </div>

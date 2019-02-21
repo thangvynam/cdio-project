@@ -9,7 +9,7 @@ class Layout7 extends Component {
     return (
         <div className="container">
             <div className="row">
-                <div className="" >
+                <div className="col-sm-1" >
                 </div>
                 <div className="col-sm-11" >
                     <br/>

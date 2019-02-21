@@ -291,7 +291,7 @@ class ItemMenu extends Component {
                                 </span>
                             )}
                         >
-                            <div style={{ float: "left", width: '76%' }}>
+                            <div style={{ float: "left", width: '74%' }}>
                                 <Select
                                     mode="tags"
                                     style={{ width: '100%' }}

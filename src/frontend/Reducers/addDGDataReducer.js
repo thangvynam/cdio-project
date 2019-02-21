@@ -21,6 +21,27 @@ const initialState = [{
     tenthanhphan:'Thiết kế giao diện',
     mota:'Thiết kế 1 màn hình tìm sản phẩm',
     tile: '2.5%',
+},{
+    key: 'BTVN',
+    standardOutput: [],
+    mathanhphan:'BTVN',
+    tenthanhphan:'Bài tập về nhà',
+    mota:'',
+    tile: '',
+},{
+    key: 'BTVN#1',
+    standardOutput: ['G1.3','G5.4','G6.1'],
+    mathanhphan:'\xa0\xa0\xa0BTVN#1',
+    tenthanhphan:'Mô hình hóa phần mềm',
+    mota:'Mô hình hóa dựa trên yêu cầu đặt tả đã có sẵn',
+    tile: '5%',
+},{
+    key: 'BTVN#2',
+    standardOutput: ['G5.4','G6.1'],
+    mathanhphan:'\xa0\xa0\xa0BTVN#2',
+    tenthanhphan:'Thiết kế giao diện',
+    mota:'Thiết kế 1 màn hình tìm sản phẩm',
+    tile: '2%',
 }];
 
 

@@ -187,7 +187,7 @@ class DGFormItem extends Component {
     })
   }
   onChange1 = (value) => {
-    temp1 = value;
+    temp1 = value[0];
   }
 
   addDGData = () => {
@@ -238,6 +238,7 @@ class DGFormItem extends Component {
                     }
                   } else if (temp1 === 'Bài tập về nhà') {
                     let flag = true;
+                    
                     this.props.dgdata.mathanhphan = 'BTVN#' + this.props.dgdata.mathanhphan;
                     for (let i = 0; i < this.props.dgtable.length; i++) {
                       if ('BTVN' === this.props.dgtable[i].mathanhphan) {
@@ -277,7 +278,8 @@ class DGFormItem extends Component {
                       newData = this.props.dgtable.concat(dataFather);
                       isAdd2Rows = true;
                     }
-                  } else if (temp1 === 'Thi lý thuyết cuối kỳ') {
+                  } else if (temp1 === 'Thi lý thuyết cuối kì') {
+                    console.log("Vo duoc nha")
                     let flag = true;
                     this.props.dgdata.mathanhphan = 'LTCK#' + this.props.dgdata.mathanhphan;
                     for (let i = 0; i < this.props.dgtable.length; i++) {

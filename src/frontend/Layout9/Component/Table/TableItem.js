@@ -1,8 +1,9 @@
 import React, { Component } from "react";
-import { Table, Divider, Button, Modal, Popconfirm, Form, Input } from "antd";
+import { Table, Divider, Button, Modal, Popconfirm, Form } from "antd";
 import { connect } from "react-redux";
 import { DeleteItemRule, UpdateRules } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
+import TextArea from "antd/lib/input/TextArea";
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -40,7 +41,7 @@ class EditableCell extends React.Component {
                       }
                     ],
                     initialValue: record[dataIndex]
-                  })(<Input />)}
+                  })(<TextArea  rows={4}/>)}
                 </FormItem>
               ) : (
                 restProps.children

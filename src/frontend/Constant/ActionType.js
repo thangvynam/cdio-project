@@ -7,7 +7,9 @@ export const ADD_CDRDATA = 'ADD_CDRDATA';
 export const CHANGE_CDRDATA = 'CHANGE_CDRDATA';
 export const SELECTED_CDRITEM = 'SELECT_CDRITEM';
 export const CHANGE_EDITSTATE = 'CHANGE_EDITSTATE';
+export const CHANGE_LEVEL_DATA = 'CHANGE_LEVEL_DATA';
 export const SELECTED_VERB = 'SELECTED_VERB';
+export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
@@ -46,10 +48,24 @@ export function changeEditState(newEditState) {
     };
 }
 
+export function changeLevelData(newLevelData) {
+    return {
+        type: CHANGE_LEVEL_DATA,
+        leveldata: newLevelData
+    };
+}
+
 export function selectedVerb(newVerb) {
     return {
         type: SELECTED_VERB,
         verb: newVerb
+    };
+}
+
+export function selectedTempVerb(newTempVerb) {
+    return {
+        type: SELECTED_TEMP_VERB,
+        tempverb: newTempVerb
     };
 }
 

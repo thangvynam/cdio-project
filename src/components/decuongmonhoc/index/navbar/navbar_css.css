@@ -1,0 +1,53 @@
+.ant-row.navbar-logo {
+    height: 70px;
+    background-color: #2c2e3e;
+}
+
+.navbar-left-style{
+    background-color: #fff;
+}
+
+.ant-row.navbar-logo .ant-col-3 {
+    height: 100%;
+    width: 70%;
+}
+
+.ant-row.navbar-logo .ant-col-3 h3 {
+    height: 100%;
+    margin: 0;
+    font-size: 2rem;
+    text-align: center;
+    line-height: 4rem;
+}
+
+.ant-row.navbar-logo .ant-col-2 {
+    height: 100%;
+    width: 30%;
+}
+
+.ant-row.navbar-logo .ant-col-2 i.anticon.anticon-align-right.icon-style,
+.ant-row.navbar-logo .ant-col-2 i.anticon.anticon-align-left.icon-style
+{
+    margin: 25%;
+}
+
+
+
+.navbar-left {
+    width: 50%;
+    height: 70px;
+    position: relative;
+    float: left;
+}
+
+.navbar-right {
+    width: 50%;
+    height: 70px;
+    float: right;
+    position: relative;
+}
+
+.navbar-right ul{
+    text-align: right;
+    margin-right: 5px;
+}

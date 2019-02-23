@@ -1,0 +1,21 @@
+.card_CDR .cdr_Select{
+    width: 40%;
+}
+
+.card_CDR {
+    margin: 3%;
+    margin-top: 0%;
+    box-shadow: 0px 1px 15px 1px rgba(69,65,78,0.08);
+}
+
+.card_CDR span.ant-cascader-picker {
+    width: 40%;
+    display: inline-block;
+    float: left;
+    margin-right: 5%;
+}
+
+.card_CDR input#verb {
+    width: 55%;
+    float: left;
+}

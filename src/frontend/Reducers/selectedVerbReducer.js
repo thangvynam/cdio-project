@@ -5,7 +5,7 @@ const initialState = {
     verb: ""
 };
 
-export default function selecteVerbReducer(state = initialState, action) {
+export default function selectedVerbReducer(state = initialState, action) {
 
     switch(action.type) {
         case SELECTED_VERB:

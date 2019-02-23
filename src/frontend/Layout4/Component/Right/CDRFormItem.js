@@ -161,7 +161,6 @@ class CDRFormItem extends Component {
     }
   }
   render() {
-    console.log(this.props.cdrleveldata)
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {
       return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>
@@ -195,7 +194,7 @@ class CDRFormItem extends Component {
                 />
                 {getFieldDecorator('input', {
             initialValue: this.props.cdrverb.verb
-          })(<Input placeholder={'Chọn một động từ'} onChange={this.changeLevelData} style={{width: "30%"}} />)}
+          })(<Input disabled={this.props.cdrverb.level === "" ? true : false} placeholder={'Chọn một động từ'} onChange={this.changeLevelData} style={{width: "30%"}} />)}
               </Form.Item>
            
 

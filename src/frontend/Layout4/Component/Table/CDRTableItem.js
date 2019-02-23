@@ -380,7 +380,6 @@ class CDRTableItem extends Component {
   }
 
     render() {
-      console.log(this.props.cdrtable)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -414,7 +413,7 @@ class CDRTableItem extends Component {
       const CDRTable = this.props.cdrtable;
       for(let i = 0;i < CDRTable.length - 1;i++){
         for(let j = i + 1;j < CDRTable.length;j++){
-          if(CDRTable[i].cdr.split("G")[1].split(".")[0] > CDRTable[j].cdr.split("G")[1].split(".")[0]){
+          if(CDRTable[i].cdr.split(".")[0] > CDRTable[j].cdr.split(".")[0]){
             let iKey = CDRTable[i].key;
             let jKey = CDRTable[j].key;
             let temp = CDRTable[i];
@@ -423,8 +422,8 @@ class CDRTableItem extends Component {
             CDRTable[j] = temp;
             CDRTable[j].key = jKey;
           }
-          else if(CDRTable[i].cdr.split("G")[1].split(".")[0] === CDRTable[j].cdr.split("G")[1].split(".")[0]){
-            if(CDRTable[i].cdr.split("G")[1].split(".")[1] > CDRTable[j].cdr.split("G")[1].split(".")[1]){
+          else if(CDRTable[i].cdr.split(".")[0] === CDRTable[j].cdr.split(".")[0]){
+            if(CDRTable[i].cdr.split(".")[1] > CDRTable[j].cdr.split(".")[1]){
               let iKey = CDRTable[i].key;
               let jKey = CDRTable[j].key;
               let temp = CDRTable[i];

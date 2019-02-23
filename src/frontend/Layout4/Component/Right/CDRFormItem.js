@@ -9,7 +9,7 @@ import {
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeCDRData, addCDRData, selectedVerb } from '../../../Constant/ActionType';
+import { changeCDRData, addCDRData, selectedVerb, changeLevelData, selectedTempVerb } from '../../../Constant/ActionType';
 import './1.css';
 const formItemLayout = {
   labelCol: {
@@ -26,27 +26,7 @@ const { Option } = Select;
 const CDRData = ["G1", "G2", "G3", "G4", "G5"];
 const levelsOptions = ["I", "T", "U"];
 
-const options = [{
-  value: 'skill',
-  label: 'skill',
-  children: [
-    {
-      value: 'Đạt được',
-      label: 'Đạt được',
-    },
-    {
-      value: '1.2',
-      label: '1.2',
-    }
-  ],
-}, {
-  value: 'attitude',
-  label: 'attitude',
-  children: [{
-    value: 'nanjing',
-    label: 'Nanjing',
-  }],
-}];
+
 
 class CDRFormItem extends Component {
 
@@ -55,12 +35,11 @@ class CDRFormItem extends Component {
   }
 
   onChange = (value) => {
-    console.log(value[0])
-    console.log(value[value.length - 1])
     const data = {
       level: value[0],
       verb: value[value.length - 1]
     }
+    this.props.onUpdateTempVerb(value[value.length - 1]);
     this.props.onUpdateVerb(data);
   }
 
@@ -81,8 +60,15 @@ class CDRFormItem extends Component {
     )
   }
 
+  changeLevelData = (e) => {
+    let a = e.target.value;
+    const data = this.props.cdrverb;
+    data.verb = a;
+    this.props.onUpdateVerb(data);
+  }
+
   onDescriptionChange = (e) => {
-    var a = e.target.value;
+    let a = e.target.value;
     this.props.onChangeCDRData(
       {
         cdr: this.props.cdrdata.cdr,
@@ -117,7 +103,8 @@ class CDRFormItem extends Component {
       message.info("Chọn một chuẩn đầu ra!")
     }
     else {
-      if(this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined){
+      if(this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined || 
+      this.props.cdrverb.verb === "" || this.props.cdrverb.verb === undefined){
         message.info("Chọn mức độ và động từ!")
       }
       else {
@@ -146,12 +133,27 @@ class CDRFormItem extends Component {
             }
             var newData = this.props.cdrtable.concat(data);
             this.props.onAddCDRData(newData);
+            
+            const leveldata = this.props.cdrleveldata;
+            for(let i = 0;i < leveldata.length;i++) {
+              if(leveldata[i].value === this.props.cdrverb.level) {
+                for(let j = 0;j < leveldata[i].children.length;j++) {
+                  if(leveldata[i].children[j].value === this.props.cdrtempverb) {
+                    leveldata[i].children[j].value = this.props.cdrverb.verb;
+                    leveldata[i].children[j].label = this.props.cdrverb.verb;
+                    this.props.onChangeLevelData(leveldata);
+                  }
+                }
+              }
+            }
+            
             message.info("Thêm thành công!");
             this.props.onChangeCDRData({
               cdr: "",
               description: "",
               levels: []
             });
+            this.props.onUpdateVerb({level: "", verb: ""});
             this.props.form.resetFields();
           }
         }
@@ -159,7 +161,7 @@ class CDRFormItem extends Component {
     }
   }
   render() {
-
+    console.log(this.props.cdrleveldata)
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {
       return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>
@@ -185,13 +187,15 @@ class CDRFormItem extends Component {
 
               <Form.Item {...formItemLayout} label="Chọn mức độ: ">
                 <Cascader
-                  options={options}
+                  options={this.props.cdrleveldata}
                   expandTrigger="hover"
                   displayRender={this.displayRender}
                   onChange={this.onChange}
                   style={{width: "30%"}}
                 />
-                <Input disabled={true} style={{width: "30%"}} placeholder={this.props.cdrverb.verb}/>
+                {getFieldDecorator('input', {
+            initialValue: this.props.cdrverb.verb
+          })(<Input placeholder={'Chọn một động từ'} onChange={this.changeLevelData} style={{width: "30%"}} />)}
               </Form.Item>
            
 
@@ -243,14 +247,18 @@ const mapStateToProps = (state) => {
   return {
     cdrdata: state.cdrdata,
     cdrtable: state.cdrtable,
-    cdrverb: state.cdrverb
+    cdrleveldata: state.cdrleveldata,
+    cdrverb: state.cdrverb,
+    cdrtempverb: state.cdrtempverb,
   };
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onAddCDRData: addCDRData,
     onChangeCDRData: changeCDRData,
+    onChangeLevelData: changeLevelData,
     onUpdateVerb: selectedVerb,
+    onUpdateTempVerb: selectedTempVerb,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CDRFormItem);

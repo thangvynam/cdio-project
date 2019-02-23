@@ -12,6 +12,8 @@ import addDGDataReducer from '../Reducers/addDGDataReducer';
 import changeDGDataReducer from '../Reducers/changeDGDataReducer';
 import addTNDataReducer from '../Reducers/addTNDataReducer';
 import changeTNDataReducer from '../Reducers/changeTNDataReducer';
+import changeLevelDataReducer from '../Reducers/changeLevelDataReducer';
+import selecteTempVerbReducer from '../Reducers/selectedTempVerbReducer';
 
 var redux = require("redux");
 
@@ -21,7 +23,9 @@ const allReducers = redux.combineReducers({
     cdrdata: changeCDRDataReducer,
     cdrselecteditem: selecteCDRItemReducer,
     cdreditstate: changeEditStateReducer,
+    cdrleveldata: changeLevelDataReducer,
     cdrverb: selectedVerbReducer,
+    cdrtempverb: selecteTempVerbReducer,
     itemLayout2Reducer: itemLayout2Reducer,
     itemLayout3Reducer: itemLayout3Reducer,
     itemKHGDTHReducer:itemKHGDTHReducer,

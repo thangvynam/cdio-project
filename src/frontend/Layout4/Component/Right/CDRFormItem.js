@@ -35,12 +35,17 @@ class CDRFormItem extends Component {
   }
 
   onChange = (value) => {
-    const data = {
-      level: value[0],
-      verb: value[value.length - 1]
-    }
-    this.props.onUpdateTempVerb(value[value.length - 1]);
-    this.props.onUpdateVerb(data);
+    
+      const data = {
+        level: value[0],
+        verb: value[value.length - 1]
+      }
+      if(value[value.length - 1] !== undefined) {
+        this.props.onUpdateTempVerb(value[value.length - 1]);
+      }
+      
+      this.props.onUpdateVerb(data);
+      
   }
 
 
@@ -161,6 +166,7 @@ class CDRFormItem extends Component {
     }
   }
   render() {
+    console.log(this.props.cdrverb.level);
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {
       return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>
@@ -194,7 +200,7 @@ class CDRFormItem extends Component {
                 />
                 {getFieldDecorator('input', {
             initialValue: this.props.cdrverb.verb
-          })(<Input disabled={this.props.cdrverb.level === "" ? true : false} placeholder={'Chọn một động từ'} onChange={this.changeLevelData} style={{width: "30%"}} />)}
+          })(<Input disabled={this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined ? true : false} placeholder={'Chọn một động từ'} onChange={this.changeLevelData} style={{width: "30%"}} />)}
               </Form.Item>
            
 

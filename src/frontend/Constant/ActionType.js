@@ -19,7 +19,8 @@ export const DELETE_ITEM_RULE = 'DELETE_ITEM_RULE';
 export const UPDATE_RULES = 'UPDATE_RULES';
 export const ADD_TNDATA = 'ADD_TNDATA';
 export const CHANGE_TNDATA = 'CHANGE_TNDATA';
-
+// layout 5
+export const DELETE_DATA_LAYOUT_5 = 'DELETE_DATA_LAYOUT_5';
 export function addCDRData(newCDRData) {
     return {
         type: ADD_CDRDATA,

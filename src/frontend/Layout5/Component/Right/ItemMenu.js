@@ -339,6 +339,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             evalActs = value;
         },
         saveAndContinue: () => {
+            myObj.key = ownProps.step;
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs;
             myObj.evalActs = evalActs;

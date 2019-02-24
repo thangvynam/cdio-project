@@ -1,7 +1,9 @@
 export const ADD_DATA = 'ADD_DATA';
 export const ADD_DATA_LAYOUT_2 = 'ADD_DATA_LAYOUT_2';
+//layout 3
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
 export const DELETE_DATA_LAYOUT_3 = 'DELETE_DATA_LAYOUT_3';
+export const SAVE_DATA_LAYOUT_3 = 'SAVE_DATA_LAYOUT_3';
 // layout4
 export const ADD_CDRDATA = 'ADD_CDRDATA';
 export const CHANGE_CDRDATA = 'CHANGE_CDRDATA';

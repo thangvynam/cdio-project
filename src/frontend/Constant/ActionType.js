@@ -21,6 +21,7 @@ export const ADD_TNDATA = 'ADD_TNDATA';
 export const CHANGE_TNDATA = 'CHANGE_TNDATA';
 // layout 5
 export const DELETE_DATA_LAYOUT_5 = 'DELETE_DATA_LAYOUT_5';
+export const CHANGE_EDITSTATE_5 = 'CHANGE_EDITSTATE_5';
 export function addCDRData(newCDRData) {
     return {
         type: ADD_CDRDATA,

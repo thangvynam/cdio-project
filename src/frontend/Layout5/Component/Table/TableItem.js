@@ -1,10 +1,17 @@
 import React, { Component } from 'react';
-import { Table, Divider, Tag, Popconfirm } from 'antd';
+import { Table, Divider, Tag, Popconfirm,Form } from 'antd';
 import { connect } from 'react-redux';
-import {DELETE_DATA_LAYOUT_5} from '../../../Constant/ActionType';
+import {DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5} from '../../../Constant/ActionType';
 
 const EditableContext = React.createContext();
 
+const EditableRow = ({ form, index, ...props }) => (
+  <EditableContext.Provider value={form}>
+    <tr {...props} />
+  </EditableContext.Provider>
+);
+
+const EditableFormRow = Form.create()(EditableRow);
 class TableItem extends Component {  
   constructor(props){
     super(props);
@@ -56,30 +63,29 @@ class TableItem extends Component {
       title: 'Action',
       key: 'action',
       render: (text, record) => {
-        //const editable = this.isEditing(record);
-        const editable =  false;
+        const editable = this.isEditing(record);
         return(
         <div>
           {editable ? (
                 <span>
-                  <EditableContext.Consumer>
-                    {form => (
-                      <a
-                        href="#a"
-                        onClick={() => this.save(form, record.key)}
-                        style={{ marginRight: 8 }}
-                      >
-                        Save
-                      </a>
-                    )}
-                  </EditableContext.Consumer>
-                  <Popconfirm
-                    title="Hủy bỏ?"
-                    onConfirm={() => this.cancel(record.key)}
-                  >
-                    <a href="#a">Cancel</a>
-                  </Popconfirm>
-                </span>
+                <EditableContext.Consumer>
+                  {form => (
+                    <a
+                      href="#a"
+                      onClick={() => this.save(form, record.key)}
+                      style={{ marginRight: 8 }}
+                    >
+                      Save
+                    </a>
+                  )}
+                </EditableContext.Consumer>
+                <Popconfirm
+                  title="Hủy bỏ?"
+                  onConfirm={() => this.cancel(record.key)}
+                >
+                  <a href="#a">Cancel</a>
+                </Popconfirm>
+              </span>
               ) : (
                 <a href="#a" onClick={() => this.props.handleEdit(record.key)}>Edit</a>
               )}
@@ -93,8 +99,11 @@ class TableItem extends Component {
         </div>
       )},
     }
-  ];
+  ];};
+  isEditing = record => {
+    return record.key === this.props.itemMenuReducer.changeEditStateState;;
   }
+ 
 
   render() {
       return (
@@ -107,17 +116,18 @@ class TableItem extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
   return {
-    itemMenuReducer: state.itemMenuReducer
+    itemMenuReducer: state.itemMenuReducer5
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    handleEdit: (key) => {
-      console.log(key);
+    handleEdit : (key) => {
+      dispatch({type: CHANGE_EDITSTATE_5, key: key});
     },
-    handleDelete :(key) =>{
+    handleDelete : (key) => {
       dispatch({type: DELETE_DATA_LAYOUT_5, key: key});
-    }
+    }, 
+    
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TableItem);

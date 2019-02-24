@@ -1,4 +1,4 @@
-import itemMenuReducer from '../Reducers/ItemMenuReducer'
+import itemMenuReducer5 from '../Reducers/ItemMenu5Reducer'
 import itemLayout2Reducer from '../Reducers/ItemLayout2Reducer'
 import itemLayout3Reducer from '../Reducers/ItemLayout3Reducer'
 import { addCDRDataReducer, changeCDRDataReducer, selecteCDRItemReducer, changeEditStateReducer, 
@@ -13,7 +13,7 @@ import changeTNDataReducer from '../Reducers/changeTNDataReducer';
 var redux = require("redux");
 
 const allReducers = redux.combineReducers({
-    itemMenuReducer: itemMenuReducer,
+    itemMenuReducer5: itemMenuReducer5,
     cdrtable: addCDRDataReducer,
     cdrdata: changeCDRDataReducer,
     cdrselecteditem: selecteCDRItemReducer,

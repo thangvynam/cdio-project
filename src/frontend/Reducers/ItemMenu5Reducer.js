@@ -1,8 +1,10 @@
-import {ADD_DATA,DELETE_DATA_LAYOUT_5} from '../Constant/ActionType';
+import {ADD_DATA,DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5} from '../Constant/ActionType';
 
 const itemMenuInitialState = {
-    previewInfo: []
+    previewInfo: [],
+    changeEditStateState:''
 }
+
 const itemMenuReducer = (state = itemMenuInitialState, action) => {
     switch (action.type) {
         case ADD_DATA:
@@ -20,6 +22,8 @@ const itemMenuReducer = (state = itemMenuInitialState, action) => {
                 ...state,
                 previewInfo: state.previewInfo
             }
+        case CHANGE_EDITSTATE_5:
+            return {...state,changeEditStateState:action.key}
         default:
             return state
     }

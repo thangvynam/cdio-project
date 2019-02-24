@@ -70,6 +70,7 @@ class CDRFormItem extends Component {
     const data = this.props.cdrverb;
     data.verb = a;
     this.props.onUpdateVerb(data);
+
   }
 
   onDescriptionChange = (e) => {
@@ -166,7 +167,6 @@ class CDRFormItem extends Component {
     }
   }
   render() {
-    console.log(this.props.cdrverb.level);
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {
       return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>

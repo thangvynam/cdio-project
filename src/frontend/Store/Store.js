@@ -1,19 +1,14 @@
 import itemMenuReducer from '../Reducers/ItemMenuReducer'
 import itemLayout2Reducer from '../Reducers/ItemLayout2Reducer'
 import itemLayout3Reducer from '../Reducers/ItemLayout3Reducer'
-import addCDRDataReducer from '../Reducers/addCDRDataReducer';
-import changeCDRDataReducer from '../Reducers/changeCDRDataReducer';
+import { addCDRDataReducer, changeCDRDataReducer, selecteCDRItemReducer, changeEditStateReducer, 
+    selectedVerbReducer, changeLevelDataReducer, selectedTempVerbReducer } from '../Reducers/cdrReducer';
 import itemKHGDTHReducer from '../Reducers/ItemKHGDTHReducer';
-import selecteCDRItemReducer from '../Reducers/selectedCDRItem';
 import itemRuleReducer from '../Reducers/ItemRuleReducer';
-import changeEditStateReducer from '../Reducers/changeEditStateReducer';
-import selectedVerbReducer from '../Reducers/selectedVerbReducer';
 import addDGDataReducer from '../Reducers/addDGDataReducer';
 import changeDGDataReducer from '../Reducers/changeDGDataReducer';
 import addTNDataReducer from '../Reducers/addTNDataReducer';
 import changeTNDataReducer from '../Reducers/changeTNDataReducer';
-import changeLevelDataReducer from '../Reducers/changeLevelDataReducer';
-import selectedTempVerbReducer from '../Reducers/selectedTempVerbReducer';
 
 var redux = require("redux");
 

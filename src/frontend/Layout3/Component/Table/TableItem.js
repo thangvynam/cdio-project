@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm, Tag, Button, Form, Divider } from 'antd';
+import { Table, Popconfirm, Tag, Button, Form, Divider, Modal } from 'antd';
 import { connect } from 'react-redux';
 import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
 import axios from 'axios';
 import TextArea from "antd/lib/input/TextArea"; 
 
+const confirm = Modal.confirm;
 const FormItem = Form.Item
 const EditableContext = React.createContext();
 
@@ -59,7 +60,8 @@ class TableItem extends Component {
     this.exportData = this.exportData.bind(this);
     this.state = { 
       data: this.props.itemLayout3Reducer.previewInfo, 
-      editingKey: '' 
+      editingKey: '' ,
+      selectedRowKeys: []
     };
     this.columns = [{
       title: 'Mục tiêu',
@@ -144,8 +146,46 @@ class TableItem extends Component {
     }];
   }
 
+  onMultiDelete = () => {
+    const selectedRow = this.state.selectedRowKeys;
+
+    // delete one
+    if (selectedRow.length === 1) {
+      this.delete(selectedRow[0]);
+      return;
+    }
+
+    //delete all
+    if (selectedRow.length === this.props.itemLayout3Reducer.previewInfo.length) {
+      this.props.handleSave([]);
+      this.setState({ selectedRowKeys: [] });
+      return;
+    }
+
+    let items = this.props.itemLayout3Reducer.previewInfo;
+    const filteredItems = items.filter(
+      (_, index) => !selectedRow.includes(index)
+    );
+    this.props.handleSave(filteredItems);
+    this.setState({ selectedRowKeys: [] });
+  };
+
+  showModal = () => {
+    confirm({
+      title: "Xóa các mục đã chọn?",
+      content: "",
+      onOk: this.onMultiDelete,
+      onCancel() {}
+    });
+  };
+
+  onSelectChange = selectedRowKeys => {
+    this.setState({ selectedRowKeys });
+  };
+
   delete(key) {
     this.props.handleDelete(key);
+    this.setState({ selectedRowKeys: [] });
   }
 
   isEditing = record => record.key === this.state.editingKey;
@@ -157,6 +197,10 @@ class TableItem extends Component {
   edit(key) {
     this.setState({ editingKey: key });
   }
+
+  onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
 
   save(form, key) {
     form.validateFields((error, row) => {
@@ -174,9 +218,12 @@ class TableItem extends Component {
           let arr = [];
           let str = index.standActs + ""
           str.split(",").forEach(id => {
-            arr.push(id);
+            if(!isNaN(parseInt(id))) {
+              arr.push(id);
+            }
           })
-          index.standActs = arr;
+          let uniqueArr = arr.filter(this.onlyUnique)
+          index.standActs = uniqueArr;
         })
         this.props.handleSave(newData);
         this.setState({ editingKey: "" });
@@ -226,11 +273,33 @@ class TableItem extends Component {
           }),
         };
       });
+
+    const { selectedRowKeys } = this.state;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange
+    };
+    const hasSelected = selectedRowKeys.length > 0;
+
       return (
         <div>
+          <div style={{ marginBottom: 16, marginTop: 10 }}>
+          <Button
+            type="danger"
+            onClick={this.showModal}
+            disabled={!hasSelected}
+          >
+            Delete
+          </Button>
+
+          <span style={{ marginLeft: 8 }}>
+            {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
+          </span>
+        </div>
           <Table
             components={components}
             bordered
+            rowSelection={rowSelection}
             dataSource={this.setIndexForItem()}
             columns={columns}
             rowClassName="editable-row"
@@ -255,7 +324,6 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleDelete: (key) => {
-      console.log(key)
       dispatch({type: DELETE_DATA_LAYOUT_3, key: key});
     },
     handleSave: (data) => {

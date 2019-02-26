@@ -2,19 +2,60 @@ import React, { Component } from 'react';
 import { Table, Divider, Tag, Popconfirm,Form } from 'antd';
 import { connect } from 'react-redux';
 import {DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5} from '../../../Constant/ActionType';
+import TextArea from "antd/lib/input/TextArea";
 
 const EditableContext = React.createContext();
-
+const FormItem = Form.Item
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
   </EditableContext.Provider>
 );
-
 const EditableFormRow = Form.create()(EditableRow);
+
+class EditableCell extends React.Component {
+
+  render() {
+    const {
+      editing,
+      dataIndex,
+      title,
+      inputType,
+      record,
+      index,
+      ...restProps
+    } = this.props;
+    return (
+      <EditableContext.Consumer>
+        {(form) => {
+          const { getFieldDecorator } = form;    
+          return (
+            <td {...restProps}>
+              {editing ? (
+                <FormItem style={{ margin: 0 }}>
+                  {getFieldDecorator(dataIndex, {
+                    rules: [{
+                      required: true,
+                      message: `Vui lòng nhập ${title.toLowerCase()}!`,
+                    }],
+                    initialValue: record[dataIndex],
+                  })(<TextArea  rows={1}/>)}
+                </FormItem>
+              ) : restProps.children}
+            </td>
+          );
+        }}
+      </EditableContext.Consumer>
+    );
+  }
+}
+
 class TableItem extends Component {  
   constructor(props){
     super(props);
+    this.state = {
+      selectedRowKeys: []
+    }
     this.columns = [{
       title: 'Tên chủ đề',
       dataIndex: 'titleName',
@@ -60,7 +101,7 @@ class TableItem extends Component {
       ),
     },
     , {
-      title: 'Action',
+      title: 'Thao tác',
       key: 'action',
       render: (text, record) => {
         const editable = this.isEditing(record);
@@ -93,7 +134,7 @@ class TableItem extends Component {
           {!editable 
               ? (
                 <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.props.handleDelete(record.key)}>
-                  <a href="#a">Xóa</a>
+                  <a href="#a">Delete</a>
                 </Popconfirm>
               ) : null}
         </div>
@@ -106,9 +147,43 @@ class TableItem extends Component {
  
 
   render() {
+    const components = {
+      body: {
+        row: EditableFormRow,
+        cell: EditableCell,
+      },
+    };
+    const columns = this.columns.map((col) => {
+      if (!col.editable) {
+        return col;
+      }
+      return {
+        ...col,
+        onCell: record => ({
+          record,
+          dataIndex: col.dataIndex,
+          title: col.title,
+          editing: this.isEditing(record),
+        }),
+      };
+    });
+    const { selectedRowKeys } = this.state;
+    const rowSelection = {
+      selectedRowKeys,
+      onChange: this.onSelectChange
+    };
+    const hasSelected = selectedRowKeys.length > 0;
       return (
         <div>
-          <Table columns={this.columns} dataSource={this.props.itemMenuReducer.previewInfo} pagination={{ pageSize: 50 }} scroll={{ y: 240, }}/>
+          <Table 
+          components={components}
+          bordered
+          rowClassName="editable-row"
+          rowSelection={rowSelection}
+          columns={columns} 
+          dataSource={this.props.itemMenuReducer.previewInfo} 
+          pagination={{ pageSize: 50 }} 
+          scroll={{ y: 240, }}/>
         </div>
           
       );

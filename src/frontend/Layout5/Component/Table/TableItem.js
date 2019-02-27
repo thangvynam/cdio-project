@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { Table, Divider, Tag, Popconfirm,Form } from 'antd';
+import { Table, Divider, Tag, Popconfirm,Form,Button,Modal } from 'antd';
 import { connect } from 'react-redux';
 import {DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5,
         SAVE_DATA_LAYOUT_5} from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea";
 
+const confirm = Modal.confirm;
 const EditableContext = React.createContext();
 const FormItem = Form.Item
 const EditableRow = ({ form, index, ...props }) => (
@@ -154,7 +155,50 @@ class TableItem extends Component {
 
   onlyUnique(value, index, self) { 
     return self.indexOf(value) === index;
-}
+  }
+
+  onSelectChange = selectedRowKeys => {
+    this.setState({ selectedRowKeys });
+  };
+
+  showModal = () => {
+    confirm({
+      title: "Xóa các mục đã chọn?",
+      content: "",
+      onOk: this.onMultiDelete,
+      onCancel() {}
+    });
+  };
+
+  delete(key) {
+    this.props.handleDelete(key);
+    this.setState({ selectedRowKeys: [] });
+  }
+
+  onMultiDelete = () => {
+    const selectedRow = this.state.selectedRowKeys;
+
+    // delete one
+    if (selectedRow.length === 1) {
+      this.delete(selectedRow[0]);
+      return;
+    }
+
+    //delete all
+    if (selectedRow.length === this.props.itemMenuReducer.previewInfo.length) {
+      this.props.handleSave([]);
+      this.setState({ selectedRowKeys: [] });
+      return;
+    }
+
+    let items = this.props.itemMenuReducer.previewInfo;
+    const filteredItems = items.filter(
+      (_, index) => !selectedRow.includes(index)
+    );
+    this.props.handleSave(filteredItems);
+    this.setState({ selectedRowKeys: [] });
+  };
+
 
   save(form, key) {
     form.validateFields((error, row) => {
@@ -214,7 +258,20 @@ class TableItem extends Component {
     };
     const hasSelected = selectedRowKeys.length > 0;
       return (
+        
         <div>
+          <Button
+            style={{ marginBottom: 16, marginTop: 10 }}
+            type="danger"
+            onClick={this.showModal}
+            disabled={!hasSelected}
+          >
+            Delete
+          </Button>
+
+          <span style={{ marginLeft: 8 }}>
+            {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
+          </span>
           <Table 
           components={components}
           bordered

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Table, Divider, Tag, Popconfirm,Form } from 'antd';
 import { connect } from 'react-redux';
-import {DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5} from '../../../Constant/ActionType';
+import {DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5,
+        SAVE_DATA_LAYOUT_5} from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea";
 
 const EditableContext = React.createContext();
@@ -60,7 +61,8 @@ class TableItem extends Component {
       title: 'Tên chủ đề',
       dataIndex: 'titleName',
       key: 'titleName',
-      width: 150
+      width: 150,
+      editable:true
     }, {
       title: 'Hoạt động giảng dạy ',
       dataIndex: 'teachingActs',
@@ -100,7 +102,7 @@ class TableItem extends Component {
         </span>
       ),
     },
-    , {
+    {
       title: 'Thao tác',
       key: 'action',
       render: (text, record) => {
@@ -138,11 +140,49 @@ class TableItem extends Component {
                 </Popconfirm>
               ) : null}
         </div>
-      )},
-    }
-  ];};
+      )}
+}
+  ];
+};
   isEditing = record => {
     return record.key === this.props.itemMenuReducer.changeEditStateState;;
+  }
+
+  edit(key) {
+    this.setState({ editingKey: key });
+  }
+
+  onlyUnique(value, index, self) { 
+    return self.indexOf(value) === index;
+}
+
+  save(form, key) {
+    form.validateFields((error, row) => {
+      if (error) {
+        return;
+      }
+      const newData = [...this.props.itemMenuReducer.previewInfo];
+      const index = newData.findIndex(item => key === item.key);
+        const item = newData[index];
+        newData.splice(index, 1, {
+          ...item,
+          ...row,
+        });
+        newData.map(index => {
+          let arr = [];
+          let str = index.standActs + ""
+          str.split(",").forEach(id => {
+            if(!isNaN(parseInt(id))) {
+              arr.push(id);
+            }
+          })
+          let uniqueArr = arr.filter(this.onlyUnique)
+          index.standActs = uniqueArr;
+        })
+        console.log(newData)
+        this.props.handleSave(newData);
+        // this.setState({ editingKey: "" });
+    });
   }
  
 
@@ -202,6 +242,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleDelete : (key) => {
       dispatch({type: DELETE_DATA_LAYOUT_5, key: key});
     }, 
+    handleSave: (data) => {
+      dispatch({type: SAVE_DATA_LAYOUT_5, data: data,key : ''})
+    }
     
   }
 }

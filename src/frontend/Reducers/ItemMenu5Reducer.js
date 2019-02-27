@@ -1,4 +1,5 @@
-import {ADD_DATA,DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5} from '../Constant/ActionType';
+import {ADD_DATA,DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5,
+        SAVE_DATA_LAYOUT_5} from '../Constant/ActionType';
 
 const itemMenuInitialState = {
     previewInfo: [],
@@ -24,6 +25,11 @@ const itemMenuReducer = (state = itemMenuInitialState, action) => {
             }
         case CHANGE_EDITSTATE_5:
             return {...state,changeEditStateState:action.key}
+        case SAVE_DATA_LAYOUT_5:
+            return {
+                ...state, 
+                previewInfo: action.data,changeEditStateState:action.key
+            }
         default:
             return state
     }

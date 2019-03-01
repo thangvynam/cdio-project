@@ -148,10 +148,14 @@ class CDRFormItem extends Component {
             for(let i = 0;i < leveldata.length;i++) {
               if(leveldata[i].value === this.props.cdrverb.level) {
                 for(let j = 0;j < leveldata[i].children.length;j++) {
-                  if(leveldata[i].children[j].value === this.props.cdrtempverb) {
-                    leveldata[i].children[j].value = this.props.cdrverb.verb;
-                    leveldata[i].children[j].label = this.props.cdrverb.verb;
-                    this.props.onChangeLevelData(leveldata);
+                  if(leveldata[i].children[j].value === this.props.cdrverb.childLevel) {
+                    for(let k = 0;k < leveldata[i].children[j].children.length;k++) {
+                      if(leveldata[i].children[j].children[k].value === this.props.cdrtempverb){
+                        leveldata[i].children[j].children[k].value = this.props.cdrverb.verb;
+                        leveldata[i].children[j].children[k].label = this.props.cdrverb.verb;
+                        this.props.onChangeLevelData(leveldata);
+                      }
+                    }
                   }
                 }
               }

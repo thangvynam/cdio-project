@@ -57,25 +57,71 @@ export function changeEditStateReducer(state = changeEditStateState, action) {
 }
 
 const changeLevelDataState = [{
-    value: 'skill',
-    label: 'skill',
+    value: 'A',
+    label: 'A',
     children: [
       {
-        value: 'Đạt được',
-        label: 'Đạt được',
+        value: 'Level 1',
+        label: 'Level 1',
+        children: [
+            {
+              value: 'Đạt được',
+              label: 'Đạt được',
+            },
+            {
+              value: 'Phân biệt',
+              label: 'Phân biệt',
+            }
+          ]
       },
       {
-        value: '1.2',
-        label: '1.2',
+        value: 'Level 2',
+        label: 'Level 2',
+        children: [
+            {
+              value: 'Đạt được',
+              label: 'Đạt được',
+            },
+            {
+              value: 'Phân biệt',
+              label: 'Phân biệt',
+            }
+          ]
       }
     ],
   }, {
-    value: 'attitude',
-    label: 'attitude',
-    children: [{
-      value: 'nanjing',
-      label: 'Nanjing',
-    }],
+    value: 'B',
+    label: 'B',
+    children: [
+        {
+          value: 'Level 1',
+          label: 'Level 1',
+          children: [
+              {
+                value: 'Thành lập',
+                label: 'Thành lập',
+              },
+              {
+                value: 'Tổ chức',
+                label: 'Tổ chức',
+              }
+            ]
+        },
+        {
+          value: 'Level 2',
+          label: 'Level 2',
+          children: [
+            {
+              value: 'Thành lập',
+              label: 'Thành lập',
+            },
+            {
+              value: 'Tổ chức',
+              label: 'Tổ chức',
+            }
+          ]
+        }
+      ],
   }];
  
 export function changeLevelDataReducer(state = changeLevelDataState, action) {
@@ -114,6 +160,7 @@ export function selectedTempVerbReducer(state = selectedTempVerbState, action) {
 
 const selectedVerbState = {
     level: "",
+    childLevel: "",
     verb: ""
 };
 

@@ -31,6 +31,9 @@ const levelsOptions = ["I", "T", "U"];
 class CDRFormItem extends Component {
 
   displayRender = (label) => {
+  if(label[1] !== "" && label[1] !== undefined){
+    return label[0] + " - " + label[1];
+  }
     return label[0];
   }
 
@@ -38,6 +41,7 @@ class CDRFormItem extends Component {
     
       const data = {
         level: value[0],
+        childLevel: value[1],
         verb: value[value.length - 1]
       }
       if(value[value.length - 1] !== undefined) {

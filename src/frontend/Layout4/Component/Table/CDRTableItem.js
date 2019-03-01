@@ -180,7 +180,7 @@ class CDRTableItem extends Component {
       title: 'Mức độ (I/T/U)',
       key: 'levels',
       dataIndex: 'levels',
-      width: 150,
+      width: 130,
       editable: true,
       render: levels => (
         <span>
@@ -475,6 +475,8 @@ class CDRTableItem extends Component {
               index,
               moveRow: this.moveRow,
             }) : null}
+            pagination={{ pageSize: 50 }} 
+          scroll={{ y: 240, }}
              />
             </div>
         )

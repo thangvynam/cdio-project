@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Divider, Tag, Button,
    Popconfirm, Modal, Form, Checkbox,
-   Input } from 'antd';
+   Input, Cascader } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { selectedCDRItem, addCDRData, changeEditState } from '../../../Constant/ActionType';
@@ -21,13 +21,52 @@ const EditableFormRow = Form.create()(EditableRow);
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const levelsOptions = ["I", "T", "U"];
-
+const level_data = [{
+  value: 'A',
+  label: 'A',
+  children: [
+    {
+      value: '1',
+      label: '1',
+    },
+    {
+      value: '2',
+      label: '2',
+    }
+  ],
+}, {
+  value: 'B',
+  label: 'B',
+  children: [
+      {
+        value: '1',
+        label: '1',
+      },
+      {
+        value: '2',
+        label: '2',
+      }
+    ],
+}];
 class EditableCell extends Component {
-  
+  displayRender = (label) => {
+    if(label[1] !== "" && label[1] !== undefined){
+      return label[0] + " - " + label[1];
+    }
+      return label[0];
+    }
   getInput = () => {
 
     if (this.props.inputType === 'choice') {
       return <Checkbox.Group options={levelsOptions} style={{ width: "100%" }}/>;
+    }
+    else if(this.props.inputType === 'level_verb') {
+      return <Cascader
+      options={level_data}
+      expandTrigger="hover"
+      displayRender={this.displayRender}
+      style={{width: "100%"}}
+    />
     }
     else if(this.props.inputType === 'select'){
       return <div>
@@ -171,10 +210,27 @@ class CDRTableItem extends Component {
       editable: true,
       render: text => <p>{text}</p>,
     }, {
+      title: 'Mức độ đạt được',
+      dataIndex: 'level_verb',
+      key: 'level_verb',
+      width: 200,
+      align: "center",
+      editable: true,
+      render: level => {
+        let color = level[1] === "1" ? 'green' :
+        level[1] === "2" ? 'volcano' : 'yellow';
+        return (
+          <span>
+            <Tag color={color} key={level}>{level[0].toUpperCase()}</Tag>
+        </span>
+        )
+        
+    }
+    }, {
       title: 'Mô tả (Mức chi tiết - hành động)',
       dataIndex: 'description',
       key: 'description',
-      width: 600,
+      width: 400,
       editable: true,
     }, {
       title: 'Mức độ (I/T/U)',
@@ -246,11 +302,13 @@ class CDRTableItem extends Component {
       var cdrType = cdrtable[key - 1].cdr.split(".")[0];
       for(let i = key - 1;i < cdrtable.length - 1;i++){
         if(cdrtable[i + 1].cdr.split(".")[0] === cdrType){
+          cdrtable[i].level_verb = cdrtable[i + 1].level_verb;
           cdrtable[i].description = cdrtable[i + 1].description;
           cdrtable[i].levels = cdrtable[i + 1].levels;
         }
         else {
           cdrtable[i].cdr = cdrtable[i + 1].cdr;
+          cdrtable[i].level_verb = cdrtable[i + 1].level_verb;
           cdrtable[i].description = cdrtable[i + 1].description;
           cdrtable[i].levels = cdrtable[i + 1].levels;
         }
@@ -276,11 +334,13 @@ class CDRTableItem extends Component {
         var cdrType = cdrtable[cdrselecteditem[i] - 1].cdr.split(".")[0];
         for(let j = cdrselecteditem[i] - 1;j < cdrtable.length - 1;j++){
           if(cdrtable[j + 1].cdr.split(".")[0] === cdrType){
+            cdrtable[j].level_verb = cdrtable[j + 1].level_verb;
             cdrtable[j].description = cdrtable[j + 1].description;
             cdrtable[j].levels = cdrtable[j + 1].levels;
           }
           else {
             cdrtable[j].cdr = cdrtable[j + 1].cdr;
+            cdrtable[j].level_verb = cdrtable[j + 1].level_verb;
             cdrtable[j].description = cdrtable[j + 1].description;
             cdrtable[j].levels = cdrtable[j + 1].levels;
           }
@@ -366,12 +426,15 @@ class CDRTableItem extends Component {
 
     const data  = this.props.cdrtable;
     const temp = {
+      level_verb: data[dragIndex].level_verb,
       description: data[dragIndex].description,
       levels: data[dragIndex].levels
     }
+    data[dragIndex].level_verb = data[hoverIndex].level_verb;
     data[dragIndex].description = data[hoverIndex].description;
     data[dragIndex].levels= data[hoverIndex].levels;
 
+    data[hoverIndex].level_verb = temp.level_verb;
     data[hoverIndex].description = temp.description;
     data[hoverIndex].levels= temp.levels;
 
@@ -402,7 +465,7 @@ class CDRTableItem extends Component {
           ...col,
           onCell: record => ({
             record,
-            inputType: col.dataIndex === 'cdr' ? 'select' : col.dataIndex === 'levels' ? 'choice' : 'text',
+            inputType: col.dataIndex === 'cdr' ? 'select' : col.dataIndex === 'levels' ? 'choice' : col.dataIndex === 'level_verb' ? 'level_verb' : 'text',
             dataIndex: col.dataIndex,
             title: col.title,
             editing: this.isEditing(record),

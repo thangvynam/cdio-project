@@ -2,7 +2,7 @@ import itemMenuReducer5 from '../Reducers/ItemMenu5Reducer'
 import itemLayout2Reducer from '../Reducers/ItemLayout2Reducer'
 import itemLayout3Reducer from '../Reducers/ItemLayout3Reducer'
 import { addCDRDataReducer, changeCDRDataReducer, selecteCDRItemReducer, changeEditStateReducer, 
-    selectedVerbReducer, changeLevelDataReducer, selectedTempVerbReducer } from '../Reducers/cdrReducer';
+    selectedVerbReducer } from '../Reducers/cdrReducer';
 import itemKHGDTHReducer from '../Reducers/ItemKHGDTHReducer';
 import itemRuleReducer from '../Reducers/ItemRuleReducer';
 import addDGDataReducer from '../Reducers/addDGDataReducer';
@@ -18,9 +18,7 @@ const allReducers = redux.combineReducers({
     cdrdata: changeCDRDataReducer,
     cdrselecteditem: selecteCDRItemReducer,
     cdreditstate: changeEditStateReducer,
-    cdrleveldata: changeLevelDataReducer,
     cdrverb: selectedVerbReducer,
-    cdrtempverb: selectedTempVerbReducer,
     itemLayout2Reducer: itemLayout2Reducer,
     itemLayout3Reducer: itemLayout3Reducer,
     itemKHGDTHReducer:itemKHGDTHReducer,

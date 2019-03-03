@@ -1,4 +1,4 @@
-import { ADD_ITEM_KHGDTH } from '../Constant/ActionType';
+import { ADD_ITEM_KHGDTH, UPDATE_KHGDTH } from '../Constant/ActionType';
 
 const initialState = {
     previewInfo: [
@@ -15,6 +15,13 @@ const initialState = {
             teachingActs : ["Thảo luận và trả lời thắc mắc trên diễn đàn môn học"],
             standardOutput : ["G1.2","G2.2"],
             evalActs : ["BTCN"],
+        },
+        {
+            key: 3,
+            titleName : "Yêu cầu phần mềm",
+            teachingActs : ["Thảo luận và trả lời thắc mắc trên diễn đàn môn học"],
+            standardOutput : ["G1.3","G2.1"],
+            evalActs : ["BTCN"],
         }
     ]
 }
@@ -25,6 +32,11 @@ const itemKHGDTHReducer = (state = initialState, action) => {
                 ...state,
                 previewInfo: [...state.previewInfo, JSON.parse(action.data)]
             }
+            case UPDATE_KHGDTH:
+            return {
+              ...state,
+              previewInfo: action.data
+            };
         default:
             return state
     }

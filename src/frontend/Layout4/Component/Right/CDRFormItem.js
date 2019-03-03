@@ -8,7 +8,7 @@ import {
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeCDRData, addCDRData, selectedVerb } from '../../../Constant/ActionType';
+import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem } from '../../../Constant/ActionType';
 import './1.css';
 const formItemLayout = {
   labelCol: {
@@ -409,13 +409,13 @@ class CDRFormItem extends Component {
           }
           else {
             let index = 0;
-            for (let i = 0; i < this.props.cdrtable.length; i++) {
-              if (this.props.cdrtable[i].cdr.split(".")[0] === this.props.cdrdata.cdr) {
-                index = this.props.cdrtable[i].cdr.split(".")[1];
+            for (let i = 0; i < this.props.cdrtable.previewInfo.length; i++) {
+              if (this.props.cdrtable.previewInfo[i].cdr.split(".")[0] === this.props.cdrdata.cdr) {
+                index = this.props.cdrtable.previewInfo[i].cdr.split(".")[1];
               }
             }
             index++;
-            let uniqueKey = this.props.cdrtable.length + 1;
+            let uniqueKey = this.props.cdrtable.previewInfo.length + 1;
             let description = this.props.cdrdata.description;
             let level_verb = [this.props.cdrverb.level, this.props.cdrverb.childLevel];
             var data = {
@@ -425,7 +425,11 @@ class CDRFormItem extends Component {
               description: description,
               levels: this.props.cdrdata.levels
             }
-            var newData = this.props.cdrtable.concat(data);
+            var newData = this.props.cdrtable;
+            var previewInfo = this.props.cdrtable.previewInfo;
+            newData.previewInfo = previewInfo.concat(data);
+            //newData.previewInfo = this.props.cdrtable.previewInfo.push(data);
+            
             this.props.onAddCDRData(newData);
             
             // const leveldata = this.props.cdrleveldata;
@@ -453,6 +457,7 @@ class CDRFormItem extends Component {
               levels: []
             });
             this.props.onUpdateVerb({level: "",childLevel: "", verb: ""});
+            this.props.onSelectCDRItem([]);
             this.props.form.resetFields();
           }
         }
@@ -460,6 +465,7 @@ class CDRFormItem extends Component {
     }
   }
   render() {
+    let cdrtableLength = this.props.cdrtable.previewInfo.length;
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {
       return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>
@@ -528,7 +534,7 @@ class CDRFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div>
-              {this.props.cdrtable.length > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
+              {cdrtableLength > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
               <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
                 Continue<Icon type="right" />
               </Button>
@@ -552,6 +558,7 @@ const mapDispatchToProps = (dispatch) => {
     onAddCDRData: addCDRData,
     onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
+    onSelectCDRItem: selectedCDRItem,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CDRFormItem);

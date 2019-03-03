@@ -1,7 +1,8 @@
-import { ADD_CDRDATA, CHANGE_CDRDATA, CHANGE_EDITSTATE, CHANGE_LEVEL_DATA, 
-    SELECTED_CDRITEM, SELECTED_TEMP_VERB, SELECTED_VERB } from '../Constant/ActionType';
+import { ADD_CDRDATA, CHANGE_CDRDATA, CHANGE_EDITSTATE, 
+    SELECTED_CDRITEM, SELECTED_VERB } from '../Constant/ActionType';
 
-const addCDRDataState = [{
+const addCDRDataState = {
+    previewInfo: [{
     key: "1",
     cdr: 'G1.1',
     level_verb: ["SKILL", "3"],
@@ -19,9 +20,10 @@ const addCDRDataState = [{
     level_verb: ["ATTITUDE", "4"],
     description: 'Giải thích được thuật ngữ tiếng Anh chuyên ngành của môn học',
     levels: ["I", "T", "U"],
-  }];
+  }]
+};
 
-export function addCDRDataReducer(state = addCDRDataState, action) {
+export function itemLayout4Reducer(state = addCDRDataState, action) {
 
     switch(action.type) {
         case ADD_CDRDATA:

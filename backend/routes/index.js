@@ -18,11 +18,11 @@ hbs.registerHelper('dateFormat',function(value,format){
 /* GET export file page. */
 router.post('/exportfile', function(req, res, next) {
 
-  
+
   (async function(){
     try{
       let body = await req.body
-
+      console.log(body)
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       const content =await compile('test',body);

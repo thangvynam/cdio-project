@@ -146,7 +146,7 @@ class TableItem extends Component {
   ];
 };
   isEditing = record => {
-    return record.key === this.props.itemMenuReducer.changeEditStateState;;
+    return record.key === this.props.itemLayout5Reducer.changeEditStateState;;
   }
 
   edit(key) {
@@ -185,13 +185,13 @@ class TableItem extends Component {
     }
 
     //delete all
-    if (selectedRow.length === this.props.itemMenuReducer.previewInfo.length) {
+    if (selectedRow.length === this.props.itemLayout5Reducer.previewInfo.length) {
       this.props.handleSave([]);
       this.setState({ selectedRowKeys: [] });
       return;
     }
 
-    let items = this.props.itemMenuReducer.previewInfo;
+    let items = this.props.itemLayout5Reducer.previewInfo;
     const filteredItems = items.filter(
       (_, index) => !selectedRow.includes(index)
     );
@@ -205,7 +205,7 @@ class TableItem extends Component {
       if (error) {
         return;
       }
-      const newData = [...this.props.itemMenuReducer.previewInfo];
+      const newData = [...this.props.itemLayout5Reducer.previewInfo];
       const index = newData.findIndex(item => key === item.key);
         const item = newData[index];
         newData.splice(index, 1, {
@@ -278,7 +278,7 @@ class TableItem extends Component {
           rowClassName="editable-row"
           rowSelection={rowSelection}
           columns={columns} 
-          dataSource={this.props.itemMenuReducer.previewInfo} 
+          dataSource={this.props.itemLayout5Reducer.previewInfo} 
           pagination={{ pageSize: 50 }} 
           scroll={{ y: 240, }}/>
         </div>
@@ -288,7 +288,7 @@ class TableItem extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
   return {
-    itemMenuReducer: state.itemMenuReducer5
+    itemLayout5Reducer: state.itemLayout5Reducer
   }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {

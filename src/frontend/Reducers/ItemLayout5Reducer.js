@@ -6,7 +6,7 @@ const itemMenuInitialState = {
     changeEditStateState:''
 }
 
-const itemMenuReducer = (state = itemMenuInitialState, action) => {
+const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
     switch (action.type) {
         case ADD_DATA:
             return {
@@ -34,4 +34,4 @@ const itemMenuReducer = (state = itemMenuInitialState, action) => {
             return state
     }
 }
-export default itemMenuReducer;
+export default itemLayout5Reducer;

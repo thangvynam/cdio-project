@@ -22,8 +22,8 @@ const FormItem = Form.Item;
 const { TextArea } = Input;
 const levelsOptions = ["I", "T", "U"];
 const level_data = [{
-  value: 'A',
-  label: 'A',
+  value: 'Knowledge',
+  label: 'Knowledge',
   children: [
     {
       value: '1',
@@ -35,8 +35,21 @@ const level_data = [{
     }
   ],
 }, {
-  value: 'B',
-  label: 'B',
+  value: 'Skill',
+  label: 'Skill',
+  children: [
+      {
+        value: '1',
+        label: '1',
+      },
+      {
+        value: '2',
+        label: '2',
+      }
+    ],
+}, {
+  value: 'Attitude',
+  label: 'Attitude',
   children: [
       {
         value: '1',
@@ -51,7 +64,7 @@ const level_data = [{
 class EditableCell extends Component {
   displayRender = (label) => {
     if(label[1] !== "" && label[1] !== undefined){
-      return label[0] + " - " + label[1];
+      return label[0] + " - Level " + label[1];
     }
       return label[0];
     }
@@ -218,7 +231,7 @@ class CDRTableItem extends Component {
       editable: true,
       render: level => {
         let color = level[1] === "1" ? 'green' :
-        level[1] === "2" ? 'volcano' : 'yellow';
+        level[1] === "2" ? 'volcano' : level[1] === "3" ? 'yellow' : level[1] === "4" ? 'blue' : 'orange';
         return (
           <span>
             <Tag color={color} key={level}>{level[0].toUpperCase()}</Tag>
@@ -539,7 +552,7 @@ class CDRTableItem extends Component {
               moveRow: this.moveRow,
             }) : null}
             pagination={{ pageSize: 50 }} 
-          scroll={{ y: 240, }}
+          scroll={{ y: 600, }}
              />
             </div>
         )

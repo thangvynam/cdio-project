@@ -138,19 +138,41 @@ class ItemMenu extends Component {
         redirectTab7: false
     }
     onChange = (value) => {
+        // if(value.length===0) return;
+        // var newArray = this.state.standardSelectedItem.slice();
+        // newArray.push(value[0] + value[1]);
+        // this.setState({ standardSelectedItem: newArray });
+        // temp = newArray;
+        if (value.length === 0) return;
+
         var newArray = this.state.standardSelectedItem.slice();
-        newArray.push(value[0] + value[1]);
+        let item = value[0] + value[1];
+        let flag = true;
+    
+        for (let i = 0; i < newArray.length; i++) {
+          if (newArray[i] === item) {
+            newArray.splice(i, 1);
+            flag = false;
+          }
+        } 
+    
+        if (flag) newArray.push(item);
+    
         this.setState({ standardSelectedItem: newArray });
         temp = newArray;
+
     }
     toString = () => {
         let temp = '';
+        // for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
+        //     temp += this.state.standardSelectedItem[i] + ' , ';
+        // }
+        // do{
+        //     temp = temp.replace('NaN', '');
+        // }while(temp.search('NaN')!== -1);
         for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
-            temp += this.state.standardSelectedItem[i] + ' , ';
-        }
-        do{
-            temp = temp.replace('NaN', '');
-        }while(temp.search('NaN')!== -1);
+            temp += this.state.standardSelectedItem[i] + " , ";
+          }
         return temp;
     }
     back = (e) => {

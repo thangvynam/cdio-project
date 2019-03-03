@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Button,
    Input, Cascader } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 
@@ -369,6 +369,7 @@ class CDRTableItem extends Component {
     var cdrtable = this.props.cdrtable;
     this.OnDelete(cdrtable, key);
     this.props.onAddCDRData(cdrtable);
+    this.props.onUpdateVerb(this.props.cdrverb);
     this.props.onSelectCDRItem([]);
   }
 
@@ -403,6 +404,9 @@ class CDRTableItem extends Component {
       }
     }
     this.props.onAddCDRData(cdrtable);
+    const cdrverb = this.props.cdrverb;
+    this.props.onUpdateVerb({});
+    this.props.onUpdateVerb(cdrverb);
     this.props.onSelectCDRItem([]);
   }
 
@@ -596,16 +600,18 @@ class CDRTableItem extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        cdrtable: state.cdrtable,
+        cdrtable: state.itemLayout4Reducer,
         cdrselecteditem: state.cdrselecteditem,
-        cdreditstate: state.cdreditstate
+        cdreditstate: state.cdreditstate,
+        cdrverb: state.cdrverb
     }
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onAddCDRData: addCDRData,
     onSelectCDRItem: selectedCDRItem,
-    onChangeEditState: changeEditState
+    onChangeEditState: changeEditState,
+    onUpdateVerb: selectedVerb,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

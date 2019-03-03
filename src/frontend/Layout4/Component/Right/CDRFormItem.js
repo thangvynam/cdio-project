@@ -465,7 +465,6 @@ class CDRFormItem extends Component {
     }
   }
   render() {
-    let cdrtableLength = this.props.cdrtable.previewInfo.length;
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {
       return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>
@@ -534,7 +533,7 @@ class CDRFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div>
-              {cdrtableLength > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
+              {this.props.cdrtable.previewInfo.length > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
               <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
                 Continue<Icon type="right" />
               </Button>
@@ -549,7 +548,7 @@ class CDRFormItem extends Component {
 const mapStateToProps = (state) => {
   return {
     cdrdata: state.cdrdata,
-    cdrtable: state.cdrtable,
+    cdrtable: state.itemLayout4Reducer,
     cdrverb: state.cdrverb,
   };
 }

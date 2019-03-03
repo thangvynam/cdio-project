@@ -14,11 +14,10 @@ var redux = require("redux");
 
 const allReducers = redux.combineReducers({
 
-    
     itemLayout5Reducer: itemLayout5Reducer,
     itemLayout2Reducer: itemLayout2Reducer,
     itemLayout3Reducer: itemLayout3Reducer,
-    cdrtable: itemLayout4Reducer,
+    itemLayout4Reducer: itemLayout4Reducer,
     cdrdata: changeCDRDataReducer,
     cdrselecteditem: selecteCDRItemReducer,
     cdreditstate: changeEditStateReducer,

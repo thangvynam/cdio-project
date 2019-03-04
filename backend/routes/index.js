@@ -42,7 +42,9 @@ router.post('/exportfile', function(req, res, next) {
       const page = await browser.newPage();
       let body = await req.body
       let data = new Map();
+
       let content =await compile('header',null);
+
       for (let k of Object.keys(JSON.parse(body.data))) {
           let value = JSON.parse(JSON.parse(body.data)[k]);
           objKey.key = k ;
@@ -57,13 +59,13 @@ router.post('/exportfile', function(req, res, next) {
       await page.setContent(content);
       await page.emulateMedia('screen');
       await page.pdf({
-        path:'mypdf.pdf',
+        path:'../mypdf.pdf', // edit path
         format:'A4',
         printBackground:true
       });
       await browser.close();
     
-      console.log("done")
+      res.end("1");
     }catch(e){
       console.log('error',e);
     }

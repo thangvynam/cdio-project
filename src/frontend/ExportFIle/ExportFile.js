@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Button, Checkbox } from 'antd';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 
+import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
+import Loader from '../components/loader/loader';
 const plainOptions = [
     'Thông tin chung',
     'Mô tả môn học',
@@ -21,7 +21,8 @@ class ExportFile extends Component {
     state = {
         indeterminate: true,
         checkAll: false,
-        selectedItem: []
+        selectedItem: [],
+        loading : -1
     }
     returnReducer = (pos) => {
         switch (pos) {
@@ -52,17 +53,13 @@ class ExportFile extends Component {
         callback(obj);
     }
     export = () => {
+        this.setState({loading:0});
+        let self = this;
         this.addDataMap(function (obj) {
-            //console.log(JSON.stringify(data));
-            
-            // let value  = '';
-            // Object.keys(data).forEach(function(key) {
-            //     console.log(key)
-            // });
-
-            console.log(obj)
             axios.post('/exportfile', { data: JSON.stringify(obj) }).then(res => {
-                console.log(res);
+                if(res.data == 1){
+                    self.setState({loading:1});
+                }
             })
             
         })
@@ -109,13 +106,12 @@ class ExportFile extends Component {
                         <br />
                         <div style={{ width: "50%", margin: "0 auto " }}>
                             <button onClick={this.export} type="button" class="btn btn-success">Export</button>
-                        </div>
+                            <br/><br/><br/>
+                            <Loader loading={this.state.loading}/>
+                        </div> 
                     </div>
                 </div>
             </div>
-
-
-
         );
     }
 }

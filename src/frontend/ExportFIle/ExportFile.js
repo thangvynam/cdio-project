@@ -46,14 +46,22 @@ class ExportFile extends Component {
                 }
             }
         }
-        callback(data);
+        const obj = {}
+        for (let [k,v] of data)
+            obj[k] = v
+        callback(obj);
     }
     export = () => {
-
-        this.addDataMap(function (data) {
+        this.addDataMap(function (obj) {
+            //console.log(JSON.stringify(data));
             
-            console.log(data);
-            axios.post('/exportfile', { data: data }).then(res => {
+            // let value  = '';
+            // Object.keys(data).forEach(function(key) {
+            //     console.log(key)
+            // });
+
+            console.log(obj)
+            axios.post('/exportfile', { data: JSON.stringify(obj) }).then(res => {
                 console.log(res);
             })
             
@@ -100,7 +108,7 @@ class ExportFile extends Component {
                         </div>
                         <br />
                         <div style={{ width: "50%", margin: "0 auto " }}>
-                            <button onClick={this.export} type="button" class="btn btn-success">Success</button>
+                            <button onClick={this.export} type="button" class="btn btn-success">Export</button>
                         </div>
                     </div>
                 </div>

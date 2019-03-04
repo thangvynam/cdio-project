@@ -8,7 +8,7 @@ import {
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeCDRData, addCDRData, selectedVerb } from '../../../Constant/ActionType';
+import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem } from '../../../Constant/ActionType';
 import './1.css';
 const formItemLayout = {
   labelCol: {
@@ -25,8 +25,8 @@ const { Option } = Select;
 const CDRData = ["G1", "G2", "G3", "G4", "G5"];
 const levelsOptions = ["I", "T", "U"];
 const level_verb_data = [{
-  value: 'A',
-  label: 'A',
+  value: 'Knowledge',
+  label: 'Knowledge',
   children: [
     {
       value: '1',
@@ -39,6 +39,10 @@ const level_verb_data = [{
           {
             value: 'Phân biệt',
             label: 'Phân biệt',
+          },
+          {
+            value: 'Biết được',
+            label: 'Biết được',
           }
         ]
     },
@@ -47,19 +51,77 @@ const level_verb_data = [{
       label: '2',
       children: [
           {
-            value: 'Đạt được',
-            label: 'Đạt được',
+            value: 'Áp dụng',
+            label: 'Áp dụng',
           },
           {
-            value: 'Phân biệt',
-            label: 'Phân biệt',
+            value: 'Phân tích',
+            label: 'Phân tích',
+          },
+          {
+            value: 'Tổng hợp',
+            label: 'Tổng hợp',
+          }
+        ]
+    },
+    {
+      value: '3',
+      label: '3',
+      children: [
+          {
+            value: 'Có thể tự định nghĩa',
+            label: 'Có thể tự định nghĩa',
+          },
+          {
+            value: 'Hiểu được',
+            label: 'Hiểu được',
+          },
+          {
+            value: 'Phát biểu',
+            label: 'Phát biểu',
+          }
+        ]
+    },
+    {
+      value: '4',
+      label: '4',
+      children: [
+          {
+            value: 'Cấu hình',
+            label: 'Cấu hình',
+          },
+          {
+            value: 'Thiết lập',
+            label: 'Thiết lập',
+          },
+          {
+            value: 'Xây dựng',
+            label: 'Xây dựng',
+          }
+        ]
+    },
+    {
+      value: '5',
+      label: '5',
+      children: [
+          {
+            value: 'Sử dụng',
+            label: 'Sử dụng',
+          },
+          {
+            value: 'Viết được',
+            label: 'Viết được',
+          },
+          {
+            value: 'Có khả năng suy luận',
+            label: 'Có khả năng suy luận',
           }
         ]
     }
   ],
 }, {
-  value: 'B',
-  label: 'B',
+  value: 'Skill',
+  label: 'Skill',
   children: [
       {
         value: '1',
@@ -72,6 +134,10 @@ const level_verb_data = [{
             {
               value: 'Tổ chức',
               label: 'Tổ chức',
+            },
+            {
+              value: 'Vận hành',
+              label: 'Vận hành',
             }
           ]
       },
@@ -80,12 +146,165 @@ const level_verb_data = [{
         label: '2',
         children: [
           {
-            value: 'Thành lập',
-            label: 'Thành lập',
+            value: 'Giao tiếp',
+            label: 'Giao tiếp',
           },
           {
-            value: 'Tổ chức',
-            label: 'Tổ chức',
+            value: 'Quản lí',
+            label: 'Quản lí',
+          },
+          {
+            value: 'Giải quyết',
+            label: 'Giải quyết',
+          }
+        ]
+      },
+      {
+        value: '3',
+        label: '3',
+        children: [
+          {
+            value: 'Có khả năng nói',
+            label: 'Có khả năng nói',
+          },
+          {
+            value: 'Có khả năng thuyết trình',
+            label: 'Có khả năng thuyết trình',
+          },
+          {
+            value: 'Có thể đưa ra quyết định',
+            label: 'Có thể đưa ra quyết định',
+          }
+        ]
+      },
+      {
+        value: '4',
+        label: '4',
+        children: [
+          {
+            value: 'Xem xét',
+            label: 'Xem xét',
+          },
+          {
+            value: 'Xác định',
+            label: 'Xác định',
+          },
+          {
+            value: 'Tiến hành',
+            label: 'Tiến hành',
+          }
+        ]
+      },
+      {
+        value: '5',
+        label: '5',
+        children: [
+          {
+            value: 'Sắp xếp',
+            label: 'Sắp xếp',
+          },
+          {
+            value: 'Hợp tác',
+            label: 'Hợp tác',
+          },
+          {
+            value: 'Định lượng',
+            label: 'Định lượng',
+          }
+        ]
+      }
+    ],
+}, {
+  value: 'Attitude',
+  label: 'Attitude',
+  children: [
+      {
+        value: '1',
+        label: '1',
+        children: [
+            {
+              value: 'Có chừng mực',
+              label: 'Có chừng mực',
+            },
+            {
+              value: 'Hiểu biết',
+              label: 'Hiểu biết',
+            },
+            {
+              value: 'Hăng hái',
+              label: 'Hăng hái',
+            }
+          ]
+      },
+      {
+        value: '2',
+        label: '2',
+        children: [
+          {
+            value: 'Nhiệt tình',
+            label: 'Nhiệt tình',
+          },
+          {
+            value: 'Khéo léo',
+            label: 'Khéo léo',
+          },
+          {
+            value: 'Nhẹ nhàng',
+            label: 'Nhẹ nhàng',
+          }
+        ]
+      },
+      {
+        value: '3',
+        label: '3',
+        children: [
+          {
+            value: 'Trung thực',
+            label: 'Trung thực',
+          },
+          {
+            value: 'Kiên nhẫn',
+            label: 'Kiên nhẫn',
+          },
+          {
+            value: 'Khoáng đạt',
+            label: 'Khoáng đạt',
+          }
+        ]
+      },
+      {
+        value: '4',
+        label: '4',
+        children: [
+          {
+            value: 'Nghiêm túc',
+            label: 'Nghiêm túc',
+          },
+          {
+            value: 'Lạc quan',
+            label: 'Lạc quan',
+          },
+          {
+            value: 'Kỷ luật',
+            label: 'Kỷ luật',
+          }
+        ]
+      },
+      {
+        value: '5',
+        label: '5',
+        children: [
+          {
+            value: 'Tập trung',
+            label: 'Tập trung',
+          },
+          {
+            value: 'Nhất quán',
+            label: 'Nhất quán',
+          },
+          {
+            value: 'Tích cực',
+            label: 'Tích cực',
           }
         ]
       }
@@ -97,7 +316,7 @@ class CDRFormItem extends Component {
 
   displayRender = (label) => {
   if(label[1] !== "" && label[1] !== undefined){
-    return label[0] + " - " + label[1];
+    return label[0] + " - Level " + label[1];
   }
     return label[0];
   }
@@ -190,13 +409,13 @@ class CDRFormItem extends Component {
           }
           else {
             let index = 0;
-            for (let i = 0; i < this.props.cdrtable.length; i++) {
-              if (this.props.cdrtable[i].cdr.split(".")[0] === this.props.cdrdata.cdr) {
-                index = this.props.cdrtable[i].cdr.split(".")[1];
+            for (let i = 0; i < this.props.cdrtable.previewInfo.length; i++) {
+              if (this.props.cdrtable.previewInfo[i].cdr.split(".")[0] === this.props.cdrdata.cdr) {
+                index = this.props.cdrtable.previewInfo[i].cdr.split(".")[1];
               }
             }
             index++;
-            let uniqueKey = this.props.cdrtable.length + 1;
+            let uniqueKey = this.props.cdrtable.previewInfo.length + 1;
             let description = this.props.cdrdata.description;
             let level_verb = [this.props.cdrverb.level, this.props.cdrverb.childLevel];
             var data = {
@@ -206,7 +425,11 @@ class CDRFormItem extends Component {
               description: description,
               levels: this.props.cdrdata.levels
             }
-            var newData = this.props.cdrtable.concat(data);
+            var newData = this.props.cdrtable;
+            var previewInfo = this.props.cdrtable.previewInfo;
+            newData.previewInfo = previewInfo.concat(data);
+            //newData.previewInfo = this.props.cdrtable.previewInfo.push(data);
+            
             this.props.onAddCDRData(newData);
             
             // const leveldata = this.props.cdrleveldata;
@@ -234,6 +457,7 @@ class CDRFormItem extends Component {
               levels: []
             });
             this.props.onUpdateVerb({level: "",childLevel: "", verb: ""});
+            this.props.onSelectCDRItem([]);
             this.props.form.resetFields();
           }
         }
@@ -309,7 +533,7 @@ class CDRFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div>
-              {this.props.cdrtable.length > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
+              {this.props.cdrtable.previewInfo.length > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
               <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
                 Continue<Icon type="right" />
               </Button>
@@ -324,7 +548,7 @@ class CDRFormItem extends Component {
 const mapStateToProps = (state) => {
   return {
     cdrdata: state.cdrdata,
-    cdrtable: state.cdrtable,
+    cdrtable: state.itemLayout4Reducer,
     cdrverb: state.cdrverb,
   };
 }
@@ -333,6 +557,7 @@ const mapDispatchToProps = (dispatch) => {
     onAddCDRData: addCDRData,
     onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
+    onSelectCDRItem: selectedCDRItem,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CDRFormItem);

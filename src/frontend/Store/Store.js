@@ -2,7 +2,7 @@ import itemLayout5Reducer from '../Reducers/ItemLayout5Reducer'
 import itemLayout2Reducer from '../Reducers/ItemLayout2Reducer'
 import itemLayout3Reducer from '../Reducers/ItemLayout3Reducer'
 import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, changeEditStateReducer, 
-    selectedVerbReducer } from '../Reducers/cdrReducer';
+    selectedVerbReducer } from '../Reducers/ItemLayout4Reducer';
 import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/DGReducer';
 import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/TNReducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";

@@ -5,10 +5,8 @@ import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, change
     selectedVerbReducer } from '../Reducers/cdrReducer';
 import itemKHGDTHReducer from '../Reducers/ItemKHGDTHReducer';
 import itemRuleReducer from '../Reducers/ItemRuleReducer';
-import addDGDataReducer from '../Reducers/addDGDataReducer';
-import changeDGDataReducer from '../Reducers/changeDGDataReducer';
-import addTNDataReducer from '../Reducers/addTNDataReducer';
-import changeTNDataReducer from '../Reducers/changeTNDataReducer';
+import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/DGReducer';
+import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/TNReducer';
 
 var redux = require("redux");
 
@@ -24,9 +22,9 @@ const allReducers = redux.combineReducers({
     cdrverb: selectedVerbReducer,
     itemKHGDTHReducer:itemKHGDTHReducer,
     itemRuleReducer:itemRuleReducer,   
-    dgtable : addDGDataReducer,
+    itemLayout7Reducer : itemLayout7Reducer,
     dgdata: changeDGDataReducer,
-    tntable: addTNDataReducer,
+    itemLayout8Reducer: itemLayout8Reducer,
     tndata: changeTNDataReducer,
 })
 var store1 = redux.createStore(allReducers);

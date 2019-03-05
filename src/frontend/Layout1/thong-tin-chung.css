@@ -1,6 +1,5 @@
 .card_TTC {
     border: 2px solid; border-radius: 12px;
-    margin: 3%;
     padding-bottom: 1%;
     padding-top: 1%;
 }
@@ -19,4 +18,22 @@
 
 .card_TTC input.inputNumber {
     width: 30%;
+}
+
+.contentItem {
+    width: 100%;
+}
+
+.left_contentItem {
+    width: 30%;
+    float: left;
+    text-align: right;
+    font-weight: 600;
+}
+
+.right_contentItem {
+    float: right;
+    width: 70%;
+    text-align: left;
+    padding-left: 1rem;
 }

@@ -57,7 +57,6 @@ class EditableCell extends React.Component {
 class TableItem extends Component {
   constructor(props){
     super(props)
-    this.exportData = this.exportData.bind(this);
     this.state = { 
       data: this.props.itemLayout3Reducer.previewInfo, 
       editingKey: '' ,
@@ -138,11 +137,6 @@ class TableItem extends Component {
           </div>
         );
       },
-        // render: (text, record) => (
-        //   <Popconfirm title="Sure to delete?" onConfirm={() => this.props.handleDelete(record.key)}>
-        //     <a href="javascript:;">Delete</a>
-        //   </Popconfirm>
-        // ),
     }];
   }
 
@@ -245,12 +239,6 @@ class TableItem extends Component {
     return data;
   };
 
-  exportData (){
-    axios.post("/exportfile", {exportData: this.props.itemLayout3Reducer.previewInfo})
-      .then(res => {
-        console.log(res)
-      })
-  }
     render() {
       const components = {
         body: {
@@ -305,15 +293,8 @@ class TableItem extends Component {
             rowClassName="editable-row"
             style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
           />
-          <Button style={{float: "right"}} onClick={this.exportData}>Export PDF</Button>
         </div>
       );
-        // return (
-        //   <div>
-        //     <Table columns={this.columns} dataSource={this.props.itemLayout3Reducer.previewInfo} style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}} />
-        //     <Button style={{float: "right"}} onClick={this.exportData}>Export PDF</Button>
-        //   </div>
-        //   );
     }
 }
 const mapStateToProps = (state, ownProps) => {
@@ -330,7 +311,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleSave: (data) => {
       dispatch({type: SAVE_DATA_LAYOUT_3, data: data})
     }
-    // dispatch({ type: DELETE_DATA_LAYOUT_3, item: this.dataSource });
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TableItem);

@@ -4,8 +4,8 @@ import itemLayout3Reducer from '../Reducers/ItemLayout3Reducer'
 import itemLayout1Reducer from '../Reducers/itemLayout1Reducer';
 import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, changeEditStateReducer, 
     selectedVerbReducer } from '../Reducers/ItemLayout4Reducer';
-import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/DGReducer';
-import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/TNReducer';
+import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Reducer';
+import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 

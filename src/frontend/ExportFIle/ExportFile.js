@@ -27,7 +27,7 @@ class ExportFile extends Component {
     returnReducer = (pos) => {
         switch (pos) {
             case 2: {
-                return this.props.itemLayout2Reducer.description;
+                return this.props.itemLayout2Reducer.previewInfo;
             }
             case 3: {
                 return this.props.itemLayout3Reducer.previewInfo;

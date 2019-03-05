@@ -12,9 +12,17 @@ const objKey = {
 const objValue = {
   value : ''
 }
-const dataRender ={
-  title : '',
-  data : []
+const dataRender2 ={
+  title2 : '',
+  data2 : []
+}
+const dataRender3 ={
+  title3 : '',
+  data3 : []
+}
+const dataRender5 ={
+  title5 : '',
+  data5 : []
 }
 
 
@@ -33,6 +41,10 @@ router.post('/exportfile', function(req, res, next) {
     switch(str){
       case "Mục tiêu môn học" : 
         return "3. ";
+      case "Mô tả môn học":
+        return "2. ";
+      case "Danh sách kế hoạch giảng dạy lý thuyết":
+        return "5. ";
     }
   }
 
@@ -41,6 +53,7 @@ router.post('/exportfile', function(req, res, next) {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       let body = await req.body
+      console.log(body);
       let data = new Map();
 
       let content =await compile('header',null);
@@ -49,11 +62,24 @@ router.post('/exportfile', function(req, res, next) {
           let value = JSON.parse(JSON.parse(body.data)[k]);
           objKey.key = k ;
           objValue.value = value;
-          data.set(objKey,objValue);
-          dataRender.title = renderNumber(k) +  k.toUpperCase() ;
-          dataRender.value = value;
-          console.log(dataRender.value);
-          content += await compile('content',dataRender);
+          data.set(objKey,objValue);         
+          if (k === "Mục tiêu môn học" && (value !== [] || value !== "")) {
+            dataRender3.title3 = renderNumber(k) +  k.toUpperCase() ;
+            dataRender3.value3 = value;
+            content += await compile('content',dataRender3);
+          } 
+          if (k === "Mô tả môn học" && (value !== [] && value !== "")) {
+            dataRender2.title2 = renderNumber(k) +  k.toUpperCase() ;
+            dataRender2.value2 = value;
+            content += await compile('content',dataRender2);
+          }
+          if (k === "Danh sách kế hoạch giảng dạy lý thuyết" && (value !== [] && value !== "")) {
+            dataRender5.title5 = renderNumber(k) +  k.toUpperCase() ;
+            dataRender5.value5 = value;
+            content += await compile('content',dataRender5);
+            console.log(dataRender5);
+          }
+          
       }
      
       await page.setContent(content);

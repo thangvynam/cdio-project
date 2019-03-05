@@ -1,41 +1,34 @@
-import itemMenuReducer from '../Reducers/ItemMenuReducer'
+import itemLayout5Reducer from '../Reducers/ItemLayout5Reducer'
 import itemLayout2Reducer from '../Reducers/ItemLayout2Reducer'
 import itemLayout3Reducer from '../Reducers/ItemLayout3Reducer'
-import addCDRDataReducer from '../Reducers/addCDRDataReducer';
-import changeCDRDataReducer from '../Reducers/changeCDRDataReducer';
-import itemKHGDTHReducer from '../Reducers/ItemKHGDTHReducer';
-import selecteCDRItemReducer from '../Reducers/selectedCDRItem';
-import itemRuleReducer from '../Reducers/ItemRuleReducer';
-import changeEditStateReducer from '../Reducers/changeEditStateReducer';
-import selectedVerbReducer from '../Reducers/selectedVerbReducer';
-import addDGDataReducer from '../Reducers/addDGDataReducer';
-import changeDGDataReducer from '../Reducers/changeDGDataReducer';
-import addTNDataReducer from '../Reducers/addTNDataReducer';
-import changeTNDataReducer from '../Reducers/changeTNDataReducer';
-import changeLevelDataReducer from '../Reducers/changeLevelDataReducer';
-import selecteTempVerbReducer from '../Reducers/selectedTempVerbReducer';
 import itemLayout1Reducer from '../Reducers/itemLayout1Reducer';
+import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, changeEditStateReducer, 
+    selectedVerbReducer } from '../Reducers/ItemLayout4Reducer';
+import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/DGReducer';
+import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/TNReducer';
+import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
+import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
+
 
 var redux = require("redux");
 
 const allReducers = redux.combineReducers({
+
     itemLayout1Reducer: itemLayout1Reducer,
-    itemMenuReducer: itemMenuReducer,
-    cdrtable: addCDRDataReducer,
+    itemLayout5Reducer: itemLayout5Reducer,
+    itemLayout2Reducer: itemLayout2Reducer,
+    itemLayout3Reducer: itemLayout3Reducer,
+    itemLayout4Reducer: itemLayout4Reducer,
     cdrdata: changeCDRDataReducer,
     cdrselecteditem: selecteCDRItemReducer,
     cdreditstate: changeEditStateReducer,
-    cdrleveldata: changeLevelDataReducer,
     cdrverb: selectedVerbReducer,
-    cdrtempverb: selecteTempVerbReducer,
-    itemLayout2Reducer: itemLayout2Reducer,
-    itemLayout3Reducer: itemLayout3Reducer,
-    itemKHGDTHReducer:itemKHGDTHReducer,
-    itemRuleReducer:itemRuleReducer,   
-    dgtable : addDGDataReducer,
+    itemLayout6Reducer: itemLayout6Reducer,
+    itemLayout9Reducer: itemLayout9Reducer,
+    itemLayout7Reducer : itemLayout7Reducer,
     dgdata: changeDGDataReducer,
-    tntable: addTNDataReducer,
+    itemLayout8Reducer: itemLayout8Reducer,
     tndata: changeTNDataReducer,
-})
+});
 var store1 = redux.createStore(allReducers);
 export default store1;

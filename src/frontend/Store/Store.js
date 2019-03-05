@@ -14,10 +14,12 @@ import addTNDataReducer from '../Reducers/addTNDataReducer';
 import changeTNDataReducer from '../Reducers/changeTNDataReducer';
 import changeLevelDataReducer from '../Reducers/changeLevelDataReducer';
 import selecteTempVerbReducer from '../Reducers/selectedTempVerbReducer';
+import itemLayout1Reducer from '../Reducers/itemLayout1Reducer';
 
 var redux = require("redux");
 
 const allReducers = redux.combineReducers({
+    itemLayout1Reducer: itemLayout1Reducer,
     itemMenuReducer: itemMenuReducer,
     cdrtable: addCDRDataReducer,
     cdrdata: changeCDRDataReducer,

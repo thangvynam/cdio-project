@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux';
 import FormMoTa from './Component/Main/FormMoTa';
 import { Tooltip, Button } from 'antd';
+import TableItem from './Component/Table/TableItem';
 
 class Layout2 extends Component {
     render() {
@@ -18,18 +18,11 @@ class Layout2 extends Component {
                         <Tooltip placement="topLeft" >
                             <Button style={{color: "red", margin: "auto", width: "100%"}}>(Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)</Button>
                         </Tooltip>
-                        <Tooltip title="Nội dung mô tả">
-                            <span style={{fontSize: "24px", wordWrap: "break-word", whiteSpace: 'pre-line'}}>{this.props.itemLayout2Reducer.description}</span>
-                        </Tooltip>
+                        <TableItem />
                     </div>
                 </div>
             </div>
         );
     }
 }
-const mapStateToProps = (state, ownProps) => {
-    return {
-      itemLayout2Reducer: state.itemLayout2Reducer
-    }
-  }
-export default connect(mapStateToProps, null)(Layout2);
+export default Layout2;

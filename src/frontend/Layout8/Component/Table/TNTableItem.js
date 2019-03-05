@@ -36,13 +36,13 @@ class TNTableItem extends Component {
 
   render() {
     return (
-      <Table columns={columns} dataSource={this.props.tntable} />
+      <Table columns={columns} dataSource={this.props.tntable.previewInfo} />
     );
   }
 }
 const mapStateToProps = (state) => {
   return {
-    tntable: state.tntable,
+    tntable: state.itemLayout8Reducer,
   }
 }
 

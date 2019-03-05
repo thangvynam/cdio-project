@@ -303,6 +303,7 @@ class TableItem extends Component {
             dataSource={this.setIndexForItem()}
             columns={columns}
             rowClassName="editable-row"
+            style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
           />
           <Button style={{float: "right"}} onClick={this.exportData}>Export PDF</Button>
         </div>

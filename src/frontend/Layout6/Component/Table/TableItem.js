@@ -8,7 +8,7 @@ import {
   Modal,
   Form,
   Input,
-  Select,
+  Select
 } from "antd";
 import { connect } from "react-redux";
 import { UpdateKHGDTH } from "../../../Constant/ActionType";
@@ -112,7 +112,7 @@ const standard_item = [
   "G5.4",
   "G5.5",
   "G6.1",
-  "G7.1",
+  "G7.1"
 ];
 const teachingActs = [
   "Thuyết giảng",
@@ -261,14 +261,14 @@ class TableItem extends Component {
         title: "Tuần",
         dataIndex: "key",
         key: "key",
-        width: 60
+        width: 70
       },
       {
         title: "Chủ đề",
         dataIndex: "titleName",
         key: "titleName",
         editable: true,
-        width: 160
+        width: 130
       },
       {
         title: "Chuẩn đầu ra ",
@@ -293,7 +293,7 @@ class TableItem extends Component {
         title: "Hoạt động dạy/ Hoạt động học",
         dataIndex: "teachingActs",
         key: "teachingActs",
-        width: 400,
+        width: 420,
         editable: true,
         render: teachingActs => (
           <span>
@@ -331,7 +331,6 @@ class TableItem extends Component {
       {
         title: "Action",
         key: "action",
-        width: 110,
         render: (text, record) => {
           const editable = this.isEditing(record);
 
@@ -554,7 +553,7 @@ class TableItem extends Component {
 }
 const mapStateToProps = state => {
   return {
-    itemKHGDTH: state.itemKHGDTHReducer
+    itemKHGDTH: state.itemLayout6Reducer
   };
 };
 const mapDispatchToProps = dispatch => {

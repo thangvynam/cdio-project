@@ -58,7 +58,7 @@ class TNFormItem extends Component {
       if (this.props.tndata.mota === "" || this.props.tndata.mota === undefined) {
         message.error("Chưa nhập mô tả");
       } else {
-        let index = this.props.tntable.length + 1;
+        let index = this.props.tntable.previewInfo.length + 1;
 
         let data = {
           key: index,
@@ -67,7 +67,8 @@ class TNFormItem extends Component {
           mota: this.props.tndata.mota,
           link: this.props.tndata.link,
         }
-        let newData = this.props.tntable.concat(data);
+        let newData = {previewInfo : []};
+        newData.previewInfo = this.props.tntable.previewInfo.concat(data);
         this.props.onAddTNData(newData);
         message.info("Thêm thành công!");
         this.props.form.resetFields();
@@ -156,7 +157,7 @@ class TNFormItem extends Component {
 const mapStateToProps = (state) => {
   return {
     tndata: state.tndata,
-    tntable: state.tntable,
+    tntable: state.itemLayout8Reducer,
   };
 }
 const mapDispatchToProps = (dispatch) => {

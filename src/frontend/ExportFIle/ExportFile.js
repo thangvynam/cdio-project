@@ -27,7 +27,7 @@ class ExportFile extends Component {
     returnReducer = (pos) => {
         switch (pos) {
             case 2: {
-                return this.props.itemLayout2Reducer.description;
+                return this.props.itemLayout2Reducer.previewInfo;
             }
             case 3: {
                 return this.props.itemLayout3Reducer.previewInfo;
@@ -119,7 +119,7 @@ const mapStateToProps = (state, ownProps) => {
     return {
         itemLayout2Reducer: state.itemLayout2Reducer,
         itemLayout3Reducer: state.itemLayout3Reducer,
-        itiemLayout5Reducer: state.itemLayout5Reducer
+        itemLayout5Reducer: state.itemLayout5Reducer
     }
 }
 

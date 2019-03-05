@@ -278,9 +278,9 @@ class TableItem extends Component {
           rowClassName="editable-row"
           rowSelection={rowSelection}
           columns={columns} 
-          dataSource={this.props.itemLayout5Reducer.previewInfo} 
-          pagination={{ pageSize: 50 }} 
-          scroll={{ y: 240, }}/>
+          dataSource={this.props.itemLayout5Reducer.previewInfo}
+          style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
+         />
         </div>
           
       );

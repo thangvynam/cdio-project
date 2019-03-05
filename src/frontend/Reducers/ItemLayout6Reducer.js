@@ -25,7 +25,7 @@ const initialState = {
         }
     ]
 }
-const itemKHGDTHReducer = (state = initialState, action) => {
+const itemLayout6Reducer = (state = initialState, action) => {
     switch (action.type) {
         case ADD_ITEM_KHGDTH:
             return {
@@ -41,4 +41,4 @@ const itemKHGDTHReducer = (state = initialState, action) => {
             return state
     }
 }
-export default itemKHGDTHReducer;
+export default itemLayout6Reducer;

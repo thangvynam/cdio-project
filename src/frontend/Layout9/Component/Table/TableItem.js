@@ -257,7 +257,7 @@ class TableItem extends Component {
 }
 const mapStateToProps = state => {
   return {
-    itemRule: state.itemRuleReducer
+    itemRule: state.itemLayout9Reducer
   };
 };
 

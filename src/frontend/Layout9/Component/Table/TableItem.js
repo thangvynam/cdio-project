@@ -41,7 +41,7 @@ class EditableCell extends React.Component {
                       }
                     ],
                     initialValue: record[dataIndex]
-                  })(<TextArea  rows={4}/>)}
+                  })(<TextArea rows={4} />)}
                 </FormItem>
               ) : (
                 restProps.children
@@ -131,7 +131,7 @@ class TableItem extends Component {
     //delete all
     if (selectedRow.length === this.props.itemRule.rules.length) {
       this.props.onUpdateRules([]);
-      this.setState({ selectedRowKeys: [] });
+      this.setState({ selectedRowKeys: [], editingKey: "" });
       return;
     }
 
@@ -140,7 +140,7 @@ class TableItem extends Component {
       (_, index) => !selectedRow.includes(index)
     );
     this.props.onUpdateRules(filteredItems);
-    this.setState({ selectedRowKeys: [] });
+    this.setState({ selectedRowKeys: [], editingKey: "" });
   };
 
   showModal = () => {
@@ -158,7 +158,7 @@ class TableItem extends Component {
 
   handleDelete(key) {
     this.props.onDeleteItemRule(key);
-    this.setState({ selectedRowKeys: [] });
+    this.setState({ selectedRowKeys: [], editingKey: "" });
   }
   handleEdit(key) {
     this.setState({ editingKey: key });
@@ -257,7 +257,7 @@ class TableItem extends Component {
 }
 const mapStateToProps = state => {
   return {
-    itemRule: state.itemRuleReducer
+    itemRule: state.itemLayout9Reducer
   };
 };
 

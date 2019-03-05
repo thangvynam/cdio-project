@@ -20,7 +20,7 @@ const initialState = {
     }
   ]
 };
-const itemRuleReducer = (state = initialState, action) => {
+const itemLayout9Reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM_RULE:
       return {
@@ -43,4 +43,4 @@ const itemRuleReducer = (state = initialState, action) => {
       return state;
   }
 };
-export default itemRuleReducer;
+export default itemLayout9Reducer;

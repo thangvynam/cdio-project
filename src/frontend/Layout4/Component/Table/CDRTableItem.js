@@ -1,12 +1,11 @@
 import React, { Component } from 'react';
-import {
-  Table, Divider, Tag, Button,
-  Popconfirm, Modal, Form, Checkbox,
-  Input
-} from 'antd';
-import { connect } from 'react-redux';
+
+import { Table, Divider, Tag, Button,
+   Popconfirm, Modal, Form, Checkbox,
+   Input, Cascader } from 'antd';
+import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 
@@ -23,15 +22,106 @@ const EditableFormRow = Form.create()(EditableRow);
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const levelsOptions = ["I", "T", "U"];
-
+const level_data = [{
+  value: 'Knowledge',
+  label: 'Knowledge',
+  children: [
+    {
+      value: '1',
+      label: '1',
+    },
+    {
+      value: '2',
+      label: '2',
+    },
+    {
+      value: '3',
+      label: '3',
+    },
+    {
+      value: '4',
+      label: '4',
+    },
+    {
+      value: '5',
+      label: '5',
+    }
+  ],
+}, {
+  value: 'Skill',
+  label: 'Skill',
+  children: [
+    {
+      value: '1',
+      label: '1',
+    },
+    {
+      value: '2',
+      label: '2',
+    },
+    {
+      value: '3',
+      label: '3',
+    },
+    {
+      value: '4',
+      label: '4',
+    },
+    {
+      value: '5',
+      label: '5',
+    }
+    ],
+}, {
+  value: 'Attitude',
+  label: 'Attitude',
+  children: [
+    {
+      value: '1',
+      label: '1',
+    },
+    {
+      value: '2',
+      label: '2',
+    },
+    {
+      value: '3',
+      label: '3',
+    },
+    {
+      value: '4',
+      label: '4',
+    },
+    {
+      value: '5',
+      label: '5',
+    }
+    ],
+}];
 class EditableCell extends Component {
 
+  displayRender = (label) => {
+    if(label[1] !== "" && label[1] !== undefined){
+      return label[0] + " - Level " + label[1];
+    }
+      return label[0];
+    }
   getInput = () => {
 
     if (this.props.inputType === 'choice') {
       return <Checkbox.Group options={levelsOptions} style={{ width: "100%" }} />;
     }
-    else if (this.props.inputType === 'select') {
+
+    else if(this.props.inputType === 'level_verb') {
+      return <Cascader
+      options={level_data}
+      expandTrigger="hover"
+      displayRender={this.displayRender}
+      style={{width: "100%"}}
+    />
+    }
+    else if(this.props.inputType === 'select'){
+
       return <div>
         <Input disabled={true} style={{ width: '100%' }} placeholder={this.props.record[this.props.dataIndex]} />
       </div>
@@ -173,16 +263,33 @@ class CDRTableItem extends Component {
       editable: true,
       render: text => <p>{text}</p>,
     }, {
+      title: 'Mức độ đạt được',
+      dataIndex: 'level_verb',
+      key: 'level_verb',
+      width: 200,
+      align: "center",
+      editable: true,
+      render: level => {
+        let color = level[1] === "1" ? 'green' :
+        level[1] === "2" ? 'volcano' : level[1] === "3" ? 'yellow' : level[1] === "4" ? 'blue' : 'orange';
+        return (
+          <span>
+            <Tag color={color} key={level}>{level[0].toUpperCase()}</Tag>
+        </span>
+        )
+        
+    }
+    }, {
       title: 'Mô tả (Mức chi tiết - hành động)',
       dataIndex: 'description',
       key: 'description',
-      width: 600,
+      width: 400,
       editable: true,
     }, {
       title: 'Mức độ (I/T/U)',
       key: 'levels',
       dataIndex: 'levels',
-      width: 150,
+      width: 130,
       editable: true,
       render: levels => (
         <span>
@@ -242,61 +349,72 @@ class CDRTableItem extends Component {
   }
 
   OnDelete = (cdrtable, key) => {
-    if (key === cdrtable.length) {
-      cdrtable.splice(cdrtable.length - 1, 1);
+
+    if(key === cdrtable.previewInfo.length){
+      cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
     }
     else {
-      var cdrType = cdrtable[key - 1].cdr.split(".")[0];
-      for (let i = key - 1; i < cdrtable.length - 1; i++) {
-        if (cdrtable[i + 1].cdr.split(".")[0] === cdrType) {
-          cdrtable[i].description = cdrtable[i + 1].description;
-          cdrtable[i].levels = cdrtable[i + 1].levels;
+      var cdrType = cdrtable.previewInfo[key - 1].cdr.split(".")[0];
+      for(let i = key - 1;i < cdrtable.previewInfo.length - 1;i++){
+        if(cdrtable.previewInfo[i + 1].cdr.split(".")[0] === cdrType){
+          cdrtable.previewInfo[i].level_verb = cdrtable.previewInfo[i + 1].level_verb;
+          cdrtable.previewInfo[i].description = cdrtable.previewInfo[i + 1].description;
+          cdrtable.previewInfo[i].levels = cdrtable.previewInfo[i + 1].levels;
+
         }
         else {
-          cdrtable[i].cdr = cdrtable[i + 1].cdr;
-          cdrtable[i].description = cdrtable[i + 1].description;
-          cdrtable[i].levels = cdrtable[i + 1].levels;
+          cdrtable.previewInfo[i].cdr = cdrtable.previewInfo[i + 1].cdr;
+          cdrtable.previewInfo[i].level_verb = cdrtable.previewInfo[i + 1].level_verb;
+          cdrtable.previewInfo[i].description = cdrtable.previewInfo[i + 1].description;
+          cdrtable.previewInfo[i].levels = cdrtable.previewInfo[i + 1].levels;
         }
       }
-      cdrtable.splice(cdrtable.length - 1, 1);
+      cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
     }
   }
   handleDelete = (key) => {
     var cdrtable = this.props.cdrtable;
     this.OnDelete(cdrtable, key);
     this.props.onAddCDRData(cdrtable);
+    this.props.onUpdateVerb(this.props.cdrverb);
     this.props.onSelectCDRItem([]);
   }
 
   delete = () => {
     var cdrtable = this.props.cdrtable;
     var cdrselecteditem = this.props.cdrselecteditem;
-    for (let i = 0; i < cdrselecteditem.length; i++) {
-      if (cdrselecteditem[i] - 1 === cdrtable.length - 1) {
-        cdrtable.splice(cdrtable.length - 1, 1);
+
+    for(let i = 0;i < cdrselecteditem.length;i++){
+      if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
+        cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
       }
       else {
-        var cdrType = cdrtable[cdrselecteditem[i] - 1].cdr.split(".")[0];
-        for (let j = cdrselecteditem[i] - 1; j < cdrtable.length - 1; j++) {
-          if (cdrtable[j + 1].cdr.split(".")[0] === cdrType) {
-            cdrtable[j].description = cdrtable[j + 1].description;
-            cdrtable[j].levels = cdrtable[j + 1].levels;
+        var cdrType = cdrtable.previewInfo[cdrselecteditem[i] - 1].cdr.split(".")[0];
+        for(let j = cdrselecteditem[i] - 1;j < cdrtable.previewInfo.length - 1;j++){
+          if(cdrtable.previewInfo[j + 1].cdr.split(".")[0] === cdrType){
+            cdrtable.previewInfo[j].level_verb = cdrtable.previewInfo[j + 1].level_verb;
+            cdrtable.previewInfo[j].description = cdrtable.previewInfo[j + 1].description;
+            cdrtable.previewInfo[j].levels = cdrtable.previewInfo[j + 1].levels;
           }
           else {
-            cdrtable[j].cdr = cdrtable[j + 1].cdr;
-            cdrtable[j].description = cdrtable[j + 1].description;
-            cdrtable[j].levels = cdrtable[j + 1].levels;
+            cdrtable.previewInfo[j].cdr = cdrtable.previewInfo[j + 1].cdr;
+            cdrtable.previewInfo[j].level_verb = cdrtable.previewInfo[j + 1].level_verb;
+            cdrtable.previewInfo[j].description = cdrtable.previewInfo[j + 1].description;
+            cdrtable.previewInfo[j].levels = cdrtable.previewInfo[j + 1].levels;
           }
         }
-        cdrtable.splice(cdrtable.length - 1, 1);
-        for (let k = 0; k < cdrselecteditem.length; k++) {
-          if (cdrselecteditem[k] > cdrselecteditem[i]) {
+        cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+        for(let k = 0;k < cdrselecteditem.length;k++){
+          if(cdrselecteditem[k] > cdrselecteditem[i]){
             cdrselecteditem[k]--;
           }
         }
       }
     }
     this.props.onAddCDRData(cdrtable);
+    const cdrverb = this.props.cdrverb;
+    this.props.onUpdateVerb({});
+    this.props.onUpdateVerb(cdrverb);
     this.props.onSelectCDRItem([]);
   }
 
@@ -335,22 +453,23 @@ class CDRTableItem extends Component {
       }
       const newData = this.props.cdrtable;
 
-      const index = newData.findIndex(item => key === item.key);
+      
+      const index = newData.previewInfo.findIndex(item => key === item.key);
       if (index > -1) {
-        const item = newData[index];
-        newData.splice(index, 1, {
+        const item = newData.previewInfo[index];
+        newData.previewInfo.splice(index, 1, {
           ...item,
           ...row,
         });
       } else {
-        newData.push(row);
+        newData.previewInfo.push(row);
       }
-      for (let i = 0; i < newData[key - 1].levels.length - 1; i++) {
-        for (let j = i + 1; j < newData[key - 1].levels.length; j++) {
-          if (newData[key - 1].levels[j] < newData[key - 1].levels[i]) {
-            let temp = newData[key - 1].levels[j];
-            newData[key - 1].levels[j] = newData[key - 1].levels[i];
-            newData[key - 1].levels[i] = temp;
+      for(let i = 0;i < newData.previewInfo[key - 1].levels.length - 1;i++){
+        for (let j = i + 1; j < newData.previewInfo[key - 1].levels.length; j++) {
+          if (newData.previewInfo[key - 1].levels[j] < newData.previewInfo[key - 1].levels[i]) {
+            let temp = newData.previewInfo[key - 1].levels[j];
+            newData.previewInfo[key - 1].levels[j] = newData.previewInfo[key - 1].levels[i];
+            newData.previewInfo[key - 1].levels[i] = temp;
           }
         }
 
@@ -369,23 +488,27 @@ class CDRTableItem extends Component {
 
     const data = this.props.cdrtable;
     const temp = {
-      description: data[dragIndex].description,
-      levels: data[dragIndex].levels
+      level_verb: data.previewInfo[dragIndex].level_verb,
+      description: data.previewInfo[dragIndex].description,
+      levels: data.previewInfo[dragIndex].levels
     }
-    data[dragIndex].description = data[hoverIndex].description;
-    data[dragIndex].levels = data[hoverIndex].levels;
 
-    data[hoverIndex].description = temp.description;
-    data[hoverIndex].levels = temp.levels;
+    data.previewInfo[dragIndex].level_verb = data.previewInfo[hoverIndex].level_verb;
+    data.previewInfo[dragIndex].description = data.previewInfo[hoverIndex].description;
+    data.previewInfo[dragIndex].levels= data.previewInfo[hoverIndex].levels;
+
+    data.previewInfo[hoverIndex].level_verb = temp.level_verb;
+    data.previewInfo[hoverIndex].description = temp.description;
+    data.previewInfo[hoverIndex].levels= temp.levels;
 
     this.props.onAddCDRData(data);
     this.props.onSelectCDRItem([]);
   }
 
-  render() {
-    console.log(this.props.cdrtable)
-    var components = {};
-    this.props.cdreditstate !== '' ?
+
+    render() {
+      var components = {};
+      this.props.cdreditstate !== '' ?
       components = {
         body: {
           row: EditableFormRow,
@@ -426,15 +549,40 @@ class CDRTableItem extends Component {
           CDRTable[j] = temp;
           CDRTable[j].key = jKey;
         }
-        else if (CDRTable[i].cdr.split("G")[1].split(".")[0] === CDRTable[j].cdr.split("G")[1].split(".")[0]) {
-          if (CDRTable[i].cdr.split("G")[1].split(".")[1] > CDRTable[j].cdr.split("G")[1].split(".")[1]) {
-            let iKey = CDRTable[i].key;
-            let jKey = CDRTable[j].key;
-            let temp = CDRTable[i];
-            CDRTable[i] = CDRTable[j];
-            CDRTable[i].key = iKey;
-            CDRTable[j] = temp;
-            CDRTable[j].key = jKey;
+        return {
+          ...col,
+          onCell: record => ({
+            record,
+            inputType: col.dataIndex === 'cdr' ? 'select' : col.dataIndex === 'levels' ? 'choice' : col.dataIndex === 'level_verb' ? 'level_verb' : 'text',
+            dataIndex: col.dataIndex,
+            title: col.title,
+            editing: this.isEditing(record),
+          }),
+        };
+      });
+
+      var CDRTable = this.props.cdrtable;
+      for(let i = 0;i < CDRTable.previewInfo.length - 1;i++){
+        for(let j = i + 1;j < CDRTable.previewInfo.length;j++){
+          if(CDRTable.previewInfo[i].cdr.split(".")[0] > CDRTable.previewInfo[j].cdr.split(".")[0]){
+            let iKey = CDRTable.previewInfo[i].key;
+            let jKey = CDRTable.previewInfo[j].key;
+            let temp = CDRTable.previewInfo[i];
+            CDRTable.previewInfo[i] = CDRTable.previewInfo[j];
+            CDRTable.previewInfo[i].key = iKey;
+            CDRTable.previewInfo[j] = temp;
+            CDRTable.previewInfo[j].key = jKey;
+          }
+          else if(CDRTable.previewInfo[i].cdr.split(".")[0] === CDRTable.previewInfo[j].cdr.split(".")[0]){
+            if(CDRTable.previewInfo[i].cdr.split(".")[1] > CDRTable.previewInfo[j].cdr.split(".")[1]){
+              let iKey = CDRTable.previewInfo[i].key;
+              let jKey = CDRTable.previewInfo[j].key;
+              let temp = CDRTable.previewInfo[i];
+              CDRTable.previewInfo[i] = CDRTable.previewInfo[j];
+              CDRTable.previewInfo[i].key = iKey;
+              CDRTable.previewInfo[j] = temp;
+              CDRTable.previewInfo[j].key = jKey;
+            }
           }
         }
       }
@@ -467,35 +615,39 @@ class CDRTableItem extends Component {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${this.props.cdrselecteditem.length} mục` : ''}
           </span>
-        </div>
-        <Table bordered
-          components={components}
-          rowSelection={rowSelection}
-          columns={this.props.cdreditstate === '' ? this.columns : columns}
-          dataSource={CDRTable}
-          onRow={
-            this.props.cdreditstate === '' ?
+          </div>
+            <Table bordered 
+            components={components}
+            rowSelection={rowSelection} 
+            columns={this.props.cdreditstate === '' ? this.columns : columns} 
+            dataSource={CDRTable.previewInfo}
+            onRow={
+              this.props.cdreditstate === '' ?
               (record, index) => ({
-                index,
-                moveRow: this.moveRow,
-              }) : null}
-        />
-      </div>
-    )
-  }
+              index,
+              moveRow: this.moveRow,
+            }) : null}
+            pagination={{ pageSize: 50 }} 
+          scroll={{ y: 600, }}
+             />
+            </div>
+        )
+    }
 }
 const mapStateToProps = (state) => {
-  return {
-    cdrtable: state.cdrtable,
-    cdrselecteditem: state.cdrselecteditem,
-    cdreditstate: state.cdreditstate
-  }
+    return {
+        cdrtable: state.itemLayout4Reducer,
+        cdrselecteditem: state.cdrselecteditem,
+        cdreditstate: state.cdreditstate,
+        cdrverb: state.cdrverb
+    }
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onAddCDRData: addCDRData,
     onSelectCDRItem: selectedCDRItem,
-    onChangeEditState: changeEditState
+    onChangeEditState: changeEditState,
+    onUpdateVerb: selectedVerb,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

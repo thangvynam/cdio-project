@@ -150,7 +150,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     return {
         saveAndContinue: () => {
-            myObj.key = ownProps.step;
             myObj.objectName = objectName;
             myObj.description = description;
             myObj.standActs = temp;

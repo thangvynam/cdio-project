@@ -212,19 +212,20 @@ class DGFormItem extends Component {
             } else {
               {
                 {
+                  let previewInfo = this.props.dgtable.previewInfo;
                   let newData = '';
                   let isAdd2Rows = false;
                   let iserror = false;
                   if (temp1 === 'Bài tập tại lớp') {
                     let flag = true;
                     this.props.dgdata.mathanhphan = 'BTTL#' + this.props.dgdata.mathanhphan;
-                    for (let i = 0; i < this.props.dgtable.length; i++) {
-                      if ('BTTL' === this.props.dgtable[i].mathanhphan) {
+                    for (let i = 0; i < previewInfo.length; i++) {
+                      if ('BTTL' === previewInfo[i].mathanhphan) {
                         flag = false;
                       }
                     }
                     if (flag === true) {
-                      
+
                       let dataFather = {
                         key: 'BTTL',
                         standardOutput: [],
@@ -233,15 +234,15 @@ class DGFormItem extends Component {
                         mota: '',
                         tile: '',
                       };
-                      newData = this.props.dgtable.concat(dataFather);
+                      newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
                   } else if (temp1 === 'Bài tập về nhà') {
                     let flag = true;
-                    
+
                     this.props.dgdata.mathanhphan = 'BTVN#' + this.props.dgdata.mathanhphan;
-                    for (let i = 0; i < this.props.dgtable.length; i++) {
-                      if ('BTVN' === this.props.dgtable[i].mathanhphan) {
+                    for (let i = 0; i < previewInfo.length; i++) {
+                      if ('BTVN' === previewInfo[i].mathanhphan) {
                         flag = false;
                       }
                     }
@@ -254,19 +255,19 @@ class DGFormItem extends Component {
                         mota: '',
                         tile: '',
                       };
-                      newData = this.props.dgtable.concat(dataFather);
+                      newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
                   } else if (temp1 === 'Đồ án môn học') {
                     let flag = true;
                     this.props.dgdata.mathanhphan = 'DAMH#' + this.props.dgdata.mathanhphan;
-                    for (let i = 0; i < this.props.dgtable.length; i++) {
-                      if ('DAMH' === this.props.dgtable[i].mathanhphan) {
+                    for (let i = 0; i < previewInfo.length; i++) {
+                      if ('DAMH' === previewInfo[i].mathanhphan) {
                         flag = false;
                       }
                     }
                     if (flag === true) {
-                       
+
                       let dataFather = {
                         key: 'DAMH',
                         standardOutput: [],
@@ -275,18 +276,18 @@ class DGFormItem extends Component {
                         mota: '',
                         tile: '',
                       };
-                      newData = this.props.dgtable.concat(dataFather);
+                      newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
                   } else if (temp1 === 'Thi lý thuyết cuối kì') {
                     console.log("Vo duoc nha")
                     let flag = true;
                     this.props.dgdata.mathanhphan = 'LTCK#' + this.props.dgdata.mathanhphan;
-                    for (let i = 0; i < this.props.dgtable.length; i++) {
-                      if ('LTCK' === this.props.dgtable[i].mathanhphan) {
+                    for (let i = 0; i < previewInfo.length; i++) {
+                      if ('LTCK' === previewInfo[i].mathanhphan) {
                         flag = false;
                       }
-                     
+
                     }
                     if (flag === true) {
                       let dataFather = {
@@ -297,13 +298,13 @@ class DGFormItem extends Component {
                         mota: '',
                         tile: '',
                       };
-                      newData = this.props.dgtable.concat(dataFather);
+                      newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
                   }
-                  for (let i = 0; i < this.props.dgtable.length; i++) {
-                    
-                    if (this.props.dgdata.mathanhphan === this.props.dgtable[i].key) {
+                  for (let i = 0; i < previewInfo.length; i++) {
+
+                    if (this.props.dgdata.mathanhphan === previewInfo[i].key) {
                       iserror = true;
                     }
                   }
@@ -318,20 +319,20 @@ class DGFormItem extends Component {
                       mota: this.props.dgdata.mota,
                       tile: this.props.dgdata.tile + '%',
                     }
-                    
-                    let dataReturn = '';
+
+                    let dataReturn = { previewInfo: [] };
                     if (isAdd2Rows === true) {
-                      dataReturn = newData.concat(data);
+                      dataReturn.previewInfo = newData.concat(data);
                     } else {
-                      dataReturn = this.props.dgtable.concat(data);
+                      dataReturn.previewInfo = previewInfo.concat(data);
                     }
 
                     console.log(dataReturn);
                     this.props.onAddDGData(dataReturn);
                     message.info("Thêm thành công!");
                     this.props.form.resetFields();
-                    isAdd2Rows=false;
-                    temp.splice(0,temp.length)
+                    isAdd2Rows = false;
+                    temp.splice(0, temp.length)
                   }
 
                 }
@@ -472,7 +473,7 @@ class DGFormItem extends Component {
 const mapStateToProps = (state) => {
   return {
     dgdata: state.dgdata,
-    dgtable: state.dgtable,
+    dgtable: state.itemLayout7Reducer,
   };
 }
 const mapDispatchToProps = (dispatch) => {

@@ -409,7 +409,7 @@ class ItemMenu extends Component {
 
 const mapStateToProps = state => {
   return {
-    itemKHGDTH: state.itemKHGDTHReducer
+    itemKHGDTH: state.itemLayout6Reducer
   };
 };
 

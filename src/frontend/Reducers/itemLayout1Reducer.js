@@ -1,8 +1,8 @@
 import * as Types from '../Constant/thong-tin-chung/actionTypes';
 
 const initialState = {
-    data: [
-        {
+    previewInfo: [
+    {
         tenMonHocTV: 'Nhập môn Công nghệ phần mềm',
         tenMonHocTA: 'Introduction to Software Engineering',
         maMonHoc: 'CSC13002',
@@ -19,14 +19,14 @@ const initialState = {
 export default function thongTinChung(state = initialState, action) {
     switch(action.type) {
         case Types.ADD_TTC:
-            state.data.push(action.newTTC);
+            state.previewInfo.push(action.newTTC);
             return {...state};
         case Types.DELETE_TTC:
-            state.data = [];
+            state.previewInfo = [];
             return {...state};
         case Types.EDIT_TTC:
-            state.data = [];
-            state.data.push(action.newTTC);
+            state.previewInfo = [];
+            state.previewInfo.push(action.newTTC);
             return {...state};
         default: 
             return {...state};

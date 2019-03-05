@@ -229,7 +229,7 @@ class ThongTinChung extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    dataTTC: state.itemLayout1Reducer.data
+    dataTTC: state.itemLayout1Reducer.previewInfo
   }
 }
 

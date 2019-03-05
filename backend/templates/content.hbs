@@ -46,31 +46,51 @@
 <body>
     <page size="A4">
 
+        {{#if this.value2}}
         <div style="width: 100%">
             <hr style="border:1px solid;width:80%" />
         </div>
         <div style="height: 85%;">
+        <div style="height: 85%;">  
             <div>
                 <center>
                     <h1 style="color: blue;">ĐỀ CƯƠNG MÔN HỌC</h1>
                 </center>
+            </div>        
+            <div style="margin-left: 10%;margin-right:10%">
+                <h3><b>{{this.title2}}</b></h3>
+                <p style="color: red;">(Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)</p>
             </div>
             <div style="margin-left: 10%;margin-right:10%">
-                <h3><b>{{this.title}}</b></h3>
-                <p style="color: red;">(Hướng dẫn: Liệt kê các mục tiêu môn học, từ 5-8 mục tiêu ở mức độ tổng quát. Sử
-                    dụng động từ
-                    Bloom ở mức độ nhóm. Mỗi mục tiêu môn học được mapping với chuẩn đầu ra cấp chương trình)</p>
+                <table id="customers">
+                    <tr>
+                        <th>Mô tả môn học</th>
+                    </tr>
+                    <tbody>
+                        <tr>
+                            <td>{{this.value2}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>       
+        {{/if}}
+
+        {{#if this.value3}}
+        <div style="height: 85%;">          
+            <div style="margin-left: 10%;margin-right:10%">
+                <h3><b>{{this.title3}}</b></h3>
+                <p style="color: red;">(Hướng dẫn: Liệt kê các mục tiêu môn học, từ 5-8 mục tiêu ở mức độ tổng quát. Sử dụng động từ Bloom ở mức độ nhóm. Mỗi mục tiêu môn học được mapping với chuẩn đầu ra cấp chương trình)</p>
             </div>
             <div style="margin-left: 10%;margin-right:10%">
-                <p>Sinh viên học xong môn học này có khả năng :</p>
                 <table id="customers">
                     <tr>
                         <th>Mục tiêu</th>
-                        <th>Mô tả (mức tổng quát )</th>
+                        <th>Mô tả</th>
                         <th>CĐR CDIO của chương trình</th>
                     </tr>
 
-                    {{#each value}}
+                    {{#each this.value3}}
                     <tbody>
                         <tr>
                             <td>
@@ -83,10 +103,44 @@
                     {{/each}}
                 </table>
             </div>
-        </div>
-        <div style="margin-left: 10%;margin-right:10%;">
-            <i>Đề cương môn học <b> Nhập môn Công nghệ phần mềm</b></i>
-        </div>
+        </div>       
+
+        {{/if}}
+
+        {{#if this.value5}}
+        <div style="height: 85%;">          
+            <div style="margin-left: 10%;margin-right:10%">
+                <h3><b>{{this.title5}}</b></h3>
+                <p style="color: red;">(Hướng dẫn: Mô tả chi tiết quá trình giảng dạy theo từng chủ đề: tên chủ đề, danh sách các chuẩn đầu ra chi tiết tương ứng với mỗi chủ đề, các hoạt động dạy và học gợi ý, các hoạt động đánh giá nếu có)</p>
+            </div>
+            <div style="margin-left: 10%;margin-right:10%">
+                <table id="customers">
+                    <tr>
+                        <th>Tên chủ đề</th>
+                        <th>Hoạt động giảng dạy</th>
+                        <th>Chuẩn đầu ra</th>
+                        <th>Hoạt động đánh giá</th>
+                    </tr>
+
+                    {{#each this.value5}}
+                    <tbody>
+                        <tr>
+                            <td>
+                                <center>{{this.titleName}}</center>
+                            </td>
+                            <td>{{this.teachingActs}}</td>
+                            <td>{{this.standardOutput}}</td>
+                            <td>{{this.evalActs}}</td>
+                        </tr>
+                    </tbody>
+                    {{/each}}
+                </table>
+            </div>
+        </div>       
+            <div style="margin-left: 10%;margin-right:10%;">
+                <i>Đề cương môn học <b> Nhập môn Công nghệ phần mềm</b></i>
+            </div>
+        {{/if}}
 
     </page>
 

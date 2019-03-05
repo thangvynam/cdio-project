@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-
 import { Table, Divider, Tag, Button,
    Popconfirm, Modal, Form, Checkbox,
    Input, Cascader } from 'antd';
@@ -99,7 +98,6 @@ const level_data = [{
     ],
 }];
 class EditableCell extends Component {
-
   displayRender = (label) => {
     if(label[1] !== "" && label[1] !== undefined){
       return label[0] + " - Level " + label[1];
@@ -109,9 +107,8 @@ class EditableCell extends Component {
   getInput = () => {
 
     if (this.props.inputType === 'choice') {
-      return <Checkbox.Group options={levelsOptions} style={{ width: "100%" }} />;
+      return <Checkbox.Group options={levelsOptions} style={{ width: "100%" }}/>;
     }
-
     else if(this.props.inputType === 'level_verb') {
       return <Cascader
       options={level_data}
@@ -121,15 +118,14 @@ class EditableCell extends Component {
     />
     }
     else if(this.props.inputType === 'select'){
-
       return <div>
-        <Input disabled={true} style={{ width: '100%' }} placeholder={this.props.record[this.props.dataIndex]} />
+          <Input disabled={true} style={{ width: '100%' }} placeholder={this.props.record[this.props.dataIndex]}/>
       </div>
 
 
     }
     else return <TextArea rows={4} placeholder="Mô tả" />
-
+    
   };
 
   render() {
@@ -145,23 +141,23 @@ class EditableCell extends Component {
     return (
       <EditableContext.Consumer>
         {(form) => {
-          const { getFieldDecorator } = form;
-          return (
-            <td {...restProps}>
-              {editing ? (
-                <FormItem style={{ margin: 0 }}>
-                  {getFieldDecorator(dataIndex, {
-                    rules: [{
-                      required: true,
-                      message: `Thiếu thông tin!`,
-                    }],
-                    initialValue: record[dataIndex],
-                  })(this.getInput())}
-                </FormItem>
-              ) : restProps.children}
-            </td>
-          );
-        }}
+        const  { getFieldDecorator } = form;
+        return (
+          <td {...restProps}>
+            {editing ? (
+              <FormItem style={{ margin: 0 }}>
+                {getFieldDecorator(dataIndex, {
+                  rules: [{
+                    required: true,
+                    message: `Thiếu thông tin!`,
+                  }],
+                  initialValue: record[dataIndex],
+                })(this.getInput())}
+              </FormItem>
+            ) : restProps.children}
+          </td>
+        );
+      }}
       </EditableContext.Consumer>
     );
   }
@@ -251,9 +247,9 @@ const DragableBodyRow = DropTarget(
 
 class CDRTableItem extends Component {
 
-  state = { visible: false }
+  state = { visible: false}
 
-  constructor(props) {
+  constructor(props){
     super(props);
     this.columns = [{
       title: 'Chuẩn đầu ra',
@@ -295,7 +291,7 @@ class CDRTableItem extends Component {
         <span>
           {levels.map(level => {
             let color = level === "I" ? 'geekblue' :
-              level === "T" ? 'orange' : 'gray';
+            level === "T" ? 'orange' : 'gray';
             return <Tag color={color} key={level}>{level.toUpperCase()}</Tag>;
           })}
         </span>
@@ -305,41 +301,40 @@ class CDRTableItem extends Component {
       key: 'action',
       render: (text, record) => {
         const editable = this.isEditing(record);
-        return (
-          <div>
-            {editable ? (
-              <span>
-                <EditableContext.Consumer>
-                  {form => (
-                    <a
-                      href="#a"
-                      onClick={() => this.save(form, record.key)}
-                      style={{ marginRight: 8 }}
-                    >
-                      Save
+        return(
+        <div>
+          {editable ? (
+                <span>
+                  <EditableContext.Consumer>
+                    {form => (
+                      <a
+                        href="#a"
+                        onClick={() => this.save(form, record.key)}
+                        style={{ marginRight: 8 }}
+                      >
+                        Save
                       </a>
-                  )}
-                </EditableContext.Consumer>
-                <Popconfirm
-                  title="Hủy bỏ?"
-                  onConfirm={() => this.cancel(record.key)}
-                >
-                  <a href="#a">Cancel</a>
-                </Popconfirm>
-              </span>
-            ) : (
+                    )}
+                  </EditableContext.Consumer>
+                  <Popconfirm
+                    title="Hủy bỏ?"
+                    onConfirm={() => this.cancel(record.key)}
+                  >
+                    <a href="#a">Cancel</a>
+                  </Popconfirm>
+                </span>
+              ) : (
                 <a href="#a" onClick={() => this.edit(record.key)}>Edit</a>
               )}
-            {!editable ? <Divider type="vertical" /> : null}
-            {!editable
+          {!editable ? <Divider type="vertical" /> : null}
+          {!editable 
               ? (
                 <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.handleDelete(record.key)}>
                   <a href="#a">Xóa</a>
                 </Popconfirm>
               ) : null}
-          </div>
-        )
-      },
+        </div>
+      )},
     }];
   }
 
@@ -349,7 +344,6 @@ class CDRTableItem extends Component {
   }
 
   OnDelete = (cdrtable, key) => {
-
     if(key === cdrtable.previewInfo.length){
       cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
     }
@@ -360,7 +354,6 @@ class CDRTableItem extends Component {
           cdrtable.previewInfo[i].level_verb = cdrtable.previewInfo[i + 1].level_verb;
           cdrtable.previewInfo[i].description = cdrtable.previewInfo[i + 1].description;
           cdrtable.previewInfo[i].levels = cdrtable.previewInfo[i + 1].levels;
-
         }
         else {
           cdrtable.previewInfo[i].cdr = cdrtable.previewInfo[i + 1].cdr;
@@ -383,7 +376,6 @@ class CDRTableItem extends Component {
   delete = () => {
     var cdrtable = this.props.cdrtable;
     var cdrselecteditem = this.props.cdrselecteditem;
-
     for(let i = 0;i < cdrselecteditem.length;i++){
       if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
         cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
@@ -429,7 +421,7 @@ class CDRTableItem extends Component {
     this.setState({
       visible: false,
     });
-
+    
   }
 
   handleCancel = (e) => {
@@ -439,7 +431,7 @@ class CDRTableItem extends Component {
   }
 
   // Edit
-
+  
   isEditing = record => record.key === this.props.cdreditstate;
 
   cancel = () => {
@@ -452,7 +444,6 @@ class CDRTableItem extends Component {
         return;
       }
       const newData = this.props.cdrtable;
-
       
       const index = newData.previewInfo.findIndex(item => key === item.key);
       if (index > -1) {
@@ -460,7 +451,7 @@ class CDRTableItem extends Component {
         newData.previewInfo.splice(index, 1, {
           ...item,
           ...row,
-        });
+        });   
       } else {
         newData.previewInfo.push(row);
       }
@@ -472,8 +463,8 @@ class CDRTableItem extends Component {
             newData.previewInfo[key - 1].levels[i] = temp;
           }
         }
-
-      }
+      
+    }
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');
@@ -486,13 +477,12 @@ class CDRTableItem extends Component {
 
   moveRow = (dragIndex, hoverIndex) => {
 
-    const data = this.props.cdrtable;
+    const data  = this.props.cdrtable;
     const temp = {
       level_verb: data.previewInfo[dragIndex].level_verb,
       description: data.previewInfo[dragIndex].description,
       levels: data.previewInfo[dragIndex].levels
     }
-
     data.previewInfo[dragIndex].level_verb = data.previewInfo[hoverIndex].level_verb;
     data.previewInfo[dragIndex].description = data.previewInfo[hoverIndex].description;
     data.previewInfo[dragIndex].levels= data.previewInfo[hoverIndex].levels;
@@ -505,49 +495,24 @@ class CDRTableItem extends Component {
     this.props.onSelectCDRItem([]);
   }
 
-
     render() {
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
         body: {
-          row: EditableFormRow,
+          row:  EditableFormRow,
           cell: EditableCell
         },
-      } :
+      } : 
       components = {
         body: {
-          row: DragableBodyRow
+          row:  DragableBodyRow
         },
       }
 
-    const columns = this.columns.map((col) => {
-      if (!col.editable) {
-        return col;
-      }
-      return {
-        ...col,
-        onCell: record => ({
-          record,
-          inputType: col.dataIndex === 'cdr' ? 'select' : col.dataIndex === 'levels' ? 'choice' : 'text',
-          dataIndex: col.dataIndex,
-          title: col.title,
-          editing: this.isEditing(record),
-        }),
-      };
-    });
-
-    const CDRTable = this.props.cdrtable;
-    for (let i = 0; i < CDRTable.length - 1; i++) {
-      for (let j = i + 1; j < CDRTable.length; j++) {
-        if (CDRTable[i].cdr.split("G")[1].split(".")[0] > CDRTable[j].cdr.split("G")[1].split(".")[0]) {
-          let iKey = CDRTable[i].key;
-          let jKey = CDRTable[j].key;
-          let temp = CDRTable[i];
-          CDRTable[i] = CDRTable[j];
-          CDRTable[i].key = iKey;
-          CDRTable[j] = temp;
-          CDRTable[j].key = jKey;
+      const columns = this.columns.map((col) => {
+        if (!col.editable) {
+          return col;
         }
         return {
           ...col,
@@ -586,16 +551,15 @@ class CDRTableItem extends Component {
           }
         }
       }
-    }
-    const hasSelected = this.props.cdrselecteditem.length > 0;
-    const selectedRowKeys = this.props.cdrselecteditem;
-    const rowSelection = {
-      selectedRowKeys,
-      onChange: this.onSelectChange,
-    };
-    return (
-      <div>
-        <div style={{ marginBottom: 16, marginTop: 16 }}>
+      const hasSelected = this.props.cdrselecteditem.length > 0;
+      const selectedRowKeys = this.props.cdrselecteditem;
+      const rowSelection = {
+        selectedRowKeys,
+        onChange: this.onSelectChange,
+      };
+        return (
+          <div>
+          <div style={{ marginBottom: 16,  marginTop: 16}}>
           <Button
             type="danger"
             onClick={this.showModal}
@@ -604,14 +568,14 @@ class CDRTableItem extends Component {
             Delete
           </Button>
           <Modal
-            title="Cảnh báo"
-            visible={this.state.visible}
-            onOk={this.handleOk}
-            onCancel={this.handleCancel}
-          >
-            <p>Xóa những mục đã chọn?</p>
-
-          </Modal>
+          title="Cảnh báo"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <p>Xóa những mục đã chọn?</p>
+          
+        </Modal>
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${this.props.cdrselecteditem.length} mục` : ''}
           </span>

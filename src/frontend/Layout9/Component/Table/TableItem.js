@@ -129,13 +129,13 @@ class TableItem extends Component {
     }
 
     //delete all
-    if (selectedRow.length === this.props.itemRule.rules.length) {
+    if (selectedRow.length === this.props.itemRule.previewInfo.length) {
       this.props.onUpdateRules([]);
       this.setState({ selectedRowKeys: [], editingKey: "" });
       return;
     }
 
-    let ruleitems = this.props.itemRule.rules;
+    let ruleitems = this.props.itemRule.previewInfo;
     const filteredItems = ruleitems.filter(
       (_, index) => !selectedRow.includes(index)
     );
@@ -171,7 +171,7 @@ class TableItem extends Component {
         return;
       }
 
-      var newRules = this.props.itemRule.rules;
+      var newRules = this.props.itemRule.previewInfo;
       const item = newRules[key];
       newRules.splice(key, 1, {
         ...item,
@@ -188,7 +188,7 @@ class TableItem extends Component {
 
   setIndexForItem = () => {
     let itemRuleTable = [];
-    let rules = this.props.itemRule.rules;
+    let rules = this.props.itemRule.previewInfo;
     for (let i = 0; i < rules.length; i++) {
       let temp = {
         key: i,

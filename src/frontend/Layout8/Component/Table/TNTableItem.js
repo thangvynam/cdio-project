@@ -36,7 +36,7 @@ class TNTableItem extends Component {
 
   render() {
     return (
-      <Table columns={columns} dataSource={this.props.tntable.previewInfo} />
+      <Table columns={columns} dataSource={this.props.tntable.previewInfo} style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}/>
     );
   }
 }

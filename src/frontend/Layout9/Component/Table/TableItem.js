@@ -250,6 +250,7 @@ class TableItem extends Component {
           columns={columns}
           rowClassName="editable-row"
           dataSource={this.setIndexForItem()}
+          style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
         />
       </div>
     );

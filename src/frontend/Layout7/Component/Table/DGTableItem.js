@@ -121,7 +121,7 @@ class DGTableItem extends Component {
     console.log(this.props.dgtable);
     sortValues(this.props.dgtable.previewInfo)
     return (
-      <Table columns={columns} dataSource={this.props.dgtable.previewInfo} />
+      <Table columns={columns} dataSource={this.props.dgtable.previewInfo} style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}/>
     );
   }
 }

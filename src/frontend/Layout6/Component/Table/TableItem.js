@@ -544,8 +544,7 @@ class TableItem extends Component {
                 })
               : null
           }
-          pagination={{ pageSize: 50 }}
-          scroll={{ y: 240 }}
+          style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
         />
       </div>
     );

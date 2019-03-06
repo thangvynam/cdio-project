@@ -57,6 +57,7 @@ class tableTTC extends Component {
                     bordered
                     columns={columns}
                     dataSource={data}
+                    style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
                 />
             </React.Fragment>
         );

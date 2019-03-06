@@ -18,11 +18,30 @@ const dataRender3 ={
   title3 : '',
   data3 : []
 }
+const dataRender4 ={
+  title4 : '',
+  data4 : []
+}
 const dataRender5 ={
   title5 : '',
   data5 : []
 }
-
+const dataRender6 ={
+  title6 : '',
+  data6 : []
+}
+const dataRender7 ={
+  title7 : '',
+  data7 : []
+}
+const dataRender8 ={
+  title8 : '',
+  data8 : []
+}
+const dataRender9 ={
+  title9 : '',
+  data9 : []
+}
 
 const compile = async function(templateName,data){
   const filePath = path.join(process.cwd(),'templates',`${templateName}.hbs`);
@@ -43,8 +62,18 @@ router.post('/exportfile', function(req, res, next) {
         return "2. ";
       case "Mục tiêu môn học" : 
         return "3. ";
+      case "Chuẩn đầu ra môn học" : 
+        return "4. ";
       case "Kế hoạch giảng dạy lý thuyết":
         return "5. ";
+      case "Kế hoạch giảng dạy thực hành":
+        return "6. ";
+      case "Đánh giá":
+        return "7. ";
+      case "Tài nguyên môn học":
+        return "8. ";
+      case "Các quy định chung":
+        return "9. ";
       default:
         return "";
     }
@@ -58,20 +87,45 @@ router.post('/exportfile', function(req, res, next) {
           
           return dataRender1;
         }
-        case "Mục tiêu môn học":{
-          dataRender3.title3 = renderNumber(key) +  key.toUpperCase() ;
-          dataRender3.value3 = value;
-          return dataRender3;
-        }
         case "Mô tả môn học":{
           dataRender2.title2 = renderNumber(key) +  key.toUpperCase() ;
           dataRender2.value2 = value;
           return dataRender2;
         }
+        case "Mục tiêu môn học":{
+          dataRender3.title3 = renderNumber(key) +  key.toUpperCase() ;
+          dataRender3.value3 = value;
+          return dataRender3;
+        }
+        case "Chuẩn đầu ra môn học":{
+          dataRender4.title4 = renderNumber(key) +  key.toUpperCase() ;
+          dataRender4.value4 = value;
+          return dataRender4;
+        }
         case "Kế hoạch giảng dạy lý thuyết":{
           dataRender5.title5 = renderNumber(key) +  key.toUpperCase() ;
           dataRender5.value5 = value;
           return dataRender5;
+        }
+        case "Kế hoạch giảng dạy thực hành":{
+          dataRender6.title6 = renderNumber(key) +  key.toUpperCase() ;
+          dataRender6.value6 = value;
+          return dataRender6;
+        }
+        case "Đánh giá":{
+          dataRender7.title7 = renderNumber(key) +  key.toUpperCase() ;
+          dataRender7.value7 = value;
+          return dataRender7;
+        }
+        case "Tài nguyên môn học":{
+          dataRender8.title8 = renderNumber(key) +  key.toUpperCase() ;
+          dataRender8.value8 = value;
+          return dataRender8;
+        }
+        case "Các quy định chung":{
+          dataRender9.title9 = renderNumber(key) +  key.toUpperCase() ;
+          dataRender9.value9 = value;
+          return dataRender9;
         }
       }
     }

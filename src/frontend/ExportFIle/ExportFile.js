@@ -12,7 +12,7 @@ const plainOptions = [
     'Chuẩn đầu ra môn học',
     'Kế hoạch giảng dạy lý thuyết',
     'Kế hoạch giảng dạy thực hành',
-    'Đánh giá ',
+    'Đánh giá',
     'Tài nguyên môn học',
     'Các quy định chung',
 ];

@@ -40,23 +40,115 @@
             background-color: #0080ff;
             color: white;
         }
+
+        .column {
+            height: 40px;
+            width: 50%;
+            /* as @passatgt mentioned in the comment*/
+            width: calc(100% / 3);
+            display: inline-block;
+            margin-left: 60px;
+            letter-spacing: 1.9px;
+        }
     </style>
 </head>
 
 <body>
     <page size="A4">
+        {{#if this.value1}}
+        <center>
+            <b>
+                <h1 style="color: blue;">CSC13002 – Nhập Môn Công Nghệ Phần Mềm</h1>
+            </b>
+        </center>
+        <div style="height:85%">
+            <div style="margin-left: 10%;margin-right:10%">
+                <h3><b>{{this.title1}}</b></h3>
+                <p style="color: red;">(Hướng dẫn: mô tả các thông tin cơ bản của môn học)</p>
+            </div>
+            {{#each this.value1}}
+            <div style="margin-left: 10%;margin-right:10%">
+                <div>
+                    <div class="column">
+                        Tên môn học (tiếng Việt):
+                    </div>
+                    <div class="column">
+                        {{this.tenMonHocTV}}
+                    </div>
+                </div>
+                <div>
+                    <div class="column">
+                        Tên môn học (tiếng Anh):
+                    </div>
+                    <div class="column">
+                        {{this.tenMonHocTA}}
+                </div>
+                <div>
+                    <div class="column">
+                        Mã số môn học:
+                    </div>
+                    <div class="column">
+                        {{this.maMonHoc}}
+                    </div>
+                </div>
+                <div>
+                    <div class="column">
+                        Thuộc khối kiến thức:
+                    </div>
+                    <div class="column">
+                        {{this.khoiKienThuc}}
+                    </div>
+                </div>
+                <div>
+                    <div class="column">
+                        Số tín chỉ
+                    </div>
+                    <div class="column">
+                        {{this.soTinChi}}
+                    </div>
+                    <div style="margin-left:30px">
+                        <div>
+                            <div class="column">
+                                Số tiết lý thuyết:
+                            </div>
+                            <div class="column">
+                                {{this.tietLyThuyet}}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="column">
+                                Số tiết thực hành:
+                            </div>
+                            <div class="column">
+                                {{this.tietThucHanh}}
+                            </div>
+                        </div>
+                        <div>
+                            <div class="column">
+                                Số tiết tự học:
+                            </div>
+                            <div class="column">
+                                {{this.tietTuHoc}}
+                            </div>
+                        </div>
 
-        {{#if this.value2}}
-        <div style="width: 100%">
-            <hr style="border:1px solid;width:80%" />
+                    </div>
+                </div>
+                <div>
+                    <div class="column">
+                        Các môn học tiên quyết
+                    </div>
+                    <div class="column">
+                        {{this.monTienQuyet}}
+                    </div>
+                </div>
+            </div>
+            {{/each}}
         </div>
+
+        {{/if}}
+        {{#if this.value2}}
         <div style="height: 85%;">
-        <div style="height: 85%;">  
-            <div>
-                <center>
-                    <h1 style="color: blue;">ĐỀ CƯƠNG MÔN HỌC</h1>
-                </center>
-            </div>        
             <div style="margin-left: 10%;margin-right:10%">
                 <h3><b>{{this.title2}}</b></h3>
                 <p style="color: red;">(Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)</p>
@@ -73,14 +165,16 @@
                     </tbody>
                 </table>
             </div>
-        </div>       
+        </div>
         {{/if}}
 
         {{#if this.value3}}
-        <div style="height: 85%;">          
+        <div style="height: 85%;">
             <div style="margin-left: 10%;margin-right:10%">
                 <h3><b>{{this.title3}}</b></h3>
-                <p style="color: red;">(Hướng dẫn: Liệt kê các mục tiêu môn học, từ 5-8 mục tiêu ở mức độ tổng quát. Sử dụng động từ Bloom ở mức độ nhóm. Mỗi mục tiêu môn học được mapping với chuẩn đầu ra cấp chương trình)</p>
+                <p style="color: red;">(Hướng dẫn: Liệt kê các mục tiêu môn học, từ 5-8 mục tiêu ở mức độ tổng
+                    quát. Sử dụng động từ Bloom ở mức độ nhóm. Mỗi mục tiêu môn học được mapping với chuẩn đầu ra
+                    cấp chương trình)</p>
             </div>
             <div style="margin-left: 10%;margin-right:10%">
                 <table id="customers">
@@ -103,15 +197,16 @@
                     {{/each}}
                 </table>
             </div>
-        </div>       
-
+        </div>
         {{/if}}
 
         {{#if this.value5}}
-        <div style="height: 85%;">          
+        <div style="height: 85%;">
             <div style="margin-left: 10%;margin-right:10%">
                 <h3><b>{{this.title5}}</b></h3>
-                <p style="color: red;">(Hướng dẫn: Mô tả chi tiết quá trình giảng dạy theo từng chủ đề: tên chủ đề, danh sách các chuẩn đầu ra chi tiết tương ứng với mỗi chủ đề, các hoạt động dạy và học gợi ý, các hoạt động đánh giá nếu có)</p>
+                <p style="color: red;">(Hướng dẫn: Mô tả chi tiết quá trình giảng dạy theo từng chủ đề: tên chủ đề,
+                    danh sách các chuẩn đầu ra chi tiết tương ứng với mỗi chủ đề, các hoạt động dạy và học gợi ý,
+                    các hoạt động đánh giá nếu có)</p>
             </div>
             <div style="margin-left: 10%;margin-right:10%">
                 <table id="customers">
@@ -136,10 +231,10 @@
                     {{/each}}
                 </table>
             </div>
-        </div>       
-            <div style="margin-left: 10%;margin-right:10%;">
-                <i>Đề cương môn học <b> Nhập môn Công nghệ phần mềm</b></i>
-            </div>
+        </div>
+        <div style="margin-left: 10%;margin-right:10%;">
+            <i>Đề cương môn học <b> Nhập môn Công nghệ phần mềm</b></i>
+        </div>
         {{/if}}
 
     </page>

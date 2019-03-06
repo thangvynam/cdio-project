@@ -26,15 +26,35 @@ class ExportFile extends Component {
     }
     returnReducer = (pos) => {
         switch (pos) {
+            case 1 : {
+                return this.props.itemLayout1Reducer.previewInfo;
+            }
             case 2: {
                 return this.props.itemLayout2Reducer.previewInfo;
             }
             case 3: {
                 return this.props.itemLayout3Reducer.previewInfo;
             }
+            case 4: {
+                return this.props.itemLayout4Reducer.previewInfo;
+            }
             case 5: {
                 return this.props.itemLayout5Reducer.previewInfo;
             }
+            case 6: {
+                return this.props.itemLayout6Reducer.previewInfo;
+            }
+            case 7: {
+                return this.props.itemLayout7Reducer.previewInfo;
+            }
+            case 8: {
+                return this.props.itemLayout8Reducer.previewInfo;
+            }
+            case 9: {
+                return this.props.itemLayout9Reducer.previewInfo;
+            }
+            default :
+                return null;
         }
     }
     addDataMap = (callback) => {
@@ -55,7 +75,9 @@ class ExportFile extends Component {
     export = () => {
         this.setState({loading:0});
         let self = this;
+       
         this.addDataMap(function (obj) {
+            
             axios.post('/exportfile', { data: JSON.stringify(obj) }).then(res => {
                 if(res.data == 1){
                     self.setState({loading:1});
@@ -117,9 +139,15 @@ class ExportFile extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
+        itemLayout1Reducer: state.itemLayout1Reducer,
         itemLayout2Reducer: state.itemLayout2Reducer,
         itemLayout3Reducer: state.itemLayout3Reducer,
-        itemLayout5Reducer: state.itemLayout5Reducer
+        itemLayout4Reducer: state.itemLayout4Reducer,
+        itemLayout5Reducer: state.itemLayout5Reducer,
+        itemLayout6Reducer: state.itemLayout6Reducer,
+        itemLayout7Reducer: state.itemLayout7Reducer,
+        itemLayout8Reducer: state.itemLayout8Reducer,
+        itemLayout9Reducer: state.itemLayout9Reducer
     }
 }
 

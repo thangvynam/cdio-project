@@ -5,7 +5,7 @@ import {
 } from "../Constant/ActionType";
 
 const initialState = {
-  rules: [
+  previewInfo: [
     {
       content:
         "Sinh viên cần tuân thủ nghiêm túc các nội quy và quy định của Khoa và Trường."
@@ -25,18 +25,18 @@ const itemLayout9Reducer = (state = initialState, action) => {
     case ADD_ITEM_RULE:
       return {
         ...state,
-        rules: [...state.rules, JSON.parse(action.data)]
+        previewInfo: [...state.previewInfo, JSON.parse(action.data)]
       };
     case DELETE_ITEM_RULE: {
       return {
         ...state,
-        rules: state.rules.filter((_, index) => index !== action.data)
+        previewInfo: state.previewInfo.filter((_, index) => index !== action.data)
       };
     }
     case UPDATE_RULES:
       return {
         ...state,
-        rules: action.data
+        previewInfo: action.data
       };
 
     default:

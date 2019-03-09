@@ -328,6 +328,12 @@ class CDRFormItem extends Component {
         childLevel: value[1],
         verb: value[value.length - 1]
       }    
+      if(this.props.cdrdata.description === "" || this.props.cdrdata.description === undefined) {
+        this.props.form.setFieldsValue({
+          description: data.verb,
+        });
+      }
+      
       this.props.onUpdateVerb(data);
       this.props.onChangeCDRData(
         {
@@ -359,14 +365,32 @@ class CDRFormItem extends Component {
 
   onDescriptionChange = (e) => {
     let a = e.target.value;
-    this.props.onChangeCDRData(
-      {
-        cdr: this.props.cdrdata.cdr,
-        level_verb: this.props.cdrdata.level_verb,
-        description: a,
-        levels: this.props.cdrdata.levels
-      }
-    )
+
+    if(a === "" || a === undefined) {
+      const data = {
+        level: "",
+        childLevel: "",
+        verb: ""
+      }  
+      this.props.onUpdateVerb(data);
+      this.props.onChangeCDRData(
+        {
+          cdr: this.props.cdrdata.cdr,
+          level_verb: [],
+          description: a,
+          levels: this.props.cdrdata.levels
+        }
+      )
+    } else {
+      this.props.onChangeCDRData(
+        {
+          cdr: this.props.cdrdata.cdr,
+          level_verb: this.props.cdrdata.level_verb,
+          description: a,
+          levels: this.props.cdrdata.levels
+        }
+      )
+    }
   }
 
   onLevelsChange = (checkedValues) => {
@@ -509,7 +533,7 @@ class CDRFormItem extends Component {
            
 
           <Form.Item {...formItemLayout} label="Mô tả (Mức chi tiết - hành động)">
-            {getFieldDecorator('username',
+            {getFieldDecorator('description',
             
               {
                 rules: [{
@@ -518,8 +542,7 @@ class CDRFormItem extends Component {
 
                 }],
                 initialValue: this.props.cdrdata.description !== "" && this.props.cdrdata.description !== undefined ?
-                this.props.cdrdata.description :
-                `${this.props.cdrverb.verb}${this.props.cdrdata.description !== undefined ? this.props.cdrdata.description : ""}`
+                this.props.cdrdata.description : this.props.cdrverb.verb
               })(
                 <TextArea disabled={this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined ? true : false} onChange={this.onDescriptionChange} rows={4} placeholder="Mô tả" />
               )}

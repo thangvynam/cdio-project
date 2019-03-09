@@ -315,10 +315,10 @@ const level_verb_data = [{
 class CDRFormItem extends Component {
 
   displayRender = (label) => {
-  if(label[1] !== "" && label[1] !== undefined){
-    return label[0] + " - Level " + label[1];
+  if(this.props.cdrdata.level_verb[1] !== "" && this.props.cdrdata.level_verb[1] !== undefined){
+    return this.props.cdrdata.level_verb[0] + " - Level " + this.props.cdrdata.level_verb[1];
   }
-    return label[0];
+    return this.props.cdrdata.level_verb[0];
   }
 
   onChange = (value) => {
@@ -481,6 +481,7 @@ class CDRFormItem extends Component {
               rules: [
                 { required: true, message: 'Chọn chuẩn đầu ra' },
               ],
+              initialValue: this.props.cdrdata.cdr
             })(
               <Select onChange={this.onCDRChange} placeholder="Chọn chuẩn đầu ra" >
                 {CDROption}
@@ -489,13 +490,21 @@ class CDRFormItem extends Component {
           </Form.Item>
 
               <Form.Item {...formItemLayout} label="Chọn mức độ: ">
-                <Cascader
+              {getFieldDecorator('cascader', {
+              rules: [
+                { required: true, message: 'Chọn mức độ' },
+              ],
+              initialValue: this.props.cdrdata.level_verb
+            })(
+              <Cascader
                   options={level_verb_data}
                   expandTrigger="hover"
                   displayRender={this.displayRender}
                   onChange={this.onChange}
                   style={{width: "30%"}}
                 />
+            )}
+                
               </Form.Item>
            
 
@@ -508,7 +517,9 @@ class CDRFormItem extends Component {
                   message: 'Mô tả không được rỗng',
 
                 }],
-                initialValue: this.props.cdrverb.verb
+                initialValue: this.props.cdrdata.description !== "" && this.props.cdrdata.description !== undefined ?
+                this.props.cdrdata.description :
+                `${this.props.cdrverb.verb}${this.props.cdrdata.description !== undefined ? this.props.cdrdata.description : ""}`
               })(
                 <TextArea disabled={this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined ? true : false} onChange={this.onDescriptionChange} rows={4} placeholder="Mô tả" />
               )}
@@ -521,7 +532,7 @@ class CDRFormItem extends Component {
                 required: true,
                 message: 'Chọn ít nhất một',
               }],
-              initialValue: [],
+              initialValue: this.props.cdrdata.levels
             })(
               <Checkbox.Group options={levelsOptions} onChange={this.onLevelsChange} style={{ width: "100%" }}>
 

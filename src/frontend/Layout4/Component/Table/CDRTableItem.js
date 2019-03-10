@@ -591,8 +591,7 @@ class CDRTableItem extends Component {
               index,
               moveRow: this.moveRow,
             }) : null}
-            pagination={{ pageSize: 50 }} 
-          scroll={{ y: 600, }}
+            style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
              />
             </div>
         )

@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA } from '../../../Constant/ActionType';
+import { ADD_DATA, CHANGE_DATA } from '../../../Constant/ActionType';
 
 const { Option } = Select;
 const standard_item = [{
@@ -102,7 +102,7 @@ const standard_item = [{
     label: 'G7',
     children: [{
         value: '.1',
-        label: '.1',
+        label: '.1', teachingActs
     }]
 },
 ];
@@ -123,14 +123,16 @@ const evalActs = [
     'DAMH',
     'Bài đọc thêm và viết báo cáo',
 ]
-const myObj = {
+let myObj = {
     titleName: '',
     teachingActs: '',
     standardOutput: '',
     evalActs: ''
 };
-let temp = [];
 let titleName = '';
+let teachingActs_data = [];
+let standardOutput_data = [];
+let evalActs_data = [];
 class ItemMenu extends Component {
     state = {
         standardSelectedItem: [],
@@ -138,41 +140,32 @@ class ItemMenu extends Component {
         redirectTab7: false
     }
     onChange = (value) => {
-        // if(value.length===0) return;
-        // var newArray = this.state.standardSelectedItem.slice();
-        // newArray.push(value[0] + value[1]);
-        // this.setState({ standardSelectedItem: newArray });
-        // temp = newArray;
+
         if (value.length === 0) return;
 
         var newArray = this.state.standardSelectedItem.slice();
         let item = value[0] + value[1];
         let flag = true;
-    
+
         for (let i = 0; i < newArray.length; i++) {
-          if (newArray[i] === item) {
-            newArray.splice(i, 1);
-            flag = false;
-          }
-        } 
-    
+            if (newArray[i] === item) {
+                newArray.splice(i, 1);
+                flag = false;
+            }
+        }
+
         if (flag) newArray.push(item);
-    
+
         this.setState({ standardSelectedItem: newArray });
-        temp = newArray;
+        standardOutput_data = newArray;
+        this.props.onChangeData(titleName, teachingActs_data, standardOutput_data, evalActs_data);
 
     }
     toString = () => {
         let temp = '';
-        // for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
-        //     temp += this.state.standardSelectedItem[i] + ' , ';
-        // }
-        // do{
-        //     temp = temp.replace('NaN', '');
-        // }while(temp.search('NaN')!== -1);
-        for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
-            temp += this.state.standardSelectedItem[i] + " , ";
-          }
+        for (let i = 0; i < this.props.itemLayout5Reducer.standardOutput.length; i++) {
+            temp += this.props.itemLayout5Reducer.standardOutput[i] + " , ";
+        }
         return temp;
     }
     back = (e) => {
@@ -189,6 +182,7 @@ class ItemMenu extends Component {
     }
     handleInputChange = (e) => {
         titleName = e.target.value;
+        this.props.onChangeData(titleName, teachingActs_data, standardOutput_data, evalActs_data);
     }
     moveTab7 = () => {
         this.setState({ redirectTab7: true });
@@ -263,6 +257,7 @@ class ItemMenu extends Component {
                                 rules: [{
                                     required: true, message: 'Vui lòng nhập tên chủ đề',
                                 }],
+                                initialValue: this.props.itemLayout5Reducer.titleName
                             })(
                                 <Input onChange={this.handleInputChange} />
                             )}
@@ -273,15 +268,21 @@ class ItemMenu extends Component {
                             {...formItemLayout}
                             label="Hoạt động dạy"
                         >
-                            <Select
-                                mode="tags"
-                                style={{ width: '100%' }}
-                                placeholder="Please select"
-                                defaultValue={['Thuyết giảng', 'Thảo luận và thể hiện trên bảng']}
-                                onChange={(value) => this.props.handleChangeTeachingAct(value)}
-                            >
-                                {childrenTeachingActs}
-                            </Select>
+                            {getFieldDecorator('teachingActs', {
+
+                                initialValue: this.props.itemLayout5Reducer.teachingActs
+                            })(
+                                <Select
+                                    mode="tags"
+                                    style={{ width: '100%' }}
+                                    placeholder="Please select"
+
+                                    onChange={(value) => this.props.handleChangeTeachingAct(value)}
+                                >
+                                    {childrenTeachingActs}
+                                </Select>
+                            )}
+
                         </Form.Item>
 
                         <Form.Item
@@ -296,6 +297,7 @@ class ItemMenu extends Component {
                             )}
                         >
                             <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />
+
                         </Form.Item>
 
                         <Form.Item
@@ -316,18 +318,23 @@ class ItemMenu extends Component {
                                 </span>
                             )}
                         >
-                            <div style={{ float: "left", width: '74%' }}>
+                            {getFieldDecorator('evalActs', {
+
+                                initialValue: this.props.itemLayout5Reducer.evalActs
+                            })(
+
                                 <Select
-                                    mode="tags"
-                                    style={{ width: '100%' }}
+
+                                    style={{ width: '100%', float: "left", width: '74%' }}
                                     placeholder="Please select"
-                                    defaultValue={['BTVN', 'DAMH']}
                                     onChange={(value) => this.props.handleChangeEvalActs(value)}
                                 >
                                     {childrenEvalActs}
                                 </Select>
 
-                            </div>
+
+                            )}
+
                             <div style={{ float: "left" }}>
                                 <Button type="primary" onClick={this.moveTab7}>
                                     Nhập đánh giá <Icon type="right" />
@@ -351,40 +358,57 @@ class ItemMenu extends Component {
         );
     }
 }
-const mapDispatchToProps = (dispatch, ownProps) => {
-
-    let teachingActs = ['Thuyết giảng', 'Thảo luận và thể hiện trên bảng'];
-    let evalActs = ['BTVN', 'DAMH'];
+const mapStateToProps = (state, ownProps) => {
     return {
-
+        itemLayout5Reducer: state.itemLayout5Reducer
+    }
+}
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        onChangeData: (titleName, teachingActs_data, standardOutput_data, evalActs_data) => {
+            dispatch({
+                type: CHANGE_DATA, titleName: titleName, teachingActs: teachingActs_data,
+                standardOutput: standardOutput_data, evalActs: evalActs_data
+            });
+        },
         handleChangeTeachingAct: (value) => {
-            teachingActs = value;
+            teachingActs_data = value;
+            dispatch({
+                type: CHANGE_DATA, titleName: titleName, teachingActs: teachingActs_data,
+                standardOutput: standardOutput_data, evalActs: evalActs_data
+            });
         },
         handleChangeEvalActs: (value) => {
-            evalActs = value;
+            evalActs_data = value;
+            dispatch({
+                type: CHANGE_DATA, titleName: titleName, teachingActs: teachingActs_data,
+                standardOutput: standardOutput_data, evalActs: evalActs_data
+            });
         },
         saveAndContinue: () => {
             myObj.key = ownProps.step;
             myObj.titleName = titleName;
-            myObj.teachingActs = teachingActs;
-            myObj.evalActs = evalActs;
-            myObj.standardOutput = temp;
+            myObj.teachingActs = teachingActs_data;
+            myObj.evalActs = evalActs_data;
+            myObj.standardOutput = standardOutput_data;
 
-            if (titleName === '' || temp.length === 0) {
+            if (titleName === '' || standardOutput_data.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
             }
             else {
                 const myObjStr = JSON.stringify(myObj);
                 //reset
-                teachingActs = ['Thuyết giảng', 'Thảo luận và thể hiện trên bảng'];
-                evalActs = ['BTVN', 'DAMH'];
                 titleName = '';
                 dispatch({ type: ADD_DATA, item: myObjStr });
                 ownProps.form.resetFields();
                 ownProps.nextStep();
             }
-            temp.splice(0, temp.length);
+            standardOutput_data.splice(0, standardOutput_data.length);
+            dispatch({
+                type: CHANGE_DATA, titleName: '', teachingActs: '',
+                standardOutput: '', evalActs: ''
+            });
         },
     }
 }
-export default connect(null, mapDispatchToProps)(ItemMenu);
+export default connect(mapStateToProps, mapDispatchToProps)(ItemMenu);

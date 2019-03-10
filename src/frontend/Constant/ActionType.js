@@ -32,7 +32,7 @@ export const CHANGE_TNDATA = 'CHANGE_TNDATA';
 export const DELETE_DATA_LAYOUT_5 = 'DELETE_DATA_LAYOUT_5';
 export const CHANGE_EDITSTATE_5 = 'CHANGE_EDITSTATE_5';
 export const SAVE_DATA_LAYOUT_5 = 'SAVE_DATA_LAYOUT_5';
-
+export const CHANGE_DATA = 'CHANGE_DATA';
 
 export function addCDRData(newCDRData) {
     return {

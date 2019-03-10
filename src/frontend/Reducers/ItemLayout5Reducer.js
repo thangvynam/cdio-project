@@ -1,5 +1,5 @@
 import {ADD_DATA,DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5,
-        SAVE_DATA_LAYOUT_5} from '../Constant/ActionType';
+        SAVE_DATA_LAYOUT_5,CHANGE_DATA} from '../Constant/ActionType';
 
 const itemMenuInitialState = {
     previewInfo: [
@@ -18,7 +18,12 @@ const itemMenuInitialState = {
             evalActs : ["BTVN"],
         },
     ],
-    changeEditStateState:''
+    changeEditStateState:'',
+    titleName : '',
+    teachingActs :[],
+    standardOutput:[],
+    evalActs:[]
+
 }
 
 const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
@@ -44,6 +49,15 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
             return {
                 ...state, 
                 previewInfo: action.data,changeEditStateState:action.key
+            }
+        case CHANGE_DATA :
+            console.log(action.evalActs)
+            return {
+                ...state,
+                titleName:action.titleName,
+                teachingActs:action.teachingActs,
+                standardOutput:action.standardOutput,
+                evalActs:action.evalActs
             }
         default:
             return state

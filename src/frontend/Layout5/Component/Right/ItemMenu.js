@@ -130,15 +130,29 @@ let myObj = {
     evalActs: ''
 };
 let titleName = '';
+let isSubmit = false;
 let teachingActs_data = [];
 let standardOutput_data = [];
 let evalActs_data = [];
 class ItemMenu extends Component {
-    state = {
-        standardSelectedItem: [],
-        previewInfo: [],
-        redirectTab7: false
+    constructor(props){
+        super(props);
+        this.state = {
+            standardSelectedItem: [],
+            previewInfo: [],
+            redirectTab7: false
+        }
+       
     }
+    
+    displayRender = label => {
+        
+        if (isSubmit) {
+          isSubmit = false;
+          return null;
+        }
+        if (label.length > 0) return label[0] + label[1];
+      }; 
     onChange = (value) => {
 
         if (value.length === 0) return;
@@ -296,7 +310,8 @@ class ItemMenu extends Component {
                                 </span>
                             )}
                         >
-                            <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />
+                            <Cascader options={standard_item} onChange={this.onChange} 
+                                      placeholder="Chọn chuẩn đầu ra" displayRender={this.displayRender}/>
 
                         </Form.Item>
 
@@ -324,7 +339,7 @@ class ItemMenu extends Component {
                             })(
 
                                 <Select
-
+                                    mode="tags"
                                     style={{ width: '100%', float: "left", width: '74%' }}
                                     placeholder="Please select"
                                     onChange={(value) => this.props.handleChangeEvalActs(value)}
@@ -399,14 +414,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 const myObjStr = JSON.stringify(myObj);
                 //reset
                 titleName = '';
+                isSubmit = true;
                 dispatch({ type: ADD_DATA, item: myObjStr });
                 ownProps.form.resetFields();
                 ownProps.nextStep();
             }
             standardOutput_data.splice(0, standardOutput_data.length);
             dispatch({
-                type: CHANGE_DATA, titleName: '', teachingActs: '',
-                standardOutput: '', evalActs: ''
+                type: CHANGE_DATA, titleName: '', teachingActs: [],
+                standardOutput: '', evalActs: []
             });
         },
     }

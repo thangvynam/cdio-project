@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
+import { init } from 'events';
 const plainOptions = [
     'Thông tin chung',
     'Mô tả môn học',
@@ -14,7 +15,7 @@ const plainOptions = [
     'Kế hoạch giảng dạy thực hành',
     'Đánh giá',
     'Tài nguyên môn học',
-    'Các quy định chung',
+    'Các quy định chung' 
 ];
 
 class ExportFile extends Component {
@@ -57,8 +58,12 @@ class ExportFile extends Component {
                 return null;
         }
     }
+   
     addDataMap = (callback) => {
         let data = new Map();
+        for(let i = 0 ; i <plainOptions.length ; i++){
+            data.set(plainOptions[i],"");
+        }
         for (let j = 0; j < this.state.selectedItem.length; j++) {
             for (let i = 0; i < plainOptions.length; i++) {
                 if (this.state.selectedItem[j] === plainOptions[i]) {
@@ -67,9 +72,13 @@ class ExportFile extends Component {
                 }
             }
         }
+        
         const obj = {}
-        for (let [k,v] of data)
-            obj[k] = v
+        for (let [k,v] of data){
+            if(v != ""){
+                obj[k] = v
+            }
+        }
         callback(obj);
     }
     export = () => {

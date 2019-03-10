@@ -5,7 +5,7 @@ import { connect } from 'react-redux';
 
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
-import { init } from 'events';
+
 const plainOptions = [
     'Thông tin chung',
     'Mô tả môn học',
@@ -60,6 +60,7 @@ class ExportFile extends Component {
     }
    
     addDataMap = (callback) => {
+        console.log(this.state.selectedItem)
         let data = new Map();
         for(let i = 0 ; i <plainOptions.length ; i++){
             data.set(plainOptions[i],"");
@@ -97,10 +98,20 @@ class ExportFile extends Component {
 
     }
     handleChange = ({ target: { label, checked } }) => {
+        console.log(this.state)
         this.setState({ [label]: checked });
-        var newArray = this.state.selectedItem.slice();
-        newArray.push(label);
-        this.setState({ selectedItem: newArray })
+        if(checked){ // checked
+            this.setState({
+                selectedItem: [...this.state.selectedItem, label]
+            })
+        }else{  // unchecked
+            var array = [...this.state.selectedItem]; // make a separate copy of the array
+            var index = array.indexOf(label)
+            if (index !== -1) {
+              array.splice(index, 1);
+              this.setState({selectedItem: array});
+            }
+        }
     }
 
 

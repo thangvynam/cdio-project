@@ -5,6 +5,9 @@ import {
   Select, Input
 } from 'antd';
 import { connect } from 'react-redux';
+import { DragDropContext, DragSource, DropTarget } from "react-dnd";
+import HTML5Backend from "react-dnd-html5-backend";
+
 import {
   DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
   SAVE_DATA_LAYOUT_5
@@ -15,7 +18,7 @@ const confirm = Modal.confirm;
 const EditableContext = React.createContext();
 const FormItem = Form.Item
 const { Option } = Select;
-
+let dragingIndex = -1; // move row
 const standard_item = [
   "G1.1",
   "G1.2",
@@ -58,6 +61,68 @@ const EditableRow = ({ form, index, ...props }) => (
     <tr {...props} />
   </EditableContext.Provider>
 );
+class BodyRow extends React.Component {
+  render() {
+    const {
+      isOver,
+      connectDragSource,
+      connectDropTarget,
+      moveRow,
+      ...restProps
+    } = this.props;
+    const style = { ...restProps.style, cursor: "move" };
+
+    let className = restProps.className;
+    if (isOver) {
+      if (restProps.index > dragingIndex) {
+        className += " drop-over-downward";
+      }
+      if (restProps.index < dragingIndex) {
+        className += " drop-over-upward";
+      }
+    }
+
+    return connectDragSource(
+      connectDropTarget(
+        <tr {...restProps} className={className} style={style} />
+      )
+    );
+  }
+}
+
+const rowSource = {
+  beginDrag(props) {
+    dragingIndex = props.index;
+    return {
+      index: props.index
+    };
+  }
+};
+
+const rowTarget = {
+  drop(props, monitor) {
+    const dragIndex = monitor.getItem().index;
+    const hoverIndex = props.index;
+
+    if (dragIndex === hoverIndex) {
+      return;
+    }
+
+    props.moveRow(dragIndex, hoverIndex);
+
+    monitor.getItem().index = hoverIndex;
+  }
+};
+
+const DragableBodyRow = DropTarget("row", rowTarget, (connect, monitor) => ({
+  connectDropTarget: connect.dropTarget(),
+  isOver: monitor.isOver()
+}))(
+  DragSource("row", rowSource, connect => ({
+    connectDragSource: connect.dragSource()
+  }))(BodyRow)
+);
+
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
@@ -276,12 +341,28 @@ class TableItem extends Component {
     }
     ];
   };
+  moveRow = (dragIndex, hoverIndex) => {
+    let data = this.props.itemLayout5Reducer.previewInfo;
+    
+    const dragRow = data[dragIndex];
+
+    data[dragIndex] = data[hoverIndex];
+    data[hoverIndex] = dragRow;
+    data[dragIndex].key = dragIndex + 1;
+    data[hoverIndex].key = hoverIndex + 1;
+
+    this.props.handleSave(data);
+  };
   isEditing = record => {
     return record.key === this.props.itemLayout5Reducer.changeEditStateState;;
   }
-
+  cancel() {
+    this.props.handleEdit('');
+    //this.setState({ editingKey: "" });
+  };
   edit(key) {
-    this.setState({ editingKey: key });
+    //this.setState({ editingKey: key });
+    this.props.handleEdit('');
   }
 
   onlyUnique(value, index, self) {
@@ -354,21 +435,37 @@ class TableItem extends Component {
         let uniqueArr = arr.filter(this.onlyUnique)
         index.standActs = uniqueArr;
       })
-      console.log(newData)
+      
       this.props.handleSave(newData);
-      // this.setState({ editingKey: "" });
+      //this.setState({ editingKey: "" });
+      
     });
   }
 
 
   render() {
-    const components = {
-      body: {
-        row: EditableFormRow,
-        cell: EditableCell,
-      },
-    };
-    const columns = this.columns.map((col) => {
+    var components = {};
+    var columns = [];
+
+    this.props.itemLayout5Reducer.changeEditStateState == ""
+      ? (components = {
+          body: {
+            row: DragableBodyRow
+          }
+        })
+      : (components = {
+          body: {
+            row: EditableFormRow,
+            cell: EditableCell
+          }
+        });
+    // const components = {
+    //   body: {
+    //     row: EditableFormRow,
+    //     cell: EditableCell,
+    //   },
+    // };
+    const columns = this.columns.map(col => {
       if (!col.editable) {
         return col;
       }
@@ -378,10 +475,12 @@ class TableItem extends Component {
           record,
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: this.isEditing(record),
-        }),
+          editing: this.isEditing(record)
+        })
       };
     });
+
+    
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -408,9 +507,17 @@ class TableItem extends Component {
           bordered
           rowClassName="editable-row"
           rowSelection={rowSelection}
-          columns={columns}
+          columns={this.props.itemLayout5Reducer.changeEditStateState === "" ? this.columns : columns}
           dataSource={this.props.itemLayout5Reducer.previewInfo}
           style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
+          onRow={
+            this.props.itemLayout5Reducer.changeEditStateState === ""
+              ? (record, index) => ({
+                  index,
+                  moveRow: this.moveRow
+                })
+              : null
+          }
         />
       </div>
 
@@ -432,8 +539,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     handleSave: (data) => {
       dispatch({ type: SAVE_DATA_LAYOUT_5, data: data, key: '' })
-    }
+    },
+    
 
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(TableItem);
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(TableItem));

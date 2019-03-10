@@ -379,6 +379,7 @@ class TableItem extends Component {
 
   moveRow = (dragIndex, hoverIndex) => {
     let data = this.props.itemKHGDTH.previewInfo;
+    
     const dragRow = data[dragIndex];
 
     data[dragIndex] = data[hoverIndex];

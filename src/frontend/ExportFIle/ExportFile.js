@@ -143,7 +143,7 @@ class ExportFile extends Component {
                     </div>
                     <div className="col-sm-11" >
                         <br />
-                        <h2 style={{ textAlign: "center" }}>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h2>
+                        <h2 style={{ textAlign: "center" }}>XUẤT FILE PDF </h2>
                         <div style={{ marginLeft: "25%" }}>
                             <Checkbox
                                 onChange={(e) => { this.onCheckAllChange(e) }}

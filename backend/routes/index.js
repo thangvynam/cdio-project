@@ -136,13 +136,15 @@ router.post('/exportfile', function(req, res, next) {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       let body = await req.body
+      //header
       let content =await compile('header',null);
-      
+      //body
       for (let k of Object.keys(JSON.parse(body.data))) {
           let value = JSON.parse(JSON.parse(body.data)[k]);
           content += await compile('content',renderContenByNameTab(k,value));
       }
-     
+      //footer
+      content += await compile('footer',renderContenByNameTab('Thông tin chung',JSON.parse(JSON.parse(body.data)['Thông tin chung'])));
       await page.setContent(content);
       await page.emulateMedia('screen');
       await page.pdf({

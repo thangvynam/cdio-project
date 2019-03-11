@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import { connect } from 'react-redux';
 
-
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
+import { Checkbox,message } from 'antd';
 
 const plainOptions = [
     'Thông tin chung',
@@ -15,19 +15,22 @@ const plainOptions = [
     'Kế hoạch giảng dạy thực hành',
     'Đánh giá',
     'Tài nguyên môn học',
-    'Các quy định chung' 
+    'Các quy định chung'
 ];
 
 class ExportFile extends Component {
     state = {
-        indeterminate: true,
-        checkAll: false,
         selectedItem: [],
-        loading : -1
+        loading: -1,
+    }
+    componentWillMount() {
+        plainOptions.forEach((v, i) => {
+            this.setState({ [v]: false });
+        });
     }
     returnReducer = (pos) => {
         switch (pos) {
-            case 1 : {
+            case 1: {
                 return this.props.itemLayout1Reducer.previewInfo;
             }
             case 2: {
@@ -54,73 +57,82 @@ class ExportFile extends Component {
             case 9: {
                 return this.props.itemLayout9Reducer.previewInfo;
             }
-            default :
+            default:
                 return null;
         }
     }
-   
+
     addDataMap = (callback) => {
-        console.log(this.state.selectedItem)
-        let data = new Map();
-        for(let i = 0 ; i <plainOptions.length ; i++){
-            data.set(plainOptions[i],"");
-        }
-        for (let j = 0; j < this.state.selectedItem.length; j++) {
+        if (this.state.selectedItem.length > 0) {
+            let data = new Map();
             for (let i = 0; i < plainOptions.length; i++) {
-                if (this.state.selectedItem[j] === plainOptions[i]) {
-                    let pos = i + 1;
-                    data.set(plainOptions[i], JSON.stringify(this.returnReducer(pos)));
+                data.set(plainOptions[i], "");
+            }
+            for (let j = 0; j < this.state.selectedItem.length; j++) {
+                for (let i = 0; i < plainOptions.length; i++) {
+                    if (this.state.selectedItem[j] === plainOptions[i]) {
+                        let pos = i + 1;
+                        data.set(plainOptions[i], JSON.stringify(this.returnReducer(pos)));
+                    }
                 }
             }
-        }
-        
-        const obj = {}
-        for (let [k,v] of data){
-            if(v != ""){
-                obj[k] = v
+
+            const obj = {}
+            for (let [k, v] of data) {
+                if (v != "") {
+                    obj[k] = v
+                }
             }
+            callback(obj);
+        }else{
+            message.error("Vui lòng chọn ít nhất 1 mục ");
         }
-        callback(obj);
+
     }
     export = () => {
-        this.setState({loading:0});
-        let self = this;
        
+        let self = this;
+
         this.addDataMap(function (obj) {
-            
+            self.setState({ loading: 0 });
             axios.post('/exportfile', { data: JSON.stringify(obj) }).then(res => {
-                if(res.data == 1){
-                    self.setState({loading:1});
+                if (res.data == 1) {
+                    self.setState({ loading: 1 });
                 }
             })
-            
+
         })
 
     }
     handleChange = ({ target: { label, checked } }) => {
-        console.log(this.state)
+
         this.setState({ [label]: checked });
-        if(checked){ // checked
+        if (checked) { // checked
             this.setState({
                 selectedItem: [...this.state.selectedItem, label]
             })
-        }else{  // unchecked
+        } else {  // unchecked
             var array = [...this.state.selectedItem]; // make a separate copy of the array
             var index = array.indexOf(label)
             if (index !== -1) {
-              array.splice(index, 1);
-              this.setState({selectedItem: array});
+                array.splice(index, 1);
+                this.setState({ selectedItem: array });
             }
         }
     }
 
 
     onCheckAllChange = (e) => {
-        this.setState({
-            checkedList: e.target.checked ? plainOptions : [],
-            indeterminate: false,
-            checkAll: e.target.checked,
+        plainOptions.forEach((v, i) => {
+            this.setState({ [v]: e.target.checked });
         });
+        if (e.target.checked) {
+            this.setState({ selectedItem: plainOptions });
+        } else {
+            this.setState({ selectedItem: [] });
+        }
+
+
     }
 
     render() {
@@ -132,25 +144,27 @@ class ExportFile extends Component {
                     <div className="col-sm-11" >
                         <br />
                         <h2 style={{ textAlign: "center" }}>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h2>
+                        <div style={{ marginLeft: "25%" }}>
+                            <Checkbox
+                                onChange={(e) => { this.onCheckAllChange(e) }}
+                            >
+                                Chọn tất cả
+                                </Checkbox>
+                        </div>
                         <div style={{ width: "50%", margin: "0 auto " }}>
                             <CheckboxGroup
                                 {...this.state}
                                 options={plainOptions}
                                 handleChange={this.handleChange} />
-                            {/* <Checkbox
-                                indeterminate={this.state.indeterminate}
-                                onChange={this.onCheckAllChange}
-                                checked={this.state.checkAll}
-                            >
-                                Check all
-                            </Checkbox> */}
+
                         </div>
+
                         <br />
                         <div style={{ width: "50%", margin: "0 auto " }}>
                             <button onClick={this.export} type="button" class="btn btn-success">Export</button>
-                            <br/><br/><br/>
-                            <Loader loading={this.state.loading}/>
-                        </div> 
+                            <br /><br /><br />
+                            <Loader loading={this.state.loading} />
+                        </div>
                     </div>
                 </div>
             </div>

@@ -1,13 +1,20 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm, Tag, Button, Form, Divider, Modal } from 'antd';
+import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input } from 'antd';
 import { connect } from 'react-redux';
 import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
-import axios from 'axios';
 import TextArea from "antd/lib/input/TextArea"; 
 
+const { Option } = Select;
 const confirm = Modal.confirm;
 const FormItem = Form.Item
 const EditableContext = React.createContext();
+const staActs = [
+  '1.1',
+  '2.2',
+  '2.3',
+  '2.4',
+  '4.1',
+]
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -18,6 +25,46 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      standActs: []
+    };
+  }
+
+  handleChangeStandard(value) {
+    this.setState({ standActs: value });
+  }
+
+  getInput = () => {
+    const childrenStandard = [];
+
+    for (let i = 0; i < staActs.length; i++) {
+      childrenStandard.push(
+        <Option key={staActs[i]}>{staActs[i]}</Option>
+      );
+    }    
+
+    switch (this.props.dataIndex) {
+      case "objectName":
+        return <TextArea rows={1} style={{ width: "100%" }} />;
+      case "description":
+        return <TextArea rows={2} style={{ width: "100%" }} />;
+      case "standActs":
+        return (
+          <Select
+            mode="tags"
+            style={{ width: "100%" }}
+            placeholder="Chọn hoạt động"
+            onChange={value => this.handleChangeStandard(value)}
+          >
+            {childrenStandard}
+          </Select>
+        );
+      default:
+        return <Input />;
+    }
+  }
 
   render() {
     const {
@@ -43,7 +90,7 @@ class EditableCell extends React.Component {
                       message: `Vui lòng nhập ${title.toLowerCase()}!`,
                     }],
                     initialValue: record[dataIndex],
-                  })(<TextArea  rows={1}/>)}
+                  })(this.getInput())}
                 </FormItem>
               ) : restProps.children}
             </td>
@@ -109,7 +156,7 @@ class TableItem extends Component {
                       onClick={() => this.save(form, record.key)}
                       style={{ marginRight: 8 }}
                     >
-                      Save
+                      Lưu
                     </a>
                   )}
                 </EditableContext.Consumer>
@@ -117,20 +164,20 @@ class TableItem extends Component {
                   title="Xác nhận hủy?"
                   onConfirm={() => this.cancel(record.key)}
                 >
-                  <a>Cancel</a>
+                  <a>Hủy</a>
                 </Popconfirm>
               </span>
             ) : (
               <span>
                   <a onClick={() => this.edit(record.key)} href="#a">
-                    Edit
+                    Sửa
                   </a>
                   <Divider type="vertical" />
                   <Popconfirm
                     title="Xác nhận xóa?"
                     onConfirm={() => this.delete(record.key)}
                   >
-                    <a href="#a">Delete</a>
+                    <a href="#a">Xóa</a>
                   </Popconfirm>
                 </span>
             )}
@@ -201,26 +248,17 @@ class TableItem extends Component {
       if (error) {
         return;
       }
-      const newData = [...this.props.itemLayout3Reducer.previewInfo];
-      const index = newData.findIndex(item => key === item.key);
-        const item = newData[index];
-        newData.splice(index, 1, {
-          ...item,
-          ...row,
-        });
-        newData.map(index => {
-          let arr = [];
-          let str = index.standActs + ""
-          str.split(",").forEach(id => {
-            if(!isNaN(parseInt(id))) {
-              arr.push(id);
-            }
-          })
-          let uniqueArr = arr.filter(this.onlyUnique)
-          index.standActs = uniqueArr;
-        })
-        this.props.handleSave(newData);
-        this.setState({ editingKey: "" });
+
+      let index = key
+
+      var newItems = this.props.itemLayout3Reducer.previewInfo;
+      const item = newItems[index];
+      newItems.splice(index, 1, {
+        ...item,
+        ...row
+      });
+      this.props.handleSave(newItems);
+      this.setState({ editingKey: "" });
     });
   }
 
@@ -277,7 +315,7 @@ class TableItem extends Component {
             onClick={this.showModal}
             disabled={!hasSelected}
           >
-            Delete
+            Xoá
           </Button>
 
           <span style={{ marginLeft: 8 }}>

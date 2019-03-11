@@ -24,6 +24,8 @@ const staActs = [
     '1.1',
     '2.2',
     '2.3',
+    '2.4',
+    '4.1',
 ]
 class MenuMucTieu extends Component {
     state = {
@@ -150,7 +152,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
     return {
         saveAndContinue: () => {
-            myObj.objectName = objectName;
+            myObj.objectName = objectName.toUpperCase();
             myObj.description = description;
             myObj.standActs = temp;
             if (objectName === '' || description === '' || temp.length === 0) {

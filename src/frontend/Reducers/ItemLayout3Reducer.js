@@ -28,8 +28,6 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
                 previewInfo: [...state.previewInfo, JSON.parse(action.item)]
             }
         case DELETE_DATA_LAYOUT_3:  
-        console.log(state.previewInfo)
-            console.log(action.key)          
             state.previewInfo= state.previewInfo.filter((_, item) => item !== action.key)
             return {
                 ...state,

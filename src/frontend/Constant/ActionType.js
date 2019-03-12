@@ -25,7 +25,7 @@ export const UPDATE_RULES = 'UPDATE_RULES';
 
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
-
+export const DELETE_DGDATA = 'DELETE_DGDATA';
 export const ADD_TNDATA = 'ADD_TNDATA';
 export const CHANGE_TNDATA = 'CHANGE_TNDATA';
 // layout 5
@@ -125,6 +125,13 @@ export function addDGData(newDGData){
 export function changeDGData(newDGData){
     return{
         type: CHANGE_DGDATA,
+        data: newDGData
+    };
+}
+
+export function deleteDGData(newDGData){
+    return{
+        type: DELETE_DGDATA,
         data: newDGData
     };
 }

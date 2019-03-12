@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
-import { Checkbox,message } from 'antd';
+import { Checkbox,message, Input, Upload, Button, Icon } from 'antd';
 
 const plainOptions = [
     'Thông tin chung',
@@ -135,6 +135,10 @@ class ExportFile extends Component {
 
     }
 
+    uploadDir = (file) => {
+        console.log(file)
+    }
+
     render() {
         return (
             <div className="container">
@@ -158,7 +162,14 @@ class ExportFile extends Component {
                                 handleChange={this.handleChange} />
 
                         </div>
-
+                        <br/>
+                        <div style={{ width: "50%", margin: "0 auto " }}>
+                        <Upload action="" directory showUploadList={false} onChange={this.uploadDir}>
+                            <Button>
+                                <Icon type="upload" />  Chọn đường dẫn lưu file
+                            </Button>
+                        </Upload>,
+                        </div>
                         <br />
                         <div style={{ width: "50%", margin: "0 auto " }}>
                             <button onClick={this.export} type="button" class="btn btn-success">Export</button>

@@ -44,7 +44,7 @@ class TNFormItem extends Component {
   handleLoaiChange = (value) => {
     this.props.onChangeTNData({
       stt: this.props.tndata.stt,
-      loai: value,
+      loai: value[0],
       mota: this.props.tndata.mota,
       link: this.props.tndata.link,
     })
@@ -72,6 +72,8 @@ class TNFormItem extends Component {
         this.props.onAddTNData(newData);
         message.info("Thêm thành công!");
         this.props.form.resetFields();
+        this.props.tndata.link = '';
+        this.props.tndata.mota = '';
       }
     }
   }

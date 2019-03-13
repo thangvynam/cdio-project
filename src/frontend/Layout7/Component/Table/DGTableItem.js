@@ -1,11 +1,11 @@
 import {
-  Table, Input, Button, Popconfirm, Form, Divider, Tag, InputNumber,Select,Modal
+  Table, Input, Button, Popconfirm, Form, Divider, Tag, InputNumber, Select, Modal
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
-import {bindActionCreators} from 'redux';
+import { bindActionCreators } from 'redux';
 import { changeDGData, addDGData, deleteDGData } from '../../../Constant/ActionType';
 import React, { Component } from 'react';
-import { DragDropContext, DragSource, DropTarget } from "react-dnd";
+import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from 'react-redux';
 const { Option } = Select;
@@ -64,11 +64,11 @@ class EditableCell extends React.Component {
       }
     }
     init();
-    switch(this.props.dataIndex){
+    switch (this.props.dataIndex) {
       case "tenthanhphan":
-      return <TextArea rows={4} style={{ width: "100%" }} />;
+        return <TextArea rows={4} style={{ width: "100%" }} />;
       case "mota":
-      return <TextArea rows={4} style={{ width: "100%" }} />;
+        return <TextArea rows={4} style={{ width: "100%" }} />;
       case "standardOutput":
         return (
           <Select
@@ -81,7 +81,7 @@ class EditableCell extends React.Component {
           </Select>
         );
       case "tile":
-      return <TextArea rows={4} style={{ width: "100%" }} />;
+        return <TextArea rows={4} style={{ width: "100%" }} />;
       default:
         return <Input />;
     }
@@ -129,7 +129,7 @@ class EditableCell extends React.Component {
 class DGTableItem extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { selectedRowKeys: [],editingKey: '' };
+    this.state = { selectedRowKeys: [], editingKey: '' };
     this.columns = [{
       title: 'Mã',
       dataIndex: 'mathanhphan',
@@ -173,7 +173,7 @@ class DGTableItem extends React.Component {
         console.log(editable);
         return (
           <div>
-            
+
             {editable ? (
               <span>
                 <EditableContext.Consumer>
@@ -195,25 +195,25 @@ class DGTableItem extends React.Component {
                 </Popconfirm>
               </span>
             ) : (
-              <span>
-                <a onClick={() => this.edit(record.key)} href="#a">
-                  Sửa
+                <span>
+                  <a onClick={() => this.edit(record.key)} href="#a">
+                    Sửa
                 </a>
-                <Divider type="vertical" />
-                <Popconfirm
-                  title="Xác nhận xóa?"
-                  onConfirm={() => this.handleDelete(record.key)}
-                >
-                  <a href="#a">Xóa</a>
-                </Popconfirm>
-              </span>
-            )}
+                  <Divider type="vertical" />
+                  <Popconfirm
+                    title="Xác nhận xóa?"
+                    onConfirm={() => this.handleDelete(record.key)}
+                  >
+                    <a href="#a">Xóa</a>
+                  </Popconfirm>
+                </span>
+              )}
           </div>
         );
       },
     }];
   }
-  
+
 
   isEditing = record => record.key === this.state.editingKey;
 
@@ -245,82 +245,83 @@ class DGTableItem extends React.Component {
   }
 
   handleDelete(key) {
-     let newData = {previewInfo:[]};
-     let lengthtable = this.props.dgtable.previewInfo.length;
-     console.log(key);
-     console.log(this.isExist(key));
-    if(this.isExist(key)){
-      let index =0 ;
-      let indexChildren = 0 ;
-      for(let i = 0 ;i<this.props.dgtable.previewInfo.length;i++){
-        if(key === this.props.dgtable.previewInfo[i].key){
-          index = i ;
+    let newData = { previewInfo: [] };    
+    this.onDelete(newData,key);
+    this.setState({ selectedRowKeys: [], editingKey: "" });
+    this.props.onDeleteDGData(newData);
+  }
+
+  onDelete = (newData,key) => {
+    if (this.isExist(key)) {
+      let index = 0;
+      let indexChildren = 0;
+      for (let i = 0; i < this.props.dgtable.previewInfo.length; i++) {
+        if (key === this.props.dgtable.previewInfo[i].key) {
+          index = i;
         }
-        if(this.isChildren(key,this.props.dgtable.previewInfo[i].key)){
+        if (this.isChildren(key, this.props.dgtable.previewInfo[i].key)) {
           indexChildren++;
         }
       }
       indexChildren = indexChildren + index;
-      if(index===0 && indexChildren===this.props.dgtable.previewInfo.length){
+      if ((index === 0 && indexChildren === this.props.dgtable.previewInfo.length) || this.props.dgtable.previewInfo.length === 1) {
+        console.log("1");
         this.props.dgtable.previewInfo = [];
-      }else 
-      if(index === 0 || indexChildren === this.props.dgtable.previewInfo.length){
-        this.props.dgtable.previewInfo.splice(index,indexChildren);
-      }
-      else{
-        let listKey = [];
-        for(let i=index;i<index+indexChildren;i++){
-          this.props.dgtable.previewInfo[i].mathanhphan = this.props.dgtable.previewInfo[i+indexChildren].mathanhphan;
-          this.props.dgtable.previewInfo[i].tenthanhphan = this.props.dgtable.previewInfo[i+indexChildren].tenthanhphan;
-          this.props.dgtable.previewInfo[i].mota = this.props.dgtable.previewInfo[i+indexChildren].mota;
-          this.props.dgtable.previewInfo[i].standardOutput = this.props.dgtable.previewInfo[i+indexChildren].standardOutput;
-          this.props.dgtable.previewInfo[i].tile = this.props.dgtable.previewInfo[i+indexChildren].tile;
-          this.props.dgtable.previewInfo[i].key= index;
-          listKey.push(this.props.dgtable.previewInfo[i+indexChildren].key);        
+      } else if (index === 0 || indexChildren === this.props.dgtable.previewInfo.length) {
+        console.log("2");
+          this.props.dgtable.previewInfo.splice(index, indexChildren);
+      } else {
+        console.log("3")
+          let listKey = [];
+          for (let i = index; i < index + indexChildren; i++) {
+            console.log(this.props.dgtable.previewInfo[i])
+            this.props.dgtable.previewInfo[i].mathanhphan = this.props.dgtable.previewInfo[i + indexChildren].mathanhphan;
+            this.props.dgtable.previewInfo[i].tenthanhphan = this.props.dgtable.previewInfo[i + indexChildren].tenthanhphan;
+            this.props.dgtable.previewInfo[i].mota = this.props.dgtable.previewInfo[i + indexChildren].mota;
+            this.props.dgtable.previewInfo[i].standardOutput = this.props.dgtable.previewInfo[i + indexChildren].standardOutput;
+            this.props.dgtable.previewInfo[i].tile = this.props.dgtable.previewInfo[i + indexChildren].tile;
+            this.props.dgtable.previewInfo[i].key = index;
+            listKey.push(this.props.dgtable.previewInfo[i + indexChildren].key);
+          }
+          this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length - indexChildren - 1, 1);
         }
-        this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length-indexChildren-1,1);
-      }
-      
+
 
     }
-    else if(key === this.props.dgtable.previewInfo[lengthtable-1].key){
-      this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length-1,1);
+    else if (key === this.props.dgtable.previewInfo[this.props.dgtable.previewInfo.length - 1].key) {
+      this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length - 1, 1);
       newData.previewInfo = this.props.dgtable.previewInfo;
-    }else{
+    } else {
       console.log(this.props.dgtable.previewInfo);
       let index = 0;
-      for(let i = 0; i < this.props.dgtable.previewInfo.length;i++){
-        if(key === this.props.dgtable.previewInfo[i].key){
+      for (let i = 0; i < this.props.dgtable.previewInfo.length; i++) {
+        if (key === this.props.dgtable.previewInfo[i].key) {
           index = i;
         }
       }
       let listKey = [];
-      for(let i = index ; i< this.props.dgtable.previewInfo.length-1;i++){
-        this.props.dgtable.previewInfo[i].mathanhphan = this.props.dgtable.previewInfo[i+1].mathanhphan;
-        this.props.dgtable.previewInfo[i].tenthanhphan = this.props.dgtable.previewInfo[i+1].tenthanhphan;
-        this.props.dgtable.previewInfo[i].mota = this.props.dgtable.previewInfo[i+1].mota;
-        this.props.dgtable.previewInfo[i].standardOutput = this.props.dgtable.previewInfo[i+1].standardOutput;
-        this.props.dgtable.previewInfo[i].tile = this.props.dgtable.previewInfo[i+1].tile;
-        this.props.dgtable.previewInfo[i].key= index;
-        listKey.push(this.props.dgtable.previewInfo[i+1].key);        
+      for (let i = index; i < this.props.dgtable.previewInfo.length - 1; i++) {
+        this.props.dgtable.previewInfo[i].mathanhphan = this.props.dgtable.previewInfo[i + 1].mathanhphan;
+        this.props.dgtable.previewInfo[i].tenthanhphan = this.props.dgtable.previewInfo[i + 1].tenthanhphan;
+        this.props.dgtable.previewInfo[i].mota = this.props.dgtable.previewInfo[i + 1].mota;
+        this.props.dgtable.previewInfo[i].standardOutput = this.props.dgtable.previewInfo[i + 1].standardOutput;
+        this.props.dgtable.previewInfo[i].tile = this.props.dgtable.previewInfo[i + 1].tile;
+        this.props.dgtable.previewInfo[i].key = index;
+        listKey.push(this.props.dgtable.previewInfo[i + 1].key);
       }
       console.log(listKey);
-      this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length-1,1);
-      let indexListKey = 0 ;
-      for(let i= index ;i<this.props.dgtable.previewInfo.length;i++){
-        this.props.dgtable.previewInfo[i].key=listKey[indexListKey];
+      this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length - 1, 1);
+      let indexListKey = 0;
+      for (let i = index; i < this.props.dgtable.previewInfo.length; i++) {
+        this.props.dgtable.previewInfo[i].key = listKey[indexListKey];
         indexListKey++;
       }
       newData.previewInfo = this.props.dgtable.previewInfo;
       console.log(newData);
     }
-    
-    this.setState({ selectedRowKeys: [], editingKey: "" });
-    this.props.onDeleteDGData(newData);
   }
 
   onSelectChange = selectedRowKeys => {
-    console.log(selectedRowKeys);
     this.setState({ selectedRowKeys });
   };
 
@@ -332,13 +333,27 @@ class DGTableItem extends React.Component {
     this.setState({ editingKey: "" });
   };
 
-    isExist(value) {
-      for (let i = 0; i < chude.length; i++) {
-        if (value === chude[i])
-          return true;
-      }
-      return false;
+  isExist(value) {
+    for (let i = 0; i < chude.length; i++) {
+      if (value === chude[i])
+        return true;
     }
+    return false;
+  }
+
+  onMultiDelete = () => {
+    let newData = {previewInfo:[]};
+    console.log(this.state.selectedRowKeys.length);
+    console.log(this.props.dgtable)
+    if(this.state.selectedRowKeys.length === this.props.dgtable.previewInfo.length){
+      this.props.dgtable.previewInfo = [];
+    }else {
+    for(let i=0 ;i< this.state.selectedRowKeys.length;i++){
+      this.onDelete(newData,this.state.selectedRowKeys[i]);
+    }}
+    this.setState({ selectedRowKeys: [], editingKey: "" });
+    this.props.onDeleteDGData(newData);
+  }
 
 
   showModal = () => {
@@ -346,74 +361,76 @@ class DGTableItem extends React.Component {
       title: "Xóa các mục đã chọn?",
       content: "",
       onOk: this.onMultiDelete,
-      onCancel() {}
+      onCancel() { }
     });
   };
 
-    isChildren(value,children){
-      for(let i=0;i<value.length;i++){
-        if(children[i]!==value[i]){
-          return false;
-        }
+  isChildren(value, children) {
+    for (let i = 0; i < value.length; i++) {
+      if (children[i] !== value[i]) {
+        return false;
       }
-      return true;
     }
-    sortValues(checkedValues) {
-      for (let i = 0; i < checkedValues.length; i++) {
-        if (!this.isExist(checkedValues[i].mathanhphan) && checkedValues[i].mathanhphan[0] === '\xa0') {
+    return true;
+  }
 
-          checkedValues[i].mathanhphan = checkedValues[i].mathanhphan.slice(3, checkedValues[i].mathanhphan.length);
-        }
-      }
-      for (let i = 0; i < checkedValues.length - 1; i++) {
-        for (let j = i + 1; j < checkedValues.length; j++) {
-          if (checkedValues[j].mathanhphan < checkedValues[i].mathanhphan) {
-            let temp = checkedValues[j];
-            checkedValues[j] = checkedValues[i];
-            checkedValues[i] = temp;
-          }
-        }
-      }
-      let index = [];
-      for (let i = 0; i < checkedValues.length; i++) {
-        if (this.isExist(checkedValues[i].mathanhphan)) {
-          index.push(i);
-        }
-      }
-      if (index.length === 1) {
 
+  sortValues(checkedValues) {
+    for (let i = 0; i < checkedValues.length; i++) {
+      if (!this.isExist(checkedValues[i].mathanhphan) && checkedValues[i].mathanhphan[0] === '\xa0') {
+
+        checkedValues[i].mathanhphan = checkedValues[i].mathanhphan.slice(3, checkedValues[i].mathanhphan.length);
+      }
+    }
+    for (let i = 0; i < checkedValues.length - 1; i++) {
+      for (let j = i + 1; j < checkedValues.length; j++) {
+        if (checkedValues[j].mathanhphan < checkedValues[i].mathanhphan) {
+          let temp = checkedValues[j];
+          checkedValues[j] = checkedValues[i];
+          checkedValues[i] = temp;
+        }
+      }
+    }
+    let index = [];
+    for (let i = 0; i < checkedValues.length; i++) {
+      if (this.isExist(checkedValues[i].mathanhphan)) {
+        index.push(i);
+      }
+    }
+    if (index.length === 1) {
+
+      let totalTile = 0;
+      for (let j = 1; j < checkedValues.length; j++) {
+        let newTile = checkedValues[j].tile.slice(0, checkedValues[j].tile.length - 1);
+        totalTile += parseFloat(newTile);
+      }
+
+      checkedValues[index[0]].tile = totalTile + '%';
+    } else {
+      for (let i = 0; i < index.length - 1; i++) {
         let totalTile = 0;
-        for (let j = 1; j < checkedValues.length; j++) {
+        for (let j = index[i] + 1; j < index[i + 1]; j++) {
           let newTile = checkedValues[j].tile.slice(0, checkedValues[j].tile.length - 1);
           totalTile += parseFloat(newTile);
         }
-
-        checkedValues[index[0]].tile = totalTile + '%';
-      } else {
-        for (let i = 0; i < index.length - 1; i++) {
-          let totalTile = 0;
-          for (let j = index[i] + 1; j < index[i + 1]; j++) {
-            let newTile = checkedValues[j].tile.slice(0, checkedValues[j].tile.length - 1);
-            totalTile += parseFloat(newTile);
-          }
-          checkedValues[index[i]].tile = totalTile + '%';
-        }
-        let totalTile = 0;
-        for (let i = index[index.length - 1] + 1; i < checkedValues.length; i++) {
-          let newTile = checkedValues[i].tile.slice(0, checkedValues[i].tile.length - 1);
-          totalTile += parseFloat(newTile);
-
-        }
-        checkedValues[index[index.length - 1]].tile = totalTile + '%';
+        checkedValues[index[i]].tile = totalTile + '%';
       }
+      let totalTile = 0;
+      for (let i = index[index.length - 1] + 1; i < checkedValues.length; i++) {
+        let newTile = checkedValues[i].tile.slice(0, checkedValues[i].tile.length - 1);
+        totalTile += parseFloat(newTile);
 
-      for (let i = 0; i < checkedValues.length; i++) {
-        if (!this.isExist(checkedValues[i].mathanhphan)) {
-          checkedValues[i].mathanhphan = '\xa0\xa0\xa0' + checkedValues[i].mathanhphan;
-        }
       }
-
+      checkedValues[index[index.length - 1]].tile = totalTile + '%';
     }
+
+    for (let i = 0; i < checkedValues.length; i++) {
+      if (!this.isExist(checkedValues[i].mathanhphan)) {
+        checkedValues[i].mathanhphan = '\xa0\xa0\xa0' + checkedValues[i].mathanhphan;
+      }
+    }
+
+  }
 
 
 
@@ -444,14 +461,14 @@ class DGTableItem extends React.Component {
         }),
       };
     });
-    if(this.props.dgtable.previewInfo.length !== 0 ){
+    if (this.props.dgtable.previewInfo.length !== 0) {
       this.sortValues(this.props.dgtable.previewInfo);
 
     }
-    
+
     return (
       <div>
-      <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 16 }}>
           <Button
             type="danger"
             onClick={this.showModal}
@@ -464,18 +481,18 @@ class DGTableItem extends React.Component {
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
         </div>
-      <Table
-        components={components}
-        bordered
-        dataSource={this.props.dgtable.previewInfo}
-        columns={columns}
-        rowSelection={rowSelection}
-        rowClassName="editable-row"
-        pagination={{
-          onChange: this.cancel,
-        }}
-        style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
-      />
+        <Table
+          components={components}
+          bordered
+          dataSource={this.props.dgtable.previewInfo}
+          columns={columns}
+          rowSelection={rowSelection}
+          rowClassName="editable-row"
+          pagination={{
+            onChange: this.cancel,
+          }}
+          style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
+        />
       </div>
     );
   }
@@ -494,4 +511,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(DragDropContext(HTML5Backend)(DGTableItem));
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(DGTableItem));

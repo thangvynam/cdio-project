@@ -2,18 +2,24 @@ import { ADD_TNDATA, CHANGE_TNDATA } from '../Constant/ActionType';
 
 const addTNDataState = {
     previewInfo: [{
-        key: '1',
-        stt: '1',
+        key: 1,
+        stt: 1,
         loai: 'BOOK',
-        mota: 'mota',
-        link: 'link'
+        mota: 'mota1',
+        link: 'link1'
     }, {
-        key: '2',
-        stt: '2',
+        key: 2,
+        stt: 2,
         loai: 'ARTICLE',
-        mota: 'mota',
-        link: 'link'
-    }]
+        mota: 'mota2',
+        link: 'link2'
+    },{
+        key: 3,
+        stt: 3,
+        loai: 'URL',
+        mota: 'mota3',
+        link: 'link3'
+    },]
 };
 
 

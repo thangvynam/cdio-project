@@ -25,11 +25,15 @@ export const DELETE_ITEM_RULE = 'DELETE_ITEM_RULE';
 export const UPDATE_RULES = 'UPDATE_RULES';
 export const CHANGE_TEMP_RULES = 'CHANGE_TEMP_RULES';
 
+//layout 7
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
 export const DELETE_DGDATA = 'DELETE_DGDATA';
+
+//layout 8
 export const ADD_TNDATA = 'ADD_TNDATA';
 export const CHANGE_TNDATA = 'CHANGE_TNDATA';
+export const UPDATE_TNDATA  = 'UPDATE_TNDATA';
 // layout 5
 export const DELETE_DATA_LAYOUT_5 = 'DELETE_DATA_LAYOUT_5';
 export const CHANGE_EDITSTATE_5 = 'CHANGE_EDITSTATE_5';
@@ -160,6 +164,12 @@ export function addTNData(newTNData){
 export function changeTNData(newTNData){
     return {
         type: CHANGE_TNDATA,
+        data: newTNData
+    }
+}
+export function updateTNData(newTNData){
+    return{
+        type: UPDATE_TNDATA,
         data: newTNData
     }
 }

@@ -96,7 +96,7 @@ export default class Content extends Component {
                         <Link to={"de-cuong-mon-hoc/222/thong-tin-chung"}>
                             <Button style={{width: "100%"}}><Icon type="book" />Phương pháp lập trình hướng đối tượng</Button>
                         </Link>
-                        <hr />
+                        <div style={{height: "20px"}} />
                         <Link to={"de-cuong-mon-hoc/333/thong-tin-chung"}>
                             <Button style={{width: "100%"}}><Icon type="book" />Design Pattern</Button>
                         </Link>
@@ -110,7 +110,7 @@ export default class Content extends Component {
                         <Link to={"tab-2/222/thong-tin-chung"}>
                             <Button style={{width: "100%"}}><Icon type="book" />Mạng máy tính</Button>
                         </Link>
-                        <hr />
+                        <div style={{height: "20px"}} />
                         <Link to={"tab-2/333/thong-tin-chung"}>
                             <Button style={{width: "100%"}}><Icon type="book" />Kiến trúc phần mềm</Button>
                         </Link>

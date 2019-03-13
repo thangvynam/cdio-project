@@ -41,16 +41,16 @@ export default class Content extends Component {
         let content_layout;
         const decuongSub = this.state.decuong.map((key, id) => 
         {
-            return <div key={key}><Link to={`de-cuong-mon-hoc/${key}/thong-tin-chung`}>
-            <Button style={{width: "100%"}}><Icon type="book" />{this.state.decuong[id]}</Button>
+            return <div key={key}><Link to={`de-cuong-mon-hoc/${id}/thong-tin-chung`}>
+            <Button style={{width: "100%"}}><Icon type="book" />{key}</Button>
         </Link>
         <div style={{height: "20px"}} /></div>
         }
     )
     const tab2Sub = this.state.tab2.map((key, id) => 
         {
-            return <div key={key}><Link to={`tab-2/${key}/thong-tin-chung`}>
-            <Button style={{width: "100%"}}><Icon type="book" />{this.state.tab2[id]}</Button>
+            return <div key={key}><Link to={`tab-2/${id}/thong-tin-chung`}>
+            <Button style={{width: "100%"}}><Icon type="book" />{key}</Button>
         </Link>
         <div style={{height: "20px"}} /></div>
         }

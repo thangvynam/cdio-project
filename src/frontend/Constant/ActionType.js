@@ -174,5 +174,6 @@ export const MENUITEM = {
     MUC_TIEU_MON_HOC: 'muc-tieu-mon-hoc',
     QUY_DINH_CHUNG: 'quy-dinh-chung',
     TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc',
-    XUAT_FILE_PDF:'xuat-file'
+    XUAT_FILE_PDF:'xuat-file',
+    DE_CUONG_MON_HOC: 'de-cuong-mon-hoc'
 };

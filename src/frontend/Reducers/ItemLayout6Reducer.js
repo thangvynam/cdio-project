@@ -1,4 +1,4 @@
-import { ADD_ITEM_KHGDTH, UPDATE_KHGDTH } from '../Constant/ActionType';
+import { ADD_ITEM_KHGDTH, UPDATE_KHGDTH, CHANGE_TEMP_KHGDTH } from '../Constant/ActionType';
 
 const initialState = {
     previewInfo: [
@@ -23,7 +23,13 @@ const initialState = {
             standardOutput : ["G1.3","G2.1"],
             evalActs : ["BTCN"],
         }
-    ]
+    ],
+    tempInfo :{
+        titleName : '',
+        teachingActs : [],
+        standardOutput : [],
+        evalActs : [],
+    }
 }
 const itemLayout6Reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -37,6 +43,12 @@ const itemLayout6Reducer = (state = initialState, action) => {
               ...state,
               previewInfo: action.data
             };
+            case CHANGE_TEMP_KHGDTH:{
+                return {
+                    ...state,
+                    tempInfo:action.data
+                }
+            }
         default:
             return state
     }

@@ -12,7 +12,7 @@ import {
 import { Link } from "react-scroll";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
-import { AddItemKHGDTH } from "../../../Constant/ActionType";
+import { addItemKHGDTH, changeTempKHGDTH } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 
@@ -153,7 +153,9 @@ class ItemMenu extends Component {
   onChangeStandar = value => {
     if (value.length === 0) return;
 
-    var newArray = this.state.standardOutput.slice();
+    let tempInfo = this.props.itemKHGDTH.tempInfo;
+
+    var newArray = tempInfo.standardOutput.slice();
     let temp = value[0] + value[1];
     let flag = true;
 
@@ -166,54 +168,76 @@ class ItemMenu extends Component {
 
     if (flag) newArray.push(temp);
 
-    this.setState({ standardOutput: newArray });
+    //this.setState({ standardOutput: newArray });
+    tempInfo["standardOutput"] = newArray;
+    this.props.onChangeTempKHGDTH(tempInfo);
   };
   showStandard = () => {
     let temp = "";
-    for (let i = 0; i < this.state.standardOutput.length; i++) {
-      temp += this.state.standardOutput[i] + " , ";
+    let tempInfo = this.props.itemKHGDTH.tempInfo;
+    for (let i = 0; i < tempInfo.standardOutput.length; i++) {
+      temp += tempInfo.standardOutput[i] + " , ";
     }
     return temp;
   };
 
   handleSubmit = () => {
+
+    let tempInfo = this.props.itemKHGDTH.tempInfo;
+
     if (
-      this.state.titleName === "" ||
-      this.state.teachingActs.length === 0 ||
-      this.state.standardOutput.length === 0 ||
-      this.state.evalActs.length === 0
+      tempInfo.titleName === "" ||
+      tempInfo.teachingActs.length === 0 ||
+      tempInfo.standardOutput.length === 0 ||
+      tempInfo.evalActs.length === 0
     ) {
       message.error("Vui lòng điền đầy đủ thông tin", 0.75);
       return;
     }
     let previewData = {};
     previewData.key = this.props.itemKHGDTH.previewInfo.length + 1;
-    previewData.titleName = this.state.titleName;
-    previewData.teachingActs = this.state.teachingActs;
-    previewData.standardOutput = this.state.standardOutput;
-    previewData.evalActs = this.state.evalActs;
+    previewData.titleName = tempInfo.titleName;
+    previewData.teachingActs = tempInfo.teachingActs;
+    previewData.standardOutput = tempInfo.standardOutput;
+    previewData.evalActs = tempInfo.evalActs;
 
     this.props.onAddItemKHGDTH(JSON.stringify(previewData));
     this.props.nextStep();
-    this.resetPreviewData();
     this.props.form.resetFields();
     this.isSubmit = true;
+
+    let resetTemp  = {
+      titleName : '',
+      teachingActs : [],
+      standardOutput : [],
+      evalActs : [],
+  }
+  this.props.onChangeTempKHGDTH(resetTemp);
+
   };
 
   handleTitleChange = e => {
-    this.setState({ titleName: e.target.value });
+    let tempInfo = this.props.itemKHGDTH.tempInfo;
+    tempInfo["titleName"] = e.target.value;
+    this.props.onChangeTempKHGDTH(tempInfo);
+
+    //this.setState({ titleName: e.target.value });
   };
 
   handleChangeTeachingAct(value) {
-    this.setState({ teachingActs: value });
+    let tempInfo = this.props.itemKHGDTH.tempInfo;
+    tempInfo["teachingActs"] = value;
+    this.props.onChangeTempKHGDTH(tempInfo);
+    //this.setState({ teachingActs: value });
   }
   handleChangeEvalActs(value) {
-    this.setState({ evalActs: value });
+    let tempInfo = this.props.itemKHGDTH.tempInfo;
+    tempInfo["evalActs"] = value;
+    this.props.onChangeTempKHGDTH(tempInfo);
+    //this.setState({ evalActs: value });
   }
 
-  resetPreviewData = () => {
-    this.setState({ teachingActs: [], standardOutput: [], evalActs: [] });
-  };
+
   renderBackButton() {
     if (this.props.step !== 0) {
       return (
@@ -251,7 +275,6 @@ class ItemMenu extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const previewData = this.state;
 
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
@@ -314,7 +337,8 @@ class ItemMenu extends Component {
                     required: true,
                     message: "Vui lòng nhập tên chủ đề"
                   }
-                ]
+                ],
+                initialValue: this.props.itemKHGDTH.tempInfo.titleName
               })(<Input onChange={this.handleTitleChange} />)}
             </Form.Item>
 
@@ -342,17 +366,19 @@ class ItemMenu extends Component {
             </Form.Item>
 
             <Form.Item {...formItemLayout} label="Hoạt động dạy">
-              <Select
-                id="select-teaching"
-                value={previewData.teachingActs}
-                mode="tags"
-                style={{ width: "100%" }}
-                placeholder="Chọn hoạt động"
-                //  defaultValue={['Thuyết giảng']}
-                onChange={value => this.handleChangeTeachingAct(value)}
-              >
-                {childrenTeachingActs}
-              </Select>
+              {getFieldDecorator("teachingActs", {
+                initialValue: this.props.itemKHGDTH.tempInfo.teachingActs
+              })(
+                <Select
+                  id="select-teaching"
+                  mode="tags"
+                  style={{ width: "100%" }}
+                  placeholder="Chọn hoạt động"
+                  onChange={value => this.handleChangeTeachingAct(value)}
+                >
+                  {childrenTeachingActs}
+                </Select>
+              )}
             </Form.Item>
 
             <Form.Item
@@ -367,8 +393,10 @@ class ItemMenu extends Component {
               }
             >
               <div style={{ float: "left", width: "74%" }}>
+              {getFieldDecorator("evalActs", {
+                initialValue: this.props.itemKHGDTH.tempInfo.evalActs
+              })(
                 <Select
-                  value={previewData.evalActs}
                   mode="tags"
                   style={{ width: "100%" }}
                   placeholder="Chọn hoạt động"
@@ -376,6 +404,7 @@ class ItemMenu extends Component {
                 >
                   {childrenEvalActs}
                 </Select>
+                )}
               </div>
               <div style={{ float: "left" }}>
                 <Button type="primary" onClick={this.moveLayout7}>
@@ -416,7 +445,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      onAddItemKHGDTH: AddItemKHGDTH
+      onAddItemKHGDTH: addItemKHGDTH,
+      onChangeTempKHGDTH: changeTempKHGDTH
     },
     dispatch
   );

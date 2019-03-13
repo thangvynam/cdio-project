@@ -16,6 +16,15 @@
     right: 50px;
 }
 
+.submit_All{
+    text-align: center;
+    width: 100px;
+    position: relative; 
+    margin-left: 50%;
+    right: 50px;
+    margin-bottom: 15px;
+}
+
 .card_TTC input.inputNumber {
     width: 30%;
 }

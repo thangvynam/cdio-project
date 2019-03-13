@@ -3,17 +3,12 @@ import { Form, Icon, Button, message } from "antd";
 import { Link } from "react-scroll";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
-import { AddItemRule } from "../../../Constant/ActionType";
+import { addItemRule, changeTempRules } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import TextArea from "antd/lib/input/TextArea";
 
 class ItemMenu extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      content: ""
-    };
-  }
+ 
 
   renderBackButton() {
     if (this.props.step !== 0) {
@@ -33,7 +28,7 @@ class ItemMenu extends Component {
     return null;
   }
   handleSubmit = () => {
-    let content = this.state.content;
+    let content = this.props.itemRule.tempInfo.content;
     if (content.length === 0) {
       message.error("Vui lòng điền nội dung quy định", 0.75);
       return;
@@ -45,10 +40,16 @@ class ItemMenu extends Component {
     this.props.onAddItemRule(JSON.stringify(rule));
     this.props.nextStep();
     this.props.form.resetFields();
-    this.setState({ content: "" });
+    let temp = {
+      content: ''
+    }
+    this.props.onChangeTempRule(temp);
   };
   handleContentChange = e => {
-    this.state.content = e.target.value;
+    let temp = {
+      content: e.target.value,
+    }
+    this.props.onChangeTempRule(temp);
   };
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -84,9 +85,10 @@ class ItemMenu extends Component {
                 {
                   required: true,
                   message: "Vui lòng nhập nội dung"
-                }
-              ]
-            })(<TextArea onChange={this.handleContentChange} />)}
+                },
+              ],
+              initialValue: this.props.itemRule.tempInfo.content
+            })(<TextArea onChange={this.handleContentChange}/>)}
           </Form.Item>
 
           <Form.Item {...tailFormItemLayout}>
@@ -109,15 +111,22 @@ class ItemMenu extends Component {
   }
 }
 
+const mapStateToProps = state => {
+  return {
+    itemRule: state.itemLayout9Reducer
+  };
+};
+
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      onAddItemRule: AddItemRule
+      onAddItemRule: addItemRule,
+      onChangeTempRule: changeTempRules,
     },
     dispatch
   );
 };
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
 )(ItemMenu);

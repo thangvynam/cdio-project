@@ -1,4 +1,5 @@
 import * as Types from '../../Constant/thong-tin-chung/actionTypes';
+import _ from 'lodash'
 
 // const actAddSuccess = () => {
 //     return {
@@ -21,6 +22,13 @@ import * as Types from '../../Constant/thong-tin-chung/actionTypes';
 //         });
 //     }
 // }
+
+const addDataTemp = (tempTTC)=>{
+    return {
+        type: Types.ADD_TEMP_DATA,
+        tempTTC: tempTTC
+    }
+}
 
 const themThongTinChung = (newTTC)=>{
     return {
@@ -45,5 +53,6 @@ const suaThongTinChung = (newTTC)=>{
 export {
     themThongTinChung,
     xoaThongTinChung, 
-    suaThongTinChung
+    suaThongTinChung,
+    addDataTemp
 }

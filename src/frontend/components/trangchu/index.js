@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Col } from 'antd';
-import './index.css';
-import Content from './content/content';
-import MenuLeft from './menu/menu';
-import NavBar from './navbar/navbar';
+import './../decuongmonhoc/index/index.css';
+import { Link } from "react-router-dom";
+import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
+import NavBar from './../decuongmonhoc/index/navbar/navbar';
 
-class Dashboard extends Component {
+class Home extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -36,7 +36,6 @@ class Dashboard extends Component {
 
     render() {
         let GirdLayout;
-        console.log(this.props.match.params)
         if (this.state.collapse) {
             GirdLayout = (<Row>
                 <Col span={2} className="col-left col-left-inline">
@@ -45,7 +44,7 @@ class Dashboard extends Component {
                         theme={this.state.theme}
                     />
                 </Col>
-                <Col span={22}  className="col-right">
+                <Col span={22} className="col-right">
                     <Row>
                         <NavBar
                             updateCollapse={this.updateCollapse}
@@ -55,7 +54,13 @@ class Dashboard extends Component {
                         />
                     </Row>
                     <Row >
-                        <Content content_type = {this.props.match.params.type}/>
+                        <Link to={"de-cuong-mon-hoc/222/thong-tin-chung"}>
+                            <span>OOP</span>
+                        </Link>
+                        <hr />
+                        <Link to={"de-cuong-mon-hoc/333/thong-tin-chung"}>
+                            <span>Design Pattern</span>
+                        </Link>
                     </Row>
                 </Col>
             </Row>);
@@ -79,7 +84,13 @@ class Dashboard extends Component {
                         />
                     </Row>
                     <Row>
-                        <Content content_type = {this.props.match.params.type}/>
+                        <Link to={"de-cuong-mon-hoc/222/thong-tin-chung"}>
+                            <span>OOP</span>
+                        </Link>
+                        <hr />
+                        <Link to={"de-cuong-mon-hoc/333/thong-tin-chung"}>
+                            <span>Design Pattern</span>
+                        </Link>
                     </Row>
                 </Col>
             </Row>);
@@ -93,4 +104,4 @@ class Dashboard extends Component {
     }
 }
 
-export default Dashboard;
+export default Home;

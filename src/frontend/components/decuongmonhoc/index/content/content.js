@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import {MENUITEM} from './../../../../Constant/ActionType';
 import ThongTinChung from '../../../../Layout1/thong-tin-chung';
+import Home from '../../../trangchu/index/index';
 import Layout2 from '../../../../Layout2/Layout2';
 import Layout3 from '../../../../Layout3/Layout3';
 import Layout4 from '../../../../Layout4/Layout4';

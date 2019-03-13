@@ -43,6 +43,7 @@ class Dashboard extends Component {
                     <MenuLeft className="menu_left"
                         collapse={this.state.collapse}
                         theme={this.state.theme}
+                        path={this.props.match.params.type1}
                     />
                 </Col>
                 <Col span={22}  className="col-right">
@@ -67,6 +68,7 @@ class Dashboard extends Component {
                         className="menu_left"
                         collapse={this.state.collapse}
                         theme={this.state.theme}
+                        path={this.props.match.params.type1}
                     />
                 </Col>
                 <Col span={19} className="col-right">

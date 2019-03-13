@@ -6,6 +6,7 @@ import "./menu_css.css";
 
 class MenuLeft extends Component {
   render() {
+      console.log(this.props.path)
     return (
       <Menu
         defaultSelectedKeys={["1"]}
@@ -72,6 +73,11 @@ class MenuLeft extends Component {
           <Link to={MENUITEM.XUAT_FILE_PDF}>
             <Icon type="file-pdf" />
             <span>XUẤT FILE PDF</span>
+          </Link>
+        </Menu.Item><Menu.Item key="11">
+          <Link to={`/${this.props.path}`}>
+          <Icon type="step-backward" />
+            <span>QUAY LẠI</span>
           </Link>
         </Menu.Item>
       </Menu>

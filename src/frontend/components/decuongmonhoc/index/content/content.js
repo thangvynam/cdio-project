@@ -12,6 +12,8 @@ import Layout7 from '../../../../Layout7/Layout7';
 import Layout8 from '../../../../Layout8/Layout8';
 import ExportFile from '../../../../ExportFIle/ExportFile';
 import Page404 from '../../../../NotFound/Page404';
+import { Button, Icon} from 'antd';
+import { Link } from "react-router-dom";
 export default class Content extends Component {
     render() {
         let content_layout;
@@ -84,6 +86,34 @@ export default class Content extends Component {
                 return content_layout = (
                     <React.Fragment>
                         <ExportFile/>
+                    </React.Fragment>
+                );
+            }
+
+            case "de-cuong-mon-hoc":{
+                return content_layout = (
+                    <React.Fragment>
+                        <Link to={"de-cuong-mon-hoc/222/thong-tin-chung"}>
+                            <Button style={{width: "100%"}}><Icon type="book" />Phương pháp lập trình hướng đối tượng</Button>
+                        </Link>
+                        <hr />
+                        <Link to={"de-cuong-mon-hoc/333/thong-tin-chung"}>
+                            <Button style={{width: "100%"}}><Icon type="book" />Design Pattern</Button>
+                        </Link>
+                    </React.Fragment>
+                );
+            }
+
+            case "tab-2":{
+                return content_layout = (
+                    <React.Fragment>
+                        <Link to={"tab-2/222/thong-tin-chung"}>
+                            <Button style={{width: "100%"}}><Icon type="book" />Mạng máy tính</Button>
+                        </Link>
+                        <hr />
+                        <Link to={"tab-2/333/thong-tin-chung"}>
+                            <Button style={{width: "100%"}}><Icon type="book" />Kiến trúc phần mềm</Button>
+                        </Link>
                     </React.Fragment>
                 );
             }

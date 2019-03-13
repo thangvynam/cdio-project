@@ -12,6 +12,7 @@ class MenuLeft extends Component {
                 theme={this.props.theme}
                 inlineCollapsed={this.props.collapse}
                 className="menu-style"
+                defaultSelectedKeys={this.props.defaultSelectedKeys}
             >
                 <Menu.Item key="1">
                     <Link to={"de-cuong-mon-hoc"}>
@@ -22,8 +23,8 @@ class MenuLeft extends Component {
 
                 <Menu.Item key="2">
                     <Link to={"tab-2"}>
-                        <Icon type="dashboard" />
-                        <span>Tab2</span>
+                    <Icon type="left-square" />
+                        <span>Tab - 2</span>
                     </Link>
                 </Menu.Item>
 

@@ -17,11 +17,13 @@ export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
+export const CHANGE_TEMP_KHGDTH = 'CHANGE_TEMP_KHGDTH';
 
 
 export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
 export const DELETE_ITEM_RULE = 'DELETE_ITEM_RULE';
 export const UPDATE_RULES = 'UPDATE_RULES';
+export const CHANGE_TEMP_RULES = 'CHANGE_TEMP_RULES';
 
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
@@ -83,35 +85,48 @@ export function selectedTempVerb(newTempVerb) {
     };
 }
 
-export function AddItemKHGDTH(newItem){
+export function addItemKHGDTH(newItem){
     return{
         type: ADD_ITEM_KHGDTH,
         data: newItem,
     };
 }
-export function UpdateKHGDTH(newKHGDTH){
+export function updateKHGDTH(newKHGDTH){
     return{
         type: UPDATE_KHGDTH,
         data: newKHGDTH,
     }
 }
+export function changeTempKHGDTH(newTemp){
+    return{
+        type: CHANGE_TEMP_KHGDTH,
+        data: newTemp,
+    }
+}
 
-export function AddItemRule(newItem){
+
+export function addItemRule(newItem){
     return{
         type: ADD_ITEM_RULE,
         data: newItem,
     };
 }
-export function DeleteItemRule(index){
+export function deleteItemRule(index){
     return{
         type: DELETE_ITEM_RULE,
         data: index,
     }
 }
-export function UpdateRules(newRules){
+export function updateRules(newRules){
     return{
         type: UPDATE_RULES,
         data: newRules,
+    }
+}
+export function changeTempRules(newTemp){
+    return{
+        type: CHANGE_TEMP_RULES,
+        data: newTemp,
     }
 }
 

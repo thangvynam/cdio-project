@@ -1,7 +1,8 @@
 import {
   ADD_ITEM_RULE,
   DELETE_ITEM_RULE,
-  UPDATE_RULES
+  UPDATE_RULES,
+  CHANGE_TEMP_RULES
 } from "../Constant/ActionType";
 
 const initialState = {
@@ -18,7 +19,10 @@ const initialState = {
       content:
         "Sinh viên không được vắng quá 3 buổi trên tổng số các buổi học lý thuyết."
     }
-  ]
+  ],
+  tempInfo:{
+    content:'',
+  }
 };
 const itemLayout9Reducer = (state = initialState, action) => {
   switch (action.type) {
@@ -38,6 +42,12 @@ const itemLayout9Reducer = (state = initialState, action) => {
         ...state,
         previewInfo: action.data
       };
+      case CHANGE_TEMP_RULES:{
+        return{
+          ...state,
+          tempInfo:action.data
+        }
+      }
 
     default:
       return state;

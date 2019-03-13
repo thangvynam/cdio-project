@@ -11,6 +11,7 @@ import Layout9 from '../../../../Layout9/Layout9';
 import Layout7 from '../../../../Layout7/Layout7';
 import Layout8 from '../../../../Layout8/Layout8';
 import ExportFile from '../../../../ExportFIle/ExportFile';
+import Page404 from '../../../../NotFound/Page404';
 export default class Content extends Component {
     render() {
         let content_layout;
@@ -89,7 +90,7 @@ export default class Content extends Component {
             default: {
                 content_layout = (
                     <React.Fragment>
-                        <h2>HELLO</h2>
+                        <Page404/>
                     </React.Fragment>
                 );
             }

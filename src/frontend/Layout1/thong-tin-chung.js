@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import TableTTC from './table/tableTTC';
 import './thong-tin-chung.css'
-import { themThongTinChung, xoaThongTinChung, suaThongTinChung } from './../Constant/thong-tin-chung/actions';
+import { themThongTinChung, xoaThongTinChung, suaThongTinChung, addDataTemp } from './../Constant/thong-tin-chung/actions';
 class ThongTinChung extends Component {
   constructor(props) {
     super(props)
@@ -22,11 +22,11 @@ class ThongTinChung extends Component {
       if (!err) {
         if (this.props.dataTTC.length === 0) {
           this.props.themThongTinChung(values);
-        }else{
+        } else {
           this.props.suaThongTinChung(values);
         }
         notification.open({
-          message: "Sucess",
+          message: "Success",
           icon: <Icon type="check-circle" style={{ color: 'green' }} />,
         })
       }
@@ -34,26 +34,37 @@ class ThongTinChung extends Component {
   }
 
   handleButtonEdit = () => {
-    if (this.props.dataTTC.length === 1 && this.state.isBtnEdit) {
+    if (this.state.isBtnEdit) {
       return (
-        <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
-          Edit
-        </Button>
-      );
-    } else if (this.props.dataTTC.length < 1) {
-      return (
-        <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
-          Add
+        <Button type="primary" disabled htmlType="submit" className="submit_TTC form-signin-button">
+          Continue
         </Button>
       );
     }
+    return (
+      <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
+        Continue
+        </Button>
+    );
   }
 
   toggleButton = () => {
-    console.log("AA")
     this.setState({
-      isBtnEdit: true
+      isBtnEdit: !this.state.isBtnEdit
     })
+  }
+
+  toggleButtonDelete = () => {
+    this.setState({
+      isBtnEdit: false
+    })
+  }
+
+  handleOnChange = (e)=>{
+    const tempData = {
+      [e.target.name]: e.target.value
+    }
+    this.props.addDataTemp(tempData)
   }
 
   render() {
@@ -70,8 +81,8 @@ class ThongTinChung extends Component {
     };
 
     const { isBtnEdit } = this.state;
-    const { dataTTC } = this.props;
-
+    const { dataTTC, tempData } = this.props;
+    console.log(tempData[0]['tenMonHocTV'])
     return (
       <div className="container">
         <div className="row">
@@ -79,7 +90,7 @@ class ThongTinChung extends Component {
           <div className="col-sm-11" >
             <h1 style={{ textAlign: "center" }}>THÔNG TIN CHUNG</h1>
             <div className="card_TTC" >
-              <Form onSubmit={this.handleSubmit}>
+              <Form  onChange={this.handleOnChange} onSubmit={this.handleSubmit}>
                 <Form.Item
                   {...formItemLayout}
                   label="Tên Môn Học (Tiếng Việt):">
@@ -90,9 +101,9 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input VietNamese name!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['tenMonHocTV'] : ''}` : '',
+                    initialValue: tempData[0]['tenMonHocTV'] !== '' ? tempData[0]['tenMonHocTV'] : '',
                   })(
-                    <Input name="tenTV" type="text" />
+                    <Input name="tenMonHocTV" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -105,9 +116,9 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input your English Name!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['tenMonHocTA'] : ''}` : '',
+                    initialValue: tempData[0]['tenMonHocTA'] !== '' ? tempData[0]['tenMonHocTA'] : '',
                   })(
-                    <Input name="tenTA" type="text" />
+                    <Input   name="tenMonHocTA" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -120,9 +131,9 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input your Course Code!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['maMonHoc'] : ''}` : '',
+                    initialValue: tempData[0]['maMonHoc'] !== '' ? tempData[0]['maMonHoc'] : '',
                   })(
-                    <Input name="msMonHoc" type="text" />
+                    <Input   name="maMonHoc" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -135,9 +146,9 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input your Knowledge Attributes!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['khoiKienThuc'] : ''}` : '',
+                    initialValue: tempData[0]['khoiKienThuc'] !== '' ? tempData[0]['khoiKienThuc'] : '',
                   })(
-                    <Input name="thuocTinhKienThuc" type="text" />
+                    <Input   name="khoiKienThuc" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -148,9 +159,9 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Credits!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['soTinChi'] : ''}` : '',
+                    initialValue: tempData[0]['soTinChi'] !== -1 ? tempData[0]['soTinChi'] : '',
                   })(
-                    <Input className="inputNumber" name="soTinChi" type="number" />
+                    <Input   className="inputNumber" name="soTinChi" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -161,9 +172,9 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Theoretical Lessons!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['tietLyThuyet'] : ''}` : '',
+                    initialValue: tempData[0]['tietLyThuyet'] !== -1 ? tempData[0]['tietLyThuyet'] : '',
                   })(
-                    <Input className="inputNumber" name="soTietLyThuyet" type="number" />
+                    <Input   className="inputNumber" name="tietLyThuyet" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -174,9 +185,9 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Practice Lessons!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['tietThucHanh'] : ''}` : '',
+                    initialValue:tempData[0]['tietThucHanh'] !== -1 ? tempData[0]['tietThucHanh'] : '',
                   })(
-                    <Input className="inputNumber" name="soTietThucHanh" type="number" />
+                    <Input   className="inputNumber" name="tietThucHanh" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -187,9 +198,9 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Self-Study Periods!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['tietTuHoc'] : ''}` : '',
+                    initialValue: tempData[0]['tietTuHoc'] !== -1 ? tempData[0]['tietTuHoc'] : '',
                   })(
-                    <Input className="inputNumber" name="soTietTuHoc" type="number" />
+                    <Input   className="inputNumber" name="tietTuHoc" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -202,9 +213,9 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input Prerequisite Subjects!',
                       }],
-                    initialValue: isBtnEdit ? `${dataTTC.length > 0 ? dataTTC[0]['monTienQuyet'] : ''}` : '',
+                    initialValue:tempData[0]['monTienQuyet'] !== '' ? tempData[0]['monTienQuyet'] : '',
                   })(
-                    <Input name="monTienQuyet" type="text" />
+                    <Input   name="monTienQuyet" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item>
@@ -219,7 +230,11 @@ class ThongTinChung extends Component {
             <TableTTC
               {...this.props}
               toggleButton={this.toggleButton}
+              toggleButtonDelete={this.toggleButtonDelete}
             />
+            <Button type="primary" className="submit_All">
+              Save All
+            </Button>
           </div>
         </div>
       </div>
@@ -229,13 +244,15 @@ class ThongTinChung extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    dataTTC: state.itemLayout1Reducer.previewInfo
+    dataTTC: state.itemLayout1Reducer.previewInfo,
+    tempData: state.itemLayout1Reducer.tempData
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
     themThongTinChung: (newTTC) => dispatch(themThongTinChung(newTTC)),
+    addDataTemp: (tempTTC) => dispatch(addDataTemp(tempTTC)),
     suaThongTinChung: (newTTC) => dispatch(suaThongTinChung(newTTC)),
     xoaThongTinChung: () => dispatch(xoaThongTinChung())
   }

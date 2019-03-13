@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table, Divider, Button, Modal, Popconfirm, Form } from "antd";
 import { connect } from "react-redux";
-import { DeleteItemRule, UpdateRules } from "../../../Constant/ActionType";
+import { deleteItemRule, updateRules } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import TextArea from "antd/lib/input/TextArea";
 
@@ -32,7 +32,7 @@ class EditableCell extends React.Component {
           return (
             <td {...restProps}>
               {editing ? (
-                <FormItem style={{ margin: 0 }}>
+                <FormItem style={{ margin: 0}} >
                   {getFieldDecorator(dataIndex, {
                     rules: [
                       {
@@ -265,8 +265,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      onDeleteItemRule: DeleteItemRule,
-      onUpdateRules: UpdateRules
+      onDeleteItemRule: deleteItemRule,
+      onUpdateRules: updateRules
     },
     dispatch
   );

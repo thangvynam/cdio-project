@@ -11,7 +11,7 @@ import {
   Select
 } from "antd";
 import { connect } from "react-redux";
-import { UpdateKHGDTH } from "../../../Constant/ActionType";
+import { updateKHGDTH } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
@@ -261,7 +261,6 @@ class TableItem extends Component {
         title: "Tuần",
         dataIndex: "key",
         key: "key",
-        width: 70
       },
       {
         title: "Chủ đề",
@@ -559,7 +558,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      onUpdateKHGDTH: UpdateKHGDTH
+      onUpdateKHGDTH: updateKHGDTH
     },
     dispatch
   );

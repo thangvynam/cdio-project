@@ -15,46 +15,9 @@ import Page404 from '../../../../NotFound/Page404';
 import { Button, Icon} from 'antd';
 import { Link } from "react-router-dom";
 export default class Content extends Component {
-    state = {
-        decuong: ["Phương pháp lập trình hướng đối tượng", "Design Pattern"],
-        tab2: ["Mạng máy tính", "Kiến trúc phần mềm"]
-    }
-    addSubject = (type) => {
-        switch(type) {
-            case "de-cuong-mon-hoc": {
-            let index = this.state.decuong.length;
-            const data = this.state.decuong.concat(`Subject${index + 1}`);
-            this.setState({ decuong: data });
-            }
-            
-            case "tab-2": {
-            let index = this.state.tab2.length;
-            const data = this.state.tab2.concat(`Subject${index + 1}`);
-            this.setState({ tab2: data });
-            }
-
-            default: {}
-        }
         
-    }
     render() {
         let content_layout;
-        const decuongSub = this.state.decuong.map((key, id) => 
-        {
-            return <div key={key}><Link to={`de-cuong-mon-hoc/${id}/thong-tin-chung`}>
-            <Button style={{width: "100%"}}><Icon type="book" />{key}</Button>
-        </Link>
-        <div style={{height: "20px"}} /></div>
-        }
-    )
-    const tab2Sub = this.state.tab2.map((key, id) => 
-        {
-            return <div key={key}><Link to={`tab-2/${id}/thong-tin-chung`}>
-            <Button style={{width: "100%"}}><Icon type="book" />{key}</Button>
-        </Link>
-        <div style={{height: "20px"}} /></div>
-        }
-    )
         switch (this.props.content_type) {
             case MENUITEM.THONG_TIN_CHUNG: {
                 return content_layout = (
@@ -128,23 +91,7 @@ export default class Content extends Component {
                 );
             }
 
-            case "de-cuong-mon-hoc":{
-                return content_layout = (
-                    <React.Fragment>
-                        {decuongSub}
-                        <Button onClick={() => this.addSubject(this.props.content_type)} style={{width: "100%"}}><Icon type="plus" />New</Button>
-                    </React.Fragment>
-                );
-            }
-
-            case "tab-2":{
-                return content_layout = (
-                    <React.Fragment>
-                        {tab2Sub}
-                        <Button onClick={() => this.addSubject(this.props.content_type)} style={{width: "100%"}}><Icon type="plus" />New</Button>
-                    </React.Fragment>
-                );
-            }
+            
             default: {
                 content_layout = (
                     <React.Fragment>

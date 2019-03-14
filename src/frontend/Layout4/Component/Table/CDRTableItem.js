@@ -324,7 +324,7 @@ class CDRTableItem extends Component {
                   </Popconfirm>
                 </span>
               ) : (
-                <a href="#a" onClick={() => this.edit(record.key)}>Edit</a>
+                <a href="#a" onClick={() => this.edit(record.key)}>Sửa</a>
               )}
           {!editable ? <Divider type="vertical" /> : null}
           {!editable 

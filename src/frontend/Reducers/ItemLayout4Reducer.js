@@ -85,18 +85,6 @@ export function selecteCDRItemReducer(state = selecteCDRItemState, action) {
     }
 }
 
-// const selectedTempVerbState = "";
-
-// export function selectedTempVerbReducer(state = selectedTempVerbState, action) {
-
-//     switch(action.type) {
-//         case SELECTED_TEMP_VERB:
-//         return action.tempverb;
-//         default: 
-//         return state;
-//     }
-// }
-
 const selectedVerbState = {
     level: "",
     childLevel: "",

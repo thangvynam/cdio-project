@@ -14,6 +14,7 @@ export const CHANGE_EDITSTATE = 'CHANGE_EDITSTATE';
 export const CHANGE_LEVEL_DATA = 'CHANGE_LEVEL_DATA';
 export const SELECTED_VERB = 'SELECTED_VERB';
 export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
+export const SUBJECT_LIST = 'SUBJECT_LIST';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -82,10 +83,10 @@ export function selectedVerb(newVerb) {
     };
 }
 
-export function selectedTempVerb(newTempVerb) {
+export function subjectList(newSubjectList) {
     return {
-        type: SELECTED_TEMP_VERB,
-        tempverb: newTempVerb
+        type: SUBJECT_LIST,
+        subjectlist: newSubjectList
     };
 }
 
@@ -185,5 +186,6 @@ export const MENUITEM = {
     QUY_DINH_CHUNG: 'quy-dinh-chung',
     TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc',
     XUAT_FILE_PDF:'xuat-file',
-    DE_CUONG_MON_HOC: 'de-cuong-mon-hoc'
+    DE_CUONG_MON_HOC: 'de-cuong-mon-hoc',
+    TAB_2: 'tab-2'
 };

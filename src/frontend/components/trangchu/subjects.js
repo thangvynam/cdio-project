@@ -4,7 +4,7 @@ import './../decuongmonhoc/index/index.css';
 import { Link } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
-import Content from '../decuongmonhoc/index/content/content'
+import Content from './content'
 class Home extends Component {
     constructor(props) {
         super(props);

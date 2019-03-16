@@ -36,7 +36,6 @@ class Dashboard extends Component {
 
     render() {
         let GirdLayout;
-        console.log(this.props.match.params)
         if (this.state.collapse) {
             GirdLayout = (<Row>
                 <Col span={2} className="col-left col-left-inline">

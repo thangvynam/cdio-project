@@ -1,4 +1,8 @@
 .menu-style {
     height: 100vh;
+}
 
+.list-item {
+    font-size: 25pt;
+    cursor: pointer
 }

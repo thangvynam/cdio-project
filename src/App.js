@@ -10,9 +10,9 @@ class App extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/:type1/:monhoc/:type" component={Dashboard} />
         <Route exact path="/" component={Home} />
         <Route exact path="/:type/" component={Subject} />
+        <Route exact path="/:type/:monhoc/:tab" component={Subject} />
         <Route component={Page404}/>
       </Switch>
     );

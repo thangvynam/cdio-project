@@ -8,7 +8,7 @@ import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Red
 import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
-import { subjectListReducer } from '../Reducers/subjectListReducer';
+import { subjectListReducer, subjectIdReducer } from '../Reducers/subjectListReducer';
 
 
 var redux = require("redux");
@@ -31,6 +31,7 @@ const allReducers = redux.combineReducers({
     itemLayout8Reducer: itemLayout8Reducer,
     tndata: changeTNDataReducer,
     subjectlist: subjectListReducer,
+    subjectid: subjectIdReducer
 });
 var store1 = redux.createStore(allReducers);
 export default store1;

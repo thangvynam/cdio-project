@@ -15,6 +15,7 @@ export const CHANGE_LEVEL_DATA = 'CHANGE_LEVEL_DATA';
 export const SELECTED_VERB = 'SELECTED_VERB';
 export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
+export const SUBJECT_ID = 'SUBJECT_ID';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -87,6 +88,13 @@ export function subjectList(newSubjectList) {
     return {
         type: SUBJECT_LIST,
         subjectlist: newSubjectList
+    };
+}
+
+export function subjectId(newSubjectId) {
+    return {
+        type: SUBJECT_ID,
+        subjectid: newSubjectId
     };
 }
 

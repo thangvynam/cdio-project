@@ -4,7 +4,8 @@ import './../decuongmonhoc/index/index.css';
 import { Link } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
-import Content from './content'
+import Content from './content';
+import { connect } from'react-redux';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -35,6 +36,7 @@ class Home extends Component {
     }
 
     render() {
+
         let GirdLayout;
         if (this.state.collapse) {
             GirdLayout = (<Row>
@@ -42,8 +44,10 @@ class Home extends Component {
                     <MenuLeft className="menu_left"
                         collapse={this.state.collapse}
                         theme={this.state.theme}
-                        defaultSelectedKeys={this.props.match.params.type === 'de-cuong-mon-hoc' ? 
-                    ['1'] : this.props.match.params.type === 'tab-2' ? ['2'] : []}
+                        defaultSelectedKeys={[this.props.match.params.type]}
+                        content_type={this.props.match.params.type}
+                        content_monhoc={this.props.match.params.monhoc}
+                        content_tab={this.props.match.params.tab}
                     />
                 </Col>
                 <Col span={22} className="col-right">
@@ -56,7 +60,9 @@ class Home extends Component {
                         />
                     </Row>
                     <Row >
-                    <Content content_type = {this.props.match.params.type}/>
+                    <Content content_type={this.props.match.params.type}
+                            content_monhoc={this.props.match.params.monhoc}
+                            content_tab={this.props.match.params.tab}/>
                     </Row>
                 </Col>
             </Row>);
@@ -68,8 +74,10 @@ class Home extends Component {
                         className="menu_left"
                         collapse={this.state.collapse}
                         theme={this.state.theme}
-                        defaultSelectedKeys={this.props.match.params.type === 'de-cuong-mon-hoc' ? 
-                    ['1'] : this.props.match.params.type === 'tab-2' ? ['2'] : []}
+                        defaultSelectedKeys={[this.props.match.params.type]}
+                        content_type={this.props.match.params.type}
+                        content_monhoc={this.props.match.params.monhoc}
+                        content_tab={this.props.match.params.tab}
                     />
                 </Col>
                 <Col span={19} className="col-right">
@@ -82,7 +90,9 @@ class Home extends Component {
                         />
                     </Row>
                     <Row>
-                    <Content content_type = {this.props.match.params.type}/>
+                    <Content content_type = {this.props.match.params.type}
+                            content_tab={this.props.match.params.tab}
+                            content_monhoc={this.props.match.params.monhoc}/>
                     </Row>
                 </Col>
             </Row>);
@@ -96,4 +106,10 @@ class Home extends Component {
     }
 }
 
-export default Home;
+const mapStateToProps = (state) => {
+    return {
+        subjectList: state.subjectlist
+    }
+}
+
+export default connect(mapStateToProps)(Home);

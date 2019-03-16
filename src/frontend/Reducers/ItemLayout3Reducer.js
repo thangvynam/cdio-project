@@ -1,4 +1,5 @@
-import {ADD_DATA_LAYOUT_3, DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3} from '../Constant/ActionType';
+import {ADD_DATA_LAYOUT_3, DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3} from '../Constant/ActionType';
+import axios from 'axios';
 
 const itemLayout3InitialState = {
     previewInfo: [
@@ -18,26 +19,43 @@ const itemLayout3InitialState = {
          description: "Phân loại và so sánh được các loại tiến trình phát triển phần mềm khác nhau",
          standActs: ["1.3.6", "1.5"]
         },
-    ]
+    ],
+    tempInfo: {
+        objectName: "",
+        description: "",
+        standActs: [],
+    }
 }
 const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
     switch (action.type) {
-        case ADD_DATA_LAYOUT_3:
+        case ADD_DATA_LAYOUT_3: {
+            axios.post('/add-data-3', { data: action.item })
             return {
                 ...state,
                 previewInfo: [...state.previewInfo, JSON.parse(action.item)]
             }
-        case DELETE_DATA_LAYOUT_3:  
+        }           
+        case DELETE_DATA_LAYOUT_3: {
+            axios.post('/delete-data-3', { data: state.previewInfo[action.key] })
             state.previewInfo= state.previewInfo.filter((_, item) => item !== action.key)
             return {
                 ...state,
                 previewInfo: state.previewInfo
             }
-        case SAVE_DATA_LAYOUT_3:
-        return {
-            ...state, 
-            previewInfo: action.data
+        }             
+        case SAVE_DATA_LAYOUT_3: {
+            axios.post('/save-data-3', { data: action.data[action.key] })            
+            return {
+                ...state, 
+                previewInfo: action.data
+            }
         }
+            
+        case SAVE_TEMP_DATA_LAYOUT_3:
+            return {
+                ...state,
+                tempInfo: action.tempInfo
+            }
         default:
             return state
     }

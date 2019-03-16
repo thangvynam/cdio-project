@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA_LAYOUT_2 } from '../../../Constant/ActionType';
+import { ADD_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2 } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
 
 let description = '';
@@ -13,6 +13,7 @@ class MenuMota extends Component {
     handleDesInputChange = (e) => {
         description = e.target.value;
         description.replace('\n', '<br/>')
+        this.props.saveTemp(description);
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -51,9 +52,8 @@ class MenuMota extends Component {
                             rules: [ {
                                 required: true, message: 'Vui lòng nhập nội dung mô tả',
                             }],
-                        })(
-                            <TextArea onChange={this.handleDesInputChange} />
-                        )}
+                            initialValue: this.props.itemLayout2Reducer.tempInfo
+                        })(<TextArea onChange={this.handleDesInputChange} />)}
                         
                     </Form.Item>
 
@@ -69,6 +69,13 @@ class MenuMota extends Component {
         );
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+      itemLayout2Reducer: state.itemLayout2Reducer
+    }
+  }
+
 const mapDispatchToProps = (dispatch, ownProps) => {
 
     return {
@@ -82,6 +89,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 ownProps.nextStep();      
             }
         },
+        saveTemp: (description) => {
+            dispatch({type: SAVE_TEMP_DATA_LAYOUT_2, description})
+        }
     }
 }
-export default connect(null, mapDispatchToProps)(MenuMota);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuMota);

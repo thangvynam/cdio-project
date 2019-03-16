@@ -17,11 +17,24 @@ class MenuLeft extends Component {
         this.props.updateSubjectId("");
     }
 
+    checkSubjectExist = (type, monhoc) => {
+        for(let i = 0;i < this.props.subjectList[type][type].length;i++) {
+            if(this.props.subjectList[type][type][i].id === monhoc) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     redirect = () => {
         if(this.props.subjectId !== "" && this.props.subjectId !== undefined && (this.props.content_monhoc === "" ||
         this.props.content_monhoc === undefined)) {
             return <Redirect to={`/${this.props.content_type}/${this.props.subjectId}/thong-tin-chung`}/>
         }
+        else if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && (this.props.content_tab === ""
+    || this.props.content_tab === undefined) && this.checkSubjectExist(this.props.content_type, this.props.content_monhoc) === true) {
+        return <Redirect to={`/${this.props.content_type}/${this.props.content_monhoc}/thong-tin-chung`}/>
+    }
     }
 
     render() {

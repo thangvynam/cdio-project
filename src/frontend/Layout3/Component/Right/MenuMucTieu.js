@@ -5,7 +5,7 @@ import {
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
+import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
 
 const { Option } = Select;
@@ -41,12 +41,21 @@ class MenuMucTieu extends Component {
     }
     handleObjectInputChange = (e) => {
         objectName = e.target.value;
+        let tempInfo = this.props.itemLayout3Reducer.tempInfo 
+        tempInfo["objectName"] = objectName
+        this.props.saveTemp(tempInfo)
     }
     handleDesInputChange = (e) => {
         description = e.target.value;
+        let tempInfo = this.props.itemLayout3Reducer.tempInfo 
+        tempInfo["description"] = description
+        this.props.saveTemp(tempInfo)
     }
     handleChangeStandActs = (value) => {
         temp = value
+        let tempInfo = this.props.itemLayout3Reducer.tempInfo     
+        tempInfo["standActs"] = temp
+        this.props.saveTemp(tempInfo)
     }
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -93,6 +102,7 @@ class MenuMucTieu extends Component {
                             rules: [ {
                                 required: true, message: 'Vui lòng nhập mục tiêu',
                             }],
+                            initialValue: this.props.itemLayout3Reducer.tempInfo.objectName
                         })(
                             <Input onChange={this.handleObjectInputChange} />
                         )}
@@ -107,6 +117,7 @@ class MenuMucTieu extends Component {
                             rules: [ {
                                 required: true, message: 'Vui lòng nhập mô tả',
                             }],
+                            initialValue: this.props.itemLayout3Reducer.tempInfo.description
                         })(
                             <TextArea onChange={this.handleDesInputChange} />
                         )}
@@ -121,6 +132,7 @@ class MenuMucTieu extends Component {
                             rules: [{
                                 required: true, message: 'Vui lòng nhập CĐR CDIO của chương trình',
                             }],
+                            initialValue: this.props.itemLayout3Reducer.tempInfo.standActs
                         })(
                             <Select
                                 mode="tags"
@@ -148,6 +160,13 @@ class MenuMucTieu extends Component {
         );
     }
 }
+
+const mapStateToProps = (state, ownProps) => {
+    return {
+      itemLayout3Reducer: state.itemLayout3Reducer
+    }
+  }
+
 const mapDispatchToProps = (dispatch, ownProps) => {
 
     return {
@@ -169,6 +188,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 ownProps.nextStep();      
             }
         },
+        saveTemp: (tempInfo) => {
+            dispatch({type: SAVE_TEMP_DATA_LAYOUT_3, tempInfo})
+        }
     }
 }
-export default connect(null, mapDispatchToProps)(MenuMucTieu);
+export default connect(mapStateToProps, mapDispatchToProps)(MenuMucTieu);

@@ -257,7 +257,7 @@ class TableItem extends Component {
         ...item,
         ...row
       });
-      this.props.handleSave(newItems);
+      this.props.handleSave(newItems, key);
       this.setState({ editingKey: "" });
     });
   }
@@ -346,8 +346,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleDelete: (key) => {
       dispatch({type: DELETE_DATA_LAYOUT_3, key: key});
     },
-    handleSave: (data) => {
-      dispatch({type: SAVE_DATA_LAYOUT_3, data: data})
+    handleSave: (data, key) => {
+      dispatch({type: SAVE_DATA_LAYOUT_3, data, key})
     }
   }
 }

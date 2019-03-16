@@ -13,9 +13,9 @@ const initialState = {
             }
             ],
     },
-    "tab-2": {
-        name: "TAB - 2",
-        "tab-2": [
+    "metrics": {
+        name: "METRICS",
+        "metrics": [
         {
             id: "003",
             title: "Mạng máy tính",

@@ -6,6 +6,7 @@ import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
 import Content from './content';
 import { connect } from'react-redux';
+import Page404 from '../../NotFound/Page404';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -35,8 +36,35 @@ class Home extends Component {
         })
     }
 
-    render() {
+    checkSubjectExist = (type, monhoc) => {
+        for(let i = 0;i < this.props.subjectList[type][type].length;i++) {
+            console.log(type + monhoc)
+            if(this.props.subjectList[type][type][i].id === monhoc) {
+               
+                return true;
+            }
+        }
+        return false;
+    }
 
+    render() {
+        let type = this.props.match.params.type;
+        let isExist = 0;
+        for(let i = 0;i < Object.keys(this.props.subjectList).length;i++) {
+            if(type === Object.keys(this.props.subjectList)[i]) {
+                isExist = 1;
+                break;
+            }
+        }
+        
+        if(isExist === 0) {
+            return <Page404/>;
+        }
+       
+        if(!this.checkSubjectExist( this.props.match.params.type,  this.props.match.params.monhoc) && this.props.match.params.monhoc !== "" &&
+        this.props.match.params.monhoc !== undefined) {
+            return <Page404/>;
+        }
         let GirdLayout;
         if (this.state.collapse) {
             GirdLayout = (<Row>

@@ -106,8 +106,16 @@ class Content extends Component {
       onClick = (id) => {
         this.props.updateSubjectId(id);
       }
+
+      checkSubjectExist = (type, monhoc) => {
+        for(let i = 0;i < this.props.subjectList[type][type].length;i++) {
+            if(this.props.subjectList[type][type][i].id === monhoc) {
+                return true;
+            }
+        }
+        return false;
+    }
     render() {
-        
         var subjectList;
         let type = this.props.content_type;
         let isExist = 0;
@@ -119,6 +127,11 @@ class Content extends Component {
             }
         }
         if(isExist === 0) {
+            return <Page404/>;
+        }
+
+        if(!this.checkSubjectExist(this.props.content_type, this.props.content_monhoc) && this.props.content_monhoc !== "" &&
+        this.props.content_monhoc !== undefined) {
             return <Page404/>;
         }
         let content_layout;
@@ -194,6 +207,15 @@ class Content extends Component {
                     </React.Fragment>
                 );break;
             }
+
+            case "": {
+                content_layout = (
+                    <React.Fragment>
+                        <ThongTinChung />
+                    </React.Fragment>
+                );break
+            }
+
             case undefined: {
                 content_layout = (
                     <React.Fragment>

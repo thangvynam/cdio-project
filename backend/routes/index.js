@@ -5,7 +5,9 @@ const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path');
 const moment = require('moment');
-const MoTaModel = require('../models/MoTaModel')
+
+const MoTaModel = require('../models/MoTaModel');
+const Model5 = require('../models/Model5');
 
 const dataRender1 ={
   title1 : '',
@@ -174,8 +176,14 @@ router.post('/add-data-2', function(req, res) {
 })
 
 router.post('/save-data-2', function(req) {
-  let body = req.body
+  const data = req.body.data
   console.log(body.data);
+  MoTaModel.add(data, function(err, description) {
+    if (err) {
+      console.log(err);
+    }
+      console.log("done");
+  })   
 })
 
 router.post('/add-data-3', function(req) {
@@ -191,6 +199,18 @@ router.post('/delete-data-3', function(req) {
 router.post('/save-data-3', function(req) {
   let body = req.body
   console.log(body.data);
+})
+
+router.post('/add-data-5', function(req, res) {
+  let data = req.body.data
+  
+  Model5.add(data, function(err, description) {
+    if (err) {
+      res.end("0");
+    }
+    console.log("done");
+    res.end("1");
+  })   
 })
 
 module.exports = router;

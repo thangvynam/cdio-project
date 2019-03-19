@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { Element } from 'react-scroll';
 
 import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';
@@ -13,8 +12,8 @@ class Layout5 extends Component {
                     <div className="col-sm-1" >
                     </div>
                     <div className="col-sm-11" >
-                        <br/>
-                        <h2 style={{textAlign: "center"}}>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h2>
+                        <br />
+                        <h2 style={{ textAlign: "center" }}>DANH SÁCH KẾ HOẠCH GIẢNG DẠY LÝ THUYẾT</h2>
                         <MainForm />
                         <br />
                         <Tooltip placement="topLeft">
@@ -22,9 +21,8 @@ class Layout5 extends Component {
 ra chi tiết tương ứng với mỗi chủ đề, <br /> các hoạt động dạy và học gợi ý, các hoạt động đánh giá nếu có)</Button>
                         </Tooltip>
                         <br />
-                        <Element name="test1" className="element" >
-                            <TableItem />
-                        </Element>
+                        <TableItem />
+                        
                     </div>
                 </div>
             </div>

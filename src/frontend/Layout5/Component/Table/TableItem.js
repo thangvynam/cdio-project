@@ -10,7 +10,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 
 import {
   DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
-  SAVE_DATA_LAYOUT_5
+  SAVE_DATA_LAYOUT_5 , ADD_DATA_LAYOUT_5
 } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea";
 
@@ -161,8 +161,8 @@ class EditableCell extends React.Component {
         <Option key={standard_item[i]}>{standard_item[i]}</Option>
       );
     }
-    
-    
+
+
     switch (this.props.dataIndex) {
       case "titleName":
         return <TextArea rows={4} style={{ width: "100%" }} />;
@@ -182,7 +182,7 @@ class EditableCell extends React.Component {
       case "teachingActs":
         return (
           <Select
-           
+
             mode="tags"
             style={{ width: "100%" }}
             placeholder="Chọn hoạt động"
@@ -207,7 +207,7 @@ class EditableCell extends React.Component {
       default:
         return <Input />;
     }
-    
+
   }
   render() {
     const {
@@ -314,7 +314,7 @@ class TableItem extends Component {
                       onClick={() => this.save(form, record.key)}
                       style={{ marginRight: 8 }}
                     >
-                      Save
+                      Lưu
                     </a>
                   )}
                 </EditableContext.Consumer>
@@ -322,17 +322,17 @@ class TableItem extends Component {
                   title="Hủy bỏ?"
                   onConfirm={() => this.cancel(record.key)}
                 >
-                  <a href="#a">Cancel</a>
+                  <a href="#a">Hủy</a>
                 </Popconfirm>
               </span>
             ) : (
-                <a href="#a" onClick={() => this.props.handleEdit(record.key)}>Edit</a>
+                <a href="#a" onClick={() => this.props.handleEdit(record.key)}>Sửa</a>
               )}
             {!editable ? <Divider type="vertical" /> : null}
             {!editable
               ? (
                 <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.props.handleDelete(record.key)}>
-                  <a href="#a">Delete</a>
+                  <a href="#a">Xóa</a>
                 </Popconfirm>
               ) : null}
           </div>
@@ -343,7 +343,7 @@ class TableItem extends Component {
   };
   moveRow = (dragIndex, hoverIndex) => {
     let data = this.props.itemLayout5Reducer.previewInfo;
-    
+
     const dragRow = data[dragIndex];
 
     data[dragIndex] = data[hoverIndex];
@@ -435,10 +435,10 @@ class TableItem extends Component {
         let uniqueArr = arr.filter(this.onlyUnique)
         index.standActs = uniqueArr;
       })
-      
+
       this.props.handleSave(newData);
       //this.setState({ editingKey: "" });
-      
+
     });
   }
 
@@ -449,22 +449,16 @@ class TableItem extends Component {
 
     this.props.itemLayout5Reducer.changeEditStateState == ""
       ? (components = {
-          body: {
-            row: DragableBodyRow
-          }
-        })
+        body: {
+          row: DragableBodyRow
+        }
+      })
       : (components = {
-          body: {
-            row: EditableFormRow,
-            cell: EditableCell
-          }
-        });
-    // const components = {
-    //   body: {
-    //     row: EditableFormRow,
-    //     cell: EditableCell,
-    //   },
-    // };
+        body: {
+          row: EditableFormRow,
+          cell: EditableCell
+        }
+      });
     const columns = this.columns.map(col => {
       if (!col.editable) {
         return col;
@@ -480,7 +474,7 @@ class TableItem extends Component {
       };
     });
 
-    
+
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -513,12 +507,16 @@ class TableItem extends Component {
           onRow={
             this.props.itemLayout5Reducer.changeEditStateState === ""
               ? (record, index) => ({
-                  index,
-                  moveRow: this.moveRow
-                })
+                index,
+                moveRow: this.moveRow
+              })
               : null
           }
         />
+        <Button type="primary" onClick={ () => this.props.saveData()} className="submit_All">
+          Lưu
+        </Button>
+
       </div>
 
     );
@@ -538,9 +536,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
       dispatch({ type: DELETE_DATA_LAYOUT_5, key: key });
     },
     handleSave: (data) => {
-      dispatch({ type: SAVE_DATA_LAYOUT_5, data: data, key: '' })
+      dispatch({ type: SAVE_DATA_LAYOUT_5, data: data, key: 'abc' })
     },
+    saveData : () => {
+      dispatch({ type: ADD_DATA_LAYOUT_5});
     
+    }
+
 
   }
 }

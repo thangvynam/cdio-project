@@ -13,9 +13,9 @@ const initialState = {
             }
             ],
     },
-    "metrics": {
-        name: "METRICS",
-        "metrics": [
+    "matrix": {
+        name: "MATRIX",
+        "matrix": [
         {
             id: "003",
             title: "Mạng máy tính",

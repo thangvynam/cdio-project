@@ -171,7 +171,7 @@ router.post('/add-data-2', function(req, res) {
     if (err) {
       console.log(err);
     }
-      console.log("done");
+
   })   
 })
 
@@ -182,7 +182,6 @@ router.post('/save-data-2', function(req) {
     if (err) {
       console.log(err);
     }
-      console.log("done");
   })   
 })
 
@@ -204,12 +203,13 @@ router.post('/save-data-3', function(req) {
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
   
-  Model5.add(data, function(err, description) {
-    if (err) {
-      res.end("0");
+  Model5.add(data, function(err) {
+    if(err == null){
+      res.end("1")
+    }else{
+      res.end("0")
     }
-    console.log("done");
-    res.end("1");
+   
   })   
 })
 

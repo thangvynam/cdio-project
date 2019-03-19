@@ -62,16 +62,18 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
                 evalActs:action.evalActs
             }
         case ADD_DATA_LAYOUT_5:{
-            axios.post('/add-data-5', { data: state.previewInfo }).then(res => {
-                console.log(res.data);
-                return{
-                    ...state,
-                    result:1
-                }
-            })
-            
+            let temp = "";
+            axios.post('/add-data-5', { data: state.previewInfo })
+                .then(res => {
+                    temp =res.data;
+                })
+                .then(()=>{
+                    return{
+                        ...state,
+                        result:temp
+                    }
+                })
         }
-            
         default:
             return state
     }

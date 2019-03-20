@@ -6,7 +6,9 @@ const hbs = require('handlebars');
 const path = require('path');
 const moment = require('moment');
 
-const MoTaModel = require('../models/MoTaModel');
+const MoTaModel = require('../models/MoTaModel')
+const ThongTinChungModel = require('../models/ThongTinChungModel')
+const Model4 = require('../models/Model4');
 const Model5 = require('../models/Model5');
 const Model9 = require('../models/Model9');
 const Model6 = require('../models/Model6');
@@ -168,6 +170,27 @@ router.post('/exportfile', function(req, res, next) {
     
   })
 
+  router.get('/collect-data-1', function(req, res) {
+    ThongTinChungModel.collect(function(err, data) {
+      if (err) {
+        console.log(err);
+      } else{
+        res.send(data)
+      }   
+    })   
+  })
+
+  router.post('/add-data-1', function(req, res) {
+    let description = req.body.data;
+    ThongTinChungModel.add(description, function(err, description){
+      if (err) {
+        console.log(err);
+      }
+        console.log("done");
+    })
+    
+  })
+
 router.post('/add-data-2', function(req, res) {
   let description = req.body.data
   MoTaModel.add(description, function(err, description) {
@@ -201,6 +224,16 @@ router.post('/delete-data-3', function(req) {
 router.post('/save-data-3', function(req) {
   let body = req.body
   console.log(body.data);
+})
+
+router.post('/add-data-4', function(req, res) {
+  let data = req.body.data
+  Model4.add(data, function(err, description) {
+    if (err) {
+      console.log(err);
+    }
+      console.log("done");
+  })   
 })
 
 router.post('/add-data-5', function(req, res) {
@@ -239,7 +272,6 @@ router.post('/add-data-6', function(req, res) {
     res.end("1");
   })   
 })
-
 
 
 module.exports = router;

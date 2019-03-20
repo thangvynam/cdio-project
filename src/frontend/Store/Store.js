@@ -10,7 +10,10 @@ import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import { subjectListReducer, subjectIdReducer } from '../Reducers/subjectListReducer';
 
-
+import { createStore, applyMiddleware} from 'redux';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
+const middleware = [ thunk, logger ];
 var redux = require("redux");
 
 const allReducers = redux.combineReducers({
@@ -33,5 +36,5 @@ const allReducers = redux.combineReducers({
     subjectlist: subjectListReducer,
     subjectid: subjectIdReducer
 });
-var store1 = redux.createStore(allReducers);
+const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

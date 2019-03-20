@@ -1,19 +1,7 @@
 import * as Types from '../Constant/thong-tin-chung/actionTypes';
 
 const initialState = {
-    previewInfo: [
-        {
-            tenMonHocTV: 'Nhập môn Công nghệ phần mềm',
-            tenMonHocTA: 'Introduction to Software Engineering',
-            maMonHoc: 'CSC13002',
-            khoiKienThuc: 'Chuyên ngành',
-            soTinChi: 4,
-            tietLyThuyet: 45,
-            tietThucHanh: 30,
-            tietTuHoc: 90,
-            monTienQuyet: 'Không'
-        }
-    ],
+    previewInfo: [],
     tempData: [{
         tenMonHocTV: '',
         tenMonHocTA: '',

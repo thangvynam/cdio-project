@@ -1,12 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import axios from 'axios';
 import {
   Form, Input, Card, Button, notification, Icon, Tooltip
 
 } from 'antd';
 import TableTTC from './table/tableTTC';
 import './thong-tin-chung.css'
-import { themThongTinChung, xoaThongTinChung, suaThongTinChung, addDataTemp } from './../Constant/thong-tin-chung/actions';
+import { collectDataRequest, themThongTinChung, xoaThongTinChung, suaThongTinChung, addDataTemp } from './../Constant/thong-tin-chung/actions';
+
 class ThongTinChung extends Component {
   constructor(props) {
     super(props)
@@ -14,6 +16,12 @@ class ThongTinChung extends Component {
       isHasData: false,
       isBtnEdit: false
     }
+  }
+
+  componentDidMount() {
+    console.log("component did mount");
+    
+    this.props.collectDataRequest()
   }
 
   handleSubmit = (e) => {
@@ -60,11 +68,47 @@ class ThongTinChung extends Component {
     })
   }
 
-  handleOnChange = (e)=>{
+  handleOnChange = (e) => {
     const tempData = {
       [e.target.name]: e.target.value
     }
     this.props.addDataTemp(tempData)
+  }
+
+  showButtonAll = () => {
+    if (this.props.dataTTC[0] === undefined) {
+      return (<Button disabled onClick={this.saveDB} type="primary" className="submit_All">
+        Save All
+        </Button>)
+    }
+    return (
+      <Button onClick={this.saveDB} type="primary" className="submit_All">
+        Save All
+        </Button>
+    )
+  }
+
+  saveDB = () => {
+    const data = {
+      ten_mon_hoc_tv: this.props.dataTTC[0].tenMonHocTV,
+      ten_mon_hoc_ta: this.props.dataTTC[0].tenMonHocTA,
+      ma_so: this.props.dataTTC[0].maMonHoc,
+      khoi_kien_thuc: this.props.dataTTC[0].khoiKienThuc,
+      so_tin_chi: this.props.dataTTC[0].soTinChi,
+      so_tiet_ly_thuyet: this.props.dataTTC[0].tietLyThuyet,
+      so_tiet_thuc_hanh: this.props.dataTTC[0].tietThucHanh,
+      so_tiet_tu_hoc: this.props.dataTTC[0].tietTuHoc,
+      cac_mon_hoc_tien_quyet: this.props.dataTTC[0].monTienQuyet
+    };
+    axios.post('/add-data-1', {
+      data
+    })
+      .then(function (response) {
+        console.log(response);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   }
 
   render() {
@@ -82,7 +126,7 @@ class ThongTinChung extends Component {
 
     const { isBtnEdit } = this.state;
     const { dataTTC, tempData } = this.props;
-    console.log(tempData[0]['tenMonHocTV'])
+
     return (
       <div className="container">
         <div className="row">
@@ -90,7 +134,7 @@ class ThongTinChung extends Component {
           <div className="col-sm-11" >
             <h1 style={{ textAlign: "center" }}>THÔNG TIN CHUNG</h1>
             <div className="card_TTC" >
-              <Form  onChange={this.handleOnChange} onSubmit={this.handleSubmit}>
+              <Form onChange={this.handleOnChange} onSubmit={this.handleSubmit}>
                 <Form.Item
                   {...formItemLayout}
                   label="Tên Môn Học (Tiếng Việt):">
@@ -118,7 +162,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: tempData[0]['tenMonHocTA'] !== '' ? tempData[0]['tenMonHocTA'] : '',
                   })(
-                    <Input   name="tenMonHocTA" type="text" />
+                    <Input name="tenMonHocTA" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -133,7 +177,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: tempData[0]['maMonHoc'] !== '' ? tempData[0]['maMonHoc'] : '',
                   })(
-                    <Input   name="maMonHoc" type="text" />
+                    <Input name="maMonHoc" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -148,7 +192,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: tempData[0]['khoiKienThuc'] !== '' ? tempData[0]['khoiKienThuc'] : '',
                   })(
-                    <Input   name="khoiKienThuc" type="text" />
+                    <Input name="khoiKienThuc" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -161,7 +205,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: tempData[0]['soTinChi'] !== -1 ? tempData[0]['soTinChi'] : '',
                   })(
-                    <Input   className="inputNumber" name="soTinChi" type="number" />
+                    <Input className="inputNumber" name="soTinChi" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -174,7 +218,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: tempData[0]['tietLyThuyet'] !== -1 ? tempData[0]['tietLyThuyet'] : '',
                   })(
-                    <Input   className="inputNumber" name="tietLyThuyet" type="number" />
+                    <Input className="inputNumber" name="tietLyThuyet" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -185,9 +229,9 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Practice Lessons!',
                       }],
-                    initialValue:tempData[0]['tietThucHanh'] !== -1 ? tempData[0]['tietThucHanh'] : '',
+                    initialValue: tempData[0]['tietThucHanh'] !== -1 ? tempData[0]['tietThucHanh'] : '',
                   })(
-                    <Input   className="inputNumber" name="tietThucHanh" type="number" />
+                    <Input className="inputNumber" name="tietThucHanh" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -200,7 +244,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: tempData[0]['tietTuHoc'] !== -1 ? tempData[0]['tietTuHoc'] : '',
                   })(
-                    <Input   className="inputNumber" name="tietTuHoc" type="number" />
+                    <Input className="inputNumber" name="tietTuHoc" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -213,9 +257,9 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input Prerequisite Subjects!',
                       }],
-                    initialValue:tempData[0]['monTienQuyet'] !== '' ? tempData[0]['monTienQuyet'] : '',
+                    initialValue: tempData[0]['monTienQuyet'] !== '' ? tempData[0]['monTienQuyet'] : '',
                   })(
-                    <Input   name="monTienQuyet" type="text" />
+                    <Input name="monTienQuyet" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item>
@@ -232,9 +276,9 @@ class ThongTinChung extends Component {
               toggleButton={this.toggleButton}
               toggleButtonDelete={this.toggleButtonDelete}
             />
-            <Button type="primary" className="submit_All">
-              Save All
-            </Button>
+
+            {this.showButtonAll()}
+
           </div>
         </div>
       </div>
@@ -245,7 +289,7 @@ class ThongTinChung extends Component {
 const mapStateToProps = (state) => {
   return {
     dataTTC: state.itemLayout1Reducer.previewInfo,
-    tempData: state.itemLayout1Reducer.tempData
+    tempData: state.itemLayout1Reducer.tempData,
   }
 }
 
@@ -254,7 +298,8 @@ const mapDispatchToProps = (dispatch) => {
     themThongTinChung: (newTTC) => dispatch(themThongTinChung(newTTC)),
     addDataTemp: (tempTTC) => dispatch(addDataTemp(tempTTC)),
     suaThongTinChung: (newTTC) => dispatch(suaThongTinChung(newTTC)),
-    xoaThongTinChung: () => dispatch(xoaThongTinChung())
+    xoaThongTinChung: () => dispatch(xoaThongTinChung()),
+    collectDataRequest: () => dispatch(collectDataRequest())
   }
 }
 

@@ -8,6 +8,9 @@ const moment = require('moment');
 
 const MoTaModel = require('../models/MoTaModel');
 const Model5 = require('../models/Model5');
+const Model9 = require('../models/Model9');
+const Model6 = require('../models/Model6');
+
 
 const dataRender1 ={
   title1 : '',
@@ -212,5 +215,31 @@ router.post('/add-data-5', function(req, res) {
     res.end("1");
   })   
 })
+
+router.post('/add-data-9', function(req, res) {
+  const data = req.body;
+  
+  Model9.add(data, function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    console.log("done");
+    res.end("1");
+  })   
+})
+
+router.post('/add-data-6', function(req, res) {
+  const data = req.body;
+  
+  Model6.add(data, function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    console.log("done");
+    res.end("1");
+  })   
+})
+
+
 
 module.exports = router;

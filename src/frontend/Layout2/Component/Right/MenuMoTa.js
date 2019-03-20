@@ -59,7 +59,10 @@ class MenuMota extends Component {
 
                     <Form.Item {...tailFormItemLayout}>
                         <div>
-                            <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
+                            <Button type="primary" onClick={() => { 
+                                this.props.itemLayout2Reducer.tempInfo = ''
+                                this.props.saveAndContinue() ;
+                                }} style={{ marginLeft: "2em" }}>
                                 Continue<Icon type="right" />
                             </Button>
                         </div>

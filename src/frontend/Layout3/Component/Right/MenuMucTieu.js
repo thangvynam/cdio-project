@@ -149,7 +149,12 @@ class MenuMucTieu extends Component {
                     <Form.Item {...tailFormItemLayout}>
                         <div>
                             {this.renderBackButton()}
-                            <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
+                            <Button type="primary" onClick={() => { 
+                                this.props.itemLayout3Reducer.tempInfo.objectName =""
+                                this.props.itemLayout3Reducer.tempInfo.description =""
+                                this.props.itemLayout3Reducer.tempInfo.standActs = []
+                                this.props.saveAndContinue() 
+                                }} style={{ marginLeft: "2em" }}>
                                 Continue<Icon type="right" />
                             </Button>
                             <br/>

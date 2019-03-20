@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal } from 'antd';
 import { connect } from 'react-redux';
-import { SAVE_DATA_LAYOUT_2 } from '../../../Constant/ActionType';
+import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2 } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
+import axios from 'axios';
 
 const FormItem = Form.Item
 const EditableContext = React.createContext();
@@ -56,9 +57,9 @@ class TableItem extends Component {
   constructor(props){
     super(props)
     this.state = { 
-      data: this.props.itemLayout2Reducer.previewInfo, 
+      data: '', 
       editingKey: '',
-      selectedRowKeys: []
+      selectedRowKeys: [],
     };
     this.columns = [{
       title: 'Mô tả môn học',
@@ -85,7 +86,7 @@ class TableItem extends Component {
                 <EditableContext.Consumer>
                   {form => (
                     <a
-                      href="#;"
+                      href="#"
                       onClick={() => this.save(form, record.key)}
                       style={{ marginRight: 8 }}
                     >
@@ -112,6 +113,11 @@ class TableItem extends Component {
       },
     }];
   }
+
+//   async componentWillMount(){
+//     let temp = await this.getData();
+//     this.setState({data: temp})
+//   }
 
   isEditing = record => record.key === this.state.editingKey;
 
@@ -177,6 +183,12 @@ class TableItem extends Component {
 
       return (
         <div>
+          <br />
+           <Button
+            onClick={this.props.saveAll}
+          >
+            Save all
+          </Button>
           <Table
             components={components}
             bordered
@@ -199,6 +211,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     handleSave: (data) => {            
       dispatch({type: SAVE_DATA_LAYOUT_2, data: data})
+    },
+    saveAll: () => {
+      dispatch({type: SAVE_ALL_DATA_LAYOUT_2})
     }
   }
 }

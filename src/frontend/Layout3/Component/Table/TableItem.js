@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input } from 'antd';
 import { connect } from 'react-redux';
-import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
+import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
 
 const { Option } = Select;
@@ -321,7 +321,12 @@ class TableItem extends Component {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
-        </div>
+           <Button style={{float: "right"}}
+            onClick={this.props.saveAll}
+          >
+            Save all
+          </Button>
+          </div>  
           <Table
             components={components}
             bordered
@@ -348,6 +353,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     handleSave: (data, key) => {
       dispatch({type: SAVE_DATA_LAYOUT_3, data, key})
+    },
+    saveAll: () => {
+      dispatch({type: SAVE_ALL_DATA_LAYOUT_3})
     }
   }
 }

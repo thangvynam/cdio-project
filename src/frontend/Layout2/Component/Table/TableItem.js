@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal } from 'antd';
 import { connect } from 'react-redux';
-import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2 } from '../../../Constant/ActionType';
+import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2 } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
 import axios from 'axios';
 
@@ -114,10 +114,20 @@ class TableItem extends Component {
     }];
   }
 
-//   async componentWillMount(){
-//     let temp = await this.getData();
-//     this.setState({data: temp})
-//   }
+  async getData() {
+    return axios.get('/get-data-2').then(res => {
+        return res.data
+    }).then(resp => {
+        return resp.noi_dung;
+    })
+}
+
+  async componentDidMount(){
+    let temp = await this.getData();
+    console.log(temp);
+    
+    this.props.saveAndContinue(temp);
+  }
 
   isEditing = record => record.key === this.state.editingKey;
 
@@ -143,6 +153,7 @@ class TableItem extends Component {
           ...newData.key,
           ...row,
         });
+        console.log(newData);
         this.props.handleSave(newData);
         this.setState({ editingKey: "" });
     });
@@ -150,6 +161,8 @@ class TableItem extends Component {
 
   setIndexForItem = () => {
     let des = []; 
+    // console.log(this.props.itemLayout2Reducer.previewInfo);
+    
     let temp = {
       key: 0,
       description: this.props.itemLayout2Reducer.previewInfo,
@@ -214,7 +227,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     saveAll: () => {
       dispatch({type: SAVE_ALL_DATA_LAYOUT_2})
-    }
+    },
+    saveAndContinue: (description) => {
+      dispatch({ type: ADD_DATA_LAYOUT_2, description });         
+  }
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TableItem);

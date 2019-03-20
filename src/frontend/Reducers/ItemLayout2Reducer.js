@@ -1,14 +1,6 @@
 import {ADD_DATA_LAYOUT_2, SAVE_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2} from '../Constant/ActionType';
 import axios from 'axios';
 
-  async function getData() {
-    return axios.get('/get-data-2').then(res => {
-        return res.data
-    }).then(resp => {
-        return resp.noi_dung;
-    })
-}
-
 const itemLayout2InitialState = {
     previewInfo: '',
     tempInfo: ''

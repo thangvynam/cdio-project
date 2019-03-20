@@ -4,7 +4,7 @@ var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
   password : 'rootroot',
-  database : 'mydb'
+  database : 'syllabusdb'
 });
 connection.connect()
 

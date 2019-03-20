@@ -6,6 +6,7 @@ const hbs = require('handlebars');
 const path = require('path');
 const moment = require('moment');
 const MoTaModel = require('../models/MoTaModel')
+const MucTieuModel = require('../models/MucTieuModel')
 
 const dataRender1 ={
   title1 : '',
@@ -163,34 +164,53 @@ router.post('/exportfile', function(req, res, next) {
     
   })
 
-router.post('/add-data-2', function(req, res) {
+router.get('/get-data-2', (req, res) => {
+  MoTaModel.get((data) => {
+    res.send(data)
+  })
+})
+
+// router.post('/add-data-2', function(req, res) {
+//   let description = req.body.data
+//   MoTaModel.add(description, function(err, description) {
+//     if (err) {
+//       console.log(err);
+//     }
+//       res.end("done");
+//   })   
+// })
+
+router.post('/save-data-2', function(req, res) {
   let description = req.body.data
-  MoTaModel.add(description, function(err, description) {
+  MoTaModel.save(description, function(err, description) {
     if (err) {
       console.log(err);
     }
-      console.log("done");
-  })   
+      res.end("done");
+  }) 
 })
 
-router.post('/save-data-2', function(req) {
-  let body = req.body
-  console.log(body.data);
-})
+// router.post('/add-data-3', function(req) {
+//   let body = req.body
+//   console.log(body.data);
+// })
 
-router.post('/add-data-3', function(req) {
-  let body = req.body
-  console.log(body.data);
-})
+// router.post('/delete-data-3', function(req) {
+//   let body = req.body
+//   console.log(body.data);
+// })
 
-router.post('/delete-data-3', function(req) {
-  let body = req.body
-  console.log(body.data);
-})
-
-router.post('/save-data-3', function(req) {
-  let body = req.body
-  console.log(body.data);
+router.post('/save-data-3', function(req, res) {
+  let body = req.body.data
+  body.forEach(element => {
+    console.log(element);
+    MucTieuModel.save(element, function(err) {
+      if (err) {
+        console.log(err);
+      }
+    }) 
+  });
+  
 })
 
 module.exports = router;

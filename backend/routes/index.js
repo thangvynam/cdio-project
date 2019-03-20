@@ -5,8 +5,14 @@ const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path');
 const moment = require('moment');
+
 const MoTaModel = require('../models/MoTaModel')
 const ThongTinChungModel = require('../models/ThongTinChungModel')
+const Model4 = require('../models/Model4');
+const Model5 = require('../models/Model5');
+const Model9 = require('../models/Model9');
+const Model6 = require('../models/Model6');
+
 
 const dataRender1 ={
   title1 : '',
@@ -191,13 +197,18 @@ router.post('/add-data-2', function(req, res) {
     if (err) {
       console.log(err);
     }
-      console.log("done");
+
   })   
 })
 
 router.post('/save-data-2', function(req) {
-  let body = req.body
+  const data = req.body.data
   console.log(body.data);
+  MoTaModel.add(data, function(err, description) {
+    if (err) {
+      console.log(err);
+    }
+  })   
 })
 
 router.post('/add-data-3', function(req) {
@@ -224,5 +235,43 @@ router.post('/add-data-4', function(req, res) {
       console.log("done");
   })   
 })
+
+router.post('/add-data-5', function(req, res) {
+  let data = req.body.data
+  
+  Model5.add(data, function(err) {
+    if(err == null){
+      res.end("1")
+    }else{
+      res.end("0")
+    }
+   
+  })   
+})
+
+router.post('/add-data-9', function(req, res) {
+  const data = req.body;
+  
+  Model9.add(data, function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    console.log("done");
+    res.end("1");
+  })   
+})
+
+router.post('/add-data-6', function(req, res) {
+  const data = req.body;
+  
+  Model6.add(data, function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    console.log("done");
+    res.end("1");
+  })   
+})
+
 
 module.exports = router;

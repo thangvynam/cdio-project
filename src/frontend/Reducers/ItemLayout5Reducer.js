@@ -1,5 +1,7 @@
+import axios from 'axios';
+
 import {ADD_DATA,DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5,
-        SAVE_DATA_LAYOUT_5,CHANGE_DATA} from '../Constant/ActionType';
+        SAVE_DATA_LAYOUT_5,CHANGE_DATA,ADD_DATA_LAYOUT_5} from '../Constant/ActionType';
 
 const itemMenuInitialState = {
     previewInfo: [
@@ -22,7 +24,8 @@ const itemMenuInitialState = {
     titleName : '',
     teachingActs :[],
     standardOutput:[],
-    evalActs:[]
+    evalActs:[],
+    result:-1
 
 }
 
@@ -51,7 +54,6 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
                 previewInfo: action.data,changeEditStateState:action.key
             }
         case CHANGE_DATA :
-            console.log(action.evalActs)
             return {
                 ...state,
                 titleName:action.titleName,
@@ -59,6 +61,19 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
                 standardOutput:action.standardOutput,
                 evalActs:action.evalActs
             }
+        case ADD_DATA_LAYOUT_5:{
+            let temp = "";
+            axios.post('/add-data-5', { data: state.previewInfo })
+                .then(res => {
+                    temp =res.data;
+                })
+                .then(()=>{
+                    return{
+                        ...state,
+                        result:temp
+                    }
+                })
+        }
         default:
             return state
     }

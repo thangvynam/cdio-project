@@ -144,7 +144,7 @@ class ItemMenu extends Component {
         }
        
     }
-    
+   
     displayRender = label => {
         
         if (isSubmit) {
@@ -186,14 +186,6 @@ class ItemMenu extends Component {
         e.preventDefault();
         this.props.prevStep();
     }
-    renderBackButton() {
-        if (this.props.step !== 0) {
-            return (
-                <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link>
-            )
-        }
-        return null;
-    }
     handleInputChange = (e) => {
         titleName = e.target.value;
         this.props.onChangeData(titleName, teachingActs_data, standardOutput_data, evalActs_data);
@@ -208,6 +200,7 @@ class ItemMenu extends Component {
             );
         }
     }
+
     render() {
 
         const { getFieldDecorator } = this.props.form;
@@ -360,7 +353,7 @@ class ItemMenu extends Component {
 
                         <Form.Item {...tailFormItemLayout}>
                             <div>
-                                {this.renderBackButton()}
+                               
                                 <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
                                     Continue<Icon type="right" />
                                 </Button>

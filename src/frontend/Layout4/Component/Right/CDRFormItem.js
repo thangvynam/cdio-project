@@ -10,6 +10,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem } from '../../../Constant/ActionType';
 import './1.css';
+import axios from 'axios';
+
 const formItemLayout = {
   labelCol: {
     xs: { span: 12 },
@@ -472,7 +474,13 @@ class CDRFormItem extends Component {
             //     }
             //   }
             // }
-            
+            const postData = {
+              cdr: `${this.props.cdrdata.cdr}.${index}`,
+              level_verb: level_verb,
+              description: description,
+              levels: this.props.cdrdata.levels
+            }
+            axios.post('/add-data-4', { data: postData })
             message.info("Thêm thành công!");
             this.props.onChangeCDRData({
               cdr: "",

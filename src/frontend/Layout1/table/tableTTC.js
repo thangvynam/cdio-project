@@ -40,7 +40,7 @@ class tableTTC extends Component {
 
     handleUpdateData = (e) => {
         this.setState({
-            [e.target.name]: e.target.type==='number'? e.target.value*1 : e.target.value
+            [e.target.name]: e.target.type === 'number' ? e.target.value * 1 : e.target.value
         })
     }
 
@@ -50,13 +50,14 @@ class tableTTC extends Component {
         let newData = _.cloneDeep(this.props.dataTTC[0]);
         if (_.isUndefined(c)) {
             const arrTTC = _.map(_.toPairs(this.state), d => _.fromPairs([d]));
-            arrTTC.forEach((x)=>{
+            arrTTC.forEach((x) => {
                 const key = Object.keys(x)[0];
                 const value = Object.values(x)[0];
-                
+
                 _.set(newData, key, value)
             })
             this.props.suaThongTinChung(newData);
+            this.props.toggleButton();
             this.setState({
                 isEdit: false
             })
@@ -94,7 +95,6 @@ class tableTTC extends Component {
                     ? <span>
                         <a href="javascript:;" onClick={this.suaTTC}>Edit</a>
                         <Divider type="vertical" />
-                        <a href="javascript:;" onClick={this.xoaTTC}>Delete</a>
                     </span>
                     : <span>
                         <a href="javascript:;" onClick={this.save}>Save</a>

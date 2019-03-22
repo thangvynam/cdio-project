@@ -15,6 +15,8 @@ import { connect } from "react-redux";
 import { addItemKHGDTH, changeTempKHGDTH } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
+import axios from "axios";
+
 
 const { Option } = Select;
 const standard_item = [
@@ -129,26 +131,48 @@ const standard_item = [
     ]
   }
 ];
-const teachingActs = [
-  "Thuyết giảng",
-  "Demo",
-  "Thảo luận và trả lời thắc mắc trên diễn đàn môn học"
-];
-const evalActs = ["BTVN", "BTTL", "DAMH"];
+
+const evalActs = ["BTVN#1", "BTTL#1", "DAMH#1"];
 
 class ItemMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      titleName: "",
-      teachingActs: [],
-      standardOutput: [],
-      evalActs: [],
+      // titleName: "",
+      teachingActs: new Map(),
+      // standardOutput: [],
+      // evalActs: [],
       isRedirectTab7: false
     };
 
     this.isSubmit = false;
   }
+
+  componentWillMount(){ 
+
+    console.log("aaaaa");
+
+    this.onGetTeachingActs();
+
+  }
+
+
+  onGetTeachingActs = ()=>{
+    axios.get("/get-teachingarts").then(response=>{
+      const data= response.data;
+      let map = new Map();
+      data.forEach((item,index)=>{
+        map.set(item.hoat_dong,item.id);
+      })
+
+      this.setState({teachingActs:map});
+
+
+    })
+  }
+
+
+
 
   onChangeStandar = value => {
     if (value.length === 0) return;
@@ -262,7 +286,7 @@ class ItemMenu extends Component {
 
   checkRedirect = () => {
     if (this.state.isRedirectTab7)
-      return <Redirect to="/de-cuong-mon-hoc/danh-gia" />;
+      return <Redirect to="danh-gia" />;
   };
 
   displayRender = label => {
@@ -275,6 +299,14 @@ class ItemMenu extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
+
+    var teachingActs = [];
+    const aa = this.state.teachingActs;
+
+    for(const arts of aa.keys()){
+      teachingActs.push(arts);
+    }
+
 
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
@@ -397,7 +429,7 @@ class ItemMenu extends Component {
                 initialValue: this.props.itemKHGDTH.tempInfo.evalActs
               })(
                 <Select
-                  mode="tags"
+                  mode="multiple"
                   style={{ width: "100%" }}
                   placeholder="Chọn hoạt động"
                   onChange={value => this.handleChangeEvalActs(value)}

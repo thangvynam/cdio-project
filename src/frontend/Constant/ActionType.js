@@ -31,6 +31,7 @@ export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
 export const DELETE_ITEM_RULE = 'DELETE_ITEM_RULE';
 export const UPDATE_RULES = 'UPDATE_RULES';
 export const CHANGE_TEMP_RULES = 'CHANGE_TEMP_RULES';
+export const CHANGE_ISLOADED_RULES = 'CHANGE_ISLOADED_RULES';
 
 //layout 7
 export const ADD_DGDATA = 'ADD_DGDATA';
@@ -146,6 +147,12 @@ export function changeTempRules(newTemp){
     return{
         type: CHANGE_TEMP_RULES,
         data: newTemp,
+    }
+}
+export function changeIsLoadedRules(newIsLoaded){
+    return{
+        type: CHANGE_ISLOADED_RULES,
+        data: newIsLoaded,
     }
 }
 

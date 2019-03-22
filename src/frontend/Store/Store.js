@@ -11,9 +11,11 @@ import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import { subjectListReducer, subjectIdReducer } from '../Reducers/subjectListReducer';
 
 import { createStore, applyMiddleware} from 'redux';
-import logger from 'redux-logger';
+// import logger from 'redux-logger';
 import thunk from 'redux-thunk';
-const middleware = [ thunk, logger ];
+//const middleware = [ thunk, logger ];
+const middleware = [ thunk];
+
 var redux = require("redux");
 
 const allReducers = redux.combineReducers({

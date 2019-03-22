@@ -336,16 +336,28 @@ router.post('/add-data-5', function(req, res) {
 })
 
 router.post('/add-data-9', function(req, res) {
-  const data = req.body;
+  const body = req.body;
   
-  Model9.add(data, function(err, result) {
+  Model9.add(body, function(err, result) {
     if (err) {
       res.end("0");
     }
-    console.log("done");
     res.end("1");
   })   
 })
+/* get data layout 9 */ 
+router.get('/get-data-9', function(req, res) {
+  
+  Model9.get(function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
+})
+
+
+
 
 router.post('/add-data-6', function(req, res) {
   const data = req.body;
@@ -356,6 +368,18 @@ router.post('/add-data-6', function(req, res) {
     }
     console.log("done");
     res.end("1");
+  })   
+})
+
+/* get teaching arts for layout 5+6*/ 
+router.get('/get-teachingarts', function(req, res) {
+  
+  Model6.getTeachingArts(function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    console.log("done");
+    res.end(JSON.stringify(result));
   })   
 })
 

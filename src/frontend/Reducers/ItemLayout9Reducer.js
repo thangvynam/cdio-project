@@ -2,8 +2,10 @@ import {
   ADD_ITEM_RULE,
   DELETE_ITEM_RULE,
   UPDATE_RULES,
-  CHANGE_TEMP_RULES
+  CHANGE_TEMP_RULES,
+  CHANGE_ISLOADED_RULES
 } from "../Constant/ActionType";
+import axios from "axios";
 
 const initialState = {
   previewInfo: [
@@ -11,19 +13,14 @@ const initialState = {
       content:
         "Sinh viên cần tuân thủ nghiêm túc các nội quy và quy định của Khoa và Trường."
     },
-    {
-      content:
-        "Đối với bất kỳ sự gian lận nào trong quá trình làm bài tập hay bài thi, sinh viên phải chịu mọi hình thức kỷ luật của Khoa/Trường và bị 0 điểm cho môn học này."
-    },
-    {
-      content:
-        "Sinh viên không được vắng quá 3 buổi trên tổng số các buổi học lý thuyết."
-    }
   ],
   tempInfo:{
     content:'',
-  }
+  },
+  isLoaded:false
 };
+
+
 const itemLayout9Reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM_RULE:
@@ -46,6 +43,12 @@ const itemLayout9Reducer = (state = initialState, action) => {
         return{
           ...state,
           tempInfo:action.data
+        }
+      }
+      case CHANGE_ISLOADED_RULES:{
+        return{
+          ...state,
+          isLoaded:action.data
         }
       }
 

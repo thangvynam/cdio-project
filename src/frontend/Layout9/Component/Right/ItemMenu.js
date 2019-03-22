@@ -10,23 +10,7 @@ import TextArea from "antd/lib/input/TextArea";
 class ItemMenu extends Component {
  
 
-  renderBackButton() {
-    if (this.props.step !== 0) {
-      return (
-        <Link
-          activeClass="active"
-          className="test1"
-          to="test1"
-          spy={true}
-          smooth={true}
-          duration={500}
-        >
-          <Button type="danger">Finish</Button>
-        </Link>
-      );
-    }
-    return null;
-  }
+ 
   handleSubmit = () => {
     let content = this.props.itemRule.tempInfo.content;
     if (content.length === 0) {
@@ -93,14 +77,13 @@ class ItemMenu extends Component {
 
           <Form.Item {...tailFormItemLayout}>
             <div>
-              {this.renderBackButton()}
               <Button
                 type="primary"
                 onClick={this.handleSubmit}
                 style={{ marginLeft: "2em" }}
               >
-                Continue
-                <Icon type="right" />
+                Thêm
+                <Icon type="plus" />
               </Button>
               <br />
             </div>

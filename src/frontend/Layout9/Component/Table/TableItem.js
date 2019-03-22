@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import { Table, Divider, Button, Modal, Popconfirm, Form } from "antd";
+import { Table, Divider, Button, Modal, Popconfirm, Form,notification } from "antd";
 import { connect } from "react-redux";
-import { deleteItemRule, updateRules } from "../../../Constant/ActionType";
+import { deleteItemRule, updateRules, changeIsLoadedRules } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import TextArea from "antd/lib/input/TextArea";
+import axios from "axios";
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -32,7 +33,7 @@ class EditableCell extends React.Component {
           return (
             <td {...restProps}>
               {editing ? (
-                <FormItem style={{ margin: 0}} >
+                <FormItem style={{ margin: 0 }}>
                   {getFieldDecorator(dataIndex, {
                     rules: [
                       {
@@ -66,7 +67,7 @@ class TableItem extends Component {
         editable: true
       },
       {
-        title: "Action",
+        title: "Thao tác",
         key: "action",
         render: (text, record) => {
           const editable = this.isEditing(record);
@@ -82,7 +83,7 @@ class TableItem extends Component {
                         onClick={() => this.onSaveEdit(form, record.key)}
                         style={{ marginRight: 8 }}
                       >
-                        Save
+                        Lưu
                       </a>
                     )}
                   </EditableContext.Consumer>
@@ -90,20 +91,20 @@ class TableItem extends Component {
                     title="Xác nhận hủy?"
                     onConfirm={() => this.onCancelEdit(record.key)}
                   >
-                    <a href="#a">Cancel</a>
+                    <a href="#a">Hủy</a>
                   </Popconfirm>
                 </span>
               ) : (
                 <span>
                   <a onClick={() => this.handleEdit(record.key)} href="#a">
-                    Edit
+                    Sửa
                   </a>
                   <Divider type="vertical" />
                   <Popconfirm
                     title="Xác nhận xóa?"
                     onConfirm={() => this.handleDelete(record.key)}
                   >
-                    <a href="#a">Delete</a>
+                    <a href="#a">Xóa</a>
                   </Popconfirm>
                 </span>
               )}
@@ -199,6 +200,48 @@ class TableItem extends Component {
     return itemRuleTable;
   };
 
+  onSaveAll = ()=>{
+
+    let body = {};
+    body.thong_tin_chung_id = 1;
+    body.data = this.props.itemRule.previewInfo;
+
+
+     axios.post("/add-data-9", body)
+     .then(response => {
+       if(response.data === 1){
+        notification["success"]({
+          message: "Cập nhật thành công",
+          duration: 1
+        });
+       }
+       else{
+        notification["error"]({
+          message: "Cập nhật thất bại",
+          duration: 1
+        });
+       }
+     });
+    
+  }
+
+  componentWillMount() {
+    if (!this.props.itemRule.isLoaded) {
+      axios.get("/get-data-9").then(response => {
+        const data = response.data;
+        let array = [];
+        data.forEach((item, index) => {
+          let temp = {
+            content: item.noi_dung
+          };
+          array.push(temp);
+        });
+        this.props.onUpdateRules(array);
+        this.props.onChangeIsLoaded(true);
+      });
+    }
+  }
+
   render() {
     const components = {
       body: {
@@ -236,12 +279,16 @@ class TableItem extends Component {
             onClick={this.showModal}
             disabled={!hasSelected}
           >
-            Delete
+            Xóa
           </Button>
 
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
+
+          <Button style={{ float: "right" }} type="primary" onClick={this.onSaveAll}>
+            Lưu thay đổi
+          </Button>
         </div>
         <Table
           components={components}
@@ -250,7 +297,7 @@ class TableItem extends Component {
           columns={columns}
           rowClassName="editable-row"
           dataSource={this.setIndexForItem()}
-          style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
+          style={{ wordWrap: "break-word", whiteSpace: "pre-line" }}
         />
       </div>
     );
@@ -266,7 +313,8 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       onDeleteItemRule: deleteItemRule,
-      onUpdateRules: updateRules
+      onUpdateRules: updateRules,
+      onChangeIsLoaded:changeIsLoadedRules,
     },
     dispatch
   );

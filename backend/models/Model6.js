@@ -10,7 +10,7 @@ Model6.add = (data, result) => {
         (err, res) => {
           if (err) {
               console.log("error:", err);
-              result(err,null)
+              return result(err,null);
           } else {
               let id = res.insertId;
 
@@ -20,7 +20,7 @@ Model6.add = (data, result) => {
                 (err, res) => {
                   if (err) {
                       console.log("error:", err);
-                      result(err,null)
+                      return result(err,null);
 
                   }
                   })
@@ -33,7 +33,7 @@ Model6.add = (data, result) => {
               (err, res) => {
                 if (err) {
                     console.log("error:", err);
-                    result(err,null)
+                    return result(err,null);
                 }
                 })
               
@@ -45,27 +45,38 @@ Model6.add = (data, result) => {
               (err, res) => {
                 if (err) {
                     console.log("error:", err);
-                    result(err,null)
+                    return result(err,null);
                 }
                 })
               
             })
 
-            result(null,res);
+            return result(null,res);
 
 
 
             
           }
       })
-        
-
-
-
-
-        
+           
     });
     
+}
+
+
+Model6.getTeachingArts = (result)=>{
+  sql.query(`select * from hoat_dong_day`,(err,res)=>{
+    if(err){
+      console.log("err: ",err);
+      return result(err,null);
+    }
+    else
+    //console.log("result: ",res);
+    return result(null,res);
+  });
+
+
+
 }
 
 module.exports = Model6;

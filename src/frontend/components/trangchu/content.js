@@ -104,7 +104,6 @@ class Content extends Component {
         var self = this;
         axios.post('/collect-subjectid', { data: {ma_so: id}})
         .then(function (response) {
-            console.log(response);
             self.props.updateSubjectId(response.data[0].id)
           })
          .catch(function (error) {
@@ -121,12 +120,8 @@ class Content extends Component {
         }
         return false;
     }
-
-
-
     
     render() {
-        console.log(this.props.subjectId + this.props.subjectMaso)
         var subjectList = [];
         let type = this.props.content_type;
         switch(type) {

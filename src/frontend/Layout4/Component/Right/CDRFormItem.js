@@ -457,30 +457,13 @@ class CDRFormItem extends Component {
             //newData.previewInfo = this.props.cdrtable.previewInfo.push(data);
             
             this.props.onAddCDRData(newData);
-            
-            // const leveldata = this.props.cdrleveldata;
-            // for(let i = 0;i < leveldata.length;i++) {
-            //   if(leveldata[i].value === this.props.cdrverb.level) {
-            //     for(let j = 0;j < leveldata[i].children.length;j++) {
-            //       if(leveldata[i].children[j].value === this.props.cdrverb.childLevel) {
-            //         for(let k = 0;k < leveldata[i].children[j].children.length;k++) {
-            //           if(leveldata[i].children[j].children[k].value === this.props.cdrtempverb){
-            //             leveldata[i].children[j].children[k].value = this.props.cdrverb.verb;
-            //             leveldata[i].children[j].children[k].label = this.props.cdrverb.verb;
-            //             this.props.onChangeLevelData(leveldata);
-            //           }
-            //         }
-            //       }
-            //     }
-            //   }
+            // const postData = {
+            //   cdr: `${this.props.cdrdata.cdr}.${index}`,
+            //   level_verb: level_verb,
+            //   description: description,
+            //   levels: this.props.cdrdata.levels
             // }
-            const postData = {
-              cdr: `${this.props.cdrdata.cdr}.${index}`,
-              level_verb: level_verb,
-              description: description,
-              levels: this.props.cdrdata.levels
-            }
-            axios.post('/add-data-4', { data: postData })
+            // axios.post('/add-data-4', { data: postData })
             message.info("Thêm thành công!");
             this.props.onChangeCDRData({
               cdr: "",
@@ -496,6 +479,7 @@ class CDRFormItem extends Component {
       }
     }
   }
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const CDROption = Object.keys(CDRData).map((id, key) => {

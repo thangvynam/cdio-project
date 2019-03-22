@@ -358,27 +358,29 @@ class CDRTableItem extends Component {
 });
 
     axios.get('/collect-data-4')
- .then(function (response) {
-   console.log(response);
-   const tableData = {
-     previewInfo: []
-   };
-   for(let i = 0;i < response.data.length;i++) {
-     let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
-     let data = {
-      key: (i + 1).toString(),
-      cdr: response.data[i].chuan_dau_ra,
-      level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString()],
-      description: response.data[i].mo_ta,
-      levels: response.data[i].muc_do.split(","),
-     }
-     tableData.previewInfo.push(data);
-   }
-   self.props.onAddCDRData(tableData)
- })
-.catch(function (error) {
-   console.log(error);
-});
+    .then(function (response) {
+      console.log(response);
+      const tableData = {
+        previewInfo: []
+      };
+      for(let i = 0;i < response.data.length;i++) {
+        let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
+        let data = {
+         key: (i + 1).toString(),
+         cdr: response.data[i].chuan_dau_ra,
+         level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString()],
+         description: response.data[i].mo_ta,
+         levels: response.data[i].muc_do.split(","),
+        }
+        tableData.previewInfo.push(data);
+      }
+      self.props.onAddCDRData(tableData)
+    })
+   .catch(function (error) {
+      console.log(error);
+   });
+  
+    
   }
   // Delete
   onSelectChange = (selectedRowKeys) => {

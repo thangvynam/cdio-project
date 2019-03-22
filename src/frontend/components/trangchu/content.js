@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import {MENUITEM, subjectList, subjectId} from '../../Constant/ActionType';
+import {MENUITEM, subjectList, subjectId, subjectMaso} from '../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form} from 'antd';
 import { Link } from "react-router-dom";
 import Page404 from '../../NotFound/Page404';
-import { subjectListReducer } from '../../Reducers/subjectListReducer';
+import { subjectListReducer } from '../../Reducers/homePageReducer';
 import './content.css';
 import { Redirect } from "react-router-dom";
 import ThongTinChung from '../../Layout1/thong-tin-chung';
@@ -18,7 +18,7 @@ import Layout9 from '../../Layout9/Layout9';
 import Layout7 from '../../Layout7/Layout7';
 import Layout8 from '../../Layout8/Layout8';
 import ExportFile from '../../ExportFIle/ExportFile';
-
+import axios from 'axios';
 const EditableContext = React.createContext();
 
 class Content extends Component {
@@ -41,14 +41,10 @@ class Content extends Component {
                 message.warning("Chưa nhập tên môn học!")
             }
             else {
-                let type = this.props.content_type;
+                axios.post('/add-subject', { data: {ma_so: id, ten_mon_hoc_tv: name} });
                 const data = this.props.subjectList;
-                const item = {
-                    id: id,
-                    title: name
-                }
-                data[type][type].push(item);
-                this.props.updateSubjectList(data);
+                data.push({ma_so: id, ten_mon_hoc_tv: name});
+                this.props.updateSubjectList(data)
             }
             
         }
@@ -68,7 +64,8 @@ class Content extends Component {
        
         if (id !== -1) {
             const data = this.props.subjectList;
-            data[type][type].splice(id, 1);
+            axios.post('/delete-subject', { data: {ma_so: data[id].ma_so} });
+            data.splice(id, 1);
             this.props.updateSubjectList(data);
             this.setState({
                 visible: false,
@@ -87,9 +84,9 @@ class Content extends Component {
         let name = document.getElementById("subject-name-edit").value;
         let type = this.props.content_type;
         const data = this.props.subjectList;
-
-        data[type][type][index].id = id;
-        data[type][type][index].title = name;
+        axios.post('/edit-subject', { data: {ma_so: data[index].ma_so, ma_so_editted: id, ten_mon_hoc_tv: name} });
+        data[index].ma_so = id;
+        data[index].ten_mon_hoc_tv = name;
 
         this.props.updateSubjectList(data);
         this.setState({
@@ -104,24 +101,46 @@ class Content extends Component {
       }
 
       onClick = (id) => {
-        this.props.updateSubjectId(id);
+        var self = this;
+        axios.post('/collect-subjectid', { data: {ma_so: id}})
+        .then(function (response) {
+            console.log(response);
+            self.props.updateSubjectId(response.data[0].id)
+          })
+         .catch(function (error) {
+            console.log(error);
+         });  
+        this.props.updateSubjectMaso(id);
       }
 
       checkSubjectExist = (type, monhoc) => {
-        for(let i = 0;i < this.props.subjectList[type][type].length;i++) {
-            if(this.props.subjectList[type][type][i].id === monhoc) {
+        for(let i = 0;i < this.props.subjectList.length;i++) {
+            if(this.props.subjectList[i].ma_so === monhoc) {
                 return true;
             }
         }
         return false;
     }
+
+
+
+    
     render() {
-        var subjectList;
+        console.log(this.props.subjectId + this.props.subjectMaso)
+        var subjectList = [];
         let type = this.props.content_type;
+        switch(type) {
+            case "de-cuong-mon-hoc": {
+                subjectList = this.props.subjectList;
+            }break;
+
+            default: {
+                subjectList = [];
+            }
+        }
         let isExist = 0;
-        for(let i = 0;i < Object.keys(this.props.subjectList).length;i++) {
-            if(type === Object.keys(this.props.subjectList)[i]) {
-                subjectList = this.props.subjectList[type][type];
+        for(let i = 0;i < Object.keys(this.props.menuItem).length;i++) {
+            if(type === Object.keys(this.props.menuItem)[i]) {
                 isExist = 1;
                 break;
             }
@@ -217,7 +236,7 @@ class Content extends Component {
             }
 
             case undefined: {
-                content_layout = (
+                {content_layout = type === "de-cuong-mon-hoc" ?  (
                     <React.Fragment>
                 <div>
                 <Modal
@@ -235,7 +254,7 @@ class Content extends Component {
         <p>Tên môn học: </p>
             <Input style={{width: "100%"}} id="subject-name"/>
         </Modal>
-        <List
+         <List
     itemLayout="horizontal"
     dataSource={subjectList}
     renderItem={(item, id) => (
@@ -247,7 +266,7 @@ class Content extends Component {
                 
                 <div className="list-border" style={{borderRadius: "12px"}}>
         
-      <List.Item actions={this.state.isEditting === "" || this.state.isEditting === undefined || this.state.isEditting !== item.id ? [<a href="#a" onClick={() => this.edit(item.id)} style={{fontSize: "12pt"}}>Sửa</a>, 
+      <List.Item actions={this.state.isEditting === "" || this.state.isEditting === undefined || this.state.isEditting !== item.ma_so ? [<a href="#a" onClick={() => this.edit(item.ma_so)} style={{fontSize: "12pt"}}>Sửa</a>, 
       <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.handleDelete(id)}>
                   <a href="#a">Xóa</a>
                 </Popconfirm>] : [
@@ -271,17 +290,17 @@ class Content extends Component {
                 ]}>
         <List.Item.Meta
           avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-          title={this.state.isEditting !== item.id ? 
-          <div className="list-item"><span onClick={() => this.onClick(item.id)}>{`${item.id} - ${item.title}`}</span></div>
+          title={this.state.isEditting !== item.ma_so ? 
+          <div className="list-item"><span onClick={() => this.onClick(item.ma_so)}>{`${item.ma_so} - ${item.ten_mon_hoc_tv}`}</span></div>
           : (<Row>
               <Col span={6} className="col-left">
-              <Input  defaultValue={item.id} id="subject-id-edit"/>
+              <Input  defaultValue={item.ma_so} id="subject-id-edit"/>
                 </Col>
                 <Col span={1} className="col-left">
                 <div className="div-center">-</div>
                 </Col>
                 <Col span={16} className="col-left">
-                <Input  defaultValue={item.title} id="subject-name-edit"/>
+                <Input  defaultValue={item.ten_mon_hoc_tv} id="subject-name-edit"/>
                 </Col>
           </Row>)
         }
@@ -302,7 +321,7 @@ class Content extends Component {
             </Row>
             </div>
             </React.Fragment>
-                );break;
+                ) : null};break;
             }
             
             default: {
@@ -323,13 +342,16 @@ class Content extends Component {
 const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
-        subjectId: state.subjectid
+        subjectId: state.subjectid,
+        subjectMaso: state.subjectmaso,
+        menuItem: state.menuitem
     }
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     updateSubjectList: subjectList,
-    updateSubjectId: subjectId
+    updateSubjectId: subjectId,
+    updateSubjectMaso: subjectMaso
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

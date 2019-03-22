@@ -3,12 +3,13 @@ import itemLayout2Reducer from '../Reducers/ItemLayout2Reducer'
 import itemLayout3Reducer from '../Reducers/ItemLayout3Reducer'
 import itemLayout1Reducer from '../Reducers/itemLayout1Reducer';
 import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, changeEditStateReducer, 
-    selectedVerbReducer } from '../Reducers/ItemLayout4Reducer';
+    selectedVerbReducer, 
+    cdrmdhdReducer} from '../Reducers/ItemLayout4Reducer';
 import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Reducer';
 import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
-import { subjectListReducer, subjectIdReducer } from '../Reducers/subjectListReducer';
+import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer } from '../Reducers/homePageReducer';
 
 import { createStore, applyMiddleware} from 'redux';
 import logger from 'redux-logger';
@@ -27,14 +28,17 @@ const allReducers = redux.combineReducers({
     cdrselecteditem: selecteCDRItemReducer,
     cdreditstate: changeEditStateReducer,
     cdrverb: selectedVerbReducer,
+    cdrmdhd: cdrmdhdReducer,
     itemLayout6Reducer: itemLayout6Reducer,
     itemLayout9Reducer: itemLayout9Reducer,
     itemLayout7Reducer : itemLayout7Reducer,
     dgdata: changeDGDataReducer,
     itemLayout8Reducer: itemLayout8Reducer,
     tndata: changeTNDataReducer,
-    subjectlist: subjectListReducer,
-    subjectid: subjectIdReducer
+    menuitem: menuItemReducer,
+    subjectid: subjectIdReducer,
+    subjectmaso: subjectMasoReducer,
+    subjectlist: subjectListReducer
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

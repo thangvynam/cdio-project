@@ -19,8 +19,11 @@ export const CHANGE_EDITSTATE = 'CHANGE_EDITSTATE';
 export const CHANGE_LEVEL_DATA = 'CHANGE_LEVEL_DATA';
 export const SELECTED_VERB = 'SELECTED_VERB';
 export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
+export const MENU_ITEM = 'MENU_ITEM';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
+export const SUBJECT_MASO = 'SUBJECT_MASO';
+export const CDRMDHD = 'CDRMDHD';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -90,10 +93,17 @@ export function selectedVerb(newVerb) {
     };
 }
 
-export function subjectList(newSubjectList) {
+export function cdrmdhd(newCdrmdhd) {
     return {
-        type: SUBJECT_LIST,
-        subjectlist: newSubjectList
+        type: CDRMDHD,
+        cdrmdhd: newCdrmdhd
+    };
+}
+
+export function menuItem(newMenuItem) {
+    return {
+        type: MENU_ITEM,
+        menuitem: newMenuItem
     };
 }
 
@@ -101,6 +111,20 @@ export function subjectId(newSubjectId) {
     return {
         type: SUBJECT_ID,
         subjectid: newSubjectId
+    };
+}
+
+export function subjectMaso(newSubjectMaso) {
+    return {
+        type: SUBJECT_MASO,
+        subjectmaso: newSubjectMaso
+    };
+}
+
+export function subjectList(newSubjectList) {
+    return {
+        type: SUBJECT_LIST,
+        subjectlist: newSubjectList
     };
 }
 

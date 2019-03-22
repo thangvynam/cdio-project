@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
-import { MENUITEM, subjectId } from "./../../../../Constant/ActionType";
+import { MENUITEM, subjectId, subjectMaso } from "./../../../../Constant/ActionType";
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect } from "react-router-dom";
@@ -15,11 +15,12 @@ class MenuLeft extends Component {
     }
     onClick = (key) => {
         this.props.updateSubjectId("");
+        this.props.updateSubjectMaso("");
     }
 
     checkSubjectExist = (type, monhoc) => {
-        for(let i = 0;i < this.props.subjectList[type][type].length;i++) {
-            if(this.props.subjectList[type][type][i].id === monhoc) {
+        for(let i = 0;i < this.props.subjectList.length;i++) {
+            if(this.props.subjectList[i].ma_so === monhoc) {
                 return true;
             }
         }
@@ -27,9 +28,9 @@ class MenuLeft extends Component {
     }
 
     redirect = () => {
-        if(this.props.subjectId !== "" && this.props.subjectId !== undefined && (this.props.content_monhoc === "" ||
+        if(this.props.subjectMaso !== "" && this.props.subjectMaso !== undefined && (this.props.content_monhoc === "" ||
         this.props.content_monhoc === undefined)) {
-            return <Redirect to={`/${this.props.content_type}/${this.props.subjectId}/thong-tin-chung`}/>
+            return <Redirect to={`/${this.props.content_type}/${this.props.subjectMaso}/thong-tin-chung`}/>
         }
         else if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && (this.props.content_tab === ""
     || this.props.content_tab === undefined) && this.checkSubjectExist(this.props.content_type, this.props.content_monhoc) === true) {
@@ -39,12 +40,12 @@ class MenuLeft extends Component {
 
     render() {
         const menuItemsCollapse = [];
-        Object.keys(this.props.subjectList).map((key, id) => {
-            if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && key === this.props.content_type) {
+        Object.keys(this.props.menuItem).map((key, id) => {
+            if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && key === this.props.content_type && key === "de-cuong-mon-hoc") {
                 menuItemsCollapse.push(<Menu.Item key={key} onClick={() => this.onClick(key)}>
                 <Link to={`/${key}`} >
                     <Icon type="dashboard" />
-                    <span>{this.props.subjectList[key].name}</span>
+                    <span>{this.props.menuItem[key].name}</span>
                 </Link>
             </Menu.Item>)
         menuItemsCollapse.push(<Menu.Item key={MENUITEM.THONG_TIN_CHUNG}>
@@ -112,7 +113,7 @@ class MenuLeft extends Component {
                 menuItemsCollapse.push(<Menu.Item key={key} onClick={() => this.onClick(key)}>
         <Link to={`/${key}`} >
             <Icon type="dashboard" />
-            <span>{this.props.subjectList[key].name}</span>
+            <span>{this.props.menuItem[key].name}</span>
           </Link>
         </Menu.Item>)
             }
@@ -138,13 +139,16 @@ class MenuLeft extends Component {
 }
 const mapStateToProps = (state) => {
     return {
+        menuItem: state.menuitem,
+        subjectId: state.subjectid,
         subjectList: state.subjectlist,
-        subjectId: state.subjectid
+        subjectMaso: state.subjectmaso
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-      updateSubjectId: subjectId
+      updateSubjectId: subjectId,
+      updateSubjectMaso: subjectMaso
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(MenuLeft);

@@ -4,9 +4,10 @@ import { Table, Divider, Tag, Button,
    Input, Cascader } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
+import axios from 'axios';
 
 const EditableContext = React.createContext();
 
@@ -338,6 +339,47 @@ class CDRTableItem extends Component {
     }];
   }
 
+  getCdrmdhd = (state, id) => {
+    for(let i = 0;i < state.length;i++) {
+      if(state[i].id === id) {
+        return state[i];
+      }
+    }
+  }
+  componentDidMount() {
+    var self = this;
+    axios.get('/collect-cdrmdhd-4')
+ .then(function (response) {
+   console.log(response);
+   self.props.updateCdrmdhd(response.data)
+ })
+.catch(function (error) {
+   console.log(error);
+});
+
+    axios.get('/collect-data-4')
+ .then(function (response) {
+   console.log(response);
+   const tableData = {
+     previewInfo: []
+   };
+   for(let i = 0;i < response.data.length;i++) {
+     let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
+     let data = {
+      key: (i + 1).toString(),
+      cdr: response.data[i].chuan_dau_ra,
+      level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString()],
+      description: response.data[i].mo_ta,
+      levels: response.data[i].muc_do.split(","),
+     }
+     tableData.previewInfo.push(data);
+   }
+   self.props.onAddCDRData(tableData)
+ })
+.catch(function (error) {
+   console.log(error);
+});
+  }
   // Delete
   onSelectChange = (selectedRowKeys) => {
     this.props.onSelectCDRItem(selectedRowKeys);
@@ -602,7 +644,8 @@ const mapStateToProps = (state) => {
         cdrtable: state.itemLayout4Reducer,
         cdrselecteditem: state.cdrselecteditem,
         cdreditstate: state.cdreditstate,
-        cdrverb: state.cdrverb
+        cdrverb: state.cdrverb,
+        cdrmdhd: state.cdrmdhd,
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -611,6 +654,7 @@ const mapDispatchToProps = (dispatch) => {
     onSelectCDRItem: selectedCDRItem,
     onChangeEditState: changeEditState,
     onUpdateVerb: selectedVerb,
+    updateCdrmdhd: cdrmdhd,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

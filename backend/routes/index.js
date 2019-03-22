@@ -240,6 +240,27 @@ router.post('/save-data-3', function(req, res) {
   });
 })
 
+// 4
+router.get('/collect-data-4', function(req, res) {
+  Model4.collectdata(function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
+router.get('/collect-cdrmdhd-4', function(req, res) {
+  Model4.collectcdrmdhd(function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
 router.post('/add-data-4', function(req, res) {
   let data = req.body.data
   Model4.add(data, function(err, description) {
@@ -247,6 +268,57 @@ router.post('/add-data-4', function(req, res) {
       console.log(err);
     }
       console.log("done");
+  })   
+})
+
+router.get('/collect-subjectlist', function(req, res) {
+  Model4.collectsubjectlist(function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
+router.post('/add-subject', function(req, res) {
+  let data = req.body.data
+  Model4.addsubject(data, function(err, description) {
+    if (err) {
+      console.log(err);
+    }
+      console.log("done");
+  })   
+})
+
+router.post('/delete-subject', function(req, res) {
+  let data = req.body.data
+  Model4.deletesubject(data, function(err, description) {
+    if (err) {
+      console.log(err);
+    }
+      console.log("done");
+  })   
+})
+
+router.post('/edit-subject', function(req, res) {
+  let data = req.body.data
+  Model4.editsubject(data, function(err, description) {
+    if (err) {
+      console.log(err);
+    }
+      console.log("done");
+  })   
+})
+
+router.post('/collect-subjectid', function(req, res) {
+  let data = req.body.data
+  Model4.collectsubjectid(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
   })   
 })
 

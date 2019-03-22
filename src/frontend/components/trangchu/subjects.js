@@ -55,18 +55,17 @@ class Home extends Component {
         let monhoc = self.props.match.params.monhoc;
         axios.get('/collect-subjectlist')
      .then(function (response) {
-       console.log(response);
        self.props.updateSubjectList(response.data)
      })
     .catch(function (error) {
        console.log(error);
     });     
 
-    if(this.props.subjectId === "" || this.props.subjectId === undefined || this.props.subjectMaso === "" || 
-    this.props.subjectMaso === undefined) {
+    if((this.props.subjectId === "" || this.props.subjectId === undefined || this.props.subjectMaso === "" || 
+    this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
+        console.log(1234)
         axios.post('/collect-subjectid', { data: {ma_so: monhoc}})
         .then(function (response) {
-            console.log(response);
             self.props.updateSubjectId(response.data[0].id)
           })
          .catch(function (error) {
@@ -91,7 +90,6 @@ class Home extends Component {
        
         if(!this.checkSubjectExist(this.props.match.params.type, this.props.match.params.monhoc) && this.props.match.params.monhoc !== "" &&
         this.props.match.params.monhoc !== undefined) {
-            console.log(0)
             return <Page404/>;
         }
         let GirdLayout;

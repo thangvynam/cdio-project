@@ -13,7 +13,7 @@ class MenuLeft extends Component {
     state = {
         rdrCount: 0,
     }
-    onClick = (key) => {
+    onClick = (key) => { //h chi can cai ben phai thoi dung k um
         this.props.updateSubjectId("");
         this.props.updateSubjectMaso("");
     }
@@ -41,6 +41,7 @@ class MenuLeft extends Component {
     render() {
         const menuItemsCollapse = [];
         Object.keys(this.props.menuItem).map((key, id) => {
+            //neu la de cuong thi co 9 tab con
             if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && key === this.props.content_type && key === "de-cuong-mon-hoc") {
                 menuItemsCollapse.push(<Menu.Item key={key} onClick={() => this.onClick(key)}>
                 <Link to={`/${key}`} >
@@ -109,7 +110,7 @@ class MenuLeft extends Component {
           </Link>
         </Menu.Item>)
             }
-            else {
+            else { //ko thi dell co j --matrix ne
                 menuItemsCollapse.push(<Menu.Item key={key} onClick={() => this.onClick(key)}>
         <Link to={`/${key}`} >
             <Icon type="dashboard" />

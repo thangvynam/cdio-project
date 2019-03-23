@@ -55,7 +55,7 @@ class Home extends Component {
         let monhoc = self.props.match.params.monhoc;
         axios.get('/collect-subjectlist')
      .then(function (response) {
-       self.props.updateSubjectList(response.data)
+       //self.props.updateSubjectList(response.data)
      })
     .catch(function (error) {
        console.log(error);

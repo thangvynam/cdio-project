@@ -1,5 +1,5 @@
 import { ADD_CDRDATA, CHANGE_CDRDATA, CHANGE_EDITSTATE, 
-    SELECTED_CDRITEM, SELECTED_VERB, CDRMDHD } from '../Constant/ActionType';
+    SELECTED_CDRITEM, SELECTED_VERB, CDRMDHD, MTMH, ISLOAD } from '../Constant/ActionType';
 
 const addCDRDataState = {
     previewInfo: []
@@ -79,6 +79,30 @@ export function cdrmdhdReducer(state = cdrmdhdState, action) {
     switch(action.type) {
         case CDRMDHD:
         return action.cdrmdhd;
+        default: 
+        return state;
+    }
+}
+
+const mtmhState = [];
+
+export function mtmhReducer(state = mtmhState, action) {
+
+    switch(action.type) {
+        case MTMH:
+        return action.mtmh;
+        default: 
+        return state;
+    }
+}
+
+const isLoadState = "false";
+
+export function isLoadReducer(state = isLoadState, action) {
+
+    switch(action.type) {
+        case ISLOAD:
+        return action.isload;
         default: 
         return state;
     }

@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { MENUITEM, subjectList, subjectId, subjectMaso } from '../../Constant/ActionType';
-import { connect } from 'react-redux';
+import {MENUITEM, subjectList, subjectId} from '../../Constant/ActionType';
+import { connect } from'react-redux';
+
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form } from 'antd';
 import { Link } from "react-router-dom";
@@ -103,19 +104,18 @@ class Content extends Component {
 
     onClick = (id) => {
         var self = this;
-        axios.post('/collect-subjectid', { data: { ma_so: id } })
-            .then(function (response) {
-                self.props.updateSubjectId(response.data[0].id)
-            })
-            .catch(function (error) {
-                console.log(error);
-            });
-        this.props.updateSubjectMaso(id);
-    }
+        axios.post('/collect-subjectid', { data: {ma_so: id}})
+        .then(function (response) {
+            self.props.updateSubjectId(response.data[0].id)
+          })
+         .catch(function (error) {
+            console.log(error);
+         });  
+      }
 
-    checkSubjectExist = (type, monhoc) => {
-        for (let i = 0; i < this.props.subjectList.length; i++) {
-            if (this.props.subjectList[i].ma_so === monhoc) {
+      checkSubjectExist = (monhoc) => {
+        for(let i = 0;i < this.props.subjectList.length;i++) {
+            if(this.props.subjectList[i].ma_so === monhoc) {
                 return true;
             }
         }
@@ -145,9 +145,10 @@ class Content extends Component {
             return <Page404 />;
         }
 
-        if (!this.checkSubjectExist(this.props.content_type, this.props.content_monhoc) && this.props.content_monhoc !== "" &&
-            this.props.content_monhoc !== undefined) {
-            return <Page404 />;
+        if(!this.checkSubjectExist(this.props.content_monhoc) && this.props.content_monhoc !== "" &&
+        this.props.content_monhoc !== undefined) {
+            //return <Page404/>;
+
         }
         let content_layout;
         switch (this.props.content_tab) {
@@ -276,6 +277,7 @@ class Content extends Component {
                                                                     >
                                                                         Save
                         </a>
+
                                                                 )}
                                                             </EditableContext.Consumer>,
                                                             <Popconfirm
@@ -320,6 +322,7 @@ class Content extends Component {
                         </React.Fragment>
                     ) : type === "matrix" ? <Matrix/>:null
                 }; break;
+
             }
 
             default: {
@@ -332,6 +335,7 @@ class Content extends Component {
         }
         return (
             <React.Fragment>
+                
                 {content_layout}
             </React.Fragment>
         )
@@ -341,15 +345,15 @@ const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
-        subjectMaso: state.subjectmaso,
         menuItem: state.menuitem
     }
 }
 const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        updateSubjectList: subjectList,
-        updateSubjectId: subjectId,
-        updateSubjectMaso: subjectMaso
-    }, dispatch);
+
+  return bindActionCreators({
+    updateSubjectList: subjectList,
+    updateSubjectId: subjectId,
+  }, dispatch);
+
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

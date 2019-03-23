@@ -40,39 +40,35 @@ class Home extends Component {
         })
     }
 
-    checkSubjectExist = (type, monhoc) => {
-        for(let i = 0;i < this.props.subjectList.length;i++) {
-            if(this.props.subjectList[i].ma_so === monhoc) {
-               
+    checkSubjectExist = (subjectlist, monhoc) => {
+        for(let i = 0;i < subjectlist.length;i++) {
+            if(subjectlist[i].id === monhoc) {
                 return true;
             }
         }
         return false;
     }
+    // should update dau m de chay thu chu sang chay k dc
 
-    componentDidMount() {
+    componentWillMount() {
         var self = this;
-        let monhoc = self.props.match.params.monhoc;
+        let monhoc = this.props.match.params.monhoc;
+        if((this.props.subjectId === "" || this.props.subjectId === undefined) && monhoc !== "" && monhoc !== undefined) {
+            this.props.updateSubjectId(monhoc);//
+            
+        }
         axios.get('/collect-subjectlist')
      .then(function (response) {
-       //self.props.updateSubjectList(response.data)
+
+        //console.log(response.data)
+       self.props.updateSubjectList(response.data)
+
      })
     .catch(function (error) {
        console.log(error);
     });     
 
-    if((this.props.subjectId === "" || this.props.subjectId === undefined || this.props.subjectMaso === "" || 
-    this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
-        console.log(1234)
-        axios.post('/collect-subjectid', { data: {ma_so: monhoc}})
-        .then(function (response) {
-            self.props.updateSubjectId(response.data[0].id)
-          })
-         .catch(function (error) {
-            console.log(error);
-         });  
-        this.props.updateSubjectMaso(monhoc);
-    }
+    
         }
     render() {
         let type = this.props.match.params.type;
@@ -84,14 +80,18 @@ class Home extends Component {
             }
         }
 
-        if(isExist === 0) {
+        if(isExist === 0 || (type !== "de-cuong-mon-hoc" && this.props.match.params.monhoc !== "" &&
+        this.props.match.params.monhoc !== undefined)) {
             return <Page404/>;
         }
        
-        if(!this.checkSubjectExist(this.props.match.params.type, this.props.match.params.monhoc) && this.props.match.params.monhoc !== "" &&
-        this.props.match.params.monhoc !== undefined) {
-            return <Page404/>;
-        }
+        if(this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc) === false && this.props.match.params.monhoc !== "" &&
+            this.props.match.params.monhoc !== undefined) {
+                //console.log(this.props.subjectList)
+                //return <Page404/>;
+            }
+        
+
         let GirdLayout;
         if (this.state.collapse) {
             GirdLayout = (<Row>
@@ -165,7 +165,6 @@ const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
-        subjectMaso: state.subjectmaso,
         menuItem: state.menuitem
     }
 }
@@ -173,8 +172,6 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
       updateSubjectList: subjectList,
       updateSubjectId: subjectId,
-      updateSubjectMaso: subjectMaso
-
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

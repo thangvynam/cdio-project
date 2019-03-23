@@ -15,12 +15,11 @@ class MenuLeft extends Component {
     }
     onClick = (key) => {
         this.props.updateSubjectId("");
-        this.props.updateSubjectMaso("");
     }
 
-    checkSubjectExist = (type, monhoc) => {
+    checkSubjectExist = (monhoc) => {
         for(let i = 0;i < this.props.subjectList.length;i++) {
-            if(this.props.subjectList[i].ma_so === monhoc) {
+            if(this.props.subjectList[i].id === monhoc) {
                 return true;
             }
         }
@@ -28,12 +27,12 @@ class MenuLeft extends Component {
     }
 
     redirect = () => {
-        if(this.props.subjectMaso !== "" && this.props.subjectMaso !== undefined && (this.props.content_monhoc === "" ||
+        if(this.props.subjectId !== "" && this.props.subjectId !== undefined && (this.props.content_monhoc === "" ||
         this.props.content_monhoc === undefined)) {
-            return <Redirect to={`/${this.props.content_type}/${this.props.subjectMaso}/thong-tin-chung`}/>
+            return <Redirect to={`/${this.props.content_type}/${this.props.subjectId}/thong-tin-chung`}/>
         }
         else if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && (this.props.content_tab === ""
-    || this.props.content_tab === undefined) && this.checkSubjectExist(this.props.content_type, this.props.content_monhoc) === true) {
+    || this.props.content_tab === undefined) && this.checkSubjectExist(this.props.content_monhoc) === true) {
         return <Redirect to={`/${this.props.content_type}/${this.props.content_monhoc}/thong-tin-chung`}/>
     }
     }

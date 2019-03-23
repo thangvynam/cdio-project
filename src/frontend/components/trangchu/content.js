@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {MENUITEM, subjectList, subjectId, subjectMaso} from '../../Constant/ActionType';
+import {MENUITEM, subjectList, subjectId} from '../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form} from 'antd';
@@ -109,10 +109,9 @@ class Content extends Component {
          .catch(function (error) {
             console.log(error);
          });  
-        this.props.updateSubjectMaso(id);
       }
 
-      checkSubjectExist = (type, monhoc) => {
+      checkSubjectExist = (monhoc) => {
         for(let i = 0;i < this.props.subjectList.length;i++) {
             if(this.props.subjectList[i].ma_so === monhoc) {
                 return true;
@@ -144,9 +143,9 @@ class Content extends Component {
             return <Page404/>;
         }
 
-        if(!this.checkSubjectExist(this.props.content_type, this.props.content_monhoc) && this.props.content_monhoc !== "" &&
+        if(!this.checkSubjectExist(this.props.content_monhoc) && this.props.content_monhoc !== "" &&
         this.props.content_monhoc !== undefined) {
-            return <Page404/>;
+            //return <Page404/>;
         }
         let content_layout;
         switch (this.props.content_tab) {
@@ -313,6 +312,7 @@ class Content extends Component {
                 </Col>
                 
             <Button onClick={this.addSubject} style={{width: "30%", alignContent: "center"}}><Icon type="plus" />Thêm môn học</Button>
+            <div style={{height: "10px"}}></div>
             </Row>
             </div>
             </React.Fragment>
@@ -329,6 +329,7 @@ class Content extends Component {
         }
         return (
             <React.Fragment>
+                
                 {content_layout}
             </React.Fragment>
         )
@@ -338,7 +339,6 @@ const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
-        subjectMaso: state.subjectmaso,
         menuItem: state.menuitem
     }
 }
@@ -346,7 +346,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     updateSubjectList: subjectList,
     updateSubjectId: subjectId,
-    updateSubjectMaso: subjectMaso
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

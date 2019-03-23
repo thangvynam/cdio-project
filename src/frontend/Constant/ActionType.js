@@ -3,6 +3,8 @@ export const ADD_DATA_LAYOUT_2 = 'ADD_DATA_LAYOUT_2';
 export const SAVE_DATA_LAYOUT_2 = 'SAVE_DATA_LAYOUT_2';
 export const SAVE_TEMP_DATA_LAYOUT_2 = 'SAVE_TEMP_DATA_LAYOUT_2';
 export const SAVE_ALL_DATA_LAYOUT_2 = 'SAVE_ALL_DATA_LAYOUT_2';
+export const IS_LOADED_2 = 'IS_LOADED_2';
+
 
 //layout 3
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
@@ -10,6 +12,8 @@ export const DELETE_DATA_LAYOUT_3 = 'DELETE_DATA_LAYOUT_3';
 export const SAVE_DATA_LAYOUT_3 = 'SAVE_DATA_LAYOUT_3';
 export const SAVE_TEMP_DATA_LAYOUT_3 = 'SAVE_TEMP_DATA_LAYOUT_3';
 export const SAVE_ALL_DATA_LAYOUT_3 = 'SAVE_ALL_DATA_LAYOUT_3';
+export const IS_LOADED_3 = 'IS_LOADED_3';
+export const ADD_ARRAY_LAYOUT_3 = 'ADD_ARRAY_LAYOUT_3';
 
 // layout4
 export const ADD_CDRDATA = 'ADD_CDRDATA';

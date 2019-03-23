@@ -192,25 +192,20 @@ router.post('/exportfile', function(req, res, next) {
     
   })
 
-router.get('/get-data-2', (req, res) => {
-  MoTaModel.get((data) => {
-    res.send(data)
-  })
+router.get('/get-data-2/:id', (req, res) => {
+  let id = req.params
+  MoTaModel.get(id, (resData) => {
+    res.send(resData);
+  })  
 })
-
-// router.post('/add-data-2', function(req, res) {
-//   let description = req.body.data
-//   MoTaModel.add(description, function(err, description) {
-//     if (err) {
-//       console.log(err);
-//     }
-//       res.end("done");
-//   })   
-// })
 
 router.post('/save-data-2', function(req, res) {
   let description = req.body.data
-  MoTaModel.save(description, function(err, description) {
+  let data = {
+    description: description,
+    id: req.body.id
+  }
+  MoTaModel.save(data, function(err, description) {
     if (err) {
       console.log(err);
     }
@@ -218,26 +213,39 @@ router.post('/save-data-2', function(req, res) {
   })   
 })
 
-// router.post('/add-data-3', function(req) {
-//   let body = req.body
-//   console.log(body.data);
-// })
+router.get('/get-muc-tieu-3/:id', (req, res) => {
+  let id = req.params
+  MucTieuModel.getMucTieu(id, (resData) => {
+    res.send(resData);
+  })
+})
 
-// router.post('/delete-data-3', function(req) {
-//   let body = req.body
-//   console.log(body.data);
-// })
+router.post('/get-mtmh-cdr-3', (req, res) => {
+  let data = req.body  
+  MucTieuModel.getMTMH_HAS_CDR(data, (resData) => {
+    res.send(resData);
+  });  
+})
+
+router.post('/get-cdr-3', (req, res) => {  
+  let data = req.body
+  MucTieuModel.getCDR(data, (resData) => {    
+    res.send(resData[0].cdr);
+  }) 
+})
 
 router.post('/save-data-3', function(req, res) {
   let body = req.body.data
-  body.forEach(element => {
-    console.log(element);
-    MucTieuModel.save(element, function(err) {
-      if (err) {
-        console.log(err);
-      }
-    }) 
-  });
+  let data = {
+    body: body,
+    id: req.body.id
+  }
+  MucTieuModel.save(data, function(err) {
+    if (err) {
+      console.log(err);
+    }
+  }) 
+  res.end("done")
 })
 
 // 4

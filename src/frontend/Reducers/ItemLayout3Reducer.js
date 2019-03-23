@@ -1,6 +1,8 @@
 import {ADD_DATA_LAYOUT_3, DELETE_DATA_LAYOUT_3, 
     SAVE_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, 
-    SAVE_ALL_DATA_LAYOUT_3} from '../Constant/ActionType';
+    SAVE_ALL_DATA_LAYOUT_3,
+    IS_LOADED_3,
+    ADD_ARRAY_LAYOUT_3} from '../Constant/ActionType';
 import axios from 'axios';
 
 const itemLayout3InitialState = {
@@ -26,19 +28,30 @@ const itemLayout3InitialState = {
         objectName: "",
         description: "",
         standActs: [],
-    }
+    },
+    isLoaded: false
 }
 const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
     switch (action.type) {
+        case IS_LOADED_3: {
+            return {
+                ...state,
+                isLoaded: action.idLoaded
+            }
+        }
         case ADD_DATA_LAYOUT_3: {
-            axios.post('/add-data-3', { data: action.item })
             return {
                 ...state,
                 previewInfo: [...state.previewInfo, JSON.parse(action.item)]
             }
+        } 
+        case ADD_ARRAY_LAYOUT_3: {
+            return {
+                ...state,
+                previewInfo: action.item
+            }
         }           
         case DELETE_DATA_LAYOUT_3: {
-            axios.post('/delete-data-3', { data: state.previewInfo[action.key] })
             state.previewInfo= state.previewInfo.filter((_, item) => item !== action.key)
             return {
                 ...state,
@@ -46,7 +59,6 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
             }
         }             
         case SAVE_DATA_LAYOUT_3: {
-            axios.post('/save-data-3', { data: action.data[action.key] })            
             return {
                 ...state, 
                 previewInfo: action.data
@@ -59,7 +71,7 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
                 tempInfo: action.tempInfo
             }
         case SAVE_ALL_DATA_LAYOUT_3:
-            axios.post('/save-data-3', { data: state.previewInfo })
+            axios.post('/save-data-3', { data: state.previewInfo, id: action.id })
             return {
                 ...state
             }

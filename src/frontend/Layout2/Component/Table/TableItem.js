@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal } from 'antd';
 import { connect } from 'react-redux';
-import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2 } from '../../../Constant/ActionType';
+import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2, IS_LOADED_2 } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
 import axios from 'axios';
 
@@ -115,7 +115,7 @@ class TableItem extends Component {
   }
 
   async getData() {
-    return axios.get('/get-data-2').then(res => {
+    return axios.get(`/get-data-2/${this.props.subjectid}`).then(res => {
         return res.data
     }).then(resp => {
         return resp.noi_dung;
@@ -123,10 +123,11 @@ class TableItem extends Component {
 }
 
   async componentDidMount(){
-    let temp = await this.getData();
-    console.log(temp);
-    
-    this.props.saveAndContinue(temp);
+    if (!this.props.itemLayout2Reducer.isLoaded) {
+      let temp = await this.getData();
+      this.props.saveAndContinue(temp);
+      this.props.setFlag(true);
+    }
   }
 
   isEditing = record => record.key === this.state.editingKey;
@@ -153,7 +154,6 @@ class TableItem extends Component {
           ...newData.key,
           ...row,
         });
-        console.log(newData);
         this.props.handleSave(newData);
         this.setState({ editingKey: "" });
     });
@@ -161,8 +161,6 @@ class TableItem extends Component {
 
   setIndexForItem = () => {
     let des = []; 
-    // console.log(this.props.itemLayout2Reducer.previewInfo);
-    
     let temp = {
       key: 0,
       description: this.props.itemLayout2Reducer.previewInfo,
@@ -198,7 +196,7 @@ class TableItem extends Component {
         <div>
           <br />
            <Button
-            onClick={this.props.saveAll}
+            onClick={() => this.props.saveAll(this.props.subjectid)}
           >
             Save all
           </Button>
@@ -216,7 +214,8 @@ class TableItem extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
   return {
-    itemLayout2Reducer: state.itemLayout2Reducer
+    itemLayout2Reducer: state.itemLayout2Reducer,
+    subjectid: state.subjectid
   }
 }
 
@@ -225,12 +224,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleSave: (data) => {            
       dispatch({type: SAVE_DATA_LAYOUT_2, data: data})
     },
-    saveAll: () => {
-      dispatch({type: SAVE_ALL_DATA_LAYOUT_2})
+    saveAll: (id) => {      
+      dispatch({type: SAVE_ALL_DATA_LAYOUT_2, id})
     },
     saveAndContinue: (description) => {
       dispatch({ type: ADD_DATA_LAYOUT_2, description });         
-  }
+    },
+    setFlag: (idLoaded) => {
+      dispatch({ type: IS_LOADED_2, idLoaded });         
+    }
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TableItem);

@@ -90,7 +90,7 @@ class Home extends Component {
        
         if(!this.checkSubjectExist(this.props.match.params.type, this.props.match.params.monhoc) && this.props.match.params.monhoc !== "" &&
         this.props.match.params.monhoc !== undefined) {
-            return <Page404/>;
+            // return <Page404/>;
         }
         let GirdLayout;
         if (this.state.collapse) {

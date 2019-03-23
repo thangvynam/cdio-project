@@ -1,12 +1,19 @@
-import {ADD_DATA_LAYOUT_2, SAVE_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2} from '../Constant/ActionType';
+import {ADD_DATA_LAYOUT_2, SAVE_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, IS_LOADED_2} from '../Constant/ActionType';
 import axios from 'axios';
 
 const itemLayout2InitialState = {
     previewInfo: '',
-    tempInfo: ''
+    tempInfo: '',
+    isLoaded: false
 }
 const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
     switch (action.type) {
+        case IS_LOADED_2: {
+            return {
+                ...state,
+                isLoaded: action.idLoaded
+            }
+        }
         case ADD_DATA_LAYOUT_2: {
             // axios.post('/add-data-2', { data: action.description })
             return {
@@ -25,8 +32,8 @@ const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
             return {
                 ...state, tempInfo: action.description
             }
-        case SAVE_ALL_DATA_LAYOUT_2:
-            axios.post('/save-data-2', { data: state.previewInfo })
+        case SAVE_ALL_DATA_LAYOUT_2:        
+            axios.post('/save-data-2', { data: state.previewInfo, id: action.id })
             return {
                 ...state
             }

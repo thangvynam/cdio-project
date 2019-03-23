@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input } from 'antd';
 import { connect } from 'react-redux';
-import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
+import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3 } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
+import axios from 'axios'
 
 const { Option } = Select;
 const confirm = Modal.confirm;
@@ -187,6 +188,58 @@ class TableItem extends Component {
     }];
   }
 
+  async getMucTieu() {
+    return axios.get(`/get-muc-tieu-3/${this.props.subjectid}`).then(res => {
+        return res.data
+    }).then(resp => {
+        return resp;
+    })
+}
+
+async getMucTieuCDR(data) {
+  return axios.post("/get-mtmh-cdr-3", data).then(res => {
+      return res.data
+  }).then(resp => {
+      return resp;
+  })
+}
+
+async getCDR(data) {
+  return axios.post("/get-cdr-3", data).then(res => {
+    return res.data
+}).then(resp => {
+    return resp;
+})
+}
+
+async componentDidMount(){
+  let saveData = []
+  let standActs = []
+  if (!this.props.itemLayout3Reducer.isLoaded) {
+    let temp1 = await this.getMucTieu();
+    for (const ele of temp1) {
+      let temp2 = await this.getMucTieuCDR(ele);
+      for(const map1 of temp2) {       
+        let temp3 = await this.getCDR(map1);
+        standActs.push(temp3.toString())  
+      }
+      let newObj = {
+          objectName: ele.muc_tieu,
+          description: ele.mo_ta,
+          standActs: standActs
+        }
+      saveData.push(newObj);
+      standActs = []    
+    }
+    
+    // saveData = JSON.stringify(saveData)
+    // console.log(saveData);
+    
+    this.props.saveAndContinue(saveData);
+    this.props.setFlag(true);
+  }
+}
+
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
 
@@ -248,7 +301,6 @@ class TableItem extends Component {
       if (error) {
         return;
       }
-
       let index = key
 
       var newItems = this.props.itemLayout3Reducer.previewInfo;
@@ -274,6 +326,8 @@ class TableItem extends Component {
       };
       data.push(temp);
     }
+    console.log(this.props.itemLayout3Reducer.previewInfo);
+    
     return data;
   };
 
@@ -322,7 +376,7 @@ class TableItem extends Component {
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
            <Button style={{float: "right"}}
-            onClick={this.props.saveAll}
+            onClick={() => this.props.saveAll(this.props.subjectid)}
           >
             Save all
           </Button>
@@ -342,7 +396,8 @@ class TableItem extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
   return {
-    itemLayout3Reducer: state.itemLayout3Reducer
+    itemLayout3Reducer: state.itemLayout3Reducer,
+    subjectid: state.subjectid
   }
 }
 
@@ -354,8 +409,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     handleSave: (data, key) => {
       dispatch({type: SAVE_DATA_LAYOUT_3, data, key})
     },
-    saveAll: () => {
-      dispatch({type: SAVE_ALL_DATA_LAYOUT_3})
+    saveAndContinue: (item) => {
+      dispatch({ type: ADD_ARRAY_LAYOUT_3, item });         
+    },
+    setFlag: (idLoaded) => {
+      dispatch({ type: IS_LOADED_3, idLoaded });         
+    },
+    saveAll: (id) => {
+      dispatch({type: SAVE_ALL_DATA_LAYOUT_3, id})
     }
   }
 }

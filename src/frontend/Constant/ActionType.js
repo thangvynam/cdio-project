@@ -24,6 +24,8 @@ export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
 export const SUBJECT_MASO = 'SUBJECT_MASO';
 export const CDRMDHD = 'CDRMDHD';
+export const MTMH = 'MTMH';
+export const ISLOAD = 'ISLOAD';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -99,6 +101,20 @@ export function cdrmdhd(newCdrmdhd) {
     return {
         type: CDRMDHD,
         cdrmdhd: newCdrmdhd
+    };
+}
+
+export function mtmh(newMtmh) {
+    return {
+        type: MTMH,
+        mtmh: newMtmh
+    };
+}
+
+export function isLoad(newIsLoad) {
+    return {
+        type: ISLOAD,
+        isload: newIsLoad
     };
 }
 

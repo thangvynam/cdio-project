@@ -4,11 +4,28 @@ var Model4 = (data) => {
     this.data = data;
 }
 
-Model4.add = (data, result) => {
-    // sql.query(`delete from chuan_dau_ra_mon_hoc where chuan_dau_ra = ${data.cdr}`);
+Model4.save = (data, result) => {
+    sql.query(`update chuan_dau_ra_mon_hoc set del_flag = 1 where thong_tin_chung_id = ${data.thong_tin_chung_id}`);
+    for(let i = 0;i < data.data.length;i++) {
+        
+        if(data.data[i].muc_tieu_mon_hoc_id !== -1 && data.data[i].cdrmh_muc_do_hanh_dong_id !== -1) {
+            sql.query(`insert into chuan_dau_ra_mon_hoc(chuan_dau_ra, mo_ta, muc_do, muc_tieu_mon_hoc_id, cdrmh_muc_do_hanh_dong_id, thong_tin_chung_id) values ('${data.data[i].cdr}', '${data.data[i].description}', '${data.data[i].levels.toString()}',
+            ${data.data[i].muc_tieu_mon_hoc_id}, ${data.data[i].cdrmh_muc_do_hanh_dong_id}, ${data.thong_tin_chung_id})`,
+             (err, res) => {
+               if (err) {
+                   console.log("error:", err);
+                   result(null, err)
+               } else {
+                   result(null, res);
+               }
+           })
+        }
+    }
+    
+}
 
-    sql.query(`insert into chuan_dau_ra_mon_hoc(chuan_dau_ra, mo_ta, muc_do, muc_tieu_mon_hoc_id, cdrmh_muc_do_hanh_dong_id, thong_tin_chung_id) values ('${data.cdr}', '${data.description}', '${data.levels.toString()}', 1, 1, 1)`,
-      (err, res) => {
+Model4.collectdata = (data, result) => {
+    sql.query(`SELECT * FROM chuan_dau_ra_mon_hoc where del_flag = 0 && thong_tin_chung_id = ${data.thong_tin_chung_id}`, (err, res) => {
         if (err) {
             console.log("error:", err);
             result(null, err)
@@ -18,16 +35,6 @@ Model4.add = (data, result) => {
     })
 }
 
-Model4.collectdata = (result) => {
-    sql.query("SELECT * FROM chuan_dau_ra_mon_hoc", (err, res) => {
-        if (err) {
-            console.log("error:", err);
-            result(null, err)
-        } else {
-            result(null, res);
-        }
-    })
-}
 
 Model4.collectcdrmdhd = (result) => {
     sql.query("SELECT * FROM cdrmh_muc_do_hanh_dong", (err, res) => {
@@ -41,7 +48,7 @@ Model4.collectcdrmdhd = (result) => {
 }
 
 Model4.collectsubjectlist = (result) => {
-    sql.query("SELECT ma_so, ten_mon_hoc_tv FROM thong_tin_chung where del_flag = 0", (err, res) => {
+    sql.query("SELECT id, ma_so, ten_mon_hoc_tv FROM thong_tin_chung where del_flag = 0", (err, res) => {
         if (err) {
             console.log("error:", err);
             result(null, err)
@@ -90,7 +97,19 @@ Model4.editsubject = (data, result) => {
 }
 
 Model4.collectsubjectid = (data, result) => {
-    sql.query(`select id from thong_tin_chung where ma_so = ${data.ma_so}`,
+    sql.query(`select id from thong_tin_chung where ma_so = ${data.ma_so} && del_flag = 0`,
+      (err, res) => {
+        if (err) {
+            console.log("error:", err);
+            result(null, err)
+        } else {
+            result(null, res);
+        }
+    })
+}
+
+Model4.collectmtmh = (data, result) => {
+    sql.query(`select id, muc_tieu from muc_tieu_mon_hoc where del_flag = 0 && thong_tin_chung_id = ${data.thong_tin_chung_id}`,
       (err, res) => {
         if (err) {
             console.log("error:", err);

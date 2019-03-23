@@ -241,8 +241,9 @@ router.post('/save-data-3', function(req, res) {
 })
 
 // 4
-router.get('/collect-data-4', function(req, res) {
-  Model4.collectdata(function(err, data) {
+router.post('/collect-data-4', function(req, res) {
+  let data = req.body.data
+  Model4.collectdata(data, function(err, data) {
     if (err) {
       console.log(err);
     } else{
@@ -261,9 +262,9 @@ router.get('/collect-cdrmdhd-4', function(req, res) {
   })   
 })
 
-router.post('/add-data-4', function(req, res) {
+router.post('/save-data-4', function(req, res) {
   let data = req.body.data
-  Model4.add(data, function(err, description) {
+  Model4.save(data, function(err, description) {
     if (err) {
       console.log(err);
     }
@@ -314,6 +315,17 @@ router.post('/edit-subject', function(req, res) {
 router.post('/collect-subjectid', function(req, res) {
   let data = req.body.data
   Model4.collectsubjectid(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
+router.post('/collect-mtmh', function(req, res) {
+  let data = req.body.data
+  Model4.collectmtmh(data, function(err, data) {
     if (err) {
       console.log(err);
     } else{

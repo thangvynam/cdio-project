@@ -40,15 +40,15 @@ class Home extends Component {
         })
     }
 
-    checkSubjectExist = (type, monhoc) => {
-        for(let i = 0;i < this.props.subjectList.length;i++) {
-            if(this.props.subjectList[i].ma_so === monhoc) {
-               
+    checkSubjectExist = (subjectlist, monhoc) => {
+        for(let i = 0;i < subjectlist.length;i++) {
+            if(subjectlist[i].id === monhoc) {
                 return true;
             }
         }
         return false;
     }
+    // should update dau m de chay thu chu sang chay k dc
 
     componentDidMount() {
     //     var self = this;
@@ -84,7 +84,8 @@ class Home extends Component {
             }
         }
 
-        if(isExist === 0) {
+        if(isExist === 0 || (type !== "de-cuong-mon-hoc" && this.props.match.params.monhoc !== "" &&
+        this.props.match.params.monhoc !== undefined)) {
             return <Page404/>;
         }
        
@@ -165,7 +166,6 @@ const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
-        subjectMaso: state.subjectmaso,
         menuItem: state.menuitem
     }
 }
@@ -173,8 +173,6 @@ const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
       updateSubjectList: subjectList,
       updateSubjectId: subjectId,
-      updateSubjectMaso: subjectMaso
-
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

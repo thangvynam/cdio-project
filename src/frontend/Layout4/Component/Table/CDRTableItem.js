@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Button,
    Input, Cascader } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
@@ -248,10 +248,14 @@ const DragableBodyRow = DropTarget(
 
 class CDRTableItem extends Component {
 
-  state = { visible: false}
 
   constructor(props){
     super(props);
+    this.state = {
+      id: this.props.subjectId,
+      visible: false,
+      isLoaded: false
+    };
     this.columns = [{
       title: 'Chuẩn đầu ra',
       dataIndex: 'cdr',
@@ -346,42 +350,46 @@ class CDRTableItem extends Component {
       }
     }
   }
-  componentDidMount() {
+  componentWillReceiveProps(nextProps) {
+    this.setState({id: nextProps.subjectId})
+    
+  if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    this.props.updateIsLoad("true");
     var self = this;
     axios.get('/collect-cdrmdhd-4')
- .then(function (response) {
-   console.log(response);
-   self.props.updateCdrmdhd(response.data)
- })
-.catch(function (error) {
-   console.log(error);
-});
+  .then(function (response) {
+    self.props.updateCdrmdhd(response.data)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 
-    axios.get('/collect-data-4')
-    .then(function (response) {
-      console.log(response);
-      const tableData = {
-        previewInfo: []
-      };
-      for(let i = 0;i < response.data.length;i++) {
-        let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
-        let data = {
-         key: (i + 1).toString(),
-         cdr: response.data[i].chuan_dau_ra,
-         level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString()],
-         description: response.data[i].mo_ta,
-         levels: response.data[i].muc_do.split(","),
-        }
-        tableData.previewInfo.push(data);
+      axios.post('/collect-data-4', { data: {thong_tin_chung_id: this.state.id}})
+      .then(function (response) {
+    const tableData = {
+      previewInfo: []
+    };
+    for(let i = 0;i < response.data.length;i++) {
+      let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
+      let data = {
+       key: (i + 1).toString(),
+       cdr: response.data[i].chuan_dau_ra,
+       level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
+       description: response.data[i].mo_ta,
+       levels: response.data[i].muc_do.split(","),
       }
-      self.props.onAddCDRData(tableData)
-    })
-   .catch(function (error) {
-      console.log(error);
-   });
-  
-    
-  }
+      tableData.previewInfo.push(data);
+    }
+    self.props.onAddCDRData(tableData)
+        })
+       .catch(function (error) {
+          console.log(error);
+       });  
+}
+
+
+}
+
   // Delete
   onSelectChange = (selectedRowKeys) => {
     this.props.onSelectCDRItem(selectedRowKeys);
@@ -539,7 +547,41 @@ class CDRTableItem extends Component {
     this.props.onSelectCDRItem([]);
   }
 
+  getMtmhId = (cdr) => {
+    for(let i = 0;i < this.props.mtmh.length;i++) {
+      if(this.props.mtmh[i].muc_tieu === cdr) {
+        return this.props.mtmh[i].id;
+      }
+    }
+    return -1;
+  }
+
+  getCdrmdhdId = (verb) => {
+    for(let i = 0;i < this.props.cdrmdhd.length;i++) {
+      if(this.props.cdrmdhd[i].muc_do_3 === verb) {
+        return this.props.cdrmdhd[i].id;
+      }
+    }
+    return -1;
+  }
+  saveAll = () => {
+    let data = this.props.cdrtable.previewInfo.map((key) => {
+        return {
+          cdr: key.cdr,
+          description: key.description,
+          levels: key.levels,
+          muc_tieu_mon_hoc_id: this.getMtmhId(key.cdr.split(".")[0]),
+          cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(key.level_verb[2]),
+        }
+      })
+      console.log(data)
+    
+    axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}}).then(
+      alert("ok")
+    );
+  }
     render() {
+      //console.log(this.props.subjectId)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -623,7 +665,13 @@ class CDRTableItem extends Component {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${this.props.cdrselecteditem.length} mục` : ''}
           </span>
+          <Button style={{float: "right"}}
+            onClick={this.saveAll}
+          >
+            Lưu lại
+          </Button>
           </div>
+          
             <Table bordered 
             components={components}
             rowSelection={rowSelection} 
@@ -648,6 +696,9 @@ const mapStateToProps = (state) => {
         cdreditstate: state.cdreditstate,
         cdrverb: state.cdrverb,
         cdrmdhd: state.cdrmdhd,
+        mtmh: state.mtmh,
+        subjectId: state.subjectid,
+        isLoad: state.isloadtab4
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -657,6 +708,7 @@ const mapDispatchToProps = (dispatch) => {
     onChangeEditState: changeEditState,
     onUpdateVerb: selectedVerb,
     updateCdrmdhd: cdrmdhd,
+    updateIsLoad: isLoad
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

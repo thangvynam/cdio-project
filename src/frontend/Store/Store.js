@@ -4,7 +4,9 @@ import itemLayout3Reducer from '../Reducers/ItemLayout3Reducer'
 import itemLayout1Reducer from '../Reducers/itemLayout1Reducer';
 import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, changeEditStateReducer, 
     selectedVerbReducer, 
-    cdrmdhdReducer} from '../Reducers/ItemLayout4Reducer';
+    cdrmdhdReducer,
+    mtmhReducer,
+    isLoadReducer} from '../Reducers/ItemLayout4Reducer';
 import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Reducer';
 import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
@@ -31,6 +33,8 @@ const allReducers = redux.combineReducers({
     cdreditstate: changeEditStateReducer,
     cdrverb: selectedVerbReducer,
     cdrmdhd: cdrmdhdReducer,
+    isloadtab4: isLoadReducer,
+    mtmh: mtmhReducer,
     itemLayout6Reducer: itemLayout6Reducer,
     itemLayout9Reducer: itemLayout9Reducer,
     itemLayout7Reducer : itemLayout7Reducer,

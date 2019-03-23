@@ -332,7 +332,6 @@ class CDRFormItem extends Component {
   }
 
   onChange = (value) => {
-    console.log("desc change: ", this.state.id)
       const data = {
         level: value[0],
         childLevel: value[1],
@@ -462,16 +461,8 @@ class CDRFormItem extends Component {
             var newData = this.props.cdrtable;
             var previewInfo = this.props.cdrtable.previewInfo;
             newData.previewInfo = previewInfo.concat(data);
-            //newData.previewInfo = this.props.cdrtable.previewInfo.push(data);
             
             this.props.onAddCDRData(newData);
-            // const postData = {
-            //   cdr: `${this.props.cdrdata.cdr}.${index}`,
-            //   level_verb: level_verb,
-            //   description: description,
-            //   levels: this.props.cdrdata.levels
-            // }
-            // axios.post('/add-data-4', { data: postData })
             message.info("Thêm thành công!");
             this.props.onChangeCDRData({
               cdr: "",
@@ -489,14 +480,27 @@ class CDRFormItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    console.log("next props: ", nextProps.subjectId);
     this.setState({id: nextProps.subjectId})
     if(this.state.isLoaded === false && this.state.id !== null && this.state.id !== undefined && this.state.id !== ""){
       this.setState({isLoaded: true})
       var self = this;
       if(this.state.id !== "" && this.state.id !== undefined) {
-        console.log("a11")
         axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.state.id}})
+        .then(function (response) {
+            self.props.updateMtmh(response.data);
+            
+          })
+         .catch(function (error) {
+            console.log(error);
+         });  
+      }
+    }
+  }
+  componentDidMount() {
+    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== ""){
+      var self = this;
+      if(this.state.id !== "" && this.state.id !== undefined) {
+        axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.props.subjectId}})
         .then(function (response) {
             self.props.updateMtmh(response.data);
             
@@ -509,7 +513,6 @@ class CDRFormItem extends Component {
   }
 
   render() {
-    console.log(this.props.subjectId)
     const { getFieldDecorator } = this.props.form;
     const CDROption = this.props.mtmh.map((key) => {
       return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>
@@ -588,7 +591,6 @@ class CDRFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div>
-              {this.props.cdrtable.previewInfo.length > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
               <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
                 Continue<Icon type="right" />
               </Button>

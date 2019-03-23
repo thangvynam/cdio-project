@@ -59,8 +59,10 @@ class Home extends Component {
         }
         axios.get('/collect-subjectlist')
      .then(function (response) {
+
         //console.log(response.data)
        self.props.updateSubjectList(response.data)
+
      })
     .catch(function (error) {
        console.log(error);

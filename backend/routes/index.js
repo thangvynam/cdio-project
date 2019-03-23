@@ -5,7 +5,7 @@ const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path');
 const moment = require('moment');
-
+const CircularJSON = require('circular-json');
 const MoTaModel = require('../models/MoTaModel')
 const ThongTinChungModel = require('../models/ThongTinChungModel')
 const Model4 = require('../models/Model4');
@@ -249,8 +249,9 @@ router.post('/save-data-3', function(req, res) {
 })
 
 // 4
-router.get('/collect-data-4', function(req, res) {
-  Model4.collectdata(function(err, data) {
+router.post('/collect-data-4', function(req, res) {
+  let data = req.body.data
+  Model4.collectdata(data, function(err, data) {
     if (err) {
       console.log(err);
     } else{
@@ -269,9 +270,9 @@ router.get('/collect-cdrmdhd-4', function(req, res) {
   })   
 })
 
-router.post('/add-data-4', function(req, res) {
+router.post('/save-data-4', function(req, res) {
   let data = req.body.data
-  Model4.add(data, function(err, description) {
+  Model4.save(data, function(err, description) {
     if (err) {
       console.log(err);
     }
@@ -330,16 +331,36 @@ router.post('/collect-subjectid', function(req, res) {
   })   
 })
 
+router.post('/collect-mtmh', function(req, res) {
+  let data = req.body.data
+  Model4.collectmtmh(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
-  
   Model5.add(data, function(err) {
     if(err == null){
       res.end("1")
     }else{
       res.end("0")
     }
-   
+  })   
+})
+
+router.get('/collect-data-5', function(req, res) {
+  Model5.collect(function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      //console.log(data)
+      res.send(data);
+    }   
   })   
 })
 

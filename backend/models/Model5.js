@@ -1,15 +1,135 @@
 var sql = require('../db');
-
 var Model5 = (data) => {
     this.data = data;
+}
+query = (string_sql, args) => {
+    return new Promise((resolve, reject) => {
+        sql.query(string_sql, args, (err, rows) => {
+            if (err)
+                return reject(err);
+            resolve(rows);
+        })
+    });
+}
+close = () => {
+    console.log("close resource");
+    sql.end();
+}
+
+collectDataPromise = (objResult) => {
+    return new Promise((resolve, reject) => {
+        query(`SELECT hoat_dong FROM khlt_has_hdd JOIN hoat_dong_day on hoat_dong_day_id = id WHERE ke_hoach_ly_thuyet_id = '${objResult.key}' `)
+            .then(res => {
+                res.map(async value => {
+                    await objResult.teachingActs.push(value.hoat_dong);
+                })
+
+            }, err => {
+                console.log(err);
+            })
+            .then(() => {
+                query(`SELECT chuan_dau_ra FROM khlt_has_cdrmh JOIN chuan_dau_ra_mon_hoc on chuan_dau_ra_mon_hoc_id = id WHERE ke_hoach_ly_thuyet_id = '${objResult.key}' `)
+                    .then(res => {
+                        res.map(async value => {
+                            await objResult.standardOutput.push(value.chuan_dau_ra);
+                        })
+
+                    }, err => {
+                        console.log(err);
+                    })
+            })
+            .then(() => {
+                query(`SELECT ma FROM khlt_has_dg JOIN danh_gia on danh_gia_id = id  `)
+                    .then(res => {
+                        res.map(async value => {
+                            await objResult.evalActs.push(value.ma);
+                        })
+                        resolve(objResult)
+                    }, err => {
+                        console.log(err);
+                    })
+
+            })
+    })
+}
+
+Model5.collect = (result) => {
+    let data = [];
+    query("SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0")
+        .then(res => {
+            if (res.length != 0) {
+                for (const ele of res) {
+                    let objResult = {
+                        key: '',
+                        titleName: '',
+                        teachingActs: [],
+                        standardOutput: [],
+                        evalActs: []
+                    }
+                    objResult.key = ele.id;
+                    objResult.titleName = ele.ten_chu_de;
+                    let buzCollect = collectDataPromise(objResult);
+                    buzCollect
+                        .then((result)=>{
+                            data.push(result);
+                        })
+                        .finally(()=>{
+                            console.log("====");
+                            console.log(data);
+                        })
+                }
+            }
+        })
+        .catch(err => {
+            console.log(err);
+        })
+        
+    // sql.query("SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0", (err, res) => {
+    //     if (err) {
+    //         console.log("error:", err);
+    //         result(null, err)
+    //     } else {
+    //         let data = [];
+    //         if(res.length != 0){
+    //             for(const ele of res){
+    //                 let objResult = {
+    //                     key : '',
+    //                     titleName : '',
+    //                     teachingActs: ['sadad'],
+    //                     standardOutput:[],
+    //                     evalActs:[]
+    //                 }
+    //                 objResult.key = ele.id;
+    //                 objResult.titleName = ele.ten_chu_de;
+
+    //                 // select hdd
+    //                 sql.query(`SELECT * FROM khlt_has_hdd JOIN mydb.hoat_dong_day on hoat_dong_day_id = id WHERE ke_hoach_ly_thuyet_id = '${objResult.key}' `, (err, res) => {
+    //                     console.log("=====");
+    //                     if(err){
+
+    //                     }else{
+    //                         for(const ele of res){
+    //                             objResult.teachingActs.push(ele.hoat_dong);
+    //                         }
+    //                         console.log(objResult.teachingActs);
+    //                     }
+    //                 })
+    //                 console.log(objResult)
+    //                 //data.push(objResult);
+    //             }
+    //         }
+    //         //console.log(data);
+    //         result(null, data);
+    //     }
+    //})
 }
 Model5.add = (data, result) => {
     data.forEach(function (value, index) {
         let id = value.key;
         let stt = value.key;  // hardcode 
         let titleName = value.titleName;
-        let teachingActs =  value.teachingActs;
-        let standardOutput =  value.standardOutput;
+        let teachingActs = value.teachingActs;
+        let standardOutput = value.standardOutput;
         let thong_tin_chund_id = 0 // hardcode
 
         sql.query(`insert into ke_hoach_ly_thuyet(id, stt,ten_chu_de,hoat_dong,thong_tin_chung_id) 
@@ -18,8 +138,8 @@ Model5.add = (data, result) => {
             (err, res) => {
                 if (err) {
                     console.log("error:", err);
-                } 
-        })
+                }
+            })
 
         sql.query(`insert into khlt_has_cdrmh(ke_hoach_ly_thuyet_id,chuan_dau_ra_mon_hoc_id) 
         values ('${id}', '${index}')`,
@@ -28,7 +148,7 @@ Model5.add = (data, result) => {
                     console.log("error:", err);
                     result(null, err)
                 }
-        })
+            })
 
         sql.query(`insert into khlt_has_dg(ke_hoach_ly_thuyet_id,danh_gia_id) 
         values ('${id}', '${index}')`,
@@ -39,7 +159,7 @@ Model5.add = (data, result) => {
                 } else {
                     result(null, res);
                 }
-        })
+            })
 
         sql.query(`insert into khlt_has_hdd(ke_hoach_ly_thuyet_id,hoat_dong_day_id) 
         values ('${id}', '${index}')`,
@@ -48,8 +168,7 @@ Model5.add = (data, result) => {
                     console.log("error:", err);
                     result(null, err)
                 }
-        })
-        
+            })
     });
 }
 

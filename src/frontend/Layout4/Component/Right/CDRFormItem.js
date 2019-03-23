@@ -8,7 +8,7 @@ import {
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem } from '../../../Constant/ActionType';
+import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh } from '../../../Constant/ActionType';
 import './1.css';
 import axios from 'axios';
 
@@ -61,7 +61,7 @@ const level_verb_data = [{
             label: 'Phân tích',
           },
           {
-            value: 'Tổng hợp',
+            value: '  ',
             label: 'Tổng hợp',
           }
         ]
@@ -316,6 +316,14 @@ const level_verb_data = [{
 
 class CDRFormItem extends Component {
 
+  constructor(props) {
+    super(props);
+    this.state = {
+      id: this.props.subjectId,
+      isLoaded: false
+    }
+  }
+
   displayRender = (label) => {
   if(this.props.cdrdata.level_verb[1] !== "" && this.props.cdrdata.level_verb[1] !== undefined){
     return this.props.cdrdata.level_verb[0] + " - Level " + this.props.cdrdata.level_verb[1];
@@ -324,7 +332,6 @@ class CDRFormItem extends Component {
   }
 
   onChange = (value) => {
-    
       const data = {
         level: value[0],
         childLevel: value[1],
@@ -443,7 +450,7 @@ class CDRFormItem extends Component {
             index++;
             let uniqueKey = this.props.cdrtable.previewInfo.length + 1;
             let description = this.props.cdrdata.description;
-            let level_verb = [this.props.cdrverb.level, this.props.cdrverb.childLevel];
+            let level_verb = [this.props.cdrverb.level, this.props.cdrverb.childLevel, this.props.cdrverb.verb];
             var data = {
               key: `${uniqueKey}`,
               cdr: `${this.props.cdrdata.cdr}.${index}`,
@@ -454,16 +461,8 @@ class CDRFormItem extends Component {
             var newData = this.props.cdrtable;
             var previewInfo = this.props.cdrtable.previewInfo;
             newData.previewInfo = previewInfo.concat(data);
-            //newData.previewInfo = this.props.cdrtable.previewInfo.push(data);
             
             this.props.onAddCDRData(newData);
-            // const postData = {
-            //   cdr: `${this.props.cdrdata.cdr}.${index}`,
-            //   level_verb: level_verb,
-            //   description: description,
-            //   levels: this.props.cdrdata.levels
-            // }
-            // axios.post('/add-data-4', { data: postData })
             message.info("Thêm thành công!");
             this.props.onChangeCDRData({
               cdr: "",
@@ -480,10 +479,43 @@ class CDRFormItem extends Component {
     }
   }
 
+  componentWillReceiveProps(nextProps) {
+    this.setState({id: nextProps.subjectId})
+    if(this.state.isLoaded === false && this.state.id !== null && this.state.id !== undefined && this.state.id !== ""){
+      this.setState({isLoaded: true})
+      var self = this;
+      if(this.state.id !== "" && this.state.id !== undefined) {
+        axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.state.id}})
+        .then(function (response) {
+            self.props.updateMtmh(response.data);
+            
+          })
+         .catch(function (error) {
+            console.log(error);
+         });  
+      }
+    }
+  }
+  componentDidMount() {
+    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== ""){
+      var self = this;
+      if(this.state.id !== "" && this.state.id !== undefined) {
+        axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.props.subjectId}})
+        .then(function (response) {
+            self.props.updateMtmh(response.data);
+            
+          })
+         .catch(function (error) {
+            console.log(error);
+         });  
+      }
+    }
+  }
+
   render() {
     const { getFieldDecorator } = this.props.form;
-    const CDROption = Object.keys(CDRData).map((id, key) => {
-      return <Option key={key} value={CDRData[key]}>{CDRData[key]}</Option>
+    const CDROption = this.props.mtmh.map((key) => {
+      return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>
     });
     return (
       <div style={{ border: "2px solid", borderRadius: "12px" }}>
@@ -559,7 +591,6 @@ class CDRFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div>
-              {this.props.cdrtable.previewInfo.length > 0 ? <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link> : null}
               <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
                 Continue<Icon type="right" />
               </Button>
@@ -576,6 +607,8 @@ const mapStateToProps = (state) => {
     cdrdata: state.cdrdata,
     cdrtable: state.itemLayout4Reducer,
     cdrverb: state.cdrverb,
+    subjectId: state.subjectid,
+    mtmh: state.mtmh
   };
 }
 const mapDispatchToProps = (dispatch) => {
@@ -584,6 +617,7 @@ const mapDispatchToProps = (dispatch) => {
     onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
     onSelectCDRItem: selectedCDRItem,
+    updateMtmh: mtmh
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CDRFormItem);

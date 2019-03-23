@@ -481,6 +481,7 @@ class TableItem extends Component {
       onChange: this.onSelectChange
     };
     const hasSelected = selectedRowKeys.length > 0;
+  
     return (
 
       <div>
@@ -540,7 +541,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     saveData : () => {
       dispatch({ type: ADD_DATA_LAYOUT_5});
-    
     }
 
 

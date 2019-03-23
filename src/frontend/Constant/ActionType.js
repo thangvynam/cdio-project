@@ -51,6 +51,7 @@ export const CHANGE_EDITSTATE_5 = 'CHANGE_EDITSTATE_5';
 export const SAVE_DATA_LAYOUT_5 = 'SAVE_DATA_LAYOUT_5';
 export const CHANGE_DATA = 'CHANGE_DATA';
 export const ADD_DATA_LAYOUT_5 = "ADD_DATA_LAYOUT_5";
+export const COLLECT_DATA_REQUEST_5 = "COLLECT_DATA_REQUEST_5";
 
 export function addCDRData(newCDRData) {
     return {

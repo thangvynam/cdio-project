@@ -6,8 +6,8 @@ import { Redirect } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA, CHANGE_DATA } from '../../../Constant/ActionType';
-
+import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_REQUEST_5} from '../../../Constant/ActionType';
+import axios from 'axios';
 const { Option } = Select;
 const standard_item = [{
     value: 'G1',
@@ -144,6 +144,9 @@ class ItemMenu extends Component {
         }
        
     }
+    componentDidMount() {
+        this.props.collectDataRequest()
+    }
    
     displayRender = label => {
         
@@ -176,11 +179,12 @@ class ItemMenu extends Component {
 
     }
     toString = () => {
-        let temp = '';
-        for (let i = 0; i < this.props.itemLayout5Reducer.standardOutput.length; i++) {
-            temp += this.props.itemLayout5Reducer.standardOutput[i] + " , ";
-        }
-        return temp;
+        
+        // let temp = '';
+        // for (let i = 0; i < this.props.itemLayout5Reducer.standardOutput.length; i++) {
+        //     temp += this.props.itemLayout5Reducer.standardOutput[i] + " , ";
+        // }
+        // return temp;
     }
     back = (e) => {
         e.preventDefault();
@@ -418,6 +422,34 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 standardOutput: '', evalActs: []
             });
         },
+        collectDataRequest: ()=>{
+            let newArr = [];
+            axios.get('/collect-data-5')
+            .then(function (response) {
+                console.log(response)
+                // for(let i = 0; i <response.data.length;i++){
+                //     let data = {
+                //         key : response.data[i].id,
+                //         titleName : response.data[i].ten_chu_de,
+                //         //key : response.data[i].hoat_dong,
+                //         // key: 1,
+                //         // titleName : "Quy trình phần mềm xem video #1,#2",
+                //          teachingActs : ["Thuyết giảng","Thảo luận nhóm"],
+                //          standardOutput : ["G2.1","G2.2","G4.1","G5.1"],
+                //          evalActs : ["BTVN"]
+                //     }
+                //     newArr.push(data); 
+                //     dispatch({type:ADD_DATA,data:newArr})
+                    
+                // }
+            })
+            .catch(function (error) {
+                console.log(error);
+            })
+            .finally(function(){
+               
+            })
+        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(ItemMenu);

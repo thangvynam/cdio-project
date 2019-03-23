@@ -143,8 +143,7 @@ class Content extends Component {
 
         if(!this.checkSubjectExist(this.props.content_monhoc) && this.props.content_monhoc !== "" &&
         this.props.content_monhoc !== undefined) {
-            //return <Page404/>;
-
+            // return <Page404/>;
         }
         let content_layout;
         switch (this.props.content_tab) {

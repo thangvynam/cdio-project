@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {MENUITEM, subjectList, subjectId} from '../../Constant/ActionType';
+import {MENUITEM, subjectList, subjectId, isLoad} from '../../Constant/ActionType';
 import { connect } from'react-redux';
 
 import { bindActionCreators } from 'redux';
@@ -103,7 +103,8 @@ class Content extends Component {
     }
 
     onClick = (id) => {
-       console.log(id)
+
+       this.props.updateIsLoad("false");
         this.props.updateSubjectId(id)
           
       }
@@ -348,6 +349,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     updateSubjectList: subjectList,
     updateSubjectId: subjectId,
+    updateIsLoad: isLoad
   }, dispatch);
 
 }

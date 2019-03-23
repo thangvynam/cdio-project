@@ -248,10 +248,14 @@ const DragableBodyRow = DropTarget(
 
 class CDRTableItem extends Component {
 
-  state = { visible: false}
 
   constructor(props){
     super(props);
+    this.state = {
+      id: this.props.subjectId,
+      visible: false,
+      isLoaded: false
+    };
     this.columns = [{
       title: 'Chuẩn đầu ra',
       dataIndex: 'cdr',
@@ -346,50 +350,46 @@ class CDRTableItem extends Component {
       }
     }
   }
-  
-  componentWillMount() {
-    //console.log( this.props.subjectId)
+  componentWillReceiveProps(nextProps) {
+    this.setState({id: nextProps.subjectId})
+    
+  if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    this.props.updateIsLoad("true");
     var self = this;
     axios.get('/collect-cdrmdhd-4')
- .then(function (response) {
-   //console.log(response);
-   self.props.updateCdrmdhd(response.data)
- })
-.catch(function (error) {
-   console.log(error);
-});
-  if(this.props.isLoad === "false") {
-    var self = this;
-        axios.post('/collect-data-4', { data: {thong_tin_chung_id: this.props.subjectId}})
-        .then(function (response) {
-            //console.log(response);
-      const tableData = {
-        previewInfo: []
-      };
-      for(let i = 0;i < response.data.length;i++) {
-        let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
-        //console.log(cdrmdhd)
-        let data = {
-         key: (i + 1).toString(),
-         cdr: response.data[i].chuan_dau_ra,
-         level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
-         description: response.data[i].mo_ta,
-         levels: response.data[i].muc_do.split(","),
-        }
-        tableData.previewInfo.push(data);
+  .then(function (response) {
+    self.props.updateCdrmdhd(response.data)
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
+
+      axios.post('/collect-data-4', { data: {thong_tin_chung_id: this.state.id}})
+      .then(function (response) {
+    const tableData = {
+      previewInfo: []
+    };
+    for(let i = 0;i < response.data.length;i++) {
+      let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
+      let data = {
+       key: (i + 1).toString(),
+       cdr: response.data[i].chuan_dau_ra,
+       level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
+       description: response.data[i].mo_ta,
+       levels: response.data[i].muc_do.split(","),
       }
-      self.props.onAddCDRData(tableData)
-          })
-         .catch(function (error) {
-            console.log(error);
-         });  
-    
-   this.props.updateIsLoad("true");
-  }
-    
-  
-    
-  }
+      tableData.previewInfo.push(data);
+    }
+    self.props.onAddCDRData(tableData)
+        })
+       .catch(function (error) {
+          console.log(error);
+       });  
+}
+
+
+}
+
   // Delete
   onSelectChange = (selectedRowKeys) => {
     this.props.onSelectCDRItem(selectedRowKeys);
@@ -668,7 +668,7 @@ class CDRTableItem extends Component {
           <Button style={{float: "right"}}
             onClick={this.saveAll}
           >
-            Save all
+            Lưu lại
           </Button>
           </div>
           

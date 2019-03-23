@@ -103,14 +103,9 @@ class Content extends Component {
     }
 
     onClick = (id) => {
-        var self = this;
-        axios.post('/collect-subjectid', { data: {ma_so: id}})
-        .then(function (response) {
-            self.props.updateSubjectId(response.data[0].id)
-          })
-         .catch(function (error) {
-            console.log(error);
-         });  
+       console.log(id)
+        this.props.updateSubjectId(id)
+          
       }
 
       checkSubjectExist = (monhoc) => {
@@ -290,7 +285,7 @@ class Content extends Component {
                                                         <List.Item.Meta
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={this.state.isEditting !== item.ma_so ?
-                                                                <div className="list-item"><span onClick={() => this.onClick(item.ma_so)}>{`${item.ma_so} - ${item.ten_mon_hoc_tv}`}</span></div>
+                                                                <div className="list-item"><span onClick={() => this.onClick(item.id)}>{`${item.ma_so} - ${item.ten_mon_hoc_tv}`}</span></div>
                                                                 : (<Row>
                                                                     <Col span={6} className="col-left">
                                                                         <Input defaultValue={item.ma_so} id="subject-id-edit" />

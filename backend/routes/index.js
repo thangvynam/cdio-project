@@ -12,6 +12,8 @@ const Model4 = require('../models/Model4');
 const Model5 = require('../models/Model5');
 const Model9 = require('../models/Model9');
 const Model6 = require('../models/Model6');
+const MatrixModel = require('../models/MatrixModel');
+
 
 const MucTieuModel = require('../models/MucTieuModel')
 
@@ -394,6 +396,27 @@ router.get('/get-teachingarts', function(req, res) {
     res.end(JSON.stringify(result));
   })   
 })
+
+router.get('/get-reality-matrix', function(req, res) {
+  
+  MatrixModel.getRealityMatrix().then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+});
+
+router.get('/get-cdr-cdio', function(req, res) {
+  
+  MatrixModel.getCdrCDIO().then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+});
+
 
 
 module.exports = router;

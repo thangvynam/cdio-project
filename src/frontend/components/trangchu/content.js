@@ -44,9 +44,17 @@ class Content extends Component {
             }
             else {
                 axios.post('/add-subject', { data: { ma_so: id, ten_mon_hoc_tv: name } });
-                const data = this.props.subjectList;
-                data.push({ ma_so: id, ten_mon_hoc_tv: name });
-                this.props.updateSubjectList(data)
+                // const data = this.props.subjectList;
+                // data.push({ ma_so: id, ten_mon_hoc_tv: name });
+                // this.props.updateSubjectList(data)
+                var self = this;
+                axios.get('/collect-subjectlist')
+                .then(function (response) {
+                self.props.updateSubjectList(response.data)
+                })
+                .catch(function (error) {
+                console.log(error);
+                });     
             }
 
         }
@@ -103,10 +111,8 @@ class Content extends Component {
     }
 
     onClick = (id) => {
-
-       this.props.updateIsLoad("false");
+        this.props.updateIsLoad("false");
         this.props.updateSubjectId(id)
-          
       }
 
       checkSubjectExist = (monhoc) => {

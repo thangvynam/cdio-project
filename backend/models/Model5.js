@@ -11,9 +11,44 @@ query = (string_sql, args) => {
         })
     });
 }
+
 close = () => {
     console.log("close resource");
     sql.end();
+}
+
+loopCollectData = (res, data,sl) => {
+    return new Promise((resolve, reject) => {
+        for (const ele of res) {
+            let objResult = {
+                key: '',
+                titleName: '',
+                teachingActs: [],
+                standardOutput: [],
+                evalActs: []
+            }
+            objResult.key = ele.id;
+            objResult.titleName = ele.ten_chu_de;
+            let element = collectData(objResult);
+            element.then(async (result) => {
+                await data.push(result);
+            }).finally(() => {
+                if (data.length == sl)
+                    resolve(data);
+            })
+        }
+
+    });
+}
+
+collectData = (objResult) => {
+    return new Promise((resolve, reject) => {
+        let buzCollect = collectDataPromise(objResult);
+        buzCollect
+            .then((result) => {
+                resolve(result);
+            })
+    })
 }
 
 collectDataPromise = (objResult) => {
@@ -39,8 +74,9 @@ collectDataPromise = (objResult) => {
                     })
             })
             .then(() => {
-                query(`SELECT ma FROM khlt_has_dg JOIN danh_gia on danh_gia_id = id  `)
+                query(`SELECT ma FROM khlt_has_dg JOIN danh_gia on danh_gia_id = id  WHERE ke_hoach_ly_thuyet_id = '${objResult.key}'`)
                     .then(res => {
+                        
                         res.map(async value => {
                             await objResult.evalActs.push(value.ma);
                         })
@@ -53,37 +89,28 @@ collectDataPromise = (objResult) => {
     })
 }
 
-Model5.collect = (result) => {
+Model5.collect = (respone) => {
     let data = [];
-    query("SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0")
-        .then(res => {
-            if (res.length != 0) {
-                for (const ele of res) {
-                    let objResult = {
-                        key: '',
-                        titleName: '',
-                        teachingActs: [],
-                        standardOutput: [],
-                        evalActs: []
+    query("SELECT count(*) as sl FROM ke_hoach_ly_thuyet where del_flag = 0").
+        then(res => {
+            let sl = res[0].sl
+            query("SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0")
+                .then(res => {
+                    if (res.length != 0) {
+                       
+                        let finalResult = loopCollectData(res, data,sl);
+                        finalResult.then((result) => {
+                            respone(null,result)
+                        })
                     }
-                    objResult.key = ele.id;
-                    objResult.titleName = ele.ten_chu_de;
-                    let buzCollect = collectDataPromise(objResult);
-                    buzCollect
-                        .then((result)=>{
-                            data.push(result);
-                        })
-                        .finally(()=>{
-                            console.log("====");
-                            console.log(data);
-                        })
-                }
-            }
+                })
+                .catch(err => {
+                    console.log(err);
+                })
         })
-        .catch(err => {
-            console.log(err);
-        })
-        
+
+
+
     // sql.query("SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0", (err, res) => {
     //     if (err) {
     //         console.log("error:", err);

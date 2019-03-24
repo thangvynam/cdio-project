@@ -350,21 +350,25 @@ class CDRTableItem extends Component {
       }
     }
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({id: nextProps.subjectId})
-    
-  if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
-    this.props.updateIsLoad("true");
+
+  componentDidMount() {
     var self = this;
     axios.get('/collect-cdrmdhd-4')
-  .then(function (response) {
-    self.props.updateCdrmdhd(response.data)
-  })
-  .catch(function (error) {
-    console.log(error);
-  });
+    .then(function (response) {
+      self.props.updateCdrmdhd(response.data)
+    })
+    .catch(function (error) {
+      console.log(error);
+    });
+  }
+  componentWillReceiveProps(nextProps) {
+    this.setState({id: nextProps.subjectId})
 
-      axios.post('/collect-data-4', { data: {thong_tin_chung_id: this.state.id}})
+  if(this.props.isLoad === "false" && nextProps.subjectId !== null && nextProps.subjectId !== undefined && nextProps.subjectId !== "") {
+    this.props.updateIsLoad("true");
+    var self = this;
+
+      axios.post('/collect-data-4', { data: {thong_tin_chung_id: nextProps.subjectId}})
       .then(function (response) {
     const tableData = {
       previewInfo: []
@@ -380,7 +384,7 @@ class CDRTableItem extends Component {
       }
       tableData.previewInfo.push(data);
     }
-    self.props.onAddCDRData(tableData)
+      self.props.onAddCDRData(tableData)
         })
        .catch(function (error) {
           console.log(error);

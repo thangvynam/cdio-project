@@ -48,31 +48,23 @@ class Home extends Component {
         }
         return false;
     }
-    // should update dau m de chay thu chu sang chay k dc
+    
 
     componentDidMount() {
-    //     var self = this;
-    //     let monhoc = self.props.match.params.monhoc;
-    //     axios.get('/collect-subjectlist')
-    //  .then(function (response) {
-    //    //self.props.updateSubjectList(response.data)
-    //  })
-    // .catch(function (error) {
-    //    console.log(error);
-    // });     
+        var self = this;
+        let monhoc = self.props.match.params.monhoc;
+        axios.get('/collect-subjectlist')
+     .then(function (response) {
+       self.props.updateSubjectList(response.data)
+     })
+    .catch(function (error) {
+       console.log(error);
+    });     
 
-    // if((this.props.subjectId === "" || this.props.subjectId === undefined || this.props.subjectMaso === "" || 
-    // this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
-    //     console.log(1234)
-    //     axios.post('/collect-subjectid', { data: {ma_so: monhoc}})
-    //     .then(function (response) {
-    //         //self.props.updateSubjectId(response.data[0].id)
-    //       })
-    //      .catch(function (error) {
-    //         console.log(error);
-    //      });  
-        //this.props.updateSubjectMaso(monhoc);
-    //}
+    if((this.props.subjectId === "" || this.props.subjectId === undefined || this.props.subjectMaso === "" || 
+    this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
+        self.props.updateSubjectId(monhoc) 
+    }
 }
     render() {
         let type = this.props.match.params.type;

@@ -13,6 +13,7 @@ import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import matrixReducer from "../Reducers/matrixReducer";
 import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer } from '../Reducers/homePageReducer';
+import logReducer from "../Reducers/logReducer"
 
 import { createStore, applyMiddleware} from 'redux';
 // import logger from 'redux-logger';
@@ -49,7 +50,8 @@ const allReducers = redux.combineReducers({
     subjectlist: subjectListReducer,
     editmatrix: editMatrixReducer,
     editmatrixeditstate: editMatrixEditStateReducer,
-    matrix: matrixReducer
+    matrix: matrixReducer,
+    logReducer: logReducer
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

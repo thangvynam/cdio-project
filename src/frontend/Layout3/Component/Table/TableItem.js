@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input } from 'antd';
 import { connect } from 'react-redux';
-import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3 } from '../../../Constant/ActionType';
+import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3, SAVE_LOG } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
 import axios from 'axios'
+import { getCurrTime } from '../../../utils/Time';
 
 const { Option } = Select;
 const confirm = Modal.confirm;
@@ -212,29 +213,44 @@ async getCDR(data) {
 })
 }
 
+async getData() {
+  return axios.get(`/get-data-3/${this.props.subjectid}`).then(res => {
+    return res.data
+  }).then(resp => {
+    return resp;
+  })
+}
+
+getUnique(arr, comp) {
+  const unique = arr
+       .map(e => e[comp])
+    .map((e, i, final) => final.indexOf(e) === i && i)
+
+    .filter(e => arr[e]).map(e => arr[e]);
+   return unique;
+}
+
 async componentDidMount(){
   let saveData = []
-  let standActs = []
-  if (!this.props.itemLayout3Reducer.isLoaded) {
-    let temp1 = await this.getMucTieu();
-    for (const ele of temp1) {
-      let temp2 = await this.getMucTieuCDR(ele);
-      for(const map1 of temp2) {       
-        let temp3 = await this.getCDR(map1);
-        standActs.push(temp3.toString())  
-      }
-      let newObj = {
-          objectName: ele.muc_tieu,
-          description: ele.mo_ta,
-          standActs: standActs
+  let standActs = [];
+  if (!this.props.itemLayout3Reducer.isLoaded) {   
+    let temp = await this.getData()
+    temp.forEach(element => {
+      temp.forEach(element2 => {
+        if(element2.muc_tieu === element.muc_tieu) {
+          standActs.push(element2.cdr)
         }
-      saveData.push(newObj);
-      standActs = []    
-    }
-    
-    // saveData = JSON.stringify(saveData)
-    // console.log(saveData);
-    
+      });
+      let newObj = {
+            objectName: element.muc_tieu,
+            description: element.mo_ta,
+            standActs: standActs
+          }
+        saveData.push(newObj);        
+        standActs = []
+    });  
+
+    saveData = this.getUnique(saveData, "objectName")
     this.props.saveAndContinue(saveData);
     this.props.setFlag(true);
   }
@@ -278,6 +294,8 @@ async componentDidMount(){
   };
 
   delete(key) {
+    let deleteData = this.props.itemLayout3Reducer.previewInfo[key]
+    this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa mục tiêu môn học: ${deleteData.objectName}, ${deleteData.description}, ${deleteData.standActs}`, this.props.logReducer.contentTab, this.props.subjectid);
     this.props.handleDelete(key);
     this.setState({ selectedRowKeys: [] });
   }
@@ -310,6 +328,7 @@ async componentDidMount(){
         ...row
       });
       this.props.handleSave(newItems, key);
+      this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mục tiêu môn học thành: ${newItems[key].objectName}, ${newItems[key].description}, ${newItems[key].standActs}`, this.props.logReducer.contentTab, this.props.subjectid);
       this.setState({ editingKey: "" });
     });
   }
@@ -325,9 +344,7 @@ async componentDidMount(){
         standActs: items[i].standActs
       };
       data.push(temp);
-    }
-    console.log(this.props.itemLayout3Reducer.previewInfo);
-    
+    }    
     return data;
   };
 
@@ -378,7 +395,7 @@ async componentDidMount(){
            <Button style={{float: "right"}}
             onClick={() => this.props.saveAll(this.props.subjectid)}
           >
-            Save all
+            Lưu tất cả
           </Button>
           </div>  
           <Table
@@ -397,7 +414,8 @@ async componentDidMount(){
 const mapStateToProps = (state, ownProps) => {
   return {
     itemLayout3Reducer: state.itemLayout3Reducer,
-    subjectid: state.subjectid
+    subjectid: state.subjectid,
+    logReducer: state.logReducer
   }
 }
 
@@ -417,6 +435,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     saveAll: (id) => {
       dispatch({type: SAVE_ALL_DATA_LAYOUT_3, id})
+    },
+    saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
+      dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
     }
   }
 }

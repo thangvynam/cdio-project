@@ -11,6 +11,7 @@ import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Red
 import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
+import matrixReducer from "../Reducers/matrixReducer";
 import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer } from '../Reducers/homePageReducer';
 
 import { createStore, applyMiddleware} from 'redux';
@@ -44,7 +45,8 @@ const allReducers = redux.combineReducers({
     menuitem: menuItemReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,
-    subjectlist: subjectListReducer
+    subjectlist: subjectListReducer,
+    matrix: matrixReducer
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

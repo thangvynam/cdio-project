@@ -2,7 +2,8 @@ import {ADD_DATA_LAYOUT_3, DELETE_DATA_LAYOUT_3,
     SAVE_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, 
     SAVE_ALL_DATA_LAYOUT_3,
     IS_LOADED_3,
-    ADD_ARRAY_LAYOUT_3} from '../Constant/ActionType';
+    ADD_ARRAY_LAYOUT_3,
+    SAVE_LOG} from '../Constant/ActionType';
 import axios from 'axios';
 
 const itemLayout3InitialState = {
@@ -29,7 +30,8 @@ const itemLayout3InitialState = {
         description: "",
         standActs: [],
     },
-    isLoaded: false
+    isLoaded: false,
+    logData: []
 }
 const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
     switch (action.type) {
@@ -75,6 +77,19 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
             return {
                 ...state
             }
+        case SAVE_LOG: {
+                let obj = {
+                    ten: action.ten,
+                    timestamp: action.timestamp,
+                    noi_dung: action.noi_dung,
+                    muc_de_cuong: action.muc_de_cuong,
+                    thong_tin_chung_id: action.thong_tin_chung_id
+                }
+                return {
+                    ...state,
+                    logData: [...state.logData, obj]
+                }
+            }    
         default:
             return state
     }

@@ -4,7 +4,9 @@ export const SAVE_DATA_LAYOUT_2 = 'SAVE_DATA_LAYOUT_2';
 export const SAVE_TEMP_DATA_LAYOUT_2 = 'SAVE_TEMP_DATA_LAYOUT_2';
 export const SAVE_ALL_DATA_LAYOUT_2 = 'SAVE_ALL_DATA_LAYOUT_2';
 export const IS_LOADED_2 = 'IS_LOADED_2';
+export const UPDATE_CON_TAB = 'UPDATE_CON_TAB';
 
+export const SAVE_LOG = 'SAVE_LOG';
 
 //layout 3
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
@@ -62,6 +64,16 @@ export const CHANGE_DATA = 'CHANGE_DATA';
 export const ADD_DATA_LAYOUT_5 = "ADD_DATA_LAYOUT_5";
 export const COLLECT_DATA_REQUEST_5 = "COLLECT_DATA_REQUEST_5";
 
+export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
+    return {
+        type: SAVE_LOG,
+        ten: ten,
+        timestamp: timestamp,
+        noi_dung: noi_dung,
+        muc_de_cuong: muc_de_cuong,
+        thong_tin_chung_id: thong_tin_chung_id
+    };
+}
 
 export function addCDRData(newCDRData) {
     return {
@@ -263,6 +275,13 @@ export function updateTNData(newTNData){
     return{
         type: UPDATE_TNDATA,
         data: newTNData
+    }
+}
+
+export function updateContentTab(contentTab){
+    return {
+        type: UPDATE_CON_TAB,
+        data: contentTab
     }
 }
 

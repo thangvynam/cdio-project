@@ -5,8 +5,9 @@ import {
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3 } from '../../../Constant/ActionType';
+import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, SAVE_LOG } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
+import { getCurrTime } from '../../../utils/Time';
 
 const { Option } = Select;
 
@@ -153,9 +154,10 @@ class MenuMucTieu extends Component {
                                 this.props.itemLayout3Reducer.tempInfo.objectName =""
                                 this.props.itemLayout3Reducer.tempInfo.description =""
                                 this.props.itemLayout3Reducer.tempInfo.standActs = []
+                                this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm mục tiêu môn học: ${objectName.toUpperCase()}, ${description}, ${temp}`, this.props.logReducer.contentTab, this.props.subjectid)
                                 this.props.saveAndContinue() 
                                 }} style={{ marginLeft: "2em" }}>
-                                Continue<Icon type="right" />
+                                Thêm<Icon type="right" />
                             </Button>
                             <br/>
                         </div>
@@ -168,7 +170,9 @@ class MenuMucTieu extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-      itemLayout3Reducer: state.itemLayout3Reducer
+      itemLayout3Reducer: state.itemLayout3Reducer,
+      subjectid: state.subjectid,
+      logReducer: state.logReducer
     }
   }
 
@@ -195,6 +199,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         saveTemp: (tempInfo) => {
             dispatch({type: SAVE_TEMP_DATA_LAYOUT_3, tempInfo})
+        },
+        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
+            dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
         }
     }
 }

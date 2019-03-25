@@ -1,10 +1,11 @@
-import {ADD_DATA_LAYOUT_2, SAVE_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, IS_LOADED_2} from '../Constant/ActionType';
+import {ADD_DATA_LAYOUT_2, SAVE_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG} from '../Constant/ActionType';
 import axios from 'axios';
 
 const itemLayout2InitialState = {
     previewInfo: '',
     tempInfo: '',
-    isLoaded: false
+    isLoaded: false,
+    logData: [],
 }
 const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
     switch (action.type) {
@@ -37,6 +38,20 @@ const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
             return {
                 ...state
             }
+
+        case SAVE_LOG: {
+            let obj = {
+                ten: action.ten,
+                timestamp: action.timestamp,
+                noi_dung: action.noi_dung,
+                muc_de_cuong: action.muc_de_cuong,
+                thong_tin_chung_id: action.thong_tin_chung_id
+            }
+            return {
+                ...state,
+                logData: [...state.logData, obj]
+            }
+        }
         default:
             return state
     }

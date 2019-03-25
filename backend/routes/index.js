@@ -434,6 +434,25 @@ router.get('/get-cdr-cdio', function(req, res) {
   });
 });
 
+router.get('/get-standard-matrix', function(req, res) {
+  
+  MatrixModel.getStandardMatrix().then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+});
+router.post('/update-standard-matrix', function(req, res) {
+  const body = req.body;
+  
+  MatrixModel.updateStandardMatrix(body, function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end("1");
+  })   
+})
 
 
 module.exports = router;

@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
 import {MENUITEM, subjectList, subjectId, isLoad} from '../../Constant/ActionType';
 import { connect } from'react-redux';
-
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form } from 'antd';
 import { Link } from "react-router-dom";
@@ -21,6 +20,7 @@ import Layout8 from '../../Layout8/Layout8';
 import ExportFile from '../../ExportFIle/ExportFile';
 import axios from 'axios';
 import Matrix from '../matrix/matrix';
+import EditMatrix from '../matrix/editmatrix';
 const EditableContext = React.createContext();
 
 class Content extends Component {
@@ -177,7 +177,7 @@ class Content extends Component {
             case MENUITEM.CHUAN_DAU_RA: {
                 content_layout = (
                     <React.Fragment>
-                        <Layout4 />
+                        <Layout4 tab={this.props.content_tab}/>
                     </React.Fragment>
                 ); break;
             }
@@ -321,7 +321,7 @@ class Content extends Component {
                                 </Row>
                             </div>
                         </React.Fragment>
-                    ) : type === "matrix" ? <Matrix/>:null
+                    ) : type === "matrix" ? <Matrix/> : type === "edit-matrix" ? <EditMatrix/> : null;
                 }; break;
 
             }

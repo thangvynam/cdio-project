@@ -30,6 +30,8 @@ export const SUBJECT_MASO = 'SUBJECT_MASO';
 export const CDRMDHD = 'CDRMDHD';
 export const MTMH = 'MTMH';
 export const ISLOAD = 'ISLOAD';
+export const EDIT_MATRIX = 'EDIT_MATRIX';
+export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -58,6 +60,7 @@ export const SAVE_DATA_LAYOUT_5 = 'SAVE_DATA_LAYOUT_5';
 export const CHANGE_DATA = 'CHANGE_DATA';
 export const ADD_DATA_LAYOUT_5 = "ADD_DATA_LAYOUT_5";
 export const COLLECT_DATA_REQUEST_5 = "COLLECT_DATA_REQUEST_5";
+
 
 export function addCDRData(newCDRData) {
     return {
@@ -147,6 +150,20 @@ export function subjectList(newSubjectList) {
     return {
         type: SUBJECT_LIST,
         subjectlist: newSubjectList
+    };
+}
+
+export function editMatrix(newEditMatrix) {
+    return {
+        type: EDIT_MATRIX,
+        editmatrix: newEditMatrix
+    };
+}
+
+export function editMatrixEditState(newEditMatrixEditState) {
+    return {
+        type: EDIT_MATRIX_EDIT_STATE,
+        editmatrixeditstate: newEditMatrixEditState
     };
 }
 

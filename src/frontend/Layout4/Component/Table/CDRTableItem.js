@@ -4,10 +4,11 @@ import { Table, Divider, Tag, Button,
    Input, Cascader } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
+import { getCurrTime } from '../../../utils/Time';
 
 const EditableContext = React.createContext();
 
@@ -423,6 +424,7 @@ class CDRTableItem extends Component {
   }
   handleDelete = (key) => {
     var cdrtable = this.props.cdrtable;
+    this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: ${cdrtable[key].cdr}, ${cdrtable[key].level_verb}, ${cdrtable[key].description}, ${cdrtable[key].level}`, this.props.logReducer.contentTab, this.props.subjectId);
     this.OnDelete(cdrtable, key);
     this.props.onAddCDRData(cdrtable);
     this.props.onUpdateVerb(this.props.cdrverb);
@@ -521,6 +523,9 @@ class CDRTableItem extends Component {
         }
       
     }
+      let newItems = newData.previewInfo[key-1]
+    
+      this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung chuẩn đầu ra môn học thành: ${newItems.cdr}, ${newItems.level_verb}, ${newItems.description}, ${newItems.level}`, this.props.logReducer.contentTab, this.props.subjectId);
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');
@@ -585,7 +590,6 @@ class CDRTableItem extends Component {
     );
   }
     render() {
-      //console.log(this.props.subjectId)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -702,6 +706,7 @@ const mapStateToProps = (state) => {
         cdrmdhd: state.cdrmdhd,
         mtmh: state.mtmh,
         subjectId: state.subjectid,
+        logReducer: state.logReducer,
         isLoad: state.isloadtab4
     }
 }
@@ -712,7 +717,8 @@ const mapDispatchToProps = (dispatch) => {
     onChangeEditState: changeEditState,
     onUpdateVerb: selectedVerb,
     updateCdrmdhd: cdrmdhd,
-    updateIsLoad: isLoad
+    updateIsLoad: isLoad,
+    saveLog: saveLog
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

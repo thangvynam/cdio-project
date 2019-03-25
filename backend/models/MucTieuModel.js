@@ -72,4 +72,19 @@ MucTieuModel.getCDR = (data, result) => {
     })
 }
 
+MucTieuModel.get = (data, result) => {
+  sql.query(`SELECT mt.muc_tieu, mt.mo_ta, syllabusdb.chuan_dau_ra_cdio.cdr FROM syllabusdb.muc_tieu_mon_hoc as mt
+  join syllabusdb.mtmh_has_cdrcdio
+  on mt.id = syllabusdb.mtmh_has_cdrcdio.muc_tieu_mon_hoc_id
+  join syllabusdb.chuan_dau_ra_cdio
+  on syllabusdb.mtmh_has_cdrcdio.chuan_dau_ra_cdio_id = syllabusdb.chuan_dau_ra_cdio.id
+  where mt.thong_tin_chung_id = ${data.id} and mt.del_flag = 0`,
+    (err, res) => {
+      if (err) {
+        result(err)
+      }
+      result(res)
+    })
+}
+
 module.exports = MucTieuModel;

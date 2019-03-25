@@ -8,9 +8,10 @@ import {
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh } from '../../../Constant/ActionType';
+import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog } from '../../../Constant/ActionType';
 import './1.css';
 import axios from 'axios';
+import { getCurrTime } from '../../../utils/Time';
 
 const formItemLayout = {
   labelCol: {
@@ -458,7 +459,8 @@ class CDRFormItem extends Component {
               description: description,
               levels: this.props.cdrdata.levels
             }
-            var newData = this.props.cdrtable;
+            this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm chuẩn đầu ra môn học: ${data.cdr}, ${data.level_verb}, ${data.description}, ${data.levels}`, this.props.logReducer.contentTab, this.props.subjectId)
+            var newData = this.props.cdrtable;            
             var previewInfo = this.props.cdrtable.previewInfo;
             newData.previewInfo = previewInfo.concat(data);
             
@@ -608,7 +610,8 @@ const mapStateToProps = (state) => {
     cdrtable: state.itemLayout4Reducer,
     cdrverb: state.cdrverb,
     subjectId: state.subjectid,
-    mtmh: state.mtmh
+    mtmh: state.mtmh,
+    logReducer: state.logReducer
   };
 }
 const mapDispatchToProps = (dispatch) => {
@@ -617,7 +620,8 @@ const mapDispatchToProps = (dispatch) => {
     onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
     onSelectCDRItem: selectedCDRItem,
-    updateMtmh: mtmh
+    updateMtmh: mtmh,
+    saveLog: saveLog
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CDRFormItem);

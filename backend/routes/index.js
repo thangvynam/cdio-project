@@ -213,6 +213,13 @@ router.post('/save-data-2', function(req, res) {
   })   
 })
 
+router.get('/get-data-3/:id', (req, res) => {
+  let id = req.params
+  MucTieuModel.get(id, (resData) => {    
+    res.send(resData);
+  })
+})
+
 router.get('/get-muc-tieu-3/:id', (req, res) => {
   let id = req.params
   MucTieuModel.getMucTieu(id, (resData) => {

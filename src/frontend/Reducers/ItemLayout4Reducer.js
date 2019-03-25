@@ -1,17 +1,31 @@
 import { ADD_CDRDATA, CHANGE_CDRDATA, CHANGE_EDITSTATE, 
-    SELECTED_CDRITEM, SELECTED_VERB, CDRMDHD, MTMH, ISLOAD } from '../Constant/ActionType';
+    SELECTED_CDRITEM, SELECTED_VERB, CDRMDHD, MTMH, ISLOAD, SAVE_LOG } from '../Constant/ActionType';
 
 const addCDRDataState = {
-    previewInfo: []
+    previewInfo: [],
+    logData: []
 };
 
 export function itemLayout4Reducer(state = addCDRDataState, action) {
 
     switch(action.type) {
         case ADD_CDRDATA:
-        return action.data;
+            return action.data;
+        case SAVE_LOG: {
+            let obj = {
+                ten: action.ten,
+                timestamp: action.timestamp,
+                noi_dung: action.noi_dung,
+                muc_de_cuong: action.muc_de_cuong,
+                thong_tin_chung_id: action.thong_tin_chung_id
+            }          
+            return {
+                ...state,
+                logData: [...state.logData, obj]
+            }
+            }      
         default: 
-        return state;
+            return state;
     }
 }
 

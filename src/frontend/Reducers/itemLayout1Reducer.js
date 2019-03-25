@@ -18,6 +18,7 @@ const initialState = {
 export default function thongTinChung(state = initialState, action) {
     switch (action.type) {
         case Types.ADD_TTC:
+            state.previewInfo = [];
             state.previewInfo.push(action.newTTC);
             return { ...state };
         case Types.ADD_TEMP_DATA:

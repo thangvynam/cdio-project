@@ -19,8 +19,6 @@ class ThongTinChung extends Component {
   }
 
   componentDidMount() {
-    //console.log("component did mount");
-    
     this.props.collectDataRequest()
   }
 
@@ -126,7 +124,8 @@ class ThongTinChung extends Component {
 
     const { isBtnEdit } = this.state;
     const { dataTTC, tempData } = this.props;
-
+    console.log(dataTTC[0] !== undefined ? dataTTC[0].maMonHoc : "PHU")
+    
     return (
       <div className="container">
         <div className="row">
@@ -267,17 +266,17 @@ class ThongTinChung extends Component {
                 </Form.Item>
               </Form>
             </div>
-            <br />
+            {/* <br />
             <Tooltip placement="topLeft" >
               <Button style={{ color: "red", margin: "auto", width: "100%" }}>(Hướng dẫn: mô tả các thông tin cơ bản của môn học )</Button>
-            </Tooltip>
-            <TableTTC
+            </Tooltip> */}
+            {/* <TableTTC
               {...this.props}
               toggleButton={this.toggleButton}
               toggleButtonDelete={this.toggleButtonDelete}
             />
 
-            {this.showButtonAll()}
+            {this.showButtonAll()} */}
 
           </div>
         </div>

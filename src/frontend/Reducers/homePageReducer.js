@@ -5,6 +5,9 @@ const initialState = {
     },
     "matrix": {
         name: "MATRIX",
+    },
+    "edit-matrix": {
+        name: "EDIT-MATRIX"
     }
 }
 

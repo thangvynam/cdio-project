@@ -17,6 +17,7 @@ import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReduc
 import { createStore, applyMiddleware} from 'redux';
 // import logger from 'redux-logger';
 import thunk from 'redux-thunk';
+import { editMatrixReducer, editMatrixEditStateReducer } from '../Reducers/editMatrixReducer';
 //const middleware = [ thunk, logger ];
 const middleware = [ thunk];
 
@@ -46,6 +47,8 @@ const allReducers = redux.combineReducers({
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,
     subjectlist: subjectListReducer,
+    editmatrix: editMatrixReducer,
+    editmatrixeditstate: editMatrixEditStateReducer,
     matrix: matrixReducer
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));

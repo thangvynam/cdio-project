@@ -3,7 +3,7 @@ import { Table, Form, Input, Checkbox, Icon, Tooltip, Button } from 'antd';
 import "./matrix.css";
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { editMatrix, editMatrixEditState } from '../../Constant/ActionType';
+import { editMatrix, editMatrixEditState, isLoadEditMatrix } from '../../Constant/ActionType';
 import axios from 'axios';
 
 const FormItem = Form.Item;
@@ -115,7 +115,6 @@ class EditMatrix extends Component {
         this.state = {
             levels: [],
             cdr_cdio: [],
-            isLoad: false,
             subjectList: [],
             tempMatrix: []
         }
@@ -150,7 +149,7 @@ class EditMatrix extends Component {
       }
       componentWillReceiveProps(nextProps) {
         this.setState({subjectList: nextProps.subjectList})
-        if(this.state.isLoad === false && nextProps.subjectList.length > 0) {
+        if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
             axios.get("/get-standard-matrix").then((res) => {
                 this.setState({tempMatrix: res.data});
                 let data = [];
@@ -180,15 +179,47 @@ class EditMatrix extends Component {
                 }
                 this.props.updateEditMatrix(data);
               })
-              this.setState({isLoad: true})
+              this.props.updateIsLoadEditMatrix("true");
         }
       }
       
       componentDidMount() {
           axios.get("/get-cdr-cdio").then((res) => {
             this.setState({cdr_cdio: res.data})
-          }  
-          )
+          })
+
+          if(this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+            axios.get("/get-standard-matrix").then((res) => {
+                this.setState({tempMatrix: res.data});
+                let data = [];
+                for(let i = 0;i < res.data.length;i++) {
+                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                    if(index !== -1) {
+                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if(cdr_cdio !== "") {
+                            data[index][cdr_cdio] = res.data[i].muc_do.split(",").join(" ");
+                        }
+                    }
+                    else {
+                        let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if(subjectName !== "" && cdr_cdio !== "") {
+                            data.push({
+                                key: res.data[i].thong_tin_chung_id,
+                                hocky: 1,
+                                hocphan: subjectName,
+                                gvtruongnhom: 'NULL'
+                            })
+
+                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do.split(",").join(" ");
+                        }
+                        
+                    }
+                }
+                this.props.updateEditMatrix(data);
+              })
+              this.props.updateIsLoadEditMatrix("true");
+        }
       }
 
       getIndex = (matrix, key) => {
@@ -423,7 +454,8 @@ const mapStateToProps = (state) => {
     return {
         editMatrix: state.editmatrix,
         editMatrixEditState: state.editmatrixeditstate,
-        subjectList: state.subjectlist
+        subjectList: state.subjectlist,
+        isLoadEditMatrix: state.isloadeditmatrix
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -431,6 +463,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     updateEditMatrix: editMatrix,
     updateEditMatrixEditState: editMatrixEditState,
+    updateIsLoadEditMatrix: isLoadEditMatrix
   }, dispatch);
 
 }

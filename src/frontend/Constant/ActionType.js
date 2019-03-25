@@ -32,6 +32,7 @@ export const MTMH = 'MTMH';
 export const ISLOAD = 'ISLOAD';
 export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
+export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -164,6 +165,13 @@ export function editMatrixEditState(newEditMatrixEditState) {
     return {
         type: EDIT_MATRIX_EDIT_STATE,
         editmatrixeditstate: newEditMatrixEditState
+    };
+}
+
+export function isLoadEditMatrix(newIsLoadEditMatrix) {
+    return {
+        type: ISLOAD_EDIT_MATRIX,
+        isloadeditmatrix: newIsLoadEditMatrix
     };
 }
 

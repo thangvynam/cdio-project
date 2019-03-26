@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';
 import { Tooltip, Button } from 'antd';
-
 class Layout3 extends Component {
     render() {
         return (

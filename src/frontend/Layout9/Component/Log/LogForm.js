@@ -4,7 +4,7 @@ import { Comment, Tooltip, List, Avatar } from 'antd';
 import moment from 'moment';
 
 const ExampleComment = ({ children, content }) => (
-    <Comment
+    <Comment 
         actions={[<span>Reply to</span>]}
         author={<a>{"phu itto"}</a>}
         avatar={(
@@ -22,10 +22,12 @@ const ExampleComment = ({ children, content }) => (
   
 const log = [
     {
+        key:1,
         id: 1,
         logContent : "log1",
     },
     {
+        key:2,
         id: 2,
         logContent : "log2",
     }
@@ -33,21 +35,25 @@ const log = [
 
 const comment = [
     {
+        key:1,
         id : 1,
         log_id : 1,
         content : "comment1",
     },
     {
+        key:2,
         id : 2,
         log_id:2,
         content : "comment2",
     },
     {
+        key:3,
         id: 3,
         log_id: 2,
         content : "comment3"
     },
     {
+        key:4,
         id:4,
         log_id:1,
         content: "comment4"
@@ -63,42 +69,13 @@ class LogForm extends Component {
                     return  <ExampleComment content={itemchilren.content}/>;
                 }else return;
                 }) 
-                console.log(itemparent.content)
                     return <ExampleComment children={con} content={itemparent.logContent}/>
                 })
         return (
             <div className="container1">
                 <div className="center-col">
                 {LogComment}
-                    {/* <div>
-                        {rootComments}
-                    </div> */}
-                    {/* <ExampleComment>
-                        <ExampleComment></ExampleComment>
-                    </ExampleComment>
-                    <ExampleComment></ExampleComment> */}
-
-
-
-
-                    {/* <List
-                        className="comment-list"
-                        header={`${data.length} actions`}
-                        itemLayout="horizontal"
-                        dataSource={data}
-                        style={{ marginLeft: 20 }}
-                        renderItem={item => (
-                            <Comment
-                                actions={item.actions}
-                                author={item.author}
-                                avatar={item.avatar}
-                                content={item.content}
-                                datetime={item.datetime}
-                                
-                            />
-
-                        )}
-                    /> */}
+                    
               </div>
             </div>
         )

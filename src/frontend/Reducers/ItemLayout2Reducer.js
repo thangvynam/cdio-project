@@ -16,14 +16,12 @@ const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
             }
         }
         case ADD_DATA_LAYOUT_2: {
-            // axios.post('/add-data-2', { data: action.description })
             return {
                 ...state,
                 previewInfo: action.description
             }
         }  
         case SAVE_DATA_LAYOUT_2: {
-            // axios.post('/save-data-2', { data: action.data[0].description })
             return {
                 ...state, 
                 previewInfo: action.data[0].description               
@@ -35,6 +33,7 @@ const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
             }
         case SAVE_ALL_DATA_LAYOUT_2:        
             axios.post('/save-data-2', { data: state.previewInfo, id: action.id })
+            axios.post('/save-log', { data: state.logData })
             return {
                 ...state
             }

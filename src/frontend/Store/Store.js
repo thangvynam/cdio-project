@@ -6,7 +6,8 @@ import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, change
     selectedVerbReducer, 
     cdrmdhdReducer,
     mtmhReducer,
-    isLoadReducer} from '../Reducers/ItemLayout4Reducer';
+    isLoadReducer,
+    logLayout4Reducer} from '../Reducers/ItemLayout4Reducer';
 import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Reducer';
 import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
@@ -26,6 +27,7 @@ var redux = require("redux");
 
 const allReducers = redux.combineReducers({
 
+    logLayout4Reducer: logLayout4Reducer,
     itemLayout1Reducer: itemLayout1Reducer,
     itemLayout5Reducer: itemLayout5Reducer,
     itemLayout2Reducer: itemLayout2Reducer,

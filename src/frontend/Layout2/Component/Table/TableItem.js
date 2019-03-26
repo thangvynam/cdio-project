@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm, Tag, Button, Form, Divider, Modal } from 'antd';
+import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, notification } from 'antd';
 import { connect } from 'react-redux';
 import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
@@ -8,6 +8,13 @@ import { getCurrTime } from '../../../utils/Time';
 
 const FormItem = Form.Item
 const EditableContext = React.createContext();
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: 'Thông báo',
+    description: 'Lưu dữ liệu thành công',
+  });
+};
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -200,8 +207,11 @@ class TableItem extends Component {
           <Button></Button>
 
            <Button style={{float: "right"}}
-            onClick={() => this.props.saveAll(this.props.subjectid)}
-          >
+            onClick={() => {
+              this.props.saveAll(this.props.subjectid)
+              openNotificationWithIcon('success')
+            } 
+            }>
             Lưu tất cả
           </Button>
           </div>

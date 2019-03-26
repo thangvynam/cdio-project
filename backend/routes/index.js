@@ -12,6 +12,7 @@ const Model4 = require('../models/Model4');
 const Model5 = require('../models/Model5');
 const Model9 = require('../models/Model9');
 const Model6 = require('../models/Model6');
+const LogModel = require('../models/LogModel');
 const MatrixModel = require('../models/MatrixModel');
 
 
@@ -461,5 +462,12 @@ router.post('/update-standard-matrix', function(req, res) {
   })   
 })
 
+
+router.post('/save-log', function(req, res) {  
+  const body = req.body.data
+  LogModel.save(body, (result) => {
+    res.end("done")
+  })
+})
 
 module.exports = router;

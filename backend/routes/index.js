@@ -12,13 +12,9 @@ const Model4 = require('../models/Model4');
 const Model5 = require('../models/Model5');
 const Model9 = require('../models/Model9');
 const Model6 = require('../models/Model6');
-<<<<<<< HEAD
 const Model7 = require('../models/Model7')
-=======
 const LogModel = require('../models/LogModel');
 const MatrixModel = require('../models/MatrixModel');
-
->>>>>>> 2dc88a7a88f8573079e2883d424216e3262ea54f
 
 const MucTieuModel = require('../models/MucTieuModel')
 

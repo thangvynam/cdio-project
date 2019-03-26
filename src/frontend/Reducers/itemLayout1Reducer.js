@@ -17,6 +17,11 @@ const initialState = {
 
 export default function thongTinChung(state = initialState, action) {
     switch (action.type) {
+        case Types.FETCH_DATA:
+            return {
+                ...state,
+                previewInfo: action.newTTC
+            }
         case Types.ADD_TTC:
             state.previewInfo = [];
             state.previewInfo.push(action.newTTC);
@@ -25,6 +30,10 @@ export default function thongTinChung(state = initialState, action) {
             const key = Object.keys(action.tempTTC)[0];
             const value = Object.values(action.tempTTC)[0];
             state.tempData[0][key] = value;
+            return { ...state };
+        case Types.ADD_TEMP_DATA1:
+            state.tempData = [];
+            state.tempData.push(action.temp);
             return { ...state };
         case Types.DELETE_TTC:
             state.previewInfo = [];

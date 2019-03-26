@@ -174,19 +174,17 @@ router.post('/exportfile', function(req, res, next) {
     
   })
 
-  router.get('/collect-data-1', function(req, res) {
-    ThongTinChungModel.collect(function(err, data) {
-      if (err) {
-        console.log(err);
-      } else{
-        res.send(data)
-      }   
-    })   
+  router.get('/collect-data/:id', function(req, res) {
+    let id = req.params
+    ThongTinChungModel.collect(id, (resData) => {
+      res.send(resData);
+    })  
   })
 
-  router.post('/add-data-1', function(req, res) {
-    let description = req.body.data;
-    ThongTinChungModel.add(description, function(err, description){
+  router.post('/update-data/:id', function(req, res) {
+    let id = req.params
+    let description = req.body;
+    ThongTinChungModel.add(id, description, function(err, description){
       if (err) {
         console.log(err);
       }

@@ -19,7 +19,7 @@ import logReducer from "../Reducers/logReducer"
 import { createStore, applyMiddleware} from 'redux';
 // import logger from 'redux-logger';
 import thunk from 'redux-thunk';
-import { editMatrixReducer, editMatrixEditStateReducer } from '../Reducers/editMatrixReducer';
+import { editMatrixReducer, editMatrixEditStateReducer, isLoadEditMatrixReducer } from '../Reducers/editMatrixReducer';
 //const middleware = [ thunk, logger ];
 const middleware = [ thunk];
 
@@ -52,8 +52,10 @@ const allReducers = redux.combineReducers({
     subjectlist: subjectListReducer,
     editmatrix: editMatrixReducer,
     editmatrixeditstate: editMatrixEditStateReducer,
+    isloadeditmatrix: isLoadEditMatrixReducer,
     matrix: matrixReducer,
     logReducer: logReducer
+
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

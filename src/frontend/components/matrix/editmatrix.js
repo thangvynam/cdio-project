@@ -125,7 +125,10 @@ class EditMatrix extends Component {
       componentDidMount() {
           axios.get("/get-cdr-cdio").then((res) => {
             this.setState({cdr_cdio: res.data})
-          })
+          });
+          axios.get("/get-standard-matrix").then((res) => {
+            this.setState({tempMatrix: res.data});
+        });
       }
 
       getIndex = (matrix, key) => {
@@ -236,92 +239,6 @@ class EditMatrix extends Component {
           console.log(data);
           axios.post('/update-standard-matrix', data).then(alert("ok"));
         
-      }
-
-      getMatrixField = (key, dataIndex, matrix) => {
-        for(let i = 0;i < matrix.length;i++) {
-            if(matrix[i].key === key) {
-                return matrix[i][dataIndex];
-            }
-        }
-        return "";
-      }
-      checkGAPandReturnResult = (text, textMatrix) => {
-        if(textMatrix !== "") {
-            if(text === "-") {
-                if(text !== textMatrix) {
-                    let textArr = textMatrix.split(",");
-                    let textRender = [];
-                    for(let i = 0;i < textArr.length;i++) {
-                        textRender.push(<span key={i} className="adding-text">{textArr[i]}</span>);
-                        if(i !== textArr.length - 1) {
-                            textRender.push(<span key={i + ','}>,</span>);
-                        }
-                    }
-                    return textRender;
-                }
-                return <span>-</span>;
-            }
-            else {
-                if(textMatrix === "-") {
-                    let textArr = text.split(",");
-                    let textRender = [];
-                    for(let i = 0;i < textArr.length;i++) {
-                        textRender.push(<span key={i} className="removing-text">{textArr[i]}</span>);
-                        if(i !== textArr.length - 1) {
-                            textRender.push(<span key={i + ','}>,</span>);
-                        }
-                    }
-                    return textRender;
-                }
-                else {
-                    let textArr = text.split(",");
-                    let textMatrixArr = textMatrix.split(",");
-                    let textRender = [];
-                    let textRenderStateArr = [];
-                    for(let i = 0;i < textArr.length;i++) {
-                        if(this.isExistInArray(textMatrixArr, textArr[i])) {
-                            textRenderStateArr.push({
-                                text: textArr[i],
-                                state: ""
-                            })
-                        }
-                        else {
-                            textRenderStateArr.push({
-                                text: textArr[i],
-                                state: "remove"
-                            })
-                        }
-                    }
-
-                    for(let i = 0;i < textMatrixArr.length;i++) {
-                        if(!this.isExistInArray(textArr, textMatrixArr[i])) {
-                            textRenderStateArr.push({
-                                text: textMatrixArr[i],
-                                state: "add"
-                            })
-                        }
-                    }
-
-                    textRenderStateArr.sort((a, b) => a.text > b.text).map((item, i) => {
-                        if(item.state === "add") {
-                            textRender.push(<span key={i} className="adding-text">{item.text}</span>);
-                        }
-                        else if(item.state === "remove") {
-                            textRender.push(<span key={i} className="removing-text">{item.text}</span>);
-                        }
-                        else {
-                            textRender.push(<span key={i}>{item.text}</span>);
-                        }
-                        if(i !== textRenderStateArr.length - 1) {
-                            textRender.push(<span key={i + ','}>,</span>);
-                        }
-                    })
-                    return textRender;
-                }
-            }
-        }
-        return <div></div>;
       }
 
       checkIdExist = (matrix, id) => {
@@ -494,7 +411,6 @@ class EditMatrix extends Component {
         }
         return (
             <React.Fragment>
-                {this.props.editMatrix.length > 0 ? this.checkGAPandReturnResult("I", this.getMatrixField(1, "1.1.2", this.props.editMatrix)) : null}
                 <div style={{margin: "10px"}}><Button onClick={this.saveAll}>Lưu lại</Button></div>
                 <Table  bordered
                     components={components}

@@ -9,7 +9,7 @@ import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
 import axios from 'axios';
-import { subjectList, subjectId, subjectMaso } from '../../Constant/ActionType';
+import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix } from '../../Constant/ActionType';
 
 class Home extends Component {
     constructor(props) {
@@ -18,7 +18,9 @@ class Home extends Component {
             collapse: false,
             theme: 'dark',
             isShow: false,
-            colorTheme: false
+            colorTheme: false,
+            subjectList: [],
+            cdr_cdio: [],
         }
     }
 
@@ -49,6 +51,68 @@ class Home extends Component {
         return false;
     }
     
+    checkIdExist = (matrix, id) => {
+        for(let i = 0;i < matrix.length;i++) {
+            if(matrix[i].key === id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    getCdrCdio = (cdr_cdio, id) => {
+      for(let i = 0;i < cdr_cdio.length;i++) {
+          if(cdr_cdio[i].id === id)  {
+              return cdr_cdio[i].cdr;
+          }
+      }
+      return "";
+    }
+
+    getSubjectName = (subjectList, id) => {
+        for(let i = 0;i < subjectList.length;i++) {
+            if(subjectList[i].id === id) {
+                return subjectList[i].ten_mon_hoc_tv;
+            }
+        }
+        return "";
+      }
+
+    componentWillReceiveProps(nextProps) {
+        this.setState({subjectList: nextProps.subjectList})
+        if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+            axios.get("/get-standard-matrix").then((res) => {
+                this.setState({tempMatrix: res.data});
+                let data = [];
+                for(let i = 0;i < res.data.length;i++) {
+                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                    if(index !== -1) {
+                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if(cdr_cdio !== "") {
+                            data[index][cdr_cdio] = res.data[i].muc_do;
+                        }
+                    }
+                    else {
+                        let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
+                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if(subjectName !== "" && cdr_cdio !== "") {
+                            data.push({
+                                key: res.data[i].thong_tin_chung_id,
+                                hocky: 1,
+                                hocphan: subjectName,
+                                gvtruongnhom: 'NULL'
+                            })
+
+                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                        }
+                        
+                    }
+                }
+                this.props.updateEditMatrix(data);
+              })
+              this.props.updateIsLoadEditMatrix("true");
+        }
+      }
 
     componentDidMount() {
         var self = this;
@@ -65,6 +129,9 @@ class Home extends Component {
     this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
         self.props.updateSubjectId(monhoc) 
     }
+    axios.get("/get-cdr-cdio").then((res) => {
+        this.setState({cdr_cdio: res.data})
+      })
 }
     render() {
         let type = this.props.match.params.type;
@@ -158,13 +225,17 @@ const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
-        menuItem: state.menuitem
+        menuItem: state.menuitem,
+        editMatrix: state.editmatrix,
+        isLoadEditMatrix: state.isloadeditmatrix
     }
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
       updateSubjectList: subjectList,
       updateSubjectId: subjectId,
+      updateEditMatrix: editMatrix,
+      updateIsLoadEditMatrix: isLoadEditMatrix
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

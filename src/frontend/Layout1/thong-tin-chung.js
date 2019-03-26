@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
+import _ from 'lodash';
 import axios from 'axios';
 import {
   Form, Input, Card, Button, notification, Icon, Tooltip
@@ -7,32 +8,27 @@ import {
 } from 'antd';
 import TableTTC from './table/tableTTC';
 import './thong-tin-chung.css'
-import { collectDataRequest, themThongTinChung, xoaThongTinChung, suaThongTinChung, addDataTemp } from './../Constant/thong-tin-chung/actions';
+import { updateTTCRequest, fetchData, collectDataRequest, themThongTinChung, xoaThongTinChung, suaThongTinChung, addDataTemp } from './../Constant/thong-tin-chung/actions';
 
 class ThongTinChung extends Component {
   constructor(props) {
     super(props)
     this.state = {
       isHasData: false,
-      isBtnEdit: false
+      isBtnEdit: false,
+      isLoading: false
     }
   }
 
   componentDidMount() {
-    //console.log("component did mount");
-    
-    this.props.collectDataRequest()
+    this.props.collectDataRequest(this.props.content_monhoc);
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        if (this.props.dataTTC.length === 0) {
-          this.props.themThongTinChung(values);
-        } else {
-          this.props.suaThongTinChung(values);
-        }
+        this.props.updateTTCRequest(this.props.content_monhoc, values);
         notification.open({
           message: "Success",
           icon: <Icon type="check-circle" style={{ color: 'green' }} />,
@@ -124,11 +120,10 @@ class ThongTinChung extends Component {
       },
     };
 
-    const { isBtnEdit } = this.state;
     const { dataTTC, tempData } = this.props;
 
     return (
-      <div className="container">
+      (!_.isEmpty(dataTTC) && <div className="container">
         <div className="row">
           <div className="col-sm-1" ></div>
           <div className="col-sm-11" >
@@ -145,7 +140,7 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input VietNamese name!',
                       }],
-                    initialValue: tempData[0]['tenMonHocTV'] !== '' ? tempData[0]['tenMonHocTV'] : '',
+                    initialValue: dataTTC['tenMonHocTV'],
                   })(
                     <Input name="tenMonHocTV" type="text" />
                   )}
@@ -160,7 +155,7 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input your English Name!',
                       }],
-                    initialValue: tempData[0]['tenMonHocTA'] !== '' ? tempData[0]['tenMonHocTA'] : '',
+                    initialValue: dataTTC['tenMonHocTA'],
                   })(
                     <Input name="tenMonHocTA" type="text" />
                   )}
@@ -175,7 +170,7 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input your Course Code!',
                       }],
-                    initialValue: tempData[0]['maMonHoc'] !== '' ? tempData[0]['maMonHoc'] : '',
+                    initialValue: dataTTC['maMonHoc'],
                   })(
                     <Input name="maMonHoc" type="text" />
                   )}
@@ -190,7 +185,7 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input your Knowledge Attributes!',
                       }],
-                    initialValue: tempData[0]['khoiKienThuc'] !== '' ? tempData[0]['khoiKienThuc'] : '',
+                    initialValue: dataTTC['khoiKienThuc'],
                   })(
                     <Input name="khoiKienThuc" type="text" />
                   )}
@@ -203,7 +198,7 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Credits!',
                       }],
-                    initialValue: tempData[0]['soTinChi'] !== -1 ? tempData[0]['soTinChi'] : '',
+                    initialValue: dataTTC['soTinChi'],
                   })(
                     <Input className="inputNumber" name="soTinChi" type="number" />
                   )}
@@ -216,7 +211,7 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Theoretical Lessons!',
                       }],
-                    initialValue: tempData[0]['tietLyThuyet'] !== -1 ? tempData[0]['tietLyThuyet'] : '',
+                    initialValue: dataTTC['tietLyThuyet'],
                   })(
                     <Input className="inputNumber" name="tietLyThuyet" type="number" />
                   )}
@@ -229,7 +224,7 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Practice Lessons!',
                       }],
-                    initialValue: tempData[0]['tietThucHanh'] !== -1 ? tempData[0]['tietThucHanh'] : '',
+                    initialValue: dataTTC['tietThucHanh'],
                   })(
                     <Input className="inputNumber" name="tietThucHanh" type="number" />
                   )}
@@ -242,7 +237,7 @@ class ThongTinChung extends Component {
                       {
                         required: true, message: 'Please input your Number Of Self-Study Periods!',
                       }],
-                    initialValue: tempData[0]['tietTuHoc'] !== -1 ? tempData[0]['tietTuHoc'] : '',
+                    initialValue: dataTTC['tietTuHoc'],
                   })(
                     <Input className="inputNumber" name="tietTuHoc" type="number" />
                   )}
@@ -257,31 +252,34 @@ class ThongTinChung extends Component {
                       }, {
                         required: true, message: 'Please input Prerequisite Subjects!',
                       }],
-                    initialValue: tempData[0]['monTienQuyet'] !== '' ? tempData[0]['monTienQuyet'] : '',
+                    initialValue: dataTTC['monTienQuyet'],
                   })(
                     <Input name="monTienQuyet" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item>
-                  {this.handleButtonEdit()}
+                  {/* {this.handleButtonEdit()} */}
+                  <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
+                    Update
+                 </Button>
                 </Form.Item>
               </Form>
             </div>
-            <br />
+            {/* <br />
             <Tooltip placement="topLeft" >
               <Button style={{ color: "red", margin: "auto", width: "100%" }}>(Hướng dẫn: mô tả các thông tin cơ bản của môn học )</Button>
-            </Tooltip>
-            <TableTTC
+            </Tooltip> */}
+            {/* <TableTTC
               {...this.props}
               toggleButton={this.toggleButton}
               toggleButtonDelete={this.toggleButtonDelete}
             />
 
-            {this.showButtonAll()}
+            {this.showButtonAll()} */}
 
           </div>
         </div>
-      </div>
+      </div>)
     )
   }
 }
@@ -299,7 +297,9 @@ const mapDispatchToProps = (dispatch) => {
     addDataTemp: (tempTTC) => dispatch(addDataTemp(tempTTC)),
     suaThongTinChung: (newTTC) => dispatch(suaThongTinChung(newTTC)),
     xoaThongTinChung: () => dispatch(xoaThongTinChung()),
-    collectDataRequest: () => dispatch(collectDataRequest())
+    collectDataRequest: (id) => dispatch(collectDataRequest(id)),
+    fetchData: (data) => dispatch(fetchData(data)),
+    updateTTCRequest: (id, data) => dispatch(updateTTCRequest(id, data))
   }
 }
 

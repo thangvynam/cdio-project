@@ -427,21 +427,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             axios.get('/collect-data-5')
             .then(function (response) {
                 console.log(response)
-                // for(let i = 0; i <response.data.length;i++){
-                //     let data = {
-                //         key : response.data[i].id,
-                //         titleName : response.data[i].ten_chu_de,
-                //         //key : response.data[i].hoat_dong,
-                //         // key: 1,
-                //         // titleName : "Quy trình phần mềm xem video #1,#2",
-                //          teachingActs : ["Thuyết giảng","Thảo luận nhóm"],
-                //          standardOutput : ["G2.1","G2.2","G4.1","G5.1"],
-                //          evalActs : ["BTVN"]
-                //     }
-                //     newArr.push(data); 
-                //     dispatch({type:ADD_DATA,data:newArr})
-                    
-                // }
+                for(let i = 0; i <response.data.length;i++){
+                    let data = {
+                        key : response.data[i].key,
+                        titleName : response.data[i].titleName,
+                        teachingActs : response.data[i].teachingActs,
+                        standardOutput : response.data[i].standardOutput,
+                        evalActs : response.data[i].evalActs
+                    }
+                    newArr.push(data);   
+                }
+                dispatch({type:ADD_DATA,data:newArr})
             })
             .catch(function (error) {
                 console.log(error);

@@ -4,10 +4,11 @@ import { Table, Divider, Tag, Button,
    Input, Cascader } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
+import { getCurrTime } from '../../../utils/Time';
 
 const EditableContext = React.createContext();
 
@@ -400,6 +401,9 @@ class CDRTableItem extends Component {
   }
 
   OnDelete = (cdrtable, key) => {
+    let deleteData = cdrtable.previewInfo[key - 1]    
+    this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: ${deleteData.cdr}, ${deleteData.level_verb}, ${deleteData.description}, ${deleteData.levels}`, this.props.logReducer.contentTab, this.props.subjectId);
+
     if(key === cdrtable.previewInfo.length){
       cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
     }
@@ -422,7 +426,7 @@ class CDRTableItem extends Component {
     }
   }
   handleDelete = (key) => {
-    var cdrtable = this.props.cdrtable;
+    var cdrtable = this.props.cdrtable;   
     this.OnDelete(cdrtable, key);
     this.props.onAddCDRData(cdrtable);
     this.props.onUpdateVerb(this.props.cdrverb);
@@ -431,7 +435,7 @@ class CDRTableItem extends Component {
 
   delete = () => {
     var cdrtable = this.props.cdrtable;
-    var cdrselecteditem = this.props.cdrselecteditem;
+    var cdrselecteditem = this.props.cdrselecteditem;    
     for(let i = 0;i < cdrselecteditem.length;i++){
       if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
         cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
@@ -521,6 +525,9 @@ class CDRTableItem extends Component {
         }
       
     }
+      let newItems = newData.previewInfo[key-1]
+    
+      this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung chuẩn đầu ra môn học thành: ${newItems.cdr}, ${newItems.level_verb}, ${newItems.description}, ${newItems.level}`, this.props.logReducer.contentTab, this.props.subjectId);
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');
@@ -583,9 +590,9 @@ class CDRTableItem extends Component {
     axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}}).then(
       alert("ok")
     );
+    axios.post('/save-log', { data: this.props.logData })
   }
     render() {
-      //console.log(this.props.subjectId)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -702,7 +709,9 @@ const mapStateToProps = (state) => {
         cdrmdhd: state.cdrmdhd,
         mtmh: state.mtmh,
         subjectId: state.subjectid,
-        isLoad: state.isloadtab4
+        logReducer: state.logReducer,
+        isLoad: state.isloadtab4,
+        logData: state.logLayout4Reducer.logData
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -712,7 +721,8 @@ const mapDispatchToProps = (dispatch) => {
     onChangeEditState: changeEditState,
     onUpdateVerb: selectedVerb,
     updateCdrmdhd: cdrmdhd,
-    updateIsLoad: isLoad
+    updateIsLoad: isLoad,
+    saveLog: saveLog
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

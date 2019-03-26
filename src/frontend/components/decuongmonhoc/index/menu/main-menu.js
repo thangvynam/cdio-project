@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Menu, Icon } from "antd";
 import { Link } from "react-router-dom";
-import { MENUITEM, subjectId, subjectMaso } from "./../../../../Constant/ActionType";
+import { MENUITEM, subjectId, subjectMaso, updateContentTab } from "./../../../../Constant/ActionType";
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { Redirect } from "react-router-dom";
@@ -13,7 +13,7 @@ class MenuLeft extends Component {
     state = {
         rdrCount: 0,
     }
-    onClick = (key) => { //h chi can cai ben phai thoi dung k um
+    onClick = (key) => {        
         this.props.updateSubjectId("");
     }
 
@@ -27,6 +27,7 @@ class MenuLeft extends Component {
     }
 
     redirect = () => {
+        this.props.updateContentTab(this.props.content_tab);            
         if(this.props.subjectId !== "" && this.props.subjectId !== undefined && (this.props.content_monhoc === "" ||
         this.props.content_monhoc === undefined)) {
             return <Redirect to={`/${this.props.content_type}/${this.props.subjectId}/thong-tin-chung`}/>
@@ -40,7 +41,6 @@ class MenuLeft extends Component {
     render() {
         const menuItemsCollapse = [];
         Object.keys(this.props.menuItem).map((key, id) => {
-            //neu la de cuong thi co 9 tab con
             if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && key === this.props.content_type && key === "de-cuong-mon-hoc") {
                 menuItemsCollapse.push(<Menu.Item key={key} onClick={() => this.onClick(key)}>
                 <Link to={`/${key}`} >
@@ -109,7 +109,7 @@ class MenuLeft extends Component {
           </Link>
         </Menu.Item>)
             }
-            else { //ko thi dell co j --matrix ne
+            else {
                 menuItemsCollapse.push(<Menu.Item key={key} onClick={() => this.onClick(key)}>
         <Link to={`/${key}`} >
             <Icon type="dashboard" />
@@ -148,7 +148,8 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
       updateSubjectId: subjectId,
-      updateSubjectMaso: subjectMaso
+      updateSubjectMaso: subjectMaso,
+      updateContentTab: updateContentTab
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(MenuLeft);

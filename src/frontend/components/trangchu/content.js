@@ -1,7 +1,6 @@
 import React, { Component } from 'react'
-import {MENUITEM, subjectList, subjectId, isLoad} from '../../Constant/ActionType';
+import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix} from '../../Constant/ActionType';
 import { connect } from'react-redux';
-
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form } from 'antd';
 import { Link } from "react-router-dom";
@@ -21,6 +20,7 @@ import Layout8 from '../../Layout8/Layout8';
 import ExportFile from '../../ExportFIle/ExportFile';
 import axios from 'axios';
 import Matrix from '../matrix/matrix';
+import EditMatrix from '../matrix/editmatrix';
 const EditableContext = React.createContext();
 
 class Content extends Component {
@@ -44,9 +44,6 @@ class Content extends Component {
             }
             else {
                 axios.post('/add-subject', { data: { ma_so: id, ten_mon_hoc_tv: name } });
-                // const data = this.props.subjectList;
-                // data.push({ ma_so: id, ten_mon_hoc_tv: name });
-                // this.props.updateSubjectList(data)
                 var self = this;
                 axios.get('/collect-subjectlist')
                 .then(function (response) {
@@ -54,13 +51,14 @@ class Content extends Component {
                 })
                 .catch(function (error) {
                 console.log(error);
-                });     
+                });  
+                this.props.updateIsLoadEditMatrix("false");
+                this.setState({
+                    visible: false,
+                });
             }
-
         }
-        this.setState({
-            visible: false,
-        });
+        
 
     }
 
@@ -77,6 +75,7 @@ class Content extends Component {
             axios.post('/delete-subject', { data: { ma_so: data[id].ma_so } });
             data.splice(id, 1);
             this.props.updateSubjectList(data);
+            this.props.updateIsLoadEditMatrix("false");
             this.setState({
                 visible: false,
             });
@@ -99,6 +98,7 @@ class Content extends Component {
         data[index].ten_mon_hoc_tv = name;
 
         this.props.updateSubjectList(data);
+        this.props.updateIsLoadEditMatrix("false");
         this.setState({
             isEditting: "",
         });
@@ -177,7 +177,7 @@ class Content extends Component {
             case MENUITEM.CHUAN_DAU_RA: {
                 content_layout = (
                     <React.Fragment>
-                        <Layout4 />
+                        <Layout4 tab={this.props.content_tab}/>
                     </React.Fragment>
                 ); break;
             }
@@ -321,7 +321,7 @@ class Content extends Component {
                                 </Row>
                             </div>
                         </React.Fragment>
-                    ) : type === "matrix" ? <Matrix/>:null
+                    ) : type === "matrix" ? <Matrix/> : type === "edit-matrix" ? <EditMatrix/> : null;
                 }; break;
 
             }
@@ -354,7 +354,8 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     updateSubjectList: subjectList,
     updateSubjectId: subjectId,
-    updateIsLoad: isLoad
+    updateIsLoad: isLoad,
+    updateIsLoadEditMatrix: isLoadEditMatrix
   }, dispatch);
 
 }

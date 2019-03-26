@@ -4,7 +4,9 @@ export const SAVE_DATA_LAYOUT_2 = 'SAVE_DATA_LAYOUT_2';
 export const SAVE_TEMP_DATA_LAYOUT_2 = 'SAVE_TEMP_DATA_LAYOUT_2';
 export const SAVE_ALL_DATA_LAYOUT_2 = 'SAVE_ALL_DATA_LAYOUT_2';
 export const IS_LOADED_2 = 'IS_LOADED_2';
+export const UPDATE_CON_TAB = 'UPDATE_CON_TAB';
 
+export const SAVE_LOG = 'SAVE_LOG';
 
 //layout 3
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
@@ -30,6 +32,9 @@ export const SUBJECT_MASO = 'SUBJECT_MASO';
 export const CDRMDHD = 'CDRMDHD';
 export const MTMH = 'MTMH';
 export const ISLOAD = 'ISLOAD';
+export const EDIT_MATRIX = 'EDIT_MATRIX';
+export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
+export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -61,6 +66,17 @@ export const SAVE_DATA_LAYOUT_5 = 'SAVE_DATA_LAYOUT_5';
 export const CHANGE_DATA = 'CHANGE_DATA';
 export const ADD_DATA_LAYOUT_5 = "ADD_DATA_LAYOUT_5";
 export const COLLECT_DATA_REQUEST_5 = "COLLECT_DATA_REQUEST_5";
+
+export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
+    return {
+        type: SAVE_LOG,
+        ten: ten,
+        timestamp: timestamp,
+        noi_dung: noi_dung,
+        muc_de_cuong: muc_de_cuong,
+        thong_tin_chung_id: thong_tin_chung_id
+    };
+}
 
 export function addCDRData(newCDRData) {
     return {
@@ -150,6 +166,27 @@ export function subjectList(newSubjectList) {
     return {
         type: SUBJECT_LIST,
         subjectlist: newSubjectList
+    };
+}
+
+export function editMatrix(newEditMatrix) {
+    return {
+        type: EDIT_MATRIX,
+        editmatrix: newEditMatrix
+    };
+}
+
+export function editMatrixEditState(newEditMatrixEditState) {
+    return {
+        type: EDIT_MATRIX_EDIT_STATE,
+        editmatrixeditstate: newEditMatrixEditState
+    };
+}
+
+export function isLoadEditMatrix(newIsLoadEditMatrix) {
+    return {
+        type: ISLOAD_EDIT_MATRIX,
+        isloadeditmatrix: newIsLoadEditMatrix
     };
 }
 
@@ -262,6 +299,13 @@ export function getLoaiTaiNguyen(loaitainguyen){
     return{
         type: LOAI_TAI_NGUYEN,
         data: loaitainguyen
+    }
+}
+
+export function updateContentTab(contentTab){
+    return {
+        type: UPDATE_CON_TAB,
+        data: contentTab
     }
 }
 

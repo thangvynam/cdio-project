@@ -12,7 +12,13 @@ const Model4 = require('../models/Model4');
 const Model5 = require('../models/Model5');
 const Model9 = require('../models/Model9');
 const Model6 = require('../models/Model6');
+<<<<<<< HEAD
 const Model7 = require('../models/Model7')
+=======
+const LogModel = require('../models/LogModel');
+const MatrixModel = require('../models/MatrixModel');
+
+>>>>>>> 2dc88a7a88f8573079e2883d424216e3262ea54f
 
 const MucTieuModel = require('../models/MucTieuModel')
 
@@ -172,19 +178,17 @@ router.post('/exportfile', function(req, res, next) {
     
   })
 
-  router.get('/collect-data-1', function(req, res) {
-    ThongTinChungModel.collect(function(err, data) {
-      if (err) {
-        console.log(err);
-      } else{
-        res.send(data)
-      }   
-    })   
+  router.get('/collect-data/:id', function(req, res) {
+    let id = req.params
+    ThongTinChungModel.collect(id, (resData) => {
+      res.send(resData);
+    })  
   })
 
-  router.post('/add-data-1', function(req, res) {
-    let description = req.body.data;
-    ThongTinChungModel.add(description, function(err, description){
+  router.post('/update-data/:id', function(req, res) {
+    let id = req.params
+    let description = req.body;
+    ThongTinChungModel.add(id, description, function(err, description){
       if (err) {
         console.log(err);
       }
@@ -212,6 +216,13 @@ router.post('/save-data-2', function(req, res) {
     }
     res.end("done");
   })   
+})
+
+router.get('/get-data-3/:id', (req, res) => {
+  let id = req.params
+  MucTieuModel.get(id, (resData) => {    
+    res.send(resData);
+  })
 })
 
 router.get('/get-muc-tieu-3/:id', (req, res) => {
@@ -462,5 +473,52 @@ router.get('/get-loaitainguyen',function(req,res){
   })
 })
 
+router.get('/get-reality-matrix', function(req, res) {
+  
+  MatrixModel.getRealityMatrix().then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+});
+
+router.get('/get-cdr-cdio', function(req, res) {
+  
+  MatrixModel.getCdrCDIO().then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+});
+
+router.get('/get-standard-matrix', function(req, res) {
+  
+  MatrixModel.getStandardMatrix().then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+});
+router.post('/update-standard-matrix', function(req, res) {
+  const body = req.body;
+  
+  MatrixModel.updateStandardMatrix(body, function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end("1");
+  })   
+})
+
+
+router.post('/save-log', function(req, res) {  
+  const body = req.body.data
+  LogModel.save(body, (result) => {
+    res.end("done")
+  })
+})
 
 module.exports = router;

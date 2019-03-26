@@ -6,16 +6,20 @@ import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, change
     selectedVerbReducer, 
     cdrmdhdReducer,
     mtmhReducer,
-    isLoadReducer} from '../Reducers/ItemLayout4Reducer';
+    isLoadReducer,
+    logLayout4Reducer} from '../Reducers/ItemLayout4Reducer';
 import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Reducer';
 import {itemLayout8Reducer,changeTNDataReducer, loaiTaiNguyenReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
+import matrixReducer from "../Reducers/matrixReducer";
 import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer } from '../Reducers/homePageReducer';
+import logReducer from "../Reducers/logReducer"
 
 import { createStore, applyMiddleware} from 'redux';
 // import logger from 'redux-logger';
 import thunk from 'redux-thunk';
+import { editMatrixReducer, editMatrixEditStateReducer, isLoadEditMatrixReducer } from '../Reducers/editMatrixReducer';
 //const middleware = [ thunk, logger ];
 const middleware = [ thunk];
 
@@ -23,6 +27,7 @@ var redux = require("redux");
 
 const allReducers = redux.combineReducers({
 
+    logLayout4Reducer: logLayout4Reducer,
     itemLayout1Reducer: itemLayout1Reducer,
     itemLayout5Reducer: itemLayout5Reducer,
     itemLayout2Reducer: itemLayout2Reducer,
@@ -45,7 +50,13 @@ const allReducers = redux.combineReducers({
     menuitem: menuItemReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,
-    subjectlist: subjectListReducer
+    subjectlist: subjectListReducer,
+    editmatrix: editMatrixReducer,
+    editmatrixeditstate: editMatrixEditStateReducer,
+    isloadeditmatrix: isLoadEditMatrixReducer,
+    matrix: matrixReducer,
+    logReducer: logReducer
+
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

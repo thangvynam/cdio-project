@@ -401,6 +401,9 @@ class CDRTableItem extends Component {
   }
 
   OnDelete = (cdrtable, key) => {
+    let deleteData = cdrtable.previewInfo[key - 1]    
+    this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: ${deleteData.cdr}, ${deleteData.level_verb}, ${deleteData.description}, ${deleteData.levels}`, this.props.logReducer.contentTab, this.props.subjectId);
+
     if(key === cdrtable.previewInfo.length){
       cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
     }
@@ -423,8 +426,7 @@ class CDRTableItem extends Component {
     }
   }
   handleDelete = (key) => {
-    var cdrtable = this.props.cdrtable;
-    this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: ${cdrtable[key].cdr}, ${cdrtable[key].level_verb}, ${cdrtable[key].description}, ${cdrtable[key].level}`, this.props.logReducer.contentTab, this.props.subjectId);
+    var cdrtable = this.props.cdrtable;   
     this.OnDelete(cdrtable, key);
     this.props.onAddCDRData(cdrtable);
     this.props.onUpdateVerb(this.props.cdrverb);
@@ -433,7 +435,7 @@ class CDRTableItem extends Component {
 
   delete = () => {
     var cdrtable = this.props.cdrtable;
-    var cdrselecteditem = this.props.cdrselecteditem;
+    var cdrselecteditem = this.props.cdrselecteditem;    
     for(let i = 0;i < cdrselecteditem.length;i++){
       if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
         cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
@@ -588,6 +590,7 @@ class CDRTableItem extends Component {
     axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}}).then(
       alert("ok")
     );
+    axios.post('/save-log', { data: this.props.logData })
   }
     render() {
       var components = {};
@@ -707,7 +710,8 @@ const mapStateToProps = (state) => {
         mtmh: state.mtmh,
         subjectId: state.subjectid,
         logReducer: state.logReducer,
-        isLoad: state.isloadtab4
+        isLoad: state.isloadtab4,
+        logData: state.logLayout4Reducer.logData
     }
 }
 const mapDispatchToProps = (dispatch) => {

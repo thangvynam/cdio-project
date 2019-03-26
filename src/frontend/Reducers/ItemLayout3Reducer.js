@@ -74,6 +74,7 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
             }
         case SAVE_ALL_DATA_LAYOUT_3:
             axios.post('/save-data-3', { data: state.previewInfo, id: action.id })
+            axios.post('/save-log', { data: state.logData })
             return {
                 ...state
             }

@@ -273,7 +273,7 @@ class TableItem extends Component {
 
     return (
       <div>
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 16 , marginTop : 16 }}>
           <Button
             type="danger"
             onClick={this.showModal}

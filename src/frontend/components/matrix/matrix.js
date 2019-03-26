@@ -252,6 +252,101 @@ class Matrix extends Component {
         return result;
     }
 
+    getMatrixField = (key, dataIndex, matrix) => {
+        for (let i = 0; i < matrix.length; i++) {
+            if (matrix[i].key === key) {
+                return matrix[i][dataIndex];
+            }
+        }
+        return "";
+    }
+    checkGAPandReturnResult = (text, textMatrix) => {
+        if (textMatrix !== "") {
+            if (text === "-") {
+                if (text !== textMatrix) {
+                    let textArr = textMatrix.split(",");
+                    let textRender = [];
+                    for (let i = 0; i < textArr.length; i++) {
+                        textRender.push(<span key={i} className="adding-text">{textArr[i]}</span>);
+                        if (i !== textArr.length - 1) {
+                            textRender.push(<span key={i + ','}>,</span>);
+                        }
+                    }
+                    return textRender;
+                }
+                return <span>-</span>;
+            }
+            else {
+                if (textMatrix === "-") {
+                    let textArr = text.split(",");
+                    let textRender = [];
+                    for (let i = 0; i < textArr.length; i++) {
+                        textRender.push(<span key={i} className="removing-text">{textArr[i]}</span>);
+                        if (i !== textArr.length - 1) {
+                            textRender.push(<span key={i + ','}>,</span>);
+                        }
+                    }
+                    return textRender;
+                }
+                else {
+                    let textArr = text.split(",");
+                    let textMatrixArr = textMatrix.split(",");
+                    let textRender = [];
+                    let textRenderStateArr = [];
+                    for (let i = 0; i < textArr.length; i++) {
+                        if (this.isExistInArray(textMatrixArr, textArr[i])) {
+                            textRenderStateArr.push({
+                                text: textArr[i],
+                                state: ""
+                            })
+                        }
+                        else {
+                            textRenderStateArr.push({
+                                text: textArr[i],
+                                state: "remove"
+                            })
+                        }
+                    }
+
+                    for (let i = 0; i < textMatrixArr.length; i++) {
+                        if (!this.isExistInArray(textArr, textMatrixArr[i])) {
+                            textRenderStateArr.push({
+                                text: textMatrixArr[i],
+                                state: "add"
+                            })
+                        }
+                    }
+
+                    textRenderStateArr.sort((a, b) => a.text > b.text).map((item, i) => {
+                        if (item.state === "add") {
+                            textRender.push(<span key={i} className="adding-text">{item.text}</span>);
+                        }
+                        else if (item.state === "remove") {
+                            textRender.push(<span key={i} className="removing-text">{item.text}</span>);
+                        }
+                        else {
+                            textRender.push(<span key={i}>{item.text}</span>);
+                        }
+                        if (i !== textRenderStateArr.length - 1) {
+                            textRender.push(<span key={i + ','}>,</span>);
+                        }
+                    })
+                    return textRender;
+                }
+            }
+        }
+        return <div></div>;
+    }
+
+    isExistInArray = (arr, item) => {
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i] === item) {
+                return true;
+            }
+        }
+        return false;
+    }
+    //TV đi t đi mua sữa cái ,về liên :))) ok
     createColumnGroupSecond = (group) => {
         let dt = [];
         let smallGroup = _.toArray(this.createGroupCDR(group, 2));
@@ -260,8 +355,11 @@ class Matrix extends Component {
                 title: `${smallGroup[0][i].cdr}`,
                 dataIndex: `${smallGroup[0][i].cdr}`,
                 key: `${smallGroup[0][i].cdr}`,
+                render: (text, record) =>
+                    <div>{this.checkGAPandReturnResult(text, this.getMatrixField(record.key, smallGroup[0][i].cdr, this.props.editMatrix))}</div>,
             })
         }
+
         return dt;
     }
 
@@ -293,7 +391,7 @@ class Matrix extends Component {
                 title: 'GV trưởng nhóm', width: 100, dataIndex: 'gvtruongnhom', key: 'gvtruongnhom', fixed: 'left',
             },
         ];
-
+        // cai column nho
         //Group: 1 or 2 or 3
         let groups = this.createGroupCDR(dataMatrix[1].data, 0);
         _.toArray(groups).forEach(group => {
@@ -313,6 +411,7 @@ class Matrix extends Component {
         var data1 = [];
         for (let i = 0; i < dataMatrix[0].data.length; i++) {
             var a = {
+                key: dataMatrix[0].data[i].idSubject,
                 hocky: "chua co",
                 hocphan: dataMatrix[0].data[i].subject,
                 gvtruongnhom: 'chua co'
@@ -339,7 +438,7 @@ class Matrix extends Component {
     render() {
         const { isLoading } = this.state;
         return (
-            <React.Fragment>
+            this.props.editMatrix && <React.Fragment>
                 {
                     !isLoading
                     && !_.isEmpty(this.props.dataMatrix)
@@ -349,6 +448,7 @@ class Matrix extends Component {
                         scroll={{ x: 1500 }}
                     />
                 }
+
             </React.Fragment>
         )
     }
@@ -357,6 +457,7 @@ class Matrix extends Component {
 const mapStateToProps = (state) => {
     return {
         dataMatrix: state.matrix.previewInfo,
+        editMatrix: state.editmatrix
     }
 }
 

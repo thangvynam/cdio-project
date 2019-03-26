@@ -8,7 +8,7 @@ import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, change
     mtmhReducer,
     isLoadReducer} from '../Reducers/ItemLayout4Reducer';
 import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Reducer';
-import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/itemLayout8Reducer';
+import {itemLayout8Reducer,changeTNDataReducer, loaiTaiNguyenReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer } from '../Reducers/homePageReducer';
@@ -41,6 +41,7 @@ const allReducers = redux.combineReducers({
     dgdata: changeDGDataReducer,
     itemLayout8Reducer: itemLayout8Reducer,
     tndata: changeTNDataReducer,
+    loaitainguyen: loaiTaiNguyenReducer,
     menuitem: menuItemReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,

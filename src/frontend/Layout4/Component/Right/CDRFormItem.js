@@ -480,6 +480,7 @@ class CDRFormItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
+    console.log("CHAY TRUOC")
     this.setState({id: nextProps.subjectId})
     if(this.state.isLoaded === false && this.state.id !== null && this.state.id !== undefined && this.state.id !== ""){
       this.setState({isLoaded: true})
@@ -497,6 +498,7 @@ class CDRFormItem extends Component {
     }
   }
   componentDidMount() {
+    console.log("CHAY SAU")
     if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== ""){
       var self = this;
       if(this.state.id !== "" && this.state.id !== undefined) {
@@ -513,6 +515,7 @@ class CDRFormItem extends Component {
   }
 
   render() {
+    console.log(this.state.isLoaded);
     const { getFieldDecorator } = this.props.form;
     const CDROption = this.props.mtmh.map((key) => {
       return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>

@@ -12,6 +12,7 @@ const Model4 = require('../models/Model4');
 const Model5 = require('../models/Model5');
 const Model9 = require('../models/Model9');
 const Model6 = require('../models/Model6');
+const Model7 = require('../models/Model7')
 
 const MucTieuModel = require('../models/MucTieuModel')
 
@@ -410,6 +411,55 @@ router.get('/get-teachingarts', function(req, res) {
     console.log("done");
     res.end(JSON.stringify(result));
   })   
+})
+
+router.get('/collect-data-5', function(req, res) {
+  Model5.collectdata(function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
+router.get('/get-danhgia',function(req,res){
+  Model7.getDanhGia(function(err,result){
+    if(err){
+      res.end("0");
+    }
+    console.log("done");
+    res.end(JSON.stringify(result));
+  })
+})
+
+router.post('/add-danhgia',function(req,res){
+  const body = req.body;
+  Model7.addDanhGia(body,function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end("1");
+  })
+})
+
+router.get('/get-chude',function(req,res){
+  Model7.getChude(function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
+})
+
+
+router.get('/get-loaitainguyen',function(req,res){
+  Model9.getLoaiTaiNguyen(function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
 })
 
 

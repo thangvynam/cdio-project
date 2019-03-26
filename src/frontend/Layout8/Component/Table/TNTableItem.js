@@ -33,9 +33,9 @@ const columns = [{
   key: 'action',
   render: (text, record) => (
     <span>
-      <a href="#a">Edit {record.name}</a>
+      <a href="#a">Sửa {record.name}</a>
       <Divider type="vertical" />
-      <a href="#b">Delete</a>
+      <a href="#b">Xóa</a>
     </span>
   ),
 }];
@@ -300,7 +300,7 @@ class TNTableItem extends Component {
             onClick={this.showModal}
             disabled={!hasSelected}
           >
-            Delete
+            Xóa
           </Button>
 
           <span style={{ marginLeft: 8 }}>

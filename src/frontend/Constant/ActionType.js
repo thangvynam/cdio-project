@@ -46,11 +46,14 @@ export const CHANGE_ISLOADED_RULES = 'CHANGE_ISLOADED_RULES';
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
 export const DELETE_DGDATA = 'DELETE_DGDATA';
+export const SAVE_TEMP_DATA_LAYOUT_7 = "SAVE_TEMP_DATA_LAYOUT_7";
 
 //layout 8
 export const ADD_TNDATA = 'ADD_TNDATA';
 export const CHANGE_TNDATA = 'CHANGE_TNDATA';
 export const UPDATE_TNDATA  = 'UPDATE_TNDATA';
+export const SAVE_TEMP_DATA_LAYOUT_8 = "SAVE_TEMP_DATA_LAYOUT_8";
+export const LOAI_TAI_NGUYEN = 'LOAI_TAI_NGUYEN';
 // layout 5
 export const DELETE_DATA_LAYOUT_5 = 'DELETE_DATA_LAYOUT_5';
 export const CHANGE_EDITSTATE_5 = 'CHANGE_EDITSTATE_5';
@@ -238,6 +241,27 @@ export function updateTNData(newTNData){
     return{
         type: UPDATE_TNDATA,
         data: newTNData
+    }
+}
+
+export function saveTempDGData(tempDGData){
+    return{
+        type: SAVE_TEMP_DATA_LAYOUT_7,
+        data: tempDGData
+    }
+}
+
+export function saveTempTNData(tempTNData){
+    return{
+        type: SAVE_TEMP_DATA_LAYOUT_8,
+        data: tempTNData
+    }
+}
+
+export function getLoaiTaiNguyen(loaitainguyen){
+    return{
+        type: LOAI_TAI_NGUYEN,
+        data: loaitainguyen
     }
 }
 

@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeDGData, addDGData } from '../../../Constant/ActionType';
+import { changeDGData, addDGData, saveTempDGData } from '../../../Constant/ActionType';
 
 const standard_item = [{
   value: 'G1',
@@ -122,9 +122,7 @@ var temp = '';
 var temp1 = [];
 
 class DGFormItem extends Component {
-  state = {
-    standardSelectedItem: [],
-  }
+ 
   handleMathanhphanChange = (e) => {
     let a = e.target.value;
     this.props.onChangeDGData({
@@ -134,6 +132,11 @@ class DGFormItem extends Component {
       mota: this.props.dgdata.mota,
       tile: this.props.dgdata.tile
     })
+    
+     let tempInfo = this.props.dgtable.tempInfo;
+     tempInfo["mathanhphan"] = a;
+    
+    this.props.onSaveTempDGData(tempInfo);
   }
   handleTenthanhphanChange = (e) => {
     let a = e.target.value;
@@ -144,6 +147,10 @@ class DGFormItem extends Component {
       mota: this.props.dgdata.mota,
       tile: this.props.dgdata.tile
     })
+    let tempInfo = this.props.dgtable.tempInfo;
+    tempInfo["tenthanhphan"] = a;
+   
+   this.props.onSaveTempDGData(tempInfo);
   }
   handleMotaChange = (e) => {
     let a = e.target.value;
@@ -154,6 +161,10 @@ class DGFormItem extends Component {
       mota: a,
       tile: this.props.dgdata.tile
     })
+    let tempInfo = this.props.dgtable.tempInfo;
+    tempInfo["mota"] = a;
+   
+   this.props.onSaveTempDGData(tempInfo);
   }
   handleTileChange = (e) => {
     let a = e.target.value;
@@ -164,20 +175,39 @@ class DGFormItem extends Component {
       mota: this.props.dgdata.mota,
       tile: a
     })
+    let tempInfo = this.props.dgtable.tempInfo;
+    tempInfo["tile"] = a;
+   
+   this.props.onSaveTempDGData(tempInfo);
   }
   toString = () => {
     let temp2 = '';
-    for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
-      temp2 += this.state.standardSelectedItem[i] + ' , ';
+    let tempInfo = this.props.dgtable.tempInfo;
+    console.log(tempInfo)
+    for (let i = 0; i < tempInfo.standardOutput.length; i++) {
+      temp2 += tempInfo.standardOutput[i] + " , ";
+      console.log(temp2);
+      console.log(tempInfo.standardOutput[i]);
     }
-    return temp2.replace('NaN', '');
+    console.log(temp2);
+    return temp2;
   }
+  displayRender = label => {
+    if (this.isSubmit) {
+      this.isSubmit = false;
+      return null;
+    }
+    if (label.length > 0) return label[0] + label[1];
+  };
   onChange = (value) => {
-    let newArray = this.state.standardSelectedItem.slice();
+    if(value.length === 0 ) return;
+    let tempInfo = this.props.dgtable.tempInfo;
+
+    let newArray = tempInfo.standardOutput.slice();
     newArray.push(value[0] + value[1]);
-    this.setState({ standardSelectedItem: newArray });
     temp = newArray;
     const standardoutput1 = temp.slice();
+   
     this.props.onChangeDGData({
       standardOutput: standardoutput1,
       mathanhphan: this.props.dgdata.mathanhphan,
@@ -185,9 +215,16 @@ class DGFormItem extends Component {
       mota: this.props.dgdata.mota,
       tile: this.props.dgdata.tile
     })
+
+    tempInfo["standardOutput"] = standardoutput1;
+    this.props.onSaveTempDGData(tempInfo);
   }
   onChange1 = (value) => {
     temp1 = value[0];
+  }
+
+  componentWillMount(){
+    
   }
 
   addDGData = () => {
@@ -320,11 +357,18 @@ class DGFormItem extends Component {
                       tile: this.props.dgdata.tile + '%',
                     }
 
-                    let dataReturn = { previewInfo: [] };
+                    let dataReturn = { previewInfo: [],tempInfo : {} };
                     if (isAdd2Rows === true) {
                       dataReturn.previewInfo = newData.concat(data);
                     } else {
                       dataReturn.previewInfo = previewInfo.concat(data);
+                    }
+                    dataReturn.tempInfo = {
+                      mathanhphan: "",
+                      tenthanhphan: "",
+                      mota : "",
+                      tile : "",
+                      standardOutput : []
                     }
 
                     console.log(dataReturn);
@@ -333,6 +377,7 @@ class DGFormItem extends Component {
                     this.props.form.resetFields();
                     isAdd2Rows = false;
                     temp.splice(0, temp.length)
+                    this.props.onSaveTempDGData(dataReturn.tempInfo);
                   }
 
                 }
@@ -370,13 +415,13 @@ class DGFormItem extends Component {
     return (
       <div style={{ border: "2px solid", borderRadius: "12px" }}>
         <div style={{ marginTop: "10px" }}></div>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.addDGData}>
           <Form.Item
             {...formDynamicItemLayout}
             label={(
               <span>
                 Tên chủ đề
-                            </span>
+              </span>
             )}
           >
             <Cascader options={tenchude_item} onChange={this.onChange1} placeholder="Tên chủ đề" />
@@ -390,6 +435,7 @@ class DGFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập mã thành phần',
               }],
+              initialValue: this.props.dgtable.tempInfo.mathanhphan
             })(
               <Input onChange={this.handleMathanhphanChange} />
             )}
@@ -403,6 +449,7 @@ class DGFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập tên mô tả thành phần',
               }],
+              initialValue: this.props.dgtable.tempInfo.tenthanhphan
             })(
               <Input onChange={this.handleTenthanhphanChange} />
             )}
@@ -416,6 +463,7 @@ class DGFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập tên mô tả thành phần',
               }],
+              initialValue: this.props.dgtable.tempInfo.mota
             })(
               <Input onChange={this.handleMotaChange} />
             )}
@@ -432,7 +480,11 @@ class DGFormItem extends Component {
               </span>
             )}
           >
-            <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />
+            <Cascader 
+            options={standard_item} 
+            onChange={this.onChange} 
+            placeholder="Chọn chuẩn đầu ra"
+            displayRender={this.displayRender} />
           </Form.Item>
 
           <Form.Item
@@ -450,6 +502,7 @@ class DGFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập tỉ lệ(%)',
               }],
+              initialValue: this.props.dgtable.tempInfo.tile
             })(
               <Input onChange={this.handleTileChange} />
             )}
@@ -474,12 +527,14 @@ const mapStateToProps = (state) => {
   return {
     dgdata: state.dgdata,
     dgtable: state.itemLayout7Reducer,
+    subjectId: state.subjectid,
   };
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onAddDGData: addDGData,
     onChangeDGData: changeDGData,
+    onSaveTempDGData : saveTempDGData,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DGFormItem);

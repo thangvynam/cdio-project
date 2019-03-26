@@ -44,7 +44,14 @@ const addDGDataState = {
             tenthanhphan: 'Thiết kế giao diện',
             mota: 'Thiết kế 1 màn hình tìm sản phẩm',
             tile: '2%',
-        }]
+        }],
+        tempInfo: {
+            mathanhphan: "",
+            tenthanhphan: "",
+            mota: "",
+            tile:"",
+            standardOutput: [],
+        }
 };
 
 

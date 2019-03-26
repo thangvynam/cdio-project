@@ -1,4 +1,4 @@
-import { ADD_TNDATA, CHANGE_TNDATA } from '../Constant/ActionType';
+import { ADD_TNDATA, CHANGE_TNDATA,getLoaiTaiNguyen } from '../Constant/ActionType';
 
 const addTNDataState = {
     previewInfo: [{
@@ -19,7 +19,12 @@ const addTNDataState = {
         loai: 'URL',
         mota: 'mota3',
         link: 'link3'
-    },]
+    },],
+    tempInfo: {
+        mota: "",
+        link: "",
+    },
+    isLoaded: false,
 };
 
 
@@ -45,6 +50,17 @@ export function changeTNDataReducer(state = changeTNDataState, action) {
 
     switch (action.type) {
         case CHANGE_TNDATA:
+            return action.data;
+        default:
+            return state;
+    }
+}
+
+const loaitainguyenState = []
+
+export function loaiTaiNguyenReducer(state = loaitainguyenState,action){
+    switch(action.type){
+        case getLoaiTaiNguyen: 
             return action.data;
         default:
             return state;

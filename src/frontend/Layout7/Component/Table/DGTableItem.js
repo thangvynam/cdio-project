@@ -468,18 +468,23 @@ class DGTableItem extends React.Component {
 
     return (
       <div>
-        <div style={{ marginBottom: 16 }}>
+        <div style={{ marginBottom: 16 , marginTop:16 }}>
           <Button
             type="danger"
             onClick={this.showModal}
             disabled={!hasSelected}
           >
-            Delete
+            Xóa
           </Button>
 
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
+          <Button style={{float: "right"}}
+            onClick={this.props.saveAll}
+          >
+            Lưu tât cả
+          </Button>
         </div>
         <Table
           components={components}
@@ -500,6 +505,8 @@ class DGTableItem extends React.Component {
 const mapStateToProps = (state) => {
   return {
     dgtable: state.itemLayout7Reducer,
+    subjectId: state.subjectid,
+
   }
 }
 

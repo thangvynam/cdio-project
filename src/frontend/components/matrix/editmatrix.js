@@ -60,7 +60,7 @@ class EditableCell extends React.Component {
                         required: false,
                         message: `${title} is required.`,
                       }],
-                      initialValue: record[dataIndex].split(" "),
+                      initialValue: record[dataIndex].split(","),
                     })(
                         
                         <Checkbox.Group 
@@ -71,7 +71,7 @@ class EditableCell extends React.Component {
                        <Checkbox value="T">T</Checkbox>
                        <Checkbox value="U">U</Checkbox>
                        <div style={{paddingTop: "10px"}}>
-                       <Tooltip placement="bottomRight" title="Save"><Icon onClick={save} type="check" /></Tooltip>
+                       <Tooltip placement="bottomRight" title="OK"><Icon onClick={save} type="check" /></Tooltip>
                        <Tooltip placement="bottomLeft" title="Cancel"><Icon onClick={cancel} type="close" /></Tooltip>
                        </div>
                        </div>
@@ -115,111 +115,20 @@ class EditMatrix extends Component {
         this.state = {
             levels: [],
             cdr_cdio: [],
-            subjectList: [],
             tempMatrix: []
         }
         
       }
 
-      checkIdExist = (matrix, id) => {
-          for(let i = 0;i < matrix.length;i++) {
-              if(matrix[i].key === id) {
-                  return i;
-              }
-          }
-          return -1;
-      }
-
-      getCdrCdio = (cdr_cdio, id) => {
-        for(let i = 0;i < cdr_cdio.length;i++) {
-            if(cdr_cdio[i].id === id)  {
-                return cdr_cdio[i].cdr;
-            }
-        }
-        return "";
-      }
-
-      getSubjectName = (subjectList, id) => {
-        for(let i = 0;i < subjectList.length;i++) {
-            if(subjectList[i].id === id) {
-                return subjectList[i].ten_mon_hoc_tv;
-            }
-        }
-        return "";
-      }
-      componentWillReceiveProps(nextProps) {
-        this.setState({subjectList: nextProps.subjectList})
-        if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
-            axios.get("/get-standard-matrix").then((res) => {
-                this.setState({tempMatrix: res.data});
-                let data = [];
-                for(let i = 0;i < res.data.length;i++) {
-                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                    if(index !== -1) {
-                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(cdr_cdio !== "") {
-                            data[index][cdr_cdio] = res.data[i].muc_do.split(",").join(" ");
-                        }
-                    }
-                    else {
-                        let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
-                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(subjectName !== "" && cdr_cdio !== "") {
-                            data.push({
-                                key: res.data[i].thong_tin_chung_id,
-                                hocky: 1,
-                                hocphan: subjectName,
-                                gvtruongnhom: 'NULL'
-                            })
-
-                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do.split(",").join(" ");
-                        }
-                        
-                    }
-                }
-                this.props.updateEditMatrix(data);
-              })
-              this.props.updateIsLoadEditMatrix("true");
-        }
-      }
+      
       
       componentDidMount() {
           axios.get("/get-cdr-cdio").then((res) => {
             this.setState({cdr_cdio: res.data})
-          })
-
-          if(this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
-            axios.get("/get-standard-matrix").then((res) => {
-                this.setState({tempMatrix: res.data});
-                let data = [];
-                for(let i = 0;i < res.data.length;i++) {
-                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                    if(index !== -1) {
-                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(cdr_cdio !== "") {
-                            data[index][cdr_cdio] = res.data[i].muc_do.split(",").join(" ");
-                        }
-                    }
-                    else {
-                        let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(subjectName !== "" && cdr_cdio !== "") {
-                            data.push({
-                                key: res.data[i].thong_tin_chung_id,
-                                hocky: 1,
-                                hocphan: subjectName,
-                                gvtruongnhom: 'NULL'
-                            })
-
-                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do.split(",").join(" ");
-                        }
-                        
-                    }
-                }
-                this.props.updateEditMatrix(data);
-              })
-              this.props.updateIsLoadEditMatrix("true");
-        }
+          });
+          axios.get("/get-standard-matrix").then((res) => {
+            this.setState({tempMatrix: res.data});
+        });
       }
 
       getIndex = (matrix, key) => {
@@ -235,7 +144,7 @@ class EditMatrix extends Component {
         let index = this.getIndex(matrix, record.key);
         if(this.state.levels.length > 0) {
             if(index !== -1) {
-                matrix[index][dataIndex] = this.state.levels.join(' ');
+                matrix[index][dataIndex] = this.state.levels.join(',');
             }
         }
         else {
@@ -289,7 +198,7 @@ class EditMatrix extends Component {
       }
 
       onClickEdit = (record, key) => {
-        let levels = record[key].split(" ");
+        let levels = record[key].split(",");
         this.sortLevels(levels);
         this.setState({levels: levels});
         this.props.updateEditMatrixEditState(record.key + "-" + key)
@@ -314,21 +223,85 @@ class EditMatrix extends Component {
       }
       saveAll = () => {
           let data = [];
+          console.log(this.props.editMatrix[0]['1.1.1']);//clm
           for(let i = 0;i < this.props.editMatrix.length;i++) {
             Object.keys(this.props.editMatrix[i]).map((key, id) => {
+              
                 if(Object.keys(this.props.editMatrix[i])[id] !== "key" && Object.keys(this.props.editMatrix[i])[id] !== "hocky"
             && Object.keys(this.props.editMatrix[i])[id] !== "hocphan" && Object.keys(this.props.editMatrix[i])[id] !== "gvtruongnhom") {
-                let cdr_cdio_id = this.getCdrCdioId(this.state.cdr_cdio, Object.keys(this.props.editMatrix[i])[id]);
+              let cdr_cdio_id = this.getCdrCdioId(this.state.cdr_cdio, Object.keys(this.props.editMatrix[i])[id]);
                 let matrixId = this.getMatrixId(this.state.tempMatrix, this.props.editMatrix[i].key, cdr_cdio_id);
-                data.push({id: matrixId, muc_do: this.props.editMatrix[i][Object.keys(this.props.editMatrix[i])[id]].split(" ").toString()});
+                data.push({id: matrixId, muc_do: this.props.editMatrix[i][Object.keys(this.props.editMatrix[i])[id]]});
             }
                 
             })
           }
-          //console.log(data);
+          console.log(data);
           axios.post('/update-standard-matrix', data).then(alert("ok"));
         
       }
+
+      checkIdExist = (matrix, id) => {
+        for(let i = 0;i < matrix.length;i++) {
+            if(matrix[i].key === id) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    getCdrCdio = (cdr_cdio, id) => {
+      for(let i = 0;i < cdr_cdio.length;i++) {
+          if(cdr_cdio[i].id === id)  {
+              return cdr_cdio[i].cdr;
+          }
+      }
+      return "";
+    }
+
+    getSubjectName = (subjectList, id) => {
+        for(let i = 0;i < subjectList.length;i++) {
+            if(subjectList[i].id === id) {
+                return subjectList[i].ten_mon_hoc_tv;
+            }
+        }
+        return "";
+      }
+
+      componentWillReceiveProps(nextProps) {
+       if(nextProps.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+        axios.get("/get-standard-matrix").then((res) => {
+            this.setState({tempMatrix: res.data});
+            let data = [];
+            for(let i = 0;i < res.data.length;i++) {
+                let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                if(index !== -1) {
+                    let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+                    if(cdr_cdio !== "") {
+                        data[index][cdr_cdio] = res.data[i].muc_do;
+                    }
+                }
+                else {
+                    let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                    let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+                    if(subjectName !== "" && cdr_cdio !== "") {
+                        data.push({
+                            key: res.data[i].thong_tin_chung_id,
+                            hocky: 1,
+                            hocphan: subjectName,
+                            gvtruongnhom: 'NULL'
+                        })
+
+                        data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                    }
+                    
+                }
+            }
+            this.props.updateEditMatrix(data);
+          })
+       }
+    }
+
     render() {
         let firstColumnMapped = [];
         if(this.state.cdr_cdio.length > 0) {
@@ -433,9 +406,12 @@ class EditMatrix extends Component {
         return col;
         
         });
-
+        if(this.props.editMatrix.length > 0) {
+            console.log(this.props.editMatrix)
+        }
         return (
             <React.Fragment>
+                <div style={{margin: "10px"}}><Button onClick={this.saveAll}>Lưu lại</Button></div>
                 <Table  bordered
                     components={components}
                     rowClassName={() => 'editable-row'}
@@ -444,7 +420,6 @@ class EditMatrix extends Component {
                     scroll={{x: 1500}}
                     size="small"
                     />
-                    <Button onClick={this.saveAll}>Lưu lại</Button>
             </React.Fragment>
         )
     }
@@ -455,7 +430,6 @@ const mapStateToProps = (state) => {
         editMatrix: state.editmatrix,
         editMatrixEditState: state.editmatrixeditstate,
         subjectList: state.subjectlist,
-        isLoadEditMatrix: state.isloadeditmatrix
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -463,7 +437,6 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     updateEditMatrix: editMatrix,
     updateEditMatrixEditState: editMatrixEditState,
-    updateIsLoadEditMatrix: isLoadEditMatrix
   }, dispatch);
 
 }

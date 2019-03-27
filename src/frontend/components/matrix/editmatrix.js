@@ -215,7 +215,6 @@ class EditMatrix extends Component {
       }
       saveAll = () => {
           let data = [];
-          console.log(this.props.editMatrix[0]['1.1.1']);//clm
           for(let i = 0;i < this.props.editMatrix.length;i++) {
             Object.keys(this.props.editMatrix[i]).map((key, id) => {
               
@@ -266,6 +265,9 @@ class EditMatrix extends Component {
         axios.get("/get-cdr-cdio").then((res) => {
           this.setState({cdr_cdio: res.data})
         });
+        axios.get("/get-standard-matrix").then((res) => {
+                this.setState({tempMatrix: res.data});
+        })
         // if(this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
         //     console.log("did");
         //     this.props.updateIsLoadEditMatrix("true");

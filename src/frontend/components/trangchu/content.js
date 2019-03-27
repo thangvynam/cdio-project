@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix} from '../../Constant/ActionType';
+import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix,resetTab} from '../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form } from 'antd';
@@ -112,7 +112,9 @@ class Content extends Component {
 
     onClick = (id) => {
         this.props.updateIsLoad("false");
-        this.props.updateSubjectId(id)
+        this.props.updateSubjectId(id);
+        this.props.resetTab();
+        
       }
 
       checkSubjectExist = (monhoc) => {
@@ -355,6 +357,7 @@ const mapDispatchToProps = (dispatch) => {
     updateSubjectList: subjectList,
     updateSubjectId: subjectId,
     updateIsLoad: isLoad,
+    resetTab:resetTab
     updateIsLoadEditMatrix: isLoadEditMatrix
   }, dispatch);
 

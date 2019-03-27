@@ -383,9 +383,9 @@ router.post('/add-data-9', function(req, res) {
   })   
 })
 /* get data layout 9 */ 
-router.get('/get-data-9', function(req, res) {
-  
-  Model9.get(function(err, result) {
+router.get('/get-data-9/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model9.get(idSubject,function(err, result) {
     if (err) {
       res.end("0");
     }

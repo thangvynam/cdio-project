@@ -468,4 +468,11 @@ router.post('/save-log', function(req, res) {
   })
 })
 
+router.post('/get-log', function(req, res) {
+  const body = req.body.data
+  LogModel.get(body, (result) => {
+    res.send(result)
+  })
+})
+
 module.exports = router;

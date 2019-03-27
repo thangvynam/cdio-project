@@ -7,6 +7,8 @@ export const IS_LOADED_2 = 'IS_LOADED_2';
 export const UPDATE_CON_TAB = 'UPDATE_CON_TAB';
 
 export const SAVE_LOG = 'SAVE_LOG';
+export const IS_LOAD_LOG = 'IS_LOAD_LOG';
+
 export const RESET_TAB = 'RESET_TAG';
 
 //layout 3

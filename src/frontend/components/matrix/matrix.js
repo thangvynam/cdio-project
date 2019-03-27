@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import axios from 'axios';
 import _ from 'lodash';
-import { Table } from 'antd';
+import { Table, Icon, Tag } from 'antd';
 import { connect } from 'react-redux';
 import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import "./matrix.css";
@@ -57,24 +57,24 @@ class Matrix extends Component {
                     let textArr = textMatrix.split(",");
                     let textRender = [];
                     for (let i = 0; i < textArr.length; i++) {
-                        textRender.push(<span key={i} className="adding-text">{textArr[i]}</span>);
-                        if (i !== textArr.length - 1) {
-                            textRender.push(<span key={i + ','}>,</span>);
-                        }
+                        textRender.push(<Tag key={i} color="green" style={{fontSize: "8pt", fontWeight: "bold"}}>{textArr[i]}</Tag>);
+                        // if (i !== textArr.length - 1) {
+                        //     textRender.push(<span key={i + ','}>,</span>);
+                        // }
                     }
                     return textRender;
                 }
-                return <span>-</span>;
+                return <Tag color="black" style={{fontSize: "8pt", fontWeight: "bold"}}>-</Tag>;
             }
             else {
                 if (textMatrix === "-") {
                     let textArr = text.split(",");
                     let textRender = [];
                     for (let i = 0; i < textArr.length; i++) {
-                        textRender.push(<span key={i} className="removing-text">{textArr[i]}</span>);
-                        if (i !== textArr.length - 1) {
-                            textRender.push(<span key={i + ','}>,</span>);
-                        }
+                        textRender.push(<Tag key={i} color="red" style={{fontSize: "8pt", fontWeight: "bold"}}>{textArr[i]}</Tag>);
+                        // if (i !== textArr.length - 1) {
+                        //     textRender.push(<span key={i + ','}>,</span>);
+                        // }
                     }
                     return textRender;
                 }
@@ -109,17 +109,17 @@ class Matrix extends Component {
 
                     textRenderStateArr.sort((a, b) => a.text > b.text).map((item, i) => {
                         if (item.state === "add") {
-                            textRender.push(<span key={i} className="adding-text">{item.text}</span>);
+                            textRender.push(<Tag key={i} color="green" style={{fontSize: "8pt", fontWeight: "bold"}}>{item.text}</Tag>);
                         }
                         else if (item.state === "remove") {
-                            textRender.push(<span key={i} className="removing-text">{item.text}</span>);
+                            textRender.push(<Tag key={i} color="red" style={{fontSize: "8pt", fontWeight: "bold"}}>{item.text}</Tag>);
                         }
                         else {
-                            textRender.push(<span key={i}>{item.text}</span>);
+                            textRender.push(<Tag key={i} color="black" style={{fontSize: "8pt", fontWeight: "bold"}}>{item.text}</Tag>);
                         }
-                        if (i !== textRenderStateArr.length - 1) {
-                            textRender.push(<span key={i + ','}>,</span>);
-                        }
+                        // if (i !== textRenderStateArr.length - 1) {
+                        //     textRender.push(<span key={i + ','}>,</span>);
+                        // }
                     })
                     return textRender;
                 }
@@ -173,13 +173,13 @@ class Matrix extends Component {
     createColumn = (dataMatrix) => {
         let result = [
             {
-                title: 'HK', width: 100, dataIndex: 'hocky', key: 'hocky', fixed: 'left',
+                title: 'HK', width: 100, dataIndex: 'hocky', key: 'hocky', 
             },
             {
-                title: 'Học phần', width: 100, dataIndex: 'hocphan', key: 'hocphan', fixed: 'left',
+                title: 'Học phần', width: 100, dataIndex: 'hocphan', key: 'hocphan', 
             },
             {
-                title: 'GV trưởng nhóm', width: 100, dataIndex: 'gvtruongnhom', key: 'gvtruongnhom', fixed: 'left',
+                title: 'GV trưởng nhóm', width: 100, dataIndex: 'gvtruongnhom', key: 'gvtruongnhom', 
             },
         ];
 
@@ -232,11 +232,20 @@ class Matrix extends Component {
                 {
                     !isLoading
                     && !_.isEmpty(this.props.dataMatrix)
-                    && <Table bordered
+                    && <div style={{margin: "10px"}}>
+                    <div style={{marginBottom: "10px"}}>
+                        <span className="adding-text"><Icon type="plus-square" />: Thêm</span>
+                        
+                        <span style={{marginLeft: "30px"}} className="removing-text"><Icon type="close-square" />: Xóa</span>
+                        
+                        <span style={{marginLeft: "30px"}} className="no-action-text"><Icon type="minus-square" />: Không đổi</span>
+                    </div>
+                    <Table bordered
                         columns={this.createColumn(this.props.dataMatrix)}
                         dataSource={this.createData(this.props.dataMatrix)}
                         scroll={{ x: 1500 }}
                     />
+                    </div>
                 }
 
             </React.Fragment>

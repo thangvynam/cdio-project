@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Form, Input, Checkbox, Icon, Tooltip, Button } from 'antd';
+import { Table, Form, Input, Checkbox, Icon, Tooltip, Button, Tag } from 'antd';
 import "./matrix.css";
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
@@ -71,7 +71,7 @@ class EditableCell extends React.Component {
                        <Checkbox value="T">T</Checkbox>
                        <Checkbox value="U">U</Checkbox>
                        <div style={{paddingTop: "10px"}}>
-                       <Tooltip placement="bottomRight" title="OK"><Icon onClick={save} type="check" /></Tooltip>
+                       <Tooltip placement="bottomRight" title="OK"><Icon onClick={save} type="check" style={{marginRight: "30px"}}/></Tooltip>
                        <Tooltip placement="bottomLeft" title="Cancel"><Icon onClick={cancel} type="close" /></Tooltip>
                        </div>
                        </div>
@@ -371,7 +371,7 @@ class EditMatrix extends Component {
                     align: "center",
                     editable: true,
                     render: (text, record) => <div>
-                        <p>{text}</p>
+                        <Tag color="orange" style={{fontSize: "8pt", fontWeight: "bold"}}>{text}</Tag>
                         <Tooltip placement="bottom" title="Edit"><Icon onClick={() => this.onClickEdit(record, key)} type="edit" style={{cursor: "pointer"}}/></Tooltip>
                         </div>,
                 }
@@ -444,7 +444,7 @@ class EditMatrix extends Component {
 
         return (
             <React.Fragment>
-                <div style={{margin: "10px"}}><Button onClick={this.saveAll}>Lưu lại</Button></div>
+                <div style={{margin: "10px"}}><Button onClick={this.saveAll}>Lưu lại</Button>
                 <Table  bordered
                     components={components}
                     rowClassName={() => 'editable-row'}
@@ -453,6 +453,7 @@ class EditMatrix extends Component {
                     scroll={{x: 1500}}
                     size="small"
                     />
+                    </div>
             </React.Fragment>
         )
     }

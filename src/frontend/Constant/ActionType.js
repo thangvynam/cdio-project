@@ -9,6 +9,8 @@ export const UPDATE_CON_TAB = 'UPDATE_CON_TAB';
 export const SAVE_LOG = 'SAVE_LOG';
 export const IS_LOAD_LOG = 'IS_LOAD_LOG';
 
+export const RESET_TAB = 'RESET_TAG';
+
 //layout 3
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
 export const DELETE_DATA_LAYOUT_3 = 'DELETE_DATA_LAYOUT_3';
@@ -285,6 +287,13 @@ export function updateContentTab(contentTab){
         data: contentTab
     }
 }
+export function resetTab(){
+    return {
+        type: RESET_TAB,
+    }
+}
+
+
 
 export const MENUITEM = {
     THONG_TIN_CHUNG: 'thong-tin-chung',

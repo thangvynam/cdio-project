@@ -225,9 +225,46 @@ class TableItem extends Component {
     
   }
 
-  componentWillMount() {
-    if (!this.props.itemRule.isLoaded) {
-      axios.get("/get-data-9").then(response => {
+  // componentWillMount() {
+  //   console.log("subjectid: ", this.props.subjectId);
+  //   if (!this.props.itemRule.isLoaded) {
+  //     axios.get(`/get-data-9/${this.props.subjectId}`).then(response => {
+  //       const data = response.data;
+  //       let array = [];
+  //       data.forEach((item, index) => {
+  //         let temp = {
+  //           content: item.noi_dung
+  //         };
+  //         array.push(temp);
+  //       });
+  //       this.props.onUpdateRules(array);
+  //       this.props.onChangeIsLoaded(true);
+  //     });
+  //   }
+  // }
+  componentDidMount() {
+    if(!this.props.itemRule.isLoaded && this.props.subjectId !== null 
+      && this.props.subjectId !== undefined && this.props.subjectId!== "") {
+        this.props.onChangeIsLoaded(true);
+        axios.get(`/get-data-9/${this.props.subjectId}`).then(response => {
+          const data = response.data;
+          let array = [];
+          data.forEach((item, index) => {
+            let temp = {
+              content: item.noi_dung
+            };
+            array.push(temp);
+          });
+          this.props.onUpdateRules(array);
+        });
+      }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(!this.props.itemRule.isLoaded && nextProps.subjectId !== null 
+    && nextProps.subjectId !== undefined && nextProps.subjectId !== "") {
+      this.props.onChangeIsLoaded(true);
+      axios.get(`/get-data-9/${nextProps.subjectId}`).then(response => {
         const data = response.data;
         let array = [];
         data.forEach((item, index) => {
@@ -237,10 +274,11 @@ class TableItem extends Component {
           array.push(temp);
         });
         this.props.onUpdateRules(array);
-        this.props.onChangeIsLoaded(true);
       });
     }
   }
+
+
 
   render() {
     const components = {
@@ -305,7 +343,8 @@ class TableItem extends Component {
 }
 const mapStateToProps = state => {
   return {
-    itemRule: state.itemLayout9Reducer
+    itemRule: state.itemLayout9Reducer,
+    subjectId: state.subjectid,
   };
 };
 

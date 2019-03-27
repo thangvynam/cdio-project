@@ -73,7 +73,8 @@ Model4.addsubject = (data, result) => {
 }
 
 Model4.deletesubject = (data, result) => {
-    sql.query(`update thong_tin_chung set del_flag = 1 where ma_so = ${data.ma_so}`,
+    console.log(data.id)
+    sql.query(`update thong_tin_chung set del_flag = 1 where id = ${data.id}`,
       (err, res) => {
         if (err) {
             console.log("error:", err);

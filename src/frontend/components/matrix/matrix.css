@@ -1,7 +1,14 @@
 .adding-text {
-    color: rgb(9, 199, 9);
+    color: rgb(9, 245, 9);
+    font-weight: bold;
 }
 
 .removing-text {
     color: red;
+    font-weight: bold;
+}
+
+.no-action-text {
+    color: black;
+    font-weight: bold;
 }

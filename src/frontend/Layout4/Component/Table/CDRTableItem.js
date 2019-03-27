@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Button,
    Input, Cascader } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
@@ -361,6 +361,32 @@ class CDRTableItem extends Component {
     .catch(function (error) {
       console.log(error);
     });
+    if(this.props.isLoad === "false" && this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "") {
+      this.props.updateIsLoad("true");
+      var self = this;
+  
+        axios.post('/collect-data-4', { data: {thong_tin_chung_id: this.props.subjectId}})
+        .then(function (response) {
+      const tableData = {
+        previewInfo: []
+      };
+      for(let i = 0;i < response.data.length;i++) {
+        let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
+        let data = {
+         key: (i + 1).toString(),
+         cdr: response.data[i].chuan_dau_ra,
+         level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
+         description: response.data[i].mo_ta,
+         levels: response.data[i].muc_do.split(","),
+        }
+        tableData.previewInfo.push(data);
+      }
+        self.props.onAddCDRData(tableData)
+          })
+         .catch(function (error) {
+            console.log(error);
+         });  
+  }
   }
   componentWillReceiveProps(nextProps) {
     this.setState({id: nextProps.subjectId})
@@ -719,6 +745,7 @@ const mapDispatchToProps = (dispatch) => {
     onAddCDRData: addCDRData,
     onSelectCDRItem: selectedCDRItem,
     onChangeEditState: changeEditState,
+    onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
     updateCdrmdhd: cdrmdhd,
     updateIsLoad: isLoad,

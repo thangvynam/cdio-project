@@ -21,6 +21,7 @@ class Home extends Component {
             colorTheme: false,
             subjectList: [],
             cdr_cdio: [],
+            isLoadEditMatrix: "false"
         }
     }
 
@@ -79,10 +80,11 @@ class Home extends Component {
       }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({subjectList: nextProps.subjectList})
         if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+            console.log("1")
+            this.props.updateIsLoadEditMatrix("true");
+            axios.get('/get-reality-matrix');
             axios.get("/get-standard-matrix").then((res) => {
-                this.setState({tempMatrix: res.data});
                 let data = [];
                 for(let i = 0;i < res.data.length;i++) {
                     let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -92,7 +94,7 @@ class Home extends Component {
                             data[index][cdr_cdio] = res.data[i].muc_do;
                         }
                     }
-                    else {
+                    else {  
                         let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
                         let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
                         if(subjectName !== "" && cdr_cdio !== "") {
@@ -110,7 +112,7 @@ class Home extends Component {
                 }
                 this.props.updateEditMatrix(data);
               })
-              this.props.updateIsLoadEditMatrix("true");
+              
         }
       }
 
@@ -118,8 +120,8 @@ class Home extends Component {
         var self = this;
         let monhoc = self.props.match.params.monhoc;
         axios.get('/collect-subjectlist')
-     .then(function (response) {
-       self.props.updateSubjectList(response.data)
+     .then( (response) => {
+       self.props.updateSubjectList(response.data);
      })
     .catch(function (error) {
        console.log(error);
@@ -130,7 +132,7 @@ class Home extends Component {
         self.props.updateSubjectId(monhoc) 
     }
     axios.get("/get-cdr-cdio").then((res) => {
-        this.setState({cdr_cdio: res.data})
+        self.setState({cdr_cdio: res.data})
       })
 }
     render() {

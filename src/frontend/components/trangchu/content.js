@@ -357,7 +357,7 @@ const mapDispatchToProps = (dispatch) => {
     updateSubjectList: subjectList,
     updateSubjectId: subjectId,
     updateIsLoad: isLoad,
-    resetTab:resetTab
+    resetTab:resetTab,
     updateIsLoadEditMatrix: isLoadEditMatrix
   }, dispatch);
 

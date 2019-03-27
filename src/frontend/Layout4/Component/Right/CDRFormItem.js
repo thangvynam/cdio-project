@@ -484,7 +484,7 @@ class CDRFormItem extends Component {
   componentWillReceiveProps(nextProps) {
     this.setState({id: nextProps.subjectId})
     if(this.state.isLoaded === false && this.state.id !== null && this.state.id !== undefined && this.state.id !== ""){
-      this.setState({isLoaded: true})
+      this.setState({isLoaded: true});
       var self = this;
       if(this.state.id !== "" && this.state.id !== undefined) {
         axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.state.id}})

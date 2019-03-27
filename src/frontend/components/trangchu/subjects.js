@@ -80,10 +80,10 @@ class Home extends Component {
       }
 
     componentWillReceiveProps(nextProps) {
-        console.log(this.state.subjectList.length);
-        if(this.props.isLoadEditMatrix === "false" && this.state.subjectList.length > 0) {
+        if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
             console.log("1")
             this.props.updateIsLoadEditMatrix("true");
+            axios.get('/get-reality-matrix');
             axios.get("/get-standard-matrix").then((res) => {
                 let data = [];
                 for(let i = 0;i < res.data.length;i++) {
@@ -95,7 +95,7 @@ class Home extends Component {
                         }
                     }
                     else {  
-                        let subjectName = this.getSubjectName(this.state.subjectList, res.data[i].thong_tin_chung_id);
+                        let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
                         let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
                         if(subjectName !== "" && cdr_cdio !== "") {
                             data.push({
@@ -111,20 +111,16 @@ class Home extends Component {
                     }
                 }
                 this.props.updateEditMatrix(data);
-                console.log(data)
               })
               
         }
       }
 
     componentDidMount() {
-        console.log("did sub");
         var self = this;
         let monhoc = self.props.match.params.monhoc;
         axios.get('/collect-subjectlist')
      .then( (response) => {
-        console.log("up sub");
-        self.setState({subjectList: response.data});
        self.props.updateSubjectList(response.data);
      })
     .catch(function (error) {

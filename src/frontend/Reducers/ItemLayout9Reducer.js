@@ -3,15 +3,14 @@ import {
   DELETE_ITEM_RULE,
   UPDATE_RULES,
   CHANGE_TEMP_RULES,
-  CHANGE_ISLOADED_RULES
+  CHANGE_ISLOADED_RULES,
+  RESET_TAB
 } from "../Constant/ActionType";
-import axios from "axios";
 
 const initialState = {
   previewInfo: [
     {
-      content:
-        "Sinh viên cần tuân thủ nghiêm túc các nội quy và quy định của Khoa và Trường."
+      content:""
     },
   ],
   tempInfo:{
@@ -51,6 +50,15 @@ const itemLayout9Reducer = (state = initialState, action) => {
           isLoaded:action.data
         }
       }
+        case RESET_TAB:{
+          return{
+            ...state,
+            isLoaded:false,
+            tempInfo:initialState.tempInfo,
+          }
+          
+        }
+      
 
     default:
       return state;

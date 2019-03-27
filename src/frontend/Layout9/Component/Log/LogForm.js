@@ -2,11 +2,16 @@ import React, { Component } from "react";
 import "./1.css"
 import { Comment, Tooltip, List, Avatar } from 'antd';
 import moment from 'moment';
+import { connect } from 'react-redux';
+import axios from 'axios';
+import { IS_LOAD_LOG } from "../../../Constant/ActionType";
+import {convertTime} from "../../../utils/Time"
 
-const ExampleComment = ({ children, content }) => (
+const ExampleComment = ({ children, content, timestamp, nguoi_gui }) => (
     <Comment 
         actions={[<span>Reply to</span>]}
-        author={<a>{"phu itto"}</a>}
+        author={<a>{nguoi_gui}</a>}
+        datetime={timestamp ? <b style={{color: "red"}}>{convertTime(timestamp)}</b>: ""}
         avatar={(
             <Avatar
                 src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -40,36 +45,57 @@ const comment = [
         log_id : 1,
         content : "comment1",
     },
-    {
-        key:2,
-        id : 2,
-        log_id:2,
-        content : "comment2",
-    },
-    {
-        key:3,
-        id: 3,
-        log_id: 2,
-        content : "comment3"
-    },
-    {
-        key:4,
-        id:4,
-        log_id:1,
-        content: "comment4"
-    }
 ]
 
 class LogForm extends Component {
+
+    constructor (props) {
+        super(props)
+        this.state = {
+            logData: []
+        }
+    }
+
+    async getData() {
+        let data = {
+            subjectid: this.props.subjectid,
+            // contentTab: this.props.logReducer.contentTab
+            contentTab: 'mo-ta-mon-hoc'
+        }
+        return axios.post(`/get-log`, {data}).then(res => {
+            return res.data
+        })
+    }
+
+    // shouldComponentUpdate(nextState, nextProps) {
+    //     if(this.state.logData === [] || this.state.logData === undefined || this.state.logData === null) {
+    //         return true;
+    //     }
+    //     return false
+    // }
+
+    async componentDidMount() {
+        if (!this.props.logReducer.isLoaded) {
+            let data = await this.getData();
+            console.log(data);
+
+            this.setState({logData: data})        
+            this.props.setFlag(true);   
+        }
+    }
+
     render() {
+        console.log(this.state.logData);
         
-        let LogComment = log.map((itemparent, ich) => {
+        let LogComment = this.state.logData.map((itemparent, ich) => {
             let con = comment.map((itemchilren, ic) => {
                 if(itemchilren.log_id === itemparent.id){
                     return  <ExampleComment content={itemchilren.content}/>;
                 }else return;
                 }) 
-                    return <ExampleComment children={con} content={itemparent.logContent}/>
+                    return <ExampleComment children={con} 
+                        content={itemparent.noi_dung} timestamp={itemparent.thoi_gian}
+                        nguoi_gui={itemparent.nguoi_gui}/>
                 })
         return (
             <div className="container1">
@@ -82,4 +108,18 @@ class LogForm extends Component {
     }
 }
 
-export default LogForm;
+const mapStateToProps = (state, ownProps) => {
+  return {
+    subjectid: state.subjectid,
+    logReducer: state.logReducer
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    setFlag: (idLoaded) => {
+        dispatch({ type: IS_LOAD_LOG, idLoaded });         
+      },
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(LogForm);

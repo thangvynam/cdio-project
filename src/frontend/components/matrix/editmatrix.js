@@ -122,14 +122,6 @@ class EditMatrix extends Component {
 
       
       
-      componentDidMount() {
-          axios.get("/get-cdr-cdio").then((res) => {
-            this.setState({cdr_cdio: res.data})
-          });
-          axios.get("/get-standard-matrix").then((res) => {
-            this.setState({tempMatrix: res.data});
-        });
-      }
 
       getIndex = (matrix, key) => {
           for(let i= 0;i < matrix.length;i++) {
@@ -268,38 +260,81 @@ class EditMatrix extends Component {
         return "";
       }
 
-      componentWillReceiveProps(nextProps) {
-       if(nextProps.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
-        axios.get("/get-standard-matrix").then((res) => {
-            this.setState({tempMatrix: res.data});
-            let data = [];
-            for(let i = 0;i < res.data.length;i++) {
-                let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                if(index !== -1) {
-                    let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                    if(cdr_cdio !== "") {
-                        data[index][cdr_cdio] = res.data[i].muc_do;
-                    }
-                }
-                else {
-                    let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-                    let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                    if(subjectName !== "" && cdr_cdio !== "") {
-                        data.push({
-                            key: res.data[i].thong_tin_chung_id,
-                            hocky: 1,
-                            hocphan: subjectName,
-                            gvtruongnhom: 'NULL'
-                        })
+      
+      componentDidMount() {
+          
+        axios.get("/get-cdr-cdio").then((res) => {
+          this.setState({cdr_cdio: res.data})
+        });
+        // if(this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+        //     console.log("did");
+        //     this.props.updateIsLoadEditMatrix("true");
+        //  axios.get("/get-standard-matrix").then((res) => {
+        //      this.setState({tempMatrix: res.data});
+        //      let data = [];
+        //      for(let i = 0;i < res.data.length;i++) {
+        //          let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+        //          if(index !== -1) {
+        //              let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+        //              if(cdr_cdio !== "") {
+        //                  data[index][cdr_cdio] = res.data[i].muc_do;
+        //              }
+        //          }
+        //          else {
+        //              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+        //              let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+        //              if(subjectName !== "" && cdr_cdio !== "") {
+        //                  data.push({
+        //                      key: res.data[i].thong_tin_chung_id,
+        //                      hocky: 1,
+        //                      hocphan: subjectName,
+        //                      gvtruongnhom: 'NULL'
+        //                  })
+ 
+        //                  data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+        //              }
+                     
+        //          }
+        //      }
+        //      this.props.updateEditMatrix(data);
+        //    })
+        // }
+    }
 
-                        data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                    }
+      componentWillReceiveProps(nextProps) {
+    //       console.log("rec")
+    //    if(nextProps.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+    //        this.props.updateIsLoadEditMatrix("true");
+    //     axios.get("/get-standard-matrix").then((res) => {
+    //         this.setState({tempMatrix: res.data});
+    //         let data = [];
+    //         for(let i = 0;i < res.data.length;i++) {
+    //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+    //             if(index !== -1) {
+    //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+    //                 if(cdr_cdio !== "") {
+    //                     data[index][cdr_cdio] = res.data[i].muc_do;
+    //                 }
+    //             }
+    //             else {
+    //                 let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+    //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+    //                 if(subjectName !== "" && cdr_cdio !== "") {
+    //                     data.push({
+    //                         key: res.data[i].thong_tin_chung_id,
+    //                         hocky: 1,
+    //                         hocphan: subjectName,
+    //                         gvtruongnhom: 'NULL'
+    //                     })
+
+    //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+    //                 }
                     
-                }
-            }
-            this.props.updateEditMatrix(data);
-          })
-       }
+    //             }
+    //         }
+    //         this.props.updateEditMatrix(data);
+    //       })
+    //    }
     }
 
     render() {
@@ -406,9 +441,7 @@ class EditMatrix extends Component {
         return col;
         
         });
-        if(this.props.editMatrix.length > 0) {
-            console.log(this.props.editMatrix)
-        }
+
         return (
             <React.Fragment>
                 <div style={{margin: "10px"}}><Button onClick={this.saveAll}>Lưu lại</Button></div>
@@ -430,6 +463,7 @@ const mapStateToProps = (state) => {
         editMatrix: state.editmatrix,
         editMatrixEditState: state.editmatrixeditstate,
         subjectList: state.subjectlist,
+        isLoadEditMatrix: state.isloadeditmatrix
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -437,6 +471,7 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     updateEditMatrix: editMatrix,
     updateEditMatrixEditState: editMatrixEditState,
+    updateIsLoadEditMatrix: isLoadEditMatrix
   }, dispatch);
 
 }

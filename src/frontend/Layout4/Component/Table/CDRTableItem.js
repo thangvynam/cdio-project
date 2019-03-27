@@ -353,12 +353,6 @@ class CDRTableItem extends Component {
   }
 
   componentDidMount() {
-    this.props.onChangeCDRData({
-      cdr: "",
-      level_verb: [],
-      description: "",
-      levels: []
-    });
     var self = this;
     axios.get('/collect-cdrmdhd-4')
     .then(function (response) {

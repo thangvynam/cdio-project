@@ -4,8 +4,8 @@ import { Comment, Tooltip, List, Avatar } from 'antd';
 import moment from 'moment';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import { IS_LOAD_LOG } from "../../../Constant/ActionType";
-import {convertTime} from "../../../utils/Time"
+import { IS_LOAD_LOG } from "../Constant/ActionType"
+import {convertTime} from "../utils/Time"
 
 const ExampleComment = ({ children, content, timestamp, nguoi_gui }) => (
     <Comment 
@@ -52,41 +52,39 @@ class LogForm extends Component {
     constructor (props) {
         super(props)
         this.state = {
-            logData: []
+            logData: [],
+            contentTab: ""
         }
     }
 
-    async getData() {
+    async componentWillReceiveProps(nextProps) {
+        // console.log(nextProps);
+        
+        this.setState({contentTab: nextProps.logReducer.contentTab})   
+        let data = await this.getData(nextProps.logReducer.contentTab);
+        this.setState({logData: data})       
+    }
+
+    async getData(contentTab) {        
         let data = {
             subjectid: this.props.subjectid,
-            // contentTab: this.props.logReducer.contentTab
-            contentTab: 'mo-ta-mon-hoc'
-        }
+            contentTab: contentTab
+        }              
         return axios.post(`/get-log`, {data}).then(res => {
             return res.data
         })
     }
 
-    // shouldComponentUpdate(nextState, nextProps) {
-    //     if(this.state.logData === [] || this.state.logData === undefined || this.state.logData === null) {
-    //         return true;
-    //     }
-    //     return false
+    // async componentDidMount() {
+              
+    //     // this.props.setFlag(true);   
+        
     // }
 
-    async componentDidMount() {
-        if (!this.props.logReducer.isLoaded) {
-            let data = await this.getData();
-            console.log(data);
-
-            this.setState({logData: data})        
-            this.props.setFlag(true);   
-        }
-    }
-
     render() {
-        console.log(this.state.logData);
-        
+        this.state.logData.sort((a,b) => {
+            return b.thoi_gian - a.thoi_gian
+        })        
         let LogComment = this.state.logData.map((itemparent, ich) => {
             let con = comment.map((itemchilren, ic) => {
                 if(itemchilren.log_id === itemparent.id){
@@ -117,9 +115,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    setFlag: (idLoaded) => {
-        dispatch({ type: IS_LOAD_LOG, idLoaded });         
-      },
+    // setFlag: (idLoaded) => {
+    //     dispatch({ type: IS_LOAD_LOG, idLoaded });         
+    //   },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LogForm);

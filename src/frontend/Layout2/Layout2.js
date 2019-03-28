@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import FormMoTa from './Component/Main/FormMoTa';
 import { Tooltip, Button } from 'antd';
 import TableItem from './Component/Table/TableItem';
-import LogForm from '../Layout9/Component/Log/LogForm';
+import LogForm from '../Log/LogForm';
 
 class Layout2 extends Component {
     render() {

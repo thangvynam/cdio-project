@@ -8,7 +8,7 @@ const itemLayout2InitialState = {
 
 const logReducer = (state = itemLayout2InitialState, action) => {
     switch (action.type) {
-        case IS_LOAD_LOG: {
+        case IS_LOAD_LOG: {            
             return {
                 ...state,
                 isLoaded: action.idLoaded

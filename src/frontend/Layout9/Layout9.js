@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import MainForm from './Component/Main/MainForm';
 import { Element } from "react-scroll";
 import TableItem from "./Component/Table/TableItem";
-import LogForm from './Component/Log/LogForm';
+import LogForm from '../Log/LogForm';
 
 class Layout9 extends Component {
   render() {

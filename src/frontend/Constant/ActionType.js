@@ -41,11 +41,15 @@ export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 
+//layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
 export const CHANGE_TEMP_KHGDTH = 'CHANGE_TEMP_KHGDTH';
+export const CHANGE_MAP_KHGDTH = 'CHANGE_MAP_KHGDTH';
 
 
+
+//layout 9
 export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
 export const DELETE_ITEM_RULE = 'DELETE_ITEM_RULE';
 export const UPDATE_RULES = 'UPDATE_RULES';
@@ -217,7 +221,12 @@ export function changeTempKHGDTH(newTemp){
         data: newTemp,
     }
 }
-
+export function changeMapKHGDTH(newMap){
+    return{
+        type: CHANGE_MAP_KHGDTH,
+        data: newMap,
+    }
+}
 
 export function addItemRule(newItem){
     return{

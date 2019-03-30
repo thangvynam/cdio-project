@@ -431,17 +431,37 @@ router.post('/add-data-6', function(req, res) {
   })   
 })
 
-/* get teaching arts for layout 5+6*/ 
-router.get('/get-teachingarts', function(req, res) {
+/* get teaching acts for layout 5+6*/ 
+router.get('/get-teachingacts-6', function(req, res) {
   
-  Model6.getTeachingArts(function(err, result) {
+  Model6.getTeachingActs(function(err, result) {
     if (err) {
       res.end("0");
     }
     console.log("done");
     res.end(JSON.stringify(result));
   })   
+});
+
+router.get('/get-eval-acts-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.getEvalActs(idSubject,function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
 })
+router.get('/get-standard-output-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.getStandardOutput(idSubject,function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
+})
+
 
 router.get('/get-reality-matrix', function(req, res) {
   

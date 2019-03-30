@@ -69,7 +69,7 @@ selectCDR = idTTC => {
 
             if (index === listCdrCDIO.length - 1) return resolve(arrITU);
           },
-          err => {
+          err => { 
             console.log("err:", err);
             return reject(err);
           }
@@ -175,7 +175,8 @@ insertStandardMatrix = (resultRes)=>{
 
 MatrixModel.getStandardMatrix = ()=>{
   return new Promise((resolve,reject)=>{
-    sql.query(`SELECT * FROM matrix`, (err, matrix) => {
+    sql.query(`SELECT mt.id,mt.muc_do,mt.thong_tin_chung_id,mt.chuan_dau_ra_cdio_id FROM matrix mt,thong_tin_chung ttc
+    WHERE mt.thong_tin_chung_id = ttc.id AND ttc.del_flag = 0`, (err, matrix) => {
         if (err) {
           console.log("error:", err);
            return reject(err);

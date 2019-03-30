@@ -225,23 +225,6 @@ class TableItem extends Component {
     
   }
 
-  // componentWillMount() {
-  //   console.log("subjectid: ", this.props.subjectId);
-  //   if (!this.props.itemRule.isLoaded) {
-  //     axios.get(`/get-data-9/${this.props.subjectId}`).then(response => {
-  //       const data = response.data;
-  //       let array = [];
-  //       data.forEach((item, index) => {
-  //         let temp = {
-  //           content: item.noi_dung
-  //         };
-  //         array.push(temp);
-  //       });
-  //       this.props.onUpdateRules(array);
-  //       this.props.onChangeIsLoaded(true);
-  //     });
-  //   }
-  // }
   componentDidMount() {
     if(!this.props.itemRule.isLoaded && this.props.subjectId !== null 
       && this.props.subjectId !== undefined && this.props.subjectId!== "") {

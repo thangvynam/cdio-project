@@ -12,137 +12,60 @@ import {
 import { Link } from "react-scroll";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
-import { addItemKHGDTH, changeTempKHGDTH } from "../../../Constant/ActionType";
+import { addItemKHGDTH, changeTempKHGDTH, changeMapKHGDTH } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 
 
 const { Option } = Select;
-const standard_item = [
-  {
-    value: "G1",
-    label: "G1",
-    children: [
-      {
-        value: ".1",
-        label: ".1"
-      },
-      {
-        value: ".2",
-        label: ".2"
-      },
-      {
-        value: ".3",
-        label: ".3"
-      }
-    ]
-  },
-  {
-    value: "G2",
-    label: "G2",
-    children: [
-      {
-        value: ".1",
-        label: ".1"
-      },
-      {
-        value: ".2",
-        label: ".2"
-      }
-    ]
-  },
-  {
-    value: "G3",
-    label: "G3",
-    children: [
-      {
-        value: ".1",
-        label: ".1"
-      },
-      {
-        value: ".2",
-        label: ".2"
-      },
-      {
-        value: ".3",
-        label: ".3"
-      },
-      {
-        value: ".4",
-        label: ".4"
-      }
-    ]
-  },
-  {
-    value: "G4",
-    label: "G4",
-    children: [
-      {
-        value: ".1",
-        label: ".1"
-      }
-    ]
-  },
-  {
-    value: "G5",
-    label: "G5",
-    children: [
-      {
-        value: ".1",
-        label: ".1"
-      },
-      {
-        value: ".2",
-        label: ".2"
-      },
-      {
-        value: ".3",
-        label: ".3"
-      },
-      {
-        value: ".4",
-        label: ".4"
-      },
-      {
-        value: ".5",
-        label: ".5"
-      }
-    ]
-  },
-  {
-    value: "G6",
-    label: "G6",
-    children: [
-      {
-        value: ".1",
-        label: ".1"
-      }
-    ]
-  },
-  {
-    value: "G7",
-    label: "G7",
-    children: [
-      {
-        value: ".1",
-        label: ".1"
-      }
-    ]
-  }
-];
+// const standard_item = [
+//   {
+//     value: "G1",
+//     label: "G1",
+//     children: [
+//       {
+//         value: ".1",
+//         label: ".1"
+//       },
+//       {
+//         value: ".2",
+//         label: ".2"
+//       },
+//       {
+//         value: ".3",
+//         label: ".3"
+//       }
+//     ]
+//   },
+//   {
+//     value: "G2",
+//     label: "G2",
+//     children: [
+//       {
+//         value: ".1",
+//         label: ".1"
+//       },
+//       {
+//         value: ".2",
+//         label: ".2"
+//       }
+//     ]
+//   }
+// ];
 
-const evalActs = ["BTVN#1", "BTTL#1", "DAMH#1"];
+//const evalActs = ["BTVN#1", "BTTL#1", "DAMH#1"];
 
 class ItemMenu extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      // titleName: "",
-      teachingActs: new Map(),
-      // standardOutput: [],
-      // evalActs: [],
-      isRedirectTab7: false
+      //teachingActs: new Map(),
+      //evalActs: new Map(),
+     // standardOutput: new Map(),
+      isRedirectTab7: false,
+      standard_item: [],
+
     };
 
     this.isSubmit = false;
@@ -150,37 +73,86 @@ class ItemMenu extends Component {
 
   componentWillMount(){ 
 
-    console.log("aaaaa");
-
-    this.onGetTeachingActs();
+    this.onGetItemMenu();
 
   }
 
 
-  onGetTeachingActs = ()=>{
-    axios.get("/get-teachingarts").then(response=>{
+  onGetItemMenu = ()=>{
+
+    let mapId = {
+      teachingActs: new Map(),
+      standardOutput: new Map(),
+      evalActs: new Map(),
+    }
+
+    axios.get("/get-teachingacts-6").then(response=>{
       const data= response.data;
       let map = new Map();
       data.forEach((item,index)=>{
         map.set(item.hoat_dong,item.id);
       })
 
-      this.setState({teachingActs:map});
+      //this.setState({teachingActs:map});
+      mapId.teachingActs = map;
+
+    });
+
+    axios.get("/get-eval-acts-6/1").then(response=>{
+      const data= response.data;
+      let map = new Map();
+      data.forEach((item,index)=>{
+        map.set(item.ma,item.id);
+      })
+
+      //this.setState({evalActs:map});
+      mapId.evalActs = map;
+    });
+
+    axios.get("/get-standard-output-6/1").then(response=>{
+      const data= response.data;
+      let array = [];
+      let map = new Map();
+      data.forEach((item,index)=>{
+        let temp = {
+          value: item.muc_tieu,
+          label: item.muc_tieu,
+          children: [],
+        }
+        item.cdr.forEach((itemCdr,_)=>{
+          let tempCdr = {
+            value: itemCdr.chuan_dau_ra,
+            label: itemCdr.chuan_dau_ra
+          }
+          temp.children.push(tempCdr);
+          map.set(itemCdr.chuan_dau_ra,itemCdr.id);
+        })
+        array.push(temp);
+      })
+
+     // this.setState({standard_item:array,standardOutput:map});
+     mapId.standardOutput = map;
+     this.setState({standard_item:array});
+    });
 
 
-    })
+    
+    this.props.onChangeMapKHGDTH(mapId);
+
   }
 
 
 
 
-  onChangeStandar = value => {
+
+
+  onChangeStandar = (value) => {
     if (value.length === 0) return;
 
     let tempInfo = this.props.itemKHGDTH.tempInfo;
 
     var newArray = tempInfo.standardOutput.slice();
-    let temp = value[0] + value[1];
+    let temp = value[1];
     let flag = true;
 
     for (let i = 0; i < newArray.length; i++) {
@@ -262,23 +234,23 @@ class ItemMenu extends Component {
   }
 
 
-  renderBackButton() {
-    if (this.props.step !== 0) {
-      return (
-        <Link
-          activeClass="active"
-          className="test1"
-          to="test1"
-          spy={true}
-          smooth={true}
-          duration={500}
-        >
-          <Button type="danger">Finish</Button>
-        </Link>
-      );
-    }
-    return null;
-  }
+  // renderBackButton() {
+  //   if (this.props.step !== 0) {
+  //     return (
+  //       <Link
+  //         activeClass="active"
+  //         className="test1"
+  //         to="test1"
+  //         spy={true}
+  //         smooth={true}
+  //         duration={500}
+  //       >
+  //         <Button type="danger">Finish</Button>
+  //       </Link>
+  //     );
+  //   }
+  //   return null;
+  // }
 
   moveLayout7 = () => {
     this.setState({ isRedirectTab7: true });
@@ -294,17 +266,20 @@ class ItemMenu extends Component {
       this.isSubmit = false;
       return null;
     }
-    if (label.length > 0) return label[0] + label[1];
+    if (label.length > 0) return label[label.length -1];
   };
 
   render() {
     const { getFieldDecorator } = this.props.form;
 
     var teachingActs = [];
-    const aa = this.state.teachingActs;
+    var evalActs = [];
 
-    for(const arts of aa.keys()){
-      teachingActs.push(arts);
+    for(const acts of this.props.itemKHGDTH.mapIdForValue.teachingActs.keys()){
+      teachingActs.push(acts);
+    }
+    for(const acts of this.props.itemKHGDTH.mapIdForValue.evalActs.keys()){
+      evalActs.push(acts);
     }
 
 
@@ -386,7 +361,7 @@ class ItemMenu extends Component {
               }
             >
               <Cascader
-                options={standard_item}
+                options={this.state.standard_item}
                 onChange={this.onChangeStandar}
                 placeholder="Chọn chuẩn đầu ra"
                 displayRender={this.displayRender}
@@ -447,7 +422,7 @@ class ItemMenu extends Component {
 
             <Form.Item {...tailFormItemLayout}>
               <div>
-                {this.renderBackButton()}
+                {/* {this.renderBackButton()} */}
                 <Button
                   type="primary"
                   onClick={() => {
@@ -478,7 +453,8 @@ const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
       onAddItemKHGDTH: addItemKHGDTH,
-      onChangeTempKHGDTH: changeTempKHGDTH
+      onChangeTempKHGDTH: changeTempKHGDTH,
+      onChangeMapKHGDTH:changeMapKHGDTH,
     },
     dispatch
   );

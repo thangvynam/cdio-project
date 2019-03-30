@@ -1,4 +1,4 @@
-import { ADD_ITEM_KHGDTH, UPDATE_KHGDTH, CHANGE_TEMP_KHGDTH } from '../Constant/ActionType';
+import { ADD_ITEM_KHGDTH, UPDATE_KHGDTH, CHANGE_TEMP_KHGDTH, CHANGE_MAP_KHGDTH, MAP_TEACHINGARTS } from '../Constant/ActionType';
 
 const initialState = {
     previewInfo: [
@@ -7,21 +7,21 @@ const initialState = {
             titleName : "Giới thiệu môn học và môi trường làm việc",
             teachingActs : ["Thuyết giảng", "Demo"],
             standardOutput : ["G1.2","G2.2"],
-            evalActs : ["BTCN"],
+            evalActs : ["BTTL#1"],
         },
         {
             key: 2,
             titleName : "Quy trình phần mềm",
             teachingActs : ["Thảo luận và trả lời thắc mắc trên diễn đàn môn học"],
             standardOutput : ["G1.2","G2.2"],
-            evalActs : ["BTCN"],
+            evalActs : ["BTVN#1"],
         },
         {
             key: 3,
             titleName : "Yêu cầu phần mềm",
             teachingActs : ["Thảo luận và trả lời thắc mắc trên diễn đàn môn học"],
             standardOutput : ["G1.3","G2.1"],
-            evalActs : ["BTCN"],
+            evalActs : ["DAMH#1"],
         }
     ],
     tempInfo :{
@@ -29,6 +29,11 @@ const initialState = {
         teachingActs : [],
         standardOutput : [],
         evalActs : [],
+    },
+    mapIdForValue:{
+        teachingActs: new Map(),
+        standardOutput:new Map(),
+        evalActs: new Map(),
     }
 }
 const itemLayout6Reducer = (state = initialState, action) => {
@@ -48,6 +53,13 @@ const itemLayout6Reducer = (state = initialState, action) => {
                     ...state,
                     tempInfo:action.data
                 }
+            }
+            case CHANGE_MAP_KHGDTH:{
+               return{
+                   ...state,
+                   mapIdForValue:action.data
+               }
+
             }
         default:
             return state

@@ -33,6 +33,7 @@ export const MENU_ITEM = 'MENU_ITEM';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
 export const SUBJECT_MASO = 'SUBJECT_MASO';
+export const CDRMDHD_DB = 'CDRMDHD_DB';
 export const CDRMDHD = 'CDRMDHD';
 export const MTMH = 'MTMH';
 export const ISLOAD = 'ISLOAD';
@@ -118,6 +119,13 @@ export function selectedVerb(newVerb) {
     return {
         type: SELECTED_VERB,
         verb: newVerb
+    };
+}
+
+export function cdrmdhddb(newCdrmdhddb) {
+    return {
+        type: CDRMDHD_DB,
+        cdrmdhddb: newCdrmdhddb
     };
 }
 

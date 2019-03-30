@@ -350,6 +350,29 @@ router.post('/collect-mtmh', function(req, res) {
   })   
 })
 
+router.post('/collect-mtmh-has-cdrcdio', function(req, res) {
+  let data = req.body.data
+  
+  Model4.collectmtmhhascdrcdio(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
+router.post('/collect-mucdo-mtmh-has-cdrcdio', function(req, res) {
+  let data = req.body.data
+  Model4.collectmucdomtmhhascdrcdio(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
   Model5.add(data, function(err) {

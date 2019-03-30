@@ -3,7 +3,7 @@ var mysql = require('mysql')
 var connection = mysql.createConnection({
   host     : 'localhost',
   user     : 'root',
-  password : 'mug3nnsx',
+  password : 'rootroot',
   database : 'syllabusdb'
 });
 connection.connect();

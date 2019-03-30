@@ -1,5 +1,5 @@
 import { ADD_CDRDATA, CHANGE_CDRDATA, CHANGE_EDITSTATE, 
-    SELECTED_CDRITEM, SELECTED_VERB, CDRMDHD, MTMH, ISLOAD, SAVE_LOG } from '../Constant/ActionType';
+    SELECTED_CDRITEM, SELECTED_VERB, CDRMDHD, MTMH, ISLOAD, SAVE_LOG, CDRMDHD_DB } from '../Constant/ActionType';
 
 const addCDRDataState = {
     previewInfo: [],  
@@ -91,6 +91,18 @@ export function selectedVerbReducer(state = selectedVerbState, action) {
     switch(action.type) {
         case SELECTED_VERB:
         return action.verb;
+        default: 
+        return state;
+    }
+}
+
+const cdrmdhdDBState = [];
+
+export function cdrmdhdDBReducer(state = cdrmdhdDBState, action) {
+
+    switch(action.type) {
+        case CDRMDHD_DB:
+        return action.cdrmdhddb;
         default: 
         return state;
     }

@@ -87,8 +87,9 @@ selectITU = (subject_id, cdrCDIO_id) => {
     mapUIT.set("U","false");
     let query = `SELECT cdrmh.muc_do FROM chuan_dau_ra_mon_hoc cdrmh,
         muc_tieu_mon_hoc mt, mtmh_has_cdrcdio has
-        WHERE cdrmh.muc_tieu_mon_hoc_id = mt.id AND mt.thong_tin_chung_id = ${subject_id} AND mt.del_flag = 0
-        AND has.chuan_dau_ra_cdio_id = ${cdrCDIO_id} AND mt.id = has.muc_tieu_mon_hoc_id AND cdrmh.del_flag = 0`;
+        WHERE cdrmh.muc_tieu_mon_hoc_id = mt.id AND mt.thong_tin_chung_id = ${subject_id} 
+        AND has.chuan_dau_ra_cdio_id = ${cdrCDIO_id} AND mt.id = has.muc_tieu_mon_hoc_id AND cdrmh.del_flag = 0 
+        AND mt.del_flag = 0`;
 
     sql.query(query, (err, listITU) => {
       if (err) {

@@ -517,7 +517,7 @@ class CDRTableItem extends Component {
           }
 
           let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
-          console.log(notiArr);
+
           let notifications = [];
           for(let i = 0;i < notiArr.length;i++) {
             if(notiArr[i].state === "add") {

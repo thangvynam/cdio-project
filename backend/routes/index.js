@@ -148,6 +148,8 @@ router.post('/exportfile', function(req, res, next) {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       let body = await req.body
+      console.log(body.data);
+      
       //header
       let content =await compile('header',null);
       //body
@@ -156,7 +158,9 @@ router.post('/exportfile', function(req, res, next) {
           content += await compile('content',renderContenByNameTab(k,value));
       }
       //footer
+      if (JSON.parse(body.data)['Thông tin chung'] !== undefined) {        
       content += await compile('footer',renderContenByNameTab('Thông tin chung',JSON.parse(JSON.parse(body.data)['Thông tin chung'])));
+      }
       await page.setContent(content);
       await page.emulateMedia('screen');
       await page.pdf({

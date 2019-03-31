@@ -8,7 +8,7 @@ import {
   Modal,
   Form,
   Input,
-  Select
+  Select,notification
 } from "antd";
 import { connect } from "react-redux";
 import { updateKHGDTH } from "../../../Constant/ActionType";
@@ -16,6 +16,8 @@ import { bindActionCreators } from "redux";
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import TextArea from "antd/lib/input/TextArea";
+import axios from "axios";
+
 const { Option } = Select;
 
 const confirm = Modal.confirm;
@@ -475,6 +477,57 @@ class TableItem extends Component {
     });
   };
 
+  onSaveAll = ()=>{
+    const itemKHGDTH = this.props.itemKHGDTH;
+    let body = {};
+    body.thong_tin_chung_id = 1;
+    body.data = [];
+
+    itemKHGDTH.previewInfo.forEach((item,index)=>{
+      let temp = {};
+      temp.week = item.key;
+      temp.titleName = item.titleName;
+      temp.teachingActs = [];
+      temp.standardOutput = [];
+      temp.evalActs = [];
+      item.teachingActs.forEach((act,_)=>{
+        let id = itemKHGDTH.mapIdForValue.teachingActs.get(act);
+        temp.teachingActs.push(id);
+      })
+      item.standardOutput.forEach((stan,_)=>{
+        let id = itemKHGDTH.mapIdForValue.standardOutput.get(stan);
+        temp.standardOutput.push(id);
+      })
+      item.evalActs.forEach((act,_)=>{
+        let id = itemKHGDTH.mapIdForValue.evalActs.get(act);
+        temp.evalActs.push(id);
+      })
+
+
+      body.data.push(temp);
+    })
+
+   // console.log("body: ",body);
+   axios.post("/add-data-6", body)
+   .then(response => {
+     if(response.data === 1){
+      notification["success"]({
+        message: "Cập nhật thành công",
+        duration: 1
+      });
+     }
+     else{
+      notification["error"]({
+        message: "Cập nhật thất bại",
+        duration: 1
+      });
+     }
+   });
+
+  }
+
+
+
   render() {
     var components = {};
     var columns = [];
@@ -528,6 +581,9 @@ class TableItem extends Component {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
+          <Button style={{ float: "right" }} type="primary" onClick={this.onSaveAll}>
+            Lưu thay đổi
+          </Button>
         </div>
         <Table
           components={components}

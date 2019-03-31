@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Button,
    Input, Cascader } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
@@ -23,82 +23,82 @@ const EditableFormRow = Form.create()(EditableRow);
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const levelsOptions = ["I", "T", "U"];
-const level_data = [{
-  value: 'Knowledge',
-  label: 'Knowledge',
-  children: [
-    {
-      value: '1',
-      label: '1',
-    },
-    {
-      value: '2',
-      label: '2',
-    },
-    {
-      value: '3',
-      label: '3',
-    },
-    {
-      value: '4',
-      label: '4',
-    },
-    {
-      value: '5',
-      label: '5',
-    }
-  ],
-}, {
-  value: 'Skill',
-  label: 'Skill',
-  children: [
-    {
-      value: '1',
-      label: '1',
-    },
-    {
-      value: '2',
-      label: '2',
-    },
-    {
-      value: '3',
-      label: '3',
-    },
-    {
-      value: '4',
-      label: '4',
-    },
-    {
-      value: '5',
-      label: '5',
-    }
-    ],
-}, {
-  value: 'Attitude',
-  label: 'Attitude',
-  children: [
-    {
-      value: '1',
-      label: '1',
-    },
-    {
-      value: '2',
-      label: '2',
-    },
-    {
-      value: '3',
-      label: '3',
-    },
-    {
-      value: '4',
-      label: '4',
-    },
-    {
-      value: '5',
-      label: '5',
-    }
-    ],
-}];
+// const level_data = [{
+//   value: 'Knowledge',
+//   label: 'Knowledge',
+//   children: [
+//     {
+//       value: '1',
+//       label: '1',
+//     },
+//     {
+//       value: '2',
+//       label: '2',
+//     },
+//     {
+//       value: '3',
+//       label: '3',
+//     },
+//     {
+//       value: '4',
+//       label: '4',
+//     },
+//     {
+//       value: '5',
+//       label: '5',
+//     }
+//   ],
+// }, {
+//   value: 'Skill',
+//   label: 'Skill',
+//   children: [
+//     {
+//       value: '1',
+//       label: '1',
+//     },
+//     {
+//       value: '2',
+//       label: '2',
+//     },
+//     {
+//       value: '3',
+//       label: '3',
+//     },
+//     {
+//       value: '4',
+//       label: '4',
+//     },
+//     {
+//       value: '5',
+//       label: '5',
+//     }
+//     ],
+// }, {
+//   value: 'Attitude',
+//   label: 'Attitude',
+//   children: [
+//     {
+//       value: '1',
+//       label: '1',
+//     },
+//     {
+//       value: '2',
+//       label: '2',
+//     },
+//     {
+//       value: '3',
+//       label: '3',
+//     },
+//     {
+//       value: '4',
+//       label: '4',
+//     },
+//     {
+//       value: '5',
+//       label: '5',
+//     }
+//     ],
+// }];
 class EditableCell extends Component {
   displayRender = (label) => {
     if(label[1] !== "" && label[1] !== undefined){
@@ -113,7 +113,7 @@ class EditableCell extends Component {
     }
     else if(this.props.inputType === 'level_verb') {
       return <Cascader
-      options={level_data}
+      options={this.props.cdrmdhd_level}
       expandTrigger="hover"
       displayRender={this.displayRender}
       style={{width: "100%"}}
@@ -138,8 +138,10 @@ class EditableCell extends Component {
       inputType,
       record,
       index,
+      cdrmdhd_level,
       ...restProps
     } = this.props;
+
     return (
       <EditableContext.Consumer>
         {(form) => {
@@ -255,7 +257,8 @@ class CDRTableItem extends Component {
     this.state = {
       id: this.props.subjectId,
       visible: false,
-      isLoaded: false
+      isLoaded: false,
+      notifications: []
     };
     this.columns = [{
       title: 'Chuẩn đầu ra',
@@ -352,47 +355,246 @@ class CDRTableItem extends Component {
     }
   }
 
-  componentDidMount() {
-    var self = this;
-    axios.get('/collect-cdrmdhd-4')
-    .then(function (response) {
-      self.props.updateCdrmdhd(response.data)
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+  isExistInArr = (cdr, arr) => {
+    for(let i = 0;i < arr.length;i++) {
+      if(arr[i].cdr === cdr) {
+        return i;
+      }
+    }
+    return -1;
   }
-  componentWillReceiveProps(nextProps) {
-    this.setState({id: nextProps.subjectId})
+  
+  sortLevels = (levels) => {
+    for (let i = 0; i < levels.length - 1; i++) {
+        for (let j = i + 1; j < levels.length; j++) {
+          if (levels[j] < levels[i]) {
+            let temp = levels[j];
+            levels[j] = levels[i];
+            levels[i] = temp;
+          }
+        }
+      }
+      return levels;
+  }
 
-  if(this.props.isLoad === "false" && nextProps.subjectId !== null && nextProps.subjectId !== undefined && nextProps.subjectId !== "") {
-    this.props.updateIsLoad("true");
-    var self = this;
+  isExistInArray = (arr, item) => {
+    for (let i = 0; i < arr.length; i++) {
+        if (arr[i] === item) {
+            return true;
+        }
+    }
+    return false;
+}
 
-      axios.post('/collect-data-4', { data: {thong_tin_chung_id: nextProps.subjectId}})
-      .then(function (response) {
+  createGapNotifications = (desArr, matrixData, editMatrixData) => {
+    
+    desArr = [];
+    for(let i = 0;i < editMatrixData.length;i++) {
+      let matrixIndex = this.isExistInArr(editMatrixData[i].cdr, matrixData);
+      if(matrixIndex !== -1) {
+        let text = matrixData[matrixIndex].muc_do;
+        let textMatrix = editMatrixData[i].muc_do;
+        if (textMatrix !== "") {
+          if (text === "-") {
+              if (text !== textMatrix) {
+                desArr.push({
+                  state: "add",
+                  cdr: matrixData[matrixIndex].cdr,
+                  muc_tieu: matrixData[matrixIndex].muc_tieu,
+                  muc_do: textMatrix
+                })
+              }
+          }
+          else {
+              if (textMatrix === "-") {
+                desArr.push({
+                  state: "delete",
+                  cdr: matrixData[matrixIndex].cdr,
+                  muc_tieu: matrixData[matrixIndex].muc_tieu,
+                  muc_do: text
+                })
+              }
+              else {
+                if(text !== textMatrix) {
+                  let textArr = text.split(",");
+                  let textMatrixArr = textMatrix.split(",");
+                  let muc_do_del_arr = [];
+                  let muc_do_add_arr = [];
+
+                  for(let j = 0;j < textArr.length;j++) {
+                    if(this.isExistInArray(textMatrixArr, textArr[j]) === false) {
+                      muc_do_del_arr.push(textArr[j]);
+                    }
+                  }
+                  if(muc_do_del_arr.length > 0) {
+                      muc_do_del_arr = this.sortLevels(muc_do_del_arr);
+                      desArr.push({
+                        state: "delete",
+                        cdr: matrixData[matrixIndex].cdr,
+                        muc_tieu: matrixData[matrixIndex].muc_tieu,
+                        muc_do: muc_do_del_arr.toString()
+                      });
+                  }
+                  
+
+                  for(let j = 0;j < textMatrixArr.length;j++) {
+                    if(this.isExistInArray(textArr, textMatrixArr[j]) === false) {
+                      muc_do_add_arr.push(textMatrixArr[j]);
+                    }
+                  }
+                  if(muc_do_add_arr.length > 0) {
+                      muc_do_add_arr = this.sortLevels(muc_do_add_arr);
+                      desArr.push({
+                        state: "add",
+                        cdr: matrixData[matrixIndex].cdr,
+                        muc_tieu: matrixData[matrixIndex].muc_tieu,
+                        muc_do: muc_do_add_arr.toString()
+                      })
+                }
+                }
+              }
+          }
+      }
+      }
+      else {
+        if(editMatrixData[i].muc_do !== "-" && editMatrixData[i].muc_do !== "") {
+          desArr.push({
+            state: "add-cdr",
+            cdr: editMatrixData[i].cdr,
+            muc_tieu: "",
+            muc_do: editMatrixData[i].muc_do
+          })
+        }
+      }
+      
+    }
+    return desArr;
+  }
+
+  loadGap = () => {
+
+    axios.post('/collect-mtmh-has-cdrcdio', {data: {thong_tin_chung_id: this.state.id}}).then((res) => {
+        
+      axios.post('/collect-mucdo-mtmh-has-cdrcdio', {data: res.data}).then((response) => {
+          let arr = [];
+          for(let i = 0;i < response.data.length;i++) {
+            let index = this.isExistInArr(response.data[i].cdr, arr);
+            if(index !== -1) {
+              arr[index].muc_do = arr[index].muc_do + "," + response.data[i].muc_do;
+              arr[index].muc_do = this.sortLevels(Array.from(new Set(arr[index].muc_do.split(",")))).toString();
+              if(arr[index].muc_do.split(",").length > 1 && arr[index].muc_do.split(",")[0] === "-") {
+                let muc_do = arr[index].muc_do.split(",");
+                muc_do.splice(0, 1);
+                arr[index].muc_do = muc_do.toString();
+              }
+              arr[index].muc_tieu = arr[index].muc_tieu + "," + response.data[i].muc_tieu;
+              arr[index].muc_tieu = this.sortLevels(arr[index].muc_tieu.split(",")).toString();
+            }
+            else {
+              let muc_do = this.sortLevels(Array.from(new Set(response.data[i].muc_do.split(",")))).toString();
+              let muc_tieu = this.sortLevels(response.data[i].muc_tieu.split(",")).toString();
+              arr.push({
+                cdr: response.data[i].cdr,
+                muc_do: muc_do,
+                muc_tieu: muc_tieu
+              })
+            }
+          }
+          let editMatrixArr = [];
+          for(let i = 0;i < this.props.editMatrix.length;i++) {
+            if(this.props.editMatrix[i].key.toString() === this.state.id.toString()) {
+              for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
+                let key = Object.keys(this.props.editMatrix[i])[j];
+                if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
+                editMatrixArr.push({
+                  cdr: key,
+                  muc_do: this.props.editMatrix[i][key]
+                })
+              }
+              }
+              break;
+            }
+          }
+
+          let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
+
+          let notifications = [];
+          for(let i = 0;i < notiArr.length;i++) {
+            if(notiArr[i].state === "add") {
+            notifications.push(<div key={i}>
+              <span style={{color: "green"}}>{notiArr[i].cdr}. </span>
+              <span style={{color: "green"}}>{`Chọn ${notiArr[i].muc_do}`}</span>
+              <span>{` tại ít nhất một trong các mục tiêu: `}</span>
+              <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
+              </div>);
+            }
+            else if(notiArr[i].state === "delete") {
+              notifications.push(<div key={i}>
+              <span style={{color: "red"}}>{notiArr[i].cdr}. </span>
+              <span style={{color: "red"}}>{`Không chọn ${notiArr[i].muc_do}`}</span>
+              <span>{` tại tất cả các mục tiêu: `}</span>
+              <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
+              </div>
+              );
+            }
+            else {
+              notifications.push(<div key={i}>
+                <span style={{color: "orange"}}>Thêm</span>
+                <span> chuẩn đầu ra </span>
+                <span style={{color: "orange"}}>{notiArr[i].cdr}</span>
+                <span> vào môn học và chọn </span>
+                <span style={{color: "green"}}>{notiArr[i].muc_do}.</span>
+                </div>);
+            }
+          }
+          this.setState({notifications: notifications});
+      })
+  })
+  }
+
+  loadTable = (self, id) => {
+    axios.post('/collect-data-4', { data: {thong_tin_chung_id: id}})
+    .then(function (response) {
     const tableData = {
       previewInfo: []
     };
     for(let i = 0;i < response.data.length;i++) {
-      let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhd, response.data[i].cdrmh_muc_do_hanh_dong_id);
+      let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhddb, response.data[i].cdrmh_muc_do_hanh_dong_id);
       let data = {
-       key: (i + 1).toString(),
-       cdr: response.data[i].chuan_dau_ra,
-       level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
-       description: response.data[i].mo_ta,
-       levels: response.data[i].muc_do.split(","),
+      key: (i + 1).toString(),
+      cdr: response.data[i].chuan_dau_ra,
+      level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
+      description: response.data[i].mo_ta,
+      levels: response.data[i].muc_do.split(","),
       }
       tableData.previewInfo.push(data);
     }
       self.props.onAddCDRData(tableData)
         })
-       .catch(function (error) {
+      .catch(function (error) {
           console.log(error);
-       });  
-}
+      });  
+  }
+  componentDidMount() {
+    var self = this;
+    if(this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+      this.loadGap();
+    }
 
-
+    if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+      this.props.updateIsLoad("true");
+      this.loadTable(self, self.state.id);
+    }
+  }
+  
+  componentWillReceiveProps(nextProps) {
+    this.setState({id: nextProps.subjectId})
+    var self = this;
+    if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+      this.props.updateIsLoad("true");
+      this.loadGap();
+      this.loadTable(self, self.state.id);
+    }
 }
 
   // Delete
@@ -568,31 +770,36 @@ class CDRTableItem extends Component {
   }
 
   getCdrmdhdId = (verb) => {
-    for(let i = 0;i < this.props.cdrmdhd.length;i++) {
-      if(this.props.cdrmdhd[i].muc_do_3 === verb) {
-        return this.props.cdrmdhd[i].id;
+    for(let i = 0;i < this.props.cdrmdhddb.length;i++) {
+      if(this.props.cdrmdhddb[i].muc_do_3 === verb) {
+        return this.props.cdrmdhddb[i].id;
       }
     }
     return -1;
   }
   saveAll = () => {
-    let data = this.props.cdrtable.previewInfo.map((key) => {
+    let data = this.props.cdrtable.previewInfo.map((item) => {
         return {
-          cdr: key.cdr,
-          description: key.description,
-          levels: key.levels,
-          muc_tieu_mon_hoc_id: this.getMtmhId(key.cdr.split(".")[0]),
-          cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(key.level_verb[2]),
+          cdr: item.cdr,
+          description: item.description,
+          levels: item.levels,
+          muc_tieu_mon_hoc_id: this.getMtmhId(item.cdr.split(".")[0]),
+          cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(item.level_verb[2]),
         }
       })
-      console.log(data)
     
     axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}}).then(
       alert("ok")
     );
-    axios.post('/save-log', { data: this.props.logData })
+    axios.post('/save-log', { data: this.props.logData });
+    var self = this;
+    this.loadTable(self, self.state.id);
+    this.loadGap();
+    this.props.updateIsLoad("false");
   }
+
     render() {
+      
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -606,7 +813,24 @@ class CDRTableItem extends Component {
           row:  DragableBodyRow
         },
       }
-
+      let cdrmdhd_level  = this.props.cdrmdhd.map((item, key) => {
+          let child_level_1 = [];
+          for(let i = 0;i < item.children.length;i++) {
+            child_level_1.push({
+              value: item.children[i].value.toString(),
+              label: item.children[i].label.toString()
+            })
+          }
+          return {
+            value: item.value,
+            label: item.label,
+            children: child_level_1
+          }
+        })
+      
+      
+      
+      
       const columns = this.columns.map((col) => {
         if (!col.editable) {
           return col;
@@ -618,6 +842,7 @@ class CDRTableItem extends Component {
             inputType: col.dataIndex === 'cdr' ? 'select' : col.dataIndex === 'levels' ? 'choice' : col.dataIndex === 'level_verb' ? 'level_verb' : 'text',
             dataIndex: col.dataIndex,
             title: col.title,
+            cdrmdhd_level,
             editing: this.isEditing(record),
           }),
         };
@@ -654,8 +879,10 @@ class CDRTableItem extends Component {
         selectedRowKeys,
         onChange: this.onSelectChange,
       };
+
         return (
           <div>
+            {this.state.notifications}
           <div style={{ marginBottom: 16,  marginTop: 16}}>
           <Button
             type="danger"
@@ -707,10 +934,12 @@ const mapStateToProps = (state) => {
         cdreditstate: state.cdreditstate,
         cdrverb: state.cdrverb,
         cdrmdhd: state.cdrmdhd,
+        cdrmdhddb: state.cdrmdhddb,
         mtmh: state.mtmh,
         subjectId: state.subjectid,
         logReducer: state.logReducer,
         isLoad: state.isloadtab4,
+        editMatrix: state.editmatrix,
         logData: state.logLayout4Reducer.logData
     }
 }
@@ -719,8 +948,8 @@ const mapDispatchToProps = (dispatch) => {
     onAddCDRData: addCDRData,
     onSelectCDRItem: selectedCDRItem,
     onChangeEditState: changeEditState,
+    onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
-    updateCdrmdhd: cdrmdhd,
     updateIsLoad: isLoad,
     saveLog: saveLog
   }, dispatch);

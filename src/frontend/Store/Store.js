@@ -7,7 +7,8 @@ import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, change
     cdrmdhdReducer,
     mtmhReducer,
     isLoadReducer,
-    logLayout4Reducer} from '../Reducers/ItemLayout4Reducer';
+    logLayout4Reducer,
+    cdrmdhdDBReducer} from '../Reducers/ItemLayout4Reducer';
 import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Reducer';
 import {itemLayout8Reducer,changeTNDataReducer, loaiTaiNguyenReducer} from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
@@ -37,6 +38,7 @@ const allReducers = redux.combineReducers({
     cdrselecteditem: selecteCDRItemReducer,
     cdreditstate: changeEditStateReducer,
     cdrverb: selectedVerbReducer,
+    cdrmdhddb: cdrmdhdDBReducer,
     cdrmdhd: cdrmdhdReducer,
     isloadtab4: isLoadReducer,
     mtmh: mtmhReducer,

@@ -230,7 +230,7 @@ getUnique(arr, comp) {
    return unique;
 }
 
-async componentDidMount(){
+async componentWillReceiveProps(nextProps){
   let saveData = []
   let standActs = [];
   if (!this.props.itemLayout3Reducer.isLoaded) {   

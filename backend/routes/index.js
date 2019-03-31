@@ -350,6 +350,29 @@ router.post('/collect-mtmh', function(req, res) {
   })   
 })
 
+router.post('/collect-mtmh-has-cdrcdio', function(req, res) {
+  let data = req.body.data
+  
+  Model4.collectmtmhhascdrcdio(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
+router.post('/collect-mucdo-mtmh-has-cdrcdio', function(req, res) {
+  let data = req.body.data
+  Model4.collectmucdomtmhhascdrcdio(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
   Model5.add(data, function(err) {
@@ -383,9 +406,9 @@ router.post('/add-data-9', function(req, res) {
   })   
 })
 /* get data layout 9 */ 
-router.get('/get-data-9', function(req, res) {
-  
-  Model9.get(function(err, result) {
+router.get('/get-data-9/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model9.get(idSubject,function(err, result) {
     if (err) {
       res.end("0");
     }
@@ -408,17 +431,37 @@ router.post('/add-data-6', function(req, res) {
   })   
 })
 
-/* get teaching arts for layout 5+6*/ 
-router.get('/get-teachingarts', function(req, res) {
+/* get teaching acts for layout 5+6*/ 
+router.get('/get-teachingacts-6', function(req, res) {
   
-  Model6.getTeachingArts(function(err, result) {
+  Model6.getTeachingActs(function(err, result) {
     if (err) {
       res.end("0");
     }
     console.log("done");
     res.end(JSON.stringify(result));
   })   
+});
+
+router.get('/get-eval-acts-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.getEvalActs(idSubject,function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
 })
+router.get('/get-standard-output-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.getStandardOutput(idSubject,function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
+})
+
 
 router.get('/collect-data-5', function(req, res) {
   Model5.collectdata(function(err, data) {
@@ -514,6 +557,13 @@ router.post('/save-log', function(req, res) {
   const body = req.body.data
   LogModel.save(body, (result) => {
     res.end("done")
+  })
+})
+
+router.post('/get-log', function(req, res) {
+  const body = req.body.data
+  LogModel.get(body, (result) => {
+    res.send(result)
   })
 })
 

@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix} from '../../Constant/ActionType';
+import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix,resetTab, changeCDRData, selectedVerb} from '../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form } from 'antd';
@@ -69,10 +69,11 @@ class Content extends Component {
     }
     handleDelete = (id) => {
         let type = this.props.content_type;
-
+        
         if (id !== -1) {
             const data = this.props.subjectList;
-            axios.post('/delete-subject', { data: { ma_so: data[id].ma_so } });
+            console.log(data[id].id)
+            axios.post('/delete-subject', { data: { id: data[id].id } });
             data.splice(id, 1);
             this.props.updateSubjectList(data);
             this.props.updateIsLoadEditMatrix("false");
@@ -112,7 +113,15 @@ class Content extends Component {
 
     onClick = (id) => {
         this.props.updateIsLoad("false");
-        this.props.updateSubjectId(id)
+        this.props.updateSubjectId(id);
+        this.props.resetTab();
+        this.props.onChangeCDRData({
+        cdr: "",
+        level_verb: [],
+        description: "",
+        levels: []
+        });
+        this.props.onUpdateVerb({level: "",childLevel: "", verb: ""});
       }
 
       checkSubjectExist = (monhoc) => {
@@ -355,7 +364,10 @@ const mapDispatchToProps = (dispatch) => {
     updateSubjectList: subjectList,
     updateSubjectId: subjectId,
     updateIsLoad: isLoad,
-    updateIsLoadEditMatrix: isLoadEditMatrix
+    resetTab:resetTab,
+    updateIsLoadEditMatrix: isLoadEditMatrix,
+    onChangeCDRData: changeCDRData,
+    onUpdateVerb: selectedVerb,
   }, dispatch);
 
 }

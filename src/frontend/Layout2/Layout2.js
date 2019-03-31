@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import FormMoTa from './Component/Main/FormMoTa';
 import { Tooltip, Button } from 'antd';
 import TableItem from './Component/Table/TableItem';
+import LogForm from '../Log/LogForm';
 
 class Layout2 extends Component {
     render() {
@@ -19,6 +20,11 @@ class Layout2 extends Component {
                             <Button style={{color: "red", margin: "auto", width: "100%"}}>(Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)</Button>
                         </Tooltip>
                         <TableItem />
+                        <br/>
+                        <br/>
+                        <LogForm/>
+                        <br/>
+                        <br/>
                     </div>
                 </div>
             </div>

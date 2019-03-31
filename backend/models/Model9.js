@@ -30,8 +30,8 @@ Model9.add = (body, result) => {
        
 }
 
-Model9.getLoaiTaiNguyen = (result)=>{
-    sql.query(`select * from tnmh_loai_tai_nguyen`, 
+Model9.get = (idSubject,result)=>{
+    sql.query(`select noi_dung from quy_dinh_chung where del_flag = 0 AND thong_tin_chung_id = ${idSubject}`, 
     (err, res) => {
       if (err) {
           console.log("error:", err);

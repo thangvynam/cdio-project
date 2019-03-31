@@ -45,7 +45,7 @@ class Home extends Component {
 
     checkSubjectExist = (subjectlist, monhoc) => {
         for(let i = 0;i < subjectlist.length;i++) {
-            if(subjectlist[i].id === monhoc) {
+            if(subjectlist[i].id.toString() === monhoc.toString()) {
                 return true;
             }
         }
@@ -80,7 +80,8 @@ class Home extends Component {
       }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+        this.setState({subjectList: nextProps.subjectList});
+        if(this.props.isLoadEditMatrix === "false" && this.state.subjectList.length > 0) {
             this.props.updateIsLoadEditMatrix("true");
             axios.get('/get-reality-matrix');
             axios.get("/get-standard-matrix").then((res) => {
@@ -94,7 +95,7 @@ class Home extends Component {
                         }
                     }
                     else {  
-                        let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
+                        let subjectName = this.getSubjectName(this.state.subjectList, res.data[i].thong_tin_chung_id);
                         let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
                         if(subjectName !== "" && cdr_cdio !== "") {
                             data.push({
@@ -212,9 +213,11 @@ class Home extends Component {
             return <Page404/>;
         }
        
-        if(!this.checkSubjectExist(this.props.match.params.type, this.props.match.params.monhoc) && this.props.match.params.monhoc !== "" &&
-        this.props.match.params.monhoc !== undefined) {
-            // return <Page404/>;
+        if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
+             if(!this.checkSubjectExist(this.state.subjectList, this.props.match.params.monhoc)) {
+                return <Page404 />;
+             }
+                
         }
         let GirdLayout;
         if (this.state.collapse) {

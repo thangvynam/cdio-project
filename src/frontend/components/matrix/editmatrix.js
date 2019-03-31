@@ -227,7 +227,6 @@ class EditMatrix extends Component {
                 
             })
           }
-          console.log(data);
           axios.post('/update-standard-matrix', data).then(alert("ok"));
         
       }

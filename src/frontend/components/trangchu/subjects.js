@@ -19,9 +19,8 @@ class Home extends Component {
             theme: 'dark',
             isShow: false,
             colorTheme: false,
-            subjectList: [],
             cdr_cdio: [],
-            isLoadEditMatrix: "false"
+            isLoadSubjectList: "false"
         }
     }
 
@@ -80,8 +79,7 @@ class Home extends Component {
       }
 
     componentWillReceiveProps(nextProps) {
-        this.setState({subjectList: nextProps.subjectList});
-        if(this.props.isLoadEditMatrix === "false" && this.state.subjectList.length > 0) {
+        if(this.props.isLoadEditMatrix === "false" &&  nextProps.subjectList.length > 0) {
             this.props.updateIsLoadEditMatrix("true");
             axios.get('/get-reality-matrix');
             axios.get("/get-standard-matrix").then((res) => {
@@ -95,7 +93,7 @@ class Home extends Component {
                         }
                     }
                     else {  
-                        let subjectName = this.getSubjectName(this.state.subjectList, res.data[i].thong_tin_chung_id);
+                        let subjectName = this.getSubjectName( nextProps.subjectList, res.data[i].thong_tin_chung_id);
                         let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
                         if(subjectName !== "" && cdr_cdio !== "") {
                             data.push({
@@ -139,6 +137,7 @@ class Home extends Component {
         axios.get('/collect-subjectlist')
      .then( (response) => {
        self.props.updateSubjectList(response.data);
+       this.setState({isLoadSubjectList: "true"});
      })
     .catch(function (error) {
        console.log(error);
@@ -197,94 +196,100 @@ class Home extends Component {
     axios.get("/get-cdr-cdio").then((res) => {
         self.setState({cdr_cdio: res.data})
       })
+
 }
     render() {
-        let type = this.props.match.params.type;
-        let isExist = 0;
-        for(let i = 0;i < Object.keys(this.props.menuItem).length;i++) {
-            if(type === Object.keys(this.props.menuItem)[i]) {
-                isExist = 1;
-                break;
+        if(this.state.isLoadSubjectList === "true") {
+            let type = this.props.match.params.type;
+            let isExist = 0;
+            for(let i = 0;i < Object.keys(this.props.menuItem).length;i++) {
+                if(type === Object.keys(this.props.menuItem)[i]) {
+                    isExist = 1;
+                    break;
+                }
             }
-        }
 
-        if(isExist === 0 || (type !== "de-cuong-mon-hoc" && this.props.match.params.monhoc !== "" &&
-        this.props.match.params.monhoc !== undefined)) {
-            return <Page404/>;
-        }
-       
-        if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
-             if(!this.checkSubjectExist(this.state.subjectList, this.props.match.params.monhoc)) {
-                return <Page404 />;
-             }
-                
-        }
-        let GirdLayout;
-        if (this.state.collapse) {
-            GirdLayout = (<Row>
-                <Col span={2} className="col-left col-left-inline">
-                    <MenuLeft className="menu_left"
-                        collapse={this.state.collapse}
-                        theme={this.state.theme}
-                        defaultSelectedKeys={[this.props.match.params.type]}
-                        content_type={this.props.match.params.type}
-                        content_monhoc={this.props.match.params.monhoc}
-                        content_tab={this.props.match.params.tab}
-                    />
-                </Col>
-                <Col span={22} className="col-right">
-                    <Row>
-                        <NavBar
-                            updateCollapse={this.updateCollapse}
-                            isCollapse={this.state.collapse}
+            if(isExist === 0 || (type !== "de-cuong-mon-hoc" && this.props.match.params.monhoc !== "" &&
+            this.props.match.params.monhoc !== undefined)) {
+                return <Page404/>;
+            }
+        
+            if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
+                if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
+                    return <Page404 />;
+                }
+                    
+            }
+            let GirdLayout;
+            if (this.state.collapse) {
+                GirdLayout = (<Row>
+                    <Col span={2} className="col-left col-left-inline">
+                        <MenuLeft className="menu_left"
+                            collapse={this.state.collapse}
                             theme={this.state.theme}
-                            themeCollaps={this.themeCollaps}
-                        />
-                    </Row>
-                    <Row >
-                    <Content content_type={this.props.match.params.type}
+                            defaultSelectedKeys={[this.props.match.params.type]}
+                            content_type={this.props.match.params.type}
                             content_monhoc={this.props.match.params.monhoc}
-                            content_tab={this.props.match.params.tab}/>
-                    </Row>
-                </Col>
-            </Row>);
-        }
-        else {
-            GirdLayout = (<Row>
-                <Col span={5} className="col-left">
-                    <MenuLeft
-                        className="menu_left"
-                        collapse={this.state.collapse}
-                        theme={this.state.theme}
-                        defaultSelectedKeys={[this.props.match.params.type]}
-                        content_type={this.props.match.params.type}
-                        content_monhoc={this.props.match.params.monhoc}
-                        content_tab={this.props.match.params.tab}
-                    />
-                </Col>
-                <Col span={19} className="col-right">
-                    <Row>
-                        <NavBar
-                            updateCollapse={this.updateCollapse}
-                            isCollapse={this.state.collapse}
-                            theme={this.state.theme}
-                            themeCollaps={this.themeCollaps}
-                        />
-                    </Row>
-                    <Row>
-                    <Content content_type = {this.props.match.params.type}
                             content_tab={this.props.match.params.tab}
-                            content_monhoc={this.props.match.params.monhoc}/>
-                    </Row>
-                </Col>
-            </Row>);
-        }
+                        />
+                    </Col>
+                    <Col span={22} className="col-right">
+                        <Row>
+                            <NavBar
+                                updateCollapse={this.updateCollapse}
+                                isCollapse={this.state.collapse}
+                                theme={this.state.theme}
+                                themeCollaps={this.themeCollaps}
+                            />
+                        </Row>
+                        <Row >
+                        <Content content_type={this.props.match.params.type}
+                                content_monhoc={this.props.match.params.monhoc}
+                                content_tab={this.props.match.params.tab}/>
+                        </Row>
+                    </Col>
+                </Row>);
+            }
+            else {
+                GirdLayout = (<Row>
+                    <Col span={5} className="col-left">
+                        <MenuLeft
+                            className="menu_left"
+                            collapse={this.state.collapse}
+                            theme={this.state.theme}
+                            defaultSelectedKeys={[this.props.match.params.type]}
+                            content_type={this.props.match.params.type}
+                            content_monhoc={this.props.match.params.monhoc}
+                            content_tab={this.props.match.params.tab}
+                        />
+                    </Col>
+                    <Col span={19} className="col-right">
+                        <Row>
+                            <NavBar
+                                updateCollapse={this.updateCollapse}
+                                isCollapse={this.state.collapse}
+                                theme={this.state.theme}
+                                themeCollaps={this.themeCollaps}
+                            />
+                        </Row>
+                        <Row>
+                        <Content content_type = {this.props.match.params.type}
+                                content_tab={this.props.match.params.tab}
+                                content_monhoc={this.props.match.params.monhoc}/>
+                        </Row>
+                    </Col>
+                </Row>);
+            }
 
-        return (
-            <React.Fragment>
-                {GirdLayout}
-            </React.Fragment>
-        )
+            return (
+                <React.Fragment>
+                    {GirdLayout}
+                </React.Fragment>
+            )
+    }
+    else {
+        return <div>Loading...</div>
+    }
     }
 }
 

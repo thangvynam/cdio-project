@@ -57,6 +57,8 @@ class LogForm extends Component {
             contentTab: contentTab
         }
         return axios.post(`/get-log`, { data }).then(res => {
+            console.log(res.data);
+
             return res.data
         })
     }
@@ -71,74 +73,77 @@ class LogForm extends Component {
        console.log(this.state.value)
     }
 
-    render() {
-        this.state.logData.sort((a, b) => {
-            return b.thoi_gian - a.thoi_gian
-        })
-        console.log(this.props.logReducer.idLog)
-        let LogComment = this.state.logData.map((itemparent, ich) => {
-            let con = comment.map((itemchilren, ic) => {
-                if (itemchilren.log_id === itemparent.id) {
-                    return <CommentLog content={itemchilren.content} hasReply={false} />;
-                } else return;
-            })
-            if (ich == this.props.logReducer.idLog) {
-                con.push(<div>
-                    <Form.Item>
-                        <TextArea rows={4} onChange={this.handleChange} />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button
-                            htmlType="submit"
-                            onClick={this.submit}
-                            type="primary"
-                        >
-                            Add Comment
-                      </Button>
-                    </Form.Item>
-                </div>
-                );
+    getDataReducer() {
+        let data = this.props.logReducer     
+        switch (this.state.contentTab) {
+            case "thong-tin-chung": {
+                return data.logData1
             }
-            return <CommentLog children={con}
-                content={itemparent.noi_dung} timestamp={itemparent.thoi_gian}
-                nguoi_gui={itemparent.nguoi_gui} id={ich}
-                hasReply={true} />
-        })
+            case "mo-ta-mon-hoc": {
+                return data.logData2
+            }
+            case "muc-tieu-mon-hoc": {
+                return data.logData3
+            }
+            case "chuan-dau-ra": {
+                return data.logData4
+            }
+            case "giang-day-ly-thuyet": {
+                return data.logData5
+            }
+            case "giang-day-thuc-hanh": {
+                return data.logData6
+            }
+            case "danh-gia": {
+                return data.logData7
+            }
+            case "tai-nguyen-mon-hoc": {
+                return data.logData8
+            }
+            case "quy-dinh-chung": {
+                return data.logData9
+            }
+            default: 
+                return null
+        }
+    }
 
-    // getDataReducer() {
-    //     let data = this.props.logReducer
-    //     switch (this.state.contentTab) {
-    //         case "thong-tin-chung": {
-    //             return data.logData1
-    //         }
-    //         case "mo-ta-mon-hoc": {
-    //             return data.logData2
-    //         }
-    //         case "muc-tieu-mon-hoc": {
-    //             return data.logData3
-    //         }
-    //         case "chuan-dau-ra": {
-    //             return data.logData4
-    //         }
-    //         case "giang-day-ly-thuyet": {
-    //             return data.logData5
-    //         }
-    //         case "giang-day-thuc-hanh": {
-    //             return data.logData6
-    //         }
-    //         case "danh-gia": {
-    //             return data.logData7
-    //         }
-    //         case "tai-nguyen-mon-hoc": {
-    //             return data.logData8
-    //         }
-    //         case "quy-dinh-chung": {
-    //             return data.logData9
-    //         }
-    //         default: 
-    //             return null
-    //     }
-    // }
+    render() {
+        let data = this.getDataReducer()
+        let LogComment = <div></div>
+        if (data) {
+            data.sort((a, b) => {
+                return b.thoi_gian - a.thoi_gian
+            })
+            LogComment = data.map((itemparent, ich) => {
+                let con = comment.map((itemchilren, ic) => {
+                    if (itemchilren.log_id === itemparent.id) {
+                        return <CommentLog content={itemchilren.content} hasReply={false} />;
+                    } else return;
+                })
+                if (ich == this.props.logReducer.idLog) {
+                    con.push(<div>
+                        <Form.Item>
+                            <TextArea rows={4} onChange={this.handleChange} />
+                        </Form.Item>
+                        <Form.Item>
+                            <Button
+                                htmlType="submit"
+                                onClick={this.submit}
+                                type="primary"
+                            >
+                                Add Comment
+                          </Button>
+                        </Form.Item>
+                    </div>
+                    );
+                }
+                return <CommentLog children={con}
+                    content={itemparent.noi_dung} timestamp={itemparent.thoi_gian}
+                    nguoi_gui={itemparent.nguoi_gui} id={ich}
+                    hasReply={true} />
+            })
+        }
         return (
             <div className="container1">
                 <div className="center-col">

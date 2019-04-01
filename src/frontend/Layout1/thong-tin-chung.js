@@ -8,7 +8,7 @@ import {
 } from 'antd';
 import TableTTC from './table/tableTTC';
 import './thong-tin-chung.css'
-import { updateTTCRequest, fetchData, collectDataRequest, themThongTinChung, xoaThongTinChung, suaThongTinChung, addDataTemp } from './../Constant/thong-tin-chung/actions';
+import { updateTTCRequest, collectDataRequest} from './../Constant/thong-tin-chung/actions';
 
 class ThongTinChung extends Component {
   constructor(props) {
@@ -21,47 +21,20 @@ class ThongTinChung extends Component {
   }
 
   componentDidMount() {
-    this.props.collectDataRequest(this.props.content_monhoc);
+    this.props.collectDataRequest(this.props.idMH);
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.updateTTCRequest(this.props.content_monhoc, values);
+        this.props.updateTTCRequest(this.props.idMH, values);
         notification.open({
           message: "Success",
           icon: <Icon type="check-circle" style={{ color: 'green' }} />,
         })
       }
     });
-  }
-
-  handleButtonEdit = () => {
-    if (this.state.isBtnEdit) {
-      return (
-        <Button type="primary" disabled htmlType="submit" className="submit_TTC form-signin-button">
-          Continue
-        </Button>
-      );
-    }
-    return (
-      <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
-        Continue
-        </Button>
-    );
-  }
-
-  toggleButton = () => {
-    this.setState({
-      isBtnEdit: !this.state.isBtnEdit
-    })
-  }
-
-  toggleButtonDelete = () => {
-    this.setState({
-      isBtnEdit: false
-    })
   }
 
   handleOnChange = (e) => {
@@ -71,41 +44,6 @@ class ThongTinChung extends Component {
     this.props.addDataTemp(tempData)
   }
 
-  showButtonAll = () => {
-    if (this.props.dataTTC[0] === undefined) {
-      return (<Button disabled onClick={this.saveDB} type="primary" className="submit_All">
-        Save All
-        </Button>)
-    }
-    return (
-      <Button onClick={this.saveDB} type="primary" className="submit_All">
-        Save All
-        </Button>
-    )
-  }
-
-  saveDB = () => {
-    const data = {
-      ten_mon_hoc_tv: this.props.dataTTC[0].tenMonHocTV,
-      ten_mon_hoc_ta: this.props.dataTTC[0].tenMonHocTA,
-      ma_so: this.props.dataTTC[0].maMonHoc,
-      khoi_kien_thuc: this.props.dataTTC[0].khoiKienThuc,
-      so_tin_chi: this.props.dataTTC[0].soTinChi,
-      so_tiet_ly_thuyet: this.props.dataTTC[0].tietLyThuyet,
-      so_tiet_thuc_hanh: this.props.dataTTC[0].tietThucHanh,
-      so_tiet_tu_hoc: this.props.dataTTC[0].tietTuHoc,
-      cac_mon_hoc_tien_quyet: this.props.dataTTC[0].monTienQuyet
-    };
-    axios.post('/add-data-1', {
-      data
-    })
-      .then(function (response) {
-        console.log(response);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  }
 
   render() {
     const { getFieldDecorator } = this.props.form;
@@ -129,7 +67,7 @@ class ThongTinChung extends Component {
           <div className="col-sm-11" >
             <h1 style={{ textAlign: "center" }}>THÔNG TIN CHUNG</h1>
             <div className="card_TTC" >
-              <Form onChange={this.handleOnChange} onSubmit={this.handleSubmit}>
+              <Form  onSubmit={this.handleSubmit}>
                 <Form.Item
                   {...formItemLayout}
                   label="Tên Môn Học (Tiếng Việt):">
@@ -258,25 +196,12 @@ class ThongTinChung extends Component {
                   )}
                 </Form.Item>
                 <Form.Item>
-                  {/* {this.handleButtonEdit()} */}
                   <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
                     Update
                  </Button>
                 </Form.Item>
               </Form>
             </div>
-            {/* <br />
-            <Tooltip placement="topLeft" >
-              <Button style={{ color: "red", margin: "auto", width: "100%" }}>(Hướng dẫn: mô tả các thông tin cơ bản của môn học )</Button>
-            </Tooltip> */}
-            {/* <TableTTC
-              {...this.props}
-              toggleButton={this.toggleButton}
-              toggleButtonDelete={this.toggleButtonDelete}
-            />
-
-            {this.showButtonAll()} */}
-
           </div>
         </div>
       </div>)
@@ -293,12 +218,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    themThongTinChung: (newTTC) => dispatch(themThongTinChung(newTTC)),
-    addDataTemp: (tempTTC) => dispatch(addDataTemp(tempTTC)),
-    suaThongTinChung: (newTTC) => dispatch(suaThongTinChung(newTTC)),
-    xoaThongTinChung: () => dispatch(xoaThongTinChung()),
     collectDataRequest: (id) => dispatch(collectDataRequest(id)),
-    fetchData: (data) => dispatch(fetchData(data)),
     updateTTCRequest: (id, data) => dispatch(updateTTCRequest(id, data))
   }
 }

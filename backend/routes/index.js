@@ -177,6 +177,7 @@ router.post('/exportfile', function(req, res, next) {
   router.get('/collect-data/:id', function(req, res) {
     let id = req.params
     ThongTinChungModel.collect(id, (resData) => {
+      console.log(resData)
       res.send(resData);
     })  
   })

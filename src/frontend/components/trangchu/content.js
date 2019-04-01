@@ -165,7 +165,7 @@ class Content extends Component {
             case MENUITEM.THONG_TIN_CHUNG: {
                 content_layout = (
                     <React.Fragment>
-                        <ThongTinChung />
+                        <ThongTinChung idMH={this.props.content_monhoc}/>
                     </React.Fragment>
                 ); break;
             }

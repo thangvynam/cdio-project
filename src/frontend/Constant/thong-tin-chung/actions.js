@@ -39,7 +39,9 @@ const updateTTCRequest = (id, data) => {
             url: `/update-data/${id}`,
             data
         }).then(function (response) {
-
+            if (response.data === "SUCCESS") {
+                dispatch(fetchData(data));
+            }
         }).catch(function (error) {
             console.log(error);
         });

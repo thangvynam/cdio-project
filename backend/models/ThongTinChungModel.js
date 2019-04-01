@@ -17,7 +17,6 @@ const add = (id, desc, result) => {
     let data = [desc.tenMonHocTV, desc.tenMonHocTA, desc.maMonHoc, desc.khoiKienThuc, desc.soTinChi, desc.tietLyThuyet, desc.tietThucHanh, desc.tietTuHoc, desc.monTienQuyet, id.id];
     sql.query(sql1, data, (err, res) => {
         if (err) {
-            console.log("error:", err);
             result(null, err)
         } else {
             result(null, res);

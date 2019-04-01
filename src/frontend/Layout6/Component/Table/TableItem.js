@@ -8,14 +8,16 @@ import {
   Modal,
   Form,
   Input,
-  Select
+  Select,notification
 } from "antd";
 import { connect } from "react-redux";
-import { updateKHGDTH } from "../../../Constant/ActionType";
+import { updateKHGDTH, changeIsLoadedKHTH } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import TextArea from "antd/lib/input/TextArea";
+import axios from "axios";
+
 const { Option } = Select;
 
 const confirm = Modal.confirm;
@@ -128,7 +130,7 @@ class EditableCell extends React.Component {
       titleName: "",
       teachingActs: [],
       standardOutput: [],
-      evalActs: []
+      evalActs: [],
     };
   }
 
@@ -253,7 +255,8 @@ class TableItem extends Component {
     super(props);
     this.state = {
       selectedRowKeys: [],
-      editingKey: ""
+      editingKey: "",
+      subjectId: -1,
     };
 
     this.columns = [
@@ -475,6 +478,83 @@ class TableItem extends Component {
     });
   };
 
+  onSaveAll = ()=>{
+    const itemKHGDTH = this.props.itemKHGDTH;
+    let body = {};
+    body.thong_tin_chung_id = this.state.subjectId;
+    body.data = [];
+
+    itemKHGDTH.previewInfo.forEach((item,index)=>{
+      let temp = {};
+      temp.week = item.key;
+      temp.titleName = item.titleName;
+      temp.teachingActs = [];
+      temp.standardOutput = [];
+      temp.evalActs = [];
+      item.teachingActs.forEach((act,_)=>{
+        let id = itemKHGDTH.mapIdForValue.teachingActs.get(act);
+        temp.teachingActs.push(id);
+      })
+      item.standardOutput.forEach((stan,_)=>{
+        let id = itemKHGDTH.mapIdForValue.standardOutput.get(stan);
+        temp.standardOutput.push(id);
+      })
+      item.evalActs.forEach((act,_)=>{
+        let id = itemKHGDTH.mapIdForValue.evalActs.get(act);
+        temp.evalActs.push(id);
+      })
+
+
+      body.data.push(temp);
+    })
+
+   // console.log("body: ",body);
+   axios.post("/add-data-6", body)
+   .then(response => {
+     if(response.data === 1){
+      notification["success"]({
+        message: "Cập nhật thành công",
+        duration: 1
+      });
+     }
+     else{
+      notification["error"]({
+        message: "Cập nhật thất bại",
+        duration: 1
+      });
+     }
+   });
+
+  }
+
+  componentDidMount() {
+    if(!this.props.itemKHGDTH.isLoaded && this.props.subjectId !== null 
+      && this.props.subjectId !== undefined && this.props.subjectId!== "") {
+        this.props.onChangeIsLoaded(true);
+        this.setState({subjectId:this.props.subjectId});
+        axios.get(`/get-data-6/${this.props.subjectId}`).then(response => {
+          const data = response.data;
+          this.props.onUpdateKHGDTH(data);
+        });
+      }
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if(!this.props.itemKHGDTH.isLoaded && nextProps.subjectId !== null 
+    && nextProps.subjectId !== undefined && nextProps.subjectId !== "") {
+      this.props.onChangeIsLoaded(true);
+      this.setState({subjectId:this.props.subjectId});
+      axios.get(`/get-data-6/${nextProps.subjectId}`).then(response => {
+        const data = response.data;
+        this.props.onUpdateKHGDTH(data);
+      });
+    }
+  }
+
+
+
+
+
   render() {
     var components = {};
     var columns = [];
@@ -528,6 +608,9 @@ class TableItem extends Component {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
+          <Button style={{ float: "right" }} type="primary" onClick={this.onSaveAll}>
+            Lưu thay đổi
+          </Button>
         </div>
         <Table
           components={components}
@@ -552,13 +635,16 @@ class TableItem extends Component {
 }
 const mapStateToProps = state => {
   return {
-    itemKHGDTH: state.itemLayout6Reducer
+    itemKHGDTH: state.itemLayout6Reducer,
+    subjectId: state.subjectid,
+
   };
 };
 const mapDispatchToProps = dispatch => {
   return bindActionCreators(
     {
-      onUpdateKHGDTH: updateKHGDTH
+      onUpdateKHGDTH: updateKHGDTH,
+      onChangeIsLoaded:changeIsLoadedKHTH,
     },
     dispatch
   );

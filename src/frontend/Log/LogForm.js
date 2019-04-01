@@ -3,9 +3,11 @@ import "./1.css"
 import { connect } from 'react-redux';
 import axios from 'axios';
 import { Form, Button, Input } from 'antd';
-
+import { IS_LOAD_LOG, SAVE_LOG_DATA } from "../Constant/ActionType"
+import {convertTime} from "../utils/Time"
 import CommentLog from "../Comment/Comment"
 const TextArea = Input.TextArea;
+
 const log = [
     {
         key: 1,
@@ -34,16 +36,19 @@ class LogForm extends Component {
         super(props)
         this.state = {
             logData: [],
-            contentTab: ""
+            contentTab: "",
+            count: 0,
         }
     }
 
-    async componentWillReceiveProps(nextProps) {
-        // console.log(nextProps);
-
-        this.setState({ contentTab: nextProps.logReducer.contentTab })
-        let data = await this.getData(nextProps.logReducer.contentTab);
-        this.setState({ logData: data })
+    async componentWillReceiveProps(nextProps) { 
+        let count = this.state.count;
+        if(count <= 5) {
+            this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1})   
+            let data = await this.getData(nextProps.logReducer.contentTab);
+            this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.subjectid); 
+        }               
+              
     }
 
     async getData(contentTab) {
@@ -56,11 +61,6 @@ class LogForm extends Component {
         })
     }
 
-    // async componentDidMount() {
-
-    //     // this.props.setFlag(true);   
-
-    // }
     handleChange = (e) => {
         this.setState({
             value: e.target.value,
@@ -105,6 +105,40 @@ class LogForm extends Component {
                 hasReply={true} />
         })
 
+    // getDataReducer() {
+    //     let data = this.props.logReducer
+    //     switch (this.state.contentTab) {
+    //         case "thong-tin-chung": {
+    //             return data.logData1
+    //         }
+    //         case "mo-ta-mon-hoc": {
+    //             return data.logData2
+    //         }
+    //         case "muc-tieu-mon-hoc": {
+    //             return data.logData3
+    //         }
+    //         case "chuan-dau-ra": {
+    //             return data.logData4
+    //         }
+    //         case "giang-day-ly-thuyet": {
+    //             return data.logData5
+    //         }
+    //         case "giang-day-thuc-hanh": {
+    //             return data.logData6
+    //         }
+    //         case "danh-gia": {
+    //             return data.logData7
+    //         }
+    //         case "tai-nguyen-mon-hoc": {
+    //             return data.logData8
+    //         }
+    //         case "quy-dinh-chung": {
+    //             return data.logData9
+    //         }
+    //         default: 
+    //             return null
+    //     }
+    // }
         return (
             <div className="container1">
                 <div className="center-col">
@@ -124,10 +158,10 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-        // setFlag: (idLoaded) => {
-        //     dispatch({ type: IS_LOAD_LOG, idLoaded });         
-        //   },
-    }
+  return {
+    saveLoad: (data, contentTab, subjectid) => {
+        dispatch({ type: SAVE_LOG_DATA, data, contentTab, subjectid });         
+      },
+  }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LogForm);

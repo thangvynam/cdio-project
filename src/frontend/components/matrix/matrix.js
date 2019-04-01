@@ -68,7 +68,7 @@ class Matrix extends Component {
                     }
                     return textRender;
                 }
-                return <Tag color="black" style={{ fontSize: "8pt", fontWeight: "bold" }}>-</Tag>;
+                return <Tag color="fff9f9" style={{fontSize: "8pt", fontWeight: "bold", color: "black"}}>-</Tag>;
             }
             else {
                 if (textMatrix === "-") {
@@ -119,7 +119,7 @@ class Matrix extends Component {
                             textRender.push(<Tag key={i} color="red" style={{ fontSize: "8pt", fontWeight: "bold" }}>{item.text}</Tag>);
                         }
                         else {
-                            textRender.push(<Tag key={i} color="black" style={{ fontSize: "8pt", fontWeight: "bold" }}>{item.text}</Tag>);
+                            textRender.push(<Tag key={i} color="#fff9f9" style={{fontSize: "8pt", fontWeight: "bold", color: "black"}}>{item.text}</Tag>);
                         }
                         // if (i !== textRenderStateArr.length - 1) {
                         //     textRender.push(<span key={i + ','}>,</span>);

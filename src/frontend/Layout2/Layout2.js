@@ -23,6 +23,7 @@ class Layout2 extends Component {
                         <br/>
                         <br/>
                         <LogForm/>
+                    
                         <br/>
                         <br/>
                     </div>

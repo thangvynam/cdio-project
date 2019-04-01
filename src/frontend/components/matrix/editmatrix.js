@@ -115,7 +115,7 @@ class EditMatrix extends Component {
         this.state = {
             levels: [],
             cdr_cdio: [],
-            tempMatrix: []
+            tempMatrix: [],
         }
         
       }
@@ -227,7 +227,6 @@ class EditMatrix extends Component {
                 
             })
           }
-          console.log(data);
           axios.post('/update-standard-matrix', data).then(alert("ok"));
         
       }
@@ -373,7 +372,7 @@ class EditMatrix extends Component {
                     align: "center",
                     editable: true,
                     render: (text, record) => <div>
-                        <Tag color="orange" style={{fontSize: "8pt", fontWeight: "bold"}}>{text}</Tag>
+                        <Tag color="fff9f9" style={{fontSize: "8pt", fontWeight: "bold", color: "black"}}>{text}</Tag>
                         <Tooltip placement="bottom" title="Edit"><Icon onClick={() => this.onClickEdit(record, key)} type="edit" style={{cursor: "pointer"}}/></Tooltip>
                         </div>,
                 }
@@ -408,14 +407,6 @@ class EditMatrix extends Component {
             })
         }
 
-        const dataSource  = this.props.editMatrix;
-    const components = {
-      body: {
-        row: EditableFormRow,
-        cell: EditableCell,
-      },
-    };
-
     const columns = this.columns.concat(firstColumnMapped).map((col) => {
         if(col.children !== null && col.children !== undefined) {
             for(let i = 0;i < col.children.length;i++) {
@@ -441,11 +432,17 @@ class EditMatrix extends Component {
             }
         }
         return col;
-        
         });
+        const dataSource  = this.props.editMatrix;
+        const components = {
+          body: {
+            row: EditableFormRow,
+            cell: EditableCell,
+          },
+        };
 
         return (
-            <React.Fragment>
+            columns.length > this.columns.length && <React.Fragment>
                 <div style={{margin: "10px"}}><Button onClick={this.saveAll}>Lưu lại</Button>
                 <Table  bordered
                     components={components}

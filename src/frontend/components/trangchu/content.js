@@ -94,7 +94,7 @@ class Content extends Component {
         let name = document.getElementById("subject-name-edit").value;
         let type = this.props.content_type;
         const data = this.props.subjectList;
-        axios.post('/edit-subject', { data: { ma_so: data[index].ma_so, ma_so_editted: id, ten_mon_hoc_tv: name } });
+        axios.post('/edit-subject', { data: { id: data[index].id, ma_so_editted: id, ten_mon_hoc_tv: name } });
         data[index].ma_so = id;
         data[index].ten_mon_hoc_tv = name;
 

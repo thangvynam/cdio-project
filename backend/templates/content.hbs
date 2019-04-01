@@ -66,14 +66,14 @@
                 <h3><b>{{this.title1}}</b></h3>
                 <p style="color: red;">(Hướng dẫn: mô tả các thông tin cơ bản của môn học)</p>
             </div>
-            {{#each this.value1}}
+            
             <div style="margin-left: 10%;margin-right:10%">
                 <div>
                     <div class="column">
                         Tên môn học (tiếng Việt):
                     </div>
                     <div class="column">
-                        {{this.tenMonHocTV}}
+                        {{this.value1.tenMonHocTV}}
                     </div>
                 </div>
                 <div>
@@ -81,14 +81,14 @@
                         Tên môn học (tiếng Anh):
                     </div>
                     <div class="column">
-                        {{this.tenMonHocTA}}
+                        {{this.value1.tenMonHocTA}}
                 </div>
                 <div>
                     <div class="column">
                         Mã số môn học:
                     </div>
                     <div class="column">
-                        {{this.maMonHoc}}
+                        {{this.value1.maMonHoc}}
                     </div>
                 </div>
                 <div>
@@ -96,7 +96,7 @@
                         Thuộc khối kiến thức:
                     </div>
                     <div class="column">
-                        {{this.khoiKienThuc}}
+                        {{this.value1.khoiKienThuc}}
                     </div>
                 </div>
                 <div>
@@ -104,7 +104,7 @@
                         Số tín chỉ
                     </div>
                     <div class="column">
-                        {{this.soTinChi}}
+                        {{this.value1.soTinChi}}
                     </div>
                     <div style="margin-left:30px">
                         <div>
@@ -112,7 +112,7 @@
                                 Số tiết lý thuyết:
                             </div>
                             <div class="column">
-                                {{this.tietLyThuyet}}
+                                {{this.value1.tietLyThuyet}}
                             </div>
                         </div>
                         <div>
@@ -120,7 +120,7 @@
                                 Số tiết thực hành:
                             </div>
                             <div class="column">
-                                {{this.tietThucHanh}}
+                                {{this.value1.tietThucHanh}}
                             </div>
                         </div>
                         <div>
@@ -128,7 +128,7 @@
                                 Số tiết tự học:
                             </div>
                             <div class="column">
-                                {{this.tietTuHoc}}
+                                {{this.value1.tietTuHoc}}
                             </div>
                         </div>
 
@@ -139,11 +139,11 @@
                         Các môn học tiên quyết
                     </div>
                     <div class="column">
-                        {{this.monTienQuyet}}
+                        {{this.value1.monTienQuyet}}
                     </div>
                 </div>
             </div>
-            {{/each}}
+            
         </div>
 
         {{/if}}

@@ -9,6 +9,7 @@ export const UPDATE_CON_TAB = 'UPDATE_CON_TAB';
 export const SAVE_LOG = 'SAVE_LOG';
 export const IS_LOAD_LOG = 'IS_LOAD_LOG';
 export const SAVE_LOG_DATA= 'SAVE_LOG_DATA';
+export const SAVE_LOG_OBJECT = 'SAVE_LOG_OBJECT'
 
 export const RESET_TAB = 'RESET_TAG';
 
@@ -33,6 +34,7 @@ export const MENU_ITEM = 'MENU_ITEM';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
 export const SUBJECT_MASO = 'SUBJECT_MASO';
+export const CDRMDHD_DB = 'CDRMDHD_DB';
 export const CDRMDHD = 'CDRMDHD';
 export const MTMH = 'MTMH';
 export const ISLOAD = 'ISLOAD';
@@ -40,11 +42,16 @@ export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 
+//layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
 export const CHANGE_TEMP_KHGDTH = 'CHANGE_TEMP_KHGDTH';
+export const CHANGE_MAP_KHGDTH = 'CHANGE_MAP_KHGDTH';
+export const CHANGE_ISLOADED_KHTH = 'CHANGE_ISLOADED_KHTH';
 
 
+
+//layout 9
 export const ADD_ITEM_RULE = 'ADD_ITEM_RULE';
 export const DELETE_ITEM_RULE = 'DELETE_ITEM_RULE';
 export const UPDATE_RULES = 'UPDATE_RULES';
@@ -68,6 +75,8 @@ export const CHANGE_DATA = 'CHANGE_DATA';
 export const ADD_DATA_LAYOUT_5 = "ADD_DATA_LAYOUT_5";
 export const COLLECT_DATA_REQUEST_5 = "COLLECT_DATA_REQUEST_5";
 
+// Comment 
+export const SHOW_INPUT_COMMENT = "SHOW_INPUT_COMMENT";
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {
         type: SAVE_LOG,
@@ -118,6 +127,13 @@ export function selectedVerb(newVerb) {
     return {
         type: SELECTED_VERB,
         verb: newVerb
+    };
+}
+
+export function cdrmdhddb(newCdrmdhddb) {
+    return {
+        type: CDRMDHD_DB,
+        cdrmdhddb: newCdrmdhddb
     };
 }
 
@@ -209,8 +225,18 @@ export function changeTempKHGDTH(newTemp){
         data: newTemp,
     }
 }
-
-
+export function changeMapKHGDTH(newMap){
+    return{
+        type: CHANGE_MAP_KHGDTH,
+        data: newMap,
+    }
+}
+export function changeIsLoadedKHTH(newIsLoaded){
+    return{
+        type: CHANGE_ISLOADED_KHTH,
+        data: newIsLoaded,
+    }
+}
 export function addItemRule(newItem){
     return{
         type: ADD_ITEM_RULE,

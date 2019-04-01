@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, notification } from 'antd';
 import { connect } from 'react-redux';
-import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG, IS_LOAD_LOG } from '../../../Constant/ActionType';
+import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG, IS_LOAD_LOG, SAVE_LOG_OBJECT } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
@@ -68,6 +68,7 @@ class TableItem extends Component {
       data: '', 
       editingKey: '',
       selectedRowKeys: [],
+      count: 0
     };
     this.columns = [{
       title: 'Mô tả môn học',
@@ -131,7 +132,9 @@ class TableItem extends Component {
 }
 
   async componentWillReceiveProps(nextProps){
-    if (!this.props.itemLayout2Reducer.isLoaded) {
+    let count = this.state.count
+    if (count <= 2) {
+      this.setState({count: count + 1})
       let temp = await this.getData();
       this.props.saveAndContinue(temp);
       this.props.setFlag(true);
@@ -163,7 +166,8 @@ class TableItem extends Component {
           ...row,
         });
         this.props.handleSave(newData);      
-        this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
+        this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
+        this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
         this.props.setFlag2(true);   
         this.setState({ editingKey: "" });
     });
@@ -256,6 +260,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setFlag2: (idLoaded) => {
       dispatch({ type: IS_LOAD_LOG, idLoaded });         
     },
+    saveReducer: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
+      dispatch({type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
+  }
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TableItem);

@@ -188,8 +188,10 @@ router.post('/exportfile', function(req, res, next) {
     ThongTinChungModel.add(id, description, function(err, description){
       if (err) {
         console.log(err);
+      } else{
+
+        res.send("SUCCESS");
       }
-        console.log("done");
     })
     
   })

@@ -86,7 +86,7 @@ Model4.deletesubject = (data, result) => {
 }
 
 Model4.editsubject = (data, result) => {
-    sql.query(`update thong_tin_chung set ma_so = ${data.ma_so_editted}, ten_mon_hoc_tv = '${data.ten_mon_hoc_tv}' where ma_so = ${data.ma_so}`,
+    sql.query(`update thong_tin_chung set ma_so = '${data.ma_so_editted}', ten_mon_hoc_tv = '${data.ten_mon_hoc_tv}' where id = ${data.id} && del_flag = 0`,
         (err, res) => {
             if (err) {
                 console.log("error:", err);
@@ -97,17 +97,17 @@ Model4.editsubject = (data, result) => {
         })
 }
 
-Model4.collectsubjectid = (data, result) => {
-    sql.query(`select id from thong_tin_chung where ma_so = ${data.ma_so} && del_flag = 0`,
-        (err, res) => {
-            if (err) {
-                console.log("error:", err);
-                result(null, err)
-            } else {
-                result(null, res);
-            }
-        })
-}
+// Model4.collectsubjectid = (data, result) => {
+//     sql.query(`select id from thong_tin_chung where ma_so = ${data.ma_so} && ten_mon_hoc_tv = ${data.ten_mon_hoc_tv} && del_flag = 0`,
+//         (err, res) => {
+//             if (err) {
+//                 console.log("error:", err);
+//                 result(null, err)
+//             } else {
+//                 result(null, res);
+//             }
+//         })
+// }
 
 Model4.collectmtmh = (data, result) => {
     sql.query(`select id, muc_tieu from muc_tieu_mon_hoc where del_flag = 0 && thong_tin_chung_id = ${data.thong_tin_chung_id}`,

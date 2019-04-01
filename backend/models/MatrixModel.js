@@ -20,7 +20,7 @@ MatrixModel.getRealityMatrix = () => {
           reject(err);
         } else {
           if (listSubject.length === 0) {
-            resolve("0");
+            resolve([]);
           }
           listSubject.forEach((subject, index) => {
             var itemRes = {
@@ -59,6 +59,7 @@ selectCDR = idTTC => {
         console.log("error:", err);
         return reject(err);
       }
+      if(listCdrCDIO.length===0) resolve([]);
       var arrITU = [];
 
       await listCdrCDIO.forEach(async (cdrCDIO, index) => {
@@ -69,7 +70,7 @@ selectCDR = idTTC => {
 
             if (index === listCdrCDIO.length - 1) return resolve(arrITU);
           },
-          err => {
+          err => { 
             console.log("err:", err);
             return reject(err);
           }
@@ -88,13 +89,15 @@ selectITU = (subject_id, cdrCDIO_id) => {
     let query = `SELECT cdrmh.muc_do FROM chuan_dau_ra_mon_hoc cdrmh,
         muc_tieu_mon_hoc mt, mtmh_has_cdrcdio has
         WHERE cdrmh.muc_tieu_mon_hoc_id = mt.id AND mt.thong_tin_chung_id = ${subject_id} 
-        AND has.chuan_dau_ra_cdio_id = ${cdrCDIO_id} AND mt.id = has.muc_tieu_mon_hoc_id`;
+        AND has.chuan_dau_ra_cdio_id = ${cdrCDIO_id} AND mt.id = has.muc_tieu_mon_hoc_id AND cdrmh.del_flag = 0 
+        AND mt.del_flag = 0`;
 
     sql.query(query, (err, listITU) => {
       if (err) {
         console.log("err: ", err);
         return reject(err);
       }
+      if(listITU.length===0) resolve("-");
 
       listITU.forEach((itemITU, _) => {
         let arrITU = itemITU.muc_do.split(",");
@@ -151,9 +154,6 @@ insertStandardMatrix = (resultRes)=>{
               return reject(err);
             }
             for(let i=0;i<res.length;i++){
-              // console.log("11:",res[i].id);
-              // console.log("22:",item.itu[i]);
-
 
               sql.query(`INSERT INTO matrix(muc_do,thong_tin_chung_id,chuan_dau_ra_cdio_id) VALUES('${item.itu[i]}',${item.idSubject},${res[i].id})`,(err,res)=>{
                 if(err){
@@ -174,7 +174,8 @@ insertStandardMatrix = (resultRes)=>{
 
 MatrixModel.getStandardMatrix = ()=>{
   return new Promise((resolve,reject)=>{
-    sql.query(`SELECT * FROM matrix`, (err, matrix) => {
+    sql.query(`SELECT mt.id,mt.muc_do,mt.thong_tin_chung_id,mt.chuan_dau_ra_cdio_id FROM matrix mt,thong_tin_chung ttc
+    WHERE mt.thong_tin_chung_id = ttc.id AND ttc.del_flag = 0`, (err, matrix) => {
         if (err) {
           console.log("error:", err);
            return reject(err);

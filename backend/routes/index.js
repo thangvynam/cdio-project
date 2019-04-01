@@ -148,6 +148,8 @@ router.post('/exportfile', function(req, res, next) {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       let body = await req.body
+      console.log(body.data);
+      
       //header
       let content =await compile('header',null);
       //body
@@ -156,7 +158,9 @@ router.post('/exportfile', function(req, res, next) {
           content += await compile('content',renderContenByNameTab(k,value));
       }
       //footer
+      if (JSON.parse(body.data)['Thông tin chung'] !== undefined) {        
       content += await compile('footer',renderContenByNameTab('Thông tin chung',JSON.parse(JSON.parse(body.data)['Thông tin chung'])));
+      }
       await page.setContent(content);
       await page.emulateMedia('screen');
       await page.pdf({
@@ -329,9 +333,20 @@ router.post('/edit-subject', function(req, res) {
   })   
 })
 
-router.post('/collect-subjectid', function(req, res) {
+// router.post('/collect-subjectid', function(req, res) {
+//   let data = req.body.data
+//   Model4.collectsubjectid(data, function(err, data) {
+//     if (err) {
+//       console.log(err);
+//     } else{
+//       res.send(data)
+//     }   
+//   })   
+// })
+
+router.post('/collect-mtmh', function(req, res) {
   let data = req.body.data
-  Model4.collectsubjectid(data, function(err, data) {
+  Model4.collectmtmh(data, function(err, data) {
     if (err) {
       console.log(err);
     } else{
@@ -340,9 +355,21 @@ router.post('/collect-subjectid', function(req, res) {
   })   
 })
 
-router.post('/collect-mtmh', function(req, res) {
+router.post('/collect-mtmh-has-cdrcdio', function(req, res) {
   let data = req.body.data
-  Model4.collectmtmh(data, function(err, data) {
+  
+  Model4.collectmtmhhascdrcdio(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data)
+    }   
+  })   
+})
+
+router.post('/collect-mucdo-mtmh-has-cdrcdio', function(req, res) {
+  let data = req.body.data
+  Model4.collectmucdomtmhhascdrcdio(data, function(err, data) {
     if (err) {
       console.log(err);
     } else{
@@ -396,6 +423,15 @@ router.get('/get-data-9/:idSubject', function(req, res) {
 
 
 
+router.get('/get-data-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.get(idSubject).then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+})
 
 router.post('/add-data-6', function(req, res) {
   const data = req.body;
@@ -409,17 +445,37 @@ router.post('/add-data-6', function(req, res) {
   })   
 })
 
-/* get teaching arts for layout 5+6*/ 
-router.get('/get-teachingarts', function(req, res) {
+/* get teaching acts for layout 5+6*/ 
+router.get('/get-teachingacts-6', function(req, res) {
   
-  Model6.getTeachingArts(function(err, result) {
+  Model6.getTeachingActs(function(err, result) {
     if (err) {
       res.end("0");
     }
     console.log("done");
     res.end(JSON.stringify(result));
   })   
+});
+
+router.get('/get-eval-acts-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.getEvalActs(idSubject,function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
 })
+router.get('/get-standard-output-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.getStandardOutput(idSubject,function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
+})
+
 
 router.get('/get-reality-matrix', function(req, res) {
   

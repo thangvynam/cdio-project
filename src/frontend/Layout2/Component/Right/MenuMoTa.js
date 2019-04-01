@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_LOG } from '../../../Constant/ActionType';
+import { ADD_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_LOG, SAVE_LOG_OBJECT } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
 import { getCurrTime } from '../../../utils/Time';
 
@@ -63,6 +63,7 @@ class MenuMota extends Component {
                             <Button type="primary" onClick={() => { 
                                 this.props.itemLayout2Reducer.tempInfo = ''
                                 this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.subjectid)
+                                this.props.saveReducer("Nguyen Van A", getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.subjectid)
                                 this.props.saveAndContinue() ;
                                 }} style={{ marginLeft: "2em" }}>
                                 Thêm<Icon type="right" />
@@ -101,7 +102,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
             dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
-          }
+        },
+        saveReducer: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
+            dispatch({type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
+        }
     }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(MenuMota);

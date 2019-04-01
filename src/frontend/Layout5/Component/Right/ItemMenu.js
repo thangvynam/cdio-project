@@ -134,6 +134,7 @@ let isSubmit = false;
 let teachingActs_data = [];
 let standardOutput_data = [];
 let evalActs_data = [];
+let firstCollect = false;
 class ItemMenu extends Component {
     constructor(props){
         super(props);
@@ -145,7 +146,11 @@ class ItemMenu extends Component {
        
     }
     componentDidMount() {
-        this.props.collectDataRequest()
+        if(!firstCollect){
+            firstCollect = true;
+            this.props.collectDataRequest();
+        }
+        
     }
    
     displayRender = label => {
@@ -180,11 +185,11 @@ class ItemMenu extends Component {
     }
     toString = () => {
         
-        // let temp = '';
-        // for (let i = 0; i < this.props.itemLayout5Reducer.standardOutput.length; i++) {
-        //     temp += this.props.itemLayout5Reducer.standardOutput[i] + " , ";
-        // }
-        // return temp;
+        let temp = '';
+        for (let i = 0; i < this.props.itemLayout5Reducer.standardOutput.length; i++) {
+            temp += this.props.itemLayout5Reducer.standardOutput[i] + " , ";
+        }
+        return temp;
     }
     back = (e) => {
         e.preventDefault();
@@ -408,11 +413,13 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 message.error("Vui lòng điền đầy đủ thông tin");
             }
             else {
-                const myObjStr = JSON.stringify(myObj);
+                //const myObjStr = JSON.stringify(myObj);
                 //reset
                 titleName = '';
                 isSubmit = true;
-                dispatch({ type: ADD_DATA, item: myObjStr });
+                let arr = [];
+                arr.push(myObj)
+                dispatch({ type: ADD_DATA, data: arr });
                 ownProps.form.resetFields();
                 ownProps.nextStep();
             }
@@ -423,6 +430,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             });
         },
         collectDataRequest: ()=>{
+           
             let newArr = [];
             axios.get('/collect-data-5')
             .then(function (response) {
@@ -437,6 +445,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                     }
                     newArr.push(data);   
                 }
+               
                 dispatch({type:ADD_DATA,data:newArr})
             })
             .catch(function (error) {

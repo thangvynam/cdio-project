@@ -68,6 +68,7 @@ class TableItem extends Component {
       data: '', 
       editingKey: '',
       selectedRowKeys: [],
+      count: 0
     };
     this.columns = [{
       title: 'Mô tả môn học',
@@ -131,7 +132,9 @@ class TableItem extends Component {
 }
 
   async componentWillReceiveProps(nextProps){
-    if (!this.props.itemLayout2Reducer.isLoaded) {
+    let count = this.state.count
+    if (count <= 2) {
+      this.setState({count: count + 1})
       let temp = await this.getData();
       this.props.saveAndContinue(temp);
       this.props.setFlag(true);

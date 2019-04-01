@@ -109,7 +109,8 @@ class TableItem extends Component {
     this.state = { 
       data: this.props.itemLayout3Reducer.previewInfo, 
       editingKey: '' ,
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      count: 0
     };
     this.columns = [{
       title: 'Mục tiêu',
@@ -233,7 +234,9 @@ getUnique(arr, comp) {
 async componentWillReceiveProps(nextProps){
   let saveData = []
   let standActs = [];
-  if (!this.props.itemLayout3Reducer.isLoaded) {   
+  let count = this.state.count
+  if (count <= 2) {
+    this.setState({count: count + 1})
     let temp = await this.getData()
     temp.forEach(element => {
       temp.forEach(element2 => {

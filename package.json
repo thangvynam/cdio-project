@@ -11,6 +11,7 @@
     "react-dnd": "^7.0.2",
     "react-dnd-html5-backend": "^7.0.2",
     "react-dom": "^16.7.0",
+    "react-html-table-to-excel": "^2.0.0",
     "react-loader-spinner": "^2.3.0",
     "react-motion": "^0.5.2",
     "react-redux": "^6.0.0",

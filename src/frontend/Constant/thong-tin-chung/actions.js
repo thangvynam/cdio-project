@@ -25,44 +25,9 @@ const collectDataRequest = (id) => {
     }
 }
 
-
-const addDataTemp = (tempTTC) => {
-    return {
-        type: Types.ADD_TEMP_DATA,
-        tempTTC: tempTTC
-    }
-}
-
-const addDataTemp1 = (temp) => {
-    return {
-        type: Types.ADD_TEMP_DATA1,
-        temp
-    }
-}
-
-const themThongTinChung = (newTTC) => {
-    return {
-        type: Types.ADD_TTC,
-        newTTC
-    }
-}
-
 const fetchData = (newTTC) => {
     return {
         type: Types.FETCH_DATA,
-        newTTC
-    }
-}
-
-const xoaThongTinChung = () => {
-    return {
-        type: Types.DELETE_TTC
-    }
-}
-
-const suaThongTinChung = (newTTC) => {
-    return {
-        type: Types.EDIT_TTC,
         newTTC
     }
 }
@@ -82,11 +47,6 @@ const updateTTCRequest = (id, data) => {
 }
 
 export {
-    themThongTinChung,
-    xoaThongTinChung,
-    suaThongTinChung,
-    addDataTemp,
-    addDataTemp1,
     collectDataRequest,
     fetchData,
     updateTTCRequest,

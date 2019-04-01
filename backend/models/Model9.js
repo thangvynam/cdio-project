@@ -11,6 +11,7 @@ Model9.add = (body, result) => {
             console.log("err: ",err);
             return result(err,null);
         }
+        if(body.data.length===0) return result(null,"1");
 
         body.data.forEach((item,_)=>{
 

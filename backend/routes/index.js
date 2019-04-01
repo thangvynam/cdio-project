@@ -422,6 +422,15 @@ router.get('/get-data-9/:idSubject', function(req, res) {
 
 
 
+router.get('/get-data-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.get(idSubject).then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+})
 
 router.post('/add-data-6', function(req, res) {
   const data = req.body;

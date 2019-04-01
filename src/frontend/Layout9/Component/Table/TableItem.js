@@ -116,7 +116,8 @@ class TableItem extends Component {
 
     this.state = {
       selectedRowKeys: [],
-      editingKey: ""
+      editingKey: "",
+      idSubject: -1,
     };
   }
 
@@ -203,7 +204,7 @@ class TableItem extends Component {
   onSaveAll = ()=>{
 
     let body = {};
-    body.thong_tin_chung_id = 1;
+    body.thong_tin_chung_id = this.state.subjectId;
     body.data = this.props.itemRule.previewInfo;
 
 
@@ -229,6 +230,7 @@ class TableItem extends Component {
     if(!this.props.itemRule.isLoaded && this.props.subjectId !== null 
       && this.props.subjectId !== undefined && this.props.subjectId!== "") {
         this.props.onChangeIsLoaded(true);
+        this.setState({subjectId:this.props.subjectId});
         axios.get(`/get-data-9/${this.props.subjectId}`).then(response => {
           const data = response.data;
           let array = [];
@@ -247,6 +249,7 @@ class TableItem extends Component {
     if(!this.props.itemRule.isLoaded && nextProps.subjectId !== null 
     && nextProps.subjectId !== undefined && nextProps.subjectId !== "") {
       this.props.onChangeIsLoaded(true);
+      this.setState({subjectId:this.props.subjectId});
       axios.get(`/get-data-9/${nextProps.subjectId}`).then(response => {
         const data = response.data;
         let array = [];

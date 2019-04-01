@@ -20,7 +20,7 @@ MatrixModel.getRealityMatrix = () => {
           reject(err);
         } else {
           if (listSubject.length === 0) {
-            resolve("0");
+            resolve([]);
           }
           listSubject.forEach((subject, index) => {
             var itemRes = {
@@ -59,6 +59,7 @@ selectCDR = idTTC => {
         console.log("error:", err);
         return reject(err);
       }
+      if(listCdrCDIO.length===0) resolve([]);
       var arrITU = [];
 
       await listCdrCDIO.forEach(async (cdrCDIO, index) => {
@@ -96,6 +97,7 @@ selectITU = (subject_id, cdrCDIO_id) => {
         console.log("err: ", err);
         return reject(err);
       }
+      if(listITU.length===0) resolve("-");
 
       listITU.forEach((itemITU, _) => {
         let arrITU = itemITU.muc_do.split(",");
@@ -152,9 +154,6 @@ insertStandardMatrix = (resultRes)=>{
               return reject(err);
             }
             for(let i=0;i<res.length;i++){
-              // console.log("11:",res[i].id);
-              // console.log("22:",item.itu[i]);
-
 
               sql.query(`INSERT INTO matrix(muc_do,thong_tin_chung_id,chuan_dau_ra_cdio_id) VALUES('${item.itu[i]}',${item.idSubject},${res[i].id})`,(err,res)=>{
                 if(err){

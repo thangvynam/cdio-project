@@ -328,16 +328,16 @@ router.post('/edit-subject', function(req, res) {
   })   
 })
 
-router.post('/collect-subjectid', function(req, res) {
-  let data = req.body.data
-  Model4.collectsubjectid(data, function(err, data) {
-    if (err) {
-      console.log(err);
-    } else{
-      res.send(data)
-    }   
-  })   
-})
+// router.post('/collect-subjectid', function(req, res) {
+//   let data = req.body.data
+//   Model4.collectsubjectid(data, function(err, data) {
+//     if (err) {
+//       console.log(err);
+//     } else{
+//       res.send(data)
+//     }   
+//   })   
+// })
 
 router.post('/collect-mtmh', function(req, res) {
   let data = req.body.data

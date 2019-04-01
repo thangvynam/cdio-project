@@ -161,16 +161,8 @@ class ExportFile extends Component {
                                 options={plainOptions}
                                 handleChange={this.handleChange} />
 
-                        </div>
+                        </div>      
                         <br/>
-                        <div style={{ width: "50%", margin: "0 auto " }}>
-                        <Upload action="" directory showUploadList={false} onChange={this.uploadDir}>
-                            <Button>
-                                <Icon type="upload" />  Chọn đường dẫn lưu file
-                            </Button>
-                        </Upload>,
-                        </div>
-                        <br />
                         <div style={{ width: "50%", margin: "0 auto " }}>
                             <button onClick={this.export} type="button" class="btn btn-success">Export</button>
                             <br /><br /><br />

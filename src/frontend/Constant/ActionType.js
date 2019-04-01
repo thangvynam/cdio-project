@@ -47,6 +47,7 @@ export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
 export const CHANGE_TEMP_KHGDTH = 'CHANGE_TEMP_KHGDTH';
 export const CHANGE_MAP_KHGDTH = 'CHANGE_MAP_KHGDTH';
+export const CHANGE_ISLOADED_KHTH = 'CHANGE_ISLOADED_KHTH';
 
 
 
@@ -82,6 +83,8 @@ export const CHANGE_DATA = 'CHANGE_DATA';
 export const ADD_DATA_LAYOUT_5 = "ADD_DATA_LAYOUT_5";
 export const COLLECT_DATA_REQUEST_5 = "COLLECT_DATA_REQUEST_5";
 
+// Comment 
+export const SHOW_INPUT_COMMENT = "SHOW_INPUT_COMMENT";
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {
         type: SAVE_LOG,
@@ -236,7 +239,12 @@ export function changeMapKHGDTH(newMap){
         data: newMap,
     }
 }
-
+export function changeIsLoadedKHTH(newIsLoaded){
+    return{
+        type: CHANGE_ISLOADED_KHTH,
+        data: newIsLoaded,
+    }
+}
 export function addItemRule(newItem){
     return{
         type: ADD_ITEM_RULE,

@@ -97,7 +97,6 @@ router.post('/exportfile', function(req, res, next) {
         case "Thông tin chung":{
           dataRender1.title1 = renderNumber(key) +  key.toUpperCase() ;
           dataRender1.value1 = value;
-          
           return dataRender1;
         }
         case "Mô tả môn học":{
@@ -149,6 +148,7 @@ router.post('/exportfile', function(req, res, next) {
       const browser = await puppeteer.launch();
       const page = await browser.newPage();
       let body = await req.body
+      
       //header
       let content =await compile('header',null);
       //body
@@ -157,7 +157,9 @@ router.post('/exportfile', function(req, res, next) {
           content += await compile('content',renderContenByNameTab(k,value));
       }
       //footer
-      content += await compile('footer',renderContenByNameTab('Thông tin chung',JSON.parse(JSON.parse(body.data)['Thông tin chung'])));
+      // if (JSON.parse(body.data)['Thông tin chung'] !== undefined) {        
+      // content += await compile('footer',renderContenByNameTab('Thông tin chung',JSON.parse(JSON.parse(body.data)['Thông tin chung'])));
+      // }
       await page.setContent(content);
       await page.emulateMedia('screen');
       await page.pdf({
@@ -178,6 +180,7 @@ router.post('/exportfile', function(req, res, next) {
   router.get('/collect-data/:id', function(req, res) {
     let id = req.params
     ThongTinChungModel.collect(id, (resData) => {
+      console.log(resData)
       res.send(resData);
     })  
   })
@@ -188,8 +191,9 @@ router.post('/exportfile', function(req, res, next) {
     ThongTinChungModel.add(id, description, function(err, description){
       if (err) {
         console.log(err);
+      } else{
+        res.send("SUCCESS");
       }
-        console.log("done");
     })
     
   })
@@ -344,16 +348,16 @@ router.post('/edit-subject', function(req, res) {
   })   
 })
 
-router.post('/collect-subjectid', function(req, res) {
-  let data = req.body.data
-  Model4.collectsubjectid(data, function(err, data) {
-    if (err) {
-      console.log(err);
-    } else{
-      res.send(data)
-    }   
-  })   
-})
+// router.post('/collect-subjectid', function(req, res) {
+//   let data = req.body.data
+//   Model4.collectsubjectid(data, function(err, data) {
+//     if (err) {
+//       console.log(err);
+//     } else{
+//       res.send(data)
+//     }   
+//   })   
+// })
 
 router.post('/collect-mtmh', function(req, res) {
   let data = req.body.data
@@ -434,6 +438,15 @@ router.get('/get-data-9/:idSubject', function(req, res) {
 
 
 
+router.get('/get-data-6/:idSubject', function(req, res) {
+  let idSubject = req.params.idSubject;
+  Model6.get(idSubject).then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+})
 
 router.post('/add-data-6', function(req, res) {
   const data = req.body;

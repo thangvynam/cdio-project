@@ -126,7 +126,7 @@ class EditableCell extends React.Component {
   }
 }
 
-class DGTableItem extends React.Component {
+class itemLayout7ReducerItem extends React.Component {
   constructor(props) {
     super(props);
     this.state = { selectedRowKeys: [], editingKey: '' };
@@ -227,7 +227,7 @@ class DGTableItem extends React.Component {
       if (error) {
         return;
       }
-      const newData = this.props.dgtable;
+      const newData = this.props.itemLayout7Reducer;
       const index = newData.previewInfo.findIndex(item => key === item.key);
       if (index > -1) {
         const item = newData.previewInfo[index];
@@ -255,68 +255,68 @@ class DGTableItem extends React.Component {
     if (this.isExist(key)) {
       let index = 0;
       let indexChildren = 0;
-      for (let i = 0; i < this.props.dgtable.previewInfo.length; i++) {
-        if (key === this.props.dgtable.previewInfo[i].key) {
+      for (let i = 0; i < this.props.itemLayout7Reducer.previewInfo.length; i++) {
+        if (key === this.props.itemLayout7Reducer.previewInfo[i].key) {
           index = i;
         }
-        if (this.isChildren(key, this.props.dgtable.previewInfo[i].key)) {
+        if (this.isChildren(key, this.props.itemLayout7Reducer.previewInfo[i].key)) {
           indexChildren++;
         }
       }
       indexChildren = indexChildren + index;
-      if ((index === 0 && indexChildren === this.props.dgtable.previewInfo.length) || this.props.dgtable.previewInfo.length === 1) {
+      if ((index === 0 && indexChildren === this.props.itemLayout7Reducer.previewInfo.length) || this.props.itemLayout7Reducer.previewInfo.length === 1) {
         console.log("1");
-        this.props.dgtable.previewInfo = [];
-      } else if (index === 0 || indexChildren === this.props.dgtable.previewInfo.length) {
+        this.props.itemLayout7Reducer.previewInfo = [];
+      } else if (index === 0 || indexChildren === this.props.itemLayout7Reducer.previewInfo.length) {
         console.log("2");
-          this.props.dgtable.previewInfo.splice(index, indexChildren);
+          this.props.itemLayout7Reducer.previewInfo.splice(index, indexChildren);
       } else {
         console.log("3")
           let listKey = [];
           for (let i = index; i < index + indexChildren; i++) {
-            console.log(this.props.dgtable.previewInfo[i])
-            this.props.dgtable.previewInfo[i].mathanhphan = this.props.dgtable.previewInfo[i + indexChildren].mathanhphan;
-            this.props.dgtable.previewInfo[i].tenthanhphan = this.props.dgtable.previewInfo[i + indexChildren].tenthanhphan;
-            this.props.dgtable.previewInfo[i].mota = this.props.dgtable.previewInfo[i + indexChildren].mota;
-            this.props.dgtable.previewInfo[i].standardOutput = this.props.dgtable.previewInfo[i + indexChildren].standardOutput;
-            this.props.dgtable.previewInfo[i].tile = this.props.dgtable.previewInfo[i + indexChildren].tile;
-            this.props.dgtable.previewInfo[i].key = index;
-            listKey.push(this.props.dgtable.previewInfo[i + indexChildren].key);
+            console.log(this.props.itemLayout7Reducer.previewInfo[i])
+            this.props.itemLayout7Reducer.previewInfo[i].mathanhphan = this.props.itemLayout7Reducer.previewInfo[i + indexChildren].mathanhphan;
+            this.props.itemLayout7Reducer.previewInfo[i].tenthanhphan = this.props.itemLayout7Reducer.previewInfo[i + indexChildren].tenthanhphan;
+            this.props.itemLayout7Reducer.previewInfo[i].mota = this.props.itemLayout7Reducer.previewInfo[i + indexChildren].mota;
+            this.props.itemLayout7Reducer.previewInfo[i].standardOutput = this.props.itemLayout7Reducer.previewInfo[i + indexChildren].standardOutput;
+            this.props.itemLayout7Reducer.previewInfo[i].tile = this.props.itemLayout7Reducer.previewInfo[i + indexChildren].tile;
+            this.props.itemLayout7Reducer.previewInfo[i].key = index;
+            listKey.push(this.props.itemLayout7Reducer.previewInfo[i + indexChildren].key);
           }
-          this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length - indexChildren - 1, 1);
+          this.props.itemLayout7Reducer.previewInfo.splice(this.props.itemLayout7Reducer.previewInfo.length - indexChildren - 1, 1);
         }
 
 
     }
-    else if (key === this.props.dgtable.previewInfo[this.props.dgtable.previewInfo.length - 1].key) {
-      this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length - 1, 1);
-      newData.previewInfo = this.props.dgtable.previewInfo;
+    else if (key === this.props.itemLayout7Reducer.previewInfo[this.props.itemLayout7Reducer.previewInfo.length - 1].key) {
+      this.props.itemLayout7Reducer.previewInfo.splice(this.props.itemLayout7Reducer.previewInfo.length - 1, 1);
+      newData.previewInfo = this.props.itemLayout7Reducer.previewInfo;
     } else {
-      console.log(this.props.dgtable.previewInfo);
+      console.log(this.props.itemLayout7Reducer.previewInfo);
       let index = 0;
-      for (let i = 0; i < this.props.dgtable.previewInfo.length; i++) {
-        if (key === this.props.dgtable.previewInfo[i].key) {
+      for (let i = 0; i < this.props.itemLayout7Reducer.previewInfo.length; i++) {
+        if (key === this.props.itemLayout7Reducer.previewInfo[i].key) {
           index = i;
         }
       }
       let listKey = [];
-      for (let i = index; i < this.props.dgtable.previewInfo.length - 1; i++) {
-        this.props.dgtable.previewInfo[i].mathanhphan = this.props.dgtable.previewInfo[i + 1].mathanhphan;
-        this.props.dgtable.previewInfo[i].tenthanhphan = this.props.dgtable.previewInfo[i + 1].tenthanhphan;
-        this.props.dgtable.previewInfo[i].mota = this.props.dgtable.previewInfo[i + 1].mota;
-        this.props.dgtable.previewInfo[i].standardOutput = this.props.dgtable.previewInfo[i + 1].standardOutput;
-        this.props.dgtable.previewInfo[i].tile = this.props.dgtable.previewInfo[i + 1].tile;
-        this.props.dgtable.previewInfo[i].key = index;
-        listKey.push(this.props.dgtable.previewInfo[i + 1].key);
+      for (let i = index; i < this.props.itemLayout7Reducer.previewInfo.length - 1; i++) {
+        this.props.itemLayout7Reducer.previewInfo[i].mathanhphan = this.props.itemLayout7Reducer.previewInfo[i + 1].mathanhphan;
+        this.props.itemLayout7Reducer.previewInfo[i].tenthanhphan = this.props.itemLayout7Reducer.previewInfo[i + 1].tenthanhphan;
+        this.props.itemLayout7Reducer.previewInfo[i].mota = this.props.itemLayout7Reducer.previewInfo[i + 1].mota;
+        this.props.itemLayout7Reducer.previewInfo[i].standardOutput = this.props.itemLayout7Reducer.previewInfo[i + 1].standardOutput;
+        this.props.itemLayout7Reducer.previewInfo[i].tile = this.props.itemLayout7Reducer.previewInfo[i + 1].tile;
+        this.props.itemLayout7Reducer.previewInfo[i].key = index;
+        listKey.push(this.props.itemLayout7Reducer.previewInfo[i + 1].key);
       }
       console.log(listKey);
-      this.props.dgtable.previewInfo.splice(this.props.dgtable.previewInfo.length - 1, 1);
+      this.props.itemLayout7Reducer.previewInfo.splice(this.props.itemLayout7Reducer.previewInfo.length - 1, 1);
       let indexListKey = 0;
-      for (let i = index; i < this.props.dgtable.previewInfo.length; i++) {
-        this.props.dgtable.previewInfo[i].key = listKey[indexListKey];
+      for (let i = index; i < this.props.itemLayout7Reducer.previewInfo.length; i++) {
+        this.props.itemLayout7Reducer.previewInfo[i].key = listKey[indexListKey];
         indexListKey++;
       }
-      newData.previewInfo = this.props.dgtable.previewInfo;
+      newData.previewInfo = this.props.itemLayout7Reducer.previewInfo;
       console.log(newData);
     }
   }
@@ -344,9 +344,9 @@ class DGTableItem extends React.Component {
   onMultiDelete = () => {
     let newData = {previewInfo:[]};
     console.log(this.state.selectedRowKeys.length);
-    console.log(this.props.dgtable)
-    if(this.state.selectedRowKeys.length === this.props.dgtable.previewInfo.length){
-      this.props.dgtable.previewInfo = [];
+    console.log(this.props.itemLayout7Reducer)
+    if(this.state.selectedRowKeys.length === this.props.itemLayout7Reducer.previewInfo.length){
+      this.props.itemLayout7Reducer.previewInfo = [];
     }else {
     for(let i=0 ;i< this.state.selectedRowKeys.length;i++){
       this.onDelete(newData,this.state.selectedRowKeys[i]);
@@ -461,8 +461,8 @@ class DGTableItem extends React.Component {
         }),
       };
     });
-    if (this.props.dgtable.previewInfo.length !== 0) {
-      this.sortValues(this.props.dgtable.previewInfo);
+    if (this.props.itemLayout7Reducer.previewInfo.length !== 0) {
+      this.sortValues(this.props.itemLayout7Reducer.previewInfo);
 
     }
 
@@ -489,7 +489,7 @@ class DGTableItem extends React.Component {
         <Table
           components={components}
           bordered
-          dataSource={this.props.dgtable.previewInfo}
+          dataSource={this.props.itemLayout7Reducer.previewInfo}
           columns={columns}
           rowSelection={rowSelection}
           rowClassName="editable-row"
@@ -504,7 +504,7 @@ class DGTableItem extends React.Component {
 }
 const mapStateToProps = (state) => {
   return {
-    dgtable: state.itemLayout7Reducer,
+    itemLayout7Reducer: state.itemLayout7Reducer,
     subjectId: state.subjectid,
 
   }
@@ -518,4 +518,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(DGTableItem));
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(itemLayout7ReducerItem));

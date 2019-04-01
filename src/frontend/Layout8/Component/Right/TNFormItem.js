@@ -4,151 +4,77 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeTNData, addTNData, saveTempTNData ,getLoaiTaiNguyen} from '../../../Constant/ActionType';
+import { changeTNData, addTNData, saveTempTNData ,saveLoaiTaiNguyen} from '../../../Constant/ActionType';
 import axios from 'axios';
 
-const loai_item = [{
-  value: 'URL',
-  label: 'URL'
-}, {
-  value: 'BOOK',
-  label: 'BOOK'
-}, {
-  value: 'ARTICLE',
-  label: 'ARTICLE'
-}, {
-  value: 'VIDEO',
-  label: 'VIDEO'
-}]
+var mota = '';
+var link = '';
+var loai ='';
 
 class TNFormItem extends Component {
   constructor(props){
     super(props);
-    this.state = {
-        isLoad: false,
-        loaitainguyen: ''
-    }
   }
 
   handleMotaChange = (value) => {
-    let a = value.target.value;
-    this.props.onChangeTNData({
-      stt: this.props.tndata.stt,
-      loai: this.props.tndata.loai,
-      mota: a,
-      link: this.props.tndata.link,
-    })
-    
-    let tempInfo = this.props.tntable.tempInfo;
-    tempInfo["mota"] = a;
-   
+    mota = value.target.value;
+
+    let tempInfo = this.props.itemLayout8Reducer.tempInfo;
+    tempInfo["mota"] = mota;
     this.props.onSaveTempTNData(tempInfo);
 
   }
   handleLinkChange = (value) => {
-    let a = value.target.value;
-    this.props.onChangeTNData({
-      stt: this.props.tndata.stt,
-      loai: this.props.tndata.loai,
-      mota: this.props.tndata.mota,
-      link: a,
-    })
+    link = value.target.value;
     
-    let tempInfo = this.props.tntable.tempInfo;
-    tempInfo["link"] = a;
+    let tempInfo = this.props.itemLayout8Reducer.tempInfo;
+    tempInfo["link"] = link;
    
     this.props.onSaveTempTNData(tempInfo);
   }
 
   handleLoaiChange = (value) => {
-    this.props.onChangeTNData({
-      stt: this.props.tndata.stt,
-      loai: value[0],
-      mota: this.props.tndata.mota,
-      link: this.props.tndata.link,
-    })
+    loai = value[0];
   }
 
-  componentWillReceiveProps(nextProps) {
-    if(this.state.isLoad === false ){
-      this.setState= {
-        isLoad : true
-      }
+  async componentDidMount(){
+    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout8Reducer.isLoaded === false){
       var self = this;
-      
-        console.log("vo duoc roi")
-        axios.get('/get-loaitainguyen')
+        await axios.get('/get-loaitainguyen')
         .then(function (response) {
             self.props.updateLoaitainguyen(response.data);
           })
          .catch(function (error) {
             console.log(error);
          });  
-      }
-      console.log(this.props.loaitainguyen)
-  }
-
-  componentDidMount(){
-    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== ""){
-      var self = this;
-     
-        axios.get('/get-loaitainguyen')
-        .then(function (response) {
-            self.props.updateLoaitainguyen(response.data);
-            
-          })
-         .catch(function (error) {
-            console.log(error);
-         });  
-      
     }
   }
-
-  onGetLoaiTaiNguyen = () => {
-    let array = [];
-    var x  = this;
-    axios.get("/get-loaitainguyen").then(response => {
-      const data = response.data;
-      data.forEach((item, index) => {
-        let temp = item.loai;
-        array.push(temp);
-      });
-      x.setState = {
-        loaitainguyen : "Set duoc roi",
-      }
-    }
-    )
-  }
-
 
   addTNData = () => {
 
-    if (this.props.tndata.loai === "" || this.props.tndata.loai === undefined) {
+    if (loai === "" || loai === undefined) {
       message.error("Chưa chọn loại")
     } else {
-      if (this.props.tndata.mota === "" || this.props.tndata.mota === undefined) {
+      if (mota === "" || mota === undefined) {
         message.error("Chưa nhập mô tả");
       } else {
-        let index = this.props.tntable.previewInfo.length + 1;
+        let index = this.props.itemLayout8Reducer.previewInfo.length ;
 
         let data = {
           key: index,
-          stt: index,
-          loai: this.props.tndata.loai,
-          mota: this.props.tndata.mota,
-          link: this.props.tndata.link,
+          stt: index+1,
+          loai: loai,
+          mota: mota,
+          link: link,
         }
-        let newData = {previewInfo : [],tempInfo:{}};
-        newData.previewInfo = this.props.tntable.previewInfo.concat(data);
-        newData.tempInfo = {
-          mota: '',
-          link: '',
-        }
+        let newData = {};
+        newData = this.props.itemLayout8Reducer.previewInfo.concat(data);
+      
         this.props.onAddTNData(newData);
+
         message.info("Thêm thành công!");
         this.props.form.resetFields();
-         this.props.tndata.link = '';
-         this.props.tndata.mota = '';
+
         let resetTemp = {
           mota : '',
           link : ''
@@ -160,9 +86,6 @@ class TNFormItem extends Component {
   }
 
   render() {
-    // if( this.state.loaitainguyen.length === 0) return false;
-    
-    console.log(this.props.loaitainguyen);
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -184,7 +107,7 @@ class TNFormItem extends Component {
         sm: { span: 3 },
       },
     };
-    console.log(this.state.loaitainguyen)
+
 
     return (
       <div style={{ border: "2px solid", borderRadius: "12px" }}>
@@ -198,7 +121,9 @@ class TNFormItem extends Component {
               </span>
             )}
           >
-            <Cascader options={loai_item} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />
+            <Cascader options={this.props.itemLayout8Reducer.loaitainguyenState.map(item => {
+              return {value :item.loai,label : item.loai}
+            })} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />
           </Form.Item>
 
           <Form.Item
@@ -209,7 +134,7 @@ class TNFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập mô tả',
               }],
-              initialValue: this.props.tntable.tempInfo.mota
+              initialValue: this.props.itemLayout8Reducer.tempInfo.mota
 
             })(
               <Input onChange={this.handleMotaChange} />
@@ -224,7 +149,7 @@ class TNFormItem extends Component {
               rules: [{
                 message: 'Vui lòng nhập link liên kết (nếu có)',
               }],
-              initialValue: this.props.tntable.tempInfo.link
+              initialValue: this.props.itemLayout8Reducer.tempInfo.link
 
             })(
               <Input onChange={this.handleLinkChange} />
@@ -248,9 +173,8 @@ class TNFormItem extends Component {
 const mapStateToProps = (state) => {
   return {
     tndata: state.tndata,
-    tntable: state.itemLayout8Reducer,
+    itemLayout8Reducer: state.itemLayout8Reducer,
     subjectId : state.subjectid,
-    loaitainguyen: state.loaiTaiNguyenReducer
   };
 }
 const mapDispatchToProps = (dispatch) => {
@@ -258,7 +182,7 @@ const mapDispatchToProps = (dispatch) => {
     onAddTNData: addTNData,
     onChangeTNData: changeTNData,
     onSaveTempTNData : saveTempTNData,
-    updateLoaitainguyen: getLoaiTaiNguyen,
+    updateLoaitainguyen: saveLoaiTaiNguyen,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TNFormItem);

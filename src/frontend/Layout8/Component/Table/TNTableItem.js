@@ -7,38 +7,11 @@ import { bindActionCreators } from 'redux';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from 'react-redux';
-import { updateTNData } from '../../../Constant/ActionType';
+import { updateTNData,addTNData,saveAllTNData,isLoaded8 } from '../../../Constant/ActionType';
+import axios from 'axios';
+
 const { Option } = Select;
 
-const columns = [{
-  title: 'STT',
-  dataIndex: 'stt',
-  key: 'stt',
-}, {
-  title: 'Loại',
-  dataIndex: 'loai',
-  key: 'loai',
-  
-}, {
-  title: 'Mô tả',
-  dataIndex: 'mota',
-  key: 'mota',
-},
-{
-  title: 'Link liên kết',
-  dataIndex: 'link',
-  key: 'link',
-}, {
-  title: 'Action',
-  key: 'action',
-  render: (text, record) => (
-    <span>
-      <a href="#a">Sửa {record.name}</a>
-      <Divider type="vertical" />
-      <a href="#b">Xóa</a>
-    </span>
-  ),
-}];
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -125,7 +98,6 @@ class TNTableItem extends Component {
       key: 'action',
       render: (text, record) => {
         const editable = this.isEditing(record);
-        console.log(editable);
         return (
           <div>
 
@@ -172,44 +144,40 @@ class TNTableItem extends Component {
   isEditing = record => record.key === this.state.editingKey;
 
   save(form, key) {
-    console.log(this.props.tntable.previewInfo)
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
 
-      let index = key - 1;
-
-      var newItems = this.props.tntable.previewInfo;
+      let index = key;
+      var newItems = this.props.itemLayout8Reducer.previewInfo;
       const item = newItems[index];
       newItems.splice(index, 1, {
         ...item,
         ...row
       });
-      this.props.onUpdateTNData(newItems);
+      this.props.onAddTNData(newItems);
       this.setState({ editingKey: "" });
     });
   }
 
   handleDelete(key) {
-    let newData = {previewInfo:[]};
-    this.props.tntable.previewInfo = this.props.tntable.previewInfo.filter(
-      (_, index) => index !== key - 1
-    );
-    
-    for (let i = 0; i < this.props.tntable.previewInfo.length; i++) {
-      this.props.tntable.previewInfo[i].key = i + 1;
-      this.props.tntable.previewInfo[i].stt = i+1;
+    for(let i= key;i<this.props.itemLayout8Reducer.previewInfo.length-1;i++){
+      this.props.itemLayout8Reducer.previewInfo[i].loai = this.props.itemLayout8Reducer.previewInfo[i+1].loai;
+      this.props.itemLayout8Reducer.previewInfo[i].mota = this.props.itemLayout8Reducer.previewInfo[i+1].mota;
+      this.props.itemLayout8Reducer.previewInfo[i].link = this.props.itemLayout8Reducer.previewInfo[i+1].link;
     }
-
-    newData.previewInfo = this.props.tntable.previewInfo;
-    console.log(newData.previewInfo);
+    for (let i = 0; i < this.props.itemLayout8Reducer.previewInfo.length; i++) {
+      this.props.itemLayout8Reducer.previewInfo[i].key = i;
+      this.props.itemLayout8Reducer.previewInfo[i].stt = i + 1;
+    }
+    this.props.itemLayout8Reducer.previewInfo.splice(this.props.itemLayout8Reducer.previewInfo.length - 1, 1);
+    let  newData = this.props.itemLayout8Reducer.previewInfo;
     this.setState({ selectedRowKeys: [], editingKey: "" });
-    this.props.onUpdateTNData(newData);
+    this.props.onAddTNData(newData);
   }
 
   edit(key) {
-    console.log(this.props.tntable.previewInfo)
     this.setState({ editingKey: key });
   }
 
@@ -230,8 +198,8 @@ class TNTableItem extends Component {
     }
 
     //delete all
-    if (selectedRow.length === this.props.tntable.previewInfo.length) {
-      this.props.tntable.previewInfo = [];
+    if (selectedRow.length === this.props.itemLayout8Reducer.previewInfo.length) {
+      this.props.itemLayout8Reducer.previewInfo = [];
       this.props.onUpdateTNData([]);
       this.setState({ selectedRowKeys: [], editingKey: "" });
       return;
@@ -239,21 +207,69 @@ class TNTableItem extends Component {
 
     let filteredItems = {previewInfo:[]}
    
-    let KHitems = this.props.tntable.previewInfo;
-    this.props.tntable.previewInfo = KHitems.filter(
+    let KHitems = this.props.itemLayout8Reducer.previewInfo;
+    this.props.itemLayout8Reducer.previewInfo = KHitems.filter(
       (_, index) => !selectedRow.includes(index + 1)
     );
-    for (let i = 0; i < this.props.tntable.previewInfo.length; i++) {
-      this.props.tntable.previewInfo[i].key = i + 1;
-      this.props.tntable.previewInfo[i].stt=  i+1;
+    for (let i = 0; i < this.props.itemLayout8Reducer.previewInfo.length; i++) {
+      this.props.itemLayout8Reducer.previewInfo[i].key = i + 1;
+      this.props.itemLayout8Reducer.previewInfo[i].stt=  i+1;
     }
 
-    filteredItems.previewInfo = this.props.tntable.previewInfo;
+    filteredItems.previewInfo = this.props.itemLayout8Reducer.previewInfo;
     this.props.onUpdateTNData(filteredItems);
     this.setState({ selectedRowKeys: [], editingKey: "" });
   };
 
+  getData() {
+    return axios.get(`/get-tainguyenmonhoc/${this.props.subjectid}`).then(response => {
+      
+        return response.data
+    }).catch(function(error){
+      console.log(error)
+    })
+}
 
+loaiDisplayName(value){
+  for(let i=0 ;i<this.props.itemLayout8Reducer.loaitainguyenState.length;i++){
+    if(value === this.props.itemLayout8Reducer.loaitainguyenState[i].id) {
+      return this.props.itemLayout8Reducer.loaitainguyenState[i].loai;
+    }}
+}
+
+async componentDidMount(){
+  let temp = await this.getData();
+  let tempPreview = [];
+  if(temp!==null && temp!== undefined && this.props.itemLayout8Reducer.isLoaded === false){
+    temp.map((item,index) =>{
+      let data = {
+        key: index,
+        stt: index +1,
+        loai: this.loaiDisplayName(item.tnmh_loai_tai_nguyen_id),
+        mota: item.mo_ta,
+        link: item.lien_ket,
+      }
+      tempPreview.push(data);
+    })
+    this.props.isLoaded(true);
+  this.props.onAddTNData(tempPreview);
+  }
+  
+}
+
+saveAll = () => {
+
+  let loaitainguyen = this.props.itemLayout8Reducer.loaitainguyenState;
+  let id = this.props.subjectid;
+  let description = this.props.itemLayout8Reducer.previewInfo;
+  let obj = {
+    loaitainguyen : loaitainguyen,
+    id : id,
+    description : description,
+  }
+  this.props.onSaveAllData(obj);
+  alert("ok")
+}
 
   showModal = () => {
     confirm({
@@ -291,7 +307,6 @@ class TNTableItem extends Component {
         }),
       };
     });
-    console.log(this.props.tntable.previewInfo)
     return (
       <div>
         <div style={{ marginBottom: 16 }}>
@@ -306,11 +321,16 @@ class TNTableItem extends Component {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
+          <Button style={{float: "right"}}
+            onClick={this.saveAll}
+          >
+            Lưu tât cả
+          </Button>
         </div>
         <Table
           components={components}
           bordered
-          dataSource={this.props.tntable.previewInfo}
+          dataSource={this.props.itemLayout8Reducer.previewInfo}
           columns={columns}
           rowSelection={rowSelection}
           rowClassName="editable-row"
@@ -328,12 +348,17 @@ class TNTableItem extends Component {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onUpdateTNData: updateTNData,
+    onAddTNData: addTNData,
+    onSaveAllData : saveAllTNData,
+    isLoaded: isLoaded8,
   }, dispatch);
 } 
 
 const mapStateToProps = (state) => {
   return {
-    tntable: state.itemLayout8Reducer,
+    
+    itemLayout8Reducer: state.itemLayout8Reducer,
+    subjectid: state.subjectid,
   }
 }
 

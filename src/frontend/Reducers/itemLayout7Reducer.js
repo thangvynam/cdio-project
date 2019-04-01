@@ -1,5 +1,4 @@
-
-import { ADD_DGDATA, CHANGE_DGDATA } from '../Constant/ActionType';
+import { ADD_DGDATA, CHANGE_DGDATA, CHUDE_DANHGIA,IS_LOADED_7 } from '../Constant/ActionType';
 const addDGDataState = {
     previewInfo:
         [{
@@ -45,21 +44,40 @@ const addDGDataState = {
             mota: 'Thiết kế 1 màn hình tìm sản phẩm',
             tile: '2%',
         }],
-        tempInfo: {
-            mathanhphan: "",
-            tenthanhphan: "",
-            mota: "",
-            tile:"",
-            standardOutput: [],
-        }
+    tempInfo: {
+        mathanhphan: "",
+        tenthanhphan: "",
+        mota: "",
+        tile:"",
+        standardOutput: [],
+    },
+    chudeDanhGia : [],
+    isLoaded : false,
+
 };
 
 
 export function itemLayout7Reducer(state = addDGDataState, action) {
 
     switch (action.type) {
-        case ADD_DGDATA:
-            return action.data;
+        case ADD_DGDATA:{
+            return{
+                ...state,
+                previewInfo : action.data,
+            }
+        }
+        case CHUDE_DANHGIA:{
+            return{
+                ...state,
+                chudeDanhGia : action.data,
+            }
+        }
+        case IS_LOADED_7: {
+            return{
+                ...state,
+                isLoaded : action.data
+            }
+        }
         default:
             return state;
     }

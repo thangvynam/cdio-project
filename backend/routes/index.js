@@ -12,7 +12,8 @@ const Model4 = require('../models/Model4');
 const Model5 = require('../models/Model5');
 const Model9 = require('../models/Model9');
 const Model6 = require('../models/Model6');
-const Model7 = require('../models/Model7')
+const Model7 = require('../models/Model7');
+const Model8 = require('../models/Model8')
 const LogModel = require('../models/LogModel');
 const MatrixModel = require('../models/MatrixModel');
 
@@ -207,6 +208,21 @@ router.post('/save-data-2', function(req, res) {
     id: req.body.id
   }
   MoTaModel.save(data, function(err, description) {
+    if (err) {
+      console.log(err);
+    }
+    res.end("done");
+  })   
+})
+
+
+router.post('/save-tainguyenmonhoc', function(req, res) {
+  let description = req.body.data
+  let data = {
+    description: description,
+    id: req.body.id
+  }
+  Model8.save(data, function(err, description) {
     if (err) {
       console.log(err);
     }
@@ -473,12 +489,23 @@ router.get('/collect-data-5', function(req, res) {
   })   
 })
 
-router.get('/get-danhgia',function(req,res){
-  Model7.getDanhGia(function(err,result){
+
+router.get('/get-danhgia/:id',function(req,res){
+  let id = req.params
+  Model7.getDanhGia(id,function(err,result){
     if(err){
       res.end("0");
     }
-    console.log("done");
+    res.end(JSON.stringify(result));
+  })
+})
+
+router.get('/get-chuandaura/:id',function(req,res){
+  let id = req.params
+  Model7.getChuanDaura(id,function(err,result){
+    if(err){
+      res.end("0");
+    }
     res.end(JSON.stringify(result));
   })
 })
@@ -504,7 +531,18 @@ router.get('/get-chude',function(req,res){
 
 
 router.get('/get-loaitainguyen',function(req,res){
-  Model9.getLoaiTaiNguyen(function(err,result){
+  Model8.getLoaiTaiNguyen(function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
+})
+
+
+router.get('/get-tainguyenmonhoc/:id',function(req,res){
+  let id = req.params
+  Model8.getTaiNguyenMonHoc(id,function(err,result){
     if(err){
       res.end("0");
     }

@@ -11,7 +11,7 @@ Model6.add = (body, result) => {
       return result(err,null);
     }
   })
-
+  if(body.data.length===0) return result(null,"1");
 
     body.data.forEach((item,index)=> {
 
@@ -115,19 +115,121 @@ Model6.getEvalActs = (idSubject,result)=>{
           })
 
         })
-      
-
-
       }
-    
-
-
-
-      
+         
     });
   }
 
 
+
+  Model6.get = (idSubject)=>{
+    return new Promise((resolve,reject)=>{
+      sql.query(`select id,tuan,chu_de from ke_hoach_thuc_hanh 
+      where thong_tin_chung_id = ${idSubject} and del_flag = 0`,(err,listKH)=>{
+        if(err){
+          console.log("err: ",err);
+          reject(err);
+        }
+        if(listKH.length === 0){
+          resolve([]);
+        }
+        var result = [];
+        listKH.forEach((khth,index)=>{
+          let temp = {
+            key:khth.tuan,
+            titleName:khth.chu_de,
+            teachingActs: [],
+            standardOutput: [],
+            evalActs: [],
+          }
+          getTeachingActsByIdKHTH(khth.id).then(res=>{
+            temp.teachingActs = res;
+
+            getStandardOutputByIdKHTH(khth.id).then(res=>{
+               temp.standardOutput = res;
+
+               getEvalActsByIdKHTH(khth.id).then(res=>{
+                 temp.evalActs = res;
+                result.push(temp);
+                if(index===listKH.length - 1) resolve(result);
+
+               },err=>{
+                 console.log("err: ",err);
+                 reject(err);
+               })
+
+              
+   
+             },err=>{
+               console.log("err:",err);
+               reject(err);
+             });
+
+
+
+          },err=>{
+            console.log("err:",err);
+            reject(err);
+          });
+         
+        })
+        
+            
+      })
+    })
+
+  }
+
+  getTeachingActsByIdKHTH = idKHTH=>{
+    return new Promise((resolve,reject)=>{
+      let teachingActs = [];
+      sql.query(`SELECT hdd.hoat_dong FROM hoat_dong_day hdd, khth_has_hdd has
+      WHERE has.ke_hoach_thuc_hanh_id = ${idKHTH} AND hdd.id = has.hoat_dong_day_id`,(err,result)=>{
+        if(err){
+          console.log("err:", err);
+          reject(err);
+        }
+        result.forEach((item,_)=>{
+          teachingActs.push(item.hoat_dong);
+        })
+        resolve(teachingActs);
+      })
+    })
+  }
+
+  getStandardOutputByIdKHTH = idKHTH=>{
+    return new Promise((resolve,reject)=>{
+      let standardOutput = [];
+      sql.query(`SELECT cdr.chuan_dau_ra FROM chuan_dau_ra_mon_hoc cdr,khth_has_cdrmh has
+      WHERE has.ke_hoach_thuc_hanh_id = ${idKHTH} AND cdr.id = has.chuan_dau_ra_mon_hoc_id`,(err,result)=>{
+        if(err){
+          console.log("err:", err);
+          reject(err);
+        }
+        result.forEach((item,_)=>{
+          standardOutput.push(item.chuan_dau_ra);
+        })
+        resolve(standardOutput);
+      })
+    })
+  }
+
+  getEvalActsByIdKHTH = idKHTH=>{
+    return new Promise((resolve,reject)=>{
+      let evalActs = [];
+      sql.query(`SELECT dg.ma FROM danh_gia dg,khth_has_dg has
+      WHERE has.ke_hoach_thuc_hanh_id = ${idKHTH} AND dg.id = has.danh_gia_id`,(err,result)=>{
+        if(err){
+          console.log("err:", err);
+          reject(err);
+        }
+        result.forEach((item,_)=>{
+          evalActs.push(item.ma);
+        })
+        resolve(evalActs);
+      })
+    })
+  }
 
 
 

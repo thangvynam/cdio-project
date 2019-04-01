@@ -47,6 +47,7 @@ export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
 export const CHANGE_TEMP_KHGDTH = 'CHANGE_TEMP_KHGDTH';
 export const CHANGE_MAP_KHGDTH = 'CHANGE_MAP_KHGDTH';
+export const CHANGE_ISLOADED_KHTH = 'CHANGE_ISLOADED_KHTH';
 
 
 
@@ -228,7 +229,12 @@ export function changeMapKHGDTH(newMap){
         data: newMap,
     }
 }
-
+export function changeIsLoadedKHTH(newIsLoaded){
+    return{
+        type: CHANGE_ISLOADED_KHTH,
+        data: newIsLoaded,
+    }
+}
 export function addItemRule(newItem){
     return{
         type: ADD_ITEM_RULE,

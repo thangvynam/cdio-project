@@ -33,11 +33,22 @@ const itemMenuInitialState = {
 const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
     switch (action.type) {
         case ADD_DATA:
-            console.log(action.data)
+            // let arrTemp = [];
+            // arrTemp.push(action.data)
+            console.log( state.previewInfo)
+            if(state.previewInfo.length !=0){
+                console.log("123")
+                return {
+                    ...state,
+                    previewInfo: state.previewInfo.concat(action.data)
+                }
+            }
+            console.log("456")
             return {
                 ...state,
                 previewInfo: action.data
             }
+            
         case DELETE_DATA_LAYOUT_5:
             if(state.previewInfo.length === 1){
                 state.previewInfo = []

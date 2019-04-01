@@ -1,9 +1,10 @@
-import { UPDATE_CON_TAB, IS_LOAD_LOG } from "../Constant/ActionType";
+import { UPDATE_CON_TAB, IS_LOAD_LOG,SHOW_INPUT_COMMENT } from "../Constant/ActionType";
 
 
 const itemLayout2InitialState = {
     contentTab: '',
     isLoaded: false,
+    idLog : -1,
 }
 
 const logReducer = (state = itemLayout2InitialState, action) => {
@@ -18,6 +19,12 @@ const logReducer = (state = itemLayout2InitialState, action) => {
             return {
                 ...state,
                 contentTab: action.data
+            }
+        }
+        case SHOW_INPUT_COMMENT:{
+            return{
+                ...state,
+                idLog: action.id
             }
         }
         default:

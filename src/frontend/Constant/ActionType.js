@@ -68,6 +68,8 @@ export const CHANGE_DATA = 'CHANGE_DATA';
 export const ADD_DATA_LAYOUT_5 = "ADD_DATA_LAYOUT_5";
 export const COLLECT_DATA_REQUEST_5 = "COLLECT_DATA_REQUEST_5";
 
+// Comment 
+export const SHOW_INPUT_COMMENT = "SHOW_INPUT_COMMENT";
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {
         type: SAVE_LOG,

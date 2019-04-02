@@ -1,10 +1,11 @@
-import { ADD_TNDATA, CHANGE_TNDATA,SAVE_LOAI_TAI_NGUYEN,SAVE_TEMP_DATA_LAYOUT_8,SAVE_ALL_DATA_LAYOUT_8, IS_LOADED_8 } from '../Constant/ActionType';
+import { ADD_TNDATA, CHANGE_TNDATA,SAVE_LOAI_TAI_NGUYEN,SAVE_TEMP_DATA_LAYOUT_8,SAVE_ALL_DATA_LAYOUT_8, IS_LOADED_8, CDR_DANHGIA } from '../Constant/ActionType';
 import { stat } from 'fs';
 import axios from 'axios';
 
 const addTNDataState = {
     previewInfo: [],
     tempInfo: {
+        loai : [],
         mota: "",
         link: "",
     },

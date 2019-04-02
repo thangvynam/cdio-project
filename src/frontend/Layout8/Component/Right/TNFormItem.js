@@ -9,7 +9,7 @@ import axios from 'axios';
 
 var mota = '';
 var link = '';
-var loai ='';
+var loai =[];
 
 class TNFormItem extends Component {
   constructor(props){
@@ -34,7 +34,11 @@ class TNFormItem extends Component {
   }
 
   handleLoaiChange = (value) => {
-    loai = value[0];
+    let tempInfo = this.props.itemLayout8Reducer.tempInfo;
+    loai[0] = value[0];
+    tempInfo["loai"] = loai;
+    console.log(loai);
+    this.props.onSaveTempTNData(tempInfo);
   }
 
   async componentDidMount(){
@@ -120,10 +124,15 @@ class TNFormItem extends Component {
                 Loại tài nguyên
               </span>
             )}
-          >
-            <Cascader options={this.props.itemLayout8Reducer.loaitainguyenState.map(item => {
+          >{getFieldDecorator('cascader', {
+            rules: [
+              { required: true, message: 'Chọn chủ đề' },
+            ],
+            initialValue: this.props.itemLayout8Reducer.tempInfo.loai
+          })
+            (<Cascader options={this.props.itemLayout8Reducer.loaitainguyenState.map(item => {
               return {value :item.loai,label : item.loai}
-            })} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />
+            })} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />)}
           </Form.Item>
 
           <Form.Item

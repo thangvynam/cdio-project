@@ -53,6 +53,37 @@ Model7.getChuanDaura = (id,result) => {
 }
 
 
+Model7.getStandardOutput = (id,result)=>{
+    sql.query(`SELECT id,muc_tieu FROM muc_tieu_mon_hoc WHERE thong_tin_chung_id = ${id.id} AND del_flag = 0`,(err,listMT)=>{
+      if(err){
+        console.log("err: ",err);
+        return result(err,null);
+      }
+      else{
+        let standardOutput = [];
+        listMT.forEach((muctieu,index)=>{
+          sql.query(`SELECT id,chuan_dau_ra FROM chuan_dau_ra_mon_hoc
+          WHERE muc_tieu_mon_hoc_id = ${muctieu.id} AND del_flag = 0`,(err,listCdr)=>{
+            if(err){
+              console.log("err: ",err);
+              return result(err,null);
+            }
+            let temp = {
+              "muc_tieu": muctieu.muc_tieu,
+              "cdr":listCdr,
+            }
+            standardOutput.push(temp);
+            if (index === listMT.length - 1) return result(null,standardOutput);
+
+          })
+
+        })
+      }
+         
+    });
+  }
+
+
 
 
 

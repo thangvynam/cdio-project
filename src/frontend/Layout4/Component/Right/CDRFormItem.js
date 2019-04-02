@@ -515,6 +515,7 @@ class CDRFormItem extends Component {
   }
 
   render() {
+    console.log(this.props.cdrdata.level_verb);
     console.log(this.props.cdrmdhd);
     const { getFieldDecorator } = this.props.form;
     const CDROption = this.props.mtmh.map((key) => {

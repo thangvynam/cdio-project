@@ -65,6 +65,7 @@ export const DELETE_DGDATA = 'DELETE_DGDATA';
 export const SAVE_TEMP_DATA_LAYOUT_7 = "SAVE_TEMP_DATA_LAYOUT_7";
 export const CHUDE_DANHGIA = "CHUDE_DANHGIA";
 export const IS_LOADED_7 = 'IS_LOADED_7';
+export const CDR_DANHGIA = "CDR_DANHGIA";
 
 //layout 8
 export const ADD_TNDATA = 'ADD_TNDATA';
@@ -362,6 +363,13 @@ export function updateChudeDanhGia(chude){
     return{
         type: CHUDE_DANHGIA,
         data: chude,
+    }
+}
+
+export function updateCDRDanhGia(cdr){
+    return{
+        type: CDR_DANHGIA,
+        data: cdr,
     }
 }
 

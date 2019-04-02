@@ -563,6 +563,16 @@ router.get('/get-tainguyenmonhoc/:id',function(req,res){
   })
 })
 
+router.get('/get-standardoutput-7/:id', function(req, res) {
+  let id = req.params;
+  Model7.getStandardOutput(id,function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
+})
+
 router.get('/get-reality-matrix', function(req, res) {
   
   MatrixModel.getRealityMatrix().then(result => {

@@ -1,4 +1,4 @@
-import { ADD_DGDATA, CHANGE_DGDATA, CHUDE_DANHGIA,IS_LOADED_7 } from '../Constant/ActionType';
+import { ADD_DGDATA, CHANGE_DGDATA, CHUDE_DANHGIA,IS_LOADED_7,CDR_DANHGIA } from '../Constant/ActionType';
 const addDGDataState = {
     previewInfo:
         [{
@@ -45,6 +45,7 @@ const addDGDataState = {
             tile: '2%',
         }],
     tempInfo: {
+        chude : [],
         mathanhphan: "",
         tenthanhphan: "",
         mota: "",
@@ -53,7 +54,7 @@ const addDGDataState = {
     },
     chudeDanhGia : [],
     isLoaded : false,
-
+    chuandaura : [],
 };
 
 
@@ -76,6 +77,13 @@ export function itemLayout7Reducer(state = addDGDataState, action) {
             return{
                 ...state,
                 isLoaded : action.data
+            }
+        }
+        
+        case CDR_DANHGIA:{
+            return{
+                ...state,
+                chuandaura : action.data
             }
         }
         default:

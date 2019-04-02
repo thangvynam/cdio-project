@@ -3,11 +3,13 @@ import {
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
-import { changeDGData, addDGData, deleteDGData } from '../../../Constant/ActionType';
+import { changeDGData, addDGData, deleteDGData ,isLoaded7} from '../../../Constant/ActionType';
 import React, { Component } from 'react';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from 'react-redux';
+import axios from "axios"
+
 const { Option } = Select;
 // import './1.css';
 const chude = ['BTVN', 'BTTL', 'DAMH', 'LTCK'];
@@ -355,6 +357,42 @@ class itemLayout7ReducerItem extends React.Component {
     this.props.onDeleteDGData(newData);
   }
 
+  //   getData() {
+  //     return axios.get(`/get-danhgia/${this.props.subjectid}`).then(response => {
+  //         if(response.data !== null && response.data !== undefined){
+  //           response.data.map(item =>{
+  //             id_danhgia = item.id;
+              
+  //           })
+  //         }
+  //     }).catch(function(error){
+  //       console.log(error)
+  //     })
+  // }
+
+
+// async componentDidMount(){
+//   console.log(this.props.itemLayout7Reducer.isLoaded)
+//   let temp = await this.getData();
+//   let tempPreview = [];
+//   if(temp!==null && temp!== undefined && this.props.itemLayout8Reducer.isLoaded === false){
+//     temp.map((item,index) =>{
+//       let data = {
+//         key: item.ma,
+//         standardOutput: [],
+//         mathanhphan: item.ma,
+//         tenthanhphan: item.ten,
+//         mota: item.mo_ta,
+//         tile: item.ti_le,
+//       }
+//       tempPreview.push(data);
+//     })
+//     this.props.isLoaded(true);
+//   this.props.onAddTNData(tempPreview);
+//   }
+// }
+
+
 
   showModal = () => {
     confirm({
@@ -506,7 +544,6 @@ const mapStateToProps = (state) => {
   return {
     itemLayout7Reducer: state.itemLayout7Reducer,
     subjectId: state.subjectid,
-
   }
 }
 
@@ -515,6 +552,7 @@ const mapDispatchToProps = (dispatch) => {
     onAddDGData: addDGData,
     onChangeDGData: changeDGData,
     onDeleteDGData: deleteDGData,
+    isLoaded: isLoaded7,
   }, dispatch);
 }
 

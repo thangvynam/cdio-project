@@ -83,6 +83,11 @@ Model7.getStandardOutput = (id,result)=>{
     });
   }
 
+  Model7.save = (data,result) => {
+      data = data.description;
+      sql.query(`update tai_nguyen_mon_hoc set del_flag = 1 where thong_tin_chung_id = ${data.id}`);
+      
+  }
 
 
 

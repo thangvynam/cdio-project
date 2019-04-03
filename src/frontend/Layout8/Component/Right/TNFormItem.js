@@ -7,37 +7,33 @@ import { connect } from 'react-redux';
 import { changeTNData, addTNData, saveTempTNData ,saveLoaiTaiNguyen} from '../../../Constant/ActionType';
 import axios from 'axios';
 
-var mota = '';
-var link = '';
-var loai =[];
-
 class TNFormItem extends Component {
   constructor(props){
     super(props);
   }
 
   handleMotaChange = (value) => {
-    mota = value.target.value;
+    let a = value.target.value;
 
     let tempInfo = this.props.itemLayout8Reducer.tempInfo;
-    tempInfo["mota"] = mota;
+    tempInfo["mota"] = a;
     this.props.onSaveTempTNData(tempInfo);
 
   }
   handleLinkChange = (value) => {
-    link = value.target.value;
+    let a = value.target.value;
     
     let tempInfo = this.props.itemLayout8Reducer.tempInfo;
-    tempInfo["link"] = link;
+    tempInfo["link"] = a;
    
     this.props.onSaveTempTNData(tempInfo);
   }
 
   handleLoaiChange = (value) => {
+    let a = [];
     let tempInfo = this.props.itemLayout8Reducer.tempInfo;
-    loai[0] = value[0];
-    tempInfo["loai"] = loai;
-    console.log(loai);
+    a[0] = value[0];
+    tempInfo["loai"] = a;
     this.props.onSaveTempTNData(tempInfo);
   }
 
@@ -56,10 +52,10 @@ class TNFormItem extends Component {
 
   addTNData = () => {
 
-    if (loai === "" || loai === undefined) {
+    if (this.props.itemLayout8Reducer.tempInfo.loai === "" || this.props.itemLayout8Reducer.tempInfo.loai === undefined) {
       message.error("Chưa chọn loại")
     } else {
-      if (mota === "" || mota === undefined) {
+      if (this.props.itemLayout8Reducer.tempInfo.mota === "" || this.props.itemLayout8Reducer.tempInfo.mota === undefined) {
         message.error("Chưa nhập mô tả");
       } else {
         let index = this.props.itemLayout8Reducer.previewInfo.length ;
@@ -67,9 +63,9 @@ class TNFormItem extends Component {
         let data = {
           key: index,
           stt: index+1,
-          loai: loai,
-          mota: mota,
-          link: link,
+          loai: this.props.itemLayout8Reducer.tempInfo.loai[0],
+          mota: this.props.itemLayout8Reducer.tempInfo.mota,
+          link: this.props.itemLayout8Reducer.tempInfo.link,
         }
         let newData = {};
         newData = this.props.itemLayout8Reducer.previewInfo.concat(data);
@@ -80,6 +76,7 @@ class TNFormItem extends Component {
         this.props.form.resetFields();
 
         let resetTemp = {
+          loai: '',
           mota : '',
           link : ''
         }

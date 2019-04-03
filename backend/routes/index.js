@@ -219,19 +219,33 @@ router.post('/save-data-2', function(req, res) {
   })   
 })
 
+router.post('/save-danhgia',function(req,res){
+ 
+  Model7.save(req.body.data,function(err,description){
+    if(err){
+      console.log(err);
+    }
+    res.end("done");
+  })
+})
+
 
 router.post('/save-tainguyenmonhoc', function(req, res) {
-  let description = req.body.data
-  let data = {
-    description: description,
-    id: req.body.id
-  }
-  Model8.save(data, function(err, description) {
+  Model8.save(req.body.data, function(err, description) {
     if (err) {
       console.log(err);
     }
     res.end("done");
   })   
+})
+
+router.post('/test',function(req,res){
+  Model7.test(req.body.data,function(err,description){
+    if(err){
+      console.log(err);
+    }
+    res.end("done");
+  })
 })
 
 router.get('/get-data-3/:id', (req, res) => {
@@ -542,6 +556,36 @@ router.get('/get-chude',function(req,res){
   })
 })
 
+
+router.get('/get-danhgia/:id',function(req,res){
+  let id = req.params
+  Model7.getDanhGia(id,function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
+})
+
+router.post('/get-cdrdanhgia', function(req, res) {
+  const body = req.body.data;
+  Model7.getCDRDanhGia(body, function(err, result) {
+    if (err) {
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })   
+})
+
+router.post('/get-cdr-7',function(req,res) {
+  const body = req.body.data;
+  Model7.getCDR(body,function(err,result) {
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
+})
 
 router.get('/get-loaitainguyen',function(req,res){
   Model8.getLoaiTaiNguyen(function(err,result){

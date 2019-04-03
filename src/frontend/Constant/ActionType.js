@@ -64,7 +64,8 @@ export const CHANGE_DGDATA = 'CHANGE_DGDATA';
 export const DELETE_DGDATA = 'DELETE_DGDATA';
 export const SAVE_TEMP_DATA_LAYOUT_7 = "SAVE_TEMP_DATA_LAYOUT_7";
 export const CHUDE_DANHGIA = "CHUDE_DANHGIA";
-export const IS_LOADED_7 = 'IS_LOADED_7';
+export const IS_LOADED_7_1 = 'IS_LOADED_7_1';
+export const IS_LOADED_7_2 = 'IS_LOADED_7_2';
 export const CDR_DANHGIA = "CDR_DANHGIA";
 export const SAVE_ALL_DATA_LAYOUT_7 = "SAVE_ALL_DATA_LAYOUT_7";
 
@@ -361,9 +362,16 @@ export function isLoaded8(isLoaded){
     }
 }
 
-export function isLoaded7(isLoaded){
+export function isLoaded7_1(isLoaded){
     return{
-        type: IS_LOADED_7,
+        type: IS_LOADED_7_1,
+        data: isLoaded
+    }
+}
+
+export function isLoaded7_2(isLoaded){
+    return{
+        type: IS_LOADED_7_2,
         data: isLoaded
     }
 }

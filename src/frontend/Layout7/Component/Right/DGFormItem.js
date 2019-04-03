@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeDGData, addDGData, saveTempDGData ,updateChudeDanhGia, updateCDRDanhGia} from '../../../Constant/ActionType';
+import { changeDGData, addDGData, saveTempDGData ,updateChudeDanhGia, updateCDRDanhGia, isLoaded7_1} from '../../../Constant/ActionType';
 import axios from "axios"
 
 var temp = '';
@@ -91,7 +91,7 @@ class DGFormItem extends Component {
   }
 
   componentWillMount(){
-    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout7Reducer.isLoaded === false){
+    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout7Reducer.isLoaded1 === false){
       var self = this;
         axios.get('/get-chude')
         .then(function (response) {
@@ -109,14 +109,21 @@ class DGFormItem extends Component {
         .catch(function(error){
           console.log(error);
         });
-
+        self.props.isLoaded(true);
         
     }
     
   }
 
+  getIdfromNameChude(name){
+    for(let i=0;i<this.props.itemLayout7Reducer.chudeDanhGia.length;i++){
+      if(name=== this.props.itemLayout7Reducer.chudeDanhGia[i].ma_chu_de)
+      return this.props.itemLayout7Reducer.chudeDanhGia[i].id
+    }
+  }
+
   addDGData = () => {
-    if (this.props.itemLayout7Reducer.tempInfo.chude.length === 0 || this.props.itemLayout7Reducer.tempInfo.chude === undefined) {
+    if (this.props.itemLayout7Reducer.tempInfo.chude[0] === "" || this.props.itemLayout7Reducer.tempInfo.chude[0] === undefined) {
       message.error("Chọn tên chủ đề")
     }
     else {
@@ -141,12 +148,12 @@ class DGFormItem extends Component {
                   let isAdd2Rows = false;
                   let iserror = false;
                   let mathanhphan = this.props.itemLayout7Reducer.tempInfo.mathanhphan;
-                  let chude = this.props.itemLayout7Reducer.tempInfo.chude;
+                  let chude = this.props.itemLayout7Reducer.tempInfo.chude[0];
                   let standardOutput = this.props.itemLayout7Reducer.tempInfo.standardOutput;
                   let tenthanhphan = this.props.itemLayout7Reducer.tempInfo.tenthanhphan;
                   let mota = this.props.itemLayout7Reducer.tempInfo.mota;
                   let tile = this.props.itemLayout7Reducer.tempInfo.tile;
-                  if (chude[0] === 'BTTL') {
+                  if (chude === 'BTTL') {
                     let flag = true;
                     mathanhphan = 'BTTL#' + mathanhphan;
                     for (let i = 0; i < previewInfo.length; i++) {
@@ -158,6 +165,7 @@ class DGFormItem extends Component {
 
                       let dataFather = {
                         key: 'BTTL',
+                        chude: this.getIdfromNameChude(chude),
                         standardOutput: [],
                         mathanhphan: 'BTTL',
                         tenthanhphan: 'Bài tập tại lớp',
@@ -167,7 +175,7 @@ class DGFormItem extends Component {
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
-                  } else if (chude[0] === 'BTVN') {
+                  } else if (chude === 'BTVN') {
                     let flag = true;
 
                     mathanhphan = 'BTVN#' + mathanhphan;
@@ -179,6 +187,7 @@ class DGFormItem extends Component {
                     if (flag === true) {
                       let dataFather = {
                         key: 'BTVN',
+                        chude: this.getIdfromNameChude(chude),
                         standardOutput: [],
                         mathanhphan: 'BTVN',
                         tenthanhphan: 'Bài tập về nhà',
@@ -188,7 +197,7 @@ class DGFormItem extends Component {
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
-                  } else if (chude[0] === 'DAMH') {
+                  } else if (chude === 'DAMH') {
                     let flag = true;
                    mathanhphan = 'DAMH#' + mathanhphan;
                     for (let i = 0; i < previewInfo.length; i++) {
@@ -200,6 +209,7 @@ class DGFormItem extends Component {
 
                       let dataFather = {
                         key: 'DAMH',
+                        chude: this.getIdfromNameChude(chude),
                         standardOutput: [],
                         mathanhphan: 'DAMH',
                         tenthanhphan: 'Đồ án môn học',
@@ -209,7 +219,7 @@ class DGFormItem extends Component {
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
-                  } else if (chude[0] === 'LTCK') {
+                  } else if (chude === 'LTCK') {
                     console.log("Vo duoc nha")
                     let flag = true;
                     mathanhphan = 'LTCK#' + mathanhphan;
@@ -222,6 +232,7 @@ class DGFormItem extends Component {
                     if (flag === true) {
                       let dataFather = {
                         key: 'LTCK',
+                        chude: this.getIdfromNameChude(chude),
                         standardOutput: [],
                         mathanhphan: 'LTCK',
                         tenthanhphan: 'Thi lý thuyết cuối kỳ',
@@ -244,6 +255,7 @@ class DGFormItem extends Component {
                     
                     let data = {
                       key: `${mathanhphan}`,
+                      chude : this.getIdfromNameChude(chude),
                       standardOutput: standardOutput,
                       mathanhphan: mathanhphan,
                       tenthanhphan:tenthanhphan,
@@ -285,7 +297,7 @@ class DGFormItem extends Component {
     }
   }
   render() {
-    console.log(this.props.itemLayout7Reducer.tempInfo)
+    console.log(this.props.itemLayout7Reducer.isLoaded1)
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -451,6 +463,7 @@ const mapDispatchToProps = (dispatch) => {
     onSaveTempDGData : saveTempDGData,
     onGetChude : updateChudeDanhGia,
     onGetCDR : updateCDRDanhGia,
+    isLoaded : isLoaded7_1,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DGFormItem);

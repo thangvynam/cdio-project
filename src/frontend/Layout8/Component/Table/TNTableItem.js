@@ -281,6 +281,7 @@ saveAll = () => {
   };
 
   render() {
+    console.log(this.props.itemLayout8Reducer.previewInfo)
     const components = {
       body: {
         row: EditableFormRow,

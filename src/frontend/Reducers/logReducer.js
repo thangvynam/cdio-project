@@ -1,5 +1,7 @@
 
-import { UPDATE_CON_TAB, IS_LOAD_LOG, SHOW_INPUT_COMMENT,SAVE_LOG_DATA, SAVE_LOG_OBJECT } from "../Constant/ActionType";
+import { UPDATE_CON_TAB, IS_LOAD_LOG,
+         SHOW_INPUT_COMMENT,SAVE_LOG_DATA,
+         SAVE_LOG_OBJECT,SAVE_COMMENT } from "../Constant/ActionType";
 
 
 
@@ -7,6 +9,7 @@ const itemLayout2InitialState = {
     contentTab: '',
     isLoaded: false,
     idLog : -1,
+    renderComment : false,
     logData1: [],
     logData2: [],
     logData3: [],
@@ -16,6 +19,9 @@ const itemLayout2InitialState = {
     logData7: [],
     logData8: [],
     logData9: [],
+    logComment2:[
+
+    ]
 }
 
 const logReducer = (state = itemLayout2InitialState, action) => {
@@ -36,6 +42,15 @@ const logReducer = (state = itemLayout2InitialState, action) => {
             return{
                 ...state,
                 idLog: action.id
+            }
+        }
+        case SAVE_COMMENT:{
+            
+            
+            return{
+                ...state,
+                logComment2: state.logComment2.concat(action.obj),
+                renderComment : !state.renderComment
             }
         }
         case SAVE_LOG_DATA: {

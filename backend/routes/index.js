@@ -5,7 +5,6 @@ const fs = require('fs-extra');
 const hbs = require('handlebars');
 const path = require('path');
 const moment = require('moment');
-const CircularJSON = require('circular-json');
 const MoTaModel = require('../models/MoTaModel')
 const ThongTinChungModel = require('../models/ThongTinChungModel')
 const Model4 = require('../models/Model4');
@@ -15,6 +14,7 @@ const Model6 = require('../models/Model6');
 const Model7 = require('../models/Model7');
 const Model8 = require('../models/Model8')
 const LogModel = require('../models/LogModel');
+const CommentModel = require('../models/CommentModel');
 const MatrixModel = require('../models/MatrixModel');
 
 const MucTieuModel = require('../models/MucTieuModel')
@@ -671,5 +671,21 @@ router.post('/get-log', function(req, res) {
     res.send(result)
   })
 })
+
+router.get('/get-comment', function(req, res) {
+  CommentModel.get((result) => {
+    res.send(result)
+  })
+  
+})
+
+router.post('/add-comment-2', function(req, res) {
+  const body = req.body.data
+  CommentModel.add(body,(result) => {
+    res.send(result)
+  })
+  
+})
+
 
 module.exports = router;

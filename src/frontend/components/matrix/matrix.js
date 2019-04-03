@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import "./matrix.css";
-import PreviewMatrix from './previewMatrix';
 
 class Matrix extends Component {
     constructor(props) {
@@ -36,7 +35,10 @@ class Matrix extends Component {
             .catch((err) => {
                 console.log(err)
             })
+    }
 
+    componentDidUpdate() {
+        this.showAA()
     }
 
     createGroupCDR = (data, index) => {
@@ -68,7 +70,7 @@ class Matrix extends Component {
                     }
                     return textRender;
                 }
-                return <Tag color="fff9f9" style={{fontSize: "8pt", fontWeight: "bold", color: "black"}}>-</Tag>;
+                return <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>-</Tag>;
             }
             else {
                 if (textMatrix === "-") {
@@ -119,7 +121,7 @@ class Matrix extends Component {
                             textRender.push(<Tag key={i} color="red" style={{ fontSize: "8pt", fontWeight: "bold" }}>{item.text}</Tag>);
                         }
                         else {
-                            textRender.push(<Tag key={i} color="#fff9f9" style={{fontSize: "8pt", fontWeight: "bold", color: "black"}}>{item.text}</Tag>);
+                            textRender.push(<Tag key={i} color="#fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{item.text}</Tag>);
                         }
                         // if (i !== textRenderStateArr.length - 1) {
                         //     textRender.push(<span key={i + ','}>,</span>);
@@ -225,25 +227,16 @@ class Matrix extends Component {
                 ...data[i],
                 [kkk]: 'ss'
             }
-            console.log(a)
         }
     }
 
-    showPreview = () => {
-        return (
-            <PreviewMatrix isShow={true} />
-        )
-    }
-
     handleOk = (e) => {
-        console.log(e);
         this.setState({
             visible: false,
         });
     }
 
     handleCancel = (e) => {
-        console.log(e);
         this.setState({
             visible: false,
         });
@@ -257,10 +250,16 @@ class Matrix extends Component {
 
     showAA = () => {
         const A = document.getElementsByTagName('table')[0];
-        if(!_.isEmpty(A)){
-            if(A.getAttribute('id') !== "table-to-xls"){
+        if (!_.isEmpty(A)) {
+            if (A.getAttribute('id') !== "table-to-xls") {
                 A.setAttribute('id', "table-to-xls");
+                for(let i = 0; i< A.tHead.getElementsByTagName('th').length; i++){
+                    A.tHead
+                        .getElementsByTagName('th')[i]
+                        .setAttribute('style','background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)')
+                }
             }
+
         }
     }
 
@@ -271,8 +270,7 @@ class Matrix extends Component {
                 {
                     !isLoading
                     && !_.isEmpty(this.props.dataMatrix)
-                    && <div style={{ margin: "10px" }}>
-                        {this.showAA()}
+                    && <div className="exportMatrix" style={{ margin: "10px" }}>
                         <div style={{ marginBottom: "10px" }}>
                             <span className="adding-text"><Icon type="plus-square" />: Thêm</span>
 
@@ -280,27 +278,22 @@ class Matrix extends Component {
 
                             <span style={{ marginLeft: "30px" }} className="no-action-text"><Icon type="minus-square" />: Không đổi</span>
                         </div>
-                        {/* <button className="btn btn-outline-warning"
-                            onClick={this.showModal}
-                        >Export Matrix</button> */}
                         <ReactHTMLTableToExcel
                             id="test-table-xls-button"
-                            className="download-table-xls-button"
+                            className="download-table-xls-button btn btn-outline-warning"
                             table="table-to-xls"
-                            filename="tablexls"
+                            filename="matrix"
                             sheet="tablexls"
-                            buttonText="Download as XLS" 
-                        />
-                        <Table
-                            ref="Progress1"
-                            bordered
-                            columns={this.createColumn(this.props.dataMatrix)}
-                            dataSource={this.createData(this.props.dataMatrix)}
-                            scroll={{ x: 1500 }}
-                        />
+                            buttonText="Export"
+                        />                
+                            <Table
+                                bordered
+                                columns={this.createColumn(this.props.dataMatrix)}
+                                dataSource={this.createData(this.props.dataMatrix)}
+                                scroll={{ x: 1500 }}
+                            />
                     </div>
                 }
-
             </React.Fragment>
         )
     }

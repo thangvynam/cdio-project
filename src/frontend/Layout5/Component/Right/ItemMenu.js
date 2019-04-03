@@ -179,7 +179,9 @@ class ItemMenu extends Component {
         if (flag) newArray.push(item);
 
         this.setState({ standardSelectedItem: newArray });
+        
         standardOutput_data = newArray;
+        console.log(standardOutput_data);
         this.props.onChangeData(titleName, teachingActs_data, standardOutput_data, evalActs_data);
 
     }
@@ -403,12 +405,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             });
         },
         saveAndContinue: () => {
+            console.log(standardOutput_data)
             myObj.key = ownProps.step;
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs_data;
             myObj.evalActs = evalActs_data;
             myObj.standardOutput = standardOutput_data;
 
+            console.log(myObj);
             if (titleName === '' || standardOutput_data.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
             }
@@ -423,7 +427,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 ownProps.form.resetFields();
                 ownProps.nextStep();
             }
-            standardOutput_data.splice(0, standardOutput_data.length);
+            //standardOutput_data.splice(0, standardOutput_data.length);
             dispatch({
                 type: CHANGE_DATA, titleName: '', teachingActs: [],
                 standardOutput: '', evalActs: []

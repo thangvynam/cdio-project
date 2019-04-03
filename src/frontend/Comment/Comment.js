@@ -4,14 +4,11 @@ import { convertTime } from "../utils/Time";
 import { connect } from 'react-redux';
 import {SHOW_INPUT_COMMENT} from '../Constant/ActionType';
 
-const TextArea = Input.TextArea;
 class CommentLog extends Component {
     constructor(props) {
         super(props);
     }
-    showInput = () => {
-        console.log(this.props)
-    }
+
     render() {
         if (this.props.hasReply) {
             return (
@@ -30,27 +27,13 @@ class CommentLog extends Component {
                     >
                         {this.props.children}
                     </Comment>
-                    {/* <Form.Item>
-                        <TextArea rows={4}  />
-                    </Form.Item>
-                    <Form.Item>
-                        <Button
-                            htmlType="submit"
-                            
-                            type="primary"
-                        >
-                            Add Comment
-                        </Button>
-                    </Form.Item> */}
                 </div>
-
-
             )
         }
         return (
             <Comment
                 author={<a>{this.props.nguoi_gui}</a>}
-                datetime={this.props.timestamp ? <b style={{ color: "red" }}>{convertTime(this.props.imestamp)}</b> : ""}
+                datetime={this.props.timestamp ? <b style={{ color: "red" }}>{convertTime(this.props.timestamp)}</b> : ""}
                 avatar={(
                     <Avatar
                         src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
@@ -72,6 +55,7 @@ const mapStateToProps = (state, ownProps) => {
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
         showInput: () => {
+            console.log(ownProps.id)
             dispatch({ type: SHOW_INPUT_COMMENT, id:ownProps.id });
         },
     }

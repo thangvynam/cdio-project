@@ -4,221 +4,158 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeDGData, addDGData } from '../../../Constant/ActionType';
-
-const standard_item = [{
-  value: 'G1',
-  label: 'G1',
-  children: [{
-    value: '.1',
-    label: '.1',
-  },
-  {
-    value: '.2',
-    label: '.2',
-  },
-  {
-    value: '.3',
-    label: '.3',
-  }],
-},
-{
-  value: 'G2',
-  label: 'G2',
-  children: [{
-    value: '.1',
-    label: '.1',
-  },
-  {
-    value: '.2',
-    label: '.2',
-  }],
-},
-{
-  value: 'G3',
-  label: 'G3',
-  children: [{
-    value: '.1',
-    label: '.1',
-  },
-  {
-    value: '.2',
-    label: '.2',
-  },
-  {
-    value: '.3',
-    label: '.3',
-  },
-  {
-    value: '.4',
-    label: '.4',
-  }],
-},
-{
-  value: 'G4',
-  label: 'G4',
-  children: [{
-    value: '.1',
-    label: '.1',
-  }]
-},
-{
-  value: 'G5',
-  label: 'G5',
-  children: [{
-    value: '.1',
-    label: '.1',
-  },
-  {
-    value: '.2',
-    label: '.2',
-  },
-  {
-    value: '.3',
-    label: '.3',
-  },
-  {
-    value: '.4',
-    label: '.4',
-  },
-  {
-    value: '.5',
-    label: '.5',
-  }],
-},
-{
-  value: 'G6',
-  label: 'G6',
-  children: [{
-    value: '.1',
-    label: '.1',
-  }]
-},
-{
-  value: 'G7',
-  label: 'G7',
-  children: [{
-    value: '.1',
-    label: '.1',
-  }]
-},
-];
-const tenchude_item = [{
-  value: 'Bài tập về nhà',
-  label: 'Bài tập về nhà'
-}, {
-  value: 'Bài tập tại lớp',
-  label: 'Bài tập tại lớp'
-}, {
-  value: 'Đồ án môn học',
-  label: 'Đồ án môn học'
-}, {
-  value: 'Thi lý thuyết cuối kì',
-  label: 'Thi lý thuyết cuối kì'
-}
-]
+import { changeDGData, addDGData, saveTempDGData ,updateChudeDanhGia, updateCDRDanhGia, isLoaded7_1} from '../../../Constant/ActionType';
+import axios from "axios"
 
 var temp = '';
-var temp1 = [];
 
 class DGFormItem extends Component {
-  state = {
-    standardSelectedItem: [],
-  }
+  
   handleMathanhphanChange = (e) => {
-    let a = e.target.value;
-    this.props.onChangeDGData({
-      standardOutput: this.props.dgdata.standardOutput,
-      mathanhphan: a,
-      tenthanhphan: this.props.dgdata.tenthanhphan,
-      mota: this.props.dgdata.mota,
-      tile: this.props.dgdata.tile
-    })
+    let a =  e.target.value;
+
+     let tempInfo = this.props.itemLayout7Reducer.tempInfo;
+     tempInfo["mathanhphan"] = a;
+    
+    this.props.onSaveTempDGData(tempInfo);
   }
   handleTenthanhphanChange = (e) => {
-    let a = e.target.value;
-    this.props.onChangeDGData({
-      standardOutput: this.props.dgdata.standardOutput,
-      mathanhphan: this.props.dgdata.mathanhphan,
-      tenthanhphan: a,
-      mota: this.props.dgdata.mota,
-      tile: this.props.dgdata.tile
-    })
+    let a= e.target.value;
+   
+    let tempInfo = this.props.itemLayout7Reducer.tempInfo;
+    tempInfo["tenthanhphan"] = a;
+   
+   this.props.onSaveTempDGData(tempInfo);
   }
   handleMotaChange = (e) => {
-    let a = e.target.value;
-    this.props.onChangeDGData({
-      standardOutput: this.props.dgdata.standardOutput,
-      mathanhphan: this.props.dgdata.mathanhphan,
-      tenthanhphan: this.props.dgdata.tenthanhphan,
-      mota: a,
-      tile: this.props.dgdata.tile
-    })
+    let a= e.target.value;
+  
+    let tempInfo = this.props.itemLayout7Reducer.tempInfo;
+    tempInfo["mota"] = a;
+   
+   this.props.onSaveTempDGData(tempInfo);
   }
   handleTileChange = (e) => {
     let a = e.target.value;
-    this.props.onChangeDGData({
-      standardOutput: this.props.dgdata.standardOutput,
-      mathanhphan: this.props.dgdata.mathanhphan,
-      tenthanhphan: this.props.dgdata.tenthanhphan,
-      mota: this.props.dgdata.mota,
-      tile: a
-    })
+    
+    let tempInfo = this.props.itemLayout7Reducer.tempInfo;
+    tempInfo["tile"] = a;
+   
+   this.props.onSaveTempDGData(tempInfo);
   }
+
   toString = () => {
     let temp2 = '';
-    for (let i = 0; i < this.state.standardSelectedItem.length; i++) {
-      temp2 += this.state.standardSelectedItem[i] + ' , ';
+    let tempInfo = this.props.itemLayout7Reducer.tempInfo;
+    for (let i = 0; i < tempInfo.standardOutput.length; i++) {
+      temp2 += tempInfo.standardOutput[i] + " , ";
     }
-    return temp2.replace('NaN', '');
+    return temp2;
   }
+  
+  displayRender = label => {
+    if (this.isSubmit) {
+      this.isSubmit = false;
+      return null;
+    }
+    if (label.length > 0) return label[0] + label[1];
+  };
+
   onChange = (value) => {
-    let newArray = this.state.standardSelectedItem.slice();
+    if(value.length === 0 ) return;
+    let tempInfo = this.props.itemLayout7Reducer.tempInfo;
+
+    let newArray = tempInfo.standardOutput.slice();
     newArray.push(value[0] + value[1]);
-    this.setState({ standardSelectedItem: newArray });
     temp = newArray;
-    const standardoutput1 = temp.slice();
+    let a = temp.slice();
+   
     this.props.onChangeDGData({
-      standardOutput: standardoutput1,
-      mathanhphan: this.props.dgdata.mathanhphan,
-      tenthanhphan: this.props.dgdata.tenthanhphan,
-      mota: this.props.dgdata.mota,
-      tile: this.props.dgdata.tile
+      standardOutput: a,
+      mathanhphan: this.props.itemLayout7Reducer.tempInfo.mathanhphan,
+      tenthanhphan: this.props.itemLayout7Reducer.tempInfo.tenthanhphan,
+      mota: this.props.itemLayout7Reducer.tempInfo.mota,
+      tile: this.props.itemLayout7Reducer.tempInfo.tile
     })
+
+    tempInfo["standardOutput"] = a;
+    this.props.onSaveTempDGData(tempInfo);
   }
+
   onChange1 = (value) => {
-    temp1 = value[0];
+    let tempInfo = this.props.itemLayout7Reducer.tempInfo;
+    let a = [];
+    a[0] = value[0];
+    tempInfo["chude"] = a;
+    this.props.onSaveTempDGData(tempInfo);
+  }
+
+  componentWillMount(){
+    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout7Reducer.isLoaded1 === false){
+      var self = this;
+        axios.get('/get-chude')
+        .then(function (response) {
+            self.props.onGetChude(response.data);
+          })
+         .catch(function (error) {
+            console.log(error);
+         });  
+
+        axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
+        .then(function(response){
+
+          self.props.onGetCDR(response.data);
+        })
+        .catch(function(error){
+          console.log(error);
+        });
+        self.props.isLoaded(true);
+        
+    }
+    
+  }
+
+  getIdfromNameChude(name){
+    for(let i=0;i<this.props.itemLayout7Reducer.chudeDanhGia.length;i++){
+      if(name=== this.props.itemLayout7Reducer.chudeDanhGia[i].ma_chu_de)
+      return this.props.itemLayout7Reducer.chudeDanhGia[i].id
+    }
   }
 
   addDGData = () => {
-    console.log(temp1);
-    if (temp1.length === 0 || temp1 === undefined) {
+    if (this.props.itemLayout7Reducer.tempInfo.chude[0] === "" || this.props.itemLayout7Reducer.tempInfo.chude[0] === undefined) {
       message.error("Chọn tên chủ đề")
     }
     else {
-      if (this.props.dgdata.mathanhphan === "" || this.props.dgdata.mathanhphan === undefined) {
+      if (this.props.itemLayout7Reducer.tempInfo.mathanhphan === "" || this.props.itemLayout7Reducer.tempInfo.mathanhphan === undefined) {
         message.error("Chưa nhập mã thành phần!")
       }
       else {
-        if (this.props.dgdata.tenthanhphan === "" || this.props.dgdata.tenthanhphan === undefined) {
+        if (this.props.itemLayout7Reducer.tempInfo.tenthanhphan === "" || this.props.itemLayout7Reducer.tempInfo.tenthanhphan === undefined) {
           message.error("Chưa nhập tên thành phần!")
         }
         else {
-          if (this.props.dgdata.mota === "" || this.props.dgdata.mota === undefined) {
+          if (this.props.itemLayout7Reducer.tempInfo.mota === "" || this.props.itemLayout7Reducer.tempInfo.mota === undefined) {
             message.error("Chưa nhập mô tả")
           } else {
-            if (this.props.dgdata.standardOutput === "" || this.props.dgdata.standardOutput === undefined) {
+            if (this.props.itemLayout7Reducer.tempInfo.standardOutput === "" || this.props.itemLayout7Reducer.tempInfo.standardOutput === undefined) {
               message.error("Chưa chọn chuẩn đầu ra")
             } else {
               {
                 {
-                  let previewInfo = this.props.dgtable.previewInfo;
+                  let previewInfo = this.props.itemLayout7Reducer.previewInfo;
                   let newData = '';
                   let isAdd2Rows = false;
                   let iserror = false;
-                  if (temp1 === 'Bài tập tại lớp') {
+                  let mathanhphan = this.props.itemLayout7Reducer.tempInfo.mathanhphan;
+                  let chude = this.props.itemLayout7Reducer.tempInfo.chude[0];
+                  let standardOutput = this.props.itemLayout7Reducer.tempInfo.standardOutput;
+                  let tenthanhphan = this.props.itemLayout7Reducer.tempInfo.tenthanhphan;
+                  let mota = this.props.itemLayout7Reducer.tempInfo.mota;
+                  let tile = this.props.itemLayout7Reducer.tempInfo.tile;
+                  if (chude === 'BTTL') {
                     let flag = true;
-                    this.props.dgdata.mathanhphan = 'BTTL#' + this.props.dgdata.mathanhphan;
+                    mathanhphan = 'BTTL#' + mathanhphan;
                     for (let i = 0; i < previewInfo.length; i++) {
                       if ('BTTL' === previewInfo[i].mathanhphan) {
                         flag = false;
@@ -228,6 +165,7 @@ class DGFormItem extends Component {
 
                       let dataFather = {
                         key: 'BTTL',
+                        chude: this.getIdfromNameChude(chude),
                         standardOutput: [],
                         mathanhphan: 'BTTL',
                         tenthanhphan: 'Bài tập tại lớp',
@@ -237,10 +175,10 @@ class DGFormItem extends Component {
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
-                  } else if (temp1 === 'Bài tập về nhà') {
+                  } else if (chude === 'BTVN') {
                     let flag = true;
 
-                    this.props.dgdata.mathanhphan = 'BTVN#' + this.props.dgdata.mathanhphan;
+                    mathanhphan = 'BTVN#' + mathanhphan;
                     for (let i = 0; i < previewInfo.length; i++) {
                       if ('BTVN' === previewInfo[i].mathanhphan) {
                         flag = false;
@@ -249,6 +187,7 @@ class DGFormItem extends Component {
                     if (flag === true) {
                       let dataFather = {
                         key: 'BTVN',
+                        chude: this.getIdfromNameChude(chude),
                         standardOutput: [],
                         mathanhphan: 'BTVN',
                         tenthanhphan: 'Bài tập về nhà',
@@ -258,9 +197,9 @@ class DGFormItem extends Component {
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
-                  } else if (temp1 === 'Đồ án môn học') {
+                  } else if (chude === 'DAMH') {
                     let flag = true;
-                    this.props.dgdata.mathanhphan = 'DAMH#' + this.props.dgdata.mathanhphan;
+                   mathanhphan = 'DAMH#' + mathanhphan;
                     for (let i = 0; i < previewInfo.length; i++) {
                       if ('DAMH' === previewInfo[i].mathanhphan) {
                         flag = false;
@@ -270,6 +209,7 @@ class DGFormItem extends Component {
 
                       let dataFather = {
                         key: 'DAMH',
+                        chude: this.getIdfromNameChude(chude),
                         standardOutput: [],
                         mathanhphan: 'DAMH',
                         tenthanhphan: 'Đồ án môn học',
@@ -279,10 +219,10 @@ class DGFormItem extends Component {
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
-                  } else if (temp1 === 'Thi lý thuyết cuối kì') {
+                  } else if (chude === 'LTCK') {
                     console.log("Vo duoc nha")
                     let flag = true;
-                    this.props.dgdata.mathanhphan = 'LTCK#' + this.props.dgdata.mathanhphan;
+                    mathanhphan = 'LTCK#' + mathanhphan;
                     for (let i = 0; i < previewInfo.length; i++) {
                       if ('LTCK' === previewInfo[i].mathanhphan) {
                         flag = false;
@@ -292,6 +232,7 @@ class DGFormItem extends Component {
                     if (flag === true) {
                       let dataFather = {
                         key: 'LTCK',
+                        chude: this.getIdfromNameChude(chude),
                         standardOutput: [],
                         mathanhphan: 'LTCK',
                         tenthanhphan: 'Thi lý thuyết cuối kỳ',
@@ -304,35 +245,46 @@ class DGFormItem extends Component {
                   }
                   for (let i = 0; i < previewInfo.length; i++) {
 
-                    if (this.props.dgdata.mathanhphan === previewInfo[i].key) {
+                    if (mathanhphan === previewInfo[i].key) {
                       iserror = true;
                     }
                   }
                   if (iserror === true) {
                     message.error("Mã thành phần đã tồn tại!")
                   } else {
+                    
                     let data = {
-                      key: `${this.props.dgdata.mathanhphan}`,
-                      standardOutput: this.props.dgdata.standardOutput,
-                      mathanhphan: this.props.dgdata.mathanhphan,
-                      tenthanhphan: this.props.dgdata.tenthanhphan,
-                      mota: this.props.dgdata.mota,
-                      tile: this.props.dgdata.tile + '%',
+                      key: `${mathanhphan}`,
+                      chude : this.getIdfromNameChude(chude),
+                      standardOutput: standardOutput,
+                      mathanhphan: mathanhphan,
+                      tenthanhphan:tenthanhphan,
+                      mota:mota,
+                      tile: tile + '%',
                     }
-
-                    let dataReturn = { previewInfo: [] };
+                    console.log(data);
+                    let dataReturn = {};
                     if (isAdd2Rows === true) {
-                      dataReturn.previewInfo = newData.concat(data);
+                      dataReturn = newData.concat(data);
                     } else {
-                      dataReturn.previewInfo = previewInfo.concat(data);
+                      dataReturn = previewInfo.concat(data);
                     }
-
                     console.log(dataReturn);
                     this.props.onAddDGData(dataReturn);
                     message.info("Thêm thành công!");
-                    this.props.form.resetFields();
                     isAdd2Rows = false;
-                    temp.splice(0, temp.length)
+                    if(temp !== null && temp !== "" && temp !== undefined){
+                      temp.splice(0, temp.length)
+                    }
+                    let tempInfo =this.props.itemLayout7Reducer.tempInfo;
+                    tempInfo["chude"] = [];
+                    tempInfo["mathanhphan"] = "";
+                    tempInfo["tenthanhphan"] = "";
+                    tempInfo["mota"] = "";
+                    tempInfo["tile"] = "";
+                    tempInfo["standardOutput"] = [];
+                    this.props.onSaveTempDGData(tempInfo);
+                    this.props.form.resetFields();
                   }
 
                 }
@@ -345,6 +297,7 @@ class DGFormItem extends Component {
     }
   }
   render() {
+    console.log(this.props.itemLayout7Reducer.isLoaded1)
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -370,16 +323,23 @@ class DGFormItem extends Component {
     return (
       <div style={{ border: "2px solid", borderRadius: "12px" }}>
         <div style={{ marginTop: "10px" }}></div>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.addDGData}>
           <Form.Item
             {...formDynamicItemLayout}
             label={(
               <span>
                 Tên chủ đề
-                            </span>
+              </span>
             )}
-          >
-            <Cascader options={tenchude_item} onChange={this.onChange1} placeholder="Tên chủ đề" />
+          >{getFieldDecorator('cascader', {
+            rules: [
+              { required: true, message: 'Chọn chủ đề' },
+            ],
+            initialValue: this.props.itemLayout7Reducer.tempInfo.chude
+          })
+            (<Cascader options={this.props.itemLayout7Reducer.chudeDanhGia.map(item => {
+              return {value:item.ma_chu_de , label: item.ma_chu_de}
+            })} onChange={this.onChange1} placeholder="Tên chủ đề" />)}
           </Form.Item>
 
           <Form.Item
@@ -390,6 +350,7 @@ class DGFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập mã thành phần',
               }],
+              initialValue: this.props.itemLayout7Reducer.tempInfo.mathanhphan
             })(
               <Input onChange={this.handleMathanhphanChange} />
             )}
@@ -403,6 +364,7 @@ class DGFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập tên mô tả thành phần',
               }],
+              initialValue: this.props.itemLayout7Reducer.tempInfo.tenthanhphan
             })(
               <Input onChange={this.handleTenthanhphanChange} />
             )}
@@ -416,6 +378,7 @@ class DGFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập tên mô tả thành phần',
               }],
+              initialValue: this.props.itemLayout7Reducer.tempInfo.mota
             })(
               <Input onChange={this.handleMotaChange} />
             )}
@@ -431,8 +394,23 @@ class DGFormItem extends Component {
                 </Tooltip>
               </span>
             )}
-          >
-            <Cascader options={standard_item} onChange={this.onChange} placeholder="Chọn chuẩn đầu ra" />
+          >{getFieldDecorator('chuandaura', {
+            rules: [
+              { required: true, message: 'Chọn chuẩn đầu ra' },
+            ],
+            initialValue: this.props.itemLayout7Reducer.tempInfo.chuandaura
+          })
+            (<Cascader 
+            options={this.props.itemLayout7Reducer.chuandaura.map(item => {
+              let children = item.cdr.map(children => {
+                let temp = children.chuan_dau_ra.substr(children.chuan_dau_ra.indexOf('.'),children.chuan_dau_ra.length)
+                return {value:temp, label:temp}
+              })
+              return {value:item.muc_tieu,label:item.muc_tieu,children:children}
+            })} 
+            onChange={this.onChange} 
+            placeholder="Chọn chuẩn đầu ra"
+            displayRender={this.displayRender} />)}
           </Form.Item>
 
           <Form.Item
@@ -450,6 +428,7 @@ class DGFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập tỉ lệ(%)',
               }],
+              initialValue: this.props.itemLayout7Reducer.tempInfo.tile
             })(
               <Input onChange={this.handleTileChange} />
             )}
@@ -473,13 +452,18 @@ class DGFormItem extends Component {
 const mapStateToProps = (state) => {
   return {
     dgdata: state.dgdata,
-    dgtable: state.itemLayout7Reducer,
+    itemLayout7Reducer: state.itemLayout7Reducer,
+    subjectId: state.subjectid,
   };
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onAddDGData: addDGData,
     onChangeDGData: changeDGData,
+    onSaveTempDGData : saveTempDGData,
+    onGetChude : updateChudeDanhGia,
+    onGetCDR : updateCDRDanhGia,
+    isLoaded : isLoaded7_1,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DGFormItem);

@@ -10,7 +10,7 @@ import { itemLayout4Reducer, changeCDRDataReducer, selecteCDRItemReducer, change
     logLayout4Reducer,
     cdrmdhdDBReducer} from '../Reducers/ItemLayout4Reducer';
 import {itemLayout7Reducer,changeDGDataReducer} from '../Reducers/itemLayout7Reducer';
-import {itemLayout8Reducer,changeTNDataReducer} from '../Reducers/itemLayout8Reducer';
+import itemLayout8Reducer from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import matrixReducer from "../Reducers/matrixReducer";
@@ -47,7 +47,8 @@ const allReducers = redux.combineReducers({
     itemLayout7Reducer : itemLayout7Reducer,
     dgdata: changeDGDataReducer,
     itemLayout8Reducer: itemLayout8Reducer,
-    tndata: changeTNDataReducer,
+    // tndata: changeTNDataReducer,
+    // loaitainguyenReducer: loaiTaiNguyenReducer,
     menuitem: menuItemReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,

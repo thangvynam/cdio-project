@@ -3,7 +3,7 @@ import {
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
-import { changeDGData, addDGData, deleteDGData, saveAllDGData, isLoaded7_2 } from '../../../Constant/ActionType';
+import { changeDGData, addDGData, deleteDGData, saveAllDGData,isLoaded7 } from '../../../Constant/ActionType';
 import React, { Component } from 'react';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
@@ -649,7 +649,7 @@ const mapDispatchToProps = (dispatch) => {
     onAddDGData: addDGData,
     onChangeDGData: changeDGData,
     onDeleteDGData: deleteDGData,
-    isLoaded: isLoaded7_2,
+    isLoaded: isLoaded7,
     onSaveAllData: saveAllDGData,
   }, dispatch);
 }

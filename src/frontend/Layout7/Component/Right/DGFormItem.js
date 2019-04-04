@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeDGData, addDGData, saveTempDGData ,updateChudeDanhGia, updateCDRDanhGia, isLoaded7_1} from '../../../Constant/ActionType';
+import { changeDGData, addDGData, saveTempDGData ,updateChudeDanhGia, updateCDRDanhGia} from '../../../Constant/ActionType';
 import axios from "axios"
 
 var temp = '';
@@ -91,7 +91,7 @@ class DGFormItem extends Component {
   }
 
   componentWillMount(){
-    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout7Reducer.isLoaded1 === false){
+    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" ){
       var self = this;
         axios.get('/get-chude')
         .then(function (response) {
@@ -109,7 +109,6 @@ class DGFormItem extends Component {
         .catch(function(error){
           console.log(error);
         });
-        self.props.isLoaded(true);
         
     }
     
@@ -463,7 +462,6 @@ const mapDispatchToProps = (dispatch) => {
     onSaveTempDGData : saveTempDGData,
     onGetChude : updateChudeDanhGia,
     onGetCDR : updateCDRDanhGia,
-    isLoaded : isLoaded7_1,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DGFormItem);

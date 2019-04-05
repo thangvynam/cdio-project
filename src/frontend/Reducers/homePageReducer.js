@@ -3,12 +3,12 @@ const initialState = {
     "de-cuong-mon-hoc" :{
         name: "ĐỀ CƯƠNG MÔN HỌC",
     },
-    "matrix": {
-        name: "MATRIX",
-    },
-    "edit-matrix": {
-        name: "EDIT-MATRIX"
-    }
+    // "matrix": {
+    //     name: "MATRIX",
+    // },
+    // "edit-matrix": {
+    //     name: "EDIT-MATRIX"
+    // }
 }
 
 export function menuItemReducer(state = initialState, action) {

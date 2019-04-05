@@ -48,7 +48,10 @@ Model4.collectcdrmdhd = (result) => {
 }
 
 Model4.collectsubjectlist = (result) => {
-    sql.query("SELECT id, ma_so, ten_mon_hoc_tv FROM thong_tin_chung where del_flag = 0", (err, res) => {
+    sql.query(`SELECT subject.Id, subject.SubjectCode, subject.SubjectName
+     FROM subject
+     JOIN thong_tin_chung ON subject.Id = thong_tin_chung.id
+        where thong_tin_chung.del_flag = 0`, (err, res) => {
         if (err) {
             console.log("error:", err);
             result(null, err)
@@ -59,22 +62,30 @@ Model4.collectsubjectlist = (result) => {
 }
 
 Model4.addsubject = (data, result) => {
-    sql.query(`insert into thong_tin_chung(ten_mon_hoc_tv, ten_mon_hoc_ta, ma_so, khoi_kien_thuc, so_tin_chi, so_tiet_ly_thuyet, 
-        so_tiet_thuc_hanh, so_tiet_tu_hoc, cac_mon_hoc_tien_quyet) values ('${data.ten_mon_hoc_tv}', '', 
-        '${data.ma_so}', '', 0, 0, 0, 0, '')`,
+    sql.query(`insert into subject(SubjectName, SubjectEngName, SubjectCode, Credit, TheoryPeriod, PracticePeriod, 
+        ExercisePeriod, Description, DateCreated, DateEdited) values ('${data.SubjectName}', '', 
+        '${data.SubjectCode}', 0, 0, 0, 0, '', '2019-03-02 00:00:00', '2019-03-02 00:00:00')`,
         (err, res) => {
             if (err) {
                 console.log("error:", err);
                 result(null, err)
             } else {
-                result(null, res);
+                let Id = res.insertId;
+                sql.query(`insert into thong_tin_chung(id) values (${Id})`,
+                    (err, res) => {
+                        if (err) {
+                            console.log("error:", err);
+                            result(null, err)
+                        } else {
+                            result(null, res);
+                        }
+                    })
             }
         })
 }
 
 Model4.deletesubject = (data, result) => {
-    console.log(data.id)
-    sql.query(`update thong_tin_chung set del_flag = 1 where id = ${data.id}`,
+    sql.query(`update thong_tin_chung set del_flag = 1 where id = ${data.Id}`,
         (err, res) => {
             if (err) {
                 console.log("error:", err);
@@ -86,7 +97,7 @@ Model4.deletesubject = (data, result) => {
 }
 
 Model4.editsubject = (data, result) => {
-    sql.query(`update thong_tin_chung set ma_so = '${data.ma_so_editted}', ten_mon_hoc_tv = '${data.ten_mon_hoc_tv}' where id = ${data.id} && del_flag = 0`,
+    sql.query(`update subject set SubjectCode = '${data.SubjectCode_editted}', SubjectName = '${data.SubjectName}' where Id = ${data.Id}`,
         (err, res) => {
             if (err) {
                 console.log("error:", err);

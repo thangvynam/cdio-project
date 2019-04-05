@@ -337,8 +337,11 @@ router.post('/add-subject', function(req, res) {
   Model4.addsubject(data, function(err, description) {
     if (err) {
       console.log(err);
+    } else {
+      //console.log("done");
+      res.send({});
     }
-      console.log("done");
+      
   })   
 })
 

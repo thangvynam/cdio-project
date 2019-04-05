@@ -44,7 +44,7 @@ class Home extends Component {
 
     checkSubjectExist = (subjectlist, monhoc) => {
         for(let i = 0;i < subjectlist.length;i++) {
-            if(subjectlist[i].id.toString() === monhoc.toString()) {
+            if(subjectlist[i].Id.toString() === monhoc.toString()) {
                 return true;
             }
         }
@@ -71,47 +71,47 @@ class Home extends Component {
 
     getSubjectName = (subjectList, id) => {
         for(let i = 0;i < subjectList.length;i++) {
-            if(subjectList[i].id === id) {
-                return subjectList[i].ten_mon_hoc_tv;
+            if(subjectList[i].Id.toString() === id.toString()) {
+                return subjectList[i].SubjectName;
             }
         }
         return "";
       }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.isLoadEditMatrix === "false" &&  nextProps.subjectList.length > 0) {
-            this.props.updateIsLoadEditMatrix("true");
-            axios.get('/get-reality-matrix');
-            axios.get("/get-standard-matrix").then((res) => {
-                let data = [];
-                for(let i = 0;i < res.data.length;i++) {
-                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                    if(index !== -1) {
-                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(cdr_cdio !== "") {
-                            data[index][cdr_cdio] = res.data[i].muc_do;
-                        }
-                    }
-                    else {  
-                        let subjectName = this.getSubjectName( nextProps.subjectList, res.data[i].thong_tin_chung_id);
-                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(subjectName !== "" && cdr_cdio !== "") {
-                            data.push({
-                                key: res.data[i].thong_tin_chung_id,
-                                hocky: 1,
-                                hocphan: subjectName,
-                                gvtruongnhom: 'NULL'
-                            })
+        // if(this.props.isLoadEditMatrix === "false" &&  nextProps.subjectList.length > 0) {
+        //     this.props.updateIsLoadEditMatrix("true");
+        //     axios.get('/get-reality-matrix');
+        //     axios.get("/get-standard-matrix").then((res) => {
+        //         let data = [];
+        //         for(let i = 0;i < res.data.length;i++) {
+        //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+        //             if(index !== -1) {
+        //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+        //                 if(cdr_cdio !== "") {
+        //                     data[index][cdr_cdio] = res.data[i].muc_do;
+        //                 }
+        //             }
+        //             else {  
+        //                 let subjectName = this.getSubjectName( nextProps.subjectList, res.data[i].thong_tin_chung_id);
+        //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+        //                 if(subjectName !== "" && cdr_cdio !== "") {
+        //                     data.push({
+        //                         key: res.data[i].thong_tin_chung_id,
+        //                         hocky: 1,
+        //                         hocphan: subjectName,
+        //                         gvtruongnhom: 'NULL'
+        //                     })
 
-                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                        }
+        //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+        //                 }
                         
-                    }
-                }
-                this.props.updateEditMatrix(data);
-              })
+        //             }
+        //         }
+        //         this.props.updateEditMatrix(data);
+        //       })
               
-        }
+        // }
       }
 
       checkLevel_1_Exist = (level_1, cdrmdhd) => {
@@ -193,9 +193,9 @@ class Home extends Component {
     this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
         self.props.updateSubjectId(monhoc) 
     }
-    axios.get("/get-cdr-cdio").then((res) => {
-        self.setState({cdr_cdio: res.data})
-      })
+    // axios.get("/get-cdr-cdio").then((res) => {
+    //     self.setState({cdr_cdio: res.data})
+    //   })
 
 }
     render() {

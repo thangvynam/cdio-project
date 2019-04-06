@@ -165,7 +165,7 @@ class TableItem extends Component {
           ...newData.key,
           ...row,
         });
-        this.props.handleSave(newData);      
+        this.props.handleSave(newData);
         this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
         this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
         this.props.setFlag2(true);   

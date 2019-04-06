@@ -62,11 +62,21 @@ export const CHANGE_ISLOADED_RULES = 'CHANGE_ISLOADED_RULES';
 export const ADD_DGDATA = 'ADD_DGDATA';
 export const CHANGE_DGDATA = 'CHANGE_DGDATA';
 export const DELETE_DGDATA = 'DELETE_DGDATA';
+export const SAVE_TEMP_DATA_LAYOUT_7 = "SAVE_TEMP_DATA_LAYOUT_7";
+export const CHUDE_DANHGIA = "CHUDE_DANHGIA";
+export const IS_LOADED_7= 'IS_LOADED_7';
+export const CDR_DANHGIA = "CDR_DANHGIA";
+export const SAVE_ALL_DATA_LAYOUT_7 = "SAVE_ALL_DATA_LAYOUT_7";
 
 //layout 8
 export const ADD_TNDATA = 'ADD_TNDATA';
 export const CHANGE_TNDATA = 'CHANGE_TNDATA';
 export const UPDATE_TNDATA  = 'UPDATE_TNDATA';
+export const SAVE_TEMP_DATA_LAYOUT_8 = "SAVE_TEMP_DATA_LAYOUT_8";
+export const SAVE_LOAI_TAI_NGUYEN = 'SAVE_LOAI_TAI_NGUYEN';
+export const SAVE_ALL_DATA_LAYOUT_8 = "SAVE_ALL_DATA_LAYOUT_8";
+export const IS_LOADED_8 = 'IS_LOADED_8';
+
 // layout 5
 export const DELETE_DATA_LAYOUT_5 = 'DELETE_DATA_LAYOUT_5';
 export const CHANGE_EDITSTATE_5 = 'CHANGE_EDITSTATE_5';
@@ -307,6 +317,70 @@ export function updateTNData(newTNData){
     return{
         type: UPDATE_TNDATA,
         data: newTNData
+    }
+}
+
+export function saveTempDGData(tempDGData){
+    return{
+        type: SAVE_TEMP_DATA_LAYOUT_7,
+        data: tempDGData
+    }
+}
+
+export function saveTempTNData(tempTNData){
+    return{
+        type: SAVE_TEMP_DATA_LAYOUT_8,
+        data: tempTNData
+    }
+}
+
+export function saveAllTNData(TNData){
+    return{
+        type: SAVE_ALL_DATA_LAYOUT_8,
+        data: TNData
+    }
+}
+
+
+export function saveAllDGData(DGData){
+    return{
+        type: SAVE_ALL_DATA_LAYOUT_7,
+        data: DGData
+    }
+}
+
+export function saveLoaiTaiNguyen(loaitainguyen){
+    return{
+        type: SAVE_LOAI_TAI_NGUYEN,
+        data: loaitainguyen
+    }
+}
+
+export function isLoaded8(isLoaded){
+    return{
+        type: IS_LOADED_8,
+        data: isLoaded
+    }
+}
+
+export function isLoaded7(isLoaded){
+    return{
+        type: IS_LOADED_7,
+        data: isLoaded
+    }
+}
+
+export function updateChudeDanhGia(chude){
+    return{
+        type: CHUDE_DANHGIA,
+        data: chude,
+    }
+}
+
+export function updateCDRDanhGia(cdr){
+    return{
+        type: CDR_DANHGIA,
+        data: cdr,
     }
 }
 

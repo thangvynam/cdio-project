@@ -4,76 +4,84 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeTNData, addTNData } from '../../../Constant/ActionType';
-
-const loai_item = [{
-  value: 'URL',
-  label: 'URL'
-}, {
-  value: 'BOOK',
-  label: 'BOOK'
-}, {
-  value: 'ARTICLE',
-  label: 'ARTICLE'
-}, {
-  value: 'VIDEO',
-  label: 'VIDEO'
-}]
+import { changeTNData, addTNData, saveTempTNData ,saveLoaiTaiNguyen} from '../../../Constant/ActionType';
+import axios from 'axios';
 
 class TNFormItem extends Component {
+  constructor(props){
+    super(props);
+  }
 
   handleMotaChange = (value) => {
     let a = value.target.value;
-    this.props.onChangeTNData({
-      stt: this.props.tndata.stt,
-      loai: this.props.tndata.loai,
-      mota: a,
-      link: this.props.tndata.link,
-    })
+
+    let tempInfo = this.props.itemLayout8Reducer.tempInfo;
+    tempInfo["mota"] = a;
+    this.props.onSaveTempTNData(tempInfo);
+
   }
   handleLinkChange = (value) => {
     let a = value.target.value;
-    this.props.onChangeTNData({
-      stt: this.props.tndata.stt,
-      loai: this.props.tndata.loai,
-      mota: this.props.tndata.mota,
-      link: a,
-    })
+    
+    let tempInfo = this.props.itemLayout8Reducer.tempInfo;
+    tempInfo["link"] = a;
+   
+    this.props.onSaveTempTNData(tempInfo);
   }
 
   handleLoaiChange = (value) => {
-    this.props.onChangeTNData({
-      stt: this.props.tndata.stt,
-      loai: value[0],
-      mota: this.props.tndata.mota,
-      link: this.props.tndata.link,
-    })
+    let a = [];
+    let tempInfo = this.props.itemLayout8Reducer.tempInfo;
+    a[0] = value[0];
+    tempInfo["loai"] = a;
+    this.props.onSaveTempTNData(tempInfo);
+  }
+
+  async componentDidMount(){
+    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout8Reducer.isLoaded === false){
+      var self = this;
+        await axios.get('/get-loaitainguyen')
+        .then(function (response) {
+            self.props.updateLoaitainguyen(response.data);
+          })
+         .catch(function (error) {
+            console.log(error);
+         });  
+    }
   }
 
   addTNData = () => {
 
-    if (this.props.tndata.loai === "" || this.props.tndata.loai === undefined) {
+    if (this.props.itemLayout8Reducer.tempInfo.loai === "" || this.props.itemLayout8Reducer.tempInfo.loai === undefined) {
       message.error("Chưa chọn loại")
     } else {
-      if (this.props.tndata.mota === "" || this.props.tndata.mota === undefined) {
+      if (this.props.itemLayout8Reducer.tempInfo.mota === "" || this.props.itemLayout8Reducer.tempInfo.mota === undefined) {
         message.error("Chưa nhập mô tả");
       } else {
-        let index = this.props.tntable.previewInfo.length + 1;
+        let index = this.props.itemLayout8Reducer.previewInfo.length ;
 
         let data = {
           key: index,
-          stt: index,
-          loai: this.props.tndata.loai,
-          mota: this.props.tndata.mota,
-          link: this.props.tndata.link,
+          stt: index+1,
+          loai: this.props.itemLayout8Reducer.tempInfo.loai[0],
+          mota: this.props.itemLayout8Reducer.tempInfo.mota,
+          link: this.props.itemLayout8Reducer.tempInfo.link,
         }
-        let newData = {previewInfo : []};
-        newData.previewInfo = this.props.tntable.previewInfo.concat(data);
+        let newData = {};
+        newData = this.props.itemLayout8Reducer.previewInfo.concat(data);
+      
         this.props.onAddTNData(newData);
+
         message.info("Thêm thành công!");
         this.props.form.resetFields();
-        this.props.tndata.link = '';
-        this.props.tndata.mota = '';
+
+        let resetTemp = {
+          loai: '',
+          mota : '',
+          link : ''
+        }
+        this.props.onSaveTempTNData(resetTemp);
+
       }
     }
   }
@@ -101,10 +109,11 @@ class TNFormItem extends Component {
       },
     };
 
+
     return (
       <div style={{ border: "2px solid", borderRadius: "12px" }}>
         <div style={{ marginTop: "10px" }}></div>
-        <Form onSubmit={this.handleSubmit}>
+        <Form onSubmit={this.addTNData}>
           <Form.Item
             {...formDynamicItemLayout}
             label={(
@@ -112,8 +121,15 @@ class TNFormItem extends Component {
                 Loại tài nguyên
               </span>
             )}
-          >
-            <Cascader options={loai_item} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />
+          >{getFieldDecorator('cascader', {
+            rules: [
+              { required: true, message: 'Chọn chủ đề' },
+            ],
+            initialValue: this.props.itemLayout8Reducer.tempInfo.loai
+          })
+            (<Cascader options={this.props.itemLayout8Reducer.loaitainguyenState.map(item => {
+              return {value :item.loai,label : item.loai}
+            })} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />)}
           </Form.Item>
 
           <Form.Item
@@ -124,6 +140,8 @@ class TNFormItem extends Component {
               rules: [{
                 required: true, message: 'Vui lòng nhập mô tả',
               }],
+              initialValue: this.props.itemLayout8Reducer.tempInfo.mota
+
             })(
               <Input onChange={this.handleMotaChange} />
             )}
@@ -137,6 +155,8 @@ class TNFormItem extends Component {
               rules: [{
                 message: 'Vui lòng nhập link liên kết (nếu có)',
               }],
+              initialValue: this.props.itemLayout8Reducer.tempInfo.link
+
             })(
               <Input onChange={this.handleLinkChange} />
             )}
@@ -159,13 +179,16 @@ class TNFormItem extends Component {
 const mapStateToProps = (state) => {
   return {
     tndata: state.tndata,
-    tntable: state.itemLayout8Reducer,
+    itemLayout8Reducer: state.itemLayout8Reducer,
+    subjectId : state.subjectid,
   };
 }
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onAddTNData: addTNData,
     onChangeTNData: changeTNData,
+    onSaveTempTNData : saveTempTNData,
+    updateLoaitainguyen: saveLoaiTaiNguyen,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TNFormItem);

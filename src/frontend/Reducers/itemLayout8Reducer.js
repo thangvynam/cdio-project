@@ -1,52 +1,70 @@
-import { ADD_TNDATA, CHANGE_TNDATA } from '../Constant/ActionType';
+import { ADD_TNDATA, CHANGE_TNDATA,SAVE_LOAI_TAI_NGUYEN,SAVE_TEMP_DATA_LAYOUT_8,SAVE_ALL_DATA_LAYOUT_8, IS_LOADED_8, CDR_DANHGIA } from '../Constant/ActionType';
+import { stat } from 'fs';
+import axios from 'axios';
 
 const addTNDataState = {
-    previewInfo: [{
-        key: 1,
-        stt: 1,
-        loai: 'BOOK',
-        mota: 'mota1',
-        link: 'link1'
-    }, {
-        key: 2,
-        stt: 2,
-        loai: 'ARTICLE',
-        mota: 'mota2',
-        link: 'link2'
-    },{
-        key: 3,
-        stt: 3,
-        loai: 'URL',
-        mota: 'mota3',
-        link: 'link3'
-    },]
+    previewInfo: [],
+    tempInfo: {
+        loai : [],
+        mota: "",
+        link: "",
+    },
+    isLoaded: false,
+    loaiTainguyen: [],
+    changeTNDataState : {
+        key: '',
+        stt: '',
+        loai: '',
+        mota: '',
+        link: ''
+    },
+    loaitainguyenState : [],
 };
 
 
-export function itemLayout8Reducer(state = addTNDataState, action) {
+const itemLayout8Reducer = (state = addTNDataState, action) => {
 
     switch (action.type) {
-        case ADD_TNDATA:
-            return action.data;
+        case ADD_TNDATA:{
+            return{
+                ...state,
+                previewInfo: action.data,
+            }
+        }
+        case CHANGE_TNDATA:{
+            return{
+                ...state,
+                changeTNDataState: action.data,
+            }
+        }
+        case SAVE_LOAI_TAI_NGUYEN:{
+            return {
+                ...state,
+                loaitainguyenState: action.data
+            }
+        }
+        case SAVE_TEMP_DATA_LAYOUT_8:{
+            return {
+                ...state,
+                tempInfo : action.data
+            }
+        }
+        case SAVE_ALL_DATA_LAYOUT_8 : {
+           axios.post('/save-tainguyenmonhoc', { data: action.data })
+            return {
+                ...state,
+            }
+        }
+        case IS_LOADED_8: {
+            return{
+                ...state,
+                isLoaded : action.data
+            }
+        }
+        
         default:
             return state;
     }
 }
 
-const changeTNDataState = {
-    key: '',
-    stt: '',
-    loai: '',
-    mota: '',
-    link: ''
-};
-
-export function changeTNDataReducer(state = changeTNDataState, action) {
-
-    switch (action.type) {
-        case CHANGE_TNDATA:
-            return action.data;
-        default:
-            return state;
-    }
-}
+export default itemLayout8Reducer;

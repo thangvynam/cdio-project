@@ -55,7 +55,7 @@ MatrixModel.getRealityMatrix = () => {
 selectCDR = idTTC => {
   return new Promise((resolve, reject) => {
     sql.query(`select do.Id,do.KeyRow from chuan_dau_ra_cdio cdr,detailoutcomestandard do
-    where cdr.del_flag = 0 and cdr.id = do.id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6 `, async (err, listCdrCDIO) => {
+    where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6 `, async (err, listCdrCDIO) => {
       if (err) {
         console.log("error:", err);
         return reject(err);
@@ -127,7 +127,7 @@ selectITU = (subject_id, cdrCDIO_id) => {
 MatrixModel.getCdrCDIO = ()=>{
     return new Promise((resolve,reject)=>{
         sql.query(`select do.Id,do.KeyRow from chuan_dau_ra_cdio cdr,detailoutcomestandard do
-        where cdr.del_flag = 0 and cdr.id = do.id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6`, (err, listCdrCDIO) => {
+        where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6`, (err, listCdrCDIO) => {
             if (err) {
               console.log("error:", err);
                return reject(err);
@@ -160,7 +160,7 @@ insertStandardMatrix = (resultRes)=>{
         else if(result.length===0){
           console.log("insert matrix for idSubject ",item.idSubject);
           sql.query(`select do.Id from chuan_dau_ra_cdio cdr,detailoutcomestandard do
-          where cdr.del_flag = 0 and cdr.id = do.id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6`,(err,res)=>{
+          where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6`,(err,res)=>{
             if(err){
               console.log("err: ",err);
               return reject(err);

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Divider, Tag, Button,
    Popconfirm, Modal, Form, Checkbox,
-   Input, Cascader } from 'antd';
+   Input, Cascader, notification } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData } from '../../../Constant/ActionType';
@@ -9,6 +9,13 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: 'Thông báo',
+    description: 'Lưu dữ liệu thành công',
+  });
+};
 
 const EditableContext = React.createContext();
 
@@ -474,7 +481,7 @@ class CDRTableItem extends Component {
   loadGap = () => {
 
     axios.post('/collect-mtmh-has-cdrcdio', {data: {thong_tin_chung_id: this.state.id}}).then((res) => {
-        
+
       axios.post('/collect-mucdo-mtmh-has-cdrcdio', {data: res.data}).then((response) => {
           let arr = [];
           for(let i = 0;i < response.data.length;i++) {
@@ -549,7 +556,7 @@ class CDRTableItem extends Component {
           }
           this.setState({notifications: notifications});
       })
-  })
+   })
   }
 
   loadTable = (self, id) => {
@@ -733,6 +740,7 @@ class CDRTableItem extends Component {
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');
+      openNotificationWithIcon('success');
     });
   }
 

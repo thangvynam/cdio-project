@@ -137,7 +137,7 @@ Model4.collectmtmhhascdrcdio = (data, result) => {
     FROM mtmh_has_cdrcdio
        JOIN muc_tieu_mon_hoc ON muc_tieu_mon_hoc.id = mtmh_has_cdrcdio.muc_tieu_mon_hoc_id
        JOIN chuan_dau_ra_cdio ON chuan_dau_ra_cdio.id = mtmh_has_cdrcdio .chuan_dau_ra_cdio_id
-    WHERE muc_tieu_mon_hoc.thong_tin_chung_id = ${data.thong_tin_chung_id} && muc_tieu_mon_hoc.del_flag = 0 ORDER by chuan_dau_ra_cdio.cdr`,
+    WHERE chuan_dau_ra_cdio.del_flag = 0 && muc_tieu_mon_hoc.thong_tin_chung_id = ${data.thong_tin_chung_id} && muc_tieu_mon_hoc.del_flag = 0 ORDER by chuan_dau_ra_cdio.cdr`,
         (err, res) => {
             if (err) {
                 console.log("error:", err);

@@ -11,8 +11,6 @@ import { connect } from 'react-redux';
 import axios from "axios"
 
 const { Option } = Select;
-// import './1.css';
-const chude = ['BTVN', 'BTTL', 'DAMH', 'LTCK'];
 
 const confirm = Modal.confirm;
 const standard_item = [
@@ -338,8 +336,9 @@ class itemLayout7ReducerItem extends React.Component {
   };
 
   isExist(value) {
-    for (let i = 0; i < chude.length; i++) {
-      if (value === chude[i])
+    for (let i = 0; i < this.props.itemLayout7Reducer.chudeDanhGia.length; i++) {
+      
+      if (value === this.props.itemLayout7Reducer.chudeDanhGia[i])
         return true;
     }
     return false;

@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix,resetTab, changeCDRData, selectedVerb} from '../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form } from 'antd';
+import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification } from 'antd';
 import { Link } from "react-router-dom";
 import Page404 from '../../NotFound/Page404';
 import { subjectListReducer } from '../../Reducers/homePageReducer';
@@ -23,6 +23,13 @@ import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
 import { nextTick } from 'q';
 const EditableContext = React.createContext();
+
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: 'Thông báo',
+      description: 'Thêm thành công',
+    });
+  };
 
 class Content extends Component {
 
@@ -59,6 +66,7 @@ class Content extends Component {
                 this.setState({
                     visible: false,
                 });
+                openNotificationWithIcon('success');
             }
         }
         
@@ -313,7 +321,7 @@ class Content extends Component {
                                                                         <div className="div-center">-</div>
                                                                     </Col>
                                                                     <Col span={16} className="col-left">
-                                                                        <Input defaultValue={item.Subjectname} id="subject-name-edit" />
+                                                                        <Input defaultValue={item.SubjectName} id="subject-name-edit" />
                                                                     </Col>
                                                                 </Row>)
                                                             }

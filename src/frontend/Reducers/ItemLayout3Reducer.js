@@ -3,7 +3,8 @@ import {ADD_DATA_LAYOUT_3, DELETE_DATA_LAYOUT_3,
     SAVE_ALL_DATA_LAYOUT_3,
     IS_LOADED_3,
     ADD_ARRAY_LAYOUT_3,
-    SAVE_LOG} from '../Constant/ActionType';
+    SAVE_LOG,
+    SET_CDR} from '../Constant/ActionType';
 import axios from 'axios';
 
 const itemLayout3InitialState = {
@@ -31,7 +32,8 @@ const itemLayout3InitialState = {
         standActs: [],
     },
     isLoaded: false,
-    logData: []
+    logData: [],
+    standActs: []
 }
 const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
     switch (action.type) {
@@ -90,7 +92,18 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
                     ...state,
                     logData: [...state.logData, obj]
                 }
-            }    
+            }   
+        case SET_CDR: {
+            let arr = action.data;
+            arr.forEach(element => {
+                element.KeyRow = element.KeyRow.slice(0, element.KeyRow.length -1)
+                element.KeyRow = element.KeyRow.replace(/-/g, ".")
+            });
+            return {
+                ...state,
+                standActs: arr
+            }
+        }
         default:
             return state
     }

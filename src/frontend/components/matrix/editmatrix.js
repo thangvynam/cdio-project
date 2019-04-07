@@ -3,7 +3,7 @@ import { Table, Form, Input, Checkbox, Icon, Tooltip, Button, Tag } from 'antd';
 import "./matrix.css";
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { editMatrix, editMatrixEditState, isLoadEditMatrix } from '../../Constant/ActionType';
+import { editMatrix, editMatrixEditState, isLoadEditMatrix, cdrCdio } from '../../Constant/ActionType';
 import axios from 'axios';
 
 const FormItem = Form.Item;
@@ -114,8 +114,8 @@ class EditMatrix extends Component {
         ];
         this.state = {
             levels: [],
-            cdr_cdio: [],
             tempMatrix: [],
+            isLoadMatrix: "false"
         }
         
       }
@@ -220,8 +220,8 @@ class EditMatrix extends Component {
               
                 if(Object.keys(this.props.editMatrix[i])[id] !== "key" && Object.keys(this.props.editMatrix[i])[id] !== "hocky"
             && Object.keys(this.props.editMatrix[i])[id] !== "hocphan" && Object.keys(this.props.editMatrix[i])[id] !== "gvtruongnhom") {
-              let cdr_cdio_id = this.getCdrCdioId(this.state.cdr_cdio, Object.keys(this.props.editMatrix[i])[id]);
-                let matrixId = this.getMatrixId(this.state.tempMatrix, this.props.editMatrix[i].key, cdr_cdio_id);
+              let cdr_cdio_id = this.getCdrCdioId(this.props.cdrCdio, Object.keys(this.props.editMatrix[i])[id]);
+                let matrixId = this.getMatrixId(this.props.tempMatrix, this.props.editMatrix[i].key, cdr_cdio_id);
                 data.push({id: matrixId, muc_do: this.props.editMatrix[i][Object.keys(this.props.editMatrix[i])[id]]});
             }
                 
@@ -233,7 +233,7 @@ class EditMatrix extends Component {
 
       checkIdExist = (matrix, id) => {
         for(let i = 0;i < matrix.length;i++) {
-            if(matrix[i].key === id) {
+            if(matrix[i].key.toString() === id.toString()) {
                 return i;
             }
         }
@@ -242,7 +242,7 @@ class EditMatrix extends Component {
 
     getCdrCdio = (cdr_cdio, id) => {
       for(let i = 0;i < cdr_cdio.length;i++) {
-          if(cdr_cdio[i].id === id)  {
+          if(cdr_cdio[i].id.toString() === id.toString())  {
               return cdr_cdio[i].cdr;
           }
       }
@@ -251,8 +251,8 @@ class EditMatrix extends Component {
 
     getSubjectName = (subjectList, id) => {
         for(let i = 0;i < subjectList.length;i++) {
-            if(subjectList[i].id === id) {
-                return subjectList[i].ten_mon_hoc_tv;
+            if(subjectList[i].Id.toString() === id.toString()) {
+                return subjectList[i].SubjectName;
             }
         }
         return "";
@@ -260,103 +260,70 @@ class EditMatrix extends Component {
 
       
       componentDidMount() {
-          
-        axios.get("/get-cdr-cdio").then((res) => {
-          this.setState({cdr_cdio: res.data})
-        });
+
         axios.get("/get-standard-matrix").then((res) => {
                 this.setState({tempMatrix: res.data});
         })
-        // if(this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
-        //     console.log("did");
-        //     this.props.updateIsLoadEditMatrix("true");
-        //  axios.get("/get-standard-matrix").then((res) => {
-        //      this.setState({tempMatrix: res.data});
-        //      let data = [];
-        //      for(let i = 0;i < res.data.length;i++) {
-        //          let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-        //          if(index !== -1) {
-        //              let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-        //              if(cdr_cdio !== "") {
-        //                  data[index][cdr_cdio] = res.data[i].muc_do;
-        //              }
-        //          }
-        //          else {
-        //              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-        //              let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-        //              if(subjectName !== "" && cdr_cdio !== "") {
-        //                  data.push({
-        //                      key: res.data[i].thong_tin_chung_id,
-        //                      hocky: 1,
-        //                      hocphan: subjectName,
-        //                      gvtruongnhom: 'NULL'
-        //                  })
- 
-        //                  data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-        //              }
-                     
-        //          }
-        //      }
-        //      this.props.updateEditMatrix(data);
-        //    })
-        // }
+        if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
+            this.props.updateIsLoadEditMatrix("true");
+            axios.get('/get-reality-matrix');
+            axios.get("/get-standard-matrix").then((res) => {
+                let data = [];
+                for(let i = 0;i < res.data.length;i++) {
+                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                    if(index !== -1) {
+                        let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if(cdr_cdio !== "") {
+                            data[index][cdr_cdio] = res.data[i].muc_do;
+                        }
+                    }
+                    else {  
+                        let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                        let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if(subjectName !== "" && cdr_cdio !== "") {
+                            data.push({
+                                key: res.data[i].thong_tin_chung_id,
+                                hocky: 1,
+                                hocphan: subjectName,
+                                gvtruongnhom: 'NULL'
+                            })
+
+                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                        }
+                        
+                    }
+                }
+                this.props.updateEditMatrix(data);
+              })
+              
+        }
     }
 
       componentWillReceiveProps(nextProps) {
-    //       console.log("rec")
-    //    if(nextProps.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
-    //        this.props.updateIsLoadEditMatrix("true");
-    //     axios.get("/get-standard-matrix").then((res) => {
-    //         this.setState({tempMatrix: res.data});
-    //         let data = [];
-    //         for(let i = 0;i < res.data.length;i++) {
-    //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-    //             if(index !== -1) {
-    //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-    //                 if(cdr_cdio !== "") {
-    //                     data[index][cdr_cdio] = res.data[i].muc_do;
-    //                 }
-    //             }
-    //             else {
-    //                 let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-    //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-    //                 if(subjectName !== "" && cdr_cdio !== "") {
-    //                     data.push({
-    //                         key: res.data[i].thong_tin_chung_id,
-    //                         hocky: 1,
-    //                         hocphan: subjectName,
-    //                         gvtruongnhom: 'NULL'
-    //                     })
+          //console.log("receive")
 
-    //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-    //                 }
-                    
-    //             }
-    //         }
-    //         this.props.updateEditMatrix(data);
-    //       })
-    //    }
-    }
+        }
 
     render() {
+
         let firstColumnMapped = [];
-        if(this.state.cdr_cdio.length > 0) {
+        if(this.props.cdrCdio.length > 0) {
             const firstColumn = [];
             const secondColumn = [];
             const thirdColumn = [];
-            for(let i = 0;i < this.state.cdr_cdio.length;i++) {
-                if(!this.isExistInArray(firstColumn, this.state.cdr_cdio[i].cdr.split(".")[0])) {
-                    firstColumn.push(this.state.cdr_cdio[i].cdr.split(".")[0]);
+            for(let i = 0;i < this.props.cdrCdio.length;i++) {
+                if(!this.isExistInArray(firstColumn, this.props.cdrCdio[i].cdr.split(".")[0])) {
+                    firstColumn.push(this.props.cdrCdio[i].cdr.split(".")[0]);
                 }
 
-                if(!this.isExistInArray(secondColumn, this.state.cdr_cdio[i].cdr.split(".")[0] + "." +
-                 this.state.cdr_cdio[i].cdr.split(".")[1])) {
-                    secondColumn.push(this.state.cdr_cdio[i].cdr.split(".")[0] + "." +
-                    this.state.cdr_cdio[i].cdr.split(".")[1]);
+                if(!this.isExistInArray(secondColumn, this.props.cdrCdio[i].cdr.split(".")[0] + "." +
+                 this.props.cdrCdio[i].cdr.split(".")[1])) {
+                    secondColumn.push(this.props.cdrCdio[i].cdr.split(".")[0] + "." +
+                    this.props.cdrCdio[i].cdr.split(".")[1]);
                 }
 
-                if(!this.isExistInArray(thirdColumn, this.state.cdr_cdio[i].cdr)) {
-                    thirdColumn.push(this.state.cdr_cdio[i].cdr);
+                if(!this.isExistInArray(thirdColumn, this.props.cdrCdio[i].cdr)) {
+                    thirdColumn.push(this.props.cdrCdio[i].cdr);
                 }
             }
             this.sortLevels(firstColumn);
@@ -463,15 +430,17 @@ const mapStateToProps = (state) => {
         editMatrix: state.editmatrix,
         editMatrixEditState: state.editmatrixeditstate,
         subjectList: state.subjectlist,
-        isLoadEditMatrix: state.isloadeditmatrix
+        isLoadEditMatrix: state.isloadeditmatrix,
+        cdrCdio: state.cdrcdio
     }
 }
 const mapDispatchToProps = (dispatch) => {
 
   return bindActionCreators({
-    updateEditMatrix: editMatrix,
     updateEditMatrixEditState: editMatrixEditState,
-    updateIsLoadEditMatrix: isLoadEditMatrix
+    updateEditMatrix: editMatrix,
+    updateIsLoadEditMatrix: isLoadEditMatrix,
+    updateCdrCdio: cdrCdio
   }, dispatch);
 
 }

@@ -9,7 +9,7 @@ import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
 import axios from 'axios';
-import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb } from '../../Constant/ActionType';
+import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio } from '../../Constant/ActionType';
 
 class Home extends Component {
     constructor(props) {
@@ -79,39 +79,39 @@ class Home extends Component {
       }
 
     componentWillReceiveProps(nextProps) {
-        if(this.props.isLoadEditMatrix === "false" &&  nextProps.subjectList.length > 0) {
-            this.props.updateIsLoadEditMatrix("true");
-            axios.get('/get-reality-matrix');
-            axios.get("/get-standard-matrix").then((res) => {
-                let data = [];
-                for(let i = 0;i < res.data.length;i++) {
-                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                    if(index !== -1) {
-                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(cdr_cdio !== "") {
-                            data[index][cdr_cdio] = res.data[i].muc_do;
-                        }
-                    }
-                    else {  
-                        let subjectName = this.getSubjectName( nextProps.subjectList, res.data[i].thong_tin_chung_id);
-                        let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(subjectName !== "" && cdr_cdio !== "") {
-                            data.push({
-                                key: res.data[i].thong_tin_chung_id,
-                                hocky: 1,
-                                hocphan: subjectName,
-                                gvtruongnhom: 'NULL'
-                            })
+        // if(this.props.isLoadEditMatrix === "false" &&  nextProps.subjectList.length > 0) {
+        //     this.props.updateIsLoadEditMatrix("true");
+        //     axios.get('/get-reality-matrix');
+        //     axios.get("/get-standard-matrix").then((res) => {
+        //         let data = [];
+        //         for(let i = 0;i < res.data.length;i++) {
+        //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+        //             if(index !== -1) {
+        //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+        //                 if(cdr_cdio !== "") {
+        //                     data[index][cdr_cdio] = res.data[i].muc_do;
+        //                 }
+        //             }
+        //             else {  
+        //                 let subjectName = this.getSubjectName( nextProps.subjectList, res.data[i].thong_tin_chung_id);
+        //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
+        //                 if(subjectName !== "" && cdr_cdio !== "") {
+        //                     data.push({
+        //                         key: res.data[i].thong_tin_chung_id,
+        //                         hocky: 1,
+        //                         hocphan: subjectName,
+        //                         gvtruongnhom: 'NULL'
+        //                     })
 
-                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                        }
+        //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+        //                 }
                         
-                    }
-                }
-                this.props.updateEditMatrix(data);
-              })
+        //             }
+        //         }
+        //         this.props.updateEditMatrix(data);
+        //       })
               
-        }
+        // }
       }
 
       checkLevel_1_Exist = (level_1, cdrmdhd) => {
@@ -194,7 +194,7 @@ class Home extends Component {
         self.props.updateSubjectId(monhoc) 
     }
     axios.get("/get-cdr-cdio").then((res) => {
-        self.setState({cdr_cdio: res.data})
+        self.props.updateCdrCdio(res.data)
       })
 
 }
@@ -301,7 +301,8 @@ const mapStateToProps = (state) => {
         editMatrix: state.editmatrix,
         isLoadEditMatrix: state.isloadeditmatrix,
         cdrmdhd: state.cdrmdhd,
-        cdrmdhddb: state.cdrmdhddb
+        cdrmdhddb: state.cdrmdhddb,
+        cdrCdio: state.cdrcdio
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -311,7 +312,8 @@ const mapDispatchToProps = (dispatch) => {
       updateEditMatrix: editMatrix,
       updateIsLoadEditMatrix: isLoadEditMatrix,
       updateCdrmdhd: cdrmdhd,
-      updateCdrmdhdDB: cdrmdhddb
+      updateCdrmdhdDB: cdrmdhddb,
+      updateCdrCdio: cdrCdio
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

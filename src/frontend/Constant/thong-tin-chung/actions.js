@@ -6,18 +6,7 @@ const collectDataRequest = (id) => {
     return (dispatch) => {
         return axios.get(`/collect-data/${id}`)
             .then(function (response) {
-                const data = {
-                    tenMonHocTV: response.data.ten_mon_hoc_tv,
-                    tenMonHocTA: response.data.ten_mon_hoc_ta,
-                    maMonHoc: response.data.ma_so,
-                    khoiKienThuc: response.data.khoi_kien_thuc,
-                    soTinChi: response.data.so_tin_chi,
-                    tietLyThuyet: response.data.so_tiet_ly_thuyet,
-                    tietThucHanh: response.data.so_tiet_thuc_hanh,
-                    tietTuHoc: response.data.so_tiet_tu_hoc,
-                    monTienQuyet: response.data.cac_mon_hoc_tien_quyet
-                }
-                dispatch(fetchData(data));
+                dispatch(fetchData(response.data));
             })
             .catch(function (error) {
                 console.log(error);

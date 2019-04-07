@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import "./matrix.css";
+import { editMatrix, isLoadEditMatrix } from '../../Constant/ActionType';
 
 class Matrix extends Component {
     constructor(props) {
@@ -15,13 +16,72 @@ class Matrix extends Component {
             isLoading: false,
             isError: false,
             isSuccess: false,
-            isShow: false
+            isShow: false,
         };
         this.myRef = React.createRef();
     }
 
+    checkIdExist = (matrix, id) => {
+        for(let i = 0;i < matrix.length;i++) {
+            if(matrix[i].key.toString() === id.toString()) {
+                return i;
+            }
+        }
+        return -1;
+    }
+
+    getCdrCdio = (cdr_cdio, id) => {
+      for(let i = 0;i < cdr_cdio.length;i++) {
+          if(cdr_cdio[i].id.toString() === id.toString())  {
+              return cdr_cdio[i].cdr;
+          }
+      }
+      return "";
+    }
+
+    getSubjectName = (subjectList, id) => {
+        for(let i = 0;i < subjectList.length;i++) {
+            if(subjectList[i].Id.toString() === id.toString()) {
+                return subjectList[i].SubjectName;
+            }
+        }
+        return "";
+      }
+
     componentDidMount() {
         this.setState({ isLoading: true })
+        if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
+            this.props.updateIsLoadEditMatrix("true");
+            axios.get("/get-standard-matrix").then((res) => {
+                let data = [];
+                for(let i = 0;i < res.data.length;i++) {
+                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                    if(index !== -1) {
+                        let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if(cdr_cdio !== "") {
+                            data[index][cdr_cdio] = res.data[i].muc_do;
+                        }
+                    }
+                    else {  
+                        let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                        let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if(subjectName !== "" && cdr_cdio !== "") {
+                            data.push({
+                                key: res.data[i].thong_tin_chung_id,
+                                hocky: 1,
+                                hocphan: subjectName,
+                                gvtruongnhom: 'NULL'
+                            })
+
+                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                        }
+                        
+                    }
+                }
+                this.props.updateEditMatrix(data);
+              })
+              
+        }
         var a = axios.get('/get-reality-matrix');
         var b = axios.get('/get-cdr-cdio');
         Promise.all([a, b])
@@ -264,51 +324,58 @@ class Matrix extends Component {
     }
 
     render() {
-        const { isLoading, isShow } = this.state;
-        return (
-            this.props.editMatrix && <React.Fragment>
-                {
-                    !isLoading
-                    && !_.isEmpty(this.props.dataMatrix)
-                    && <div className="exportMatrix" style={{ margin: "10px" }}>
-                        <div style={{ marginBottom: "10px" }}>
-                            <span className="adding-text"><Icon type="plus-square" />: Thêm</span>
+            const { isLoading, isShow } = this.state;
+            return (
+                this.props.editMatrix && <React.Fragment>
+                    {
+                        !isLoading
+                        && !_.isEmpty(this.props.dataMatrix)
+                        && <div className="exportMatrix" style={{ margin: "10px" }}>
+                            <div style={{ marginBottom: "10px" }}>
+                                <span className="adding-text"><Icon type="plus-square" />: Thêm</span>
 
-                            <span style={{ marginLeft: "30px" }} className="removing-text"><Icon type="close-square" />: Xóa</span>
+                                <span style={{ marginLeft: "30px" }} className="removing-text"><Icon type="close-square" />: Xóa</span>
 
-                            <span style={{ marginLeft: "30px" }} className="no-action-text"><Icon type="minus-square" />: Không đổi</span>
+                                <span style={{ marginLeft: "30px" }} className="no-action-text"><Icon type="minus-square" />: Không đổi</span>
+                            </div>
+                            <ReactHTMLTableToExcel
+                                id="test-table-xls-button"
+                                className="download-table-xls-button btn btn-outline-warning"
+                                table="table-to-xls"
+                                filename="matrix"
+                                sheet="tablexls"
+                                buttonText="Export"
+                            />                
+                                <Table
+                                    bordered
+                                    columns={this.createColumn(this.props.dataMatrix)}
+                                    dataSource={this.createData(this.props.dataMatrix)}
+                                    scroll={{ x: 1500 }}
+                                />
                         </div>
-                        <ReactHTMLTableToExcel
-                            id="test-table-xls-button"
-                            className="download-table-xls-button btn btn-outline-warning"
-                            table="table-to-xls"
-                            filename="matrix"
-                            sheet="tablexls"
-                            buttonText="Export"
-                        />                
-                            <Table
-                                bordered
-                                columns={this.createColumn(this.props.dataMatrix)}
-                                dataSource={this.createData(this.props.dataMatrix)}
-                                scroll={{ x: 1500 }}
-                            />
-                    </div>
-                }
-            </React.Fragment>
-        )
+                    }
+                </React.Fragment>
+            )
+        
+
     }
 }
 
 const mapStateToProps = (state) => {
     return {
         dataMatrix: state.matrix.previewInfo,
-        editMatrix: state.editmatrix
+        editMatrix: state.editmatrix,
+        subjectList: state.subjectlist,
+        isLoadEditMatrix: state.isloadeditmatrix,
+        cdrCdio: state.cdrcdio
     }
 }
 
 const mapDispatchToProps = (dispatch) => {
     return {
-        getDataMatrix: (newData) => dispatch(getDataMatrix(newData))
+        getDataMatrix: (newData) => dispatch(getDataMatrix(newData)),
+        updateEditMatrix: (newData) => dispatch(editMatrix(newData)),
+        updateIsLoadEditMatrix: (newData) => dispatch(isLoadEditMatrix(newData)),
     }
 }
 

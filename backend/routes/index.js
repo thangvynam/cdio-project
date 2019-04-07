@@ -16,6 +16,7 @@ const Model8 = require('../models/Model8')
 const LogModel = require('../models/LogModel');
 const CommentModel = require('../models/CommentModel');
 const MatrixModel = require('../models/MatrixModel');
+const DanhMucModel = require('../models/DanhMucModel');
 
 const MucTieuModel = require('../models/MucTieuModel')
 
@@ -685,8 +686,15 @@ router.post('/add-comment-2', function(req, res) {
   CommentModel.add(body,(result) => {
     res.send(result)
   })
-  
 })
+
+router.post('/add-hdd', function(req, res) {
+  const body = req.body.data;
+  DanhMucModel.add(body,(result) => {
+    res.send(JSON.stringify(result.affectedRows));
+  })
+})
+
 
 
 module.exports = router;

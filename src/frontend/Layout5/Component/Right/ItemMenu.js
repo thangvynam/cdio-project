@@ -102,20 +102,20 @@ const standard_item = [{
     label: 'G7',
     children: [{
         value: '.1',
-        label: '.1', teachingActs
+        label: '.1', 
     }]
 },
 ];
-const teachingActs = [
-    'Thuyết giảng',
-    'Phân nhóm & chơi trò chơi',
-    'Thảo luận nhóm',
-    'Phân nhóm đồ án',
-    'Thảo luận và thể hiện trên bảng',
-    'Trò chơi nhập vai',
-    'Nhóm thảo luận & thiết kế 1 màn hình',
-    'Làm bài tập tạo test case',
-    'Trò chơi',
+let teachingActs = [
+    // 'Thuyết giảng',
+    // 'Phân nhóm & chơi trò chơi',
+    // 'Thảo luận nhóm',
+    // 'Phân nhóm đồ án',
+    // 'Thảo luận và thể hiện trên bảng',
+    // 'Trò chơi nhập vai',
+    // 'Nhóm thảo luận & thiết kế 1 màn hình',
+    // 'Làm bài tập tạo test case',
+    // 'Trò chơi',
 ];
 const evalActs = [
     'BTVN',
@@ -148,8 +148,10 @@ class ItemMenu extends Component {
     componentDidMount() {
         if(!firstCollect){
             firstCollect = true;
+            console.log("get");
             this.props.collectDataRequest();
         }
+        this.props.getDataHDD();
         
     }
    
@@ -432,6 +434,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 type: CHANGE_DATA, titleName: '', teachingActs: [],
                 standardOutput: '', evalActs: []
             });
+        },
+        getDataHDD:()=>{
+            axios.get('/collect')
         },
         collectDataRequest: ()=>{
            

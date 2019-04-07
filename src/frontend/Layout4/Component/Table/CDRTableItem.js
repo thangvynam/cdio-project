@@ -364,7 +364,7 @@ class CDRTableItem extends Component {
 
   isExistInArr = (cdr, arr) => {
     for(let i = 0;i < arr.length;i++) {
-      if(arr[i].cdr === cdr) {
+      if(cdr === arr[i].cdr) {
         return i;
       }
     }
@@ -465,6 +465,7 @@ class CDRTableItem extends Component {
       }
       else {
         if(editMatrixData[i].muc_do !== "-" && editMatrixData[i].muc_do !== "") {
+
           desArr.push({
             state: "add-cdr",
             cdr: editMatrixData[i].cdr,
@@ -481,11 +482,13 @@ class CDRTableItem extends Component {
   loadGap = () => {
 
     axios.post('/collect-mtmh-has-cdrcdio', {data: {thong_tin_chung_id: this.state.id}}).then((res) => {
-
+      
       axios.post('/collect-mucdo-mtmh-has-cdrcdio', {data: res.data}).then((response) => {
           let arr = [];
           for(let i = 0;i < response.data.length;i++) {
-            let index = this.isExistInArr(response.data[i].cdr, arr);
+            let keyrow = response.data[i].cdr.split("-");
+            keyrow.splice(keyrow.length - 1, 1);
+            let index = this.isExistInArr(keyrow.join("."), arr);
             if(index !== -1) {
               arr[index].muc_do = arr[index].muc_do + "," + response.data[i].muc_do;
               arr[index].muc_do = this.sortLevels(Array.from(new Set(arr[index].muc_do.split(",")))).toString();
@@ -500,8 +503,9 @@ class CDRTableItem extends Component {
             else {
               let muc_do = this.sortLevels(Array.from(new Set(response.data[i].muc_do.split(",")))).toString();
               let muc_tieu = this.sortLevels(response.data[i].muc_tieu.split(",")).toString();
+
               arr.push({
-                cdr: response.data[i].cdr,
+                cdr: keyrow.join("."),
                 muc_do: muc_do,
                 muc_tieu: muc_tieu
               })
@@ -522,9 +526,7 @@ class CDRTableItem extends Component {
               break;
             }
           }
-
           let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
-
           let notifications = [];
           for(let i = 0;i < notiArr.length;i++) {
             if(notiArr[i].state === "add") {
@@ -740,7 +742,6 @@ class CDRTableItem extends Component {
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');
-      openNotificationWithIcon('success');
     });
   }
 
@@ -804,10 +805,11 @@ class CDRTableItem extends Component {
     this.loadTable(self, self.state.id);
     this.loadGap();
     this.props.updateIsLoad("false");
+    openNotificationWithIcon('success');
   }
 
     render() {
-      
+      //console.log(this.state.notifications)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {

@@ -21,6 +21,7 @@ export const SAVE_TEMP_DATA_LAYOUT_3 = 'SAVE_TEMP_DATA_LAYOUT_3';
 export const SAVE_ALL_DATA_LAYOUT_3 = 'SAVE_ALL_DATA_LAYOUT_3';
 export const IS_LOADED_3 = 'IS_LOADED_3';
 export const ADD_ARRAY_LAYOUT_3 = 'ADD_ARRAY_LAYOUT_3';
+export const SET_CDR = 'SET_CDR';
 
 // layout4
 export const ADD_CDRDATA = 'ADD_CDRDATA';

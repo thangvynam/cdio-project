@@ -30,7 +30,8 @@ class EditableCell extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      standActs: []
+      standActs: [],
+      cdr: []
     };
   }
 
@@ -38,12 +39,29 @@ class EditableCell extends React.Component {
     this.setState({ standActs: value });
   }
 
+  async getCDR() {
+    return axios.get("/get-cdr-3").then(res => {
+        return res.data
+    })
+}
+
+async componentDidMount() {
+  let arr = await this.getCDR()
+            arr.forEach(element => {
+                element.KeyRow = element.KeyRow.slice(0, element.KeyRow.length -1)
+                element.KeyRow = element.KeyRow.replace(/-/g, ".")
+            });
+    this.setState({cdr: arr})
+}
+
   getInput = () => {
     const childrenStandard = [];
+    
+    let standActs = this.state.cdr
 
-    for (let i = 0; i < staActs.length; i++) {
+    for (let i = 0; i < standActs.length; i++) {
       childrenStandard.push(
-        <Option key={staActs[i]}>{staActs[i]}</Option>
+        <Option key={standActs[i].KeyRow}>{standActs[i].KeyRow}</Option>
       );
     }    
 
@@ -139,7 +157,7 @@ class TableItem extends Component {
         <span>
           {standActs.map(  tag => {
             let color = 'green';
-            return <Tag color={color} key={tag}>{tag.toUpperCase()}</Tag>;
+            return <Tag color={color} key={tag}>{tag}</Tag>;
           })}
         </span>
       ),
@@ -190,30 +208,6 @@ class TableItem extends Component {
     }];
   }
 
-  async getMucTieu() {
-    return axios.get(`/get-muc-tieu-3/${this.props.subjectid}`).then(res => {
-        return res.data
-    }).then(resp => {
-        return resp;
-    })
-}
-
-async getMucTieuCDR(data) {
-  return axios.post("/get-mtmh-cdr-3", data).then(res => {
-      return res.data
-  }).then(resp => {
-      return resp;
-  })
-}
-
-async getCDR(data) {
-  return axios.post("/get-cdr-3", data).then(res => {
-    return res.data
-}).then(resp => {
-    return resp;
-})
-}
-
 async getData() {
   return axios.get(`/get-data-3/${this.props.subjectid}`).then(res => {
     return res.data
@@ -238,21 +232,25 @@ async componentWillReceiveProps(nextProps){
   if (count <= 2) {
     this.setState({count: count + 1})
     let temp = await this.getData()
-    temp.forEach(element => {
-      temp.forEach(element2 => {
-        if(element2.muc_tieu === element.muc_tieu) {
-          standActs.push(element2.cdr)
-        }
-      });
-      let newObj = {
-            objectName: element.muc_tieu,
-            description: element.mo_ta,
-            standActs: standActs
+    if (temp.length > 0) {
+      temp.forEach(element => {
+        temp.forEach(element2 => {
+          if(element2.muc_tieu === element.muc_tieu) {
+            element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length -1)
+            element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
+            standActs.push(element2.KeyRow)
           }
-        saveData.push(newObj);        
-        standActs = []
-    });  
-
+        });
+        let newObj = {
+              objectName: element.muc_tieu,
+              description: element.mo_ta,
+              standActs: standActs
+            }            
+          saveData.push(newObj);        
+          standActs = []
+      });
+    }
+    
     saveData = this.getUnique(saveData, "objectName")
     this.props.saveAndContinue(saveData);
     this.props.setFlag(true);

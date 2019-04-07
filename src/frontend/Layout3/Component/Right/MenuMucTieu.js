@@ -5,9 +5,10 @@ import {
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, SAVE_LOG } from '../../../Constant/ActionType';
+import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, SAVE_LOG, SET_CDR } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
 import { getCurrTime } from '../../../utils/Time';
+import axios from 'axios'
 
 const { Option } = Select;
 
@@ -31,7 +32,19 @@ const staActs = [
 class MenuMucTieu extends Component {
     state = {
         standItems: [],
+
     }
+
+    async getCDR() {
+        return axios.get("/get-cdr-3").then(res => {
+            return res.data
+        })
+    }
+
+    async componentDidMount() {
+        this.props.setCDR(await this.getCDR())
+    }
+
     renderBackButton() {
         if (this.props.step !== 0) {
             return (
@@ -62,9 +75,12 @@ class MenuMucTieu extends Component {
         const { getFieldDecorator } = this.props.form;
 
         const cdioStandard = [];
+
+        let staActs = this.props.itemLayout3Reducer.standActs;
+        
         function init() {
             for (let i = 0; i < staActs.length; i++) {
-                cdioStandard.push(<Option key={staActs[i]}>{staActs[i]}</Option>)
+                cdioStandard.push(<Option key={staActs[i].KeyRow}>{staActs[i].KeyRow}</Option>)
             }
         }
         init();
@@ -136,7 +152,7 @@ class MenuMucTieu extends Component {
                             initialValue: this.props.itemLayout3Reducer.tempInfo.standActs
                         })(
                             <Select
-                                mode="tags"
+                                mode="multiple"
                                 style={{ width: '100%' }}
                                 placeholder="Please select or type here"
                                 onChange={this.handleChangeStandActs}
@@ -202,6 +218,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
             dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
+        },
+        setCDR: (data) => {
+            dispatch({type: SET_CDR, data})
         }
     }
 }

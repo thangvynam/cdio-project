@@ -180,7 +180,6 @@ router.post('/exportfile', function(req, res, next) {
   router.get('/collect-data/:id', function(req, res) {
     let id = req.params
     ThongTinChungModel.collect(id, (resData) => {
-      console.log(resData)
       res.send(resData);
     })  
   })
@@ -195,7 +194,6 @@ router.post('/exportfile', function(req, res, next) {
         res.send("SUCCESS");
       }
     })
-    
   })
 
 router.get('/get-data-2/:id', (req, res) => {

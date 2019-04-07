@@ -13,7 +13,7 @@ MatrixModel.getRealityMatrix = () => {
   return new Promise((resolve, reject) => {
     var resultRes = [];
     sql.query(
-      `select id,ten_mon_hoc_tv from thong_tin_chung where del_flag = 0`,
+      `select sb.Id,sb.SubjectName from thong_tin_chung ttc,subject sb where ttc.del_flag = 0 and ttc.id = sb.Id`,
       (err, listSubject) => {
         if (err) {
           console.log("error:", err);
@@ -24,12 +24,12 @@ MatrixModel.getRealityMatrix = () => {
           }
           listSubject.forEach((subject, index) => {
             var itemRes = {
-              idSubject: subject.id,
-              subject: subject.ten_mon_hoc_tv,
+              idSubject: subject.Id,
+              subject: subject.SubjectName,
               itu: []
             };
 
-            selectCDR(subject.id).then(
+            selectCDR(subject.Id).then(
               res => {
                 itemRes.itu = res;
                 resultRes.push(itemRes);
@@ -54,7 +54,8 @@ MatrixModel.getRealityMatrix = () => {
 
 selectCDR = idTTC => {
   return new Promise((resolve, reject) => {
-    sql.query(`select * from chuan_dau_ra_cdio`, async (err, listCdrCDIO) => {
+    sql.query(`select do.Id,do.KeyRow from chuan_dau_ra_cdio cdr,detailoutcomestandard do
+    where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6 `, async (err, listCdrCDIO) => {
       if (err) {
         console.log("error:", err);
         return reject(err);
@@ -63,7 +64,7 @@ selectCDR = idTTC => {
       var arrITU = [];
 
       await listCdrCDIO.forEach(async (cdrCDIO, index) => {
-        await selectITU(idTTC, cdrCDIO.id).then(
+        await selectITU(idTTC, cdrCDIO.Id).then(
           async res => {
             //return res;
             arrITU.push(res);
@@ -125,12 +126,22 @@ selectITU = (subject_id, cdrCDIO_id) => {
 
 MatrixModel.getCdrCDIO = ()=>{
     return new Promise((resolve,reject)=>{
-        sql.query(`SELECT * FROM chuan_dau_ra_cdio`, (err, listCdrCDIO) => {
+        sql.query(`select do.Id,do.KeyRow from chuan_dau_ra_cdio cdr,detailoutcomestandard do
+        where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6`, (err, listCdrCDIO) => {
             if (err) {
               console.log("error:", err);
                return reject(err);
             }
-            resolve(listCdrCDIO);
+            var result = [];
+            listCdrCDIO.forEach((item,_)=>{
+              let temp = {
+                id: item.Id,
+                cdr:item.KeyRow.replace(/-/g,'.').slice(0,-1)
+              }
+              
+              result.push(temp);
+            })
+            resolve(result);
                 
         })
     })
@@ -147,15 +158,16 @@ insertStandardMatrix = (resultRes)=>{
           return reject(err);
         }
         else if(result.length===0){
-          console.log("inser matrix for idSubject ",item.idSubject);
-          sql.query(`SELECT id FROM chuan_dau_ra_cdio`,(err,res)=>{
+          console.log("insert matrix for idSubject ",item.idSubject);
+          sql.query(`select do.Id from chuan_dau_ra_cdio cdr,detailoutcomestandard do
+          where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6`,(err,res)=>{
             if(err){
               console.log("err: ",err);
               return reject(err);
             }
             for(let i=0;i<res.length;i++){
 
-              sql.query(`INSERT INTO matrix(muc_do,thong_tin_chung_id,chuan_dau_ra_cdio_id) VALUES('${item.itu[i]}',${item.idSubject},${res[i].id})`,(err,res)=>{
+              sql.query(`INSERT INTO matrix(muc_do,thong_tin_chung_id,chuan_dau_ra_cdio_id) VALUES('${item.itu[i]}',${item.idSubject},${res[i].Id})`,(err,res)=>{
                 if(err){
                   console.log("err: ",err);
                   return reject(err);

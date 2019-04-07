@@ -133,11 +133,12 @@ Model4.collectmtmh = (data, result) => {
 }
 
 Model4.collectmtmhhascdrcdio = (data, result) => {
-    sql.query(`SELECT muc_tieu_mon_hoc.id, muc_tieu_mon_hoc.muc_tieu , chuan_dau_ra_cdio.cdr, muc_tieu_mon_hoc.thong_tin_chung_id
+    sql.query(`SELECT muc_tieu_mon_hoc.id, muc_tieu_mon_hoc.muc_tieu , detailoutcomestandard.KeyRow, muc_tieu_mon_hoc.thong_tin_chung_id
     FROM mtmh_has_cdrcdio
        JOIN muc_tieu_mon_hoc ON muc_tieu_mon_hoc.id = mtmh_has_cdrcdio.muc_tieu_mon_hoc_id
        JOIN chuan_dau_ra_cdio ON chuan_dau_ra_cdio.id = mtmh_has_cdrcdio .chuan_dau_ra_cdio_id
-    WHERE muc_tieu_mon_hoc.thong_tin_chung_id = ${data.thong_tin_chung_id} && muc_tieu_mon_hoc.del_flag = 0 ORDER by chuan_dau_ra_cdio.cdr`,
+       JOIN detailoutcomestandard ON detailoutcomestandard.Id = mtmh_has_cdrcdio .chuan_dau_ra_cdio_id
+    WHERE chuan_dau_ra_cdio.del_flag = 0 && muc_tieu_mon_hoc.thong_tin_chung_id = ${data.thong_tin_chung_id} && muc_tieu_mon_hoc.del_flag = 0 ORDER by detailoutcomestandard.KeyRow`,
         (err, res) => {
             if (err) {
                 console.log("error:", err);
@@ -168,7 +169,7 @@ Model4.collectmucdomtmhhascdrcdio = (data, result) => {
                     arr.push({
                         "id": data[i].id,
                         "muc_tieu": data[i].muc_tieu,
-                        "cdr": data[i].cdr,
+                        "cdr": data[i].KeyRow,
                         "muc_do": res[0].muc_do,
                         "thong_tin_chung_id": data[i].thong_tin_chung_id
                     })
@@ -177,7 +178,7 @@ Model4.collectmucdomtmhhascdrcdio = (data, result) => {
                     arr.push({
                         "id": data[i].id,
                         "muc_tieu": data[i].muc_tieu,
-                        "cdr": data[i].cdr,
+                        "cdr": data[i].KeyRow,
                         "muc_do": "-",
                         "thong_tin_chung_id": data[i].thong_tin_chung_id
                     })

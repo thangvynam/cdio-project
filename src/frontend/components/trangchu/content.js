@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix,resetTab, changeCDRData, selectedVerb} from '../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form } from 'antd';
+import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification } from 'antd';
 import { Link } from "react-router-dom";
 import Page404 from '../../NotFound/Page404';
 import { subjectListReducer } from '../../Reducers/homePageReducer';
@@ -17,12 +17,20 @@ import Layout6 from '../../Layout6/Layout6';
 import Layout9 from '../../Layout9/Layout9';
 import Layout7 from '../../Layout7/Layout7';
 import Layout8 from '../../Layout8/Layout8';
+import Danhmuc from '../../Danhmuc/Danhmuc';
 import ExportFile from '../../ExportFIle/ExportFile';
 import axios from 'axios';
 import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
 import { nextTick } from 'q';
 const EditableContext = React.createContext();
+
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: 'Thông báo',
+      description: 'Thêm thành công',
+    });
+  };
 
 class Content extends Component {
 
@@ -59,6 +67,7 @@ class Content extends Component {
                 this.setState({
                     visible: false,
                 });
+                openNotificationWithIcon('success');
             }
         }
         
@@ -313,7 +322,7 @@ class Content extends Component {
                                                                         <div className="div-center">-</div>
                                                                     </Col>
                                                                     <Col span={16} className="col-left">
-                                                                        <Input defaultValue={item.Subjectname} id="subject-name-edit" />
+                                                                        <Input defaultValue={item.SubjectName} id="subject-name-edit" />
                                                                     </Col>
                                                                 </Row>)
                                                             }
@@ -334,7 +343,10 @@ class Content extends Component {
                                 </Row>
                             </div>
                         </React.Fragment>
-                    ) : type === "matrix" ? <Matrix/> : type === "edit-matrix" ? <EditMatrix/> : null;
+                    ) : type === "matrix" ? <Matrix/> 
+                      : type === "edit-matrix" ? <EditMatrix/>
+                      : type === "danhmuc" ? <Danhmuc/>
+                      : null;
                 }; break;
 
             }

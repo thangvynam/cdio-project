@@ -17,6 +17,7 @@ import Layout6 from '../../Layout6/Layout6';
 import Layout9 from '../../Layout9/Layout9';
 import Layout7 from '../../Layout7/Layout7';
 import Layout8 from '../../Layout8/Layout8';
+import Danhmuc from '../../Danhmuc/Danhmuc';
 import ExportFile from '../../ExportFIle/ExportFile';
 import axios from 'axios';
 import Matrix from '../matrix/matrix';
@@ -342,7 +343,10 @@ class Content extends Component {
                                 </Row>
                             </div>
                         </React.Fragment>
-                    ) : type === "matrix" ? <Matrix/> : type === "edit-matrix" ? <EditMatrix/> : null;
+                    ) : type === "matrix" ? <Matrix/> 
+                      : type === "edit-matrix" ? <EditMatrix/>
+                      : type === "danhmuc" ? <Danhmuc/>
+                      : null;
                 }; break;
 
             }

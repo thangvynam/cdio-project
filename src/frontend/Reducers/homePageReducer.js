@@ -8,7 +8,11 @@ const initialState = {
     },
     "edit-matrix": {
         name: "EDIT-MATRIX"
+    },
+    "danhmuc": {
+        name: "DANH MỤC"
     }
+    
 }
 
 export function menuItemReducer(state = initialState, action) {

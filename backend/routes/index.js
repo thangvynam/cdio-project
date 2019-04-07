@@ -268,10 +268,9 @@ router.post('/get-mtmh-cdr-3', (req, res) => {
   });  
 })
 
-router.post('/get-cdr-3', (req, res) => {  
-  let data = req.body
-  MucTieuModel.getCDR(data, (resData) => {    
-    res.send(resData[0].cdr);
+router.get('/get-cdr-3', (req, res) => {  
+  MucTieuModel.getCDR((resData) => {    
+    res.send(resData);
   }) 
 })
 

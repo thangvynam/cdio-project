@@ -21,6 +21,7 @@ export const SAVE_TEMP_DATA_LAYOUT_3 = 'SAVE_TEMP_DATA_LAYOUT_3';
 export const SAVE_ALL_DATA_LAYOUT_3 = 'SAVE_ALL_DATA_LAYOUT_3';
 export const IS_LOADED_3 = 'IS_LOADED_3';
 export const ADD_ARRAY_LAYOUT_3 = 'ADD_ARRAY_LAYOUT_3';
+export const SET_CDR = 'SET_CDR';
 
 // layout4
 export const ADD_CDRDATA = 'ADD_CDRDATA';
@@ -41,6 +42,7 @@ export const ISLOAD = 'ISLOAD';
 export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
+export const CDR_CDIO = 'CDR_CDIO';
 
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
@@ -195,6 +197,13 @@ export function subjectList(newSubjectList) {
     return {
         type: SUBJECT_LIST,
         subjectlist: newSubjectList
+    };
+}
+
+export function cdrCdio(newCdrCdio) {
+    return {
+        type: CDR_CDIO,
+        cdrcdio: newCdrCdio
     };
 }
 

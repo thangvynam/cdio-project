@@ -4,44 +4,47 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeDGData, addDGData, saveTempDGData ,updateChudeDanhGia, updateCDRDanhGia} from '../../../Constant/ActionType';
+import { changeDGData, addDGData, saveTempDGData, updateChudeDanhGia, updateCDRDanhGia } from '../../../Constant/ActionType';
 import axios from "axios"
 
 var temp = '';
 
 class DGFormItem extends Component {
-  
-  handleMathanhphanChange = (e) => {
-    let a =  e.target.value;
 
-     let tempInfo = this.props.itemLayout7Reducer.tempInfo;
-     tempInfo["mathanhphan"] = a;
-    
+  handleMathanhphanChange = (e) => {
+    let a = e.target.value;
+
+    let tempInfo = this.props.itemLayout7Reducer.tempInfo;
+    tempInfo["mathanhphan"] = a;
+
     this.props.onSaveTempDGData(tempInfo);
   }
   handleTenthanhphanChange = (e) => {
-    let a= e.target.value;
-   
+    let a = e.target.value;
+
     let tempInfo = this.props.itemLayout7Reducer.tempInfo;
     tempInfo["tenthanhphan"] = a;
-   
-   this.props.onSaveTempDGData(tempInfo);
+
+    this.props.onSaveTempDGData(tempInfo);
   }
   handleMotaChange = (e) => {
-    let a= e.target.value;
-  
+    let a = e.target.value;
+
     let tempInfo = this.props.itemLayout7Reducer.tempInfo;
     tempInfo["mota"] = a;
-   
-   this.props.onSaveTempDGData(tempInfo);
+
+    this.props.onSaveTempDGData(tempInfo);
   }
+
   handleTileChange = (e) => {
+    if (e.target.value < 0) e.target.value = 1;
+    if (e.target.value > 100) e.target.value = 100;
     let a = e.target.value;
-    
+
     let tempInfo = this.props.itemLayout7Reducer.tempInfo;
     tempInfo["tile"] = a;
-   
-   this.props.onSaveTempDGData(tempInfo);
+
+    this.props.onSaveTempDGData(tempInfo);
   }
 
   toString = () => {
@@ -52,7 +55,7 @@ class DGFormItem extends Component {
     }
     return temp2;
   }
-  
+
   displayRender = label => {
     if (this.isSubmit) {
       this.isSubmit = false;
@@ -62,14 +65,14 @@ class DGFormItem extends Component {
   };
 
   onChange = (value) => {
-    if(value.length === 0 ) return;
+    if (value.length === 0) return;
     let tempInfo = this.props.itemLayout7Reducer.tempInfo;
 
     let newArray = tempInfo.standardOutput.slice();
     newArray.push(value[0] + value[1]);
     temp = newArray;
     let a = temp.slice();
-   
+
     this.props.onChangeDGData({
       standardOutput: a,
       mathanhphan: this.props.itemLayout7Reducer.tempInfo.mathanhphan,
@@ -90,34 +93,34 @@ class DGFormItem extends Component {
     this.props.onSaveTempDGData(tempInfo);
   }
 
-  componentWillMount(){
-    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" ){
+  componentWillMount() {
+    if (this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" ) {
       var self = this;
-        axios.get('/get-chude')
+      axios.get('/get-chude')
         .then(function (response) {
-            self.props.onGetChude(response.data);
-          })
-         .catch(function (error) {
-            console.log(error);
-         });  
+          self.props.onGetChude(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
 
-        axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
-        .then(function(response){
+      axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
+        .then(function (response) {
 
           self.props.onGetCDR(response.data);
         })
-        .catch(function(error){
+        .catch(function (error) {
           console.log(error);
         });
-        
+
     }
-    
+
   }
 
-  getIdfromNameChude(name){
-    for(let i=0;i<this.props.itemLayout7Reducer.chudeDanhGia.length;i++){
-      if(name=== this.props.itemLayout7Reducer.chudeDanhGia[i].ma_chu_de)
-      return this.props.itemLayout7Reducer.chudeDanhGia[i].id
+  getIdfromNameChude(name) {
+    for (let i = 0; i < this.props.itemLayout7Reducer.chudeDanhGia.length; i++) {
+      if (name === this.props.itemLayout7Reducer.chudeDanhGia[i].ma_chu_de)
+        return this.props.itemLayout7Reducer.chudeDanhGia[i].id
     }
   }
 
@@ -198,7 +201,7 @@ class DGFormItem extends Component {
                     }
                   } else if (chude === 'DAMH') {
                     let flag = true;
-                   mathanhphan = 'DAMH#' + mathanhphan;
+                    mathanhphan = 'DAMH#' + mathanhphan;
                     for (let i = 0; i < previewInfo.length; i++) {
                       if ('DAMH' === previewInfo[i].mathanhphan) {
                         flag = false;
@@ -251,14 +254,14 @@ class DGFormItem extends Component {
                   if (iserror === true) {
                     message.error("Mã thành phần đã tồn tại!")
                   } else {
-                    
+
                     let data = {
                       key: `${mathanhphan}`,
-                      chude : this.getIdfromNameChude(chude),
+                      chude: this.getIdfromNameChude(chude),
                       standardOutput: standardOutput,
                       mathanhphan: mathanhphan,
-                      tenthanhphan:tenthanhphan,
-                      mota:mota,
+                      tenthanhphan: tenthanhphan,
+                      mota: mota,
                       tile: tile + '%',
                     }
                     console.log(data);
@@ -272,10 +275,10 @@ class DGFormItem extends Component {
                     this.props.onAddDGData(dataReturn);
                     message.info("Thêm thành công!");
                     isAdd2Rows = false;
-                    if(temp !== null && temp !== "" && temp !== undefined){
+                    if (temp !== null && temp !== "" && temp !== undefined) {
                       temp.splice(0, temp.length)
                     }
-                    let tempInfo =this.props.itemLayout7Reducer.tempInfo;
+                    let tempInfo = this.props.itemLayout7Reducer.tempInfo;
                     tempInfo["chude"] = [];
                     tempInfo["mathanhphan"] = "";
                     tempInfo["tenthanhphan"] = "";
@@ -296,7 +299,7 @@ class DGFormItem extends Component {
     }
   }
   render() {
-    console.log(this.props.itemLayout7Reducer.isLoaded1)
+    console.log(this.props.itemLayout7Reducer.isLoaded)
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {
@@ -337,7 +340,7 @@ class DGFormItem extends Component {
             initialValue: this.props.itemLayout7Reducer.tempInfo.chude
           })
             (<Cascader options={this.props.itemLayout7Reducer.chudeDanhGia.map(item => {
-              return {value:item.ma_chu_de , label: item.ma_chu_de}
+              return { value: item.ma_chu_de, label: item.ma_chu_de }
             })} onChange={this.onChange1} placeholder="Tên chủ đề" />)}
           </Form.Item>
 
@@ -399,17 +402,17 @@ class DGFormItem extends Component {
             ],
             initialValue: this.props.itemLayout7Reducer.tempInfo.chuandaura
           })
-            (<Cascader 
-            options={this.props.itemLayout7Reducer.chuandaura.map(item => {
-              let children = item.cdr.map(children => {
-                let temp = children.chuan_dau_ra.substr(children.chuan_dau_ra.indexOf('.'),children.chuan_dau_ra.length)
-                return {value:temp, label:temp}
-              })
-              return {value:item.muc_tieu,label:item.muc_tieu,children:children}
-            })} 
-            onChange={this.onChange} 
-            placeholder="Chọn chuẩn đầu ra"
-            displayRender={this.displayRender} />)}
+            (<Cascader
+              options={this.props.itemLayout7Reducer.chuandaura.map(item => {
+                let children = item.cdr.map(children => {
+                  let temp = children.chuan_dau_ra.substr(children.chuan_dau_ra.indexOf('.'), children.chuan_dau_ra.length)
+                  return { value: temp, label: temp }
+                })
+                return { value: item.muc_tieu, label: item.muc_tieu, children: children }
+              })}
+              onChange={this.onChange}
+              placeholder="Chọn chuẩn đầu ra"
+              displayRender={this.displayRender} />)}
           </Form.Item>
 
           <Form.Item
@@ -459,9 +462,9 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onAddDGData: addDGData,
     onChangeDGData: changeDGData,
-    onSaveTempDGData : saveTempDGData,
-    onGetChude : updateChudeDanhGia,
-    onGetCDR : updateCDRDanhGia,
+    onSaveTempDGData: saveTempDGData,
+    onGetChude: updateChudeDanhGia,
+    onGetCDR: updateCDRDanhGia,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DGFormItem);

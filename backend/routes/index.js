@@ -154,7 +154,7 @@ router.post('/exportfile', function(req, res, next) {
       let content =await compile('header',null);
       //body
       for (let k of Object.keys(JSON.parse(body.data))) {
-          let value = JSON.parse(JSON.parse(body.data)[k]);
+          let value = JSON.parse(JSON.parse(body.data)[k]);          
           content += await compile('content',renderContenByNameTab(k,value));
       }
       //footer

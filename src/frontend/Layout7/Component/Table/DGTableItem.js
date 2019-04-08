@@ -1,5 +1,5 @@
 import {
-  Table, Input, Button, Popconfirm, Form, Divider, Tag, InputNumber, Select, Modal
+  Table, Input, Button, Popconfirm, Form, Divider, Tag, InputNumber, Select, Modal, message
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
@@ -174,7 +174,7 @@ class itemLayout7ReducerItem extends React.Component {
       key: 'action',
       render: (text, record) => {
         const editable = this.isEditing(record);
-        console.log(editable);
+        if (this.isExist(record.mathanhphan)) return;
         return (
           <div>
 
@@ -225,11 +225,32 @@ class itemLayout7ReducerItem extends React.Component {
     this.setState({ editingKey: '' });
   };
 
+  isFloat(val) {
+    var floatRegex = /^-?\d+(?:[.,]\d*?)?$/;
+    if (!floatRegex.test(val))
+        return false;
+
+    val = parseFloat(val);
+    if (isNaN(val))
+        return false;
+    return true;
+}
+
   save(form, key) {
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
+      if(row.tile.substring(row.tile.length-1,row.tile.length) !== "%"){
+        message.error("Nhập tỉ lệ sai định dạng , vui lòng nhập lại !")
+        return;
+      }
+      
+      if(!this.isFloat(row.tile.substring(0,row.tile.length-1))){
+        message.error("Nhập tỉ lệ sai định dạng , vui lòng nhập lại !")
+        return;
+      }
+      
       const newData = this.props.itemLayout7Reducer.previewInfo;
       
       const index = newData.findIndex(item => key === item.key);
@@ -248,13 +269,49 @@ class itemLayout7ReducerItem extends React.Component {
     });
   }
 
+  isEmptyChildrenChude(value) {
+    let chude = this.props.itemLayout7Reducer.chudeDanhGia;
+    for (let i = 0; i < chude.length; i++) {
+      if (chude[i].ma_chu_de === value.substring(0, chude[i].ma_chu_de.length)) {
+        console.log(this.props.itemLayout7Reducer.previewInfo);
+        let index = 0;
+
+        for (let j = 0; j < this.props.itemLayout7Reducer.previewInfo.length; j++) {
+          if (chude[i].ma_chu_de === this.props.itemLayout7Reducer.previewInfo[j].mathanhphan.substring(0, chude[i].ma_chu_de.length)) {
+            index++;
+          }
+          
+        }
+        console.log(index);
+        if (index == 1) {
+          return false;
+        }
+      }
+    }
+    return true;
+  }
+
+
+
   handleDelete(key) {
     let newData = { previewInfo: [] };
     this.onDelete(newData, key);
     this.setState({ selectedRowKeys: [], editingKey: "" });
     this.props.onDeleteDGData(newData);
-  }
 
+    let chude = this.props.itemLayout7Reducer.chudeDanhGia;
+    if(this.isEmptyChildrenChude(key)){
+      for(let i=0;i< chude.length;i++){
+        if(chude[i].ma_chu_de === key.substring(0, chude[i].ma_chu_de.length)){
+          newData = {preview:[]};
+          this.onDelete(newData,chude[i].ma_chu_de);
+          this.props.onDeleteDGData(newData);
+        }
+      }
+    }
+    
+    
+  }
   onDelete = (newData, key) => {
     if (this.isExist(key)) {
       let index = 0;
@@ -337,13 +394,14 @@ class itemLayout7ReducerItem extends React.Component {
     this.setState({ editingKey: "" });
   };
 
-  isExist(value) {
-    for (let i = 0; i < chude.length; i++) {
-      if (value === chude[i])
-        return true;
-    }
-    return false;
+  
+ isExist(value) {
+  for (let i = 0; i < this.props.itemLayout7Reducer.chudeDanhGia.length; i++) {
+    if (value === this.props.itemLayout7Reducer.chudeDanhGia[i].ma_chu_de)
+      return true;
   }
+  return false;
+}
 
   onMultiDelete = () => {
     let newData = { previewInfo: [] };
@@ -361,17 +419,28 @@ class itemLayout7ReducerItem extends React.Component {
   }
 
   saveAll = () => {
-    let obj = {
-      thongtinchungid: this.props.subjectId,
-      description: this.props.itemLayout7Reducer.previewInfo,
-
+    let table = this.props.itemLayout7Reducer.previewInfo;
+    let totalTile = 0;
+    for (let i = 0; i < this.props.itemLayout7Reducer.previewInfo.length; i++) {
+      if (this.isExist(table[i].mathanhphan)) {
+        totalTile += parseFloat(table[i].tile.replace("%", ""));
+      }
     }
-    this.props.onSaveAllData(obj);
-    alert("ok");
+    if (totalTile != 100) {
+      message.error("Tổng tỉ lệ phải bằng 100% , vui lòng kiểm tra lại!")
+    } else {
+      let obj = {
+        thongtinchungid: this.props.subjectId,
+        description: this.props.itemLayout7Reducer.previewInfo,
+
+      }
+      this.props.onSaveAllData(obj);
+      alert("ok");
+    }
+
   }
-
   getData() {
-
+    console.log("WHAT THE HELL")
     var listDG = [];
     var listCDRDG = [];
     var listCDR = [];
@@ -398,7 +467,6 @@ class itemLayout7ReducerItem extends React.Component {
             listCDRDGString = listCDRDGString + ',' + item.chuan_dau_ra_mon_hoc_id;
           }
         })
-
         axios.post(`/get-cdr-7`, { data: listCDRDGString }).then(response3 => {
           if (response3.data === null || response3.data === undefined || response3.data.length === 0) return;
           listCDR = response3.data;
@@ -483,9 +551,9 @@ class itemLayout7ReducerItem extends React.Component {
 
 
   componentWillMount() {
-    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout7Reducer.isLoaded2 === false){
+    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout7Reducer.isLoaded === false){
       this.getData();
-      this.props.isLoaded(true);
+      // this.props.isLoaded(true);
     }
   }
 

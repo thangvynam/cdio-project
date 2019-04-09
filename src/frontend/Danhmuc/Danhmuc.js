@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Collapse, Form, Input, Menu, Icon, Button, Dropdown, message } from 'antd';
+import MucDoHanhDong from './MucDoHanhDong'
 import axios from 'axios';
 
 const Panel = Collapse.Panel;
@@ -55,7 +56,9 @@ class Danhmuc extends Component {
     }
     render() {
         return (
-            <Collapse  onChange={callback}>
+            
+            <div>
+            <Collapse defaultActiveKey={['1']} onChange={callback}>
                 <Panel header="Danh mục hoạt động dạy" key="1">
                     <Form.Item
                         {...formItemLayout}
@@ -77,6 +80,8 @@ class Danhmuc extends Component {
                     <Button type="primary" onClick={this.save} style={{ marginLeft: "22em" }}>Thêm</Button>
                 </Panel>
             </Collapse>
+            <MucDoHanhDong/>
+            </div>
         )
     }
 }

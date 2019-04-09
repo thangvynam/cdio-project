@@ -5,6 +5,10 @@ var connection = mysql.createConnection({
   user     : 'syllabus_db',
   password : 'Aa123456',
   database : 'syllabus_db'
+  // host     : 'localhost',
+  // user     : 'root',
+  // password : 'mug3nnsx',
+  // database : 'syllabusdb'
 });
 connection.connect();
 module.exports = connection;

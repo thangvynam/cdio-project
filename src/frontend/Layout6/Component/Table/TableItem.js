@@ -96,33 +96,6 @@ const DragableBodyRow = DropTarget("row", rowTarget, (connect, monitor) => ({
   }))(BodyRow)
 );
 
-const standard_item = [
-  "G1.1",
-  "G1.2",
-  "G1.3",
-  "G1.4",
-  "G2.1",
-  "G2.2",
-  "G2.3",
-  "G3.1",
-  "G3.2",
-  "G4.1",
-  "G4.2",
-  "G5.1",
-  "G5.2",
-  "G5.3",
-  "G5.4",
-  "G5.5",
-  "G6.1",
-  "G7.1"
-];
-const teachingActs = [
-  "Thuyết giảng",
-  "Demo",
-  "Thảo luận và trả lời thắc mắc trên diễn đàn môn học"
-];
-const evalActs = ["BTVN", "BTTL", "DAMH"];
-
 class EditableCell extends React.Component {
   constructor(props) {
     super(props);
@@ -138,6 +111,11 @@ class EditableCell extends React.Component {
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
     const childrenStandard = [];
+
+    const standard_item = [...this.props.mapitem.standardOutput.keys()];
+    const teachingActs = [...this.props.mapitem.teachingActs.keys()];
+    const evalActs = [...this.props.mapitem.evalActs.keys()];
+
     function init() {
       for (let i = 0; i < teachingActs.length; i++) {
         childrenTeachingActs.push(
@@ -480,10 +458,10 @@ class TableItem extends Component {
 
   onSaveAll = ()=>{
     const itemKHGDTH = this.props.itemKHGDTH;
-    let body = {};
+    var body = {};
     body.thong_tin_chung_id = this.state.subjectId;
     body.data = [];
-
+    let dt = 0;
     itemKHGDTH.previewInfo.forEach((item,index)=>{
       let temp = {};
       temp.week = item.key;
@@ -491,10 +469,23 @@ class TableItem extends Component {
       temp.teachingActs = [];
       temp.standardOutput = [];
       temp.evalActs = [];
-      item.teachingActs.forEach((act,_)=>{
+      item.teachingActs.forEach( (act,_)=>{
         let id = itemKHGDTH.mapIdForValue.teachingActs.get(act);
-        temp.teachingActs.push(id);
-      })
+        if(id === undefined || id ===''){
+          // insert hoat_dong_day khong phai danh muc
+          console.log("insert ",act);
+          let itemAct = {
+            hoat_dong:act,
+            loai:'TH',
+            danh_muc: 0,
+          }
+          axios.post(`/add-teachingacts-6`,itemAct).then(response=>{
+            
+            temp.teachingActs.push(response.data.id);
+          })
+        }
+        else temp.teachingActs.push(id); 
+      });
       item.standardOutput.forEach((stan,_)=>{
         let id = itemKHGDTH.mapIdForValue.standardOutput.get(stan);
         temp.standardOutput.push(id);
@@ -503,12 +494,10 @@ class TableItem extends Component {
         let id = itemKHGDTH.mapIdForValue.evalActs.get(act);
         temp.evalActs.push(id);
       })
-
-
       body.data.push(temp);
     })
 
-   // console.log("body: ",body);
+    console.log("body",body);
    axios.post("/add-data-6", body)
    .then(response => {
      if(response.data === 1){
@@ -582,7 +571,8 @@ class TableItem extends Component {
           record,
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: this.isEditing(record)
+          editing: this.isEditing(record),
+          mapitem:this.props.itemKHGDTH.mapIdForValue,
         })
       };
     });

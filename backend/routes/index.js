@@ -154,7 +154,7 @@ router.post('/exportfile', function(req, res, next) {
       let content =await compile('header',null);
       //body
       for (let k of Object.keys(JSON.parse(body.data))) {
-          let value = JSON.parse(JSON.parse(body.data)[k]);
+          let value = JSON.parse(JSON.parse(body.data)[k]);          
           content += await compile('content',renderContenByNameTab(k,value));
       }
       //footer
@@ -408,6 +408,18 @@ router.post('/collect-mucdo-mtmh-has-cdrcdio', function(req, res) {
   })   
 })
 
+router.post('/add-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.addcdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
   Model5.add(data, function(err) {
@@ -465,6 +477,8 @@ router.get('/get-data-6/:idSubject', function(req, res) {
 
 router.post('/add-data-6', function(req, res) {
   const data = req.body;
+  console.log("body: ",req.body.data);
+
   
   Model6.add(data, function(err, result) {
     if (err) {
@@ -472,6 +486,18 @@ router.post('/add-data-6', function(req, res) {
     }
     console.log("done");
     res.end("1");
+  })   
+})
+
+router.post('/add-teachingacts-6', function(req, res) {
+  const data = req.body;
+  
+  Model6.addTeachingAct(data, function(err, result) {
+    if (err) {
+      res.end("-1");
+    }
+    console.log("done");
+    res.end(JSON.stringify(result));
   })   
 })
 

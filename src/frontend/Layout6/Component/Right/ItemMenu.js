@@ -71,14 +71,20 @@ class ItemMenu extends Component {
     this.isSubmit = false;
   }
 
-  componentWillMount(){ 
+  // componentWillMount(){ 
 
-    this.onGetItemMenu();
+  //   this.onGetItemMenu();
+  // }
 
+  componentDidMount() {
+    if(this.props.subjectId !== null 
+      && this.props.subjectId !== undefined && this.props.subjectId!== "") {
+       this.onGetItemMenu(this.props.subjectId);
+      }
   }
 
 
-  onGetItemMenu = ()=>{
+  onGetItemMenu = (subjectId)=>{
 
     let mapId = {
       teachingActs: new Map(),
@@ -98,7 +104,7 @@ class ItemMenu extends Component {
 
     });
 
-    axios.get("/get-eval-acts-6/1").then(response=>{
+    axios.get(`/get-eval-acts-6/${subjectId}`).then(response=>{
       const data= response.data;
       let map = new Map();
       data.forEach((item,index)=>{
@@ -109,7 +115,7 @@ class ItemMenu extends Component {
       mapId.evalActs = map;
     });
 
-    axios.get("/get-standard-output-6/1").then(response=>{
+    axios.get(`/get-standard-output-6/${subjectId}`).then(response=>{
       const data= response.data;
       let array = [];
       let map = new Map();
@@ -134,9 +140,7 @@ class ItemMenu extends Component {
      mapId.standardOutput = map;
      this.setState({standard_item:array});
     });
-
-
-    
+   
     this.props.onChangeMapKHGDTH(mapId);
 
   }
@@ -147,7 +151,7 @@ class ItemMenu extends Component {
 
 
   onChangeStandar = (value) => {
-    if (value.length === 0) return;
+    if (value.length < 2) return;
 
     let tempInfo = this.props.itemKHGDTH.tempInfo;
 
@@ -446,7 +450,9 @@ class ItemMenu extends Component {
 
 const mapStateToProps = state => {
   return {
-    itemKHGDTH: state.itemLayout6Reducer
+    itemKHGDTH: state.itemLayout6Reducer,
+    subjectId: state.subjectid,
+
   };
 };
 

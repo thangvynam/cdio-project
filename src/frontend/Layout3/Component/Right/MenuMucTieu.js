@@ -45,14 +45,6 @@ class MenuMucTieu extends Component {
         this.props.setCDR(await this.getCDR())
     }
 
-    renderBackButton() {
-        if (this.props.step !== 0) {
-            return (
-                <Link activeClass="active" className="test1" to="test1" spy={true} smooth={true} duration={500} ><Button type="danger">Finish</Button></Link>
-            )
-        }
-        return null;
-    }
     handleObjectInputChange = (e) => {
         objectName = e.target.value;
         let tempInfo = this.props.itemLayout3Reducer.tempInfo 
@@ -165,7 +157,6 @@ class MenuMucTieu extends Component {
 
                     <Form.Item {...tailFormItemLayout}>
                         <div>
-                            {this.renderBackButton()}
                             <Button type="primary" onClick={() => { 
                                 this.props.itemLayout3Reducer.tempInfo.objectName =""
                                 this.props.itemLayout3Reducer.tempInfo.description =""

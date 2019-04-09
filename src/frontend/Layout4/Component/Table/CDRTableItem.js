@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Button,
    Input, Cascader, notification } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
@@ -584,9 +584,70 @@ class CDRTableItem extends Component {
           console.log(error);
       });  
   }
+
+  checkIdExist = (matrix, id) => {
+    for(let i = 0;i < matrix.length;i++) {
+        if(matrix[i].key.toString() === id.toString()) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+getCdrCdio = (cdr_cdio, id) => {
+  for(let i = 0;i < cdr_cdio.length;i++) {
+      if(cdr_cdio[i].id.toString() === id.toString())  {
+          return cdr_cdio[i].cdr;
+      }
+  }
+  return "";
+}
+
+getSubjectName = (subjectList, id) => {
+    for(let i = 0;i < subjectList.length;i++) {
+        if(subjectList[i].Id.toString() === id.toString()) {
+            return subjectList[i].SubjectName;
+        }
+    }
+    return "";
+  }
+
   componentDidMount() {
     var self = this;
     if(this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    //   if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
+    //     this.props.updateIsLoadEditMatrix("true");
+    //     axios.get('/get-reality-matrix');
+    //     axios.get("/get-standard-matrix").then((res) => {
+    //         let data = [];
+    //         for(let i = 0;i < res.data.length;i++) {
+    //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+    //             if(index !== -1) {
+    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+    //                 if(cdr_cdio !== "") {
+    //                     data[index][cdr_cdio] = res.data[i].muc_do;
+    //                 }
+    //             }
+    //             else {  
+    //                 let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+    //                 if(subjectName !== "" && cdr_cdio !== "") {
+    //                     data.push({
+    //                         key: res.data[i].thong_tin_chung_id,
+    //                         hocky: 1,
+    //                         hocphan: subjectName,
+    //                         gvtruongnhom: 'NULL'
+    //                     })
+
+    //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+    //                 }
+                    
+    //             }
+    //         }
+    //         this.props.updateEditMatrix(data);
+    //       })
+          
+    // }
       this.loadGap();
     }
 
@@ -950,6 +1011,9 @@ const mapStateToProps = (state) => {
         logReducer: state.logReducer,
         isLoad: state.isloadtab4,
         editMatrix: state.editmatrix,
+        isLoadEditMatrix: state.isloadeditmatrix,
+        subjectList: state.subjectlist,
+        cdrCdio: state.cdrcdio,
         logData: state.logLayout4Reducer.logData
     }
 }
@@ -961,6 +1025,8 @@ const mapDispatchToProps = (dispatch) => {
     onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
     updateIsLoad: isLoad,
+    updateIsLoadEditMatrix: isLoadEditMatrix,
+    updateEditMatrix: editMatrix,
     saveLog: saveLog
   }, dispatch);
 }

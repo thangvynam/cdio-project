@@ -55,7 +55,7 @@ class Danhmuc extends Component {
     }
     render() {
         return (
-            <Collapse defaultActiveKey={['1']} onChange={callback}>
+            <Collapse  onChange={callback}>
                 <Panel header="Danh mục hoạt động dạy" key="1">
                     <Form.Item
                         {...formItemLayout}

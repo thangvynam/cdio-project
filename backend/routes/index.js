@@ -694,6 +694,12 @@ router.post('/add-hdd', function(req, res) {
   })
 })
 
+router.get('/get-teachingacts-5', function(req, res) {
+  Model5.collectHDD((result) => {
+    res.send(result)
+  })
+})
+
 
 
 module.exports = router;

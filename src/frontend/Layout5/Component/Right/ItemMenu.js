@@ -6,7 +6,7 @@ import { Redirect } from 'react-router-dom';
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_REQUEST_5} from '../../../Constant/ActionType';
+import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD} from '../../../Constant/ActionType';
 import axios from 'axios';
 const { Option } = Select;
 const standard_item = [{
@@ -135,6 +135,10 @@ let teachingActs_data = [];
 let standardOutput_data = [];
 let evalActs_data = [];
 let firstCollect = false;
+
+const childrenEvalActs = [];
+let flag =true;
+
 class ItemMenu extends Component {
     constructor(props){
         super(props);
@@ -148,13 +152,34 @@ class ItemMenu extends Component {
     componentDidMount() {
         if(!firstCollect){
             firstCollect = true;
-            console.log("get");
             this.props.collectDataRequest();
         }
-        this.props.getDataHDD();
-        
     }
-   
+
+    componentWillMount(){
+        
+        this.getDataHDD();
+    }
+
+    getDataHDD = () =>{
+        let mapId = {
+            teachingActs: new Map(),
+            standardOutput: new Map(),
+            evalActs: new Map(),
+        }
+        axios.get("/get-teachingacts-5").then(response=>{
+            const data= response.data;
+            let map = new Map();
+            data.forEach((item,index)=>{
+               
+                map.set(item.hoat_dong,index);
+            })
+            //this.setState({teachingActs:map});
+            mapId.teachingActs = map;
+            this.props.saveDataValue(mapId.teachingActs)
+          });
+          
+    }
     displayRender = label => {
         
         if (isSubmit) {
@@ -214,22 +239,30 @@ class ItemMenu extends Component {
         }
     }
 
+    
     render() {
-
-        const { getFieldDecorator } = this.props.form;
-
-        const childrenTeachingActs = [];
-        const childrenEvalActs = [];
-        function init() {
-            for (let i = 0; i < teachingActs.length; i++) {
-                childrenTeachingActs.push(<Option key={teachingActs[i]}>{teachingActs[i]}</Option>)
+        let childrenTeachingActs = [];
+        console.log(this.props.itemLayout5Reducer.teachingActsData.length)
+        if(this.props.itemLayout5Reducer.teachingActsData.length !== 0){
+            for (let i = 0; i < this.props.itemLayout5Reducer.teachingActsData.length; i++) {
+                childrenTeachingActs.push(this.props.itemLayout5Reducer.teachingActsData[i])
+            }
+            
+        }
+        const data = [];
+        
+        function init(){   
+            for (let i = 0; i < childrenTeachingActs.length; i++) {
+                data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
             }
             for (let i = 0; i < evalActs.length; i++) {
                 childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
             }
         }
-
         init();
+        console.log(childrenTeachingActs);
+        const { getFieldDecorator } = this.props.form;
+        
         const formItemLayout = {
             labelCol: {
                 xs: { span: 12 },
@@ -263,9 +296,11 @@ class ItemMenu extends Component {
                 },
             },
         };
+        
         return (
             <div>
                 {this.redirect()}
+                
                 <div style={{ border: "2px solid", borderRadius: "12px" }}>
                     <div style={{ marginTop: "10px" }}></div>
                     <Form onSubmit={this.handleSubmit}>
@@ -290,16 +325,15 @@ class ItemMenu extends Component {
                         >
                             {getFieldDecorator('teachingActs', {
 
-                                initialValue: this.props.itemLayout5Reducer.teachingActs
+                                
                             })(
                                 <Select
                                     mode="tags"
                                     style={{ width: '100%' }}
                                     placeholder="Please select"
-
                                     onChange={(value) => this.props.handleChangeTeachingAct(value)}
                                 >
-                                    {childrenTeachingActs}
+                                    {data}
                                 </Select>
                             )}
 
@@ -435,8 +469,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 standardOutput: '', evalActs: []
             });
         },
-        getDataHDD:()=>{
-            axios.get('/collect')
+        saveDataValue:(teachingActs)=>{
+            dispatch({type:COLLECT_DATA_HDD,data:teachingActs})
         },
         collectDataRequest: ()=>{
            

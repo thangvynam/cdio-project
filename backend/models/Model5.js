@@ -150,6 +150,12 @@ Model5.collect = (respone) => {
     //     }
     //})
 }
+Model5.collectHDD = (result) =>{
+    query("SELECT `hoat_dong` FROM `hoat_dong_day` WHERE `loai_hoat_dong` = 'LT' and `danh_muc` =1")
+        .then(res =>{
+            result(res);
+        })
+}
 Model5.add = (data, result) => {
     data.forEach(function (value, index) {
         let id = value.key;

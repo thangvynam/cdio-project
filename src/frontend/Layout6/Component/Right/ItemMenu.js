@@ -274,14 +274,14 @@ class ItemMenu extends Component {
 
     var teachingActs = [];
     var evalActs = [];
-
+    
     for(const acts of this.props.itemKHGDTH.mapIdForValue.teachingActs.keys()){
       teachingActs.push(acts);
     }
     for(const acts of this.props.itemKHGDTH.mapIdForValue.evalActs.keys()){
       evalActs.push(acts);
     }
-
+    
 
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
@@ -295,8 +295,9 @@ class ItemMenu extends Component {
         childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>);
       }
     }
-
+    
     init();
+    
     const formItemLayout = {
       labelCol: {
         xs: { span: 12 },

@@ -127,7 +127,7 @@ class TableItem extends Component {
     return axios.get(`/get-data-2/${this.props.subjectid}`).then(res => {
         return res.data
     }).then(resp => {
-        return resp.noi_dung;
+        return resp.Description;
     })
 }
 

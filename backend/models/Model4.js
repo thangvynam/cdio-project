@@ -25,7 +25,15 @@ Model4.save = (data, result) => {
 }
 
 Model4.collectdata = (data, result) => {
-    sql.query(`SELECT * FROM chuan_dau_ra_mon_hoc
+    sql.query(`SELECT chuan_dau_ra_mon_hoc.id,
+    chuan_dau_ra_mon_hoc.chuan_dau_ra,
+    chuan_dau_ra_mon_hoc.mo_ta,
+    chuan_dau_ra_mon_hoc.muc_do,
+    chuan_dau_ra_mon_hoc.muc_tieu_mon_hoc_id,
+    chuan_dau_ra_mon_hoc.cdrmh_muc_do_hanh_dong_id,
+    chuan_dau_ra_mon_hoc.thong_tin_chung_id,
+    chuan_dau_ra_mon_hoc.del_flag
+    FROM chuan_dau_ra_mon_hoc
     JOIN muc_tieu_mon_hoc ON chuan_dau_ra_mon_hoc.muc_tieu_mon_hoc_id = muc_tieu_mon_hoc.id where chuan_dau_ra_mon_hoc.del_flag = 0
     && muc_tieu_mon_hoc.del_flag = 0
     && chuan_dau_ra_mon_hoc.thong_tin_chung_id = ${data.thong_tin_chung_id}`, (err, res) => {
@@ -192,8 +200,18 @@ Model4.collectmucdomtmhhascdrcdio = (data, result) => {
             }
         })
     }
+}
 
-    
+Model4.addcdrmdhd = (data, result) => {
+    sql.query(`insert into cdrmh_muc_do_hanh_dong(muc_do_1, muc_do_2, muc_do_3) values ('${data.muc_do_1}', ${data.muc_do_2}, '${data.muc_do_3}')`,
+        (err, res) => {
+            if (err) {
+                console.log("error:", err);
+                result(null, err)
+            } else {
+                result(null, res);
+            }
+        })
 }
 
 module.exports = Model4;

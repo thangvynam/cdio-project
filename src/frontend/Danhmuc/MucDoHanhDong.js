@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Collapse, Form, Input, Menu, Icon,
      Button, Dropdown, message, Row, Col,
       Select, Modal, Table, Tag, Popconfirm,
-    Divider } from 'antd';
+    Divider, notification } from 'antd';
 import axios from 'axios';
 
 const Panel = Collapse.Panel;
@@ -28,6 +28,13 @@ const EditableRow = ({ form, index, ...props }) => (
 );
 
 const EditableFormRow = Form.create()(EditableRow);
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: 'Thông báo',
+    description: 'Thêm thành công',
+  });
+};
 
 class EditableCell extends Component {
 
@@ -93,14 +100,16 @@ class MucDoHanhDong extends Component {
         this.state = {
             selecteditem: [],
             editstate: '',
-            dataSource: []
+            dataSource: [],
+            level_select: ''
         }
         this.columns = [{
             title: 'Loại mức độ',
             dataIndex: 'muc_do_1',
             key: 'muc_do_1',
-            width: 100,
+            width: 200,
             editable: true,
+            align: "center",
             render: text => <p>{text}</p>,
           }, {
             title: 'Cấp mức độ',
@@ -125,6 +134,7 @@ class MucDoHanhDong extends Component {
             key: 'muc_do_3',
             width: 400,
             editable: true,
+            align: "center",
           }, 
           {
             title: 'Action',
@@ -228,6 +238,38 @@ class MucDoHanhDong extends Component {
 
       }
 
+      onChange = (value) => {
+        this.setState({level_select: value})
+      }
+
+      addRow = () => {
+        let muc_do_1 = document.getElementById("input-1").value;
+        let muc_do_3 = document.getElementById("input-2").value;
+        if(muc_do_1 === "" || muc_do_1 === undefined || muc_do_1 === null) {
+          message.warning("Chưa nhập loại mức độ!");
+        }
+        else {
+          if(this.state.level_select === "" || this.state.level_select === undefined || this.state.level_select === null) {
+            message.warning("Chưa chọn mức độ!");
+          }
+          else {
+            if(muc_do_3 === "" || muc_do_3 === undefined || muc_do_3 === null) {
+              message.warning("Chưa nhập động từ!");
+            }
+            else {
+              axios.post("/add-cdrmdhd", { data: {muc_do_1: muc_do_1, muc_do_2: this.state.level_select, muc_do_3: muc_do_3}}).then(
+                res => {
+                  console.log(res.data);
+                  document.getElementById("input-1").value = "";
+                  document.getElementById("input-2").value = "";
+                  openNotificationWithIcon('success');
+                }
+              )
+              
+            }
+          }
+        }
+      }
       componentDidMount() {
           axios.get('/collect-cdrmdhd-4').then((res) => {
               let data = [];
@@ -288,7 +330,7 @@ class MucDoHanhDong extends Component {
             {...formItemLayout}
             label="Loại"
           >
-              <Input/>
+              <Input id="input-1"/>
           </Form.Item>
           </Col>
           <Col span={4}>
@@ -296,7 +338,7 @@ class MucDoHanhDong extends Component {
             {...formItemLayout}
             label="Level"
           >
-              <Select style={{ width: 120 }}>
+              <Select onChange={this.onChange} style={{ width: 120 }}>
                   {levelOptions2}
             </Select>
           </Form.Item>
@@ -306,16 +348,17 @@ class MucDoHanhDong extends Component {
             {...formItemLayout}
             label="Động từ"
           >
-              <Input/>
+              <Input id="input-2"/>
           </Form.Item>
           </Col>
           <Col span={4}>
           <Form.Item>
-              <Button type="primary" style={{ marginLeft: "5em" }}>Thêm</Button>
+              <Button onClick={this.addRow} type="primary" style={{ marginLeft: "5em" }}>Thêm</Button>
           </Form.Item>
           </Col>
           </Row>
-          <div>
+
+          <div style={{ marginLeft: 100, marginRight: 100}}>
           <div style={{ marginBottom: 16,  marginTop: 16}}>
           <Button
             type="danger"
@@ -348,6 +391,7 @@ class MucDoHanhDong extends Component {
             rowSelection={rowSelection} 
             columns={columns} 
             dataSource={this.state.dataSource}
+            scroll={{y: 400}}
             style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
              />
             </div>

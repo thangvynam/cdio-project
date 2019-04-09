@@ -408,6 +408,18 @@ router.post('/collect-mucdo-mtmh-has-cdrcdio', function(req, res) {
   })   
 })
 
+router.post('/add-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.addcdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
   Model5.add(data, function(err) {

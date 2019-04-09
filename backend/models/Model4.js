@@ -25,7 +25,10 @@ Model4.save = (data, result) => {
 }
 
 Model4.collectdata = (data, result) => {
-    sql.query(`SELECT * FROM chuan_dau_ra_mon_hoc where del_flag = 0 && thong_tin_chung_id = ${data.thong_tin_chung_id}`, (err, res) => {
+    sql.query(`SELECT * FROM chuan_dau_ra_mon_hoc
+    JOIN muc_tieu_mon_hoc ON chuan_dau_ra_mon_hoc.muc_tieu_mon_hoc_id = muc_tieu_mon_hoc.id where chuan_dau_ra_mon_hoc.del_flag = 0
+    && muc_tieu_mon_hoc.del_flag = 0
+    && chuan_dau_ra_mon_hoc.thong_tin_chung_id = ${data.thong_tin_chung_id}`, (err, res) => {
         if (err) {
             console.log("error:", err);
             result(null, err)

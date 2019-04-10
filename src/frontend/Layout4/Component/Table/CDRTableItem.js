@@ -1,14 +1,21 @@
 import React, { Component } from 'react';
 import { Table, Divider, Tag, Button,
    Popconfirm, Modal, Form, Checkbox,
-   Input, Cascader } from 'antd';
+   Input, Cascader, notification } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: 'Thông báo',
+    description: 'Lưu dữ liệu thành công',
+  });
+};
 
 const EditableContext = React.createContext();
 
@@ -357,7 +364,7 @@ class CDRTableItem extends Component {
 
   isExistInArr = (cdr, arr) => {
     for(let i = 0;i < arr.length;i++) {
-      if(arr[i].cdr === cdr) {
+      if(cdr === arr[i].cdr) {
         return i;
       }
     }
@@ -458,6 +465,7 @@ class CDRTableItem extends Component {
       }
       else {
         if(editMatrixData[i].muc_do !== "-" && editMatrixData[i].muc_do !== "") {
+
           desArr.push({
             state: "add-cdr",
             cdr: editMatrixData[i].cdr,
@@ -474,11 +482,13 @@ class CDRTableItem extends Component {
   loadGap = () => {
 
     axios.post('/collect-mtmh-has-cdrcdio', {data: {thong_tin_chung_id: this.state.id}}).then((res) => {
-        
+      
       axios.post('/collect-mucdo-mtmh-has-cdrcdio', {data: res.data}).then((response) => {
           let arr = [];
           for(let i = 0;i < response.data.length;i++) {
-            let index = this.isExistInArr(response.data[i].cdr, arr);
+            let keyrow = response.data[i].cdr.split("-");
+            keyrow.splice(keyrow.length - 1, 1);
+            let index = this.isExistInArr(keyrow.join("."), arr);
             if(index !== -1) {
               arr[index].muc_do = arr[index].muc_do + "," + response.data[i].muc_do;
               arr[index].muc_do = this.sortLevels(Array.from(new Set(arr[index].muc_do.split(",")))).toString();
@@ -493,8 +503,9 @@ class CDRTableItem extends Component {
             else {
               let muc_do = this.sortLevels(Array.from(new Set(response.data[i].muc_do.split(",")))).toString();
               let muc_tieu = this.sortLevels(response.data[i].muc_tieu.split(",")).toString();
+
               arr.push({
-                cdr: response.data[i].cdr,
+                cdr: keyrow.join("."),
                 muc_do: muc_do,
                 muc_tieu: muc_tieu
               })
@@ -515,9 +526,7 @@ class CDRTableItem extends Component {
               break;
             }
           }
-
           let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
-
           let notifications = [];
           for(let i = 0;i < notiArr.length;i++) {
             if(notiArr[i].state === "add") {
@@ -549,7 +558,7 @@ class CDRTableItem extends Component {
           }
           this.setState({notifications: notifications});
       })
-  })
+   })
   }
 
   loadTable = (self, id) => {
@@ -575,9 +584,70 @@ class CDRTableItem extends Component {
           console.log(error);
       });  
   }
+
+  checkIdExist = (matrix, id) => {
+    for(let i = 0;i < matrix.length;i++) {
+        if(matrix[i].key.toString() === id.toString()) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+getCdrCdio = (cdr_cdio, id) => {
+  for(let i = 0;i < cdr_cdio.length;i++) {
+      if(cdr_cdio[i].id.toString() === id.toString())  {
+          return cdr_cdio[i].cdr;
+      }
+  }
+  return "";
+}
+
+getSubjectName = (subjectList, id) => {
+    for(let i = 0;i < subjectList.length;i++) {
+        if(subjectList[i].Id.toString() === id.toString()) {
+            return subjectList[i].SubjectName;
+        }
+    }
+    return "";
+  }
+
   componentDidMount() {
     var self = this;
     if(this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    //   if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
+    //     this.props.updateIsLoadEditMatrix("true");
+    //     axios.get('/get-reality-matrix');
+    //     axios.get("/get-standard-matrix").then((res) => {
+    //         let data = [];
+    //         for(let i = 0;i < res.data.length;i++) {
+    //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+    //             if(index !== -1) {
+    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+    //                 if(cdr_cdio !== "") {
+    //                     data[index][cdr_cdio] = res.data[i].muc_do;
+    //                 }
+    //             }
+    //             else {  
+    //                 let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+    //                 if(subjectName !== "" && cdr_cdio !== "") {
+    //                     data.push({
+    //                         key: res.data[i].thong_tin_chung_id,
+    //                         hocky: 1,
+    //                         hocphan: subjectName,
+    //                         gvtruongnhom: 'NULL'
+    //                     })
+
+    //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+    //                 }
+                    
+    //             }
+    //         }
+    //         this.props.updateEditMatrix(data);
+    //       })
+          
+    // }
       this.loadGap();
     }
 
@@ -796,10 +866,11 @@ class CDRTableItem extends Component {
     this.loadTable(self, self.state.id);
     this.loadGap();
     this.props.updateIsLoad("false");
+    openNotificationWithIcon('success');
   }
 
     render() {
-      
+      //console.log(this.state.notifications)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -940,6 +1011,9 @@ const mapStateToProps = (state) => {
         logReducer: state.logReducer,
         isLoad: state.isloadtab4,
         editMatrix: state.editmatrix,
+        isLoadEditMatrix: state.isloadeditmatrix,
+        subjectList: state.subjectlist,
+        cdrCdio: state.cdrcdio,
         logData: state.logLayout4Reducer.logData
     }
 }
@@ -951,6 +1025,8 @@ const mapDispatchToProps = (dispatch) => {
     onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
     updateIsLoad: isLoad,
+    updateIsLoadEditMatrix: isLoadEditMatrix,
+    updateEditMatrix: editMatrix,
     saveLog: saveLog
   }, dispatch);
 }

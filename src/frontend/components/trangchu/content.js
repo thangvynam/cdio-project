@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix,resetTab, changeCDRData, selectedVerb} from '../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form } from 'antd';
+import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification } from 'antd';
 import { Link } from "react-router-dom";
 import Page404 from '../../NotFound/Page404';
 import { subjectListReducer } from '../../Reducers/homePageReducer';
@@ -17,11 +17,20 @@ import Layout6 from '../../Layout6/Layout6';
 import Layout9 from '../../Layout9/Layout9';
 import Layout7 from '../../Layout7/Layout7';
 import Layout8 from '../../Layout8/Layout8';
+import Danhmuc from '../../Danhmuc/Danhmuc';
 import ExportFile from '../../ExportFIle/ExportFile';
 import axios from 'axios';
 import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
+import { nextTick } from 'q';
 const EditableContext = React.createContext();
+
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: 'Thông báo',
+      description: 'Thêm thành công',
+    });
+  };
 
 class Content extends Component {
 
@@ -43,19 +52,22 @@ class Content extends Component {
                 message.warning("Chưa nhập tên môn học!")
             }
             else {
-                axios.post('/add-subject', { data: { ma_so: id, ten_mon_hoc_tv: name } });
-                var self = this;
-                axios.get('/collect-subjectlist')
-                .then(function (response) {
-                self.props.updateSubjectList(response.data)
-                })
-                .catch(function (error) {
-                console.log(error);
-                });  
+                axios.post('/add-subject', { data: { SubjectCode: id, SubjectName: name } }).then((res) => {
+                    var self = this;
+                    axios.get('/collect-subjectlist')
+                    .then(function (response) {
+                    self.props.updateSubjectList(response.data);
+                    })
+                    .catch(function (error) {
+                    console.log(error);
+                    });  
+                });
+                
                 this.props.updateIsLoadEditMatrix("false");
                 this.setState({
                     visible: false,
                 });
+                openNotificationWithIcon('success');
             }
         }
         
@@ -72,8 +84,7 @@ class Content extends Component {
         
         if (id !== -1) {
             const data = this.props.subjectList;
-            console.log(data[id].id)
-            axios.post('/delete-subject', { data: { id: data[id].id } });
+            axios.post('/delete-subject', { data: { Id: data[id].Id } });
             data.splice(id, 1);
             this.props.updateSubjectList(data);
             this.props.updateIsLoadEditMatrix("false");
@@ -94,9 +105,9 @@ class Content extends Component {
         let name = document.getElementById("subject-name-edit").value;
         let type = this.props.content_type;
         const data = this.props.subjectList;
-        axios.post('/edit-subject', { data: { id: data[index].id, ma_so_editted: id, ten_mon_hoc_tv: name } });
-        data[index].ma_so = id;
-        data[index].ten_mon_hoc_tv = name;
+        axios.post('/edit-subject', { data: { Id: data[index].Id, SubjectCode_editted: id, SubjectName: name } });
+        data[index].SubjectCode = id;
+        data[index].SubjectName = name;
 
         this.props.updateSubjectList(data);
         this.props.updateIsLoadEditMatrix("false");
@@ -124,9 +135,9 @@ class Content extends Component {
         this.props.onUpdateVerb({level: "",childLevel: "", verb: ""});
       }
 
-      checkSubjectExist = (monhoc) => {
-        for(let i = 0;i < this.props.subjectList.length;i++) {
-            if(this.props.subjectList[i].ma_so === monhoc) {
+      checkSubjectExist = (subjectlist, monhoc) => {
+        for(let i = 0;i < subjectlist.length;i++) {
+            if(subjectlist[i].Id.toString() === monhoc.toString()) {
                 return true;
             }
         }
@@ -156,9 +167,11 @@ class Content extends Component {
             return <Page404 />;
         }
 
-        if(!this.checkSubjectExist(this.props.content_monhoc) && this.props.content_monhoc !== "" &&
-        this.props.content_monhoc !== undefined) {
-            // return <Page404/>;
+        if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && this.props.content_monhoc !== null) {
+            if(!this.checkSubjectExist(this.props.subjectList, this.props.content_monhoc)) {
+                return <Page404 />;
+            }
+                
         }
         let content_layout;
         switch (this.props.content_tab) {
@@ -186,7 +199,7 @@ class Content extends Component {
             case MENUITEM.CHUAN_DAU_RA: {
                 content_layout = (
                     <React.Fragment>
-                        <Layout4 tab={this.props.content_tab}/>
+                        <Layout4 />
                     </React.Fragment>
                 ); break;
             }
@@ -274,7 +287,7 @@ class Content extends Component {
 
                                                 <div className="list-border" style={{ borderRadius: "12px" }}>
 
-                                                    <List.Item actions={this.state.isEditting === "" || this.state.isEditting === undefined || this.state.isEditting !== item.ma_so ? [<a href="#a" onClick={() => this.edit(item.ma_so)} style={{ fontSize: "12pt" }}>Sửa</a>,
+                                                    <List.Item actions={this.state.isEditting === "" || this.state.isEditting === undefined || this.state.isEditting !== item.Id ? [<a href="#a" onClick={() => this.edit(item.Id)} style={{ fontSize: "12pt" }}>Sửa</a>,
                                                     <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.handleDelete(id)}>
                                                         <a href="#a">Xóa</a>
                                                     </Popconfirm>] : [
@@ -299,17 +312,17 @@ class Content extends Component {
                                                         ]}>
                                                         <List.Item.Meta
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                            title={this.state.isEditting !== item.ma_so ?
-                                                                <div className="list-item"><span onClick={() => this.onClick(item.id)}>{`${item.ma_so} - ${item.ten_mon_hoc_tv}`}</span></div>
+                                                            title={this.state.isEditting !== item.Id ?
+                                                                <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
                                                                 : (<Row>
                                                                     <Col span={6} className="col-left">
-                                                                        <Input defaultValue={item.ma_so} id="subject-id-edit" />
+                                                                        <Input defaultValue={item.SubjectCode} id="subject-id-edit" />
                                                                     </Col>
                                                                     <Col span={1} className="col-left">
                                                                         <div className="div-center">-</div>
                                                                     </Col>
                                                                     <Col span={16} className="col-left">
-                                                                        <Input defaultValue={item.ten_mon_hoc_tv} id="subject-name-edit" />
+                                                                        <Input defaultValue={item.SubjectName} id="subject-name-edit" />
                                                                     </Col>
                                                                 </Row>)
                                                             }
@@ -330,7 +343,10 @@ class Content extends Component {
                                 </Row>
                             </div>
                         </React.Fragment>
-                    ) : type === "matrix" ? <Matrix/> : type === "edit-matrix" ? <EditMatrix/> : null;
+                    ) : type === "matrix" ? <Matrix/> 
+                      : type === "edit-matrix" ? <EditMatrix/>
+                      : type === "danhmuc" ? <Danhmuc/>
+                      : null;
                 }; break;
 
             }

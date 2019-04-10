@@ -1,23 +1,34 @@
 var sql = require('../db');
 
 const collect = (id, result) => {
-    sql.query(`select * from thong_tin_chung where id = ${id.id} and del_flag = 0`,
+    sql.query(
+        `select * from thong_tin_chung where id = ${id.id} and del_flag = 0`,
         (err, res) => {
             if (err) {
                 result(err);
             }
             else {
-                result(res[0]);
+                sql.query(
+                    `select * from subject where id = ${id.id}`,
+                    (err, res1) => {
+                        if (err) {
+                            result(err);
+                        } else {
+                            result(res1[0])
+                        }
+                    }
+                )
             }
         })
 }
 
 const add = (id, desc, result) => {
-    let sql1 = `UPDATE thong_tin_chung SET ten_mon_hoc_tv=?, ten_mon_hoc_ta=?, ma_so=?, khoi_kien_thuc=?, so_tin_chi=?, so_tiet_ly_thuyet=?, so_tiet_thuc_hanh=?, so_tiet_tu_hoc=?, cac_mon_hoc_tien_quyet = ? WHERE id = ? and del_flag = 0`;
-    let data = [desc.tenMonHocTV, desc.tenMonHocTA, desc.maMonHoc, desc.khoiKienThuc, desc.soTinChi, desc.tietLyThuyet, desc.tietThucHanh, desc.tietTuHoc, desc.monTienQuyet, id.id];
+    const idUpdate = parseInt(id.id); 
+    let sql1 = `UPDATE subject SET SubjectName=?, SubjectEngName=?, SubjectCode=?, Credit=?, TheoryPeriod=?, PracticePeriod=?, ExercisePeriod=?, DateEdited=? WHERE Id=${idUpdate}`;
+    let data = [desc.SubjectName, desc.SubjectEngName, desc.SubjectCode, desc.Credit, desc.TheoryPeriod, desc.PracticePeriod, desc.ExercisePeriod, desc.DateEdited];
     sql.query(sql1, data, (err, res) => {
         if (err) {
-            result(null, err)
+            console.log(err)
         } else {
             result(null, res);
         }

@@ -181,7 +181,7 @@ Model7.getCDR = (body,result) => {
                 else{
                   let danhGiaId = response[0].id;
                   if(listDanhgiaId !== ''){
-                    sql.query(`delete cdrmh_has_dg`,(err,res) => {
+                    sql.query(`delete from cdrmh_has_dg`,(err,res) => {
                       if(err){
                         console.log("err: ",err);
                         return result(err,null);
@@ -221,4 +221,4 @@ Model7.getCDR = (body,result) => {
 
 
 
-module.exports = Model7;
+module.exports = Model7;	

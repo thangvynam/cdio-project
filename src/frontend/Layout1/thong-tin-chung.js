@@ -6,7 +6,7 @@ import {
   Form, Input, Card, Button, notification, Icon, Tooltip
 
 } from 'antd';
-import TableTTC from './table/tableTTC';
+
 import './thong-tin-chung.css'
 import { updateTTCRequest, collectDataRequest} from './../Constant/thong-tin-chung/actions';
 
@@ -28,7 +28,11 @@ class ThongTinChung extends Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        this.props.updateTTCRequest(this.props.idMH, values);
+        const data = {
+          ...values,
+          DateEdited: new Date().toISOString().slice(0, 19).replace('T', ' ')
+        }
+        this.props.updateTTCRequest(this.props.idMH, data);
         notification.open({
           message: "Success",
           icon: <Icon type="check-circle" style={{ color: 'green' }} />,
@@ -71,14 +75,14 @@ class ThongTinChung extends Component {
                 <Form.Item
                   {...formItemLayout}
                   label="Tên Môn Học (Tiếng Việt):">
-                  {getFieldDecorator('tenMonHocTV', {
+                  {getFieldDecorator('SubjectName', {
                     rules: [
                       {
                         type: 'string', message: 'The input is not valid ',
                       }, {
                         required: true, message: 'Please input VietNamese name!',
                       }],
-                    initialValue: dataTTC['tenMonHocTV'],
+                    initialValue: dataTTC['SubjectName'],
                   })(
                     <Input name="tenMonHocTV" type="text" />
                   )}
@@ -86,14 +90,14 @@ class ThongTinChung extends Component {
                 <Form.Item
                   {...formItemLayout}
                   label="Tên Môn Học (Tiếng Anh):">
-                  {getFieldDecorator('tenMonHocTA', {
+                  {getFieldDecorator('SubjectEngName', {
                     rules: [
                       {
                         type: 'string', message: 'The input is not valid ',
                       }, {
                         required: true, message: 'Please input your English Name!',
                       }],
-                    initialValue: dataTTC['tenMonHocTA'],
+                    initialValue: dataTTC['SubjectEngName'],
                   })(
                     <Input name="tenMonHocTA" type="text" />
                   )}
@@ -101,19 +105,19 @@ class ThongTinChung extends Component {
                 <Form.Item
                   {...formItemLayout}
                   label="Mã Số Môn Học:">
-                  {getFieldDecorator('maMonHoc', {
+                  {getFieldDecorator('SubjectCode', {
                     rules: [
                       {
                         type: 'string', message: 'The input is not valid ',
                       }, {
                         required: true, message: 'Please input your Course Code!',
                       }],
-                    initialValue: dataTTC['maMonHoc'],
+                    initialValue: dataTTC['SubjectCode'],
                   })(
                     <Input name="maMonHoc" type="text" />
                   )}
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   {...formItemLayout}
                   label="Thuộc Tính Kiến Thức:">
                   {getFieldDecorator('khoiKienThuc', {
@@ -127,16 +131,16 @@ class ThongTinChung extends Component {
                   })(
                     <Input name="khoiKienThuc" type="text" />
                   )}
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item
                   {...formItemLayout}
                   label="Số Tín Chỉ: ">
-                  {getFieldDecorator('soTinChi', {
+                  {getFieldDecorator('Credit', {
                     rules: [
                       {
                         required: true, message: 'Please input your Number Of Credits!',
                       }],
-                    initialValue: dataTTC['soTinChi'],
+                    initialValue: dataTTC['Credit'],
                   })(
                     <Input className="inputNumber" name="soTinChi" type="number" />
                   )}
@@ -144,12 +148,12 @@ class ThongTinChung extends Component {
                 <Form.Item
                   {...formItemLayout}
                   label="Số Tiết Lý Thuyết: ">
-                  {getFieldDecorator('tietLyThuyet', {
+                  {getFieldDecorator('TheoryPeriod', {
                     rules: [
                       {
                         required: true, message: 'Please input your Number Of Theoretical Lessons!',
                       }],
-                    initialValue: dataTTC['tietLyThuyet'],
+                    initialValue: dataTTC['TheoryPeriod'],
                   })(
                     <Input className="inputNumber" name="tietLyThuyet" type="number" />
                   )}
@@ -157,12 +161,12 @@ class ThongTinChung extends Component {
                 <Form.Item
                   {...formItemLayout}
                   label="Số Tiết Thực Hành: ">
-                  {getFieldDecorator('tietThucHanh', {
+                  {getFieldDecorator('PracticePeriod', {
                     rules: [
                       {
                         required: true, message: 'Please input your Number Of Practice Lessons!',
                       }],
-                    initialValue: dataTTC['tietThucHanh'],
+                    initialValue: dataTTC['PracticePeriod'],
                   })(
                     <Input className="inputNumber" name="tietThucHanh" type="number" />
                   )}
@@ -170,17 +174,17 @@ class ThongTinChung extends Component {
                 <Form.Item
                   {...formItemLayout}
                   label="Số Tiết Tự Học: ">
-                  {getFieldDecorator('tietTuHoc', {
+                  {getFieldDecorator('ExercisePeriod', {
                     rules: [
                       {
                         required: true, message: 'Please input your Number Of Self-Study Periods!',
                       }],
-                    initialValue: dataTTC['tietTuHoc'],
+                    initialValue: dataTTC['ExercisePeriod'],
                   })(
                     <Input className="inputNumber" name="tietTuHoc" type="number" />
                   )}
                 </Form.Item>
-                <Form.Item
+                {/* <Form.Item
                   {...formItemLayout}
                   label="Các Môn Tiên Quyết:">
                   {getFieldDecorator('monTienQuyet', {
@@ -194,7 +198,7 @@ class ThongTinChung extends Component {
                   })(
                     <Input name="monTienQuyet" type="text" />
                   )}
-                </Form.Item>
+                </Form.Item> */}
                 <Form.Item>
                   <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
                     Update

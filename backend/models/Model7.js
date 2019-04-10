@@ -29,8 +29,9 @@ Model7.getChude = (result) => {
       });
 }
 
+
 Model7.getChuanDaura = (id,result) => {
-    sql.query(`select * from cdrmh_has_dg where danh_gia_id = ${id.id} and del_flag =0 `,(err,res) => {
+    sql.query(`select * from cdrmh_has_dg where danh_gia_id = ${id.id} `,(err,res) => {
         if(err){
             console.log("err: ",err);
             return result(err,null);
@@ -74,7 +75,7 @@ Model7.getStandardOutput = (id,result)=>{
 
 getCDRDanhGiaFromId= id => {
   return new Promise((resolve,reject) => {
-    sql.query(`select chuan_dau_ra_mon_hoc_id from cdrmh_has_dg where danh_gia_id = ${id} and del_flag =0 `,(err,response) => {
+    sql.query(`select chuan_dau_ra_mon_hoc_id from cdrmh_has_dg where danh_gia_id = ${id} `,(err,response) => {
       if(err){
         console.log(err);
         reject(err);
@@ -111,7 +112,7 @@ Model7.getDanhGia = (id, result) => {
 }
 
 Model7.getCDRDanhGia = (body , result) => {
-  sql.query(`select * from cdrmh_has_dg where danh_gia_id in (${body}) and del_flag =0`,(err,response) => {
+  sql.query(`select * from cdrmh_has_dg where danh_gia_id in (${body})`,(err,response) => {
     if(err){
       console.log(err);
       return result(err,null);
@@ -122,7 +123,9 @@ Model7.getCDRDanhGia = (body , result) => {
   })
 }
 
+
 Model7.getCDR = (body,result) => {
+  console.log("body"  + body)
   sql.query(`select * from chuan_dau_ra_mon_hoc where id in (${body}) and del_flag = 0`,(err,response)=>{
     if(err){
       console.log(err);
@@ -178,7 +181,7 @@ Model7.getCDR = (body,result) => {
                 else{
                   let danhGiaId = response[0].id;
                   if(listDanhgiaId !== ''){
-                    sql.query(`update cdrmh_has_dg set del_flag = 1 where danh_gia_id  in (${listDanhgiaId})`,(err,res) => {
+                    sql.query(`delete cdrmh_has_dg`,(err,res) => {
                       if(err){
                         console.log("err: ",err);
                         return result(err,null);
@@ -194,7 +197,7 @@ Model7.getCDR = (body,result) => {
                       }else{
                     
                         var chuan_dau_ra_mon_hoc_id = res[0].id;
-                        sql.query(`insert cdrmh_has_dg(chuan_dau_ra_mon_hoc_id,danh_gia_id,del_flag) values (${chuan_dau_ra_mon_hoc_id},${danhGiaId},0)`,(err,res) => {
+                        sql.query(`insert cdrmh_has_dg(chuan_dau_ra_mon_hoc_id,danh_gia_id) values (${chuan_dau_ra_mon_hoc_id},${danhGiaId})`,(err,res) => {
                           if(err) {
                             console.log("Error save data in model 8 : ", err);
                             result(null,err)

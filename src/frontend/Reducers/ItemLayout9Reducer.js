@@ -10,7 +10,9 @@ import {
 const initialState = {
   previewInfo: [
     {
-      content:""
+      id: "",
+      content:"",
+      del_flag:0,
     },
   ],
   tempInfo:{

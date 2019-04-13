@@ -461,7 +461,6 @@ class TableItem extends Component {
     var body = {};
     body.thong_tin_chung_id = this.state.subjectId;
     body.data = [];
-    let dt = 0;
     itemKHGDTH.previewInfo.forEach((item,index)=>{
       let temp = {};
       temp.week = item.key;
@@ -469,6 +468,7 @@ class TableItem extends Component {
       temp.teachingActs = [];
       temp.standardOutput = [];
       temp.evalActs = [];
+           
       item.teachingActs.forEach( (act,_)=>{
         let id = itemKHGDTH.mapIdForValue.teachingActs.get(act);
         if(id === undefined || id ===''){
@@ -479,13 +479,18 @@ class TableItem extends Component {
             loai:'TH',
             danh_muc: 0,
           }
-          axios.post(`/add-teachingacts-6`,itemAct).then(response=>{
+          // push 
+          
+          // axios.post(`/add-teachingacts-6`,itemAct).then(response=>{
             
-            temp.teachingActs.push(response.data.id);
-          })
+          //   temp.teachingActs.push(response.data.id);
+          // })
         }
         else temp.teachingActs.push(id); 
       });
+
+
+
       item.standardOutput.forEach((stan,_)=>{
         let id = itemKHGDTH.mapIdForValue.standardOutput.get(stan);
         temp.standardOutput.push(id);
@@ -497,8 +502,8 @@ class TableItem extends Component {
       body.data.push(temp);
     })
 
-    console.log("body",body);
-   axios.post("/add-data-6", body)
+    console.log("body",body.data);
+      axios.post("/add-data-6", body)
    .then(response => {
      if(response.data === 1){
       notification["success"]({
@@ -513,6 +518,8 @@ class TableItem extends Component {
       });
      }
    });
+    
+   
 
   }
 

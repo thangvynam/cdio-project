@@ -108,12 +108,7 @@ const standard_item = [{
     }]
 },
 ];
-// const evalActs = [
-//     'BTVN',
-//     'BTTL',
-//     'DAMH',
-//     'Bài đọc thêm và viết báo cáo',
-// ]
+
 let myObj = {
     titleName: '',
     teachingActs: '',
@@ -154,15 +149,17 @@ class ItemMenu extends Component {
             standardOutput: new Map(),
             evalActs: new Map(),
         }
+
         axios.get("/get-teachingacts-5").then(response=>{
             const data= response.data;
             let map = new Map();
+
             data.forEach((item,index)=>{
-               
                 map.set(item.hoat_dong,index);
             })
-            //this.setState({teachingActs:map});
+    
             mapId.teachingActs = map;
+
             this.props.saveDataValue(mapId.teachingActs)
         });
 
@@ -180,16 +177,17 @@ class ItemMenu extends Component {
         })
           
     }
-    displayRender = label => {
-        
+
+    displayRender = (label) => {
         if (isSubmit) {
           isSubmit = false;
           return null;
         }
-        if (label.length > 0) return label[0] + label[1];
-      }; 
-    onChange = (value) => {
 
+        if (label.length > 0) return label[0] + label[1];
+    }; 
+
+    onChange = (value) => {
         if (value.length === 0) return;
 
         var newArray = this.state.standardSelectedItem.slice();
@@ -203,34 +201,40 @@ class ItemMenu extends Component {
             }
         }
 
-        if (flag) newArray.push(item);
-
+        if (flag) {
+            newArray.push(item);
+        }
+            
         this.setState({ standardSelectedItem: newArray });
         
         standardOutput_data = newArray;
-        console.log(standardOutput_data);
+        
         this.props.onChangeData(titleName, teachingActs_data, standardOutput_data, evalActs_data);
 
     }
+
     toString = () => {
-        
         let temp = '';
         for (let i = 0; i < this.props.itemLayout5Reducer.standardOutput.length; i++) {
             temp += this.props.itemLayout5Reducer.standardOutput[i] + " , ";
         }
         return temp;
     }
+
     back = (e) => {
         e.preventDefault();
         this.props.prevStep();
     }
+
     handleInputChange = (e) => {
         titleName = e.target.value;
         this.props.onChangeData(titleName, teachingActs_data, standardOutput_data, evalActs_data);
     }
+
     moveTab7 = () => {
         this.setState({ redirectTab7: true });
     }
+
     redirect() {
         if (this.state.redirectTab7) {
             return (
@@ -241,31 +245,10 @@ class ItemMenu extends Component {
 
     
     render() {
-        
         let childrenTeachingActs = [];
-        let evalActs = []
-        if(this.props.itemLayout5Reducer.teachingActsData.length !== 0){
-            for (let i = 0; i < this.props.itemLayout5Reducer.teachingActsData.length; i++) {
-                childrenTeachingActs.push(this.props.itemLayout5Reducer.teachingActsData[i])
-            }
-
-            for (let i = 0 ; i < this.props.itemLayout5Reducer.evalActsData.length ; i++) {
-                evalActs.push(this.props.itemLayout5Reducer.evalActsData[i])
-            }
-            
-        }
-        const data = [];
-        const childrenEvalActs = [];
-        function init(){   
-            for (let i = 0; i < childrenTeachingActs.length; i++) {
-                data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
-            }
-            for (let i = 0; i < evalActs.length; i++) {
-                childrenEvalActs.push(<Option key={i}>{evalActs[i]}</Option>)
-            }
-        }
-        
-        init();
+        let evalActs = [];
+        let data = [];
+        let childrenEvalActs = [];
         const { getFieldDecorator } = this.props.form;
         
         const formItemLayout = {
@@ -278,6 +261,7 @@ class ItemMenu extends Component {
                 sm: { span: 16 },
             },
         };
+
         const formDynamicItemLayout = {
             labelCol: {
                 xs: { span: 12 },
@@ -301,11 +285,32 @@ class ItemMenu extends Component {
                 },
             },
         };
-        
+
+        function init(){   
+            for (let i = 0; i < childrenTeachingActs.length; i++) {
+                data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
+            }
+            for (let i = 0; i < evalActs.length; i++) {
+                childrenEvalActs.push(<Option key={i}>{evalActs[i]}</Option>)
+            }
+        }
+
+        if (this.props.itemLayout5Reducer.teachingActsData.length !== 0) {
+            for (let i = 0; i < this.props.itemLayout5Reducer.teachingActsData.length; i++) {
+                childrenTeachingActs.push(this.props.itemLayout5Reducer.teachingActsData[i])
+            }
+
+            for (let i = 0 ; i < this.props.itemLayout5Reducer.evalActsData.length ; i++) {
+                evalActs.push(this.props.itemLayout5Reducer.evalActsData[i])
+            }
+            
+        }
+       
+        init();
+    
         return (
             <div>
                 {this.redirect()}
-                
                 <div style={{ border: "2px solid", borderRadius: "12px" }}>
                     <div style={{ marginTop: "10px" }}></div>
                     <Form onSubmit={this.handleSubmit}>
@@ -418,7 +423,7 @@ class ItemMenu extends Component {
         );
     }
 }
-const mapStateToProps = (state, ownProps) => {
+const mapStateToProps = (state) => {
     return {
         itemLayout5Reducer: state.itemLayout5Reducer,
         subjectId: state.subjectid,
@@ -432,6 +437,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 standardOutput: standardOutput_data, evalActs: evalActs_data
             });
         },
+
         handleChangeTeachingAct: (value) => {
             teachingActs_data = value;
             dispatch({
@@ -439,6 +445,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 standardOutput: standardOutput_data, evalActs: evalActs_data
             });
         },
+
         handleChangeEvalActs: (value) => {
             evalActs_data = value;
             dispatch({
@@ -446,19 +453,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 standardOutput: standardOutput_data, evalActs: evalActs_data
             });
         },
+
         saveAndContinue: () => {
-            console.log(standardOutput_data)
+
             myObj.key = ownProps.step;
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs_data;
             myObj.evalActs = evalActs_data;
             myObj.standardOutput = standardOutput_data;
 
-            console.log(myObj);
+           
             if (titleName === '' || standardOutput_data.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
-            }
-            else {
+            } else {
                 //const myObjStr = JSON.stringify(myObj);
                 //reset
                 titleName = '';
@@ -475,31 +482,34 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 standardOutput: '', evalActs: []
             });
         },
+
         saveDataValue : (teachingActs) => {
             dispatch({type:COLLECT_DATA_HDD,data:teachingActs})
         },
+
         saveDataValueDG : (evalActs) => {
             dispatch({type:COLLECT_DATA_DG,data:evalActs})
         },
+
         refreshData : () => {
             dispatch({type:REFRESH_DATA,data:[]})
         },
-        collectDataRequest: (id)=>{
+
+        collectDataRequest: (id) => {
             let newArr = [];
-            console.log(id)
+           
             axios.post('/collect-data-5',{data:id})
-            .then(function (response) {
-                console.log(response)
-                for(let i = 0; i <response.data.length;i++){
-                    let data = {
-                        key : response.data[i].key,
-                        titleName : response.data[i].titleName,
-                        teachingActs : response.data[i].teachingActs,
-                        standardOutput : response.data[i].standardOutput,
-                        evalActs : response.data[i].evalActs
+                .then(function (response) {
+                    for (let i = 0; i <response.data.length; i++) {
+                        let data = {
+                            key : response.data[i].key,
+                            titleName : response.data[i].titleName,
+                            teachingActs : response.data[i].teachingActs,
+                            standardOutput : response.data[i].standardOutput,
+                            evalActs : response.data[i].evalActs
+                        }
+                        newArr.push(data);   
                     }
-                    newArr.push(data);   
-                }
                
                 dispatch({type:ADD_DATA,data:newArr})
             })
@@ -507,9 +517,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 console.log(error);
             })
             .finally(function(){
-               
+                console.log("[Finish] get data by thong_tin_chung_id " + id);
             })
         }
     }
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(ItemMenu);

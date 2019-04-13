@@ -5,8 +5,11 @@ import {
 import { Redirect } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD,COLLECT_DATA_DG} from '../../../Constant/ActionType';
 import axios from 'axios';
+
+import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD, COLLECT_DATA_DG, 
+    REFRESH_DATA } from '../../../Constant/ActionType';
+
 const { Option } = Select;
 const standard_item = [{
     value: 'G1',
@@ -122,10 +125,10 @@ let isSubmit = false;
 let teachingActs_data = [];
 let standardOutput_data = [];
 let evalActs_data = [];
-let firstCollect = false;
 
 
 class ItemMenu extends Component {
+
     constructor(props){
         super(props);
         this.state = {
@@ -135,11 +138,10 @@ class ItemMenu extends Component {
         }
        
     }
+
     componentDidMount() {
-        if(!firstCollect){
-            firstCollect = true;
-            this.props.collectDataRequest();
-        }
+        this.props.refreshData();
+        this.props.collectDataRequest(this.props.subjectId);
     }
 
     componentWillMount(){
@@ -239,6 +241,7 @@ class ItemMenu extends Component {
 
     
     render() {
+        
         let childrenTeachingActs = [];
         let evalActs = []
         if(this.props.itemLayout5Reducer.teachingActsData.length !== 0){
@@ -417,7 +420,8 @@ class ItemMenu extends Component {
 }
 const mapStateToProps = (state, ownProps) => {
     return {
-        itemLayout5Reducer: state.itemLayout5Reducer
+        itemLayout5Reducer: state.itemLayout5Reducer,
+        subjectId: state.subjectid,
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
@@ -471,16 +475,19 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 standardOutput: '', evalActs: []
             });
         },
-        saveDataValue:(teachingActs)=>{
+        saveDataValue : (teachingActs) => {
             dispatch({type:COLLECT_DATA_HDD,data:teachingActs})
         },
-        saveDataValueDG: (evalActs) => {
+        saveDataValueDG : (evalActs) => {
             dispatch({type:COLLECT_DATA_DG,data:evalActs})
         },
-        collectDataRequest: ()=>{
-           
+        refreshData : () => {
+            dispatch({type:REFRESH_DATA,data:[]})
+        },
+        collectDataRequest: (id)=>{
             let newArr = [];
-            axios.get('/collect-data-5')
+            console.log(id)
+            axios.post('/collect-data-5',{data:id})
             .then(function (response) {
                 console.log(response)
                 for(let i = 0; i <response.data.length;i++){

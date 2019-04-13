@@ -89,12 +89,14 @@ collectDataPromise = (objResult) => {
     })
 }
 
-Model5.collect = (respone) => {
+Model5.collect = (dataID,respone) => {
+    let id = dataID;
+    console.log(id);
     let data = [];
-    query("SELECT count(*) as sl FROM ke_hoach_ly_thuyet where del_flag = 0").
+    query(`SELECT count(*) as sl FROM ke_hoach_ly_thuyet where del_flag = 0 and thong_tin_chung_id = '${id}'`).
         then(res => {
             let sl = res[0].sl
-            query("SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0")
+            query(`SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0 and thong_tin_chung_id = '${id}'`)
                 .then(res => {
                     if (res.length != 0) {
                        

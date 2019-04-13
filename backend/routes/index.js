@@ -431,8 +431,8 @@ router.post('/add-data-5', function(req, res) {
   })   
 })
 
-router.get('/collect-data-5', function(req, res) {
-  Model5.collect(function(err, data) {
+router.post('/collect-data-5', function(req, res) {
+  Model5.collect(req.body.data,function(err, data) {
     if (err) {
       console.log(err);
     } else{
@@ -531,18 +531,6 @@ router.get('/get-standard-output-6/:idSubject', function(req, res) {
     res.end(JSON.stringify(result));
   })   
 })
-
-
-router.get('/collect-data-5', function(req, res) {
-  Model5.collectdata(function(err, data) {
-    if (err) {
-      console.log(err);
-    } else{
-      res.send(data)
-    }   
-  })   
-})
-
 
 router.get('/get-danhgia/:id',function(req,res){
   let id = req.params
@@ -728,7 +716,6 @@ router.get('/get-teachingacts-5', function(req, res) {
 
 router.get('/get-evalact-5', function(req, res) {
   Model5.collectDG((result) => {
-    console.log(result);
     res.send(result)
   })
 })

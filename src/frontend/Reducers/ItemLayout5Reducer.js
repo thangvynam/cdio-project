@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import {ADD_DATA,DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5,
         SAVE_DATA_LAYOUT_5,CHANGE_DATA,ADD_DATA_LAYOUT_5,
-        COLLECT_DATA_REQUEST_5,COLLECT_DATA_HDD} from '../Constant/ActionType';
+        COLLECT_DATA_REQUEST_5,COLLECT_DATA_HDD,COLLECT_DATA_DG} from '../Constant/ActionType';
 
 const itemMenuInitialState = {
     previewInfo: [
@@ -28,6 +28,7 @@ const itemMenuInitialState = {
     evalActs:[],
     result:-1,
     teachingActsData : [],
+    evalActsData : []
     
 }
 
@@ -98,6 +99,19 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
                 teachingActsData :arr
             }
         }
+
+        case COLLECT_DATA_DG : {
+            let arr = [];
+            for(const obj of action.data){
+               
+                arr.push(obj[1])
+            }
+            return {
+                ...state,
+                evalActsData :arr
+            }
+        }
+
         case COLLECT_DATA_REQUEST_5:{
             let newArr = [];
             // axios.get('/collect-data-5')

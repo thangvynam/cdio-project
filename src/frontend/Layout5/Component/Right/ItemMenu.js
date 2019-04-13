@@ -3,10 +3,9 @@ import {
     Form, Input, Tooltip, Icon, Cascader, Select, Button, message
 } from 'antd';
 import { Redirect } from 'react-router-dom';
-import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD} from '../../../Constant/ActionType';
+import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD,COLLECT_DATA_DG} from '../../../Constant/ActionType';
 import axios from 'axios';
 const { Option } = Select;
 const standard_item = [{
@@ -106,23 +105,12 @@ const standard_item = [{
     }]
 },
 ];
-let teachingActs = [
-    // 'Thuyết giảng',
-    // 'Phân nhóm & chơi trò chơi',
-    // 'Thảo luận nhóm',
-    // 'Phân nhóm đồ án',
-    // 'Thảo luận và thể hiện trên bảng',
-    // 'Trò chơi nhập vai',
-    // 'Nhóm thảo luận & thiết kế 1 màn hình',
-    // 'Làm bài tập tạo test case',
-    // 'Trò chơi',
-];
-const evalActs = [
-    'BTVN',
-    'BTTL',
-    'DAMH',
-    'Bài đọc thêm và viết báo cáo',
-]
+// const evalActs = [
+//     'BTVN',
+//     'BTTL',
+//     'DAMH',
+//     'Bài đọc thêm và viết báo cáo',
+// ]
 let myObj = {
     titleName: '',
     teachingActs: '',
@@ -136,8 +124,6 @@ let standardOutput_data = [];
 let evalActs_data = [];
 let firstCollect = false;
 
-const childrenEvalActs = [];
-let flag =true;
 
 class ItemMenu extends Component {
     constructor(props){
@@ -157,7 +143,6 @@ class ItemMenu extends Component {
     }
 
     componentWillMount(){
-        
         this.getDataHDD();
     }
 
@@ -177,7 +162,20 @@ class ItemMenu extends Component {
             //this.setState({teachingActs:map});
             mapId.teachingActs = map;
             this.props.saveDataValue(mapId.teachingActs)
-          });
+        });
+
+        axios.get("/get-evalact-5").then(response=>{
+            const data= response.data;
+            let map = new Map();
+
+            data.forEach((item,index)=>{
+                map.set(index,item.ma);
+            })
+            
+            mapId.evalActs = map;
+            
+            this.props.saveDataValueDG(mapId.evalActs)
+        })
           
     }
     displayRender = label => {
@@ -242,25 +240,29 @@ class ItemMenu extends Component {
     
     render() {
         let childrenTeachingActs = [];
-        console.log(this.props.itemLayout5Reducer.teachingActsData.length)
+        let evalActs = []
         if(this.props.itemLayout5Reducer.teachingActsData.length !== 0){
             for (let i = 0; i < this.props.itemLayout5Reducer.teachingActsData.length; i++) {
                 childrenTeachingActs.push(this.props.itemLayout5Reducer.teachingActsData[i])
             }
+
+            for (let i = 0 ; i < this.props.itemLayout5Reducer.evalActsData.length ; i++) {
+                evalActs.push(this.props.itemLayout5Reducer.evalActsData[i])
+            }
             
         }
         const data = [];
-        
+        const childrenEvalActs = [];
         function init(){   
             for (let i = 0; i < childrenTeachingActs.length; i++) {
                 data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
             }
             for (let i = 0; i < evalActs.length; i++) {
-                childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
+                childrenEvalActs.push(<Option key={i}>{evalActs[i]}</Option>)
             }
         }
+        
         init();
-        console.log(childrenTeachingActs);
         const { getFieldDecorator } = this.props.form;
         
         const formItemLayout = {
@@ -375,7 +377,7 @@ class ItemMenu extends Component {
                         >
                             {getFieldDecorator('evalActs', {
 
-                                initialValue: this.props.itemLayout5Reducer.evalActs
+                                
                             })(
 
                                 <Select
@@ -471,6 +473,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
         saveDataValue:(teachingActs)=>{
             dispatch({type:COLLECT_DATA_HDD,data:teachingActs})
+        },
+        saveDataValueDG: (evalActs) => {
+            dispatch({type:COLLECT_DATA_DG,data:evalActs})
         },
         collectDataRequest: ()=>{
            

@@ -726,6 +726,13 @@ router.get('/get-teachingacts-5', function(req, res) {
   })
 })
 
+router.get('/get-evalact-5', function(req, res) {
+  Model5.collectDG((result) => {
+    console.log(result);
+    res.send(result)
+  })
+})
+
 
 
 module.exports = router;

@@ -156,6 +156,13 @@ Model5.collectHDD = (result) =>{
             result(res);
         })
 }
+Model5.collectDG = (result) =>{
+    query("SELECT `ma` FROM `danh_gia` WHERE `del_flag` = '0' ")
+        .then(res =>{
+             result(res);
+        })
+}
+
 Model5.add = (data, result) => {
     data.forEach(function (value, index) {
         let id = value.key;

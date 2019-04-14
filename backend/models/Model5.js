@@ -76,7 +76,6 @@ collectDataPromise = (objResult) => {
             .then(() => {
                 query(`SELECT ma FROM khlt_has_dg JOIN danh_gia on danh_gia_id = id  WHERE ke_hoach_ly_thuyet_id = '${objResult.key}'`)
                     .then(res => {
-                        
                         res.map(async value => {
                             await objResult.evalActs.push(value.ma);
                         })

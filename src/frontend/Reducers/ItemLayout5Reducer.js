@@ -96,17 +96,17 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
             
         case ADD_DATA_LAYOUT_5 : {
             let temp = "";
-
-            axios.post('/add-data-5', { data: state.previewInfo })
-                .then(res => {
-                    temp =res.data;
-                })
-                .then(()=>{
-                    return{
-                        ...state,
-                        result:temp
-                    }
-                })
+            console.log(state.previewInfo);
+            // axios.post('/add-data-5', { data: state.previewInfo })
+            //     .then(res => {
+            //         temp =res.data;
+            //     })
+            //     .then(()=>{
+            //         return{
+            //             ...state,
+            //             result:temp
+            //         }
+            // });
         }
 
         case COLLECT_DATA_HDD : { 

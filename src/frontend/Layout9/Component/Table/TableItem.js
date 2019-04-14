@@ -208,8 +208,8 @@ class TableItem extends Component {
     let body = {};
     body.thong_tin_chung_id = this.state.subjectId;
     body.data = this.props.itemRule.previewInfo;
-
-
+  
+    
      axios.post("/add-data-9", body)
      .then(response => {
        if(response.data === 1){

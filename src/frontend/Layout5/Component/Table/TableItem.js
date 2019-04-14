@@ -516,6 +516,11 @@ class TableItem extends Component {
         <span style={{ marginLeft: 8 }}>
           {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
         </span>
+        <Button style={{float: "right" , marginBottom: 16, marginTop: 10}}
+            onClick={() => this.props.saveAllData()}
+          >
+            Lưu tất cả
+        </Button>
         <Table
           components={components}
           bordered
@@ -533,9 +538,6 @@ class TableItem extends Component {
               : null
           }
         />
-        <Button type="primary" onClick={ () => this.props.saveData()} className="submit_All">
-          Lưu
-        </Button>
       </div>
     );
   }
@@ -561,7 +563,7 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: SAVE_DATA_LAYOUT_5, data: data, key: 'abc' });
     },
 
-    saveData : () => {
+    saveAllData : () => {
       dispatch({ type: ADD_DATA_LAYOUT_5});
     }
   }

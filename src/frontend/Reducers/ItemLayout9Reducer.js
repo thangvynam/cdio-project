@@ -25,6 +25,7 @@ const initialState = {
 const itemLayout9Reducer = (state = initialState, action) => {
   switch (action.type) {
     case ADD_ITEM_RULE:
+      
       return {
         ...state,
         previewInfo: [...state.previewInfo, JSON.parse(action.data)]

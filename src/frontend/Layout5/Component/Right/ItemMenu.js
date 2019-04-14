@@ -11,103 +11,6 @@ import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD, COLLECT_DATA_DG,
     REFRESH_DATA, COLLECT_DATA_CDR } from '../../../Constant/ActionType';
 
 const { Option } = Select;
-const standard_item = [{
-    value: 'G1',
-    label: 'G1',
-    children: [{
-        value: '.1',
-        label: '.1',
-    },
-    {
-        value: '.2',
-        label: '.2',
-    },
-    {
-        value: '.3',
-        label: '.3',
-    }],
-},
-{
-    value: 'G2',
-    label: 'G2',
-    children: [{
-        value: '.1',
-        label: '.1',
-    },
-    {
-        value: '.2',
-        label: '.2',
-    }],
-},
-{
-    value: 'G3',
-    label: 'G3',
-    children: [{
-        value: '.1',
-        label: '.1',
-    },
-    {
-        value: '.2',
-        label: '.2',
-    },
-    {
-        value: '.3',
-        label: '.3',
-    },
-    {
-        value: '.4',
-        label: '.4',
-    }],
-},
-{
-    value: 'G4',
-    label: 'G4',
-    children: [{
-        value: '.1',
-        label: '.1',
-    }]
-},
-{
-    value: 'G5',
-    label: 'G5',
-    children: [{
-        value: '.1',
-        label: '.1',
-    },
-    {
-        value: '.2',
-        label: '.2',
-    },
-    {
-        value: '.3',
-        label: '.3',
-    },
-    {
-        value: '.4',
-        label: '.4',
-    },
-    {
-        value: '.5',
-        label: '.5',
-    }],
-},
-{
-    value: 'G6',
-    label: 'G6',
-    children: [{
-        value: '.1',
-        label: '.1',
-    }]
-},
-{
-    value: 'G7',
-    label: 'G7',
-    children: [{
-        value: '.1',
-        label: '.1', 
-    }]
-},
-];
 
 let myObj = {
     titleName: '',
@@ -115,12 +18,12 @@ let myObj = {
     standardOutput: '',
     evalActs: ''
 };
+
 let titleName = '';
 let isSubmit = false;
 let teachingActs_data = [];
 let standardOutput_data = [];
 let evalActs_data = [];
-
 
 class ItemMenu extends Component {
 
@@ -215,15 +118,23 @@ class ItemMenu extends Component {
           return null;
         }
 
-        if (label.length > 0) return label[0] + label[1];
+        if (label.length > 0) {
+            return label[0] ;
+        }
     }; 
 
     onChange = (value) => {
-        if (value.length === 0) return;
+        if (value.length === 0) {
+            return;
+        } 
 
         var newArray = this.state.standardSelectedItem.slice();
-        let item = value[0] + value[1];
+        let item = value[1];
         let flag = true;
+
+        if(typeof item === 'undefined') {
+            return;
+        }
 
         for (let i = 0; i < newArray.length; i++) {
             if (newArray[i] === item) {
@@ -232,23 +143,30 @@ class ItemMenu extends Component {
             }
         }
 
+        
         if (flag) {
             newArray.push(item);
         }
-            
+        
+        
         this.setState({ standardSelectedItem: newArray });
         
         standardOutput_data = newArray;
         
         this.props.onChangeData(titleName, teachingActs_data, standardOutput_data, evalActs_data);
-
     }
 
     toString = () => {
         let temp = '';
-        for (let i = 0; i < this.props.itemLayout5Reducer.standardOutput.length; i++) {
-            temp += this.props.itemLayout5Reducer.standardOutput[i] + " , ";
+        let data = this.props.itemLayout5Reducer.standardOutput;
+
+        for (let i = 0; i < data.length; i++) {
+            if (typeof data[i] !== 'undefined') {
+                temp += data[i] + " , ";
+            }
+            
         }
+
         return temp;
     }
 
@@ -322,7 +240,7 @@ class ItemMenu extends Component {
                 data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
             }
             for (let i = 0; i < evalActs.length; i++) {
-                childrenEvalActs.push(<Option key={i}>{evalActs[i]}</Option>)
+                childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
             }
         }
 
@@ -443,7 +361,7 @@ class ItemMenu extends Component {
                             <div>
                                
                                 <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
-                                    Continue<Icon type="right" />
+                                    Thêm<Icon type="right" />
                                 </Button>
                                 <br />
                             </div>
@@ -487,13 +405,12 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
         saveAndContinue: () => {
 
-            myObj.key = ownProps.step;
+            myObj.key = -1 ;
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs_data;
             myObj.evalActs = evalActs_data;
             myObj.standardOutput = standardOutput_data;
-
-           
+    
             if (titleName === '' || standardOutput_data.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
             } else {
@@ -545,7 +462,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                         }
                         newArr.push(data);   
                     }
-               
+                
                 dispatch({type:ADD_DATA,data:newArr})
             })
             .catch(function (error) {

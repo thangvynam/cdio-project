@@ -88,6 +88,7 @@ export const ADD_DATA_LAYOUT_5 = "ADD_DATA_LAYOUT_5";
 export const COLLECT_DATA_REQUEST_5 = "COLLECT_DATA_REQUEST_5";
 export const COLLECT_DATA_HDD = "COLLECT_DATA_HDD";
 export const COLLECT_DATA_DG = "COLLECT_DATA_DG";
+export const COLLECT_DATA_CDR = "COLLECT_DATA_CDR";
 export const REFRESH_DATA = "REFRESH_DATA";
 
 // Comment 

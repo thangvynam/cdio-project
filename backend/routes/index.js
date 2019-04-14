@@ -714,11 +714,22 @@ router.get('/get-teachingacts-5', function(req, res) {
   })
 })
 
-router.get('/get-evalact-5', function(req, res) {
-  Model5.collectDG((result) => {
+router.post('/get-evalact-5', function(req, res) {
+  const dataID = req.body.data;
+  
+  Model5.collectDG( dataID,(result) => {
     res.send(result)
-  })
+  });
 })
+
+router.post('/get-standard-output-5', function(req, res) {
+  const dataID = req.body.data;
+  
+  Model5.collectCDR( dataID,(result) => {
+    res.send(result)
+  });
+})
+
 
 
 

@@ -1,9 +1,9 @@
 import axios from 'axios';
 
-import {ADD_DATA,DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5,
-        SAVE_DATA_LAYOUT_5,CHANGE_DATA,ADD_DATA_LAYOUT_5,
-        COLLECT_DATA_REQUEST_5,COLLECT_DATA_HDD,COLLECT_DATA_DG,
-        REFRESH_DATA} from '../Constant/ActionType';
+import {ADD_DATA, DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
+        SAVE_DATA_LAYOUT_5, CHANGE_DATA, ADD_DATA_LAYOUT_5,
+        COLLECT_DATA_REQUEST_5, COLLECT_DATA_HDD, COLLECT_DATA_DG,
+        REFRESH_DATA, COLLECT_DATA_CDR} from '../Constant/ActionType';
 
 const itemMenuInitialState = {
     previewInfo: [
@@ -28,9 +28,10 @@ const itemMenuInitialState = {
     standardOutput:[],
     evalActs:[],
     result:-1,
+
     teachingActsData : [],
-    evalActsData : []
-    
+    evalActsData : [],
+    standardOutputData:[]
 }
 
 const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
@@ -131,6 +132,13 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
             return {
                 ...state,
                 evalActsData :arr
+            }
+        }
+
+        case COLLECT_DATA_CDR : {
+            return {
+                ...state,
+                standardOutputData : action.data
             }
         }
 

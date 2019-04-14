@@ -8,7 +8,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 
 import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD, COLLECT_DATA_DG, 
-    REFRESH_DATA } from '../../../Constant/ActionType';
+    REFRESH_DATA, COLLECT_DATA_CDR } from '../../../Constant/ActionType';
 
 const { Option } = Select;
 const standard_item = [{
@@ -163,19 +163,50 @@ class ItemMenu extends Component {
             this.props.saveDataValue(mapId.teachingActs)
         });
 
-        axios.get("/get-evalact-5").then(response=>{
-            const data= response.data;
-            let map = new Map();
+        axios.post("/get-evalact-5",{data: this.props.subjectId})
+            .then(response=>{
+                const data= response.data;
+                let map = new Map();
 
-            data.forEach((item,index)=>{
-                map.set(index,item.ma);
-            })
-            
-            mapId.evalActs = map;
-            
-            this.props.saveDataValueDG(mapId.evalActs)
+                data.forEach((item,index)=>{
+                    map.set(index,item.ma);
+                })
+                
+                mapId.evalActs = map;
+
+                this.props.saveDataValueDG(mapId.evalActs)
         })
-          
+
+        axios.post("/get-standard-output-5",{data: this.props.subjectId})
+            .then( response => {
+                const data= response.data;
+                let array = [];
+                let map = new Map();
+
+                data.forEach((item) => {
+                    let temp = {
+                        value: item.muc_tieu,
+                        label: item.muc_tieu,
+                        children: [],
+                    }
+
+                    item.cdr.forEach((itemCdr,_)=>{
+                        let tempCdr = {
+                        value: itemCdr.chuan_dau_ra,
+                        label: itemCdr.chuan_dau_ra
+                        }
+                        temp.children.push(tempCdr);
+                        map.set(itemCdr.chuan_dau_ra,itemCdr.id);
+                    })
+                    
+                    array.push(temp);
+                })
+        
+                // this.setState({standard_item:array,standardOutput:map});
+                mapId.standardOutput = map;
+            
+                this.props.saveDataValueCDR(array)
+            });
     }
 
     displayRender = (label) => {
@@ -360,7 +391,7 @@ class ItemMenu extends Component {
                                 </span>
                             )}
                         >
-                            <Cascader options={standard_item} onChange={this.onChange} 
+                            <Cascader options={this.props.itemLayout5Reducer.standardOutputData} onChange={this.onChange} 
                                       placeholder="Chọn chuẩn đầu ra" displayRender={this.displayRender}/>
 
                         </Form.Item>
@@ -489,6 +520,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
         saveDataValueDG : (evalActs) => {
             dispatch({type:COLLECT_DATA_DG,data:evalActs})
+        },
+
+        saveDataValueCDR : (listCDR) => {
+            dispatch({type:COLLECT_DATA_CDR,data:listCDR})
         },
 
         refreshData : () => {

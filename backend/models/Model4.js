@@ -5,12 +5,11 @@ var Model4 = (data) => {
 }
 
 Model4.save = (data, result) => {
-    sql.query(`update chuan_dau_ra_mon_hoc set del_flag = 1 where thong_tin_chung_id = ${data.thong_tin_chung_id}`);
+    
     for (let i = 0; i < data.data.length; i++) {
-
-        if (data.data[i].muc_tieu_mon_hoc_id !== -1 && data.data[i].cdrmh_muc_do_hanh_dong_id !== -1) {
-            sql.query(`insert into chuan_dau_ra_mon_hoc(chuan_dau_ra, mo_ta, muc_do, muc_tieu_mon_hoc_id, cdrmh_muc_do_hanh_dong_id, thong_tin_chung_id) values ('${data.data[i].cdr}', '${data.data[i].description}', '${data.data[i].levels.toString()}',
-            ${data.data[i].muc_tieu_mon_hoc_id}, ${data.data[i].cdrmh_muc_do_hanh_dong_id}, ${data.thong_tin_chung_id})`,
+        if(data.data[i].del_flag === 1) {
+            if(data.data[i].id != -1) {
+                sql.query(`update chuan_dau_ra_mon_hoc set del_flag = 1 where id = ${data.data[i].id}`,
                 (err, res) => {
                     if (err) {
                         console.log("error:", err);
@@ -18,10 +17,45 @@ Model4.save = (data, result) => {
                     } else {
                         result(null, res);
                     }
-                })
+                });
+            }
         }
+        else {
+            if(data.data[i].id != -1) {
+                sql.query(`update chuan_dau_ra_mon_hoc
+                set chuan_dau_ra = '${data.data[i].cdr}',
+                    mo_ta = '${data.data[i].description}',
+                    muc_do = '${data.data[i].levels.toString()}',
+                    muc_tieu_mon_hoc_id = ${data.data[i].muc_tieu_mon_hoc_id},
+                    cdrmh_muc_do_hanh_dong_id = ${data.data[i].cdrmh_muc_do_hanh_dong_id},
+                    thong_tin_chung_id = ${data.thong_tin_chung_id}
+                where id = ${data.data[i].id}`,
+                (err, res) => {
+                    if (err) {
+                        console.log("error:", err);
+                        result(null, err)
+                    } else {
+                        result(null, res);
+                    }
+                });
+            }
+            else {
+                if (data.data[i].muc_tieu_mon_hoc_id !== -1 && data.data[i].cdrmh_muc_do_hanh_dong_id !== -1) {
+                    sql.query(`insert into chuan_dau_ra_mon_hoc(chuan_dau_ra, mo_ta, muc_do, muc_tieu_mon_hoc_id, cdrmh_muc_do_hanh_dong_id, thong_tin_chung_id) values ('${data.data[i].cdr}', '${data.data[i].description}', '${data.data[i].levels.toString()}',
+                    ${data.data[i].muc_tieu_mon_hoc_id}, ${data.data[i].cdrmh_muc_do_hanh_dong_id}, ${data.thong_tin_chung_id})`,
+                        (err, res) => {
+                            if (err) {
+                                console.log("error:", err);
+                                result(null, err)
+                            } else {
+                                result(null, res);
+                            }
+                        })
+                }
+            }
+        }
+        
     }
-
 }
 
 Model4.collectdata = (data, result) => {
@@ -48,7 +82,7 @@ Model4.collectdata = (data, result) => {
 
 
 Model4.collectcdrmdhd = (result) => {
-    sql.query("SELECT * FROM cdrmh_muc_do_hanh_dong", (err, res) => {
+    sql.query("SELECT * FROM cdrmh_muc_do_hanh_dong where id != -1 ORDER by muc_do_1, muc_do_2", (err, res) => {
         if (err) {
             console.log("error:", err);
             result(null, err)
@@ -204,6 +238,49 @@ Model4.collectmucdomtmhhascdrcdio = (data, result) => {
 
 Model4.addcdrmdhd = (data, result) => {
     sql.query(`insert into cdrmh_muc_do_hanh_dong(muc_do_1, muc_do_2, muc_do_3) values ('${data.muc_do_1}', ${data.muc_do_2}, '${data.muc_do_3}')`,
+        (err, res) => {
+            if (err) {
+                console.log("error:", err);
+                result(null, err)
+            } else {
+                result(null, res);
+            }
+        })
+}
+
+Model4.updatecdrmdhd = (data, result) => {
+    sql.query(`update cdrmh_muc_do_hanh_dong
+            set muc_do_1 = '${data.muc_do_1}',
+                muc_do_2 = ${data.muc_do_2},
+                muc_do_3 = '${data.muc_do_3}'
+            where id = ${data.id}`,
+        (err, res) => {
+            if (err) {
+                console.log("error:", err);
+                result(null, err)
+            } else {
+                result(null, res);
+            }
+        })
+}
+
+Model4.deletecdrmdhdfromcdr = (data, result) => {
+    for(let i = 0;i < data.length;i++) {
+        sql.query(`update chuan_dau_ra_mon_hoc set cdrmh_muc_do_hanh_dong_id = -1 where cdrmh_muc_do_hanh_dong_id = ${data[i]}`,
+        (err, res) => {
+            if (err) {
+                console.log("error:", err);
+                result(null, err)
+            } else {
+                result(null, res);
+            }
+        })
+    }
+}
+
+Model4.deletecdrmdhd = (data, result) => {
+    let idString = "(" + data.toString() + ")";
+        sql.query(`delete from cdrmh_muc_do_hanh_dong where (id) IN ${idString}`,
         (err, res) => {
             if (err) {
                 console.log("error:", err);

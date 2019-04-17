@@ -143,52 +143,52 @@ class Home extends Component {
     .catch(function (error) {
        console.log(error);
     });     
-    axios.get('/collect-cdrmdhd-4')
-    .then(function (response) {
-        let cdrmdhd = self.props.cdrmdhd;
-        for(let i = 0;i < response.data.length;i++) {
-            let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
-            if(index_1 != -1) {
-                let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
-                if(index_2 != -1) {
-                    cdrmdhd[index_1].children[index_2].children.push({
-                        value: response.data[i].muc_do_3,
-                        label: response.data[i].muc_do_3
-                      })
-                }
-                else {
-                    cdrmdhd[index_1].children.push({
-                        value: response.data[i].muc_do_2,
-                        label: response.data[i].muc_do_2,
-                        children: [{
-                            value: response.data[i].muc_do_3,
-                            label: response.data[i].muc_do_3
-                        }]
-                      })
-                }
-            }
-            else {
-                cdrmdhd.push({
-                    value: response.data[i].muc_do_1,
-                    label: response.data[i].muc_do_1,
-                    children: [{
-                        value: response.data[i].muc_do_2,
-                        label: response.data[i].muc_do_2,
-                        children: [{
-                            value: response.data[i].muc_do_3,
-                            label: response.data[i].muc_do_3
-                        }]
-                    }]
-                  })
-            }
-        }
-        self.props.updateCdrmdhdDB(response.data);
-        self.props.updateCdrmdhd(cdrmdhd);
+    // axios.get('/collect-cdrmdhd-4')
+    // .then(function (response) {
+    //     let cdrmdhd = self.props.cdrmdhd;
+    //     for(let i = 0;i < response.data.length;i++) {
+    //         let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
+    //         if(index_1 != -1) {
+    //             let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
+    //             if(index_2 != -1) {
+    //                 cdrmdhd[index_1].children[index_2].children.push({
+    //                     value: response.data[i].muc_do_3,
+    //                     label: response.data[i].muc_do_3
+    //                   })
+    //             }
+    //             else {
+    //                 cdrmdhd[index_1].children.push({
+    //                     value: response.data[i].muc_do_2,
+    //                     label: response.data[i].muc_do_2,
+    //                     children: [{
+    //                         value: response.data[i].muc_do_3,
+    //                         label: response.data[i].muc_do_3
+    //                     }]
+    //                   })
+    //             }
+    //         }
+    //         else {
+    //             cdrmdhd.push({
+    //                 value: response.data[i].muc_do_1,
+    //                 label: response.data[i].muc_do_1,
+    //                 children: [{
+    //                     value: response.data[i].muc_do_2,
+    //                     label: response.data[i].muc_do_2,
+    //                     children: [{
+    //                         value: response.data[i].muc_do_3,
+    //                         label: response.data[i].muc_do_3
+    //                     }]
+    //                 }]
+    //               })
+    //         }
+    //     }
+    //     self.props.updateCdrmdhdDB(response.data);
+    //     self.props.updateCdrmdhd(cdrmdhd);
         
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
 
     if((this.props.subjectId === "" || this.props.subjectId === undefined || this.props.subjectMaso === "" || 
     this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {

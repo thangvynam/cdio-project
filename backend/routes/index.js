@@ -420,6 +420,42 @@ router.post('/add-cdrmdhd', function(req, res) {
   })   
 })
 
+router.post('/update-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.updatecdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-cdrmdhd-from-cdr', function(req, res) {
+  let data = req.body.data
+  
+  Model4.deletecdrmdhdfromcdr(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.deletecdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
   Model5.add(data, function(err) {

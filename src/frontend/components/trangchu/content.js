@@ -275,6 +275,13 @@ class Content extends Component {
                                     <p>Tên môn học: </p>
                                     <Input style={{ width: "100%" }} id="subject-name" />
                                 </Modal>
+                                <Row>
+                                    <div style={{ height: "10px" }}></div>
+                                    <Col span={1} className="col-left">
+                                    </Col>
+
+                                    <Button onClick={this.addSubject} style={{ width: "30%", alignContent: "center" }}><Icon type="plus" />Thêm môn học</Button>
+                                </Row>
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={subjectList}
@@ -334,13 +341,7 @@ class Content extends Component {
                                         </Row>
                                     )}
                                 />
-                                <Row>
-                                    <div style={{ height: "10px" }}></div>
-                                    <Col span={1} className="col-left">
-                                    </Col>
-
-                                    <Button onClick={this.addSubject} style={{ width: "30%", alignContent: "center" }}><Icon type="plus" />Thêm môn học</Button>
-                                </Row>
+                                
                             </div>
                         </React.Fragment>
                     ) : type === "matrix" ? <Matrix/> 

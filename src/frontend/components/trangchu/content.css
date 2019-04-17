@@ -3,8 +3,9 @@
 }
 
 .list-item {
-    font-size: 25pt;
-    cursor: pointer
+    font-size: 23pt;
+    cursor: pointer;
+    
 }
 .list-item :hover {
     color: rgb(0, 153, 255);

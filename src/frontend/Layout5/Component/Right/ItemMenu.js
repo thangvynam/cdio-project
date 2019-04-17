@@ -243,7 +243,6 @@ class ItemMenu extends Component {
                 childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
             }
         }
-
         if (this.props.itemLayout5Reducer.teachingActsData.length !== 0) {
             for (let i = 0; i < this.props.itemLayout5Reducer.teachingActsData.length; i++) {
                 childrenTeachingActs.push(this.props.itemLayout5Reducer.teachingActsData[i])
@@ -360,7 +359,7 @@ class ItemMenu extends Component {
                         <Form.Item {...tailFormItemLayout}>
                             <div>
                                
-                                <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
+                                <Button type="primary" onClick={() => { this.props.saveAndContinue(this.props.subjectId) }} style={{ marginLeft: "2em" }}>
                                     Thêm<Icon type="right" />
                                 </Button>
                                 <br />
@@ -403,13 +402,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             });
         },
 
-        saveAndContinue: () => {
+        saveAndContinue: (subjectId) => {
 
             myObj.key = -1 ;
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs_data;
             myObj.evalActs = evalActs_data;
             myObj.standardOutput = standardOutput_data;
+            myObj.subjectId = subjectId;
+            myObj.del_flag = 0;
     
             if (titleName === '' || standardOutput_data.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");

@@ -17,7 +17,7 @@ close = () => {
     sql.end();
 }
 
-loopCollectData = (res, data,sl) => {
+loopCollectData = (res, data, sl) => {
     return new Promise((resolve, reject) => {
         for (const ele of res) {
             let objResult = {
@@ -88,7 +88,7 @@ collectDataPromise = (objResult) => {
     })
 }
 
-Model5.collect = (dataID,respone) => {
+Model5.collect = (dataID, respone) => {
     let id = dataID;
     let data = [];
 
@@ -98,10 +98,10 @@ Model5.collect = (dataID,respone) => {
             query(`SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0 and thong_tin_chung_id = '${id}'`)
                 .then(res => {
                     if (res.length != 0) {
-                       
-                        let finalResult = loopCollectData(res, data,sl);
+
+                        let finalResult = loopCollectData(res, data, sl);
                         finalResult.then((result) => {
-                            respone(null,result)
+                            respone(null, result)
                         })
                     }
                 })
@@ -154,102 +154,112 @@ Model5.collect = (dataID,respone) => {
 
 Model5.collectHDD = (result) => {
     query("SELECT `hoat_dong` FROM `hoat_dong_day` WHERE `loai_hoat_dong` = 'LT' and `danh_muc` =1")
-        .then(res =>{
+        .then(res => {
             result(res);
         })
 }
 
-Model5.collectDG = (dataID,result) => {
+Model5.collectDG = (dataID, result) => {
     const id = dataID;
     query(`SELECT ma FROM danh_gia WHERE del_flag = 0 and thong_tin_chung_id = ${id} `)
-        .then(res =>{
+        .then(res => {
             result(res);
         })
 }
 
-Model5.collectCDR = (idSubject,result) => {
-    
-    sql.query(`SELECT id,muc_tieu FROM muc_tieu_mon_hoc WHERE thong_tin_chung_id = ${idSubject} AND del_flag = 0`,(err,listMT) => {
+Model5.collectCDR = (idSubject, result) => {
+
+    sql.query(`SELECT id,muc_tieu FROM muc_tieu_mon_hoc WHERE thong_tin_chung_id = ${idSubject} AND del_flag = 0`, (err, listMT) => {
         if (err) {
-          console.log("err: ",err);
-          return result(err,null);
+            console.log("err: ", err);
+            return result(err, null);
         } else {
             let standardOutput = [];
 
-            listMT.forEach((muctieu,index) => {
+            listMT.forEach((muctieu, index) => {
                 sql.query(`SELECT id,chuan_dau_ra FROM chuan_dau_ra_mon_hoc
-                    WHERE muc_tieu_mon_hoc_id = ${muctieu.id} AND del_flag = 0`, 
-                    (err,listCdr) => { 
-                    
+                    WHERE muc_tieu_mon_hoc_id = ${muctieu.id} AND del_flag = 0`,
+                    (err, listCdr) => {
+
                         if (err) {
-                            console.log("err: ",err);
-                            return result(err,null);
+                            console.log("err: ", err);
+                            return result(err, null);
                         }
 
                         let temp = {
                             "muc_tieu": muctieu.muc_tieu,
-                            "cdr":listCdr,
+                            "cdr": listCdr,
                         }
-                        
+
                         standardOutput.push(temp);
-                        
+
                         if (index === listMT.length - 1) {
-                            return result(standardOutput,null);
-                        } 
-            
+                            return result(standardOutput, null);
+                        }
+
                     });
-          })
+            })
         }
-           
+
     });
 }
 
 Model5.add = (data, result) => {
+    console.log(data);
     data.forEach(function (value, index) {
         let id = value.key;
-        let stt = value.key;  // hardcode 
+        let stt = '1'; // hardcode
         let titleName = value.titleName;
         let teachingActs = value.teachingActs;
         let standardOutput = value.standardOutput;
-        let thong_tin_chund_id = 0 // hardcode
+        let thong_tin_chund_id = value.subjectId;
+        let del_flag = value.del_flag;
 
-        sql.query(`insert into ke_hoach_ly_thuyet(id, stt,ten_chu_de,hoat_dong,thong_tin_chung_id) 
-        values ('${id}', '${stt}','${value.titleName}',
-        '${teachingActs}','${thong_tin_chund_id}')`,
-            (err, res) => {
-                if (err) {
-                    console.log("error:", err);
-                }
-            })
+        if (id === -1) {
+            if (del_flag === 1) {
+                return;
+            }
 
-        sql.query(`insert into khlt_has_cdrmh(ke_hoach_ly_thuyet_id,chuan_dau_ra_mon_hoc_id) 
-        values ('${id}', '${index}')`,
-            (err, res) => {
-                if (err) {
-                    console.log("error:", err);
-                    result(null, err)
-                }
-            })
+            sql.query(`insert into ke_hoach_ly_thuyet(stt, ten_chu_de, thong_tin_chung_id, del_flag) 
+                values ('${stt}', '${titleName}', '${thong_tin_chund_id}', '${del_flag}')`,
+                    (err, res) => {
+                        if (err) {
+                            console.log("error:", err);
+                        }
+                    });
 
-        sql.query(`insert into khlt_has_dg(ke_hoach_ly_thuyet_id,danh_gia_id) 
-        values ('${id}', '${index}')`,
-            (err, res) => {
-                if (err) {
-                    console.log("error:", err);
-                    result(null, err)
-                } else {
-                    result(null, res);
-                }
-            })
+            sql.query(`insert into khlt_has_cdrmh(ke_hoach_ly_thuyet_id,chuan_dau_ra_mon_hoc_id) 
+                values ('${id}', '${index}')`,
+                    (err, res) => {
+                        if (err) {
+                            console.log("error:", err);
+                            result(null, err)
+                        }
+                    });
 
-        sql.query(`insert into khlt_has_hdd(ke_hoach_ly_thuyet_id,hoat_dong_day_id) 
-        values ('${id}', '${index}')`,
-            (err, res) => {
-                if (err) {
-                    console.log("error:", err);
-                    result(null, err)
-                }
-            })
+            sql.query(`insert into khlt_has_dg(ke_hoach_ly_thuyet_id,danh_gia_id) 
+                values ('${id}', '${index}')`,
+                    (err, res) => {
+                        if (err) {
+                            console.log("error:", err);
+                            result(null, err)
+                        } else {
+                            result(null, res);
+                        }
+                    });
+    
+            sql.query(`insert into khlt_has_hdd(ke_hoach_ly_thuyet_id,hoat_dong_day_id) 
+            values ('${id}', '${index}')`,
+                (err, res) => {
+                    if (err) {
+                        console.log("error:", err);
+                        result(null, err)
+                    }
+                })
+
+        } else { // update 
+
+        }
     });
 }
 

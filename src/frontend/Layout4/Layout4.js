@@ -4,9 +4,7 @@ import CDRTableItem from './Component/Table/CDRTableItem';
 import { Tooltip, Button } from 'antd';
 
 class Layout4 extends Component {
-  componentWillUnmount() {
-    //alert("hey")
-  }
+
   render() {
     return (
       <div className="container">

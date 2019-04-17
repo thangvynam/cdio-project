@@ -32,7 +32,7 @@ const EditableFormRow = Form.create()(EditableRow);
 const openNotificationWithIcon = (type) => {
   notification[type]({
     message: 'Thông báo',
-    description: 'Thêm thành công',
+    description: 'Hoàn thành',
   });
 };
 
@@ -101,7 +101,8 @@ class MucDoHanhDong extends Component {
             selecteditem: [],
             editstate: '',
             dataSource: [],
-            level_select: ''
+            level_select: '',
+            visible: false
         }
         this.columns = [{
             title: 'Loại mức độ',
@@ -194,48 +195,76 @@ class MucDoHanhDong extends Component {
         this.setState({editstate: ''})
       };
 
+      loadTable = () => {
+        axios.get('/collect-cdrmdhd-4').then((res) => {
+          let data = [];
+          for(let i = 0;i < res.data.length;i++) {
+            data.push({
+                key: res.data[i].id,
+                muc_do_1: res.data[i].muc_do_1,
+                muc_do_2: res.data[i].muc_do_2,
+                muc_do_3: res.data[i].muc_do_3
+            })
+          }
+          this.setState({dataSource: data});        
+      });   
+      }
       save(form, key) {
-        // form.validateFields((error, row) => {
-        //   if (error) {
-        //     return;
-        //   }
-        //   const newData = this.props.cdrtable;
-          
-        //   const index = newData.previewInfo.findIndex(item => key === item.key);
-        //   if (index > -1) {
-        //     const item = newData.previewInfo[index];
-        //     newData.previewInfo.splice(index, 1, {
-        //       ...item,
-        //       ...row,
-        //     });   
-        //   } else {
-        //     newData.previewInfo.push(row);
-        //   }
-        //   for(let i = 0;i < newData.previewInfo[key - 1].levels.length - 1;i++){
-        //     for (let j = i + 1; j < newData.previewInfo[key - 1].levels.length; j++) {
-        //       if (newData.previewInfo[key - 1].levels[j] < newData.previewInfo[key - 1].levels[i]) {
-        //         let temp = newData.previewInfo[key - 1].levels[j];
-        //         newData.previewInfo[key - 1].levels[j] = newData.previewInfo[key - 1].levels[i];
-        //         newData.previewInfo[key - 1].levels[i] = temp;
-        //       }
-        //     }
-          
-        // }
-        //   let newItems = newData.previewInfo[key-1]
-        
-        //   this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung chuẩn đầu ra môn học thành: ${newItems.cdr}, ${newItems.level_verb}, ${newItems.description}, ${newItems.level}`, this.props.logReducer.contentTab, this.props.subjectId);
-        //   this.props.onAddCDRData(newData);
-        //   this.props.onSelectCDRItem([]);
-        //   this.props.onChangeEditState('');
-        // });
+        form.validateFields((error, row) => {
+          if (error) {
+            return;
+          }
+          axios.post("/update-cdrmdhd", { data: {id: key, muc_do_1: row.muc_do_1, muc_do_2: row.muc_do_2, muc_do_3: row.muc_do_3}}).then(
+            res => {
+              this.loadTable();
+              this.setState({editstate: ''});
+              openNotificationWithIcon('success');
+            });
+        });
       }
 
       onSelectChange = (selectedRowKeys) => {
         this.setState({selecteditem: selectedRowKeys});
       }
 
-      handleDelete = (key) => {
 
+      
+      handleDelete = (key) => {
+        axios.post("/delete-cdrmdhd-from-cdr", { data: [key]}).then(
+          res => {
+            axios.post("/delete-cdrmdhd", { data: [key]}).then(
+              res => {
+                this.loadTable();
+                this.setState({editstate: ''});
+                this.setState({selecteditem: []});
+                openNotificationWithIcon('success');
+              });
+          });
+        
+      }
+
+      handleOk = () => {
+        console.log(this.state.selecteditem);
+        let data = [];
+        axios.post("/delete-cdrmdhd-from-cdr", { data: this.state.selecteditem}).then(
+          res => {
+            axios.post("/delete-cdrmdhd", { data: this.state.selecteditem}).then(
+              res => {
+                this.loadTable();
+                this.setState({editstate: ''});
+                this.setState({selecteditem: []});
+                openNotificationWithIcon('success');
+              });
+          });
+        this.setState({
+          visible: false,
+        });
+      }
+
+      handleCancel = () => {
+        this.setState({
+          visible: false,
+        });
       }
 
       onChange = (value) => {
@@ -259,30 +288,15 @@ class MucDoHanhDong extends Component {
             else {
               axios.post("/add-cdrmdhd", { data: {muc_do_1: muc_do_1, muc_do_2: this.state.level_select, muc_do_3: muc_do_3}}).then(
                 res => {
-                  console.log(res.data);
-                  document.getElementById("input-1").value = "";
-                  document.getElementById("input-2").value = "";
+                  this.loadTable();
                   openNotificationWithIcon('success');
-                }
-              )
-              
+                })
             }
           }
         }
       }
       componentDidMount() {
-          axios.get('/collect-cdrmdhd-4').then((res) => {
-              let data = [];
-              for(let i = 0;i < res.data.length;i++) {
-                data.push({
-                    key: res.data[i].id,
-                    muc_do_1: res.data[i].muc_do_1,
-                    muc_do_2: res.data[i].muc_do_2,
-                    muc_do_3: res.data[i].muc_do_3
-                })
-              }
-              this.setState({dataSource: data})
-          })
+        this.loadTable();
       }
     render() {
         const levelOptions2 = levelOptions.map((item, id) => {
@@ -362,16 +376,16 @@ class MucDoHanhDong extends Component {
           <div style={{ marginBottom: 16,  marginTop: 16}}>
           <Button
             type="danger"
-            //onClick={this.showModal}
+            onClick={this.showModal}
             disabled={!hasSelected}
           >
             Delete
           </Button>
           <Modal
           title="Cảnh báo"
-          //visible={this.state.visible}
-          //onOk={this.handleOk}
-          //onCancel={this.handleCancel}
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
         >
           <p>Xóa những mục đã chọn?</p>
           
@@ -379,11 +393,7 @@ class MucDoHanhDong extends Component {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${this.state.selecteditem.length} mục` : ''}
           </span>
-          <Button style={{float: "right"}}
-            //onClick={this.saveAll}
-          >
-            Lưu lại
-          </Button>
+
           </div>
           
             <Table bordered 

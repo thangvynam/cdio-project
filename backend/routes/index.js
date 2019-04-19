@@ -420,6 +420,42 @@ router.post('/add-cdrmdhd', function(req, res) {
   })   
 })
 
+router.post('/update-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.updatecdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-cdrmdhd-from-cdr', function(req, res) {
+  let data = req.body.data
+  
+  Model4.deletecdrmdhdfromcdr(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.deletecdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
   Model5.add(data, function(err) {
@@ -431,8 +467,8 @@ router.post('/add-data-5', function(req, res) {
   })   
 })
 
-router.get('/collect-data-5', function(req, res) {
-  Model5.collect(function(err, data) {
+router.post('/collect-data-5', function(req, res) {
+  Model5.collect(req.body.data,function(err, data) {
     if (err) {
       console.log(err);
     } else{
@@ -531,18 +567,6 @@ router.get('/get-standard-output-6/:idSubject', function(req, res) {
     res.end(JSON.stringify(result));
   })   
 })
-
-
-router.get('/collect-data-5', function(req, res) {
-  Model5.collectdata(function(err, data) {
-    if (err) {
-      console.log(err);
-    } else{
-      res.send(data)
-    }   
-  })   
-})
-
 
 router.get('/get-danhgia/:id',function(req,res){
   let id = req.params
@@ -725,6 +749,23 @@ router.get('/get-teachingacts-5', function(req, res) {
     res.send(result)
   })
 })
+
+router.post('/get-evalact-5', function(req, res) {
+  const dataID = req.body.data;
+  
+  Model5.collectDG( dataID,(result) => {
+    res.send(result)
+  });
+})
+
+router.post('/get-standard-output-5', function(req, res) {
+  const dataID = req.body.data;
+  
+  Model5.collectCDR( dataID,(result) => {
+    res.send(result)
+  });
+})
+
 
 
 

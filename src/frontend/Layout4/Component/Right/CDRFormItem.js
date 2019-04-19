@@ -8,7 +8,7 @@ import {
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog } from '../../../Constant/ActionType';
+import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog, cdrmdhd, cdrmdhddb } from '../../../Constant/ActionType';
 import './1.css';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
@@ -34,7 +34,8 @@ class CDRFormItem extends Component {
     super(props);
     this.state = {
       id: this.props.subjectId,
-      isLoaded: false
+      isLoaded: false,
+      loadcdrmdhd: false
     }
   }
 
@@ -170,7 +171,9 @@ class CDRFormItem extends Component {
               cdr: `${this.props.cdrdata.cdr}.${index}`,
               level_verb: level_verb,
               description: description,
-              levels: this.props.cdrdata.levels
+              levels: this.props.cdrdata.levels,
+              id: -1,
+              del_flag: 0
             }
             this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm chuẩn đầu ra môn học: ${data.cdr}, ${data.level_verb}, ${data.description}, ${data.levels}`, this.props.logReducer.contentTab, this.props.subjectId)
             var newData = this.props.cdrtable;            
@@ -211,7 +214,73 @@ class CDRFormItem extends Component {
       }
     }
   }
+
+  checkLevel_1_Exist = (level_1, cdrmdhd) => {
+    for(let i = 0;i < cdrmdhd.length;i++) {
+        if(cdrmdhd[i].value === level_1) {
+            return i;
+        }
+    }
+    return -1;
+  }
+
+  checkLevel_2_Exist = (level_2, level_1_children) => {
+    for(let i = 0;i < level_1_children.length;i++) {
+        if(level_1_children[i].value === level_2) {
+            return i;
+        }
+    }
+    return -1;
+  }
+
   componentDidMount() {
+    var self = this;
+    // axios.get('/collect-cdrmdhd-4')
+    // .then(function (response) {
+    //     let cdrmdhd = self.props.cdrmdhd;
+    //     for(let i = 0;i < response.data.length;i++) {
+    //         let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
+    //         if(index_1 != -1) {
+    //             let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
+    //             if(index_2 != -1) {
+    //                 cdrmdhd[index_1].children[index_2].children.push({
+    //                     value: response.data[i].muc_do_3,
+    //                     label: response.data[i].muc_do_3
+    //                   })
+    //             }
+    //             else {
+    //                 cdrmdhd[index_1].children.push({
+    //                     value: response.data[i].muc_do_2,
+    //                     label: response.data[i].muc_do_2,
+    //                     children: [{
+    //                         value: response.data[i].muc_do_3,
+    //                         label: response.data[i].muc_do_3
+    //                     }]
+    //                   })
+    //             }
+    //         }
+    //         else {
+    //             cdrmdhd.push({
+    //                 value: response.data[i].muc_do_1,
+    //                 label: response.data[i].muc_do_1,
+    //                 children: [{
+    //                     value: response.data[i].muc_do_2,
+    //                     label: response.data[i].muc_do_2,
+    //                     children: [{
+    //                         value: response.data[i].muc_do_3,
+    //                         label: response.data[i].muc_do_3
+    //                     }]
+    //                 }]
+    //               })
+    //         }
+    //     }
+    //     self.props.updateCdrmdhdDB(response.data);
+    //     self.props.updateCdrmdhd(cdrmdhd);
+    //     self.setState({loadcdrmdhd: true});
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
     if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== ""){
       var self = this;
       if(this.state.id !== "" && this.state.id !== undefined) {
@@ -335,7 +404,9 @@ const mapDispatchToProps = (dispatch) => {
     onUpdateVerb: selectedVerb,
     onSelectCDRItem: selectedCDRItem,
     updateMtmh: mtmh,
-    saveLog: saveLog
+    saveLog: saveLog,
+    updateCdrmdhd: cdrmdhd,
+    updateCdrmdhdDB: cdrmdhddb,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CDRFormItem);

@@ -138,6 +138,7 @@ class ItemMenu extends Component {
 
      // this.setState({standard_item:array,standardOutput:map});
      mapId.standardOutput = map;
+     
      this.setState({standard_item:array});
     });
    

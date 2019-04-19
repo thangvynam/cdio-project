@@ -7,18 +7,19 @@ import {
 import { connect } from 'react-redux';
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
+import TextArea from "antd/lib/input/TextArea";
 
 import {
   DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
   SAVE_DATA_LAYOUT_5 , ADD_DATA_LAYOUT_5
 } from '../../../Constant/ActionType';
-import TextArea from "antd/lib/input/TextArea";
 
 const confirm = Modal.confirm;
 const EditableContext = React.createContext();
 const FormItem = Form.Item
 const { Option } = Select;
 let dragingIndex = -1; // move row
+
 const standard_item = [
   "G1.1",
   "G1.2",
@@ -39,6 +40,7 @@ const standard_item = [
   "G6.1",
   "G7.1"
 ];
+
 const teachingActs = [
   'Thuyết giảng',
   'Phân nhóm & chơi trò chơi',
@@ -50,17 +52,20 @@ const teachingActs = [
   'Làm bài tập tạo test case',
   'Trò chơi',
 ];
+
 const evalActs = [
   'BTVN',
   'BTTL',
   'DAMH',
   'Bài đọc thêm và viết báo cáo',
-]
+];
+
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
   </EditableContext.Provider>
 );
+
 class BodyRow extends React.Component {
   render() {
     const {
@@ -73,6 +78,7 @@ class BodyRow extends React.Component {
     const style = { ...restProps.style, cursor: "move" };
 
     let className = restProps.className;
+
     if (isOver) {
       if (restProps.index > dragingIndex) {
         className += " drop-over-downward";
@@ -126,6 +132,7 @@ const DragableBodyRow = DropTarget("row", rowTarget, (connect, monitor) => ({
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+
   state = {
     titleName: "",
     teachingActs: [],
@@ -136,9 +143,11 @@ class EditableCell extends React.Component {
   handleChangeTeachingAct(value) {
     this.setState({ teachingActs: value });
   }
+
   handleChangeEvalActs(value) {
     this.setState({ evalActs: value });
   }
+
   handleChangeStandard(value) {
     this.setState({ standardOutput: value });
   }
@@ -153,15 +162,16 @@ class EditableCell extends React.Component {
         <Option key={teachingActs[i]}>{teachingActs[i]}</Option>
       );
     }
+
     for (let i = 0; i < evalActs.length; i++) {
       childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>);
     }
+
     for (let i = 0; i < standard_item.length; i++) {
       childrenStandard.push(
         <Option key={standard_item[i]}>{standard_item[i]}</Option>
       );
     }
-
 
     switch (this.props.dataIndex) {
       case "titleName":
@@ -207,7 +217,6 @@ class EditableCell extends React.Component {
       default:
         return <Input />;
     }
-
   }
   render() {
     const {
@@ -219,6 +228,7 @@ class EditableCell extends React.Component {
       index,
       ...restProps
     } = this.props;
+
     return (
       <EditableContext.Consumer>
         {(form) => {
@@ -245,11 +255,14 @@ class EditableCell extends React.Component {
 }
 
 class TableItem extends Component {
+
   constructor(props) {
     super(props);
+
     this.state = {
       selectedRowKeys: []
     }
+
     this.columns = [{
       title: 'Tên chủ đề',
       dataIndex: 'titleName',
@@ -341,6 +354,7 @@ class TableItem extends Component {
     }
     ];
   };
+
   moveRow = (dragIndex, hoverIndex) => {
     let data = this.props.itemLayout5Reducer.previewInfo;
 
@@ -352,14 +366,17 @@ class TableItem extends Component {
     data[hoverIndex].key = hoverIndex + 1;
 
     this.props.handleSave(data);
-  };
-  isEditing = record => {
+  }
+
+  isEditing = (record) => {
     return record.key === this.props.itemLayout5Reducer.changeEditStateState;;
   }
+
   cancel() {
     this.props.handleEdit('');
     //this.setState({ editingKey: "" });
-  };
+  }
+
   edit(key) {
     //this.setState({ editingKey: key });
     this.props.handleEdit('');
@@ -389,6 +406,10 @@ class TableItem extends Component {
 
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
+    let items = this.props.itemLayout5Reducer.previewInfo;
+    const filteredItems = items.filter(
+      (_, index) => !selectedRow.includes(index)
+    );
 
     // delete one
     if (selectedRow.length === 1) {
@@ -403,20 +424,13 @@ class TableItem extends Component {
       return;
     }
 
-    let items = this.props.itemLayout5Reducer.previewInfo;
-    const filteredItems = items.filter(
-      (_, index) => !selectedRow.includes(index)
-    );
     this.props.handleSave(filteredItems);
+
     this.setState({ selectedRowKeys: [] });
   };
 
-
   save(form, key) {
     form.validateFields((error, row) => {
-      if (error) {
-        return;
-      }
       const newData = [...this.props.itemLayout5Reducer.previewInfo];
       const index = newData.findIndex(item => key === item.key);
       const item = newData[index];
@@ -424,6 +438,11 @@ class TableItem extends Component {
         ...item,
         ...row,
       });
+
+      if (error) {
+        return;
+      }
+      
       newData.map(index => {
         let arr = [];
         let str = index.standActs + ""
@@ -438,7 +457,6 @@ class TableItem extends Component {
 
       this.props.handleSave(newData);
       //this.setState({ editingKey: "" });
-
     });
   }
 
@@ -459,6 +477,7 @@ class TableItem extends Component {
           cell: EditableCell
         }
       });
+
     const columns = this.columns.map(col => {
       if (!col.editable) {
         return col;
@@ -474,16 +493,16 @@ class TableItem extends Component {
       };
     });
 
-
     const { selectedRowKeys } = this.state;
+
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange
     };
+
     const hasSelected = selectedRowKeys.length > 0;
   
     return (
-
       <div>
         <Button
           style={{ marginBottom: 16, marginTop: 10 }}
@@ -497,6 +516,11 @@ class TableItem extends Component {
         <span style={{ marginLeft: 8 }}>
           {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
         </span>
+        <Button style={{float: "right" , marginBottom: 16, marginTop: 10}}
+            onClick={() => this.props.saveAllData()}
+          >
+            Lưu tất cả
+        </Button>
         <Table
           components={components}
           bordered
@@ -514,36 +538,34 @@ class TableItem extends Component {
               : null
           }
         />
-        <Button type="primary" onClick={ () => this.props.saveData()} className="submit_All">
-          Lưu
-        </Button>
-
       </div>
-
     );
   }
 }
-const mapStateToProps = (state, ownProps) => {
+
+const mapStateToProps = (state) => {
   return {
     itemLayout5Reducer: state.itemLayout5Reducer
   }
 }
-const mapDispatchToProps = (dispatch, ownProps) => {
+
+const mapDispatchToProps = (dispatch) => {
   return {
     handleEdit: (key) => {
       dispatch({ type: CHANGE_EDITSTATE_5, key: key });
     },
+
     handleDelete: (key) => {
       dispatch({ type: DELETE_DATA_LAYOUT_5, key: key });
     },
+
     handleSave: (data) => {
-      dispatch({ type: SAVE_DATA_LAYOUT_5, data: data, key: 'abc' })
+      dispatch({ type: SAVE_DATA_LAYOUT_5, data: data, key: 'abc' });
     },
-    saveData : () => {
+
+    saveAllData : () => {
       dispatch({ type: ADD_DATA_LAYOUT_5});
     }
-
-
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(TableItem));

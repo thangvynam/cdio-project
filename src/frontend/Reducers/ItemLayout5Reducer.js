@@ -1,8 +1,9 @@
 import axios from 'axios';
 
-import {ADD_DATA,DELETE_DATA_LAYOUT_5,CHANGE_EDITSTATE_5,
-        SAVE_DATA_LAYOUT_5,CHANGE_DATA,ADD_DATA_LAYOUT_5,
-        COLLECT_DATA_REQUEST_5,COLLECT_DATA_HDD} from '../Constant/ActionType';
+import {ADD_DATA, DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
+        SAVE_DATA_LAYOUT_5, CHANGE_DATA, ADD_DATA_LAYOUT_5,
+        COLLECT_DATA_REQUEST_5, COLLECT_DATA_HDD, COLLECT_DATA_DG,
+        REFRESH_DATA, COLLECT_DATA_CDR} from '../Constant/ActionType';
 
 const itemMenuInitialState = {
     previewInfo: [
@@ -27,47 +28,63 @@ const itemMenuInitialState = {
     standardOutput:[],
     evalActs:[],
     result:-1,
+
     teachingActsData : [],
-    
+    evalActsData : [],
+    standardOutputData:[]
 }
 
 const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
     switch (action.type) {
-        case ADD_DATA:
-            // let arrTemp = [];
-            // arrTemp.push(action.data)
-            console.log( state.previewInfo)
-            if(state.previewInfo.length !=0){
+        case ADD_DATA : {
+            if (state.previewInfo.length !== 0) {
                 
                 return {
                     ...state,
                     previewInfo: state.previewInfo.concat(action.data)
                 }
             }
-        
+            
             return {
                 ...state,
                 previewInfo: action.data
             }
+        }
             
-        case DELETE_DATA_LAYOUT_5:
-            if(state.previewInfo.length === 1){
-                state.previewInfo = []
-            } else {              
-                state.previewInfo= state.previewInfo.filter(item => item.key !== action.key)
-            }
+        case REFRESH_DATA : {
+            state.previewInfo = []
+            
             return {
                 ...state,
                 previewInfo: state.previewInfo
             }
-        case CHANGE_EDITSTATE_5:
+        }    
+
+        case DELETE_DATA_LAYOUT_5 : {
+            if (state.previewInfo.length === 1) {
+                state.previewInfo = []
+            } else {              
+                state.previewInfo= state.previewInfo.filter(item => item.key !== action.key)
+            }
+
+            return {
+                ...state,
+                previewInfo: state.previewInfo
+            }
+        }
+            
+        case CHANGE_EDITSTATE_5 :{
             return {...state,changeEditStateState:action.key}
-        case SAVE_DATA_LAYOUT_5:
+        }
+            
+        case SAVE_DATA_LAYOUT_5:{
             return {
                 ...state, 
                 previewInfo: action.data,changeEditStateState:action.key
             }
-        case CHANGE_DATA :
+        }
+            
+        case CHANGE_DATA : {
             return {
                 ...state,
                 titleName:action.titleName,
@@ -75,31 +92,58 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
                 standardOutput:action.standardOutput,
                 evalActs:action.evalActs
             }
-        case ADD_DATA_LAYOUT_5:{
-            let temp = "";
-            axios.post('/add-data-5', { data: state.previewInfo })
-                .then(res => {
-                    temp =res.data;
-                })
-                .then(()=>{
-                    return{
-                        ...state,
-                        result:temp
-                    }
-                })
         }
-        case COLLECT_DATA_HDD :{
+            
+        case ADD_DATA_LAYOUT_5 : {
+            let temp = "";
+            console.log(state.previewInfo);
+            // axios.post('/add-data-5', { data: state.previewInfo })
+            //     .then(res => {
+            //         temp =res.data;
+            //     })
+            //     .then(()=>{
+            //         return{
+            //             ...state,
+            //             result:temp
+            //         }
+            // });
+        }
+
+        case COLLECT_DATA_HDD : { 
             let arr = [];
-            for(const obj of action.data){
+            
+            for (const obj of action.data) {
                 arr.push(obj[0])
             }
+
             return {
                 ...state,
                 teachingActsData :arr
             }
         }
-        case COLLECT_DATA_REQUEST_5:{
-            let newArr = [];
+
+        case COLLECT_DATA_DG : {
+            let arr = [];
+            
+            for (const obj of action.data) {
+                arr.push(obj[1])
+            }
+
+            return {
+                ...state,
+                evalActsData :arr
+            }
+        }
+
+        case COLLECT_DATA_CDR : {
+            return {
+                ...state,
+                standardOutputData : action.data
+            }
+        }
+
+        case COLLECT_DATA_REQUEST_5 : {
+            // let newArr = [];
             // axios.get('/collect-data-5')
             // .then(function (response) {
             //     //for(let i = 0; i <response.data.length;i++){

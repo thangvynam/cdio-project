@@ -17,21 +17,23 @@ MucTieuModel.save = (data, result) => {
         } else {
           let mtmhId = res.insertId;
 
-          element.standActs.forEach(element => {
-            sql.query(`insert into chuan_dau_ra_cdio(cdr) values ('${element}')`,
+          element.standActs.forEach(element2 => {
+            element2 = element2.replace(/\./g, "-")
+            element2 += '-'
+            sql.query(`select * from detailoutcomestandard where KeyRow = '${element2}' and IdOutcomeStandard = 5`,
               (err, res) => {
                 if (err) {
                   console.log("error:", err);
                   result(err)
                 } else {
-                  let cdrId = res.insertId
+                  let cdrId = res[0].Id 
                   sql.query(`insert into mtmh_has_cdrcdio values (${mtmhId}, ${cdrId})`,
-                    (err, res) => {
-                      if (err) {
-                        console.log("error:", err);
-                        result(err)
-                      }
-                    })
+                          (err, res) => {
+                            if (err) {
+                              console.log("error:", err);
+                              result(err)
+                            }
+                          })           
                 }
               })
           });
@@ -62,8 +64,9 @@ MucTieuModel.getMTMH_HAS_CDR = (data, result) => {
     })
 }
 
-MucTieuModel.getCDR = (data, result) => {
-  sql.query(`select * from chuan_dau_ra_cdio where id = ${data.chuan_dau_ra_cdio_id}`,
+MucTieuModel.getCDR = (result) => {
+  sql.query(`select do.Id,do.KeyRow from chuan_dau_ra_cdio cdr,detailoutcomestandard do
+  where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6`,
     (err, res3) => {
       if (err) {
         result(err);
@@ -74,12 +77,14 @@ MucTieuModel.getCDR = (data, result) => {
 
 MucTieuModel.get = (data, result) => {
   
-  sql.query(`SELECT mt.muc_tieu, mt.mo_ta, chuan_dau_ra_cdio.cdr FROM muc_tieu_mon_hoc as mt
+  sql.query(`SELECT mt.muc_tieu, mt.mo_ta, detailoutcomestandard.KeyRow FROM muc_tieu_mon_hoc as mt
   join mtmh_has_cdrcdio
   on mt.id = mtmh_has_cdrcdio.muc_tieu_mon_hoc_id
   join chuan_dau_ra_cdio
   on mtmh_has_cdrcdio.chuan_dau_ra_cdio_id = chuan_dau_ra_cdio.id
-  where mt.thong_tin_chung_id = ${data.id} and mt.del_flag = 0`,
+  join detailoutcomestandard
+  on mtmh_has_cdrcdio.chuan_dau_ra_cdio_id = detailoutcomestandard.Id
+  where mt.thong_tin_chung_id = ${data.id} and mt.del_flag = 0 and chuan_dau_ra_cdio.del_flag = 0 and detailoutcomestandard.IdOutcomeStandard = 5`,
     (err, res) => {
       if (err) {
         result(err)

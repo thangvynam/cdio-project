@@ -58,7 +58,7 @@
         {{#if this.value1}}
         <center>
             <b>
-                <h1 style="color: blue;">CSC13002 – Nhập Môn Công Nghệ Phần Mềm</h1>
+                <h1 style="color: blue;">{{this.value1.SubjectName}}</h1>
             </b>
         </center>
         <div style="height:85%">
@@ -73,7 +73,7 @@
                         Tên môn học (tiếng Việt):
                     </div>
                     <div class="column">
-                        {{this.value1.tenMonHocTV}}
+                        {{this.value1.SubjectName}}
                     </div>
                 </div>
                 <div>
@@ -81,30 +81,30 @@
                         Tên môn học (tiếng Anh):
                     </div>
                     <div class="column">
-                        {{this.value1.tenMonHocTA}}
+                        {{this.value1.SubjectEngName}}
                 </div>
                 <div>
                     <div class="column">
                         Mã số môn học:
                     </div>
                     <div class="column">
-                        {{this.value1.maMonHoc}}
+                        {{this.value1.SubjectCode}}
                     </div>
                 </div>
-                <div>
+                {{!-- <div>
                     <div class="column">
                         Thuộc khối kiến thức:
                     </div>
                     <div class="column">
                         {{this.value1.khoiKienThuc}}
                     </div>
-                </div>
+                </div> --}}
                 <div>
                     <div class="column">
-                        Số tín chỉ
+                        Số tín chỉ:
                     </div>
                     <div class="column">
-                        {{this.value1.soTinChi}}
+                        {{this.value1.Credit}}
                     </div>
                     <div style="margin-left:30px">
                         <div>
@@ -112,7 +112,7 @@
                                 Số tiết lý thuyết:
                             </div>
                             <div class="column">
-                                {{this.value1.tietLyThuyet}}
+                                {{this.value1.TheoryPeriod}}
                             </div>
                         </div>
                         <div>
@@ -120,7 +120,7 @@
                                 Số tiết thực hành:
                             </div>
                             <div class="column">
-                                {{this.value1.tietThucHanh}}
+                                {{this.value1.PracticePeriod}}
                             </div>
                         </div>
                         <div>
@@ -128,18 +128,10 @@
                                 Số tiết tự học:
                             </div>
                             <div class="column">
-                                {{this.value1.tietTuHoc}}
+                                {{this.value1.ExercisePeriod}}
                             </div>
                         </div>
 
-                    </div>
-                </div>
-                <div>
-                    <div class="column">
-                        Các môn học tiên quyết
-                    </div>
-                    <div class="column">
-                        {{this.value1.monTienQuyet}}
                     </div>
                 </div>
             </div>

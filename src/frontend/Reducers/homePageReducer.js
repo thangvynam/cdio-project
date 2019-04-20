@@ -1,4 +1,4 @@
-import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO } from '../Constant/ActionType';
+import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO } from '../Constant/ActionType';
 const initialState = {
     "de-cuong-mon-hoc" :{
         name: "ĐỀ CƯƠNG MÔN HỌC",
@@ -12,7 +12,6 @@ const initialState = {
     "danhmuc": {
         name: "DANH MỤC"
     }
-    
 }
 
 export function menuItemReducer(state = initialState, action) {
@@ -54,6 +53,17 @@ export function subjectMasoReducer(state = initialSubjectMaso, action) {
     switch(action.type) {
         case SUBJECT_MASO:
         return action.subjectmaso;
+        default: 
+        return state;
+    }
+}
+
+const initialCdrCdio = [];
+export function cdrCdioReducer(state = initialCdrCdio, action) {
+
+    switch(action.type) {
+        case CDR_CDIO:
+        return action.cdrcdio;
         default: 
         return state;
     }

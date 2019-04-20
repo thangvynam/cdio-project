@@ -76,7 +76,6 @@ collectDataPromise = (objResult) => {
             .then(() => {
                 query(`SELECT ma FROM khlt_has_dg JOIN danh_gia on danh_gia_id = id  WHERE ke_hoach_ly_thuyet_id = '${objResult.key}'`)
                     .then(res => {
-                        
                         res.map(async value => {
                             await objResult.evalActs.push(value.ma);
                         })
@@ -89,12 +88,14 @@ collectDataPromise = (objResult) => {
     })
 }
 
-Model5.collect = (respone) => {
+Model5.collect = (dataID,respone) => {
+    let id = dataID;
     let data = [];
-    query("SELECT count(*) as sl FROM ke_hoach_ly_thuyet where del_flag = 0").
+
+    query(`SELECT count(*) as sl FROM ke_hoach_ly_thuyet where del_flag = 0 and thong_tin_chung_id = '${id}'`).
         then(res => {
             let sl = res[0].sl
-            query("SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0")
+            query(`SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0 and thong_tin_chung_id = '${id}'`)
                 .then(res => {
                     if (res.length != 0) {
                        
@@ -150,6 +151,59 @@ Model5.collect = (respone) => {
     //     }
     //})
 }
+
+Model5.collectHDD = (result) => {
+    query("SELECT `hoat_dong` FROM `hoat_dong_day` WHERE `loai_hoat_dong` = 'LT' and `danh_muc` =1")
+        .then(res =>{
+            result(res);
+        })
+}
+
+Model5.collectDG = (dataID,result) => {
+    const id = dataID;
+    query(`SELECT ma FROM danh_gia WHERE del_flag = 0 and thong_tin_chung_id = ${id} `)
+        .then(res =>{
+            result(res);
+        })
+}
+
+Model5.collectCDR = (idSubject,result) => {
+    
+    sql.query(`SELECT id,muc_tieu FROM muc_tieu_mon_hoc WHERE thong_tin_chung_id = ${idSubject} AND del_flag = 0`,(err,listMT) => {
+        if (err) {
+          console.log("err: ",err);
+          return result(err,null);
+        } else {
+            let standardOutput = [];
+
+            listMT.forEach((muctieu,index) => {
+                sql.query(`SELECT id,chuan_dau_ra FROM chuan_dau_ra_mon_hoc
+                    WHERE muc_tieu_mon_hoc_id = ${muctieu.id} AND del_flag = 0`, 
+                    (err,listCdr) => { 
+                    
+                        if (err) {
+                            console.log("err: ",err);
+                            return result(err,null);
+                        }
+
+                        let temp = {
+                            "muc_tieu": muctieu.muc_tieu,
+                            "cdr":listCdr,
+                        }
+                        
+                        standardOutput.push(temp);
+                        
+                        if (index === listMT.length - 1) {
+                            return result(standardOutput,null);
+                        } 
+            
+                    });
+          })
+        }
+           
+    });
+}
+
 Model5.add = (data, result) => {
     data.forEach(function (value, index) {
         let id = value.key;

@@ -16,6 +16,7 @@ const Model8 = require('../models/Model8')
 const LogModel = require('../models/LogModel');
 const CommentModel = require('../models/CommentModel');
 const MatrixModel = require('../models/MatrixModel');
+const DanhMucModel = require('../models/DanhMucModel');
 
 const MucTieuModel = require('../models/MucTieuModel')
 
@@ -153,7 +154,7 @@ router.post('/exportfile', function(req, res, next) {
       let content =await compile('header',null);
       //body
       for (let k of Object.keys(JSON.parse(body.data))) {
-          let value = JSON.parse(JSON.parse(body.data)[k]);
+          let value = JSON.parse(JSON.parse(body.data)[k]);          
           content += await compile('content',renderContenByNameTab(k,value));
       }
       //footer
@@ -267,10 +268,9 @@ router.post('/get-mtmh-cdr-3', (req, res) => {
   });  
 })
 
-router.post('/get-cdr-3', (req, res) => {  
-  let data = req.body
-  MucTieuModel.getCDR(data, (resData) => {    
-    res.send(resData[0].cdr);
+router.get('/get-cdr-3', (req, res) => {  
+  MucTieuModel.getCDR((resData) => {    
+    res.send(resData);
   }) 
 })
 
@@ -408,6 +408,54 @@ router.post('/collect-mucdo-mtmh-has-cdrcdio', function(req, res) {
   })   
 })
 
+router.post('/add-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.addcdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/update-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.updatecdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-cdrmdhd-from-cdr', function(req, res) {
+  let data = req.body.data
+  
+  Model4.deletecdrmdhdfromcdr(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-cdrmdhd', function(req, res) {
+  let data = req.body.data
+  
+  Model4.deletecdrmdhd(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
 router.post('/add-data-5', function(req, res) {
   let data = req.body.data
   Model5.add(data, function(err) {
@@ -419,8 +467,8 @@ router.post('/add-data-5', function(req, res) {
   })   
 })
 
-router.get('/collect-data-5', function(req, res) {
-  Model5.collect(function(err, data) {
+router.post('/collect-data-5', function(req, res) {
+  Model5.collect(req.body.data,function(err, data) {
     if (err) {
       console.log(err);
     } else{
@@ -465,6 +513,8 @@ router.get('/get-data-6/:idSubject', function(req, res) {
 
 router.post('/add-data-6', function(req, res) {
   const data = req.body;
+  console.log("body: ",req.body.data);
+
   
   Model6.add(data, function(err, result) {
     if (err) {
@@ -472,6 +522,18 @@ router.post('/add-data-6', function(req, res) {
     }
     console.log("done");
     res.end("1");
+  })   
+})
+
+router.post('/add-teachingacts-6', function(req, res) {
+  const data = req.body;
+  
+  Model6.addTeachingAct(data, function(err, result) {
+    if (err) {
+      res.end("-1");
+    }
+    console.log("done");
+    res.end(JSON.stringify(result));
   })   
 })
 
@@ -505,18 +567,6 @@ router.get('/get-standard-output-6/:idSubject', function(req, res) {
     res.end(JSON.stringify(result));
   })   
 })
-
-
-router.get('/collect-data-5', function(req, res) {
-  Model5.collectdata(function(err, data) {
-    if (err) {
-      console.log(err);
-    } else{
-      res.send(data)
-    }   
-  })   
-})
-
 
 router.get('/get-danhgia/:id',function(req,res){
   let id = req.params
@@ -685,8 +735,38 @@ router.post('/add-comment-2', function(req, res) {
   CommentModel.add(body,(result) => {
     res.send(result)
   })
-  
 })
+
+router.post('/add-hdd', function(req, res) {
+  const body = req.body.data;
+  DanhMucModel.add(body,(result) => {
+    res.send(JSON.stringify(result.affectedRows));
+  })
+})
+
+router.get('/get-teachingacts-5', function(req, res) {
+  Model5.collectHDD((result) => {
+    res.send(result)
+  })
+})
+
+router.post('/get-evalact-5', function(req, res) {
+  const dataID = req.body.data;
+  
+  Model5.collectDG( dataID,(result) => {
+    res.send(result)
+  });
+})
+
+router.post('/get-standard-output-5', function(req, res) {
+  const dataID = req.body.data;
+  
+  Model5.collectCDR( dataID,(result) => {
+    res.send(result)
+  });
+})
+
+
 
 
 module.exports = router;

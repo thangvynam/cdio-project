@@ -12,6 +12,7 @@ Model6.add = (body, result) => {
     }
   })
   if(body.data.length===0) return result(null,"1");
+  //console.log("body: ",body.data);
 
     body.data.forEach((item,index)=> {
 
@@ -68,7 +69,7 @@ Model6.add = (body, result) => {
 
 
 Model6.getTeachingActs = (result)=>{
-  sql.query(`select * from hoat_dong_day where danh_muc = 1`,(err,res)=>{
+  sql.query(`select * from hoat_dong_day where danh_muc = 1 and loai_hoat_dong ='TH'`,(err,res)=>{
     if(err){
       console.log("err: ",err);
       return result(err,null);
@@ -229,6 +230,20 @@ Model6.getEvalActs = (idSubject,result)=>{
         resolve(evalActs);
       })
     })
+  }
+
+  Model6.addTeachingAct = (data,result)=>{
+    sql.query(`insert into hoat_dong_day(hoat_dong,loai_hoat_dong,danh_muc) values ('${data.hoat_dong}','${data.loai}',${data.danh_muc})`,(err,res)=>{
+      if(err){
+        console.log("err: ",err);
+        return result(err,null);
+      }
+      let temp = {
+        id: res.insertId
+      }
+      return result(null,temp);
+    })
+
   }
 
 

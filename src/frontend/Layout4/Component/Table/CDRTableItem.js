@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Button,
    Input, Cascader, notification } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
@@ -30,82 +30,7 @@ const EditableFormRow = Form.create()(EditableRow);
 const FormItem = Form.Item;
 const { TextArea } = Input;
 const levelsOptions = ["I", "T", "U"];
-// const level_data = [{
-//   value: 'Knowledge',
-//   label: 'Knowledge',
-//   children: [
-//     {
-//       value: '1',
-//       label: '1',
-//     },
-//     {
-//       value: '2',
-//       label: '2',
-//     },
-//     {
-//       value: '3',
-//       label: '3',
-//     },
-//     {
-//       value: '4',
-//       label: '4',
-//     },
-//     {
-//       value: '5',
-//       label: '5',
-//     }
-//   ],
-// }, {
-//   value: 'Skill',
-//   label: 'Skill',
-//   children: [
-//     {
-//       value: '1',
-//       label: '1',
-//     },
-//     {
-//       value: '2',
-//       label: '2',
-//     },
-//     {
-//       value: '3',
-//       label: '3',
-//     },
-//     {
-//       value: '4',
-//       label: '4',
-//     },
-//     {
-//       value: '5',
-//       label: '5',
-//     }
-//     ],
-// }, {
-//   value: 'Attitude',
-//   label: 'Attitude',
-//   children: [
-//     {
-//       value: '1',
-//       label: '1',
-//     },
-//     {
-//       value: '2',
-//       label: '2',
-//     },
-//     {
-//       value: '3',
-//       label: '3',
-//     },
-//     {
-//       value: '4',
-//       label: '4',
-//     },
-//     {
-//       value: '5',
-//       label: '5',
-//     }
-//     ],
-// }];
+
 class EditableCell extends Component {
   displayRender = (label) => {
     if(label[1] !== "" && label[1] !== undefined){
@@ -360,6 +285,7 @@ class CDRTableItem extends Component {
         return state[i];
       }
     }
+    return {muc_do_1: "", muc_do_2: "", muc_do_3: ""};
   }
 
   isExistInArr = (cdr, arr) => {
@@ -575,6 +501,8 @@ class CDRTableItem extends Component {
       level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
       description: response.data[i].mo_ta,
       levels: response.data[i].muc_do.split(","),
+      id: response.data[i].id,
+      del_flag: response.data[i].del_flag
       }
       tableData.previewInfo.push(data);
     }
@@ -584,10 +512,136 @@ class CDRTableItem extends Component {
           console.log(error);
       });  
   }
+
+  checkIdExist = (matrix, id) => {
+    for(let i = 0;i < matrix.length;i++) {
+        if(matrix[i].key.toString() === id.toString()) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+getCdrCdio = (cdr_cdio, id) => {
+  for(let i = 0;i < cdr_cdio.length;i++) {
+      if(cdr_cdio[i].id.toString() === id.toString())  {
+          return cdr_cdio[i].cdr;
+      }
+  }
+  return "";
+}
+
+getSubjectName = (subjectList, id) => {
+    for(let i = 0;i < subjectList.length;i++) {
+        if(subjectList[i].Id.toString() === id.toString()) {
+            return subjectList[i].SubjectName;
+        }
+    }
+    return "";
+  }
+
+  checkLevel_1_Exist = (level_1, cdrmdhd) => {
+    for(let i = 0;i < cdrmdhd.length;i++) {
+        if(cdrmdhd[i].value === level_1) {
+            return i;
+        }
+    }
+    return -1;
+  }
+
+  checkLevel_2_Exist = (level_2, level_1_children) => {
+    for(let i = 0;i < level_1_children.length;i++) {
+        if(level_1_children[i].value === level_2) {
+            return i;
+        }
+    }
+    return -1;
+  }
+
   componentDidMount() {
     var self = this;
+    // axios.get('/collect-cdrmdhd-4')
+    // .then(function (response) {
+    //     let cdrmdhd = self.props.cdrmdhd;
+    //     for(let i = 0;i < response.data.length;i++) {
+    //         let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
+    //         if(index_1 != -1) {
+    //             let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
+    //             if(index_2 != -1) {
+    //                 cdrmdhd[index_1].children[index_2].children.push({
+    //                     value: response.data[i].muc_do_3,
+    //                     label: response.data[i].muc_do_3
+    //                   })
+    //             }
+    //             else {
+    //                 cdrmdhd[index_1].children.push({
+    //                     value: response.data[i].muc_do_2,
+    //                     label: response.data[i].muc_do_2,
+    //                     children: [{
+    //                         value: response.data[i].muc_do_3,
+    //                         label: response.data[i].muc_do_3
+    //                     }]
+    //                   })
+    //             }
+    //         }
+    //         else {
+    //             cdrmdhd.push({
+    //                 value: response.data[i].muc_do_1,
+    //                 label: response.data[i].muc_do_1,
+    //                 children: [{
+    //                     value: response.data[i].muc_do_2,
+    //                     label: response.data[i].muc_do_2,
+    //                     children: [{
+    //                         value: response.data[i].muc_do_3,
+    //                         label: response.data[i].muc_do_3
+    //                     }]
+    //                 }]
+    //               })
+    //         }
+    //     }
+    //     self.props.updateCdrmdhdDB(response.data);
+    //     self.props.updateCdrmdhd(cdrmdhd);
+        
+    // })
+    // .catch(function (error) {
+    //   console.log(error);
+    // });
+   
     if(this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
-      this.loadGap();
+    //   if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
+    //     this.props.updateIsLoadEditMatrix("true");
+    //     axios.get('/get-reality-matrix');
+    //     axios.get("/get-standard-matrix").then((res) => {
+    //         let data = [];
+    //         for(let i = 0;i < res.data.length;i++) {
+    //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+    //             if(index !== -1) {
+    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+    //                 if(cdr_cdio !== "") {
+    //                     data[index][cdr_cdio] = res.data[i].muc_do;
+    //                 }
+    //             }
+    //             else {  
+    //                 let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+    //                 if(subjectName !== "" && cdr_cdio !== "") {
+    //                     data.push({
+    //                         key: res.data[i].thong_tin_chung_id,
+    //                         hocky: 1,
+    //                         hocphan: subjectName,
+    //                         gvtruongnhom: 'NULL'
+    //                     })
+
+    //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+    //                 }
+                    
+    //             }
+    //         }
+    //         this.props.updateEditMatrix(data);
+    //       })
+          
+    // }
+      //this.loadGap();
     }
 
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
@@ -601,7 +655,7 @@ class CDRTableItem extends Component {
     var self = this;
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
       this.props.updateIsLoad("true");
-      this.loadGap();
+      //this.loadGap();
       this.loadTable(self, self.state.id);
     }
 }
@@ -616,24 +670,32 @@ class CDRTableItem extends Component {
     this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: ${deleteData.cdr}, ${deleteData.level_verb}, ${deleteData.description}, ${deleteData.levels}`, this.props.logReducer.contentTab, this.props.subjectId);
 
     if(key === cdrtable.previewInfo.length){
-      cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+      //cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+      cdrtable.previewInfo[key - 1].del_flag = 1;
     }
     else {
-      var cdrType = cdrtable.previewInfo[key - 1].cdr.split(".")[0];
+      let cdrType = cdrtable.previewInfo[key - 1].cdr.split(".")[0];
+      let delId = cdrtable.previewInfo[key - 1].id;
       for(let i = key - 1;i < cdrtable.previewInfo.length - 1;i++){
         if(cdrtable.previewInfo[i + 1].cdr.split(".")[0] === cdrType){
           cdrtable.previewInfo[i].level_verb = cdrtable.previewInfo[i + 1].level_verb;
           cdrtable.previewInfo[i].description = cdrtable.previewInfo[i + 1].description;
           cdrtable.previewInfo[i].levels = cdrtable.previewInfo[i + 1].levels;
+          cdrtable.previewInfo[i].id = cdrtable.previewInfo[i + 1].id;
+          cdrtable.previewInfo[i].del_flag = cdrtable.previewInfo[i + 1].del_flag;
         }
         else {
           cdrtable.previewInfo[i].cdr = cdrtable.previewInfo[i + 1].cdr;
           cdrtable.previewInfo[i].level_verb = cdrtable.previewInfo[i + 1].level_verb;
           cdrtable.previewInfo[i].description = cdrtable.previewInfo[i + 1].description;
           cdrtable.previewInfo[i].levels = cdrtable.previewInfo[i + 1].levels;
+          cdrtable.previewInfo[i].id = cdrtable.previewInfo[i + 1].id;
+          cdrtable.previewInfo[i].del_flag = cdrtable.previewInfo[i + 1].del_flag;
         }
       }
-      cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+      //cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+      cdrtable.previewInfo[cdrtable.previewInfo.length - 1].id = delId;
+      cdrtable.previewInfo[cdrtable.previewInfo.length - 1].del_flag = 1;
     }
   }
   handleDelete = (key) => {
@@ -649,24 +711,32 @@ class CDRTableItem extends Component {
     var cdrselecteditem = this.props.cdrselecteditem;    
     for(let i = 0;i < cdrselecteditem.length;i++){
       if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
-        cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+        //cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+        cdrtable.previewInfo[cdrtable.previewInfo.length - 1].del_flag = 1;
       }
       else {
-        var cdrType = cdrtable.previewInfo[cdrselecteditem[i] - 1].cdr.split(".")[0];
+        let cdrType = cdrtable.previewInfo[cdrselecteditem[i] - 1].cdr.split(".")[0];
+        let delId = cdrtable.previewInfo[cdrselecteditem[i] - 1].id;
         for(let j = cdrselecteditem[i] - 1;j < cdrtable.previewInfo.length - 1;j++){
           if(cdrtable.previewInfo[j + 1].cdr.split(".")[0] === cdrType){
             cdrtable.previewInfo[j].level_verb = cdrtable.previewInfo[j + 1].level_verb;
             cdrtable.previewInfo[j].description = cdrtable.previewInfo[j + 1].description;
             cdrtable.previewInfo[j].levels = cdrtable.previewInfo[j + 1].levels;
+            cdrtable.previewInfo[j].id = cdrtable.previewInfo[j + 1].id;
+            cdrtable.previewInfo[j].del_flag = cdrtable.previewInfo[j + 1].del_flag;
           }
           else {
             cdrtable.previewInfo[j].cdr = cdrtable.previewInfo[j + 1].cdr;
             cdrtable.previewInfo[j].level_verb = cdrtable.previewInfo[j + 1].level_verb;
             cdrtable.previewInfo[j].description = cdrtable.previewInfo[j + 1].description;
             cdrtable.previewInfo[j].levels = cdrtable.previewInfo[j + 1].levels;
+            cdrtable.previewInfo[j].id = cdrtable.previewInfo[j + 1].id;
+            cdrtable.previewInfo[j].del_flag = cdrtable.previewInfo[j + 1].del_flag;
           }
         }
-        cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+        //cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
+        cdrtable.previewInfo[cdrtable.previewInfo.length - 1].id = delId;
+        cdrtable.previewInfo[cdrtable.previewInfo.length - 1].del_flag = 1;
         for(let k = 0;k < cdrselecteditem.length;k++){
           if(cdrselecteditem[k] > cdrselecteditem[i]){
             cdrselecteditem[k]--;
@@ -736,7 +806,7 @@ class CDRTableItem extends Component {
         }
       
     }
-      let newItems = newData.previewInfo[key-1]
+      let newItems = newData.previewInfo[key - 1];
     
       this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung chuẩn đầu ra môn học thành: ${newItems.cdr}, ${newItems.level_verb}, ${newItems.description}, ${newItems.level}`, this.props.logReducer.contentTab, this.props.subjectId);
       this.props.onAddCDRData(newData);
@@ -778,9 +848,9 @@ class CDRTableItem extends Component {
     return -1;
   }
 
-  getCdrmdhdId = (verb) => {
+  getCdrmdhdId = (muc_do_1, muc_do_2) => {
     for(let i = 0;i < this.props.cdrmdhddb.length;i++) {
-      if(this.props.cdrmdhddb[i].muc_do_3 === verb) {
+      if(this.props.cdrmdhddb[i].muc_do_1 === muc_do_1 && this.props.cdrmdhddb[i].muc_do_2.toString() === muc_do_2.toString()) {
         return this.props.cdrmdhddb[i].id;
       }
     }
@@ -788,28 +858,28 @@ class CDRTableItem extends Component {
   }
   saveAll = () => {
     let data = this.props.cdrtable.previewInfo.map((item) => {
+      
         return {
           cdr: item.cdr,
           description: item.description,
           levels: item.levels,
+          id: item.id,
+          del_flag: item.del_flag,
           muc_tieu_mon_hoc_id: this.getMtmhId(item.cdr.split(".")[0]),
-          cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(item.level_verb[2]),
+          cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(item.level_verb[0], item.level_verb[1]),
         }
       })
-    
-    axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}}).then(
-      alert("ok")
-    );
-    axios.post('/save-log', { data: this.props.logData });
+    axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}});
     var self = this;
     this.loadTable(self, self.state.id);
-    this.loadGap();
+    //this.loadGap();
     this.props.updateIsLoad("false");
     openNotificationWithIcon('success');
+    //axios.post('/save-log', { data: this.props.logData });
+    
   }
 
     render() {
-      //console.log(this.state.notifications)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -924,7 +994,7 @@ class CDRTableItem extends Component {
             components={components}
             rowSelection={rowSelection} 
             columns={this.props.cdreditstate === '' ? this.columns : columns} 
-            dataSource={CDRTable.previewInfo}
+            dataSource={CDRTable.previewInfo.filter(item => item.del_flag === 0)}
             onRow={
               this.props.cdreditstate === '' ?
               (record, index) => ({
@@ -950,6 +1020,9 @@ const mapStateToProps = (state) => {
         logReducer: state.logReducer,
         isLoad: state.isloadtab4,
         editMatrix: state.editmatrix,
+        isLoadEditMatrix: state.isloadeditmatrix,
+        subjectList: state.subjectlist,
+        cdrCdio: state.cdrcdio,
         logData: state.logLayout4Reducer.logData
     }
 }
@@ -961,7 +1034,11 @@ const mapDispatchToProps = (dispatch) => {
     onChangeCDRData: changeCDRData,
     onUpdateVerb: selectedVerb,
     updateIsLoad: isLoad,
-    saveLog: saveLog
+    updateIsLoadEditMatrix: isLoadEditMatrix,
+    updateEditMatrix: editMatrix,
+    saveLog: saveLog,
+    updateCdrmdhd: cdrmdhd,
+    updateCdrmdhdDB: cdrmdhddb,
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

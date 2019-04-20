@@ -3,10 +3,14 @@ import { Form } from 'antd';
 import ItemMenu from '../Right/ItemMenu';
 
 const WrappedRegistrationForm = Form.create({ name: 'register' })(ItemMenu); 
+
+
 class MainForm extends Component {
+
     state = {
         step : 0
     }
+
     nextStep = () => {
         const { step } = this.state
         this.setState({
@@ -14,6 +18,7 @@ class MainForm extends Component {
         })
         return step;
     }
+
     prevStep = () => {
         const { step } = this.state
         this.setState({
@@ -21,6 +26,7 @@ class MainForm extends Component {
         })
         return step;
     }   
+
     render() {
         const {step} = this.state;
         switch(step) {
@@ -32,8 +38,6 @@ class MainForm extends Component {
                             // handleChange = {this.handleChange}
                             //values={values}
                             />
-          
-            
         }
     }
 }

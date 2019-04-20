@@ -80,7 +80,7 @@ class TableItem extends Component {
                     {form => (
                       <a
                         href="#a"
-                        onClick={() => this.onSaveEdit(form, record.key)}
+                        onClick={() => this.onSaveEdit(form, record.index)}
                         style={{ marginRight: 8 }}
                       >
                         Lưu
@@ -89,20 +89,20 @@ class TableItem extends Component {
                   </EditableContext.Consumer>
                   <Popconfirm
                     title="Xác nhận hủy?"
-                    onConfirm={() => this.onCancelEdit(record.key)}
+                    onConfirm={() => this.onCancelEdit(record.index)}
                   >
                     <a href="#a">Hủy</a>
                   </Popconfirm>
                 </span>
               ) : (
                 <span>
-                  <a onClick={() => this.handleEdit(record.key)} href="#a">
+                  <a onClick={() => this.handleEdit(record.index)} href="#a">
                     Sửa
                   </a>
                   <Divider type="vertical" />
                   <Popconfirm
                     title="Xác nhận xóa?"
-                    onConfirm={() => this.handleDelete(record.key)}
+                    onConfirm={() => this.handleDelete(record.index)}
                   >
                     <a href="#a">Xóa</a>
                   </Popconfirm>
@@ -131,17 +131,17 @@ class TableItem extends Component {
     }
 
     //delete all
-    if (selectedRow.length === this.props.itemRule.previewInfo.length) {
-      this.props.onUpdateRules([]);
-      this.setState({ selectedRowKeys: [], editingKey: "" });
-      return;
-    }
+    // if (selectedRow.length === this.props.itemRule.previewInfo.length) {
+    //   this.props.onUpdateRules([]);
+    //   this.setState({ selectedRowKeys: [], editingKey: "" });
+    //   return;
+    // }
 
     let ruleitems = this.props.itemRule.previewInfo;
-    const filteredItems = ruleitems.filter(
-      (_, index) => !selectedRow.includes(index)
-    );
-    this.props.onUpdateRules(filteredItems);
+    for(let i = 0;i<selectedRow.length;i++){
+      ruleitems[selectedRow[i]].del_flag = 1;
+    }
+    this.props.onUpdateRules(ruleitems);
     this.setState({ selectedRowKeys: [], editingKey: "" });
   };
 
@@ -158,24 +158,28 @@ class TableItem extends Component {
     this.setState({ selectedRowKeys });
   };
 
-  handleDelete(key) {
-    this.props.onDeleteItemRule(key);
+  handleDelete(index) {
+   // this.props.onDeleteItemRule(index);
+   let ruleitems = this.props.itemRule.previewInfo;
+   ruleitems[index].del_flag = 1;
+   this.props.onUpdateRules(ruleitems);
+
     this.setState({ selectedRowKeys: [], editingKey: "" });
   }
-  handleEdit(key) {
-    this.setState({ editingKey: key });
+  handleEdit(index) {
+    this.setState({ editingKey: index });
   }
-  isEditing = record => record.key === this.state.editingKey;
+  isEditing = record => record.index === this.state.editingKey;
 
-  onSaveEdit(form, key) {
+  onSaveEdit(form, index) {
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
 
       var newRules = this.props.itemRule.previewInfo;
-      const item = newRules[key];
-      newRules.splice(key, 1, {
+      const item = newRules[index];
+      newRules.splice(index, 1, {
         ...item,
         ...row
       });
@@ -192,13 +196,11 @@ class TableItem extends Component {
     let itemRuleTable = [];
     let rules = this.props.itemRule.previewInfo;
     for (let i = 0; i < rules.length; i++) {
-      let temp = {
-        key: i,
-        content: rules[i].content
-      };
+      let temp = rules[i];
+      temp.index = i;
       itemRuleTable.push(temp);
     }
-    return itemRuleTable;
+    return itemRuleTable.filter((item,_) => item.del_flag ===0);
   };
 
   onSaveAll = ()=>{
@@ -206,8 +208,8 @@ class TableItem extends Component {
     let body = {};
     body.thong_tin_chung_id = this.state.subjectId;
     body.data = this.props.itemRule.previewInfo;
-
-
+  
+    
      axios.post("/add-data-9", body)
      .then(response => {
        if(response.data === 1){
@@ -223,7 +225,8 @@ class TableItem extends Component {
         });
        }
      });
-    
+    this.getData(this.state.subjectId);
+    console.log("body: ",body.data);
   }
 
   componentDidMount() {
@@ -231,36 +234,32 @@ class TableItem extends Component {
       && this.props.subjectId !== undefined && this.props.subjectId!== "") {
         this.props.onChangeIsLoaded(true);
         this.setState({subjectId:this.props.subjectId});
-        axios.get(`/get-data-9/${this.props.subjectId}`).then(response => {
-          const data = response.data;
-          let array = [];
-          data.forEach((item, index) => {
-            let temp = {
-              content: item.noi_dung
-            };
-            array.push(temp);
-          });
-          this.props.onUpdateRules(array);
-        });
+        this.getData(this.props.subjectId);
       }
+  }
+
+  getData(subjectId) {
+    axios.get(`/get-data-9/${subjectId}`).then(response => {
+      const data = response.data;
+      let array = [];
+      data.forEach((item, index) => {
+        let temp = {
+          id: item.id,
+          content: item.noi_dung,
+          del_flag: item.del_flag
+        };
+        array.push(temp);
+      });
+      this.props.onUpdateRules(array);
+    });
   }
 
   componentWillReceiveProps(nextProps) {
     if(!this.props.itemRule.isLoaded && nextProps.subjectId !== null 
     && nextProps.subjectId !== undefined && nextProps.subjectId !== "") {
       this.props.onChangeIsLoaded(true);
-      this.setState({subjectId:this.props.subjectId});
-      axios.get(`/get-data-9/${nextProps.subjectId}`).then(response => {
-        const data = response.data;
-        let array = [];
-        data.forEach((item, index) => {
-          let temp = {
-            content: item.noi_dung
-          };
-          array.push(temp);
-        });
-        this.props.onUpdateRules(array);
-      });
+      this.setState({subjectId:nextProps.subjectId});
+      this.getData(nextProps.subjectId);
     }
   }
 

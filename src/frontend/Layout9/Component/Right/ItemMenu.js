@@ -18,7 +18,9 @@ class ItemMenu extends Component {
       return;
     }
     let rule = {
-      content: content
+      id:-1,
+      content: content,
+      del_flag:0,
     };
 
     this.props.onAddItemRule(JSON.stringify(rule));

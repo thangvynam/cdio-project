@@ -23,6 +23,7 @@ import axios from 'axios';
 import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
 import { nextTick } from 'q';
+import Survey from '../../Survey/Survey';
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -347,6 +348,7 @@ class Content extends Component {
                     ) : type === "matrix" ? <Matrix/> 
                       : type === "edit-matrix" ? <EditMatrix/>
                       : type === "danhmuc" ? <Danhmuc/>
+                      : type === "itusurvey" ? <Survey/>
                       : null;
                 }; break;
 

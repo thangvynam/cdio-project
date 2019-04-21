@@ -11,6 +11,9 @@ const initialState = {
     },
     "danhmuc": {
         name: "DANH MỤC"
+    },
+    "itusurvey": {
+        name: "ITU Survey"
     }
 }
 

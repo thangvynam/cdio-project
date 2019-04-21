@@ -708,6 +708,16 @@ router.post('/update-standard-matrix', function(req, res) {
   })   
 })
 
+router.get('/get-benchmark-matrix', function(req, res) {
+  
+  MatrixModel.getBenchmarkMatrix().then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+});
+
 
 router.post('/save-log', function(req, res) {  
   const body = req.body.data

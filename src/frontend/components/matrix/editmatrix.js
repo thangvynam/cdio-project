@@ -221,7 +221,7 @@ class EditMatrix extends Component {
                 if(Object.keys(this.props.editMatrix[i])[id] !== "key" && Object.keys(this.props.editMatrix[i])[id] !== "hocky"
             && Object.keys(this.props.editMatrix[i])[id] !== "hocphan" && Object.keys(this.props.editMatrix[i])[id] !== "gvtruongnhom") {
               let cdr_cdio_id = this.getCdrCdioId(this.props.cdrCdio, Object.keys(this.props.editMatrix[i])[id]);
-                let matrixId = this.getMatrixId(this.props.tempMatrix, this.props.editMatrix[i].key, cdr_cdio_id);
+                let matrixId = this.getMatrixId(this.state.tempMatrix, this.props.editMatrix[i].key, cdr_cdio_id);
                 data.push({id: matrixId, muc_do: this.props.editMatrix[i][Object.keys(this.props.editMatrix[i])[id]]});
             }
                 

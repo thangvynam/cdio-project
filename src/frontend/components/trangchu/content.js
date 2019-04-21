@@ -24,6 +24,7 @@ import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
 import BenchMark from '../matrix/benchmark-matrix';
 import { nextTick } from 'q';
+import Survey from '../../Survey/Survey';
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -349,7 +350,8 @@ class Content extends Component {
                             : type === "edit-matrix" ? <EditMatrix />
                                 : type === "benchmark-matrix" ? <BenchMark />
                                     : type === "danhmuc" ? <Danhmuc />
-                                        : null;
+                                        : type === "itusurvey" ? <Survey/>
+                                            : null;
                 }; break;
 
             }

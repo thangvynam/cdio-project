@@ -6,6 +6,9 @@ const initialState = {
     "matrix": {
         name: "MATRIX",
     },
+    "benchmark-matrix": {
+        name: "BENCHMARK-MATRIX",
+    },
     "edit-matrix": {
         name: "EDIT-MATRIX"
     },

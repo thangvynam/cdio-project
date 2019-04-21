@@ -1,6 +1,6 @@
 import React, { Component } from 'react'
-import {MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix,resetTab, changeCDRData, selectedVerb} from '../../Constant/ActionType';
-import { connect } from'react-redux';
+import { MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix, resetTab, changeCDRData, selectedVerb } from '../../Constant/ActionType';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification } from 'antd';
 import { Link } from "react-router-dom";
@@ -22,16 +22,17 @@ import ExportFile from '../../ExportFIle/ExportFile';
 import axios from 'axios';
 import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
+import BenchMark from '../matrix/benchmark-matrix';
 import { nextTick } from 'q';
 import Survey from '../../Survey/Survey';
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
     notification[type]({
-      message: 'Thông báo',
-      description: 'Thêm thành công',
+        message: 'Thông báo',
+        description: 'Thêm thành công',
     });
-  };
+};
 
 class Content extends Component {
 
@@ -56,14 +57,14 @@ class Content extends Component {
                 axios.post('/add-subject', { data: { SubjectCode: id, SubjectName: name } }).then((res) => {
                     var self = this;
                     axios.get('/collect-subjectlist')
-                    .then(function (response) {
-                    self.props.updateSubjectList(response.data);
-                    })
-                    .catch(function (error) {
-                    console.log(error);
-                    });  
+                        .then(function (response) {
+                            self.props.updateSubjectList(response.data);
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
                 });
-                
+
                 this.props.updateIsLoadEditMatrix("false");
                 this.setState({
                     visible: false,
@@ -71,7 +72,7 @@ class Content extends Component {
                 openNotificationWithIcon('success');
             }
         }
-        
+
 
     }
 
@@ -82,7 +83,7 @@ class Content extends Component {
     }
     handleDelete = (id) => {
         let type = this.props.content_type;
-        
+
         if (id !== -1) {
             const data = this.props.subjectList;
             axios.post('/delete-subject', { data: { Id: data[id].Id } });
@@ -128,17 +129,17 @@ class Content extends Component {
         this.props.updateSubjectId(id);
         this.props.resetTab();
         this.props.onChangeCDRData({
-        cdr: "",
-        level_verb: [],
-        description: "",
-        levels: []
+            cdr: "",
+            level_verb: [],
+            description: "",
+            levels: []
         });
-        this.props.onUpdateVerb({level: "",childLevel: "", verb: ""});
-      }
+        this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
+    }
 
-      checkSubjectExist = (subjectlist, monhoc) => {
-        for(let i = 0;i < subjectlist.length;i++) {
-            if(subjectlist[i].Id.toString() === monhoc.toString()) {
+    checkSubjectExist = (subjectlist, monhoc) => {
+        for (let i = 0; i < subjectlist.length; i++) {
+            if (subjectlist[i].Id.toString() === monhoc.toString()) {
                 return true;
             }
         }
@@ -168,18 +169,18 @@ class Content extends Component {
             return <Page404 />;
         }
 
-        if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && this.props.content_monhoc !== null) {
-            if(!this.checkSubjectExist(this.props.subjectList, this.props.content_monhoc)) {
+        if (this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && this.props.content_monhoc !== null) {
+            if (!this.checkSubjectExist(this.props.subjectList, this.props.content_monhoc)) {
                 return <Page404 />;
             }
-                
+
         }
         let content_layout;
         switch (this.props.content_tab) {
             case MENUITEM.THONG_TIN_CHUNG: {
                 content_layout = (
                     <React.Fragment>
-                        <ThongTinChung idMH={this.props.content_monhoc}/>
+                        <ThongTinChung idMH={this.props.content_monhoc} />
                     </React.Fragment>
                 ); break;
             }
@@ -342,14 +343,15 @@ class Content extends Component {
                                         </Row>
                                     )}
                                 />
-                                
+
                             </div>
                         </React.Fragment>
-                    ) : type === "matrix" ? <Matrix/> 
-                      : type === "edit-matrix" ? <EditMatrix/>
-                      : type === "danhmuc" ? <Danhmuc/>
-                      : type === "itusurvey" ? <Survey/>
-                      : null;
+                    ) : type === "matrix" ? <Matrix />
+                            : type === "edit-matrix" ? <EditMatrix />
+                                : type === "benchmark-matrix" ? <BenchMark />
+                                    : type === "danhmuc" ? <Danhmuc />
+                                        : type === "itusurvey" ? <Survey/>
+                                            : null;
                 }; break;
 
             }
@@ -364,7 +366,7 @@ class Content extends Component {
         }
         return (
             <React.Fragment>
-                
+
                 {content_layout}
             </React.Fragment>
         )
@@ -379,15 +381,15 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
 
-  return bindActionCreators({
-    updateSubjectList: subjectList,
-    updateSubjectId: subjectId,
-    updateIsLoad: isLoad,
-    resetTab:resetTab,
-    updateIsLoadEditMatrix: isLoadEditMatrix,
-    onChangeCDRData: changeCDRData,
-    onUpdateVerb: selectedVerb,
-  }, dispatch);
+    return bindActionCreators({
+        updateSubjectList: subjectList,
+        updateSubjectId: subjectId,
+        updateIsLoad: isLoad,
+        resetTab: resetTab,
+        updateIsLoadEditMatrix: isLoadEditMatrix,
+        onChangeCDRData: changeCDRData,
+        onUpdateVerb: selectedVerb,
+    }, dispatch);
 
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Content);

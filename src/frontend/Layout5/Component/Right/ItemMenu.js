@@ -459,7 +459,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                             titleName : response.data[i].titleName,
                             teachingActs : response.data[i].teachingActs,
                             standardOutput : response.data[i].standardOutput,
-                            evalActs : response.data[i].evalActs
+                            evalActs : response.data[i].evalActs,
+                            subjectId : response.data[i].subjectId
                         }
                         newArr.push(data);   
                     }

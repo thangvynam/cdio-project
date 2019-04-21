@@ -1,4 +1,5 @@
 var sql = require('../db');
+
 var Model5 = (data) => {
     this.data = data;
 }
@@ -25,11 +26,15 @@ loopCollectData = (res, data, sl) => {
                 titleName: '',
                 teachingActs: [],
                 standardOutput: [],
-                evalActs: []
+                evalActs: [],
+                subjectId : ''
             }
             objResult.key = ele.id;
             objResult.titleName = ele.ten_chu_de;
+            objResult.subjectId = ele.thong_tin_chung_id;
+
             let element = collectData(objResult);
+            
             element.then(async (result) => {
                 await data.push(result);
             }).finally(() => {
@@ -205,60 +210,136 @@ Model5.collectCDR = (idSubject, result) => {
 }
 
 Model5.add = (data, result) => {
-    console.log(data);
+   
     data.forEach(function (value, index) {
         let id = value.key;
         let stt = '1'; // hardcode
         let titleName = value.titleName;
         let teachingActs = value.teachingActs;
         let standardOutput = value.standardOutput;
-        let thong_tin_chund_id = value.subjectId;
+        let evalActs = value.evalActs;
+        let thong_tin_chung_id = value.subjectId;
         let del_flag = value.del_flag;
 
         if (id === -1) {
             if (del_flag === 1) {
                 return;
             }
+            
+            query(`insert into ke_hoach_ly_thuyet(stt, ten_chu_de, thong_tin_chung_id, del_flag) 
+                values ('${stt}', '${titleName}', '${thong_tin_chung_id}', '${del_flag}')`)
+                .then((res) => {
+                    const ke_hoach_ly_thuyet_id = res.insertId;
+                    // // BUS 1
+                    for (const elemenet of standardOutput) {
+                        query(`SELECT id FROM chuan_dau_ra_mon_hoc WHERE chuan_dau_ra = '${elemenet}' AND del_flag = 0 AND thong_tin_chung_id = '${thong_tin_chung_id}' `)
+                        .then(res => {
+                            const index = res[0].id;
 
-            sql.query(`insert into ke_hoach_ly_thuyet(stt, ten_chu_de, thong_tin_chung_id, del_flag) 
-                values ('${stt}', '${titleName}', '${thong_tin_chund_id}', '${del_flag}')`,
-                    (err, res) => {
-                        if (err) {
-                            console.log("error:", err);
-                        }
-                    });
-
-            sql.query(`insert into khlt_has_cdrmh(ke_hoach_ly_thuyet_id,chuan_dau_ra_mon_hoc_id) 
-                values ('${id}', '${index}')`,
-                    (err, res) => {
-                        if (err) {
-                            console.log("error:", err);
-                            result(null, err)
-                        }
-                    });
-
-            sql.query(`insert into khlt_has_dg(ke_hoach_ly_thuyet_id,danh_gia_id) 
-                values ('${id}', '${index}')`,
-                    (err, res) => {
-                        if (err) {
-                            console.log("error:", err);
-                            result(null, err)
-                        } else {
-                            result(null, res);
-                        }
-                    });
-    
-            sql.query(`insert into khlt_has_hdd(ke_hoach_ly_thuyet_id,hoat_dong_day_id) 
-            values ('${id}', '${index}')`,
-                (err, res) => {
-                    if (err) {
-                        console.log("error:", err);
-                        result(null, err)
+                            sql.query(`insert into khlt_has_cdrmh(ke_hoach_ly_thuyet_id,chuan_dau_ra_mon_hoc_id) 
+                                values ('${ke_hoach_ly_thuyet_id}', '${index}')`,
+                                    (err, res) => {
+                                        if (err) {
+                                            console.log("error:", err);
+                                            result(null, err)
+                                        }
+                                    });
+                        });
                     }
+                    
+                    // BUS 2
+                    for (const element of evalActs) {
+                        query(`SELECT id FROM danh_gia WHERE ma = '${element}' AND del_flag = 0 AND thong_tin_chung_id = '${thong_tin_chung_id}'`)
+                        .then(res => {
+                            const index = res[0].id;
+
+                            sql.query(`insert into khlt_has_dg(ke_hoach_ly_thuyet_id,danh_gia_id) 
+                            values ('${ke_hoach_ly_thuyet_id}', '${index}')`,
+                                (err, res) => {
+                                    if (err) {
+                                        console.log("error:", err);
+                                        result(null, err)
+                                    } else {
+                                        result(null, res);
+                                    }
+                                });
+                        });
+                    }
+                    
+                    // BUS 3
+                    for (const element of teachingActs) {
+                        query(`SELECT id FROM hoat_dong_day WHERE hoat_dong = '${element}' AND loai_hoat_dong = 'LT' `)
+                        .then(res => {
+                            const index = res[0].id;
+                            
+                            sql.query(`insert into khlt_has_hdd(ke_hoach_ly_thuyet_id,hoat_dong_day_id) 
+                                values ('${ke_hoach_ly_thuyet_id}', '${index}')`,
+                                    (err, res) => {
+                                        if (err) {
+                                            console.log("error:", err);
+                                            result(null, err)
+                                        }
+                                    })
+                        });
+                    }      
                 })
+                .catch(err => {
+                    console.log(err);
+                })
+                .finally(() => {
+                    console.log("Finish");
+                });
 
         } else { // update 
+            
+            query(`UPDATE ke_hoach_ly_thuyet SET ten_chu_de = '${titleName}' WHERE id = '${id}'`)
+            .catch(err =>{
+                console.log(err);
+            })
+            .finally(() => {
+                console.log("Finish");
+            })
 
+            // BUS 1 
+            for (const elemenet of standardOutput) {
+               
+                query(`SELECT id FROM chuan_dau_ra_mon_hoc WHERE chuan_dau_ra = '${elemenet}' AND del_flag = 0 AND thong_tin_chung_id = '${thong_tin_chung_id}' `)
+                .then(res => {
+                    const index = res[0].id;
+                   
+                    query(`DELETE FROM  khlt_has_cdrmh WHERE ke_hoach_ly_thuyet_id = '${id}'`)
+                    .then(() =>{
+                        query(`INSERT INTO khlt_has_cdrmh VALUES ('${id}','${index}')`)
+                    });
+                   
+                });
+            }
+
+            //BUS 2 
+            for (const element of evalActs) {
+                query(`SELECT id FROM danh_gia WHERE ma = '${element}' AND del_flag = 0 AND thong_tin_chung_id = '${thong_tin_chung_id}'`)
+                .then(res => {
+                    const index = res[0].id;
+
+                    query(`DELETE FROM  khlt_has_dg WHERE ke_hoach_ly_thuyet_id = '${id}'`)
+                    .then(() =>{
+                        query(`INSERT INTO khlt_has_dg VALUES ('${id}','${index}')`)
+                    });
+                });
+            }
+
+            // BUS 3
+            for (const element of teachingActs) {
+                query(`SELECT id FROM hoat_dong_day WHERE hoat_dong = '${element}' AND loai_hoat_dong = 'LT' `)
+                .then(res => {
+                    const index = res[0].id;
+                    
+                    query(`DELETE FROM  khlt_has_hdd WHERE ke_hoach_ly_thuyet_id = '${id}'`)
+                    .then(() =>{
+                        query(`INSERT INTO khlt_has_hdd VALUES ('${id}','${index}')`)
+                    });
+                });
+            }
         }
     });
 }

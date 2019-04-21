@@ -19,5 +19,8 @@
     "pdfkit": "^0.9.0",
     "puppeteer": "^1.12.2",
     "wkhtmltopdf": "^0.3.4"
+  },
+  "devDependencies": {
+    "nodemon": "^1.18.11"
   }
 }

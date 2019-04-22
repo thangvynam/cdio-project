@@ -1,0 +1,6 @@
+.ant-form-item-label {
+    overflow: unset;
+    margin-left: 20px;
+    /* width: fit-content;
+    white-space: pre-wrap; */
+}

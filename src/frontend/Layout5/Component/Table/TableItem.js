@@ -20,46 +20,6 @@ const FormItem = Form.Item
 const { Option } = Select;
 let dragingIndex = -1; // move row
 
-const standard_item = [
-  "G1.1",
-  "G1.2",
-  "G1.3",
-  "G1.4",
-  "G2.1",
-  "G2.2",
-  "G2.3",
-  "G3.1",
-  "G3.2",
-  "G4.1",
-  "G4.2",
-  "G5.1",
-  "G5.2",
-  "G5.3",
-  "G5.4",
-  "G5.5",
-  "G6.1",
-  "G7.1"
-];
-
-const teachingActs = [
-  'Thuyết giảng',
-  'Phân nhóm & chơi trò chơi',
-  'Thảo luận nhóm',
-  'Phân nhóm đồ án',
-  'Thảo luận và thể hiện trên bảng',
-  'Trò chơi nhập vai',
-  'Nhóm thảo luận & thiết kế 1 màn hình',
-  'Làm bài tập tạo test case',
-  'Trò chơi',
-];
-
-const evalActs = [
-  'BTVN',
-  'BTTL',
-  'DAMH',
-  'Bài đọc thêm và viết báo cáo',
-];
-
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
     <tr {...props} />
@@ -152,10 +112,16 @@ class EditableCell extends React.Component {
     this.setState({ standardOutput: value });
   }
 
-  getInput = () => {
+  getInput = (data ) => {
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
     const childrenStandard = [];
+    
+    const standard_item = [...this.props.mapitem.standardOutputData];
+    const teachingActs = [...this.props.mapitem.teachingActsData];
+    const evalActs = [...this.props.mapitem.evalActsData];
+
+    console.log(standard_item);
 
     for (let i = 0; i < teachingActs.length; i++) {
       childrenTeachingActs.push(
@@ -168,9 +134,12 @@ class EditableCell extends React.Component {
     }
 
     for (let i = 0; i < standard_item.length; i++) {
-      childrenStandard.push(
-        <Option key={standard_item[i]}>{standard_item[i]}</Option>
-      );
+      const children = standard_item[i].children;
+      for (let j = 0; j< children.length; j++) {
+        childrenStandard.push(
+          <Option key={children[j].value}>{children[j].value}</Option>
+        );
+      }
     }
 
     switch (this.props.dataIndex) {
@@ -229,6 +198,8 @@ class EditableCell extends React.Component {
       ...restProps
     } = this.props;
 
+    console.log(this.props);
+
     return (
       <EditableContext.Consumer>
         {(form) => {
@@ -243,7 +214,7 @@ class EditableCell extends React.Component {
                       message: `Vui lòng nhập ${title.toLowerCase()}!`,
                     }],
                     initialValue: record[dataIndex],
-                  })(this.getInput())}
+                  })(this.getInput(this.props.itemLayout5Reducer))}
                 </FormItem>
               ) : restProps.children}
             </td>
@@ -488,7 +459,8 @@ class TableItem extends Component {
           record,
           dataIndex: col.dataIndex,
           title: col.title,
-          editing: this.isEditing(record)
+          editing: this.isEditing(record),
+          mapitem:this.props.itemLayout5Reducer,
         })
       };
     });
@@ -501,7 +473,15 @@ class TableItem extends Component {
     };
 
     const hasSelected = selectedRowKeys.length > 0;
-  
+    const data = this.props.itemLayout5Reducer;
+    const childrenTeachingActs = [];
+
+    if (data.teachingActsData.length !== 0) {
+      for (let i = 0; i < data.teachingActsData.length; i++) {
+          childrenTeachingActs.push(
+            <Option key={data.teachingActs[i]}>{data.teachingActs[i]}</Option>);
+      }
+  }
     return (
       <div>
         <Button
@@ -527,7 +507,7 @@ class TableItem extends Component {
           rowClassName="editable-row"
           rowSelection={rowSelection}
           columns={this.props.itemLayout5Reducer.changeEditStateState === "" ? this.columns : columns}
-          dataSource={this.props.itemLayout5Reducer.previewInfo}
+          dataSource={this.props.itemLayout5Reducer.previewInfo.filter(element => element.del_flag == 0)}
           style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
           onRow={
             this.props.itemLayout5Reducer.changeEditStateState === ""

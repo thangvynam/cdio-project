@@ -235,14 +235,6 @@ class ItemMenu extends Component {
             },
         };
 
-        function init(){   
-            for (let i = 0; i < childrenTeachingActs.length; i++) {
-                data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
-            }
-            for (let i = 0; i < evalActs.length; i++) {
-                childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
-            }
-        }
         if (this.props.itemLayout5Reducer.teachingActsData.length !== 0) {
             for (let i = 0; i < this.props.itemLayout5Reducer.teachingActsData.length; i++) {
                 childrenTeachingActs.push(this.props.itemLayout5Reducer.teachingActsData[i])
@@ -253,7 +245,16 @@ class ItemMenu extends Component {
             }
             
         }
-       
+
+        function init(){   
+            for (let i = 0; i < childrenTeachingActs.length; i++) {
+                data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
+            }
+            for (let i = 0; i < evalActs.length; i++) {
+                childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
+            }
+        }
+
         init();
     
         return (
@@ -460,7 +461,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                             teachingActs : response.data[i].teachingActs,
                             standardOutput : response.data[i].standardOutput,
                             evalActs : response.data[i].evalActs,
-                            subjectId : response.data[i].subjectId
+                            subjectId : response.data[i].subjectId,
+                            del_flag : 0
                         }
                         newArr.push(data);   
                     }

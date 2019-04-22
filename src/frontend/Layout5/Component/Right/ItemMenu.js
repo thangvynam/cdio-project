@@ -284,7 +284,6 @@ class ItemMenu extends Component {
                         >
                             {getFieldDecorator('teachingActs', {
 
-                                
                             })(
                                 <Select
                                     mode="tags"

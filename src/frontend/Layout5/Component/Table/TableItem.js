@@ -378,25 +378,18 @@ class TableItem extends Component {
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
     let items = this.props.itemLayout5Reducer.previewInfo;
-    const filteredItems = items.filter(
-      (_, index) => !selectedRow.includes(index)
-    );
+   
+    selectedRow.forEach(id => {
+      for (let index = 0; index < items.length; index++) {
+        const element = items[index];
 
-    // delete one
-    if (selectedRow.length === 1) {
-      this.delete(selectedRow[0]);
-      return;
-    }
+        if (element.key == id) {
+          element.del_flag = 1;
+        }
+      }
+    });
 
-    //delete all
-    if (selectedRow.length === this.props.itemLayout5Reducer.previewInfo.length) {
-      this.props.handleSave([]);
-      this.setState({ selectedRowKeys: [] });
-      return;
-    }
-
-    this.props.handleSave(filteredItems);
-
+    this.props.handleSave(items);
     this.setState({ selectedRowKeys: [] });
   };
 
@@ -490,7 +483,7 @@ class TableItem extends Component {
           onClick={this.showModal}
           disabled={!hasSelected}
         >
-          Delete
+          Xóa
           </Button>
 
         <span style={{ marginLeft: 8 }}>
@@ -540,7 +533,7 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     handleSave: (data) => {
-      dispatch({ type: SAVE_DATA_LAYOUT_5, data: data, key: 'abc' });
+      dispatch({ type: SAVE_DATA_LAYOUT_5, data: data });
     },
 
     saveAllData : () => {

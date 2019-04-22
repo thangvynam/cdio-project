@@ -45,17 +45,6 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
         }    
 
         case DELETE_DATA_LAYOUT_5 : {
-            // if (state.previewInfo.length === 1) {
-            //     state.previewInfo = []
-            // } else {              
-            //     state.previewInfo= state.previewInfo.filter(item => item.key !== action.key)
-            // }
-
-            // return {
-            //     ...state,
-            //     previewInfo: state.previewInfo
-            // }
-
             let arrTemp = state.previewInfo;
             
             for (let index = 0; index < arrTemp.length; index++) {
@@ -73,13 +62,14 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
         }
             
         case CHANGE_EDITSTATE_5 :{
-            return {...state,changeEditStateState:action.key}
+            return {...state,
+                changeEditStateState:action.key}
         }
             
         case SAVE_DATA_LAYOUT_5:{
             return {
                 ...state, 
-                previewInfo: action.data,changeEditStateState:action.key
+                previewInfo: action.data,
             }
         }
             

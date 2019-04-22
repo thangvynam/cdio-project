@@ -22,8 +22,8 @@ class Matrix extends Component {
     }
 
     checkIdExist = (matrix, id) => {
-        for(let i = 0;i < matrix.length;i++) {
-            if(matrix[i].key.toString() === id.toString()) {
+        for (let i = 0; i < matrix.length; i++) {
+            if (matrix[i].key.toString() === id.toString()) {
                 return i;
             }
         }
@@ -31,41 +31,41 @@ class Matrix extends Component {
     }
 
     getCdrCdio = (cdr_cdio, id) => {
-      for(let i = 0;i < cdr_cdio.length;i++) {
-          if(cdr_cdio[i].id.toString() === id.toString())  {
-              return cdr_cdio[i].cdr;
-          }
-      }
-      return "";
+        for (let i = 0; i < cdr_cdio.length; i++) {
+            if (cdr_cdio[i].id.toString() === id.toString()) {
+                return cdr_cdio[i].cdr;
+            }
+        }
+        return "";
     }
 
     getSubjectName = (subjectList, id) => {
-        for(let i = 0;i < subjectList.length;i++) {
-            if(subjectList[i].Id.toString() === id.toString()) {
+        for (let i = 0; i < subjectList.length; i++) {
+            if (subjectList[i].Id.toString() === id.toString()) {
                 return subjectList[i].SubjectName;
             }
         }
         return "";
-      }
+    }
 
     componentDidMount() {
         this.setState({ isLoading: true })
-        if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
+        if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
             this.props.updateIsLoadEditMatrix("true");
             axios.get("/get-standard-matrix").then((res) => {
                 let data = [];
-                for(let i = 0;i < res.data.length;i++) {
+                for (let i = 0; i < res.data.length; i++) {
                     let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                    if(index !== -1) {
+                    if (index !== -1) {
                         let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(cdr_cdio !== "") {
+                        if (cdr_cdio !== "") {
                             data[index][cdr_cdio] = res.data[i].muc_do;
                         }
                     }
-                    else {  
+                    else {
                         let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
                         let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                        if(subjectName !== "" && cdr_cdio !== "") {
+                        if (subjectName !== "" && cdr_cdio !== "") {
                             data.push({
                                 key: res.data[i].thong_tin_chung_id,
                                 hocky: 1,
@@ -75,12 +75,12 @@ class Matrix extends Component {
 
                             data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
                         }
-                        
+
                     }
                 }
                 this.props.updateEditMatrix(data);
-              })
-              
+            })
+
         }
         var a = axios.get('/get-reality-matrix');
         var b = axios.get('/get-cdr-cdio');
@@ -277,6 +277,7 @@ class Matrix extends Component {
             }
             data1.push(a);
         }
+        console.log(data1);
         return data1;
     }
 
@@ -313,10 +314,10 @@ class Matrix extends Component {
         if (!_.isEmpty(A)) {
             if (A.getAttribute('id') !== "table-to-xls") {
                 A.setAttribute('id', "table-to-xls");
-                for(let i = 0; i< A.tHead.getElementsByTagName('th').length; i++){
+                for (let i = 0; i < A.tHead.getElementsByTagName('th').length; i++) {
                     A.tHead
                         .getElementsByTagName('th')[i]
-                        .setAttribute('style','background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)')
+                        .setAttribute('style', 'background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)')
                 }
             }
 
@@ -324,39 +325,39 @@ class Matrix extends Component {
     }
 
     render() {
-            const { isLoading, isShow } = this.state;
-            return (
-                this.props.editMatrix && <React.Fragment>
-                    {
-                        !isLoading
-                        && !_.isEmpty(this.props.dataMatrix)
-                        && <div className="exportMatrix" style={{ margin: "10px" }}>
-                            <div style={{ marginBottom: "10px" }}>
-                                <span className="adding-text"><Icon type="plus-square" />: Thêm</span>
+        const { isLoading, isShow } = this.state;
+        return (
+            this.props.editMatrix && <React.Fragment>
+                {
+                    !isLoading
+                    && !_.isEmpty(this.props.dataMatrix)
+                    && <div className="exportMatrix" style={{ margin: "10px" }}>
+                        <div style={{ marginBottom: "10px" }}>
+                            <span className="adding-text"><Icon type="plus-square" />: Thêm</span>
 
-                                <span style={{ marginLeft: "30px" }} className="removing-text"><Icon type="close-square" />: Xóa</span>
+                            <span style={{ marginLeft: "30px" }} className="removing-text"><Icon type="close-square" />: Xóa</span>
 
-                                <span style={{ marginLeft: "30px" }} className="no-action-text"><Icon type="minus-square" />: Không đổi</span>
-                            </div>
-                            <ReactHTMLTableToExcel
-                                id="test-table-xls-button"
-                                className="download-table-xls-button btn btn-outline-warning"
-                                table="table-to-xls"
-                                filename="matrix"
-                                sheet="tablexls"
-                                buttonText="Export"
-                            />                
-                                <Table
-                                    bordered
-                                    columns={this.createColumn(this.props.dataMatrix)}
-                                    dataSource={this.createData(this.props.dataMatrix)}
-                                    scroll={{ x: 1500 }}
-                                />
+                            <span style={{ marginLeft: "30px" }} className="no-action-text"><Icon type="minus-square" />: Không đổi</span>
                         </div>
-                    }
-                </React.Fragment>
-            )
-        
+                        <ReactHTMLTableToExcel
+                            id="test-table-xls-button"
+                            className="download-table-xls-button btn btn-outline-warning"
+                            table="table-to-xls"
+                            filename="matrix"
+                            sheet="tablexls"
+                            buttonText="Export"
+                        />
+                        <Table
+                            bordered
+                            columns={this.createColumn(this.props.dataMatrix)}
+                            dataSource={this.createData(this.props.dataMatrix)}
+                            scroll={{ x: 1500 }}
+                        />
+                    </div>
+                }
+            </React.Fragment>
+        )
+
 
     }
 }

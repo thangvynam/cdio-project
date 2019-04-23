@@ -12,8 +12,10 @@ class App extends Component {
       <Switch>
         <Route exact path="/" component={Home} />
         <Route exact path="/:type/" component={Subject} />
-        <Route exact path="/:type/:monhoc/" component={Subject} />
-        <Route exact path="/:type/:monhoc/:tab" component={Subject} />
+        <Route exact path="/:type/:ctdt/" component={Subject} />
+        <Route exact path="/:type/:ctdt/:khoi/" component={Subject} />
+        <Route exact path="/:type/:ctdt/:khoi/:monhoc/" component={Subject} />
+        <Route exact path="/:type/:ctdt/:khoi/:monhoc/:tab" component={Subject} />
         <Route component={Page404}/>
       </Switch>
     );

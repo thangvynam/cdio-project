@@ -293,11 +293,16 @@ Model5.add = (data, result) => {
         } else { // update 
             
             query(`UPDATE ke_hoach_ly_thuyet SET ten_chu_de = '${titleName}' WHERE id = '${id}'`)
-            .catch(err =>{
+            .catch(err => {
                 console.log(err);
             })
             .finally(() => {
                 console.log("Finish");
+            });
+
+            query(`UPDATE ke_hoach_ly_thuyet SET del_flag = '${del_flag}' WHERE id = '${id}'`)
+            .catch(err => {
+                console.log(err);
             })
 
             // BUS 1 

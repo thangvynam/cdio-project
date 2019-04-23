@@ -50,7 +50,38 @@ class Home extends Component {
         }
         return false;
     }
+
+    checkTypeExist = (menuItem, type) => {
+        for(let i = 0;i < Object.keys(menuItem).length;i++) {
+            if(Object.keys(menuItem)[i] === type) {
+                return true;
+            }
+        }
+        return false;
+    }
     
+    checkCtdtExist = (Ctdt, ctdt) => {
+        for(let i = 0;i < Ctdt.length;i++) {
+            if(Ctdt[i].id === ctdt) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    checkKhoiExist = (Ctdt, ctdt, khoi) => {
+        for(let i = 0;i < Ctdt.length;i++) {
+            if(Ctdt[i].id === ctdt) {
+                for(let j = 0;j < Ctdt[i].children.length;j++) {
+                    if(Ctdt[i].children[j].id === khoi) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     checkIdExist = (matrix, id) => {
         for(let i = 0;i < matrix.length;i++) {
             if(matrix[i].key === id) {
@@ -202,24 +233,41 @@ class Home extends Component {
     render() {
         if(this.state.isLoadSubjectList === "true") {
             let type = this.props.match.params.type;
-            let isExist = 0;
-            for(let i = 0;i < Object.keys(this.props.menuItem).length;i++) {
-                if(type === Object.keys(this.props.menuItem)[i]) {
-                    isExist = 1;
-                    break;
-                }
-            }
+            let ctdt = this.props.match.params.ctdt;
+            let khoi = this.props.match.params.khoi;
 
-            if(isExist === 0 || (type !== "de-cuong-mon-hoc" && this.props.match.params.monhoc !== "" &&
-            this.props.match.params.monhoc !== undefined)) {
+            if(type !== "de-cuong-mon-hoc" && this.props.match.params.ctdt !== "" &&
+            this.props.match.params.ctdt !== undefined) {
+                console.log(1)
                 return <Page404/>;
             }
         
+            if(type !== "" && type !== undefined && type !== null) {
+                if(!this.checkTypeExist(this.props.menuItem, type)) {
+                    console.log(2)
+                    return <Page404/>;
+                }    
+            }
+
+            if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                if(!this.checkCtdtExist(this.props.ctdt, ctdt)) {
+                    console.log(3)
+                    return <Page404/>;
+                }    
+            }
+
+            if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                    console.log(4)
+                    return <Page404/>;
+                }    
+            }
+
             if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
                 if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
-                    return <Page404 />;
-                }
-                    
+                    console.log(5)
+                    return <Page404/>;
+                }    
             }
             let GirdLayout;
             if (this.state.collapse) {
@@ -232,6 +280,8 @@ class Home extends Component {
                             content_type={this.props.match.params.type}
                             content_monhoc={this.props.match.params.monhoc}
                             content_tab={this.props.match.params.tab}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
                         />
                     </Col>
                     <Col span={22} className="col-right">
@@ -246,7 +296,9 @@ class Home extends Component {
                         <Row >
                         <Content content_type={this.props.match.params.type}
                                 content_monhoc={this.props.match.params.monhoc}
-                                content_tab={this.props.match.params.tab}/>
+                                content_tab={this.props.match.params.tab}
+                                content_khoi={this.props.match.params.khoi}
+                                content_ctdt={this.props.match.params.ctdt}/>
                         </Row>
                     </Col>
                 </Row>);
@@ -262,6 +314,8 @@ class Home extends Component {
                             content_type={this.props.match.params.type}
                             content_monhoc={this.props.match.params.monhoc}
                             content_tab={this.props.match.params.tab}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
                         />
                     </Col>
                     <Col span={19} className="col-right">
@@ -276,7 +330,9 @@ class Home extends Component {
                         <Row>
                         <Content content_type = {this.props.match.params.type}
                                 content_tab={this.props.match.params.tab}
-                                content_monhoc={this.props.match.params.monhoc}/>
+                                content_monhoc={this.props.match.params.monhoc}
+                                content_khoi={this.props.match.params.khoi}
+                                content_ctdt={this.props.match.params.ctdt}/>
                         </Row>
                     </Col>
                 </Row>);
@@ -299,6 +355,7 @@ const mapStateToProps = (state) => {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
         menuItem: state.menuitem,
+        ctdt: state.ctdt,
         editMatrix: state.editmatrix,
         isLoadEditMatrix: state.isloadeditmatrix,
         cdrmdhd: state.cdrmdhd,

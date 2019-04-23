@@ -1,1 +1,2 @@
 export const GET_MATRIX = 'GET_MATRIX';
+export const GET_BENCHMARK_MATRIX = 'GET_ BENCHMARK_MATRIX';

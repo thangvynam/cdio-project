@@ -14,6 +14,7 @@ import itemLayout8Reducer from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import matrixReducer from "../Reducers/matrixReducer";
+import benchmarkReducer from "../Reducers/benchmarkMatrixReducer";
 import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer, cdrCdioReducer, ctdtReducer } from '../Reducers/homePageReducer';
 import logReducer from "../Reducers/logReducer"
 
@@ -59,6 +60,7 @@ const allReducers = redux.combineReducers({
     editmatrixeditstate: editMatrixEditStateReducer,
     isloadeditmatrix: isLoadEditMatrixReducer,
     matrix: matrixReducer,
+    benchmarkMatrix: benchmarkReducer,
     logReducer: logReducer
 
 });

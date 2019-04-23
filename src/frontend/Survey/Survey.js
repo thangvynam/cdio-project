@@ -2,30 +2,71 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
 
-import { getLevel } from '../utils/Tree';
+import { getLevel, getPos} from '../utils/Tree';
 import "./Survey.css";
+
+function Node(data) {
+    this.data = data;
+    this.parent = null;
+    this.children = [];
+}
 
 class Survey extends Component {
 
-    Node(data) {
-        this.data = data;
-        this.parent = null;
-        this.children = [];
-    }
-
-    Tree(data) {
-        var node = new Node(data);
-        this._root = node;
-    }
-
     componentDidMount() {
+        let tree = [];
         //this.props.collectDataSurvey();
         axios.get("/get-data-survey").then((res) => {
-            console.log(res);
+            //let tree = new Tree(new Map(1,"root"));
+           
             res.data.forEach(element => {
-                console.log(element.keyRow);
-                console.log(getLevel(element.keyRow));
+                let level = getLevel(element.keyRow);
+
+                switch (level) {
+                    case 1:{
+                        
+                        let pos = getPos(element.keyRow, 0);
+
+                        const NodeData = {
+                            key : '',
+                            value : ''
+                        }
+
+                        NodeData.key = pos;
+                        NodeData.value = element.nameRow;
+        
+                        tree.push(new Node(NodeData));
+                        break;
+                    }
+                       
+                    case 2:{
+                        let pos0 = getPos(element.keyRow, 0);
+                        let pos1 = getPos(element.keyRow, 1);
+
+                        tree.forEach(node => {
+                            // check identity lv1 
+                            if (node.data.key === pos0) {
+                                const NodeData = {
+                                    key : '',
+                                    value : ''
+                                }
+                                
+                                NodeData.key = pos1;
+                                NodeData.value = element.nameRow;
+
+                                node.children.push(new Node(NodeData))
+                            }
+                        })
+
+                        break;
+                    }
+
+                    default:
+                        break;
+                }
+                
             });
+            console.log(tree);
         })
     }
 

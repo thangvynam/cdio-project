@@ -269,11 +269,12 @@ class Home extends Component {
                     return <Page404/>;
                 }    
             }
+            let subjectName = this.getSubjectName(this.props.subjectList,this.props.subjectId);
             let GirdLayout;
             if (this.state.collapse) {
                 GirdLayout = (<Row>
                     <Col span={2} className="col-left col-left-inline">
-                        <MenuLeft className="menu_left"
+                        <MenuLeft 
                             collapse={this.state.collapse}
                             theme={this.state.theme}
                             defaultSelectedKeys={[this.props.match.params.type]}
@@ -291,6 +292,7 @@ class Home extends Component {
                                 isCollapse={this.state.collapse}
                                 theme={this.state.theme}
                                 themeCollaps={this.themeCollaps}
+                                subjectName={subjectName}
                             />
                         </Row>
                         <Row >
@@ -307,7 +309,7 @@ class Home extends Component {
                 GirdLayout = (<Row>
                     <Col span={5} className="col-left">
                         <MenuLeft
-                            className="menu_left"
+                            
                             collapse={this.state.collapse}
                             theme={this.state.theme}
                             defaultSelectedKeys={[this.props.match.params.type]}
@@ -325,6 +327,7 @@ class Home extends Component {
                                 isCollapse={this.state.collapse}
                                 theme={this.state.theme}
                                 themeCollaps={this.themeCollaps}
+                                subjectName={subjectName}
                             />
                         </Row>
                         <Row>

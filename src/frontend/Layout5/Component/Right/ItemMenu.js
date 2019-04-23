@@ -143,12 +143,10 @@ class ItemMenu extends Component {
             }
         }
 
-        
         if (flag) {
             newArray.push(item);
         }
-        
-        
+                
         this.setState({ standardSelectedItem: newArray });
         
         standardOutput_data = newArray;

@@ -114,47 +114,6 @@ Model5.collect = (dataID, respone) => {
                     console.log(err);
                 })
         })
-
-
-
-    // sql.query("SELECT * FROM ke_hoach_ly_thuyet where del_flag = 0", (err, res) => {
-    //     if (err) {
-    //         console.log("error:", err);
-    //         result(null, err)
-    //     } else {
-    //         let data = [];
-    //         if(res.length != 0){
-    //             for(const ele of res){
-    //                 let objResult = {
-    //                     key : '',
-    //                     titleName : '',
-    //                     teachingActs: ['sadad'],
-    //                     standardOutput:[],
-    //                     evalActs:[]
-    //                 }
-    //                 objResult.key = ele.id;
-    //                 objResult.titleName = ele.ten_chu_de;
-
-    //                 // select hdd
-    //                 sql.query(`SELECT * FROM khlt_has_hdd JOIN mydb.hoat_dong_day on hoat_dong_day_id = id WHERE ke_hoach_ly_thuyet_id = '${objResult.key}' `, (err, res) => {
-    //                     console.log("=====");
-    //                     if(err){
-
-    //                     }else{
-    //                         for(const ele of res){
-    //                             objResult.teachingActs.push(ele.hoat_dong);
-    //                         }
-    //                         console.log(objResult.teachingActs);
-    //                     }
-    //                 })
-    //                 console.log(objResult)
-    //                 //data.push(objResult);
-    //             }
-    //         }
-    //         //console.log(data);
-    //         result(null, data);
-    //     }
-    //})
 }
 
 Model5.collectHDD = (result) => {

@@ -17,8 +17,8 @@ const LogModel = require('../models/LogModel');
 const CommentModel = require('../models/CommentModel');
 const MatrixModel = require('../models/MatrixModel');
 const DanhMucModel = require('../models/DanhMucModel');
-
-const MucTieuModel = require('../models/MucTieuModel')
+const ModelSurvey = require('../models/ModelSurvey');
+const MucTieuModel = require('../models/MucTieuModel');
 
 const dataRender1 ={
   title1 : '',
@@ -776,7 +776,10 @@ router.post('/get-standard-output-5', function(req, res) {
   });
 })
 
-
-
+router.get('/get-data-survey',function(req,res){
+  ModelSurvey.collectData((result) => {
+    res.send(result)
+  });
+})
 
 module.exports = router;

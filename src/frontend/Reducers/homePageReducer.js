@@ -6,11 +6,17 @@ const initialState = {
     "matrix": {
         name: "MATRIX",
     },
+    "benchmark-matrix": {
+        name: "BENCHMARK-MATRIX",
+    },
     "edit-matrix": {
         name: "EDIT-MATRIX"
     },
     "danhmuc": {
         name: "DANH MỤC"
+    },
+    "itusurvey": {
+        name: "ITU Survey"
     }
 }
 

@@ -17,5 +17,13 @@
 /*Benchmark Matrix*/
 .benchmark .ant-table-thead > tr > th, .ant-table-tbody > tr > td {
     padding: 16px 16px;
-    width: 91px;
+    /* width: 91px; */
+}
+
+.chart{
+    margin-top: 15px;
+}
+
+.bar-chart-mixed{
+    margin-top: 15px;
 }

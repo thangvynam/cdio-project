@@ -32,6 +32,7 @@ export const CHANGE_LEVEL_DATA = 'CHANGE_LEVEL_DATA';
 export const SELECTED_VERB = 'SELECTED_VERB';
 export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
 export const MENU_ITEM = 'MENU_ITEM';
+export const CTDT = 'CTDT';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
 export const SUBJECT_MASO = 'SUBJECT_MASO';
@@ -180,6 +181,13 @@ export function menuItem(newMenuItem) {
     return {
         type: MENU_ITEM,
         menuitem: newMenuItem
+    };
+}
+
+export function ctdt(newCtdt) {
+    return {
+        type: CTDT,
+        ctdt: newCtdt
     };
 }
 

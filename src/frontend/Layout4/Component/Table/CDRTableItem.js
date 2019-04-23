@@ -641,7 +641,7 @@ getSubjectName = (subjectList, id) => {
     //       })
           
     // }
-      //this.loadGap();
+    //   this.loadGap();
     }
 
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {

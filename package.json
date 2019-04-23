@@ -5,9 +5,11 @@
   "dependencies": {
     "antd": "^3.13.0",
     "axios": "^0.18.0",
+    "chart.js": "^2.8.0",
     "immutability-helper": "^3.0.0",
     "lodash": "^4.17.11",
     "react": "^16.7.0",
+    "react-chartjs-2": "^2.7.6",
     "react-dnd": "^7.0.2",
     "react-dnd-html5-backend": "^7.0.2",
     "react-dom": "^16.7.0",

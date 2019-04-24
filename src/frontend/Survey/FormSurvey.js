@@ -108,7 +108,7 @@ class FormSurvey extends Component {
     };
 
     return (
-        <div style={{ border: "2px solid", borderRadius: "12px", margin: '50px' }}>
+        <div>
                 <div style={{ marginTop: "10px" }}></div>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item
@@ -217,12 +217,11 @@ class FormSurvey extends Component {
                         {...formItemLayout}
                         label=""
                     >
-                    <br/>
                     </Form.Item>
                     <label class="col-sm-12"><strong>Các Thầy/Cô vui lòng điền thông tin I/T/U vào ô Hoạt động giảng dạy và đánh giá tương
                         ứng với chuẩn đầu ra mà môn học mình phụ trách bên trên (xét trên hiện trạng đang dạy)</strong></label>
 
-                    <Form.Item {...tailFormItemLayout}>
+                    {/* <Form.Item {...tailFormItemLayout}>
                         <div>
                             <Button type="primary" onClick={() => {
                                     let survey = {
@@ -246,7 +245,7 @@ class FormSurvey extends Component {
                                 Gửi<Icon type="right" />
                             </Button>
                         </div>
-                    </Form.Item>
+                    </Form.Item> */}
                 </Form>
             </div>
     )

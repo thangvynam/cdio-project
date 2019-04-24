@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import FormSurvey from "./FormSurvey"
-import { getLevel, getPos} from '../utils/Tree';
+import {Form} from 'antd';
+
+import FormSurvey from "./FormSurvey";
+import { getLevel, getPos } from '../utils/Tree';
 import "./Survey.css";
 
 function Node(data) {
@@ -11,80 +13,114 @@ function Node(data) {
     this.children = [];
 }
 
+const formItemLayout = {
+    labelCol: {
+        xs: { span: 12 },
+        sm: { span: 5 },
+    },
+    wrapperCol: {
+        xs: { span: 24 },
+        sm: { span: 16 },
+    },
+};
+
 class Survey extends Component {
+    state = { 
+        tree : []
+    }
 
     componentDidMount() {
         let tree = [];
         //this.props.collectDataSurvey();
         axios.get("/get-data-survey").then((res) => {
-            //let tree = new Tree(new Map(1,"root"));
-           
+            
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
+                let pos0 = getPos(element.keyRow, 0);
+                let pos1 = getPos(element.keyRow, 1);
+
+                const NodeData = {
+                    key: '',
+                    value: ''
+                }
 
                 switch (level) {
-                    case 1:{
-                        
-                        let pos = getPos(element.keyRow, 0);
-
-                        const NodeData = {
-                            key : '',
-                            value : ''
-                        }
-
-                        NodeData.key = pos;
+                    case 1: {
+                        NodeData.key = pos0;
                         NodeData.value = element.nameRow;
-        
+
                         tree.push(new Node(NodeData));
                         break;
                     }
-                       
-                    case 2:{
-                        let pos0 = getPos(element.keyRow, 0);
-                        let pos1 = getPos(element.keyRow, 1);
-
+                    case 2: {
                         tree.forEach(node => {
                             // check identity lv1 
                             if (node.data.key === pos0) {
-                                const NodeData = {
-                                    key : '',
-                                    value : ''
-                                }
-                                
-                                NodeData.key = pos1;
+                                NodeData.key = pos0 + "." + pos1;
                                 NodeData.value = element.nameRow;
 
                                 node.children.push(new Node(NodeData))
                             }
                         })
-
                         break;
                     }
+                    case 3: {
+                        tree.forEach(node => {
+                            // check identity lv1 
+                            if (node.data.key === pos0) {
+                                console.log(node);
+                            }
+                        })
 
+                    }
                     default:
                         break;
                 }
-                
             });
-            console.log(tree);
+            //console.log(tree);
+            this.setState({tree:tree})
         })
     }
 
+    genData() {
+        let data = this.state.tree;
+        let htmlDOM = [];
+
+        for (let i = 0; i < data.length; i++) {
+            const elementLv1 = data[i];
+
+            htmlDOM.push(
+                <h5>{elementLv1.data.key + ". " + elementLv1.data.value}</h5>
+            )
+
+            for (let j = 0; j<elementLv1.children.length; j++) {
+                const elementLv2 = elementLv1.children[j];
+                htmlDOM.push(
+                    <h5 style={{"paddingLeft":"1em"}}>{elementLv2.data.key + ". " + elementLv2.data.value}</h5>
+                )
+            }
+
+            // level1.push();
+            
+        }
+        return htmlDOM;
+    }
+
     render() {
-        return (       
+        return (
             <div className="container1">
                 <div className="center-col">
-                <div className="container">
-                <div className="row">
-                    <div className="col-sm-1" >
+                    <div className="container">
+                        <div className="row">
+                            <div className="col-sm-12" >
+                                <br />
+                                <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
+                                <FormSurvey />
+                                <br />
+                                {this.genData()}
+                            </div>
+                        </div>
                     </div>
-                    <div className="col-sm-11" >
-                        <br />
-                        <h1 style={{textAlign: "center"}}>Câu hỏi khảo sát</h1>
-                        <FormSurvey />
-                    </div>
-                </div>
-            </div>
                 </div>
             </div>
         );

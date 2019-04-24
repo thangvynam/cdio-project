@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-import {Form} from 'antd';
 
 import FormSurvey from "./FormSurvey";
 import { getLevel, getPos } from '../utils/Tree';
@@ -9,24 +8,12 @@ import "./Survey.css";
 
 function Node(data) {
     this.data = data;
-    this.parent = null;
     this.children = [];
 }
 
-const formItemLayout = {
-    labelCol: {
-        xs: { span: 12 },
-        sm: { span: 5 },
-    },
-    wrapperCol: {
-        xs: { span: 24 },
-        sm: { span: 16 },
-    },
-};
-
 class Survey extends Component {
-    state = { 
-        tree : []
+    state = {
+        tree: [],
     }
 
     componentDidMount() {
@@ -65,13 +52,29 @@ class Survey extends Component {
                         break;
                     }
                     case 3: {
+                        let pos0 = getPos(element.keyRow, 0);
+                        let pos1 = getPos(element.keyRow, 1);
+                        let pos2 = getPos(element.keyRow, 2);
+
                         tree.forEach(node => {
                             // check identity lv1 
                             if (node.data.key === pos0) {
-                                console.log(node);
+                                node.children.forEach(node2 => {
+                                    if (pos0 + "." + pos1 === node2.data.key) {
+                                        
+                                        const NodeData = {
+                                            key : '',
+                                            value : ''
+                                        }
+
+                                        NodeData.key = pos0 + "." + pos1 + "." + pos2;
+                                        NodeData.value = element.nameRow;
+                                        node2.children.push(new Node(NodeData));
+                                    }
+                                });
                             }
                         })
-
+                        break;
                     }
                     default:
                         break;
@@ -82,7 +85,7 @@ class Survey extends Component {
         })
     }
 
-    genData() {
+    genForm() {
         let data = this.state.tree;
         let htmlDOM = [];
 
@@ -98,10 +101,15 @@ class Survey extends Component {
                 htmlDOM.push(
                     <h5 style={{"paddingLeft":"1em"}}>{elementLv2.data.key + ". " + elementLv2.data.value}</h5>
                 )
-            }
+               
+                for (let k = 0; k < elementLv2.children.length; k++) {
+                    const elementLv3 = elementLv2.children[k];
 
-            // level1.push();
-            
+                    htmlDOM.push(
+                        <h5 style={{"paddingLeft":"2em"}}>{elementLv3.data.key + ". " + elementLv3.data.value}</h5>
+                    )
+                }
+            }
         }
         return htmlDOM;
     }
@@ -117,7 +125,7 @@ class Survey extends Component {
                                 <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
                                 <FormSurvey />
                                 <br />
-                                {this.genData()}
+                                {this.genForm()}
                             </div>
                         </div>
                     </div>

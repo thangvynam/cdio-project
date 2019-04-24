@@ -2,11 +2,6 @@
     width: 100%;
 }
 
-/*.menu_left{
-    height: 100%;
-    position: fixed;
-} */
-
 .ant-col-5.col-left{
     height: 100%;
     float: left;
@@ -21,3 +16,4 @@
 .col-right{
     float: right;
 }
+

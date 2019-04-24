@@ -112,7 +112,7 @@ class Survey extends Component {
                     <p>hello</p>
                 </div>
             </div>
-        )
+        );
     }
 }
 const mapStateToProps = (state, ownProps) => {

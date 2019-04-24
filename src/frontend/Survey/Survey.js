@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
-
+import FormSurvey from "./FormSurvey"
 import { getLevel, getPos} from '../utils/Tree';
 import "./Survey.css";
 
@@ -74,42 +74,17 @@ class Survey extends Component {
         return (       
             <div className="container1">
                 <div className="center-col">
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
-                    <p>hello</p>
+                <div className="container">
+                <div className="row">
+                    <div className="col-sm-1" >
+                    </div>
+                    <div className="col-sm-11" >
+                        <br />
+                        <h1 style={{textAlign: "center"}}>Câu hỏi khảo sát</h1>
+                        <FormSurvey />
+                    </div>
+                </div>
+            </div>
                 </div>
             </div>
         );

@@ -13,6 +13,8 @@ export const SAVE_LOG_OBJECT = 'SAVE_LOG_OBJECT'
 
 export const RESET_TAB = 'RESET_TAG';
 
+export const SAVE_SURVEY = 'SAVE_SURVEY'
+
 //layout 3
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
 export const DELETE_DATA_LAYOUT_3 = 'DELETE_DATA_LAYOUT_3';

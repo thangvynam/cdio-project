@@ -37,6 +37,9 @@ class NavBar extends Component {
                         unCheckedChildren="Light"
                     />
                 </Menu.Item>
+                <Menu.Item key="3" >
+                    <span style={{ textAlign: "center", fontSize: "16pt" }}>{this.props.subjectName}</span>
+                </Menu.Item>
             </Menu>
         );
     }

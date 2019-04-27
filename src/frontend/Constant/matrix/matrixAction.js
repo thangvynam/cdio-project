@@ -9,6 +9,14 @@ const getDataMatrix = (newData)=>{
     }
 }
 
+const getDataBenchMarkMatrix = (newData)=>{
+    return {
+        type: Types.GET_BENCHMARK_MATRIX,
+        newData
+    }
+}
+
 export {
     getDataMatrix,
+    getDataBenchMarkMatrix
 }

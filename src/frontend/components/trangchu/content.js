@@ -149,6 +149,8 @@ class Content extends Component {
     render() {
         var subjectList = [];
         let type = this.props.content_type;
+        let ctdt = this.props.content_ctdt;
+        let khoi = this.props.content_khoi;
         switch (type) {
             case "de-cuong-mon-hoc": {
                 subjectList = this.props.subjectList;
@@ -158,23 +160,7 @@ class Content extends Component {
                 subjectList = [];
             }
         }
-        let isExist = 0;
-        for (let i = 0; i < Object.keys(this.props.menuItem).length; i++) {
-            if (type === Object.keys(this.props.menuItem)[i]) {
-                isExist = 1;
-                break;
-            }
-        }
-        if (isExist === 0) {
-            return <Page404 />;
-        }
 
-        if (this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && this.props.content_monhoc !== null) {
-            if (!this.checkSubjectExist(this.props.subjectList, this.props.content_monhoc)) {
-                return <Page404 />;
-            }
-
-        }
         let content_layout;
         switch (this.props.content_tab) {
             case MENUITEM.THONG_TIN_CHUNG: {
@@ -259,7 +245,8 @@ class Content extends Component {
 
             case undefined: {
                 {
-                    content_layout = type === "de-cuong-mon-hoc" ? (
+                    content_layout = type === "de-cuong-mon-hoc" && ctdt !== "" && ctdt !== undefined &&
+                     khoi !== "" && khoi !== undefined ? (
                         <React.Fragment>
                             <div>
                                 <Modal

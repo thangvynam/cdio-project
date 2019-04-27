@@ -14,13 +14,15 @@ import itemLayout8Reducer from '../Reducers/itemLayout8Reducer';
 import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import matrixReducer from "../Reducers/matrixReducer";
-import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer, cdrCdioReducer } from '../Reducers/homePageReducer';
+import benchmarkReducer from "../Reducers/benchmarkMatrixReducer";
+import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer, cdrCdioReducer, ctdtReducer } from '../Reducers/homePageReducer';
 import logReducer from "../Reducers/logReducer"
 
 import { createStore, applyMiddleware} from 'redux';
 // import logger from 'redux-logger';
 import thunk from 'redux-thunk';
 import { editMatrixReducer, editMatrixEditStateReducer, isLoadEditMatrixReducer } from '../Reducers/editMatrixReducer';
+import surveyReducer from '../Reducers/surveyReducer';
 //const middleware = [ thunk, logger ];
 const middleware = [ thunk];
 
@@ -50,6 +52,7 @@ const allReducers = redux.combineReducers({
     // tndata: changeTNDataReducer,
     // loaitainguyenReducer: loaiTaiNguyenReducer,
     menuitem: menuItemReducer,
+    ctdt: ctdtReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,
     subjectlist: subjectListReducer,
@@ -58,8 +61,9 @@ const allReducers = redux.combineReducers({
     editmatrixeditstate: editMatrixEditStateReducer,
     isloadeditmatrix: isLoadEditMatrixReducer,
     matrix: matrixReducer,
-    logReducer: logReducer
-
+    benchmarkMatrix: benchmarkReducer,
+    logReducer: logReducer,
+    surveyReducer: surveyReducer
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

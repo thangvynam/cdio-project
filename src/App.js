@@ -11,9 +11,11 @@ class App extends Component {
     return (
       <Switch>
         <Route exact path="/" component={Home} />
-        <Route exact path="/:type/" component={Subject} />
-        <Route exact path="/:type/:monhoc/" component={Subject} />
-        <Route exact path="/:type/:monhoc/:tab" component={Subject} />
+        <Route exact path="/:ctdt/" component={Subject} />
+        <Route exact path="/:ctdt/:type/" component={Subject} />
+        <Route exact path="/:ctdt/:type/:khoi/" component={Subject} />
+        <Route exact path="/:ctdt/:type/:khoi/:monhoc/" component={Subject} />
+        <Route exact path="/:ctdt/:type/:khoi/:monhoc/:tab" component={Subject} />
         <Route component={Page404}/>
       </Switch>
     );

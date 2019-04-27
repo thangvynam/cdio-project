@@ -322,7 +322,7 @@ class TableItem extends Component {
                     {form => (
                       <a
                         href="#a"
-                        onClick={() => this.onSaveEdit(form, record.key)}
+                        onClick={() => this.onSaveEdit(form, record.index)}
                         style={{ marginRight: 8 }}
                       >
                         Lưu
@@ -331,20 +331,20 @@ class TableItem extends Component {
                   </EditableContext.Consumer>
                   <Popconfirm
                     title="Xác nhận hủy?"
-                    onConfirm={() => this.onCancelEdit(record.key)}
+                    onConfirm={() => this.onCancelEdit()}
                   >
                     <a href="#a">Hủy</a>
                   </Popconfirm>
                 </span>
               ) : (
                 <span>
-                  <a onClick={() => this.handleEdit(record.key)} href="#a">
+                  <a onClick={() => this.handleEdit(record.index)} href="#a">
                     Sửa
                   </a>
                   <Divider type="vertical" />
                   <Popconfirm
                     title="Xác nhận xóa?"
-                    onConfirm={() => this.handleDelete(record.key)}
+                    onConfirm={() => this.handleDelete(record.index)}
                   >
                     <a href="#a">Xóa</a>
                   </Popconfirm>
@@ -357,27 +357,47 @@ class TableItem extends Component {
     ];
   }
 
-  moveRow = (dragIndex, hoverIndex) => {
-    let data = this.props.itemKHGDTH.previewInfo;
-    
-    const dragRow = data[dragIndex];
+ compare( a, b ) {
+    if ( a.key < b.key ){
+      return -1;
+    }
+    if ( a.key > b.key ){
+      return 1;
+    }
+    return 0;
+  }
 
+  moveRow = (dragIndex, hoverIndex) => {
+   
+    let data = this.setIndexForItem();
+
+    const dragRow = data[dragIndex];
     data[dragIndex] = data[hoverIndex];
     data[hoverIndex] = dragRow;
-    data[dragIndex].key = dragIndex + 1;
-    data[hoverIndex].key = hoverIndex + 1;
 
-    this.props.onUpdateKHGDTH(data);
+    let temp = data[dragIndex].key;
+    data[dragIndex].key = data[hoverIndex].key;
+    data[hoverIndex].key = temp;
+
+
+    let result = this.props.itemKHGDTH.previewInfo.map((item,_)=>{
+      if(item.id===data[dragIndex].id) return data[dragIndex];
+      else if(item.id===data[hoverIndex].id) return data[hoverIndex];
+      return item;
+    })
+
+    let sortRes = result.sort(this.compare);
+    this.props.onUpdateKHGDTH(sortRes);
   };
-  isEditing = record => record.key === this.state.editingKey;
+  isEditing = record => record.index === this.state.editingKey;
 
-  onSaveEdit(form, key) {
+  onSaveEdit(form, index) {
     form.validateFields((error, row) => {
       if (error) {
         return;
       }
 
-      let index = key - 1;
+     
 
       var newItems = this.props.itemKHGDTH.previewInfo;
       const item = newItems[index];
@@ -386,7 +406,7 @@ class TableItem extends Component {
         ...row
       });
       this.props.onUpdateKHGDTH(newItems);
-      this.setState({ editingKey: "" });
+       this.setState({ editingKey: "" });
     });
   }
   onCancelEdit = () => {
@@ -396,13 +416,25 @@ class TableItem extends Component {
     this.setState({ editingKey: key });
   }
 
-  handleDelete(key) {
-    let newData = this.props.itemKHGDTH.previewInfo.filter(
-      (_, index) => index !== key - 1
-    );
-    for (let i = 0; i < newData.length; i++) {
-      newData[i].key = i + 1;
+  handleDelete(index) {
+    // let newData = this.props.itemKHGDTH.previewInfo.filter(
+    //   (_, index) => index !== key - 1
+    // );
+    // for (let i = 0; i < newData.length; i++) {
+    //   newData[i].key = i + 1;
+    // }
+
+    console.log("index: ",index);
+    let newData = this.props.itemKHGDTH.previewInfo;
+    newData[index].del_flag = 1;
+    let key = 1;
+    for(let i = 0;i<newData.length;i++){
+      if(newData[i].del_flag===0){
+        newData[i].key = key;
+        key++;
+      }
     }
+
     this.setState({ selectedRowKeys: [], editingKey: "" });
     this.props.onUpdateKHGDTH(newData);
   }
@@ -429,21 +461,32 @@ class TableItem extends Component {
     }
 
     //delete all
-    if (selectedRow.length === this.props.itemKHGDTH.previewInfo.length) {
-      this.props.onUpdateKHGDTH([]);
-      this.setState({ selectedRowKeys: [], editingKey: "" });
-      return;
-    }
+    // if (selectedRow.length === this.props.itemKHGDTH.previewInfo.length) {
+    //   this.props.onUpdateKHGDTH([]);
+    //   this.setState({ selectedRowKeys: [], editingKey: "" });
+    //   return;
+    // }
 
     let KHitems = this.props.itemKHGDTH.previewInfo;
-    const filteredItems = KHitems.filter(
-      (_, index) => !selectedRow.includes(index + 1)
-    );
+    // const filteredItems = KHitems.filter(
+    //   (_, index) => !selectedRow.includes(index + 1)
+    // );
 
-    for (let i = 0; i < filteredItems.length; i++) {
-      filteredItems[i].key = i + 1;
+    // for (let i = 0; i < filteredItems.length; i++) {
+    //   filteredItems[i].key = i + 1;
+    // }
+    for(let i = 0;i<selectedRow.length;i++){
+      KHitems[selectedRow[i]].del_flag = 1;
     }
-    this.props.onUpdateKHGDTH(filteredItems);
+    let key = 1;
+    for(let i = 0;i<KHitems.length;i++){
+      if(KHitems[i].del_flag===0){
+        KHitems[i].key = key;
+        key++;
+      }
+    }
+
+    this.props.onUpdateKHGDTH(KHitems);
     this.setState({ selectedRowKeys: [], editingKey: "" });
   };
 
@@ -463,43 +506,49 @@ class TableItem extends Component {
     body.data = [];
     itemKHGDTH.previewInfo.forEach((item,index)=>{
       let temp = {};
+      temp.id = item.id;
       temp.week = item.key;
       temp.titleName = item.titleName;
       temp.teachingActs = [];
       temp.standardOutput = [];
       temp.evalActs = [];
+      temp.del_flag = item.del_flag;
            
-      item.teachingActs.forEach( (act,_)=>{
-        let id = itemKHGDTH.mapIdForValue.teachingActs.get(act);
-        if(id === undefined || id ===''){
-          // insert hoat_dong_day khong phai danh muc
-          console.log("insert ",act);
-          let itemAct = {
-            hoat_dong:act,
-            loai:'TH',
-            danh_muc: 0,
-          }
-          // push 
-          
-          // axios.post(`/add-teachingacts-6`,itemAct).then(response=>{
+      if(temp.del_flag===0){
+        item.teachingActs.forEach( (act,_)=>{
+          let id = itemKHGDTH.mapIdForValue.teachingActs.get(act);
+          if(id === undefined || id ===''){
+            // insert hoat_dong_day khong phai danh muc
+            console.log("insert ",act);
+            let itemAct = {
+              hoat_dong:act,
+              loai:'TH',
+              danh_muc: 0,
+            }
+            // push 
             
-          //   temp.teachingActs.push(response.data.id);
-          // })
-        }
-        else temp.teachingActs.push(id); 
-      });
+            // axios.post(`/add-teachingacts-6`,itemAct).then(response=>{
+              
+            //   temp.teachingActs.push(response.data.id);
+            // })
+          }
+          else temp.teachingActs.push(id); 
+        });
+  
+  
+  
+        item.standardOutput.forEach((stan,_)=>{
+          let id = itemKHGDTH.mapIdForValue.standardOutput.get(stan);
+          temp.standardOutput.push(id);
+        })
+        item.evalActs.forEach((act,_)=>{
+          let id = itemKHGDTH.mapIdForValue.evalActs.get(act);
+          temp.evalActs.push(id);
+        })
 
-
-
-      item.standardOutput.forEach((stan,_)=>{
-        let id = itemKHGDTH.mapIdForValue.standardOutput.get(stan);
-        temp.standardOutput.push(id);
-      })
-      item.evalActs.forEach((act,_)=>{
-        let id = itemKHGDTH.mapIdForValue.evalActs.get(act);
-        temp.evalActs.push(id);
-      })
-      body.data.push(temp);
+      }
+        body.data.push(temp);
+         
     })
 
     console.log("body",body.data);
@@ -517,9 +566,10 @@ class TableItem extends Component {
         duration: 1
       });
      }
+
+     this.getDataTable(this.state.subjectId);
    });
     
-   
 
   }
 
@@ -528,10 +578,11 @@ class TableItem extends Component {
       && this.props.subjectId !== undefined && this.props.subjectId!== "") {
         this.props.onChangeIsLoaded(true);
         this.setState({subjectId:this.props.subjectId});
-        axios.get(`/get-data-6/${this.props.subjectId}`).then(response => {
-          const data = response.data;
-          this.props.onUpdateKHGDTH(data);
-        });
+        // axios.get(`/get-data-6/${this.props.subjectId}`).then(response => {
+        //   const data = response.data;
+        //   this.props.onUpdateKHGDTH(data);
+        // });
+        this.getDataTable(this.props.subjectId);
       }
   }
 
@@ -540,13 +591,33 @@ class TableItem extends Component {
     && nextProps.subjectId !== undefined && nextProps.subjectId !== "") {
       this.props.onChangeIsLoaded(true);
       this.setState({subjectId:this.props.subjectId});
-      axios.get(`/get-data-6/${nextProps.subjectId}`).then(response => {
-        const data = response.data;
-        this.props.onUpdateKHGDTH(data);
-      });
+      // axios.get(`/get-data-6/${nextProps.subjectId}`).then(response => {
+      //   const data = response.data;
+      //   this.props.onUpdateKHGDTH(data);
+      // });
+      this.getDataTable(nextProps.subjectId);
     }
   }
 
+  getDataTable = (idSubject)=>{
+    axios.get(`/get-data-6/${idSubject}`).then(response => {
+      const data = response.data;
+      console.log("data: ",data);
+      this.props.onUpdateKHGDTH(data);
+    });
+  }
+
+
+  setIndexForItem = ()=>{
+    let itemKHTHTable = [];
+    let data = this.props.itemKHGDTH.previewInfo;
+    for (let i = 0; i < data.length; i++) {
+      let temp = data[i];
+      temp.index = i;
+      itemKHTHTable.push(temp);
+    }
+    return itemKHTHTable.filter((item,_) => item.del_flag ===0);
+  }
 
 
 
@@ -615,7 +686,8 @@ class TableItem extends Component {
           columns={this.state.editingKey === "" ? this.columns : columns}
           rowSelection={rowSelection}
           rowClassName="editable-row"
-          dataSource={this.props.itemKHGDTH.previewInfo}
+          // dataSource={this.props.itemKHGDTH.previewInfo.filter((item,_) => item.del_flag ===0)}
+          dataSource = {this.setIndexForItem()}
           onRow={
             this.state.editingKey === ""
               ? (record, index) => ({

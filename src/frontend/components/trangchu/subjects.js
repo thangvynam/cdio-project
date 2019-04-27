@@ -50,7 +50,38 @@ class Home extends Component {
         }
         return false;
     }
+
+    checkTypeExist = (menuItem, type) => {
+        for(let i = 0;i < Object.keys(menuItem).length;i++) {
+            if(Object.keys(menuItem)[i] === type) {
+                return true;
+            }
+        }
+        return false;
+    }
     
+    checkCtdtExist = (Ctdt, ctdt) => {
+        for(let i = 0;i < Ctdt.length;i++) {
+            if(Ctdt[i].id === ctdt) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    checkKhoiExist = (Ctdt, ctdt, khoi) => {
+        for(let i = 0;i < Ctdt.length;i++) {
+            if(Ctdt[i].id === ctdt) {
+                for(let j = 0;j < Ctdt[i].children.length;j++) {
+                    if(Ctdt[i].children[j].id === khoi) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
     checkIdExist = (matrix, id) => {
         for(let i = 0;i < matrix.length;i++) {
             if(matrix[i].key === id) {
@@ -202,36 +233,58 @@ class Home extends Component {
     render() {
         if(this.state.isLoadSubjectList === "true") {
             let type = this.props.match.params.type;
-            let isExist = 0;
-            for(let i = 0;i < Object.keys(this.props.menuItem).length;i++) {
-                if(type === Object.keys(this.props.menuItem)[i]) {
-                    isExist = 1;
-                    break;
-                }
+            let ctdt = this.props.match.params.ctdt;
+            let khoi = this.props.match.params.khoi;
+        
+            if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                if(!this.checkCtdtExist(this.props.ctdt, ctdt)) {
+                    return <Page404/>;
+                }    
             }
 
-            if(isExist === 0 || (type !== "de-cuong-mon-hoc" && this.props.match.params.monhoc !== "" &&
-            this.props.match.params.monhoc !== undefined)) {
-                return <Page404/>;
-            }
-        
-            if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
-                if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
-                    return <Page404 />;
+            if(type !== "" && type !== undefined && type !== null) {
+                if(!this.checkTypeExist(this.props.menuItem, type)) {
+                    return <Page404/>;
                 }
-                    
+                else {
+                    if(type !== "de-cuong-mon-hoc") {
+                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                            return <Page404/>;
+                        }
+                    }
+                    else {
+                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                            if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                                console.log(4)
+                                return <Page404/>;
+                            }    
+                        }
+            
+                        if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
+                            if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
+                                console.log(5)
+                                return <Page404/>;
+                            }    
+                        }
+                    }
+                } 
             }
+
+            
+            let subjectName = this.getSubjectName(this.props.subjectList,this.props.subjectId);
             let GirdLayout;
             if (this.state.collapse) {
                 GirdLayout = (<Row>
                     <Col span={2} className="col-left col-left-inline">
-                        <MenuLeft className="menu_left"
+                        <MenuLeft 
                             collapse={this.state.collapse}
                             theme={this.state.theme}
-                            defaultSelectedKeys={[this.props.match.params.type]}
+                            defaultSelectedKeys={[this.props.match.params.ctdt]}
                             content_type={this.props.match.params.type}
                             content_monhoc={this.props.match.params.monhoc}
                             content_tab={this.props.match.params.tab}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
                         />
                     </Col>
                     <Col span={22} className="col-right">
@@ -241,12 +294,15 @@ class Home extends Component {
                                 isCollapse={this.state.collapse}
                                 theme={this.state.theme}
                                 themeCollaps={this.themeCollaps}
+                                subjectName={subjectName}
                             />
                         </Row>
                         <Row >
                         <Content content_type={this.props.match.params.type}
                                 content_monhoc={this.props.match.params.monhoc}
-                                content_tab={this.props.match.params.tab}/>
+                                content_tab={this.props.match.params.tab}
+                                content_khoi={this.props.match.params.khoi}
+                                content_ctdt={this.props.match.params.ctdt}/>
                         </Row>
                     </Col>
                 </Row>);
@@ -255,13 +311,15 @@ class Home extends Component {
                 GirdLayout = (<Row>
                     <Col span={5} className="col-left">
                         <MenuLeft
-                            className="menu_left"
+                            
                             collapse={this.state.collapse}
                             theme={this.state.theme}
-                            defaultSelectedKeys={[this.props.match.params.type]}
+                            defaultSelectedKeys={[this.props.match.params.ctdt]}
                             content_type={this.props.match.params.type}
                             content_monhoc={this.props.match.params.monhoc}
                             content_tab={this.props.match.params.tab}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
                         />
                     </Col>
                     <Col span={19} className="col-right">
@@ -271,12 +329,15 @@ class Home extends Component {
                                 isCollapse={this.state.collapse}
                                 theme={this.state.theme}
                                 themeCollaps={this.themeCollaps}
+                                subjectName={subjectName}
                             />
                         </Row>
                         <Row>
                         <Content content_type = {this.props.match.params.type}
                                 content_tab={this.props.match.params.tab}
-                                content_monhoc={this.props.match.params.monhoc}/>
+                                content_monhoc={this.props.match.params.monhoc}
+                                content_khoi={this.props.match.params.khoi}
+                                content_ctdt={this.props.match.params.ctdt}/>
                         </Row>
                     </Col>
                 </Row>);
@@ -299,6 +360,7 @@ const mapStateToProps = (state) => {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
         menuItem: state.menuitem,
+        ctdt: state.ctdt,
         editMatrix: state.editmatrix,
         isLoadEditMatrix: state.isloadeditmatrix,
         cdrmdhd: state.cdrmdhd,

@@ -5,6 +5,7 @@ import {
 } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import './FormSurvey.css'
+import { SAVE_SURVEY } from '../Constant/ActionType';
 
 
 class FormSurvey extends Component {
@@ -107,7 +108,7 @@ class FormSurvey extends Component {
     };
 
     return (
-        <div style={{ border: "2px solid", borderRadius: "12px", margin: '50px' }}>
+        <div>
                 <div style={{ marginTop: "10px" }}></div>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item
@@ -216,20 +217,35 @@ class FormSurvey extends Component {
                         {...formItemLayout}
                         label=""
                     >
-                    <br/>
                     </Form.Item>
                     <label class="col-sm-12"><strong>Các Thầy/Cô vui lòng điền thông tin I/T/U vào ô Hoạt động giảng dạy và đánh giá tương
                         ứng với chuẩn đầu ra mà môn học mình phụ trách bên trên (xét trên hiện trạng đang dạy)</strong></label>
 
-                    <Form.Item {...tailFormItemLayout}>
+                    {/* <Form.Item {...tailFormItemLayout}>
                         <div>
-                            <Button type="primary" onClick={() => { 
-             
+                            <Button type="primary" onClick={() => {
+                                    let survey = {
+                                        tenMH: this.state.tenMH,
+                                        nguoiDuocKS: this.state.nguoiDuocKS,
+                                        nguoiKS: this.state.nguoiKS,
+                                        q1: this.state.q1,
+                                        q2: this.state.q2,
+                                        q3: this.state.q3,
+                                        q4: this.state.q4,
+                                        q5: this.state.q5,
+                                        q6: this.state.q6,
+                                        q7: this.state.q7,
+                                        q8: this.state.q8,
+                                        q9: this.state.q9,
+                                        q10: this.state.q10,
+                                        q11: this.state.q11,
+                                    } 
+                                    this.props.saveAll(survey)
                                 }} style={{ marginLeft: "2em" }}>
                                 Gửi<Icon type="right" />
                             </Button>
                         </div>
-                    </Form.Item>
+                    </Form.Item> */}
                 </Form>
             </div>
     )
@@ -244,7 +260,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
-
+    saveAll: (survey) => {
+        dispatch({type: SAVE_SURVEY, survey})
+    }
   }
 }
 

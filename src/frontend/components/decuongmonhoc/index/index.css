@@ -2,15 +2,11 @@
     width: 100%;
 }
 
-/*.menu_left{
-    height: 100%;
-    position: fixed;
-} */
-
 .ant-col-5.col-left{
     height: 100%;
     float: left;
     position: fixed;
+    overflow-y: scroll
 }
 
 .ant-col-19.col-right {
@@ -20,3 +16,4 @@
 .col-right{
     float: right;
 }
+

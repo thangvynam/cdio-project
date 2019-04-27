@@ -5,6 +5,7 @@ import axios from 'axios';
 import FormSurvey from "./FormSurvey";
 import { getLevel, getPos } from '../utils/Tree';
 import "./Survey.css";
+import TableSurvey from './TableSurvey';
 
 function Node(data) {
     this.data = data;
@@ -25,7 +26,9 @@ class Survey extends Component {
                 let level = getLevel(element.keyRow);
                 let pos0 = getPos(element.keyRow, 0);
                 let pos1 = getPos(element.keyRow, 1);
-
+                let pos2 = getPos(element.keyRow, 2);
+                let pos3 = getPos(element.keyRow, 3);
+                
                 const NodeData = {
                     key: '',
                     value: ''
@@ -52,21 +55,11 @@ class Survey extends Component {
                         break;
                     }
                     case 3: {
-                        let pos0 = getPos(element.keyRow, 0);
-                        let pos1 = getPos(element.keyRow, 1);
-                        let pos2 = getPos(element.keyRow, 2);
-
                         tree.forEach(node => {
                             // check identity lv1 
                             if (node.data.key === pos0) {
                                 node.children.forEach(node2 => {
                                     if (pos0 + "." + pos1 === node2.data.key) {
-                                        
-                                        const NodeData = {
-                                            key : '',
-                                            value : ''
-                                        }
-
                                         NodeData.key = pos0 + "." + pos1 + "." + pos2;
                                         NodeData.value = element.nameRow;
                                         node2.children.push(new Node(NodeData));
@@ -76,11 +69,29 @@ class Survey extends Component {
                         })
                         break;
                     }
+
+                    case 4: {
+                        tree.forEach(node => {
+                            // check identity lv1 
+                            if (node.data.key === pos0) {
+                                node.children.forEach(node2 => {
+                                    if (pos0 + "." + pos1 === node2.data.key) {
+                                        node2.children.forEach(node3 => {
+                                            if (pos0 + "." + pos1 + "." + pos2 === node3.data.key) {
+                                                NodeData.key = pos0 + "." + pos1 + "." + pos2 + "." + pos3;
+                                                NodeData.value = element.nameRow;
+                                                node3.children.push(new Node(NodeData));
+                                            }
+                                        })
+                                    }
+                                });
+                            }
+                        })
+                    }
                     default:
                         break;
                 }
             });
-            //console.log(tree);
             this.setState({tree:tree})
         })
     }
@@ -93,20 +104,34 @@ class Survey extends Component {
             const elementLv1 = data[i];
 
             htmlDOM.push(
-                <h5>{elementLv1.data.key + ". " + elementLv1.data.value}</h5>
+                <b><h5>{elementLv1.data.key + ". " + elementLv1.data.value}</h5></b>
             )
 
             for (let j = 0; j<elementLv1.children.length; j++) {
                 const elementLv2 = elementLv1.children[j];
+
                 htmlDOM.push(
-                    <h5 style={{"paddingLeft":"1em"}}>{elementLv2.data.key + ". " + elementLv2.data.value}</h5>
+                    <b><h5 style={{"paddingLeft":"1em"}}>{elementLv2.data.key + ". " + elementLv2.data.value}</h5></b>
                 )
                
                 for (let k = 0; k < elementLv2.children.length; k++) {
                     const elementLv3 = elementLv2.children[k];
+                    const dataChildren = [];
 
                     htmlDOM.push(
-                        <h5 style={{"paddingLeft":"2em"}}>{elementLv3.data.key + ". " + elementLv3.data.value}</h5>
+                        <b><h5 style={{"paddingLeft":"2em"}}>{elementLv3.data.key + ". " + elementLv3.data.value}</h5></b>
+                    )
+
+                    for (let h = 0; h < elementLv3.children.length; h++) {
+                        const elementLv4 = elementLv3.children[h];
+
+                        dataChildren.push(elementLv4.data.value);
+                    }
+
+                    htmlDOM.push(
+                        <TableSurvey 
+                            data = {dataChildren}
+                        />
                     )
                 }
             }
@@ -125,7 +150,9 @@ class Survey extends Component {
                                 <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
                                 <FormSurvey />
                                 <br />
-                                {this.genForm()}
+                                <div style={{paddingLeft:"1em"}}>
+                                    {this.genForm()}
+                                </div>   
                             </div>
                         </div>
                     </div>

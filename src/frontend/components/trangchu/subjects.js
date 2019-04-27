@@ -235,40 +235,42 @@ class Home extends Component {
             let type = this.props.match.params.type;
             let ctdt = this.props.match.params.ctdt;
             let khoi = this.props.match.params.khoi;
-
-            if(type !== "de-cuong-mon-hoc" && this.props.match.params.ctdt !== "" &&
-            this.props.match.params.ctdt !== undefined) {
-                console.log(1)
-                return <Page404/>;
-            }
         
-            if(type !== "" && type !== undefined && type !== null) {
-                if(!this.checkTypeExist(this.props.menuItem, type)) {
-                    console.log(2)
-                    return <Page404/>;
-                }    
-            }
-
             if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
                 if(!this.checkCtdtExist(this.props.ctdt, ctdt)) {
-                    console.log(3)
                     return <Page404/>;
                 }    
             }
 
-            if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
-                    console.log(4)
+            if(type !== "" && type !== undefined && type !== null) {
+                if(!this.checkTypeExist(this.props.menuItem, type)) {
                     return <Page404/>;
-                }    
+                }
+                else {
+                    if(type !== "de-cuong-mon-hoc") {
+                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                            return <Page404/>;
+                        }
+                    }
+                    else {
+                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                            if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                                console.log(4)
+                                return <Page404/>;
+                            }    
+                        }
+            
+                        if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
+                            if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
+                                console.log(5)
+                                return <Page404/>;
+                            }    
+                        }
+                    }
+                } 
             }
 
-            if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
-                if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
-                    console.log(5)
-                    return <Page404/>;
-                }    
-            }
+            
             let subjectName = this.getSubjectName(this.props.subjectList,this.props.subjectId);
             let GirdLayout;
             if (this.state.collapse) {
@@ -277,7 +279,7 @@ class Home extends Component {
                         <MenuLeft 
                             collapse={this.state.collapse}
                             theme={this.state.theme}
-                            defaultSelectedKeys={[this.props.match.params.type]}
+                            defaultSelectedKeys={[this.props.match.params.ctdt]}
                             content_type={this.props.match.params.type}
                             content_monhoc={this.props.match.params.monhoc}
                             content_tab={this.props.match.params.tab}
@@ -312,7 +314,7 @@ class Home extends Component {
                             
                             collapse={this.state.collapse}
                             theme={this.state.theme}
-                            defaultSelectedKeys={[this.props.match.params.type]}
+                            defaultSelectedKeys={[this.props.match.params.ctdt]}
                             content_type={this.props.match.params.type}
                             content_monhoc={this.props.match.params.monhoc}
                             content_tab={this.props.match.params.tab}

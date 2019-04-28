@@ -782,4 +782,13 @@ router.get('/get-data-survey',function(req,res){
   });
 })
 
+router.post('/add-data-survey',function(req,res){
+  const data = req.body.data;
+
+  ModelSurvey.addData(data, (result) => {
+    //res.send(result)
+  });
+})
+
+
 module.exports = router;

@@ -1,7 +1,8 @@
-import {SAVE_SURVEY} from '../Constant/ActionType';
+import {SAVE_SURVEY,CHANGE_VALUE_ITU_SURVEY} from '../Constant/ActionType';
 
 const surveyInitialState = {
-    survey: {}
+    survey: {},
+    dataValueITU: new Map()
 }
 const SurveyReducer = (state = surveyInitialState, action) => {
     switch (action.type) {
@@ -10,6 +11,13 @@ const SurveyReducer = (state = surveyInitialState, action) => {
             return {
                 ...state,
                 survey: action.survey
+            }
+        }
+
+        case CHANGE_VALUE_ITU_SURVEY: {
+            return {
+                ...state,
+                dataValueITU : action.data
             }
         }
         default:

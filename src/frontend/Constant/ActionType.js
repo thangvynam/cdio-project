@@ -98,6 +98,9 @@ export const REFRESH_DATA = "REFRESH_DATA";
 export const SHOW_INPUT_COMMENT = "SHOW_INPUT_COMMENT";
 export const SAVE_COMMENT = "SAVE_COMMENT";
 
+// Survey
+export const CHANGE_VALUE_ITU_SURVEY = "CHANGE_VALUE_ITU_SURVEY";
+
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {
         type: SAVE_LOG,

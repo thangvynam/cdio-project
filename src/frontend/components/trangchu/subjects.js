@@ -247,7 +247,7 @@ class Home extends Component {
                     return <Page404/>;
                 }
                 else {
-                    if(type !== "de-cuong-mon-hoc") {
+                    if(type !== "de-cuong-mon-hoc" && type !== 'itusurvey') {
                         if(khoi !== "" && khoi !== undefined && khoi !== null) {
                             return <Page404/>;
                         }
@@ -337,7 +337,8 @@ class Home extends Component {
                                 content_tab={this.props.match.params.tab}
                                 content_monhoc={this.props.match.params.monhoc}
                                 content_khoi={this.props.match.params.khoi}
-                                content_ctdt={this.props.match.params.ctdt}/>
+                                content_ctdt={this.props.match.params.ctdt}
+                                subjectName={subjectName}/>
                         </Row>
                     </Col>
                 </Row>);

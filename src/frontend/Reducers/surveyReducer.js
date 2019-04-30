@@ -1,4 +1,5 @@
 import {SAVE_SURVEY} from '../Constant/ActionType';
+import axios from 'axios';
 
 const surveyInitialState = {
     survey: {}
@@ -6,7 +7,7 @@ const surveyInitialState = {
 const SurveyReducer = (state = surveyInitialState, action) => {
     switch (action.type) {
         case SAVE_SURVEY: {
-            console.log(action.survey)
+            axios.post('/save-survey-qa', { data: action.survey })
             return {
                 ...state,
                 survey: action.survey

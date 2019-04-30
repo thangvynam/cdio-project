@@ -433,5 +433,6 @@ export const MENUITEM = {
     TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc',
     XUAT_FILE_PDF:'xuat-file',
     DE_CUONG_MON_HOC: 'de-cuong-mon-hoc',
-    TAB_2: 'tab-2'
+    TAB_2: 'tab-2',
+    ITU_SURVEY: 'itusurvey'
 };

@@ -148,7 +148,7 @@ class Survey extends Component {
                             <div className="col-sm-12" >
                                 <br />
                                 <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
-                                <FormSurvey />
+                                <FormSurvey subjectName={this.props.subjectName}/>
                                 <br />
                                 <div style={{paddingLeft:"1em"}}>
                                     {this.genForm()}

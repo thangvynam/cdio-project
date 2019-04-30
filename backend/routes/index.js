@@ -598,6 +598,17 @@ router.post('/add-danhgia',function(req,res){
   })
 })
 
+router.post('/add-chude',function(req,res){
+  const data = req.body.data;
+  Model7.addChuDe(data,function(err,result){
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })
+})
+
 router.get('/get-chude',function(req,res){
   Model7.getChude(function(err,result){
     if(err){
@@ -607,6 +618,53 @@ router.get('/get-chude',function(req,res){
   })
 })
 
+router.post('/update-chude', function(req, res) {
+  let data = req.body.data
+  
+  Model7.updateChuDe(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-chude-from-danhgia', function(req, res) {
+  let data = req.body.data
+  
+  Model7.deletechudefromdanhgia(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-danhgia', function(req, res) {
+  let data = req.body.data
+  
+  Model7.deletedanhgia(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-chude', function(req, res) {
+  let data = req.body.data
+  
+  Model7.deleteChuDe(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
 
 router.get('/get-danhgia/:id',function(req,res){
   let id = req.params
@@ -647,6 +705,64 @@ router.get('/get-loaitainguyen',function(req,res){
   })
 })
 
+router.post('/add-loaitainguyen',function(req,res){
+  const data = req.body.data;
+  Model8.addLoaiTaiNguyen(data,function(err,result){
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })
+})
+
+router.post('/update-loaitainguyen', function(req, res) {
+  let data = req.body.data
+  
+  Model8.updateLoaiTaiNguyen(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-loaitainguyen-from-tainguyen', function(req, res) {
+  let data = req.body.data
+  
+  Model8.deleteloaitainguyenfromtainguyen(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-tainguyen', function(req, res) {
+  let data = req.body.data
+  
+  Model8.deleteTaiNguyen(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-loaitainguyen', function(req, res) {
+  let data = req.body.data
+  
+  Model8.deleteLoaiTaiNguyen(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
 
 router.get('/get-tainguyenmonhoc/:id',function(req,res){
   let id = req.params

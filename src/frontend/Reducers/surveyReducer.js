@@ -1,5 +1,4 @@
 import {SAVE_SURVEY,CHANGE_VALUE_ITU_SURVEY} from '../Constant/ActionType';
-import {SAVE_SURVEY} from '../Constant/ActionType';
 import axios from 'axios';
 
 const surveyInitialState = {

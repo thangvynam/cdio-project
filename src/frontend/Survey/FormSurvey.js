@@ -217,7 +217,7 @@ class FormSurvey extends Component {
                     <label class="col-sm-12"><strong>Các Thầy/Cô vui lòng điền thông tin I/T/U vào ô Hoạt động giảng dạy và đánh giá tương
                         ứng với chuẩn đầu ra mà môn học mình phụ trách bên trên (xét trên hiện trạng đang dạy)</strong></label>
 
-                    <Form.Item {...tailFormItemLayout}>
+                    {/* <Form.Item {...tailFormItemLayout}>
                         <div>
                             <Button type="primary" onClick={() => {
                                     let survey = {
@@ -241,7 +241,7 @@ class FormSurvey extends Component {
                                 Gửi<Icon type="right" />
                             </Button>
                         </div>
-                    </Form.Item>
+                    </Form.Item> */}
                 </Form>
             </div>
     )

@@ -19,7 +19,7 @@ const initialState = {
         name: "ITU SURVEY"
     },
     "view-survey": {
-        name: "VIEW SURVEY"
+        name: "QUẢN LÝ SURVEY"
     }
 }
 

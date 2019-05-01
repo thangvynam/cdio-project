@@ -41,4 +41,28 @@ ModelSurvey.collectData = (result) => {
         //close();
     }
 }
+
+ModelSurvey.getITU = (obj,result) => {
+    sql.query(`SELECT * FROM survey where id_ctdt =0 and id_mon =0 and id_giaovien =0`,(err,res)=>{
+        if(err){
+          console.log("err: ",err);
+          return result(null);
+        }
+        else{
+            return result(res);
+
+        }
+             });
+}
+
+ModelSurvey.getQA = (id,result) => {
+    sql.query(`SELECT * from survey_qa where id = 1`,(err,res ) => {
+        if(err) {
+            console.log("err: " , err);
+            return result(err);
+        }else
+        return result(res);
+    })
+}
+
 module.exports = ModelSurvey;

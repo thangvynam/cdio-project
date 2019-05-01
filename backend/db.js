@@ -8,7 +8,7 @@ var connection = mysql.createConnection({
   database : 'syllabus_db'
   // host     : 'localhost',
   // user     : 'root',
-  // password : '123456',
+  // password : 'hoangphupy',
   // database : 'syllabusdb'
 });
 connection.connect();

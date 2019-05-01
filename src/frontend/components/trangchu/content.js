@@ -25,6 +25,7 @@ import EditMatrix from '../matrix/editmatrix';
 import BenchMark from '../matrix/benchmark-matrix';
 import { nextTick } from 'q';
 import Survey from '../../Survey/Survey';
+import ViewSurvey from '../../Survey/ViewSurvey';
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -392,6 +393,7 @@ class Content extends Component {
                                                 </div>
                                             </React.Fragment>
                                         ) : null
+                                    : type === "view-survey" ? <ViewSurvey />
                                         : null;
                 }; break;
 

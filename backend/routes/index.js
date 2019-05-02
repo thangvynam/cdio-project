@@ -19,6 +19,7 @@ const MatrixModel = require('../models/MatrixModel');
 const DanhMucModel = require('../models/DanhMucModel');
 const ModelSurvey = require('../models/ModelSurvey');
 const MucTieuModel = require('../models/MucTieuModel');
+const SurveyQAModel = require('../models/SurveyQAModel');
 
 const dataRender1 ={
   title1 : '',
@@ -906,5 +907,11 @@ router.post('/add-data-survey',function(req,res){
   });
 })
 
+
+router.post('/save-survey-qa', function(req, res) {  
+  SurveyQAModel.save(req.body.data, (result) => {
+    res.send(result)
+  });
+})
 
 module.exports = router;

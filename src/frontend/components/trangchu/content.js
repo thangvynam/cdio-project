@@ -25,6 +25,7 @@ import EditMatrix from '../matrix/editmatrix';
 import BenchMark from '../matrix/benchmark-matrix';
 import { nextTick } from 'q';
 import Survey from '../../Survey/Survey';
+import ViewSurvey from '../../Survey/ViewSurvey';
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -152,6 +153,7 @@ class Content extends Component {
         let ctdt = this.props.content_ctdt;
         let khoi = this.props.content_khoi;
         switch (type) {
+            case 'itusurvey':
             case "de-cuong-mon-hoc": {
                 subjectList = this.props.subjectList;
             } break;
@@ -241,6 +243,15 @@ class Content extends Component {
                         <ThongTinChung />
                     </React.Fragment>
                 ); break
+            }
+
+            case MENUITEM.ITU_SURVEY: {
+                content_layout = (
+                    <React.Fragment>
+                        <Survey subjectName={this.props.subjectName}/>
+                    </React.Fragment>
+                )
+                break;
             }
 
             case undefined: {
@@ -337,8 +348,53 @@ class Content extends Component {
                             : type === "edit-matrix" ? <EditMatrix />
                                 : type === "benchmark-matrix" ? <BenchMark />
                                     : type === "danhmuc" ? <Danhmuc />
-                                        : type === "itusurvey" ? <Survey/>
-                                            : null;
+                                        : type === "itusurvey" ? 
+                                        content_layout = type === "itusurvey" && ctdt !== "" && ctdt !== undefined &&
+                                        khoi !== "" && khoi !== undefined ? (
+                                            <React.Fragment>
+                                                <div>                                         
+                                                    <List
+                                                        itemLayout="horizontal"
+                                                        dataSource={subjectList}
+                                                        renderItem={(item, id) => (
+                                                            <Row>
+                                                                <div style={{ height: "10px" }}></div>
+                                                                <Col span={1} className="col-left">
+                                                                </Col>
+                                                                <Col span={22} className="col-left">
+
+                                                                    <div className="list-border" style={{ borderRadius: "12px" }}>
+
+                                                                        <List.Item>
+                                                                            <List.Item.Meta
+                                                                                avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                                title={this.state.isEditting !== item.Id ?
+                                                                                    <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
+                                                                                    : (<Row>
+                                                                                        <Col span={6} className="col-left">
+                                                                                            <Input defaultValue={item.SubjectCode} id="subject-id-edit" />
+                                                                                        </Col>
+                                                                                        <Col span={1} className="col-left">
+                                                                                            <div className="div-center">-</div>
+                                                                                        </Col>
+                                                                                        <Col span={16} className="col-left">
+                                                                                            <Input defaultValue={item.SubjectName} id="subject-name-edit" />
+                                                                                        </Col>
+                                                                                    </Row>)
+                                                                                }
+                                                                            />
+                                                                        </List.Item>
+                                                                    </div>
+
+                                                                </Col>
+                                                            </Row>
+                                                        )}
+                                                    />
+                                                </div>
+                                            </React.Fragment>
+                                        ) : null
+                                    : type === "view-survey" ? <ViewSurvey />
+                                        : null;
                 }; break;
 
             }

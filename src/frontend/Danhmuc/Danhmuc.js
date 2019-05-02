@@ -19,6 +19,7 @@ const formItemLayout = {
 let itemClick = '';
 let value = '';
 let keyItem = '';
+
 function callback(key) {
     console.log(key);
 }

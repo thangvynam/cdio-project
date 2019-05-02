@@ -27,7 +27,11 @@ class MenuLeft extends Component {
     }
 
     redirect = () => {
-        this.props.updateContentTab(this.props.content_tab);            
+        this.props.updateContentTab(this.props.content_tab);  
+        if(this.props.content_type === 'itusurvey' && this.props.subjectId !== "" && this.props.subjectId !== undefined && (this.props.content_monhoc === "" ||
+        this.props.content_monhoc === undefined)) {
+            return <Redirect to={`/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_khoi}/${this.props.subjectId}/itusurvey`}/>
+        }          
         if(this.props.subjectId !== "" && this.props.subjectId !== undefined && (this.props.content_monhoc === "" ||
         this.props.content_monhoc === undefined)) {
             return <Redirect to={`/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_khoi}/${this.props.subjectId}/thong-tin-chung`}/>
@@ -127,6 +131,17 @@ class MenuLeft extends Component {
                         }
                         }
                         
+                    }
+
+                    if(this.props.content_type === "itusurvey" && key === "itusurvey") {
+                        for(let j = 0;j < this.props.ctdt[i].children.length;j++) {
+                            menuItemsCollapse.push(<Menu.Item key={this.props.ctdt[i].children[j].id} onClick={() => this.onClick(this.props.ctdt[i].children[j].id)}>
+                            <Link style={{paddingLeft: "40px"}} to={`/${this.props.ctdt[i].id}/${key}/${this.props.ctdt[i].children[j].id}`} >
+                                <Icon type="dashboard" />
+                                <span>{this.props.ctdt[i].children[j].name}</span>
+                            </Link>
+                            </Menu.Item>)
+                        }
                     }
                 })
             }

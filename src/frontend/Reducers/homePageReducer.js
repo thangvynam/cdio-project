@@ -16,7 +16,10 @@ const initialState = {
         name: "DANH MỤC"
     },
     "itusurvey": {
-        name: "ITU Survey"
+        name: "ITU SURVEY"
+    },
+    "view-survey": {
+        name: "QUẢN LÝ SURVEY"
     }
 }
 

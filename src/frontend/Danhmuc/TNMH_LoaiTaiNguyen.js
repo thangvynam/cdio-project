@@ -8,7 +8,7 @@ import axios from 'axios';
 const Panel = Collapse.Panel;
 const formItemLayout = {
     labelCol: {
-        xs: { span: 12 },
+        xs: { span: 16 },
         sm: { span: 8 },
     },
     wrapperCol: {
@@ -17,7 +17,6 @@ const formItemLayout = {
     },
 };
 
-const levelOptions = ["1", "2", "3", "4", "5"];
 const Option = Select.Option;
 const EditableContext = React.createContext();
 
@@ -39,22 +38,7 @@ const openNotificationWithIcon = (type) => {
 class EditableCell extends Component {
 
     getInput = () => {
-  
-      if (this.props.inputType === 'muc_do_1') {
-        return <Input style={{ width: '100%' }}/>
-      }
-      else if(this.props.inputType === 'muc_do_2') {
-        const levelOptions2 = levelOptions.map((item, id) => {
-            return <Option key={id} value={item}>{item}</Option>
-          });
-        return <Select style={{ width: '100%' }}>
-                {levelOptions2}
-            </Select>
-      }
-      else {
         return <Input style={{ width: '100%' }} />
-      }
-      
     };
   
     render() {
@@ -93,7 +77,7 @@ class EditableCell extends Component {
     }
   }
 
-class MucDoHanhDong extends Component {
+class TNMH_LoaiTaiNguyen extends Component {
 
     constructor(props) {
         super(props);
@@ -101,41 +85,16 @@ class MucDoHanhDong extends Component {
             selecteditem: [],
             editstate: '',
             dataSource: [],
-            level_select: '',
             visible: false
         }
         this.columns = [{
-            title: 'Loại mức độ',
-            dataIndex: 'muc_do_1',
-            key: 'muc_do_1',
-            width: 200,
+            title: 'Loại tài nguyên',
+            dataIndex: 'loai',
+            key: 'loai',
+            width: 600,
             editable: true,
             align: "center",
             render: text => <p>{text}</p>,
-          }, {
-            title: 'Cấp mức độ',
-            dataIndex: 'muc_do_2',
-            key: 'muc_do_2',
-            width: 200,
-            align: "center",
-            editable: true,
-            render: level => {
-              let color = level === 1 ? 'green' :
-              level === 2 ? 'volcano' : level === 3 ? 'yellow' : level === 4 ? 'blue' : 'orange';
-              return (
-                <span>
-                  <Tag color={color} key={level}>{level}</Tag>
-              </span>
-              )
-              
-          }
-          }, {
-            title: 'Động từ',
-            dataIndex: 'muc_do_3',
-            key: 'muc_do_3',
-            width: 400,
-            editable: true,
-            align: "center",
           }, 
           {
             title: 'Action',
@@ -197,14 +156,12 @@ class MucDoHanhDong extends Component {
       };
 
       loadTable = () => {
-        axios.get('/collect-cdrmdhd-4').then((res) => {
+        axios.get('/get-loaitainguyen').then((res) => {
           let data = [];
           for(let i = 0;i < res.data.length;i++) {
             data.push({
                 key: res.data[i].id,
-                muc_do_1: res.data[i].muc_do_1,
-                muc_do_2: res.data[i].muc_do_2,
-                muc_do_3: res.data[i].muc_do_3
+                loai: res.data[i].loai,
             })
           }
           this.setState({dataSource: data});        
@@ -215,7 +172,7 @@ class MucDoHanhDong extends Component {
           if (error) {
             return;
           }
-          axios.post("/update-cdrmdhd", { data: {id: key, muc_do_1: row.muc_do_1, muc_do_2: row.muc_do_2, muc_do_3: row.muc_do_3}}).then(
+          axios.post("/update-loaitainguyen", { data: {id: key, loai: row.loai}}).then(
             res => {
               this.loadTable();
               this.setState({editstate: ''});
@@ -231,31 +188,36 @@ class MucDoHanhDong extends Component {
 
       
       handleDelete = (key) => {
-        axios.post("/delete-cdrmdhd-from-cdr", { data: [key]}).then(
+        axios.post("/delete-loaitainguyen-from-tainguyen", { data: [key]}).then(
           res => {
-            axios.post("/delete-cdrmdhd", { data: [key]}).then(
-              res => {
-                this.loadTable();
-                this.setState({editstate: ''});
-                this.setState({selecteditem: []});
-                openNotificationWithIcon('success');
-              });
+            axios.post("/delete-tainguyen", { data: [key]}).then(
+                res => {
+                    axios.post("/delete-loaitainguyen", { data: [key]}).then(
+                        res => {
+                          this.loadTable();
+                          this.setState({editstate: ''});
+                          this.setState({selecteditem: []});
+                          openNotificationWithIcon('success');
+                        });
+                })
           });
         
       }
 
       handleOk = () => {
-        console.log(this.state.selecteditem);
         let data = [];
-        axios.post("/delete-cdrmdhd-from-cdr", { data: this.state.selecteditem}).then(
+        axios.post("/delete-loaitainguyen-from-tainguyen", { data: this.state.selecteditem}).then(
           res => {
-            axios.post("/delete-cdrmdhd", { data: this.state.selecteditem}).then(
-              res => {
-                this.loadTable();
-                this.setState({editstate: ''});
-                this.setState({selecteditem: []});
-                openNotificationWithIcon('success');
-              });
+            axios.post("/delete-tainguyen", { data: this.state.selecteditem}).then(
+                res => {
+                    axios.post("/delete-loaitainguyen", { data: this.state.selecteditem}).then(
+                        res => {
+                          this.loadTable();
+                          this.setState({editstate: ''});
+                          this.setState({selecteditem: []});
+                          openNotificationWithIcon('success');
+                        });
+                })
           });
         this.setState({
           visible: false,
@@ -268,41 +230,23 @@ class MucDoHanhDong extends Component {
         });
       }
 
-      onChange = (value) => {
-        this.setState({level_select: value})
-      }
-
       addRow = () => {
-        let muc_do_1 = document.getElementById("input-1").value;
-        let muc_do_3 = document.getElementById("input-2").value;
-        if(muc_do_1 === "" || muc_do_1 === undefined || muc_do_1 === null) {
-          message.warning("Chưa nhập loại mức độ!");
+        let loai = document.getElementById("input-1").value;
+        if(loai === "" || loai === undefined || loai === null) {
+          message.warning("Chưa nhập loại tài nguyên!");
         }
         else {
-          if(this.state.level_select === "" || this.state.level_select === undefined || this.state.level_select === null) {
-            message.warning("Chưa chọn mức độ!");
-          }
-          else {
-            if(muc_do_3 === "" || muc_do_3 === undefined || muc_do_3 === null) {
-              message.warning("Chưa nhập động từ!");
-            }
-            else {
-              axios.post("/add-cdrmdhd", { data: {muc_do_1: muc_do_1, muc_do_2: this.state.level_select, muc_do_3: muc_do_3}}).then(
-                res => {
-                  this.loadTable();
-                  openNotificationWithIcon('success');
-                })
-            }
-          }
+            axios.post("/add-loaitainguyen", { data: {loai: loai}}).then(
+            res => {
+                this.loadTable();
+                openNotificationWithIcon('success');
+            })
         }
       }
       componentDidMount() {
         this.loadTable();
       }
     render() {
-        const levelOptions2 = levelOptions.map((item, id) => {
-            return <Option key={id} value={item}>{item}</Option>
-          });
 
           const components = {
             body: {
@@ -326,7 +270,7 @@ class MucDoHanhDong extends Component {
           ...col,
           onCell: record => ({
             record,
-            inputType: col.dataIndex === 'muc_do_1' ? 'muc_do_1' : col.dataIndex === 'muc_do_2' ? 'muc_do_2' : 'muc_do_3',
+            inputType: col.dataIndex === 'ma_chu_de' ? 'ma_chu_de' : 'ten_chu_de',
             dataIndex: col.dataIndex,
             title: col.title,
             editing: this.isEditing(record),
@@ -336,36 +280,19 @@ class MucDoHanhDong extends Component {
 
         return (
             <Collapse >
-                <Panel header="Danh mục chuẩn đầu ra mức độ hành động" key="1">
+                <Panel header="Danh mục loại tài nguyên môn học" key="1">
                 <Row>
-                <Col span={4}>
+                <Col span={6}>
                 </Col>
-                    <Col span={4}>
+                    <Col span={6}>
                 <Form.Item
             {...formItemLayout}
-            label="Loại"
+            label="Loại tài nguyên: "
           >
               <Input id="input-1"/>
           </Form.Item>
           </Col>
-          <Col span={4}>
-          <Form.Item
-            {...formItemLayout}
-            label="Level"
-          >
-              <Select onChange={this.onChange} style={{ width: 120 }}>
-                  {levelOptions2}
-            </Select>
-          </Form.Item>
-          </Col>
-          <Col span={4}>
-          <Form.Item
-            {...formItemLayout}
-            label="Động từ"
-          >
-              <Input id="input-2"/>
-          </Form.Item>
-          </Col>
+
           <Col span={4}>
           <Form.Item>
               <Button onClick={this.addRow} type="primary" style={{ marginLeft: "5em" }}>Thêm</Button>
@@ -413,4 +340,4 @@ class MucDoHanhDong extends Component {
     }
 }
 
-export default MucDoHanhDong;
+export default TNMH_LoaiTaiNguyen;

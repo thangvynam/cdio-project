@@ -23,6 +23,7 @@ import axios from 'axios';
 import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
 import BenchMark from '../matrix/benchmark-matrix';
+import SurveyMatrix from '../matrix/survey-matrix';
 import { nextTick } from 'q';
 import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
@@ -249,7 +250,7 @@ class Content extends Component {
             case MENUITEM.ITU_SURVEY: {
                 content_layout = (
                     <React.Fragment>
-                        <Survey subjectName={this.props.subjectName}/>
+                        <Survey subjectName={this.props.subjectName} />
                     </React.Fragment>
                 )
                 break;
@@ -292,6 +293,7 @@ class Content extends Component {
                         </React.Fragment>
                     ) : type === "matrix" ? <Matrix />
                             : type === "edit-matrix" ? <EditMatrix />
+                               : type === "survey-matrix" ? <SurveyMatrix />
                                 : type === "benchmark-matrix" ? <BenchMark />
                                     : type === "danhmuc" ? <Danhmuc />
                                         : type === "itusurvey" ? 
@@ -328,6 +330,7 @@ class Content extends Component {
                                                 </div>
                                             </React.Fragment>
                                         ) : null
+                                    
                                     : type === "view-survey" ? <ViewSurvey />
                                     : content_layout = ctdt !== "" && ctdt !== undefined ? (
                                         <div>component nhóm 1</div>
@@ -365,6 +368,7 @@ class Content extends Component {
                                             </div>
                                         </React.Fragment>
                                     ) : null;
+
                 }; break;
 
             }

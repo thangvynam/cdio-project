@@ -46,12 +46,11 @@ class NavBar extends Component {
         for(let i = 0;i < ctdt.length;i++) {
             if(ctdt[i].id === ctdtId) {
                 for(let j = 0;j < ctdt[i].children.length;j++) {
-                    if( ctdt[i].children[i].id === id) {
-                        return  ctdt[i].children[i].name;
+                    if( ctdt[i].children[j].id === id) {
+                        return  ctdt[i].children[j].name;
                     }
                 }
-            }
-            
+            } 
         }
         return "";
     }

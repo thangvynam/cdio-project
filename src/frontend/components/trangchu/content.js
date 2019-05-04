@@ -23,6 +23,7 @@ import axios from 'axios';
 import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
 import BenchMark from '../matrix/benchmark-matrix';
+import SurveyMatrix from '../matrix/survey-matrix';
 import { nextTick } from 'q';
 import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
@@ -248,7 +249,7 @@ class Content extends Component {
             case MENUITEM.ITU_SURVEY: {
                 content_layout = (
                     <React.Fragment>
-                        <Survey subjectName={this.props.subjectName}/>
+                        <Survey subjectName={this.props.subjectName} />
                     </React.Fragment>
                 )
                 break;
@@ -257,144 +258,145 @@ class Content extends Component {
             case undefined: {
                 {
                     content_layout = type === "de-cuong-mon-hoc" && ctdt !== "" && ctdt !== undefined &&
-                     khoi !== "" && khoi !== undefined ? (
-                        <React.Fragment>
-                            <div>
-                                <Modal
-                                    title="Thêm môn học"
-                                    visible={this.state.visible}
-                                    onOk={this.handleOk}
-                                    onCancel={this.handleCancel}
-                                    okText="OK"
-                                    cancelText="Cancel"
-                                    centered
-                                    destroyOnClose={true}
-                                >
-                                    <p>Mã môn học: </p>
-                                    <Input style={{ width: "100%" }} id="subject-id" />
-                                    <p>Tên môn học: </p>
-                                    <Input style={{ width: "100%" }} id="subject-name" />
-                                </Modal>
-                                <Row>
-                                    <div style={{ height: "10px" }}></div>
-                                    <Col span={1} className="col-left">
-                                    </Col>
+                        khoi !== "" && khoi !== undefined ? (
+                            <React.Fragment>
+                                <div>
+                                    <Modal
+                                        title="Thêm môn học"
+                                        visible={this.state.visible}
+                                        onOk={this.handleOk}
+                                        onCancel={this.handleCancel}
+                                        okText="OK"
+                                        cancelText="Cancel"
+                                        centered
+                                        destroyOnClose={true}
+                                    >
+                                        <p>Mã môn học: </p>
+                                        <Input style={{ width: "100%" }} id="subject-id" />
+                                        <p>Tên môn học: </p>
+                                        <Input style={{ width: "100%" }} id="subject-name" />
+                                    </Modal>
+                                    <Row>
+                                        <div style={{ height: "10px" }}></div>
+                                        <Col span={1} className="col-left">
+                                        </Col>
 
-                                    <Button onClick={this.addSubject} style={{ width: "30%", alignContent: "center" }}><Icon type="plus" />Thêm môn học</Button>
-                                </Row>
-                                <List
-                                    itemLayout="horizontal"
-                                    dataSource={subjectList}
-                                    renderItem={(item, id) => (
-                                        <Row>
-                                            <div style={{ height: "10px" }}></div>
-                                            <Col span={1} className="col-left">
-                                            </Col>
-                                            <Col span={22} className="col-left">
+                                        <Button onClick={this.addSubject} style={{ width: "30%", alignContent: "center" }}><Icon type="plus" />Thêm môn học</Button>
+                                    </Row>
+                                    <List
+                                        itemLayout="horizontal"
+                                        dataSource={subjectList}
+                                        renderItem={(item, id) => (
+                                            <Row>
+                                                <div style={{ height: "10px" }}></div>
+                                                <Col span={1} className="col-left">
+                                                </Col>
+                                                <Col span={22} className="col-left">
 
-                                                <div className="list-border" style={{ borderRadius: "12px" }}>
+                                                    <div className="list-border" style={{ borderRadius: "12px" }}>
 
-                                                    <List.Item actions={this.state.isEditting === "" || this.state.isEditting === undefined || this.state.isEditting !== item.Id ? [<a href="#a" onClick={() => this.edit(item.Id)} style={{ fontSize: "12pt" }}>Sửa</a>,
-                                                    <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.handleDelete(id)}>
-                                                        <a href="#a">Xóa</a>
-                                                    </Popconfirm>] : [
-                                                            <EditableContext.Consumer>
-                                                                {form => (
-                                                                    <a
-                                                                        href="#a"
-                                                                        onClick={() => this.save(id)}
-                                                                        style={{ marginRight: 8 }}
-                                                                    >
-                                                                        Save
+                                                        <List.Item actions={this.state.isEditting === "" || this.state.isEditting === undefined || this.state.isEditting !== item.Id ? [<a href="#a" onClick={() => this.edit(item.Id)} style={{ fontSize: "12pt" }}>Sửa</a>,
+                                                        <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.handleDelete(id)}>
+                                                            <a href="#a">Xóa</a>
+                                                        </Popconfirm>] : [
+                                                                <EditableContext.Consumer>
+                                                                    {form => (
+                                                                        <a
+                                                                            href="#a"
+                                                                            onClick={() => this.save(id)}
+                                                                            style={{ marginRight: 8 }}
+                                                                        >
+                                                                            Save
                         </a>
 
-                                                                )}
-                                                            </EditableContext.Consumer>,
-                                                            <Popconfirm
-                                                                title="Hủy bỏ?"
-                                                                onConfirm={() => this.cancel()}
-                                                            >
-                                                                <a href="#a">Cancel</a>
-                                                            </Popconfirm>
-                                                        ]}>
-                                                        <List.Item.Meta
-                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                            title={this.state.isEditting !== item.Id ?
-                                                                <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
-                                                                : (<Row>
-                                                                    <Col span={6} className="col-left">
-                                                                        <Input defaultValue={item.SubjectCode} id="subject-id-edit" />
-                                                                    </Col>
-                                                                    <Col span={1} className="col-left">
-                                                                        <div className="div-center">-</div>
-                                                                    </Col>
-                                                                    <Col span={16} className="col-left">
-                                                                        <Input defaultValue={item.SubjectName} id="subject-name-edit" />
-                                                                    </Col>
-                                                                </Row>)
-                                                            }
-                                                        />
-                                                    </List.Item>
-                                                </div>
+                                                                    )}
+                                                                </EditableContext.Consumer>,
+                                                                <Popconfirm
+                                                                    title="Hủy bỏ?"
+                                                                    onConfirm={() => this.cancel()}
+                                                                >
+                                                                    <a href="#a">Cancel</a>
+                                                                </Popconfirm>
+                                                            ]}>
+                                                            <List.Item.Meta
+                                                                avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                title={this.state.isEditting !== item.Id ?
+                                                                    <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
+                                                                    : (<Row>
+                                                                        <Col span={6} className="col-left">
+                                                                            <Input defaultValue={item.SubjectCode} id="subject-id-edit" />
+                                                                        </Col>
+                                                                        <Col span={1} className="col-left">
+                                                                            <div className="div-center">-</div>
+                                                                        </Col>
+                                                                        <Col span={16} className="col-left">
+                                                                            <Input defaultValue={item.SubjectName} id="subject-name-edit" />
+                                                                        </Col>
+                                                                    </Row>)
+                                                                }
+                                                            />
+                                                        </List.Item>
+                                                    </div>
 
-                                            </Col>
-                                        </Row>
-                                    )}
-                                />
+                                                </Col>
+                                            </Row>
+                                        )}
+                                    />
 
-                            </div>
-                        </React.Fragment>
-                    ) : type === "matrix" ? <Matrix />
+                                </div>
+                            </React.Fragment>
+                        ) : type === "matrix" ? <Matrix />
                             : type === "edit-matrix" ? <EditMatrix />
-                                : type === "benchmark-matrix" ? <BenchMark />
-                                    : type === "danhmuc" ? <Danhmuc />
-                                        : type === "itusurvey" ? 
-                                        content_layout = type === "itusurvey" && ctdt !== "" && ctdt !== undefined &&
-                                        khoi !== "" && khoi !== undefined ? (
-                                            <React.Fragment>
-                                                <div>                                         
-                                                    <List
-                                                        itemLayout="horizontal"
-                                                        dataSource={subjectList}
-                                                        renderItem={(item, id) => (
-                                                            <Row>
-                                                                <div style={{ height: "10px" }}></div>
-                                                                <Col span={1} className="col-left">
-                                                                </Col>
-                                                                <Col span={22} className="col-left">
+                                : type === "survey-matrix" ? <SurveyMatrix />
+                                    : type === "benchmark-matrix" ? <BenchMark />
+                                        : type === "danhmuc" ? <Danhmuc />
+                                            : type === "itusurvey" ?
+                                                content_layout = type === "itusurvey" && ctdt !== "" && ctdt !== undefined &&
+                                                    khoi !== "" && khoi !== undefined ? (
+                                                        <React.Fragment>
+                                                            <div>
+                                                                <List
+                                                                    itemLayout="horizontal"
+                                                                    dataSource={subjectList}
+                                                                    renderItem={(item, id) => (
+                                                                        <Row>
+                                                                            <div style={{ height: "10px" }}></div>
+                                                                            <Col span={1} className="col-left">
+                                                                            </Col>
+                                                                            <Col span={22} className="col-left">
 
-                                                                    <div className="list-border" style={{ borderRadius: "12px" }}>
+                                                                                <div className="list-border" style={{ borderRadius: "12px" }}>
 
-                                                                        <List.Item>
-                                                                            <List.Item.Meta
-                                                                                avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                                                title={this.state.isEditting !== item.Id ?
-                                                                                    <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
-                                                                                    : (<Row>
-                                                                                        <Col span={6} className="col-left">
-                                                                                            <Input defaultValue={item.SubjectCode} id="subject-id-edit" />
-                                                                                        </Col>
-                                                                                        <Col span={1} className="col-left">
-                                                                                            <div className="div-center">-</div>
-                                                                                        </Col>
-                                                                                        <Col span={16} className="col-left">
-                                                                                            <Input defaultValue={item.SubjectName} id="subject-name-edit" />
-                                                                                        </Col>
-                                                                                    </Row>)
-                                                                                }
-                                                                            />
-                                                                        </List.Item>
-                                                                    </div>
+                                                                                    <List.Item>
+                                                                                        <List.Item.Meta
+                                                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                                            title={this.state.isEditting !== item.Id ?
+                                                                                                <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
+                                                                                                : (<Row>
+                                                                                                    <Col span={6} className="col-left">
+                                                                                                        <Input defaultValue={item.SubjectCode} id="subject-id-edit" />
+                                                                                                    </Col>
+                                                                                                    <Col span={1} className="col-left">
+                                                                                                        <div className="div-center">-</div>
+                                                                                                    </Col>
+                                                                                                    <Col span={16} className="col-left">
+                                                                                                        <Input defaultValue={item.SubjectName} id="subject-name-edit" />
+                                                                                                    </Col>
+                                                                                                </Row>)
+                                                                                            }
+                                                                                        />
+                                                                                    </List.Item>
+                                                                                </div>
 
-                                                                </Col>
-                                                            </Row>
-                                                        )}
-                                                    />
-                                                </div>
-                                            </React.Fragment>
-                                        ) : null
-                                    : type === "view-survey" ? <ViewSurvey />
-                                        : null;
+                                                                            </Col>
+                                                                        </Row>
+                                                                    )}
+                                                                />
+                                                            </div>
+                                                        </React.Fragment>
+                                                    ) : null
+                                                : type === "view-survey" ? <ViewSurvey />
+                                                    : null;
                 }; break;
 
             }

@@ -3,6 +3,9 @@ const initialState = {
     "de-cuong-mon-hoc" :{
         name: "ĐỀ CƯƠNG MÔN HỌC",
     },
+    "survey-matrix" :{
+        name: "SURVEY MATRIX",
+    },
     "matrix": {
         name: "MATRIX",
     },

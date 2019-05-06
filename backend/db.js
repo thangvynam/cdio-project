@@ -2,6 +2,7 @@ var mysql = require('mysql')
 
 var connection = mysql.createConnection({
 
+
   host     : 'db4free.net',
   user     : 'syllabus_db',
   password : 'Aa123456',
@@ -10,6 +11,7 @@ var connection = mysql.createConnection({
   // user     : 'root',
   // password : 'hoangphupy',
   // database : 'syllabusdb'
+
 });
 connection.connect();
 module.exports = connection;

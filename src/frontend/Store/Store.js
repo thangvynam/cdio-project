@@ -15,7 +15,7 @@ import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import matrixReducer from "../Reducers/matrixReducer";
 import benchmarkReducer from "../Reducers/benchmarkMatrixReducer";
-import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer, cdrCdioReducer, ctdtReducer } from '../Reducers/homePageReducer';
+import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer, cdrCdioReducer, ctdtReducer, parentItemReducer } from '../Reducers/homePageReducer';
 import logReducer from "../Reducers/logReducer"
 
 import { createStore, applyMiddleware} from 'redux';
@@ -52,6 +52,7 @@ const allReducers = redux.combineReducers({
     // tndata: changeTNDataReducer,
     // loaitainguyenReducer: loaiTaiNguyenReducer,
     menuitem: menuItemReducer,
+    parentitem: parentItemReducer,
     ctdt: ctdtReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,

@@ -265,8 +265,8 @@ Model4.updatecdrmdhd = (data, result) => {
 }
 
 Model4.deletecdrmdhdfromcdr = (data, result) => {
-    for(let i = 0;i < data.length;i++) {
-        sql.query(`update chuan_dau_ra_mon_hoc set cdrmh_muc_do_hanh_dong_id = -1 where cdrmh_muc_do_hanh_dong_id = ${data[i]}`,
+    let idString = "(" + data.toString() + ")";
+        sql.query(`update chuan_dau_ra_mon_hoc set cdrmh_muc_do_hanh_dong_id = -1 where (cdrmh_muc_do_hanh_dong_id) IN ${idString}`,
         (err, res) => {
             if (err) {
                 console.log("error:", err);
@@ -275,7 +275,7 @@ Model4.deletecdrmdhdfromcdr = (data, result) => {
                 result(null, res);
             }
         })
-    }
+    
 }
 
 Model4.deletecdrmdhd = (data, result) => {

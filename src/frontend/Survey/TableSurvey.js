@@ -19,18 +19,25 @@ class TableSurvey extends Component {
 
     tableBody() {
         const data = this.props.data;
+        const dataITU = this.props.resultITU;
+        // console.log(dataITU)
         let template = [];
 
         data.map(function (column) {
             let key = column.split('_')[0];
             let value = column.split('_')[1];
-
+            let valueOfKey ;
+            if(dataITU){
+               valueOfKey= Object.keys(dataITU).find(item => dataITU[item].id===key)
+            }
+            
             template.push(
                 <tr>
                     <td>{value}</td>
                     <td>
                         <CheckboxSurvey 
                             id = {key}
+                            defaultValue = {valueOfKey ? dataITU[valueOfKey].value : null}
                         />
                     </td>
                     <td>

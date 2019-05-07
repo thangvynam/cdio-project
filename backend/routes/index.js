@@ -927,4 +927,11 @@ router.get('/get-surveyqa/:id', function(req, res) {
   })  
 })
 
+router.get('/get-survey/:id',function(req,res){
+  let id = req.params
+  ModelSurvey.getITUwithQA(id,(result) => {
+    res.send(result);
+  })
+})
+
 module.exports = router;

@@ -65,4 +65,16 @@ ModelSurvey.getQA = (id,result) => {
     })
 }
 
+ModelSurvey.getITUwithQA = (id,result) => {
+    sql.query(`SELECT * FROM survey where id_ctdt =0 and id_mon =1 and id_giaovien =0 and id_qa=0`,(err,res ) => {
+        if(err) {
+            console.log("err: " , err);
+            return result(err);
+        }else{
+            return result(res);
+        }
+        
+    })
+}
+
 module.exports = ModelSurvey;

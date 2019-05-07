@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import {
     Collapse,
 } from 'antd';
-import Survey from './Survey';
-import SurveyDetail from './SurveyDetail';
 
 const Panel = Collapse.Panel;
 
@@ -27,15 +25,11 @@ class ItemVIewSurvey extends Component {
         );
     }
     render() {
-        console.log(this.props.subjectId)
         return (
             <div>
                 <Collapse onChange={callback}>
-                    <Panel header={this.genTitle()} key = {this.props.subjectId}>
-                        <SurveyDetail 
-                        subjectName = {this.props.title}
-                        subjectId = {this.props.subjectId}
-                        />
+                    <Panel header={this.genTitle()}>
+                        <p>Show ra các phiếu </p>
                     </Panel>
                 </Collapse>
             </div>

@@ -154,10 +154,13 @@ class Content extends Component {
         let ctdt = this.props.content_ctdt;
         let khoi = this.props.content_khoi;
         let parent = this.props.content_parent;
-        switch (type) {
-            case 'itusurvey':
+        switch (type) {           
             case "de-cuong-mon-hoc": {
                 subjectList = this.props.subjectList;
+            } break;
+            case 'itusurvey': {
+                subjectList = this.props.subjectList;
+                
             } break;
 
             default: {
@@ -296,9 +299,7 @@ class Content extends Component {
                                : type === "survey-matrix" ? <SurveyMatrix />
                                 : type === "benchmark-matrix" ? <BenchMark />
                                     : type === "danhmuc" ? <Danhmuc />
-                                        : type === "itusurvey" ? 
-                                        content_layout = type === "itusurvey" && ctdt !== "" && ctdt !== undefined &&
-                                        khoi !== "" && khoi !== undefined ? (
+                                        : type === "itusurvey" ?                        
                                             <React.Fragment>
                                                 <div>                                         
                                                     <List
@@ -329,7 +330,6 @@ class Content extends Component {
                                                     />
                                                 </div>
                                             </React.Fragment>
-                                        ) : null
                                     
                                     : type === "view-survey" ? <ViewSurvey />
                                     : content_layout = ctdt !== "" && ctdt !== undefined ? (

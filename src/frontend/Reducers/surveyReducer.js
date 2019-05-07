@@ -8,7 +8,9 @@ const surveyInitialState = {
 const SurveyReducer = (state = surveyInitialState, action) => {
     switch (action.type) {
         case SAVE_SURVEY: {
-            axios.post('/save-survey-qa', { data: action.survey })
+            axios.post('/save-survey-qa', { data: action.survey }).then((res) => {
+                console.log(res)
+            })
             return {
                 ...state,
                 survey: action.survey

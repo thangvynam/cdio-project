@@ -305,7 +305,32 @@ class Home extends Component {
                             }
                         } 
                     }
-                }
+                    else {
+                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                            if(khoi === "view") {
+                                if(type !== "itusurvey") {
+                                    if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                                        console.log(4)
+                                        return <Page404/>;
+                                    } 
+                                } 
+                            } else {
+                                if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                                    console.log(4)
+                                    return <Page404/>;
+                                } 
+                            }
+                        }
+                           
+            
+                        if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
+                            if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
+                                console.log(5)
+                                return <Page404/>;
+                            }    
+                        }
+                    }
+                } 
             }
 
             

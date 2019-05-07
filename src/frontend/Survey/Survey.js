@@ -171,14 +171,34 @@ class Survey extends Component {
     }
 
     saveAll = () => {
-        let data = this.props.surveyReducer.dataValueITU;
+        // let data = this.props.surveyReducer.dataValueITU;
         
-        let dataConvert = this.convertToObject(data);
-        axios.post("/add-data-survey",{data: dataConvert})
-            .then(response=>{
-                //const data= response.data;
+        // let dataConvert = this.convertToObject(data);
+        // axios.post("/add-data-survey",{data: dataConvert})
+        //     .then(response=>{
+        //         //const data= response.data;
                 
-            });
+        //     });
+        let surveyData = this.props.surveyReducer;
+        let survey = {
+            tenMH: surveyData.tenMH,
+            nguoiDuocKS: surveyData.nguoiDuocKS,
+            nguoiKS: surveyData.nguoiKS,
+            q1: surveyData.q1,
+            q2: surveyData.q2,
+            q3: surveyData.q3,
+            q4: surveyData.q4,
+            q5: surveyData.q5,
+            q6: surveyData.q6,
+            q7: surveyData.q7,
+            q8: surveyData.q8,
+            q9: surveyData.q9,
+            q10: surveyData.q10,
+            q11: surveyData.q11,
+        } 
+        axios.post('/save-survey-qa', { data: survey }).then((res) => {
+                console.log(res)
+            })
     }
 
     render() {

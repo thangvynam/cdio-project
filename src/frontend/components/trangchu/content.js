@@ -151,10 +151,14 @@ class Content extends Component {
         let type = this.props.content_type;
         let ctdt = this.props.content_ctdt;
         let khoi = this.props.content_khoi;
-        switch (type) {
-            case 'itusurvey':
+        let parent = this.props.content_parent;
+        switch (type) {           
             case "de-cuong-mon-hoc": {
                 subjectList = this.props.subjectList;
+            } break;
+            case 'itusurvey': {
+                subjectList = this.props.subjectList;
+                
             } break;
 
             default: {
@@ -347,9 +351,7 @@ class Content extends Component {
                             : type === "edit-matrix" ? <EditMatrix />
                                 : type === "benchmark-matrix" ? <BenchMark />
                                     : type === "danhmuc" ? <Danhmuc />
-                                        : type === "itusurvey" ? 
-                                        content_layout = type === "itusurvey" && ctdt !== "" && ctdt !== undefined &&
-                                        khoi !== "" && khoi !== undefined ? (
+                                        : type === "itusurvey" ?                        
                                             <React.Fragment>
                                                 <div>                                         
                                                     <List
@@ -391,8 +393,45 @@ class Content extends Component {
                                                     />
                                                 </div>
                                             </React.Fragment>
-                                        ) : null
-                                        : null;
+                                    
+                                    : type === "view-survey" ? <ViewSurvey />
+                                    : content_layout = ctdt !== "" && ctdt !== undefined ? (
+                                        <div>component nhóm 1</div>
+                                    )
+                                    : content_layout = parent === "ctdt"  ? (
+                                        <React.Fragment>
+                                            <div>
+                                                <List
+                                                    itemLayout="horizontal"
+                                                    dataSource={this.props.ctdt}
+                                                    renderItem={(item, id) => (
+                                                        <Row>
+                                                            <div style={{ height: "10px" }}></div>
+                                                            <Col span={1} className="col-left">
+                                                            </Col>
+                                                            <Col span={22} className="col-left">
+                
+                                                                <div className="list-border" style={{ borderRadius: "12px" }}>
+                
+                                                                <List.Item>
+                                                                        <List.Item.Meta
+                                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                            title={
+                                                                                <Link to={`/${parent}/${item.id}`}><div className="list-item">{`${item.id} - ${item.name}`}</div></Link> 
+                                                                            }
+                                                                        />
+                                                                </List.Item>
+                                                                </div>
+                
+                                                            </Col>
+                                                        </Row>
+                                                    )}
+                                                />
+                
+                                            </div>
+                                        </React.Fragment>
+                                    ) : null;
+
                 }; break;
 
             }

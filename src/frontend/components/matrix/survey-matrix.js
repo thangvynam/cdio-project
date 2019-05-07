@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Tooltip, Tag, Popover } from 'antd';
 import { pathToFileURL } from 'url';
 import { isUndefined } from 'util';
-import { Link } from 'react-router-dom';
+import {Link} from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
 
@@ -149,7 +149,7 @@ import './matrix.css'
 //   }
 // ];
 
-
+const href = "/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey";
 
 const myData = [
   {
@@ -238,7 +238,6 @@ class SurveyMatrix extends Component {
     }
   }
 
-
   //---Create Header---//
   getCDRHeader = (myData) => {
     const arrCDR = [];
@@ -260,21 +259,37 @@ class SurveyMatrix extends Component {
     return result;
   }
 
+  getDataLink = (data,ITU) => {
+    let dataLink = [];
+    for (let i = 0; i < data[0].length; i++) {
+      if (data[0][i] === ITU) {
+        let obj = [];
+        obj.push(data[0][i]);
+        obj.push(data[1][i]);
+        dataLink.push(obj);
+      }
+    }
+    return dataLink;
+  }
+
   showITU = (text) => {
     //T*T*T*U*U*U/1*2*3*1*2*3
     let value = "-";
     let data = (!_.isEmpty(text) && text !== "-/-") ? text.split('/') : [];
     if (!_.isEmpty(data)) {
+      // console.log("data I : " + data[0].split('I').length)
+      // console.log("length I : " + data[0].split('I').length-1);
       let tagRender = [];
       let countI = data[0].split('I').length - 1;
       let countT = data[0].split('T').length - 1;
       let countU = data[0].split('U').length - 1;
+
       if (countI > 0) {
+        const dataLink = this.getDataLink(data,'I');
+        
         const content = (
           <div className="popover">
-            <Link to={`/a`}>Content1</Link>
-            <Link to={`/b`}>Content2</Link>
-            <Link to={`/c`}>Content3</Link>
+            <Link to={`/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey?id=1`}>Content1</Link>
           </div>
         );
         // const a = this.groupCDRWithID("I", data);

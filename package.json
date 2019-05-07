@@ -8,6 +8,7 @@
     "chart.js": "^2.8.0",
     "immutability-helper": "^3.0.0",
     "lodash": "^4.17.11",
+    "query-string": "^6.5.0",
     "react": "^16.7.0",
     "react-chartjs-2": "^2.7.6",
     "react-dnd": "^7.0.2",

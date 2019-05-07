@@ -17,6 +17,10 @@ close = () => {
     sql.end();
 }
 
+ModelSurvey.addData = (data,result) => {
+    console.log(data);
+}
+
 ModelSurvey.collectData = (result) => {
     try {
         let data = [];

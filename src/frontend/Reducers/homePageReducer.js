@@ -1,7 +1,10 @@
-import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, CTDT } from '../Constant/ActionType';
+import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, CTDT, PARENT_ITEM } from '../Constant/ActionType';
 const initialState = {
     "de-cuong-mon-hoc" :{
         name: "ĐỀ CƯƠNG MÔN HỌC",
+    },
+    "survey-matrix" :{
+        name: "SURVEY MATRIX",
     },
     "matrix": {
         name: "MATRIX",
@@ -16,7 +19,10 @@ const initialState = {
         name: "DANH MỤC"
     },
     "itusurvey": {
-        name: "ITU Survey"
+        name: "ITU SURVEY"
+    },
+    "view-survey": {
+        name: "QUẢN LÝ SURVEY"
     }
 }
 
@@ -110,6 +116,39 @@ export function ctdtReducer(state = ctdtState, action) {
     switch(action.type) {
         case CTDT:
         return action.ctdt;
+        default: 
+        return state;
+    }
+}
+
+const parentState = [
+    {
+        id: "ctdt",
+        name: "CHƯƠNG TRÌNH ĐÀO TẠO"
+    },
+    {
+        id: "cdr",
+        name: "CHUẨN ĐẦU RA"
+    },
+    {
+        id: "tab-3",
+        name: "TAB 3"
+    },
+    {
+        id: "tab-4",
+        name: "TAB 4"
+    },
+    {
+        id: "tab-5",
+        name: "TAB 5"
+    }
+]
+
+export function parentItemReducer(state = parentState, action) {
+
+    switch(action.type) {
+        case PARENT_ITEM:
+        return action.parentitem;
         default: 
         return state;
     }

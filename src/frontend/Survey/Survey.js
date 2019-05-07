@@ -1,15 +1,25 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { Form, Button, Icon } from 'antd';
 
 import FormSurvey from "./FormSurvey";
 import { getLevel, getPos } from '../utils/Tree';
 import "./Survey.css";
 import TableSurvey from './TableSurvey';
 
-function Node(data) {
-    this.data = data;
-    this.children = [];
+class Node {
+    constructor(data) {
+        this.data = data;
+        this.children = [];
+    }
+}
+
+class ITUValue{
+    constructor(key, value) {
+        this.key = key;
+        this.value = value;
+    }
 }
 
 class Survey extends Component {
@@ -19,16 +29,15 @@ class Survey extends Component {
 
     componentDidMount() {
         let tree = [];
-        //this.props.collectDataSurvey();
+        
         axios.get("/get-data-survey").then((res) => {
-            
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
                 let pos0 = getPos(element.keyRow, 0);
                 let pos1 = getPos(element.keyRow, 1);
                 let pos2 = getPos(element.keyRow, 2);
                 let pos3 = getPos(element.keyRow, 3);
-                
+
                 const NodeData = {
                     key: '',
                     value: ''
@@ -92,7 +101,7 @@ class Survey extends Component {
                         break;
                 }
             });
-            this.setState({tree:tree})
+            this.setState({ tree: tree })
         })
     }
 
@@ -107,30 +116,30 @@ class Survey extends Component {
                 <b><h5>{elementLv1.data.key + ". " + elementLv1.data.value}</h5></b>
             )
 
-            for (let j = 0; j<elementLv1.children.length; j++) {
+            for (let j = 0; j < elementLv1.children.length; j++) {
                 const elementLv2 = elementLv1.children[j];
 
                 htmlDOM.push(
-                    <b><h5 style={{"paddingLeft":"1em"}}>{elementLv2.data.key + ". " + elementLv2.data.value}</h5></b>
+                    <b><h5 style={{ "paddingLeft": "1em" }}>{elementLv2.data.key + ". " + elementLv2.data.value}</h5></b>
                 )
-               
+
                 for (let k = 0; k < elementLv2.children.length; k++) {
                     const elementLv3 = elementLv2.children[k];
                     const dataChildren = [];
 
                     htmlDOM.push(
-                        <b><h5 style={{"paddingLeft":"2em"}}>{elementLv3.data.key + ". " + elementLv3.data.value}</h5></b>
+                        <b><h5 style={{ "paddingLeft": "2em" }}>{elementLv3.data.key + ". " + elementLv3.data.value}</h5></b>
                     )
 
                     for (let h = 0; h < elementLv3.children.length; h++) {
                         const elementLv4 = elementLv3.children[h];
 
-                        dataChildren.push(elementLv4.data.value);
+                        dataChildren.push(elementLv4.data.key + "_" + elementLv4.data.value);
                     }
 
                     htmlDOM.push(
-                        <TableSurvey 
-                            data = {dataChildren}
+                        <TableSurvey
+                            data={dataChildren}
                         />
                     )
                 }
@@ -139,7 +148,53 @@ class Survey extends Component {
         return htmlDOM;
     }
 
+    convertToObject = (data) => {
+        const iterator = data[Symbol.iterator]();
+        let count = 0;
+        let key = '';
+        let value = '';
+        let arr = [];
+
+        for (let item of iterator) {
+            if (count % 2 == 0) {
+                key = item;
+            } else {
+                value = item;
+
+                const obj = new ITUValue(key,value);
+                arr.push(obj);
+            }
+            count++;
+        }
+
+        return arr;
+    }
+
+    saveAll = () => {
+        let data = this.props.surveyReducer.dataValueITU;
+        
+        let dataConvert = this.convertToObject(data);
+        axios.post("/add-data-survey",{data: dataConvert})
+            .then(response=>{
+                //const data= response.data;
+                
+            });
+    }
+
     render() {
+        const tailFormItemLayout = {
+            wrapperCol: {
+                xs: {
+                    span: 24,
+                    offset: 1,
+                },
+                sm: {
+                    span: 16,
+                    offset: 9,
+                },
+            },
+        };
+
         return (
             <div className="container1">
                 <div className="center-col">
@@ -150,9 +205,19 @@ class Survey extends Component {
                                 <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
                                 <FormSurvey subjectName={this.props.subjectName}/>
                                 <br />
-                                <div style={{paddingLeft:"1em"}}>
+                                <div style={{ paddingLeft: "1em" }}>
                                     {this.genForm()}
-                                </div>   
+                                </div>
+                                <Form.Item {...tailFormItemLayout}>
+                                    <div>
+                                        <Button 
+                                            type="primary"
+                                            onClick={() => {this.saveAll()}}
+                                            style={{ marginLeft: "2em" }}>
+                                            Gửi<Icon type="right" />
+                                        </Button>
+                                    </div>
+                                </Form.Item>
                             </div>
                         </div>
                     </div>
@@ -161,21 +226,19 @@ class Survey extends Component {
         );
     }
 }
+
 const mapStateToProps = (state, ownProps) => {
     return {
-        prop: state.prop
+        surveyReducer: state.surveyReducer
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        collectDataSurvey: () => {
-            axios.get("/get-data-survey").then((res) => {
-                console.log(res);
-            })
-        }
+        // saveAll: () => {
+        //     console.log("sads")
+        // }
     }
 }
-
 
 export default connect(mapStateToProps, mapDispatchToProps)(Survey);

@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Switch } from 'antd';
+import { Link } from "react-router-dom";
 import "./navbar_css.css"
+import { subjectId } from '../../../../Constant/ActionType';
+import { connect } from'react-redux';
+import { bindActionCreators } from 'redux';
 
 class NavBar extends Component {
     state = {
@@ -8,12 +12,57 @@ class NavBar extends Component {
     }
 
     handleClick = (e) => {
-        console.log('click ', e);
-        this.setState({
-            current: e.key,
-        });
+
+    }
+
+    getParentName = (parent, id) => {
+        for(let i = 0;i < parent.length;i++) {
+            if(parent[i].id === id) {
+                return parent[i].name;
+            }
+        }
+        return "";
+    }
+
+    getCtdtName = (ctdt, id) => {
+        for(let i = 0;i < ctdt.length;i++) {
+            if(ctdt[i].id === id) {
+                return ctdt[i].name;
+            }
+        }
+        return "";
+    }
+
+    getTypeName = (menuitem, id) => {
+        for(let i = 0;i < Object.keys(menuitem).length;i++) {
+            if(Object.keys(menuitem)[i] === id) {
+                return menuitem[Object.keys(menuitem)[i]].name;
+            }
+        }
+        return "";
+    }
+
+    getKhoiName = (ctdtId ,ctdt, id) => {
+        for(let i = 0;i < ctdt.length;i++) {
+            if(ctdt[i].id === ctdtId) {
+                for(let j = 0;j < ctdt[i].children.length;j++) {
+                    if( ctdt[i].children[j].id === id) {
+                        return  ctdt[i].children[j].name;
+                    }
+                }
+            } 
+        }
+        return "";
+    }
+
+    onClick = () => {
+        this.props.updateSubjectId("");
     }
     render() {
+        let parent = this.props.content_parent;
+        let ctdt = this.props.content_ctdt;
+        let type = this.props.content_type;
+        let khoi = this.props.content_khoi;
         return (
             <Menu
                 theme= {this.props.theme}
@@ -37,11 +86,37 @@ class NavBar extends Component {
                         unCheckedChildren="Light"
                     />
                 </Menu.Item>
-                <Menu.Item key="3" >
-                    <span style={{ textAlign: "center", fontSize: "16pt" }}>{this.props.subjectName}</span>
+               <Menu.Item key={parent} >
+                    <Link onClick={this.onClick} to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getParentName(this.props.parentitem, parent)}</span></Link>
+                </Menu.Item>
+                <Menu.Item key={ctdt} >
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getCtdtName(this.props.ctdt, ctdt)}</span></Link>
+                </Menu.Item>
+               <Menu.Item key={type} >
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getTypeName(this.props.menuItem, type)}</span></Link>
+                </Menu.Item>
+                <Menu.Item key={khoi} >
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getKhoiName(ctdt, this.props.ctdt, khoi)}</span></Link>
+                </Menu.Item>
+               <Menu.Item key={this.props.subjectName} >
+                    <span style={{ textAlign: "center", fontSize: "10pt" }}>{this.props.subjectName}</span>
                 </Menu.Item>
             </Menu>
         );
     }
 }
-export default NavBar;
+
+const mapStateToProps = (state) => {
+    return {
+        menuItem: state.menuitem,
+        parentitem: state.parentitem,
+        ctdt: state.ctdt
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+      updateSubjectId: subjectId,
+    }, dispatch);
+  }
+export default connect(mapStateToProps, mapDispatchToProps)(NavBar);

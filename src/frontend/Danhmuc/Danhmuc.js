@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Collapse, Form, Input, Menu, Icon, Button, Dropdown, message } from 'antd';
-import MucDoHanhDong from './MucDoHanhDong'
+import MucDoHanhDong from './MucDoHanhDong';
+import ChuDeDanhGia from './ChuDeDanhGia';
+import TNMH_LoaiTaiNguyen from './TNMH_LoaiTaiNguyen';
 import axios from 'axios';
 
 const Panel = Collapse.Panel;
@@ -17,6 +19,7 @@ const formItemLayout = {
 let itemClick = '';
 let value = '';
 let keyItem = '';
+
 function callback(key) {
     console.log(key);
 }
@@ -81,6 +84,8 @@ class Danhmuc extends Component {
                 </Panel>
             </Collapse>
             <MucDoHanhDong/>
+            <ChuDeDanhGia/>
+            <TNMH_LoaiTaiNguyen/>
             </div>
         )
     }

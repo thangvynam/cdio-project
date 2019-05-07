@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Checkbox } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
+import { connect } from 'react-redux';
+import CheckboxSurvey from './CheckboxSurvey';
 
 const dataColumns = ['Tên chi tiết', 'I/T/U', 'Hoạt động giảng dạy và đánh giá'];
-const levelsOptions = ["I", "T", "U"];
 
 class TableSurvey extends Component {
 
@@ -22,15 +22,16 @@ class TableSurvey extends Component {
         let template = [];
 
         data.map(function (column) {
+            let key = column.split('_')[0];
+            let value = column.split('_')[1];
+
             template.push(
                 <tr>
-                    <td>{column}</td>
+                    <td>{value}</td>
                     <td>
-                        <Checkbox.Group 
-                            options={levelsOptions} 
-                            //onChange={this.onLevelsChange} 
-                            style={{ width: "100%" }}>
-                        </Checkbox.Group>
+                        <CheckboxSurvey 
+                            id = {key}
+                        />
                     </td>
                     <td>
                         <TextArea />
@@ -53,4 +54,18 @@ class TableSurvey extends Component {
     }
 }
 
-export default TableSurvey;
+const mapStateToProps = (state, ownProps) => {
+    return {
+        prop: state.prop
+    }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        saveAll: () => {
+            
+        }
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(TableSurvey);

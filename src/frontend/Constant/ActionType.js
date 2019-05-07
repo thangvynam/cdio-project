@@ -34,6 +34,7 @@ export const CHANGE_LEVEL_DATA = 'CHANGE_LEVEL_DATA';
 export const SELECTED_VERB = 'SELECTED_VERB';
 export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
 export const MENU_ITEM = 'MENU_ITEM';
+export const PARENT_ITEM = 'PARENT_ITEM';
 export const CTDT = 'CTDT';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
@@ -97,6 +98,9 @@ export const REFRESH_DATA = "REFRESH_DATA";
 // Comment 
 export const SHOW_INPUT_COMMENT = "SHOW_INPUT_COMMENT";
 export const SAVE_COMMENT = "SAVE_COMMENT";
+
+// Survey
+export const CHANGE_VALUE_ITU_SURVEY = "CHANGE_VALUE_ITU_SURVEY";
 
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {
@@ -183,6 +187,13 @@ export function menuItem(newMenuItem) {
     return {
         type: MENU_ITEM,
         menuitem: newMenuItem
+    };
+}
+
+export function parentItem(newParentItem) {
+    return {
+        type: PARENT_ITEM,
+        parentitem: newParentItem
     };
 }
 

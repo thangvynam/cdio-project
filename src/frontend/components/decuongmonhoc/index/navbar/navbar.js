@@ -86,18 +86,18 @@ class NavBar extends Component {
                         unCheckedChildren="Light"
                     />
                 </Menu.Item>
-               <Menu.Item key={parent} >
-                    <Link onClick={this.onClick} to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getParentName(this.props.parentitem, parent)}</span></Link>
-                </Menu.Item>
-                <Menu.Item key={ctdt} >
-                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getCtdtName(this.props.ctdt, ctdt)}</span></Link>
-                </Menu.Item>
-               <Menu.Item key={type} >
-                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getTypeName(this.props.menuItem, type)}</span></Link>
-                </Menu.Item>
-                <Menu.Item key={khoi} >
-                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getKhoiName(ctdt, this.props.ctdt, khoi)}</span></Link>
-                </Menu.Item>
+                {parent !== "" && parent !== undefined ? <Menu.Item key={parent} >
+                    <Link onClick={this.onClick} to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getParentName(this.props.parentitem, parent)}</span><Icon type="right" /></Link>
+                </Menu.Item> : null}
+                {ctdt !== "" && ctdt !== undefined ? <Menu.Item key={ctdt} >
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getCtdtName(this.props.ctdt, ctdt)}</span><Icon type="right" /></Link>
+                </Menu.Item> : null}
+                {type !== "" && type !== undefined ? <Menu.Item key={type} >
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getTypeName(this.props.menuItem, type)}</span><Icon type="right" /></Link>
+                </Menu.Item> : null}
+                {khoi !== "" && khoi !== undefined && khoi !== "view" ? <Menu.Item key={khoi} >
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getKhoiName(ctdt, this.props.ctdt, khoi)}</span><Icon type="right" /></Link>
+                </Menu.Item> : null}
                <Menu.Item key={this.props.subjectName} >
                     <span style={{ textAlign: "center", fontSize: "10pt" }}>{this.props.subjectName}</span>
                 </Menu.Item>

@@ -37,11 +37,8 @@ class FormSurvey extends Component {
   }
 
   render() {
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 82d66543c842ae8f752f7477fd9ef145991ad5b5
     const formItemLayout = {
         labelCol: {
             xs: { span: 12 },

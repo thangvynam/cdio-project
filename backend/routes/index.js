@@ -910,7 +910,9 @@ router.post('/add-data-survey',function(req,res){
 
 router.post('/save-survey-qa', function(req, res) {  
   SurveyQAModel.save(req.body.data, (result) => {
-    res.send(result)
+    console.log(result)
+    let response = {id: result};
+    res.send(response)
   });
 })
 

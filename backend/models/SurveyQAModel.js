@@ -11,7 +11,7 @@ SurveyQAModel.save = (data, result) => {
             console.log("error:", err);
             result(null, err)
         } else {
-            result(null, res);
+            result(res.insertId);
         }
     })
 }

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    Form,  Input
+    Form,  Input, Button, Icon
 } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import './FormSurvey.css'
@@ -28,57 +28,20 @@ class FormSurvey extends Component {
     }
   }
 
-  handleInput = (e, stateKey) => {
-      switch (stateKey) {
-              case "nguoiDuocKS":
-              this.setState({nguoiDuocKS: e.target.value})
-              break;
-              case "nguoiKS":
-              this.setState({nguoiKS: e.target.value})
-              break;
-              case "q1":
-              this.setState({q1: e.target.value})
-              break;
-              case "q2":
-              this.setState({q2: e.target.value})
-              break;
-              case "q3":
-              this.setState({q3: e.target.value})
-              break;
-              case "q4":
-              this.setState({q4: e.target.value})
-              break;
-              case "q5":
-              this.setState({q5: e.target.value})
-              break;
-              case "q6":
-              this.setState({q6: e.target.value})
-              break;
-              case "q7":
-              this.setState({q7: e.target.value})
-              break;
-              case "q8":
-              this.setState({q8: e.target.value})
-              break;
-              case "q9":
-              this.setState({q9: e.target.value})
-              break;
-              case "q10":
-              this.setState({q10: e.target.value})
-              break;
-              case "q11":
-              this.setState({q11: e.target.value})
-              break;
-          default:
-              break;
-      }
-      
+  handleInput = (e, key) => {
+      this.props.saveChange(key, e.target.value)
   }
 
+  componentDidMount() {
+    this.props.saveChange("tenMH", this.props.subjectName)
+  }
 
   render() {
+<<<<<<< HEAD
 
 
+=======
+>>>>>>> 82d66543c842ae8f752f7477fd9ef145991ad5b5
     const formItemLayout = {
         labelCol: {
             xs: { span: 12 },
@@ -372,14 +335,14 @@ class FormSurvey extends Component {
 
 const mapStateToProps = (state) => {
   return {
-
+    surveyReducer: state.surveyReducer
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
-    saveAll: (survey) => {
-        dispatch({type: SAVE_SURVEY, survey})
+    saveChange: (key, data) => {
+        dispatch({type: SAVE_SURVEY, key, data})
     }
   }
 }

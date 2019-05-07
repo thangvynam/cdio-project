@@ -2,16 +2,105 @@ import {SAVE_SURVEY,CHANGE_VALUE_ITU_SURVEY} from '../Constant/ActionType';
 import axios from 'axios';
 
 const surveyInitialState = {
-    survey: {},
+    tenMH: '',
+    nguoiDuocKS: '',
+    nguoiKS: '',
+    q1: '',
+    q2: '',
+    q3: '',
+    q4: '',
+    q5: '',
+    q6: '',
+    q7: '',
+    q8: '',
+    q9: '',
+    q10: '',
+    q11: '',
     dataValueITU: new Map()
 }
 const SurveyReducer = (state = surveyInitialState, action) => {
     switch (action.type) {
         case SAVE_SURVEY: {
-            axios.post('/save-survey-qa', { data: action.survey })
+            // axios.post('/save-survey-qa', { data: action.survey }).then((res) => {
+            //     console.log(res)
+            // })
+            switch (action.key) {
+                case "tenMH":
+                    return {
+                        ...state,
+                        tenMH: action.data
+                    }
+                case "nguoiDuocKS":
+                    return {
+                        ...state,
+                        nguoiDuocKS: action.data
+                    }
+                case "nguoiKS":
+                    return {
+                        ...state,
+                        nguoiKS: action.data
+                    }
+                case "q1":
+                    return {
+                        ...state,
+                        q1: action.data
+                    }
+                case "q2":
+                    return {
+                        ...state,
+                        q2: action.data
+                    }
+                case "q3":
+                    return {
+                        ...state,
+                        q3: action.data
+                    }
+                case "q4":
+                    return {
+                        ...state,
+                        q4: action.data
+                    }
+                case "q5":
+                    return {
+                        ...state,
+                        q5: action.data
+                    }
+                case "q6":
+                    return {
+                        ...state,
+                        q6: action.data
+                    }
+                case "q7":
+                    return {
+                        ...state,
+                        q7: action.data
+                    }
+                case "q8":
+                    return {
+                        ...state,
+                        q8: action.data
+                    }
+                case "q9":
+                    return {
+                        ...state,
+                        q9: action.data
+                    }
+                case "q10":
+                    return {
+                        ...state,
+                        q10: action.data
+                    }
+                case "q11":
+                    return {
+                        ...state,
+                        q11: action.data
+                    }
+                default:
+                    break;
+            }
+
             return {
-                ...state,
-                survey: action.survey
+                ...state
             }
         }
 

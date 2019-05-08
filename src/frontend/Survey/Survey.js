@@ -8,6 +8,8 @@ import { getLevel, getPos } from '../utils/Tree';
 import "./Survey.css";
 import TableSurvey from './TableSurvey';
 
+const  queryString = require('query-string');
+
 class Node {
     constructor(data) {
         this.data = data;
@@ -22,15 +24,39 @@ class ITUValue{
     }
 }
 
-class Survey extends Component {
-    state = {
-        tree: [],
+class Survey extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            tree: [],
+            resultQA : null,
+            resultITU : null,
+        }
     }
 
     componentDidMount() {
+<<<<<<< HEAD
         alert(this.props.subjectId);
+=======
+
+        const parsed = queryString.parse(window.location.search);
+
+        if(parsed.id){
+            const id = parsed.id;
+            axios.get(`/get-surveyqa/${id}`).then(res => {
+                this.setState ({ 
+                    resultQA : res.data[0],
+                })
+            })
+            axios.get(`/get-survey/${id}`).then(res => {
+                this.setState({
+                    resultITU : res.data,
+                },()=>console.log(this.state.resultITU))
+            })
+        }          
+
+>>>>>>> 9108f2df67dcc17f7580acd544b52130eb4497fc
         let tree = [];
-        
         axios.get("/get-data-survey").then((res) => {
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
@@ -104,6 +130,10 @@ class Survey extends Component {
             });
             this.setState({ tree: tree })
         })
+        
+        
+
+        
     }
 
     genForm() {
@@ -141,6 +171,7 @@ class Survey extends Component {
                     htmlDOM.push(
                         <TableSurvey
                             data={dataChildren}
+                            resultITU={this.state.resultITU}
                         />
                     )
                 }
@@ -160,7 +191,7 @@ class Survey extends Component {
             if (count % 2 == 0) {
                 key = item;
             } else {
-                value = item;
+                value = item;   
 
                 const obj = new ITUValue(key,value);
                 arr.push(obj);
@@ -172,14 +203,34 @@ class Survey extends Component {
     }
 
     saveAll = () => {
-        let data = this.props.surveyReducer.dataValueITU;
+        // let data = this.props.surveyReducer.dataValueITU;
         
-        let dataConvert = this.convertToObject(data);
-        axios.post("/add-data-survey",{data: dataConvert})
-            .then(response=>{
-                //const data= response.data;
+        // let dataConvert = this.convertToObject(data);
+        // axios.post("/add-data-survey",{data: dataConvert})
+        //     .then(response=>{
+        //         //const data= response.data;
                 
-            });
+        //     });
+        let surveyData = this.props.surveyReducer;
+        let survey = {
+            tenMH: surveyData.tenMH,
+            nguoiDuocKS: surveyData.nguoiDuocKS,
+            nguoiKS: surveyData.nguoiKS,
+            q1: surveyData.q1,
+            q2: surveyData.q2,
+            q3: surveyData.q3,
+            q4: surveyData.q4,
+            q5: surveyData.q5,
+            q6: surveyData.q6,
+            q7: surveyData.q7,
+            q8: surveyData.q8,
+            q9: surveyData.q9,
+            q10: surveyData.q10,
+            q11: surveyData.q11,
+        } 
+        axios.post('/save-survey-qa', { data: survey }).then((res) => {
+                console.log(res)
+            })
     }
 
     render() {
@@ -204,7 +255,7 @@ class Survey extends Component {
                             <div className="col-sm-12" >
                                 <br />
                                 <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
-                                <FormSurvey subjectName={this.props.subjectName}/>
+                                <FormSurvey subjectName={this.props.subjectName} result={this.state.resultQA}/>
                                 <br />
                                 <div style={{ paddingLeft: "1em" }}>
                                     {this.genForm()}
@@ -212,10 +263,12 @@ class Survey extends Component {
                                 <Form.Item {...tailFormItemLayout}>
                                     <div>
                                         <Button 
+                                            disabled={queryString.parse(window.location.search).id ? true : false}
                                             type="primary"
                                             onClick={() => {this.saveAll()}}
                                             style={{ marginLeft: "2em" }}>
                                             Gửi<Icon type="right" />
+                                            
                                         </Button>
                                     </div>
                                 </Form.Item>

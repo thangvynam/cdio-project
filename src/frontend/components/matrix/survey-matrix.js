@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Table, Tooltip, Tag, Popover } from 'antd';
+import { Table, Tooltip, Tag, Popover, Button } from 'antd';
+import { connect } from 'react-redux';
 import { pathToFileURL } from 'url';
 import { isUndefined } from 'util';
-import { Link } from 'react-router-dom';
+import {Link} from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
+import axios from 'axios';
 
 // const columns = [
 //   {
@@ -149,7 +151,7 @@ import './matrix.css'
 //   }
 // ];
 
-
+const href = "/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey";
 
 const myData = [
   {
@@ -234,10 +236,10 @@ class SurveyMatrix extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      tempMatrix: [],
     }
   }
-
 
   //---Create Header---//
   getCDRHeader = (myData) => {
@@ -260,21 +262,39 @@ class SurveyMatrix extends Component {
     return result;
   }
 
+  getDataLink = (data,ITU) => {
+    let dataLink = [];
+    for (let i = 0; i < data[0].length; i++) {
+      if (data[0][i] === ITU) {
+        let obj = [];
+        obj.push(data[0][i]);
+        obj.push(data[1][i]);
+        dataLink.push(obj);
+      }
+    }
+    return dataLink;
+  }
+
   showITU = (text) => {
     //T*T*T*U*U*U/1*2*3*1*2*3
     let value = "-";
     let data = (!_.isEmpty(text) && text !== "-/-") ? text.split('/') : [];
     if (!_.isEmpty(data)) {
+      // console.log("data I : " + data[0].split('I').length)
+      // console.log("length I : " + data[0].split('I').length-1);
       let tagRender = [];
       let countI = data[0].split('I').length - 1;
       let countT = data[0].split('T').length - 1;
       let countU = data[0].split('U').length - 1;
+
       if (countI > 0) {
+        const dataLink = this.getDataLink(data,'I');
         const content = (
           <div className="popover">
-            <Link to={`/a`}>Content1</Link>
-            <Link to={`/b`}>Content2</Link>
-            <Link to={`/c`}>Content3</Link>
+            {dataLink.map((item,index) => {
+              
+              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+            })}
           </div>
         );
         // const a = this.groupCDRWithID("I", data);
@@ -285,11 +305,15 @@ class SurveyMatrix extends Component {
         )
       }
       if (countT > 0) {
+        const dataLink = this.getDataLink(data,'T');
+        // console.log(dataLink)
+
         const content = (
           <div className="popover">
-            <Link to={`/a`}>Content1</Link>
-            <Link to={`/b`}>Content2</Link>
-            <Link to={`/c`}>Content3</Link>
+           {dataLink.map((item,index) => {
+             console.log(item);
+              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+            })}
           </div>
         );
         tagRender.push(
@@ -298,11 +322,13 @@ class SurveyMatrix extends Component {
           </Popover>)
       }
       if (countU > 0) {
+        const dataLink = this.getDataLink(data,'U');
+
         const content = (
           <div className="popover">
-            <Link to={`/a`}>Content1</Link>
-            <Link to={`/b`}>Content2</Link>
-            <Link to={`/c`}>Content3</Link>
+           {dataLink.map((item,index) => {
+              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+            })}
           </div>
         );
         tagRender.push(<Popover content={content}>
@@ -400,6 +426,15 @@ class SurveyMatrix extends Component {
   }
 
 
+  getCdrCdioId = (cdr_cdio, cdr) => {
+    for(let i = 0;i < cdr_cdio.length;i++) {
+        if(cdr_cdio[i].cdr === cdr)  {
+            return cdr_cdio[i].id;
+        }
+    }
+    return -1;
+  }
+
   render() {
     const { selectedRowKeys } = this.state;
     const rowSelection = {
@@ -410,7 +445,37 @@ class SurveyMatrix extends Component {
     };
     // this.createHeaderMatrix(myData);
     return (
-      <Table
+      <div>
+        <p></p>
+        <Button 
+            onClick={() => {
+              let data = []
+              let key = this.state.selectedRowKeys
+              key.forEach(element => {
+                let obj = myData[element];
+                obj.subjectId = 1;
+                data.push(obj)
+              });
+              console.log(data)
+              if (data.length > 0) {
+                axios.post('/check-exist-ttcid', data).then(res => {
+                  if (res.data === true) {
+                    axios.post('/update-to-edit-matrix', data).then(res => {
+                      console.log(res);
+                    })
+                  }
+                  else {
+                    // axios.post('/insert-to-edit-matrix', data).then(res => {
+                    //   console.log(res);
+                    // })
+                  }
+                })
+              }
+            } 
+            }>
+            Lưu
+          </Button>
+          <Table
         bordered
         rowSelection={rowSelection}
         columns={this.createHeaderMatrix(myData)}
@@ -418,7 +483,21 @@ class SurveyMatrix extends Component {
         scroll={{ x: 1500 }}
         style={{ marginTop: '25px' }}
       />
+      </div>
     )
   }
 }
-export default SurveyMatrix;
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    editMatrix: state.editmatrix,
+    cdrCdio: state.cdrcdio
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyMatrix);

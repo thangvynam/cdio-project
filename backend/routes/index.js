@@ -908,7 +908,9 @@ router.post('/add-data-survey',function(req,res){
 })
 router.post('/save-survey-qa', function(req, res) {  
   SurveyQAModel.save(req.body.data, (result) => {
-    res.send(result)
+    console.log(result)
+    let response = {id: result};
+    res.send(response)
   });
 })
 
@@ -916,5 +918,41 @@ router.get('/get-matrix-survey', function(req, res) {
   ModelSurvey.getDataMatixSurvey(result => {
     
   })
+})
+
+router.post('/get-survey-itu',function(req,res){
+  ModelSurvey.getITU(req.body,(result) => {
+    res.send(result);
+  })
+})
+
+router.get('/get-surveyqa/:id', function(req, res) {
+  let id = req.params
+  ModelSurvey.getQA(id, (result) => {
+    res.send(result);
+  })  
+})
+
+router.get('/get-survey/:id',function(req,res){
+  let id = req.params
+  ModelSurvey.getITUwithQA(id,(result) => {
+    res.send(result);
+  })
+})
+
+router.post('/check-exist-ttcid', function(req, res) {
+    let data = req.body;
+    MatrixModel.checkExistTTCId(data, result => {
+      res.send(result);
+    })
+  })
+
+router.post('/update-to-edit-matrix', function(req, res) {
+  let data = req.body;
+    MatrixModel.updateMatrix(data, result => {
+      // console.log(result);
+    })
+  res.send("ok");
+
 })
 module.exports = router;

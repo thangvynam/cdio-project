@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Table, Tooltip, Tag, Popover } from 'antd';
+import { Table, Tooltip, Tag, Popover, Button } from 'antd';
+import { connect } from 'react-redux';
 import { pathToFileURL } from 'url';
 import { isUndefined } from 'util';
 import {Link} from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
+import axios from 'axios';
 
 // const columns = [
 //   {
@@ -234,7 +236,8 @@ class SurveyMatrix extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      tempMatrix: [],
     }
   }
 
@@ -304,12 +307,12 @@ class SurveyMatrix extends Component {
       }
       if (countT > 0) {
         const dataLink = this.getDataLink(data,'T');
-        console.log(dataLink)
+        // console.log(dataLink)
 
         const content = (
           <div className="popover">
            {dataLink.map((item,index) => {
-             console.log(item);
+            //  console.log(item);
               return (<Link to={href+`?id=${item[1]}`}>Content{item[1]} </Link>)
             })}
           </div>
@@ -424,6 +427,15 @@ class SurveyMatrix extends Component {
   }
 
 
+  getCdrCdioId = (cdr_cdio, cdr) => {
+    for(let i = 0;i < cdr_cdio.length;i++) {
+        if(cdr_cdio[i].cdr === cdr)  {
+            return cdr_cdio[i].id;
+        }
+    }
+    return -1;
+  }
+
   render() {
     const { selectedRowKeys } = this.state;
     const rowSelection = {
@@ -434,7 +446,37 @@ class SurveyMatrix extends Component {
     };
     // this.createHeaderMatrix(myData);
     return (
-      <Table
+      <div>
+        <p></p>
+        <Button 
+            onClick={() => {
+              let data = []
+              let key = this.state.selectedRowKeys
+              key.forEach(element => {
+                let obj = myData[element];
+                obj.subjectId = 1;
+                data.push(obj)
+              });
+              console.log(data)
+              if (data.length > 0) {
+                axios.post('/check-exist-ttcid', data).then(res => {
+                  if (res.data === true) {
+                    axios.post('/update-to-edit-matrix', data).then(res => {
+                      console.log(res);
+                    })
+                  }
+                  else {
+                    // axios.post('/insert-to-edit-matrix', data).then(res => {
+                    //   console.log(res);
+                    // })
+                  }
+                })
+              }
+            } 
+            }>
+            Lưu
+          </Button>
+          <Table
         bordered
         rowSelection={rowSelection}
         columns={this.createHeaderMatrix(myData)}
@@ -442,7 +484,21 @@ class SurveyMatrix extends Component {
         scroll={{ x: 1500 }}
         style={{ marginTop: '25px' }}
       />
+      </div>
     )
   }
 }
-export default SurveyMatrix;
+
+const mapStateToProps = (state, ownProps) => {
+  return {
+    editMatrix: state.editmatrix,
+    cdrCdio: state.cdrcdio
+  }
+}
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    
+  }
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SurveyMatrix);

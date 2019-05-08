@@ -8,6 +8,8 @@ import { getLevel, getPos } from '../utils/Tree';
 import "./Survey.css";
 import TableSurvey from './TableSurvey';
 
+const  queryString = require('query-string');
+
 class Node {
     constructor(data) {
         this.data = data;
@@ -22,14 +24,35 @@ class ITUValue{
     }
 }
 
-class Survey extends Component {
-    state = {
-        tree: [],
+class Survey extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            tree: [],
+            resultQA : null,
+            resultITU : null,
+        }
     }
 
     componentDidMount() {
+
+        const parsed = queryString.parse(window.location.search);
+
+        if(parsed.id){
+            const id = parsed.id;
+            axios.get(`/get-surveyqa/${id}`).then(res => {
+                this.setState ({ 
+                    resultQA : res.data[0],
+                })
+            })
+            axios.get(`/get-survey/${id}`).then(res => {
+                this.setState({
+                    resultITU : res.data,
+                },()=>console.log(this.state.resultITU))
+            })
+        }          
+
         let tree = [];
-        
         axios.get("/get-data-survey").then((res) => {
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
@@ -103,6 +126,10 @@ class Survey extends Component {
             });
             this.setState({ tree: tree })
         })
+        
+        
+
+        
     }
 
     genForm() {
@@ -140,6 +167,7 @@ class Survey extends Component {
                     htmlDOM.push(
                         <TableSurvey
                             data={dataChildren}
+                            resultITU={this.state.resultITU}
                         />
                     )
                 }
@@ -159,7 +187,7 @@ class Survey extends Component {
             if (count % 2 == 0) {
                 key = item;
             } else {
-                value = item;
+                value = item;   
 
                 const obj = new ITUValue(key,value);
                 arr.push(obj);
@@ -223,7 +251,7 @@ class Survey extends Component {
                             <div className="col-sm-12" >
                                 <br />
                                 <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
-                                <FormSurvey subjectName={this.props.subjectName}/>
+                                <FormSurvey subjectName={this.props.subjectName} result={this.state.resultQA}/>
                                 <br />
                                 <div style={{ paddingLeft: "1em" }}>
                                     {this.genForm()}
@@ -231,10 +259,12 @@ class Survey extends Component {
                                 <Form.Item {...tailFormItemLayout}>
                                     <div>
                                         <Button 
+                                            disabled={queryString.parse(window.location.search).id ? true : false}
                                             type="primary"
                                             onClick={() => {this.saveAll()}}
                                             style={{ marginLeft: "2em" }}>
                                             Gửi<Icon type="right" />
+                                            
                                         </Button>
                                     </div>
                                 </Form.Item>

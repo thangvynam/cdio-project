@@ -916,4 +916,24 @@ router.post('/save-survey-qa', function(req, res) {
   });
 })
 
+router.post('/get-survey-itu',function(req,res){
+  ModelSurvey.getITU(req.body,(result) => {
+    res.send(result);
+  })
+})
+
+router.get('/get-surveyqa/:id', function(req, res) {
+  let id = req.params
+  ModelSurvey.getQA(id, (result) => {
+    res.send(result);
+  })  
+})
+
+router.get('/get-survey/:id',function(req,res){
+  let id = req.params
+  ModelSurvey.getITUwithQA(id,(result) => {
+    res.send(result);
+  })
+})
+
 module.exports = router;

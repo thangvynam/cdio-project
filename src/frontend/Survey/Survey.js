@@ -251,7 +251,7 @@ class Survey extends React.Component {
                             <div className="col-sm-12" >
                                 <br />
                                 <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
-                                <FormSurvey subjectName={this.props.subjectName} result={this.state.result}/>
+                                <FormSurvey subjectName={this.props.subjectName} result={this.state.resultQA}/>
                                 <br />
                                 <div style={{ paddingLeft: "1em" }}>
                                     {this.genForm()}

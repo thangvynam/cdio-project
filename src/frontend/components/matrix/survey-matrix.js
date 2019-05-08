@@ -286,10 +286,13 @@ class SurveyMatrix extends Component {
 
       if (countI > 0) {
         const dataLink = this.getDataLink(data,'I');
-        
         const content = (
           <div className="popover">
-            <Link to={`/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey?id=1`}>Content1</Link>
+            {dataLink.map((item,index) => {
+              
+              return (<Link to={href+`?id=${item[1]}`}>Content{item[1]} </Link>)
+            })}
+            {/* <Link to={`/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey?id=1`}>Content1</Link> */}
           </div>
         );
         // const a = this.groupCDRWithID("I", data);
@@ -300,11 +303,15 @@ class SurveyMatrix extends Component {
         )
       }
       if (countT > 0) {
+        const dataLink = this.getDataLink(data,'T');
+        console.log(dataLink)
+
         const content = (
           <div className="popover">
-            <Link to={`/a`}>Content1</Link>
-            <Link to={`/b`}>Content2</Link>
-            <Link to={`/c`}>Content3</Link>
+           {dataLink.map((item,index) => {
+             console.log(item);
+              return (<Link to={href+`?id=${item[1]}`}>Content{item[1]} </Link>)
+            })}
           </div>
         );
         tagRender.push(
@@ -313,11 +320,13 @@ class SurveyMatrix extends Component {
           </Popover>)
       }
       if (countU > 0) {
+        const dataLink = this.getDataLink(data,'U');
+
         const content = (
           <div className="popover">
-            <Link to={`/a`}>Content1</Link>
-            <Link to={`/b`}>Content2</Link>
-            <Link to={`/c`}>Content3</Link>
+           {dataLink.map((item,index) => {
+              return (<Link to={href+`?id=${item[1]}`}>Content{item[1]} </Link>)
+            })}
           </div>
         );
         tagRender.push(<Popover content={content}>

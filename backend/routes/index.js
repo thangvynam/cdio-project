@@ -906,12 +906,15 @@ router.post('/add-data-survey',function(req,res){
     //res.send(result)
   });
 })
-
-
 router.post('/save-survey-qa', function(req, res) {  
   SurveyQAModel.save(req.body.data, (result) => {
     res.send(result)
   });
 })
 
+router.get('/get-matrix-survey', function(req, res) {  
+  ModelSurvey.getDataMatixSurvey(result => {
+    
+  })
+})
 module.exports = router;

@@ -28,6 +28,7 @@ class Survey extends Component {
     }
 
     componentDidMount() {
+        alert(this.props.subjectId);
         let tree = [];
         
         axios.get("/get-data-survey").then((res) => {
@@ -229,15 +230,14 @@ class Survey extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        surveyReducer: state.surveyReducer
+        surveyReducer: state.surveyReducer,
+        subjectId: state.subjectid,
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        // saveAll: () => {
-        //     console.log("sads")
-        // }
+       
     }
 }
 

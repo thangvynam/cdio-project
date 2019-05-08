@@ -35,9 +35,6 @@ class Survey extends React.Component {
     }
 
     componentDidMount() {
-<<<<<<< HEAD
-        alert(this.props.subjectId);
-=======
 
         const parsed = queryString.parse(window.location.search);
 
@@ -54,8 +51,7 @@ class Survey extends React.Component {
                 },()=>console.log(this.state.resultITU))
             })
         }          
-
->>>>>>> 9108f2df67dcc17f7580acd544b52130eb4497fc
+        
         let tree = [];
         axios.get("/get-data-survey").then((res) => {
             res.data.forEach(element => {

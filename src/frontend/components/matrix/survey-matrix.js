@@ -290,9 +290,8 @@ class SurveyMatrix extends Component {
           <div className="popover">
             {dataLink.map((item,index) => {
               
-              return (<Link to={href+`?id=${item[1]}`}>Content{item[1]} </Link>)
+              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
-            {/* <Link to={`/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey?id=1`}>Content1</Link> */}
           </div>
         );
         // const a = this.groupCDRWithID("I", data);
@@ -310,7 +309,7 @@ class SurveyMatrix extends Component {
           <div className="popover">
            {dataLink.map((item,index) => {
              console.log(item);
-              return (<Link to={href+`?id=${item[1]}`}>Content{item[1]} </Link>)
+              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
         );
@@ -325,7 +324,7 @@ class SurveyMatrix extends Component {
         const content = (
           <div className="popover">
            {dataLink.map((item,index) => {
-              return (<Link to={href+`?id=${item[1]}`}>Content{item[1]} </Link>)
+              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
         );

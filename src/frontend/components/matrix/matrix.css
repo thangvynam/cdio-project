@@ -31,4 +31,5 @@
 .popover a{
     display: block;
     padding: 5px;
+    width : 80px;
 }

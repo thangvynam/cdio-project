@@ -11,14 +11,14 @@ class Survey {
 }
 
 class Data {
-    constructor(cdr, id) { 
+    constructor(cdr, id) {
         this.cdr = cdr;
         this.id = id;
     }
 }
 
 class itu {
-    constructor(id, data) { 
+    constructor(id, data) {
         this.id = id;
         this.data = data;
     }
@@ -38,7 +38,7 @@ close = () => {
     sql.end();
 }
 
-ModelSurvey.addData = (data,result) => {
+ModelSurvey.addData = (data, result) => {
     console.log(data);
 }
 
@@ -46,16 +46,16 @@ ModelSurvey.collectData = (result) => {
     try {
         let data = [];
         query(`SELECT KeyRow,NameRow FROM detailoutcomestandard where idOutcomeStandard = 5 `)
-        .then(res => {
-            res.forEach(element => {
-                const obj = {
-                    keyRow : element.KeyRow,
-                    nameRow : element.NameRow
-                }
-                data.push(obj);
+            .then(res => {
+                res.forEach(element => {
+                    const obj = {
+                        keyRow: element.KeyRow,
+                        nameRow: element.NameRow
+                    }
+                    data.push(obj);
+                });
+                result(data);
             });
-            result(data);
-        });
     } catch (e) {
         console.log(e);
     } finally {
@@ -65,76 +65,85 @@ ModelSurvey.collectData = (result) => {
 
 ModelSurvey.getDataMatixSurvey = (result) => {
 
-    try {    
-        query(`SELECT subject.Id, subject.SubjectCode, subject.SubjectName
-            FROM subject
-            JOIN thong_tin_chung ON subject.Id = thong_tin_chung.id
-            WHERE thong_tin_chung.del_flag = 0`)
-        .then(res => {
-            let survey = []; 
+    try {
+        query("SELECT COUNT(*) as SL FROM subject ")
+            .then(count => {
+                query(`SELECT subject.Id, subject.SubjectCode, subject.SubjectName
+                            FROM subject
+                            JOIN thong_tin_chung ON subject.Id = thong_tin_chung.id
+                            WHERE thong_tin_chung.del_flag = 0`)
+                    .then(res => {
+                        let survey = [];
 
-            res.forEach(subject => {
-                let id = subject.Id;
-                let subjectName =  subject.SubjectName;
+                        res.forEach(subject => {
+                            let id = subject.Id;
+                            let subjectName = subject.SubjectName;
 
-                query(`SELECT survey.id, survey.value, survey.id_qa 
-                    FROM survey 
-                    WHERE '${id}' = id_mon`)
-                .then(res1 => {
+                            query(`SELECT survey.id, survey.value, survey.id_qa 
+                                    FROM survey 
+                                    WHERE '${id}' = id_mon`)
+                                .then(res1 => {
 
-                    let myMap = new Map();
+                                    let myMap = new Map();
 
-                    res1.forEach(record => {
-                        const level3 = getLevel3(record.id);
-                        const value = getValueITU(record.value);
-                        const id_qa = record.id_qa;
+                                    res1.forEach(record => {
+                                        const level3 = getLevel3(record.id);
+                                        const value = getValueITU(record.value);
+                                        const id_qa = record.id_qa;
 
-                        const data = convertData(value,id_qa);
-                       
-                        if (myMap.has(level3)) { // same key , update value 
-                            let oldData = myMap.get(level3);
-                            let newData = appendData(oldData,data);
+                                        const data = convertData(value, id_qa);
 
-                            myMap.set(level3,newData)
-                        } else {
-                            myMap.set(level3,data);
-                        }
-                        
+                                        if (myMap.has(level3)) { // same key , update value 
+                                            let oldData = myMap.get(level3);
+                                            let newData = appendData(oldData, data);
+
+                                            myMap.set(level3, newData)
+                                        } else {
+                                            myMap.set(level3, data);
+                                        }
+
+                                    });
+
+                                    let data = [];
+
+                                    myMap.forEach((value, key) => {
+                                        let temp = new Data(
+                                            value.cdr,
+                                            value.id
+                                        );
+                                        
+                                        if (temp.cdr == '' && temp.id == '') {
+                                            temp.cdr = '-';
+                                            temp.id = '-';
+                                        }
+                                        
+                                        data.push(new itu(key, temp));
+                                    });
+
+                                    const object = new Survey(
+                                        subjectName,
+                                        'Nam',
+                                        data
+                                    );
+
+                                    survey.push(object);
+                                })
+                                .then(() => {
+                                    if (count[0].SL === survey.length) {
+                                        result(survey);
+                                    }
+                                });
+                        });
+
                     });
-                    
-                    let data = [];
-                    
-                    myMap.forEach( (value, key) => {
-                        let temp = new Data(
-                            value.cdr,
-                            value.id
-                        );
-                        //console.log(temp)
-                        data.push(new itu(key,temp));
-                    });
-                   
-                    const object = new Survey(
-                        subjectName,
-                        'Nam',
-                        data
-                    );
-
-                    survey.push(object);
-                })
-                .then(() => {
-                    console.log(survey);
-                });
             });
-            
-        });
-
     } catch (e) {
         console.log(e);
     }
 }
 
 getLevel3 = (id) => {
-    return id.substring(0,5);
+    return id.substring(0, 5);
 }
 
 getValueITU = (value) => {
@@ -145,55 +154,55 @@ getValueITU = (value) => {
 convertData = (value, id_qa) => {
     let newValue = '';
     let newID = '';
-    
+
     value.forEach(element => {
         newValue += element + '*';
         newID += id_qa + '*';
     });
 
-    return new Data(newValue,newID);
+    return new Data(newValue, newID);
 }
 
-appendData = (oldData,fildata) => {
+appendData = (oldData, fildata) => {
     let newValue = oldData.cdr + fildata.cdr;
     let newID = oldData.id + fildata.id;
 
-    return new Data(newValue,newID);
-    
+    return new Data(newValue, newID);
+
 }
 
-ModelSurvey.getITU = (obj,result) => {
-    sql.query(`SELECT * FROM survey where id_ctdt =0 and id_mon =0 and id_giaovien =0`,(err,res)=>{
-        if(err){
-          console.log("err: ",err);
-          return result(null);
+ModelSurvey.getITU = (obj, result) => {
+    sql.query(`SELECT * FROM survey where id_ctdt =0 and id_mon =0 and id_giaovien =0`, (err, res) => {
+        if (err) {
+            console.log("err: ", err);
+            return result(null);
         }
-        else{
+        else {
             return result(res);
 
         }
-             });
+    });
 }
 
-ModelSurvey.getQA = (id,result) => {
-    sql.query(`SELECT * from survey_qa where id = 1`,(err,res ) => {
-        if(err) {
-            console.log("err: " , err);
+ModelSurvey.getQA = (id, result) => {
+    sql.query(`SELECT * from survey_qa where id = 1`, (err, res) => {
+        if (err) {
+            console.log("err: ", err);
             return result(err);
-        }else
-        return result(res);
+        } else
+            return result(res);
     })
 }
 
-ModelSurvey.getITUwithQA = (id,result) => {
-    sql.query(`SELECT * FROM survey where id_ctdt =0 and id_mon =1 and id_giaovien =0 and id_qa=0`,(err,res ) => {
-        if(err) {
-            console.log("err: " , err);
+ModelSurvey.getITUwithQA = (id, result) => {
+    sql.query(`SELECT * FROM survey where id_ctdt =0 and id_mon =1 and id_giaovien =0 and id_qa=0`, (err, res) => {
+        if (err) {
+            console.log("err: ", err);
             return result(err);
-        }else{
+        } else {
             return result(res);
         }
-        
+
     })
 }
 module.exports = ModelSurvey;

@@ -916,8 +916,8 @@ router.post('/save-survey-qa', function(req, res) {
 
 router.get('/get-matrix-survey', function(req, res) {  
   ModelSurvey.getDataMatixSurvey(result => {
-    
-  })
+    res.send(result);
+  });
 })
 
 router.post('/get-survey-itu',function(req,res){

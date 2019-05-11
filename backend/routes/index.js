@@ -901,18 +901,22 @@ router.get('/get-data-survey',function(req,res){
 
 router.post('/add-data-survey',function(req,res){
   const data = req.body.data;
-
+  
   ModelSurvey.addData(data, (result) => {
     //res.send(result)
   });
 })
-
-
 router.post('/save-survey-qa', function(req, res) {  
   SurveyQAModel.save(req.body.data, (result) => {
     console.log(result)
     let response = {id: result};
     res.send(response)
+  });
+})
+
+router.get('/get-matrix-survey', function(req, res) {  
+  ModelSurvey.getDataMatixSurvey(result => {
+    res.send(result);
   });
 })
 
@@ -951,5 +955,4 @@ router.post('/update-to-edit-matrix', function(req, res) {
   res.send("ok");
 
 })
-
 module.exports = router;

@@ -51,7 +51,7 @@ class Survey extends React.Component {
                 },()=>console.log(this.state.resultITU))
             })
         }          
-
+        
         let tree = [];
         axios.get("/get-data-survey").then((res) => {
             res.data.forEach(element => {
@@ -178,35 +178,20 @@ class Survey extends React.Component {
 
     convertToObject = (data) => {
         const iterator = data[Symbol.iterator]();
-        let count = 0;
-        let key = '';
-        let value = '';
         let arr = [];
 
         for (let item of iterator) {
-            if (count % 2 == 0) {
-                key = item;
-            } else {
-                value = item;   
+            const obj = new ITUValue(item[0],item[1]);
 
-                const obj = new ITUValue(key,value);
-                arr.push(obj);
-            }
-            count++;
+            arr.push(obj);
         }
-
+    
         return arr;
     }
 
     saveAll = () => {
-        // let data = this.props.surveyReducer.dataValueITU;
-        
-        // let dataConvert = this.convertToObject(data);
-        // axios.post("/add-data-survey",{data: dataConvert})
-        //     .then(response=>{
-        //         //const data= response.data;
-                
-        //     });
+        let data = this.props.surveyReducer.dataValueITU;
+        let dataConvert = this.convertToObject(data);
         let surveyData = this.props.surveyReducer;
         let survey = {
             tenMH: surveyData.tenMH,
@@ -224,9 +209,19 @@ class Survey extends React.Component {
             q10: surveyData.q10,
             q11: surveyData.q11,
         } 
-        axios.post('/save-survey-qa', { data: survey }).then((res) => {
-                console.log(res)
-            })
+        axios.post('/save-survey-qa', { data: survey })
+            .then((res) => {
+                const dataSurvey = {
+                    data : dataConvert,
+                    id_qa : res.data.id
+                } 
+
+                axios.post("/add-data-survey",{data: dataConvert})
+                    .then(response => {
+                        //const data= response.data;
+                        
+                    });
+            });
     }
 
     render() {
@@ -279,15 +274,14 @@ class Survey extends React.Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        surveyReducer: state.surveyReducer
+        surveyReducer: state.surveyReducer,
+        subjectId: state.subjectid,
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        // saveAll: () => {
-        //     console.log("sads")
-        // }
+       
     }
 }
 

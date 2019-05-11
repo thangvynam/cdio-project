@@ -41,7 +41,7 @@ class TableSurvey extends Component {
                         />
                     </td>
                     <td>
-                        <TextArea />
+                        <TextArea onChange={this.handleDesInputChange}/>
                     </td>
                 </tr>
             );

@@ -940,19 +940,11 @@ router.get('/get-survey/:id',function(req,res){
   })
 })
 
-router.post('/check-exist-ttcid', function(req, res) {
-    let data = req.body;
-    MatrixModel.checkExistTTCId(data, result => {
-      res.send(result);
-    })
-  })
-
-router.post('/update-to-edit-matrix', function(req, res) {
+router.post('/add-to-edit-matrix', function(req, res) {
   let data = req.body;
-    MatrixModel.updateMatrix(data, result => {
+    MatrixModel.addMatrix(data, result => {
       // console.log(result);
     })
   res.send("ok");
-
 })
 module.exports = router;

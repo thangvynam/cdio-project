@@ -453,22 +453,13 @@ class SurveyMatrix extends Component {
               let key = this.state.selectedRowKeys
               key.forEach(element => {
                 let obj = myData[element];
-                obj.subjectId = 1;
+                obj.subjectId = 8;
                 data.push(obj)
               });
               console.log(data)
               if (data.length > 0) {
-                axios.post('/check-exist-ttcid', data).then(res => {
-                  if (res.data === true) {
-                    axios.post('/update-to-edit-matrix', data).then(res => {
-                      console.log(res);
-                    })
-                  }
-                  else {
-                    // axios.post('/insert-to-edit-matrix', data).then(res => {
-                    //   console.log(res);
-                    // })
-                  }
+                axios.post('/add-to-edit-matrix', data).then(res => {
+                  console.log(res);
                 })
               }
             } 

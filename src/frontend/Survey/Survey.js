@@ -18,9 +18,10 @@ class Node {
 }
 
 class ITUValue{
-    constructor(key, value) {
+    constructor(key, value, description) {
         this.key = key;
         this.value = value;
+        this.description = description;
     }
 }
 
@@ -176,24 +177,29 @@ class Survey extends React.Component {
         return htmlDOM;
     }
 
-    convertToObject = (data) => {
-        const iterator = data[Symbol.iterator]();
+    convertToObject = (data,dataDescription) => {
+        const iteratorData = data[Symbol.iterator]();
+        //const iteratorDataDescription = dataDescription[Symbol.iterator]();
+    
         let arr = [];
 
-        for (let item of iterator) {
-            const obj = new ITUValue(item[0],item[1]);
-
+        for (let item of iteratorData) {
+            const description = typeof dataDescription.get(item[0]) !== 'undefined' ? dataDescription.get(item[0]) : '';
+            const obj = new ITUValue(item[0],item[1],description);
             arr.push(obj);
         }
-    
+       
         return arr;
     }
 
     saveAll = () => {
-        let data = this.props.surveyReducer.dataValueITU;
-        let dataConvert = this.convertToObject(data);
-        let surveyData = this.props.surveyReducer;
-        let survey = {
+        const dataDescription = this.props.surveyReducer.dataValueDescription;
+        const data = this.props.surveyReducer.dataValueITU;
+        const surveyData = this.props.surveyReducer;
+        
+        const dataConvert = this.convertToObject(data,dataDescription);
+        
+        const survey = {
             tenMH: surveyData.tenMH,
             nguoiDuocKS: surveyData.nguoiDuocKS,
             nguoiKS: surveyData.nguoiKS,
@@ -211,12 +217,11 @@ class Survey extends React.Component {
         } 
         axios.post('/save-survey-qa', { data: survey })
             .then((res) => {
-                const dataSurvey = {
-                    data : dataConvert,
-                    id_qa : res.data.id
-                } 
-
-                axios.post("/add-data-survey",{data: dataConvert})
+                axios.post("/add-data-survey",
+                        { data: dataConvert,
+                          id_qa: res.data.id,
+                          idMon : this.props.subjectId
+                        })
                     .then(response => {
                         //const data= response.data;
                         

@@ -901,8 +901,10 @@ router.get('/get-data-survey',function(req,res){
 
 router.post('/add-data-survey',function(req,res){
   const data = req.body.data;
-  
-  ModelSurvey.addData(data, (result) => {
+  const id_qa = req.body.id_qa;
+  const idMon = req.body.idMon;
+
+  ModelSurvey.addData(data, id_qa, idMon, (result) => {
     //res.send(result)
   });
 })

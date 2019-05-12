@@ -38,8 +38,29 @@ close = () => {
     sql.end();
 }
 
-ModelSurvey.addData = (data, result) => {
-    console.log(data);
+ModelSurvey.addData = (data, id_qa, idMon, result) => {
+    try {
+        const id_ctdt = 0;
+        const id_giaovien = 0;
+
+        data.forEach(element => {
+            let resultValue = '';
+            
+            element.value.forEach(value => {
+                resultValue += value;
+            });
+
+            query(`INSERT INTO survey VALUES 
+            ('${id_ctdt}','${idMon}','${id_giaovien}', '${element.key}', '${resultValue}',
+                '${element.description}','${id_qa}')
+            `).then (res => {
+                console.log(res);
+            })
+        });
+        
+    } catch (e) {
+        console.log(e);
+    }
 }
 
 ModelSurvey.collectData = (result) => {

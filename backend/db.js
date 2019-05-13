@@ -7,6 +7,7 @@ var connection = mysql.createConnection({
   user     : 'syllabus_db',
   password : 'Aa123456',
   database : 'syllabus_db'
+
 });
 connection.connect();
 module.exports = connection;

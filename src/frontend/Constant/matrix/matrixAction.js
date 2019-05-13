@@ -16,7 +16,15 @@ const getDataBenchMarkMatrix = (newData)=>{
     }
 }
 
+const getDataSurveyMatrix = (newData)=>{
+    return {
+        type: Types.GET_SURVEY_MATRIX,
+        newData
+    }
+}
+
 export {
     getDataMatrix,
-    getDataBenchMarkMatrix
+    getDataBenchMarkMatrix,
+    getDataSurveyMatrix
 }

@@ -15,6 +15,8 @@ import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import matrixReducer from "../Reducers/matrixReducer";
 import benchmarkReducer from "../Reducers/benchmarkMatrixReducer";
+import surveyMatrixReducer from "../Reducers/surveyMatrixReducer";
+import authenticationReducer from "../Reducers/authentcationReducer";
 import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer, cdrCdioReducer, ctdtReducer, parentItemReducer } from '../Reducers/homePageReducer';
 import logReducer from "../Reducers/logReducer"
 
@@ -62,9 +64,11 @@ const allReducers = redux.combineReducers({
     editmatrixeditstate: editMatrixEditStateReducer,
     isloadeditmatrix: isLoadEditMatrixReducer,
     matrix: matrixReducer,
+    surveyMatrix: surveyMatrixReducer,
     benchmarkMatrix: benchmarkReducer,
     logReducer: logReducer,
-    surveyReducer: surveyReducer
+    surveyReducer: surveyReducer,
+    authentication: authenticationReducer
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

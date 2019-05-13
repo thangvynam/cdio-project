@@ -3,10 +3,11 @@ import { Table, Tooltip, Tag, Popover, Button } from 'antd';
 import { connect } from 'react-redux';
 import { pathToFileURL } from 'url';
 import { isUndefined } from 'util';
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
 import axios from 'axios';
+import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
 
 // const columns = [
 //   {
@@ -241,6 +242,15 @@ class SurveyMatrix extends Component {
     }
   }
 
+  componentDidMount() {
+    axios.get('/get-matrix-survey').then((res) => {
+      //this.props.getDataBenchMarkMatrix(res.data);
+      console.log(res.data)
+      this.props.getDataSurveyMatrix(res.data);
+    })
+  }
+
+
   //---Create Header---//
   getCDRHeader = (myData) => {
     const arrCDR = [];
@@ -262,7 +272,7 @@ class SurveyMatrix extends Component {
     return result;
   }
 
-  getDataLink = (data,ITU) => {
+  getDataLink = (data, ITU) => {
     let dataLink = [];
     for (let i = 0; i < data[0].length; i++) {
       if (data[0][i] === ITU) {
@@ -288,12 +298,12 @@ class SurveyMatrix extends Component {
       let countU = data[0].split('U').length - 1;
 
       if (countI > 0) {
-        const dataLink = this.getDataLink(data,'I');
+        const dataLink = this.getDataLink(data, 'I');
         const content = (
           <div className="popover">
-            {dataLink.map((item,index) => {
-              
-              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+            {dataLink.map((item, index) => {
+
+              return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
         );
@@ -305,14 +315,14 @@ class SurveyMatrix extends Component {
         )
       }
       if (countT > 0) {
-        const dataLink = this.getDataLink(data,'T');
+        const dataLink = this.getDataLink(data, 'T');
         // console.log(dataLink)
 
         const content = (
           <div className="popover">
-           {dataLink.map((item,index) => {
-             console.log(item);
-              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+            {dataLink.map((item, index) => {
+              console.log(item);
+              return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
         );
@@ -322,18 +332,18 @@ class SurveyMatrix extends Component {
           </Popover>)
       }
       if (countU > 0) {
-        const dataLink = this.getDataLink(data,'U');
+        const dataLink = this.getDataLink(data, 'U');
 
         const content = (
           <div className="popover">
-           {dataLink.map((item,index) => {
-              return (<Link to={href+`?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+            {dataLink.map((item, index) => {
+              return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
         );
         tagRender.push(<Popover content={content}>
           <Tag style={{ fontSize: "8pt", fontWeight: "bold", color: "lime" }}>{countU}U</Tag>
-          </Popover>)
+        </Popover>)
       }
       value = tagRender
     }
@@ -427,10 +437,10 @@ class SurveyMatrix extends Component {
 
 
   getCdrCdioId = (cdr_cdio, cdr) => {
-    for(let i = 0;i < cdr_cdio.length;i++) {
-        if(cdr_cdio[i].cdr === cdr)  {
-            return cdr_cdio[i].id;
-        }
+    for (let i = 0; i < cdr_cdio.length; i++) {
+      if (cdr_cdio[i].cdr === cdr) {
+        return cdr_cdio[i].id;
+      }
     }
     return -1;
   }
@@ -445,45 +455,45 @@ class SurveyMatrix extends Component {
     };
     // this.createHeaderMatrix(myData);
     return (
-      <div>
+      !_.isEmpty(this.props.dataSurveyMatrix) && (<div>
         <p></p>
-        <Button 
-            onClick={() => {
-              let data = []
-              let key = this.state.selectedRowKeys
-              key.forEach(element => {
-                let obj = myData[element];
-                obj.subjectId = 1;
-                data.push(obj)
-              });
-              console.log(data)
-              if (data.length > 0) {
-                axios.post('/check-exist-ttcid', data).then(res => {
-                  if (res.data === true) {
-                    axios.post('/update-to-edit-matrix', data).then(res => {
-                      console.log(res);
-                    })
-                  }
-                  else {
-                    // axios.post('/insert-to-edit-matrix', data).then(res => {
-                    //   console.log(res);
-                    // })
-                  }
-                })
-              }
-            } 
-            }>
-            Lưu
+        <Button
+          onClick={() => {
+            let data = []
+            let key = this.state.selectedRowKeys
+            key.forEach(element => {
+              let obj = myData[element];
+              obj.subjectId = 1;
+              data.push(obj)
+            });
+            console.log(data)
+            if (data.length > 0) {
+              axios.post('/check-exist-ttcid', data).then(res => {
+                if (res.data === true) {
+                  axios.post('/update-to-edit-matrix', data).then(res => {
+                    console.log(res);
+                  })
+                }
+                else {
+                  // axios.post('/insert-to-edit-matrix', data).then(res => {
+                  //   console.log(res);
+                  // })
+                }
+              })
+            }
+          }
+          }>
+          Lưu
           </Button>
-          <Table
-        bordered
-        rowSelection={rowSelection}
-        columns={this.createHeaderMatrix(myData)}
-        dataSource={this.createDataMatrix(myData)}
-        scroll={{ x: 1500 }}
-        style={{ marginTop: '25px' }}
-      />
-      </div>
+        <Table
+          bordered
+          rowSelection={rowSelection}
+          columns={this.createHeaderMatrix(this.props.dataSurveyMatrix)}
+          dataSource={this.createDataMatrix(this.props.dataSurveyMatrix)}
+          scroll={{ x: 1500 }}
+          style={{ marginTop: '25px' }}
+        />
+      </div>)
     )
   }
 }
@@ -491,13 +501,14 @@ class SurveyMatrix extends Component {
 const mapStateToProps = (state, ownProps) => {
   return {
     editMatrix: state.editmatrix,
-    cdrCdio: state.cdrcdio
+    cdrCdio: state.cdrcdio,
+    dataSurveyMatrix: state.surveyMatrix.previewInfo,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
-    
+    getDataSurveyMatrix: (newData) => dispatch(getDataSurveyMatrix(newData)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyMatrix);

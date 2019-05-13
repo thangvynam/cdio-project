@@ -46,7 +46,6 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
-var testTemp = '';
 class EditableCell extends React.Component {
   constructor(props) {
     super(props);
@@ -313,6 +312,7 @@ class itemLayout7ReducerItem extends React.Component {
     
   }
   onDelete = (newData, key) => {
+    //nếu key là chủ đề . xóa hết tất cả thằng con trong chủ đề đó .
     if (this.isExist(key)) {
       let index = 0;
       let indexChildren = 0;
@@ -320,10 +320,13 @@ class itemLayout7ReducerItem extends React.Component {
         if (key === this.props.itemLayout7Reducer.previewInfo[i].key) {
           index = i;
         }
+        //vị trí của thằng con cuối cùng
         if (this.isChildren(key, this.props.itemLayout7Reducer.previewInfo[i].key)) {
           indexChildren++;
         }
       }
+
+      //vị trí thăngf con cuối cùng
       indexChildren = indexChildren + index;
       if ((index === 0 && indexChildren === this.props.itemLayout7Reducer.previewInfo.length) || this.props.itemLayout7Reducer.previewInfo.length === 1) {
         console.log("1");
@@ -567,6 +570,7 @@ class itemLayout7ReducerItem extends React.Component {
     });
   };
 
+  //kiểm tra là con 
   isChildren(value, children) {
     for (let i = 0; i < value.length; i++) {
       if (children[i] !== value[i]) {
@@ -634,9 +638,21 @@ class itemLayout7ReducerItem extends React.Component {
 
   }
 
+  setIndexForItem = () => {
+    let responseDanhGia = [];
+    let  danhGia = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag===0);
+    for (let i = 0; i < danhGia.length; i++) {
+      let temp = danhGia[i];
+      temp.index = i;
+      responseDanhGia.push(temp);
+    }
+  
+    return tainguyenmonhoc;
+  };
 
 
   render() {
+    console.log(this.props.itemLayout7Reducer.previewInfo)
     const components = {
       body: {
         row: EditableFormRow,

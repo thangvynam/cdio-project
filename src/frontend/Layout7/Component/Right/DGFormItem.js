@@ -173,6 +173,7 @@ class DGFormItem extends Component {
                         tenthanhphan: 'Bài tập tại lớp',
                         mota: '',
                         tile: '',
+                        del_flag : -1,
                       };
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
@@ -195,6 +196,7 @@ class DGFormItem extends Component {
                         tenthanhphan: 'Bài tập về nhà',
                         mota: '',
                         tile: '',
+                        del_flag : -1,
                       };
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
@@ -217,12 +219,12 @@ class DGFormItem extends Component {
                         tenthanhphan: 'Đồ án môn học',
                         mota: '',
                         tile: '',
+                        del_flag : -1,
                       };
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
                     }
                   } else if (chude === 'LTCK') {
-                    console.log("Vo duoc nha")
                     let flag = true;
                     mathanhphan = 'LTCK#' + mathanhphan;
                     for (let i = 0; i < previewInfo.length; i++) {
@@ -240,6 +242,7 @@ class DGFormItem extends Component {
                         tenthanhphan: 'Thi lý thuyết cuối kỳ',
                         mota: '',
                         tile: '',
+                        del_flag : -1,
                       };
                       newData = previewInfo.concat(dataFather);
                       isAdd2Rows = true;
@@ -263,6 +266,8 @@ class DGFormItem extends Component {
                       tenthanhphan: tenthanhphan,
                       mota: mota,
                       tile: tile + '%',
+                      id : -1,
+                      del_flag : 0,
                     }
                     console.log(data);
                     let dataReturn = {};

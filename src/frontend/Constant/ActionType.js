@@ -101,6 +101,7 @@ export const SAVE_COMMENT = "SAVE_COMMENT";
 
 // Survey
 export const CHANGE_VALUE_ITU_SURVEY = "CHANGE_VALUE_ITU_SURVEY";
+export const CHANGE_VALUE_DESCRIPTION_SURVEY = "CHANGE_VALUE_DESCRIPTION_SURVEY";
 
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {

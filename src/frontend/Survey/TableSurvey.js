@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import TextArea from 'antd/lib/input/TextArea';
 import { connect } from 'react-redux';
+
 import CheckboxSurvey from './CheckboxSurvey';
+import InputTextArea from './InputTextArea';
 
 const dataColumns = ['Tên chi tiết', 'I/T/U', 'Hoạt động giảng dạy và đánh giá'];
 
@@ -41,7 +42,9 @@ class TableSurvey extends Component {
                         />
                     </td>
                     <td>
-                        <TextArea onChange={this.handleDesInputChange}/>
+                        <InputTextArea 
+                            id = {key}
+                        />
                     </td>
                 </tr>
             );

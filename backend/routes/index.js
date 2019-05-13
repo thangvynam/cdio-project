@@ -231,12 +231,13 @@ router.post('/save-danhgia',function(req,res){
 
 
 router.post('/save-tainguyenmonhoc', function(req, res) {
-  Model8.save(req.body.data, function(err, description) {
+  Model8.save(req.body, function(err, description) {
     if (err) {
       console.log(err);
+      res.end("0")
     }
-    res.end("done");
-  })   
+    res.end("1");
+  })
 })
 
 router.post('/test',function(req,res){
@@ -901,8 +902,10 @@ router.get('/get-data-survey',function(req,res){
 
 router.post('/add-data-survey',function(req,res){
   const data = req.body.data;
-  
-  ModelSurvey.addData(data, (result) => {
+  const id_qa = req.body.id_qa;
+  const idMon = req.body.idMon;
+
+  ModelSurvey.addData(data, id_qa, idMon, (result) => {
     //res.send(result)
   });
 })

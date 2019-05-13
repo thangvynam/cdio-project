@@ -199,7 +199,6 @@ MatrixModel.getStandardMatrix = ()=>{
 }
 
 MatrixModel.updateStandardMatrix = (body,result)=>{
-
   body.forEach((item,_)=>{
     sql.query(`UPDATE matrix SET muc_do = '${item.muc_do}' WHERE id = ${item.id}`,(err,res)=>{
       if(err){
@@ -209,8 +208,218 @@ MatrixModel.updateStandardMatrix = (body,result)=>{
       return result(null,res);
     })
   })
+}
 
 
+
+MatrixModel.getBenchmarkMatrix = ()=>{
+  return new Promise((resolve,reject)=>{
+      getAmountITUForBenchMark().then(res=>{
+        let data = {
+          I:[],
+          T:[],
+          U:[],
+        }
+        for(let i = 0;i<3;i++){
+          let arr = [];
+          res.forEach((item,_)=>{
+            let temp = {
+              cdr: item.cdr,
+              amount:item.amount[i]
+            }
+            arr.push(temp);
+          })
+          if(i===0) data.I = arr;
+          if(i===1) data.T = arr;
+          if(i ===2) {
+            data.U =arr;
+            resolve(data);
+          }
+        }
+        resolve(data);
+
+      }).catch(err=>{
+        reject(err);
+      })
+  })
+}
+
+
+
+getAmountITUForBenchMark = ()=>{
+  return new Promise((resolve,reject)=>{
+
+    MatrixModel.getRealityMatrix().then(realityMatrix=>{
+        MatrixModel.getCdrCDIO().then(res=>{
+          let data = [];
+          res.forEach((cdrCDIO,index)=>{
+            let temp = {
+              cdr: cdrCDIO.cdr,
+            }
+            getAmountITUByCDR(realityMatrix,index).then(arrAmount=>{
+              temp.amount = arrAmount;
+              data.push(temp);
+
+              if(index === cdrCDIO.length - 1) resolve(data);
+
+            }).catch(err=>{
+              reject(err);
+            })
+  
+  
+          })
+
+          resolve(data);
+          
+  
+        }).catch(err=>{
+            reject(err);
+        })
+      
+
+
+    }).catch(err=>{
+      reject(err);
+    })
+    
+
+  })
+}
+
+getAmountITUByCDR= (matrix,index)=>{
+  
+  return new Promise( (resolve,reject)=>{
+    var mapUIT = new Map();
+    mapUIT.set('I',0);
+    mapUIT.set('T',0);
+    mapUIT.set('U',0);
+    matrix.forEach((item,_)=>{
+        let strITU = item.itu[index];
+        if(strITU!=="-"){
+          let arrITU = strITU.split(",");
+          // console.log("arr: ",arrITU);
+          arrITU.forEach((itu,_)=>{
+            let count = mapUIT.get(itu);
+            mapUIT.set(itu,count+1);
+          })
+        }
+    })
+    let result = [];
+    for(const value of mapUIT.values()) {
+      result.push(value);
+    }
+    if(result.length>0) resolve(result);
+    else reject("err");
+    
+  })
+
+}
+
+
+checkExistTTCId = (data) => {
+  return new Promise((resolve,reject)=>{
+    sql.query(`SELECT * FROM matrix WHERE thong_tin_chung_id = ${data.subjectId}`, async (err,resp)=>{
+      if(err){
+        console.log("err: ",err);
+        return reject(err);
+      } else if (resp.length !== 0) {
+        resolve(true)
+      } else resolve(false);
+    })
+  })
+}
+
+MatrixModel.addMatrix = (body,result)=>{
+  return new Promise((resolve,reject)=>{
+    body.forEach((item,_)=>{
+      checkExistTTCId(item).then(res => {
+        if (res === true) {
+          item.ITU.forEach(el => {
+            el.id = el.id.replace(/\./g, "-")
+            el.id += '-'
+            sql.query(`select do.Id from chuan_dau_ra_cdio cdr,detailoutcomestandard do
+            where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6 and KeyRow = '${el.id}'`, (err, res) =>{
+              let muc_do = "-";
+              if (el.data.cdr.includes('I')) {
+                muc_do = 'I'
+                muc_do += ','
+              }
+               if (el.data.cdr.includes('T')) {
+                muc_do += 'T'
+                muc_do += ','
+              }
+               if (el.data.cdr.includes('U')) {
+                muc_do += 'U'
+              }
+              if (muc_do[muc_do.length -1] === ",") {
+                muc_do = muc_do.substr(0, muc_do.length-1)
+              }
+              if(muc_do.length > 1 && muc_do[0] === "-") {
+                muc_do = muc_do.substr(1);
+              }
+              if (res.length > 0) {
+                sql.query(`UPDATE matrix SET muc_do = '${muc_do}' WHERE thong_tin_chung_id = ${item.subjectId} and chuan_dau_ra_cdio_id = ${res[0].Id}`, (err, res) => {
+                if (err) {
+                  console.log("err: ", err);
+                  return result(err);
+                }
+                return result(res);
+              })
+              }
+            })
+            
+          })
+        }
+        else {
+          sql.query(`select do.Id from chuan_dau_ra_cdio cdr,detailoutcomestandard do
+          where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6`,(err,res)=>{
+            if(err){
+              console.log("err: ",err);
+              return reject(err);
+            }
+            for(let i=0;i<res.length;i++){
+              item.ITU.forEach(el => {
+                el.id = el.id.replace(/\./g, "-")
+                el.id += '-'
+                sql.query(`select do.Id from chuan_dau_ra_cdio cdr,detailoutcomestandard do
+                where cdr.del_flag = 0 and cdr.id = do.Id and do.IdOutcomeStandard = 5 and length(KeyRow) = 6 and KeyRow = '${el.id}'`, (err, res) =>{
+                  let muc_do = "-";
+                  if (el.data.cdr.includes('I')) {
+                    muc_do = 'I'
+                    muc_do += ','
+                  }
+                   if (el.data.cdr.includes('T')) {
+                    muc_do += 'T'
+                    muc_do += ','
+                  }
+                   if (el.data.cdr.includes('U')) {
+                    muc_do += 'U'
+                  }
+                  if (muc_do[muc_do.length -1] === ",") {
+                    muc_do = muc_do.substr(0, muc_do.length-1)
+                  }
+                  if(muc_do.length > 1 && muc_do[0] === "-") {
+                    muc_do = muc_do.substr(1);
+                  }
+                  if (res.length > 0) {
+                    sql.query(`INSERT INTO matrix(muc_do,thong_tin_chung_id,chuan_dau_ra_cdio_id) VALUES('${muc_do}',${item.subjectId},${res[0].Id})`,(err,res)=>{
+                      if(err){
+                        console.log("err: ",err);
+                        return reject(err);
+                      }
+                      return result(res);
+                    })
+                  }
+                })
+                
+              })
+            }
+          })
+        }
+      })
+    })
+    resolve("1");
+  })
 }
 
 

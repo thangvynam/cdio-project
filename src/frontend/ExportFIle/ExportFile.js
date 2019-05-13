@@ -131,8 +131,6 @@ class ExportFile extends Component {
         } else {
             this.setState({ selectedItem: [] });
         }
-
-
     }
 
     uploadDir = (file) => {
@@ -164,7 +162,7 @@ class ExportFile extends Component {
                         </div>      
                         <br/>
                         <div style={{ width: "50%", margin: "0 auto " }}>
-                            <button onClick={this.export} type="button" class="btn btn-success">Export</button>
+                            <button onClick={this.export} type="button" class="btn btn-success">Xuất file PDF</button>
                             <br /><br /><br />
                             <Loader loading={this.state.loading} />
                         </div>

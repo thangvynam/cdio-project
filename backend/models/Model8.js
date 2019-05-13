@@ -5,6 +5,7 @@ var Model8 = (data) => {
 }
 
 
+<<<<<<< HEAD
 Model8.getLoaiTaiNguyen = (result) => {
     sql.query(`select * from tnmh_loai_tai_nguyen where del_flag = 0`, (err, res) => {
         if (err) {
@@ -21,6 +22,90 @@ Model8.getTaiNguyenMonHoc = (id, result) => {
         if (err) {
             console.log("err: ", err);
             return result(err, null);
+=======
+Model8.getLoaiTaiNguyen = (result)=>{
+    sql.query(`select * from tnmh_loai_tai_nguyen where id != -1 ORDER by loai`,(err,res)=>{
+      if(err){
+        console.log("err: ",err);
+        return result(err,null);
+      }
+      else
+          return result(null,res);
+    });
+}
+
+Model8.addLoaiTaiNguyen = (data, result) => {
+    sql.query(`INSERT INTO tnmh_loai_tai_nguyen (loai) VALUES ('${data.loai}')`,
+    (err,res) => {
+        if(err) {
+            console.log("Error model 7 : ", err);
+            result(null,err)
+        }else{
+            result(null,res);
+        }
+    })
+  }
+
+Model8.updateLoaiTaiNguyen = (data, result) => {
+    sql.query(`update tnmh_loai_tai_nguyen
+            set loai = '${data.loai}'
+            where id = ${data.id}`,
+        (err, res) => {
+            if (err) {
+                console.log("error:", err);
+                result(null, err)
+            } else {
+                result(null, res);
+            }
+        })
+  }
+
+  Model8.deleteloaitainguyenfromtainguyen = (data, result) => {
+    let idString = "(" + data.toString() + ")";
+        sql.query(`update tai_nguyen_mon_hoc set tnmh_loai_tai_nguyen_id = -1 where (tnmh_loai_tai_nguyen_id) IN ${idString}`,
+        (err, res) => {
+            if (err) {
+                console.log("error:", err);
+                result(null, err)
+            } else {
+                result(null, res);
+            }
+        })
+    
+  }
+  
+  Model8.deleteTaiNguyen = (data, result) => {
+        sql.query(`update tai_nguyen_mon_hoc set del_flag = 1 where (tnmh_loai_tai_nguyen_id) = -1`,
+        (err, res) => {
+            if (err) {
+                console.log("error:", err);
+                result(null, err)
+            } else {
+                result(null, res);
+            }
+        })
+    
+  }
+  
+  Model8.deleteLoaiTaiNguyen = (data, result) => {
+    let idString = "(" + data.toString() + ")";
+        sql.query(`delete from tnmh_loai_tai_nguyen where (id) IN ${idString}`,
+        (err, res) => {
+            if (err) {
+                console.log("error:", err);
+                result(null, err)
+            } else {
+                result(null, res);
+            }
+        })
+  }
+
+Model8.getTaiNguyenMonHoc = (id,result) => {
+    sql.query(`select * from tai_nguyen_mon_hoc where thong_tin_chung_id = ${id.id} and del_flag = 0`,(err,res)=>{
+        if(err){
+          console.log("err: ",err);
+          return result(err,null);
+>>>>>>> 9f51c07e81c681d0c3dfbf8272203683a5d1ae8b
         }
         else
             return result(null, res);

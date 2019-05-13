@@ -17,8 +17,9 @@ const LogModel = require('../models/LogModel');
 const CommentModel = require('../models/CommentModel');
 const MatrixModel = require('../models/MatrixModel');
 const DanhMucModel = require('../models/DanhMucModel');
-
-const MucTieuModel = require('../models/MucTieuModel')
+const ModelSurvey = require('../models/ModelSurvey');
+const MucTieuModel = require('../models/MucTieuModel');
+const SurveyQAModel = require('../models/SurveyQAModel');
 
 const dataRender1 ={
   title1 : '',
@@ -599,6 +600,17 @@ router.post('/add-danhgia',function(req,res){
   })
 })
 
+router.post('/add-chude',function(req,res){
+  const data = req.body.data;
+  Model7.addChuDe(data,function(err,result){
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })
+})
+
 router.get('/get-chude',function(req,res){
   Model7.getChude(function(err,result){
     if(err){
@@ -608,6 +620,53 @@ router.get('/get-chude',function(req,res){
   })
 })
 
+router.post('/update-chude', function(req, res) {
+  let data = req.body.data
+  
+  Model7.updateChuDe(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-chude-from-danhgia', function(req, res) {
+  let data = req.body.data
+  
+  Model7.deletechudefromdanhgia(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-danhgia', function(req, res) {
+  let data = req.body.data
+  
+  Model7.deletedanhgia(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-chude', function(req, res) {
+  let data = req.body.data
+  
+  Model7.deleteChuDe(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
 
 router.get('/get-danhgia/:id',function(req,res){
   let id = req.params
@@ -648,6 +707,64 @@ router.get('/get-loaitainguyen',function(req,res){
   })
 })
 
+router.post('/add-loaitainguyen',function(req,res){
+  const data = req.body.data;
+  Model8.addLoaiTaiNguyen(data,function(err,result){
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })
+})
+
+router.post('/update-loaitainguyen', function(req, res) {
+  let data = req.body.data
+  
+  Model8.updateLoaiTaiNguyen(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-loaitainguyen-from-tainguyen', function(req, res) {
+  let data = req.body.data
+  
+  Model8.deleteloaitainguyenfromtainguyen(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-tainguyen', function(req, res) {
+  let data = req.body.data
+  
+  Model8.deleteTaiNguyen(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
+
+router.post('/delete-loaitainguyen', function(req, res) {
+  let data = req.body.data
+  
+  Model8.deleteLoaiTaiNguyen(data, function(err, data) {
+    if (err) {
+      console.log(err);
+    } else{
+      res.send(data);
+    }   
+  })   
+})
 
 router.get('/get-tainguyenmonhoc/:id',function(req,res){
   let id = req.params
@@ -709,6 +826,16 @@ router.post('/update-standard-matrix', function(req, res) {
   })   
 })
 
+router.get('/get-benchmark-matrix', function(req, res) {
+  
+  MatrixModel.getBenchmarkMatrix().then(result => {
+    return res.end(JSON.stringify(result));
+  })
+  .catch(err => {
+    return res.end(JSON.stringify(err))
+  });
+});
+
 
 router.post('/save-log', function(req, res) {  
   const body = req.body.data
@@ -767,7 +894,60 @@ router.post('/get-standard-output-5', function(req, res) {
   });
 })
 
+router.get('/get-data-survey',function(req,res){
+  ModelSurvey.collectData((result) => {
+    res.send(result)
+  });
+})
 
+router.post('/add-data-survey',function(req,res){
+  const data = req.body.data;
+  const id_qa = req.body.id_qa;
+  const idMon = req.body.idMon;
 
+  ModelSurvey.addData(data, id_qa, idMon, (result) => {
+    //res.send(result)
+  });
+})
+router.post('/save-survey-qa', function(req, res) {  
+  SurveyQAModel.save(req.body.data, (result) => {
+    console.log(result)
+    let response = {id: result};
+    res.send(response)
+  });
+})
 
+router.get('/get-matrix-survey', function(req, res) {  
+  ModelSurvey.getDataMatixSurvey(result => {
+    res.send(result);
+  });
+})
+
+router.post('/get-survey-itu',function(req,res){
+  ModelSurvey.getITU(req.body,(result) => {
+    res.send(result);
+  })
+})
+
+router.get('/get-surveyqa/:id', function(req, res) {
+  let id = req.params
+  ModelSurvey.getQA(id, (result) => {
+    res.send(result);
+  })  
+})
+
+router.get('/get-survey/:id',function(req,res){
+  let id = req.params
+  ModelSurvey.getITUwithQA(id,(result) => {
+    res.send(result);
+  })
+})
+
+router.post('/add-to-edit-matrix', function(req, res) {
+  let data = req.body;
+    MatrixModel.addMatrix(data, result => {
+      // console.log(result);
+    })
+  res.send("ok");
+})
 module.exports = router;

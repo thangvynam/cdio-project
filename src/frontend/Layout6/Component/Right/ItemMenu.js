@@ -196,11 +196,13 @@ class ItemMenu extends Component {
       return;
     }
     let previewData = {};
+    previewData.id = -1;
     previewData.key = this.props.itemKHGDTH.previewInfo.length + 1;
     previewData.titleName = tempInfo.titleName;
     previewData.teachingActs = tempInfo.teachingActs;
     previewData.standardOutput = tempInfo.standardOutput;
     previewData.evalActs = tempInfo.evalActs;
+    previewData.del_flag = 0;
 
     this.props.onAddItemKHGDTH(JSON.stringify(previewData));
     this.props.nextStep();

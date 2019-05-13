@@ -13,6 +13,8 @@ export const SAVE_LOG_OBJECT = 'SAVE_LOG_OBJECT'
 
 export const RESET_TAB = 'RESET_TAG';
 
+export const SAVE_SURVEY = 'SAVE_SURVEY'
+
 //layout 3
 export const ADD_DATA_LAYOUT_3 = 'ADD_DATA_LAYOUT_3';
 export const DELETE_DATA_LAYOUT_3 = 'DELETE_DATA_LAYOUT_3';
@@ -32,6 +34,8 @@ export const CHANGE_LEVEL_DATA = 'CHANGE_LEVEL_DATA';
 export const SELECTED_VERB = 'SELECTED_VERB';
 export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
 export const MENU_ITEM = 'MENU_ITEM';
+export const PARENT_ITEM = 'PARENT_ITEM';
+export const CTDT = 'CTDT';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
 export const SUBJECT_MASO = 'SUBJECT_MASO';
@@ -94,6 +98,10 @@ export const REFRESH_DATA = "REFRESH_DATA";
 // Comment 
 export const SHOW_INPUT_COMMENT = "SHOW_INPUT_COMMENT";
 export const SAVE_COMMENT = "SAVE_COMMENT";
+
+// Survey
+export const CHANGE_VALUE_ITU_SURVEY = "CHANGE_VALUE_ITU_SURVEY";
+export const CHANGE_VALUE_DESCRIPTION_SURVEY = "CHANGE_VALUE_DESCRIPTION_SURVEY";
 
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {
@@ -180,6 +188,20 @@ export function menuItem(newMenuItem) {
     return {
         type: MENU_ITEM,
         menuitem: newMenuItem
+    };
+}
+
+export function parentItem(newParentItem) {
+    return {
+        type: PARENT_ITEM,
+        parentitem: newParentItem
+    };
+}
+
+export function ctdt(newCtdt) {
+    return {
+        type: CTDT,
+        ctdt: newCtdt
     };
 }
 
@@ -423,5 +445,6 @@ export const MENUITEM = {
     TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc',
     XUAT_FILE_PDF:'xuat-file',
     DE_CUONG_MON_HOC: 'de-cuong-mon-hoc',
-    TAB_2: 'tab-2'
+    TAB_2: 'tab-2',
+    ITU_SURVEY: 'itusurvey'
 };

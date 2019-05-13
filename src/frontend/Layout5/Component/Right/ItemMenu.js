@@ -143,12 +143,10 @@ class ItemMenu extends Component {
             }
         }
 
-        
         if (flag) {
             newArray.push(item);
         }
-        
-        
+                
         this.setState({ standardSelectedItem: newArray });
         
         standardOutput_data = newArray;
@@ -235,15 +233,6 @@ class ItemMenu extends Component {
             },
         };
 
-        function init(){   
-            for (let i = 0; i < childrenTeachingActs.length; i++) {
-                data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
-            }
-            for (let i = 0; i < evalActs.length; i++) {
-                childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
-            }
-        }
-
         if (this.props.itemLayout5Reducer.teachingActsData.length !== 0) {
             for (let i = 0; i < this.props.itemLayout5Reducer.teachingActsData.length; i++) {
                 childrenTeachingActs.push(this.props.itemLayout5Reducer.teachingActsData[i])
@@ -254,7 +243,16 @@ class ItemMenu extends Component {
             }
             
         }
-       
+
+        function init(){   
+            for (let i = 0; i < childrenTeachingActs.length; i++) {
+                data.push(<Option key={childrenTeachingActs[i]}>{childrenTeachingActs[i]}</Option>)
+            }
+            for (let i = 0; i < evalActs.length; i++) {
+                childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>)
+            }
+        }
+
         init();
     
         return (
@@ -284,7 +282,6 @@ class ItemMenu extends Component {
                         >
                             {getFieldDecorator('teachingActs', {
 
-                                
                             })(
                                 <Select
                                     mode="tags"
@@ -360,7 +357,7 @@ class ItemMenu extends Component {
                         <Form.Item {...tailFormItemLayout}>
                             <div>
                                
-                                <Button type="primary" onClick={() => { this.props.saveAndContinue() }} style={{ marginLeft: "2em" }}>
+                                <Button type="primary" onClick={() => { this.props.saveAndContinue(this.props.subjectId) }} style={{ marginLeft: "2em" }}>
                                     Thêm<Icon type="right" />
                                 </Button>
                                 <br />
@@ -403,13 +400,15 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             });
         },
 
-        saveAndContinue: () => {
+        saveAndContinue: (subjectId) => {
 
             myObj.key = -1 ;
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs_data;
             myObj.evalActs = evalActs_data;
             myObj.standardOutput = standardOutput_data;
+            myObj.subjectId = subjectId;
+            myObj.del_flag = 0;
     
             if (titleName === '' || standardOutput_data.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
@@ -458,7 +457,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                             titleName : response.data[i].titleName,
                             teachingActs : response.data[i].teachingActs,
                             standardOutput : response.data[i].standardOutput,
-                            evalActs : response.data[i].evalActs
+                            evalActs : response.data[i].evalActs,
+                            subjectId : response.data[i].subjectId,
+                            del_flag : 0
                         }
                         newArr.push(data);   
                     }

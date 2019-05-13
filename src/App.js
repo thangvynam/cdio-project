@@ -10,10 +10,13 @@ class App extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/" component={Home} />
-        <Route exact path="/:type/" component={Subject} />
-        <Route exact path="/:type/:monhoc/" component={Subject} />
-        <Route exact path="/:type/:monhoc/:tab" component={Subject} />
+        <Route exact path="/" component={Subject} />
+        <Route exact path="/:parent/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:khoi/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:khoi/:monhoc/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:khoi/:monhoc/:tab" component={Subject} />
         <Route component={Page404}/>
       </Switch>
     );

@@ -1,5 +1,5 @@
-import {SAVE_SURVEY,CHANGE_VALUE_ITU_SURVEY} from '../Constant/ActionType';
-import axios from 'axios';
+import { SAVE_SURVEY, CHANGE_VALUE_ITU_SURVEY, 
+    CHANGE_VALUE_DESCRIPTION_SURVEY} from '../Constant/ActionType';
 
 const surveyInitialState = {
     tenMH: '',
@@ -16,14 +16,13 @@ const surveyInitialState = {
     q9: '',
     q10: '',
     q11: '',
-    dataValueITU: new Map()
+    dataValueITU: new Map(),
+    dataValueDescription : new Map()
 }
 const SurveyReducer = (state = surveyInitialState, action) => {
+
     switch (action.type) {
         case SAVE_SURVEY: {
-            // axios.post('/save-survey-qa', { data: action.survey }).then((res) => {
-            //     console.log(res)
-            // })
             switch (action.key) {
                 case "tenMH":
                     return {
@@ -110,6 +109,14 @@ const SurveyReducer = (state = surveyInitialState, action) => {
                 dataValueITU : action.data
             }
         }
+
+        case CHANGE_VALUE_DESCRIPTION_SURVEY: {
+            return {
+                ...state,
+                dataValueDescription : action.data
+            }
+        }
+
         default:
             return state
     }

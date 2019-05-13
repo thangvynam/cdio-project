@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Table, Input, Button, Popconfirm, Form, Divider, Tag, InputNumber, Select, Modal
+  Table, Button, Popconfirm, Form, Divider, Select, Modal,notification
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
@@ -129,7 +129,7 @@ class TNTableItem extends Component {
                   <Divider type="vertical" />
                   <Popconfirm
                     title="Xác nhận xóa?"
-                    onConfirm={() => this.handleDelete(record.key)}
+                    onConfirm={() => this.handleDelete(record.index)}
                   >
                     <a href="#a">Xóa</a>
                   </Popconfirm>
@@ -161,18 +161,20 @@ class TNTableItem extends Component {
     });
   }
 
-  handleDelete(key) {
-    for(let i= key;i<this.props.itemLayout8Reducer.previewInfo.length-1;i++){
-      this.props.itemLayout8Reducer.previewInfo[i].loai = this.props.itemLayout8Reducer.previewInfo[i+1].loai;
-      this.props.itemLayout8Reducer.previewInfo[i].mota = this.props.itemLayout8Reducer.previewInfo[i+1].mota;
-      this.props.itemLayout8Reducer.previewInfo[i].link = this.props.itemLayout8Reducer.previewInfo[i+1].link;
-    }
-    for (let i = 0; i < this.props.itemLayout8Reducer.previewInfo.length; i++) {
-      this.props.itemLayout8Reducer.previewInfo[i].key = i;
-      this.props.itemLayout8Reducer.previewInfo[i].stt = i + 1;
-    }
-    this.props.itemLayout8Reducer.previewInfo.splice(this.props.itemLayout8Reducer.previewInfo.length - 1, 1);
+  handleDelete(index) {
+    // for(let i= index;i<this.props.itemLayout8Reducer.previewInfo.length-1;i++){
+    //   this.props.itemLayout8Reducer.previewInfo[i].loai = this.props.itemLayout8Reducer.previewInfo[i+1].loai;
+    //   this.props.itemLayout8Reducer.previewInfo[i].mota = this.props.itemLayout8Reducer.previewInfo[i+1].mota;
+    //   this.props.itemLayout8Reducer.previewInfo[i].link = this.props.itemLayout8Reducer.previewInfo[i+1].link;
+    // }
+    // for (let i = 0; i < this.props.itemLayout8Reducer.previewInfo.length; i++) {
+    //   this.props.itemLayout8Reducer.previewInfo[i].index = i;
+    //   this.props.itemLayout8Reducer.previewInfo[i].stt = i + 1;
+    // }
+    // this.props.itemLayout8Reducer.previewInfo.splice(this.props.itemLayout8Reducer.previewInfo.length - 1, 1);
     let  newData = this.props.itemLayout8Reducer.previewInfo;
+
+    newData[index].del_flag=1;
     this.setState({ selectedRowKeys: [], editingKey: "" });
     this.props.onAddTNData(newData);
   }
@@ -198,32 +200,36 @@ class TNTableItem extends Component {
     }
 
     //delete all
-    if (selectedRow.length === this.props.itemLayout8Reducer.previewInfo.length) {
-      this.props.itemLayout8Reducer.previewInfo = [];
-      this.props.onUpdateTNData([]);
-      this.setState({ selectedRowKeys: [], editingKey: "" });
-      return;
-    }
+    // if (selectedRow.length === this.props.itemLayout8Reducer.previewInfo.length) {
+    //   this.props.itemLayout8Reducer.previewInfo = [];
+    //   this.props.onUpdateTNData([]);
+    //   this.setState({ selectedRowKeys: [], editingKey: "" });
+    //   return;
+    // }
 
-    let filteredItems = {previewInfo:[]}
+    // let filteredItems = {previewInfo:[]}
    
-    let KHitems = this.props.itemLayout8Reducer.previewInfo;
-    this.props.itemLayout8Reducer.previewInfo = KHitems.filter(
-      (_, index) => !selectedRow.includes(index + 1)
-    );
-    for (let i = 0; i < this.props.itemLayout8Reducer.previewInfo.length; i++) {
-      this.props.itemLayout8Reducer.previewInfo[i].key = i + 1;
-      this.props.itemLayout8Reducer.previewInfo[i].stt=  i+1;
+    // let KHitems = this.props.itemLayout8Reducer.previewInfo;
+    // this.props.itemLayout8Reducer.previewInfo = KHitems.filter(
+    //   (_, index) => !selectedRow.includes(index + 1)
+    // );
+    // for (let i = 0; i < this.props.itemLayout8Reducer.previewInfo.length; i++) {
+    //   this.props.itemLayout8Reducer.previewInfo[i].key = i + 1;
+    //   this.props.itemLayout8Reducer.previewInfo[i].stt=  i+1;
+    // }
+
+    // filteredItems.previewInfo = this.props.itemLayout8Reducer.previewInfo;
+    let newData = this.props.itemLayout8Reducer.previewInfo;
+    for(let i=0;i<selectedRow.length;i++){
+      newData[selectedRow[i]].del_flag  = 1;
     }
 
-    filteredItems.previewInfo = this.props.itemLayout8Reducer.previewInfo;
-    this.props.onUpdateTNData(filteredItems);
+    this.props.onAddTNData(newData);
     this.setState({ selectedRowKeys: [], editingKey: "" });
   };
 
   getData() {
     return axios.get(`/get-tainguyenmonhoc/${this.props.subjectid}`).then(response => {
-      
         return response.data
     }).catch(function(error){
       console.log(error)
@@ -239,23 +245,42 @@ loaiDisplayName(value){
 
 async componentDidMount(){
   let temp = await this.getData();
+  this.setData(temp);
+}
+
+setData = temp => {
   let tempPreview = [];
   if(temp!==null && temp!== undefined && this.props.itemLayout8Reducer.isLoaded === false){
     temp.map((item,index) =>{
       let data = {
+        id: item.id,
         key: index,
+        index: index,
         stt: index +1,
         loai: this.loaiDisplayName(item.tnmh_loai_tai_nguyen_id),
         mota: item.mo_ta,
         link: item.lien_ket,
+        del_flag : item.del_flag,
       }
       tempPreview.push(data);
     })
     this.props.isLoaded(true);
   this.props.onAddTNData(tempPreview);
   }
-  
 }
+
+setIndexForItem = () => {
+  let tainguyenmonhoc = [];
+  let tnmh = this.props.itemLayout8Reducer.previewInfo.filter(item => item.del_flag===0);
+  for (let i = 0; i < tnmh.length; i++) {
+    let temp = tnmh[i];
+    temp.index = i;
+    temp.stt = i+1;
+    tainguyenmonhoc.push(temp);
+  }
+
+  return tainguyenmonhoc;
+};
 
 saveAll = () => {
 
@@ -267,8 +292,34 @@ saveAll = () => {
     id : id,
     description : description,
   }
-  this.props.onSaveAllData(obj);
-  alert("ok")
+
+  
+  // axios.post("/save-tainguyenmonhoc",obj)
+  // .then(response => {
+  //   console.log("VO DUOC SAVEALL")
+  //       console.log(response);
+  // })
+
+
+  axios.post(`/save-tainguyenmonhoc`, obj)
+     .then(response => {
+       if(response.data === 1){
+        notification["success"]({
+          message: "Cập nhật thành công",
+          duration: 1
+        });
+       }
+       else{
+        notification["error"]({
+          message: "Cập nhật thất bại",
+          duration: 1
+        });
+       }
+     });
+
+  let temp = this.getData();
+  this.setData(temp);
+  // alert("ok")
 }
 
   showModal = () => {
@@ -281,7 +332,6 @@ saveAll = () => {
   };
 
   render() {
-    console.log(this.props.itemLayout8Reducer.previewInfo)
     const components = {
       body: {
         row: EditableFormRow,
@@ -331,7 +381,7 @@ saveAll = () => {
         <Table
           components={components}
           bordered
-          dataSource={this.props.itemLayout8Reducer.previewInfo}
+          dataSource={this.setIndexForItem()}
           columns={columns}
           rowSelection={rowSelection}
           rowClassName="editable-row"

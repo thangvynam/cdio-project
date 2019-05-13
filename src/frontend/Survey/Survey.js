@@ -18,9 +18,10 @@ class Node {
 }
 
 class ITUValue{
-    constructor(key, value) {
+    constructor(key, value, description) {
         this.key = key;
         this.value = value;
+        this.description = description;
     }
 }
 
@@ -176,39 +177,29 @@ class Survey extends React.Component {
         return htmlDOM;
     }
 
-    convertToObject = (data) => {
-        const iterator = data[Symbol.iterator]();
-        let count = 0;
-        let key = '';
-        let value = '';
+    convertToObject = (data,dataDescription) => {
+        const iteratorData = data[Symbol.iterator]();
+        //const iteratorDataDescription = dataDescription[Symbol.iterator]();
+    
         let arr = [];
 
-        for (let item of iterator) {
-            if (count % 2 == 0) {
-                key = item;
-            } else {
-                value = item;   
-
-                const obj = new ITUValue(key,value);
-                arr.push(obj);
-            }
-            count++;
+        for (let item of iteratorData) {
+            const description = typeof dataDescription.get(item[0]) !== 'undefined' ? dataDescription.get(item[0]) : '';
+            const obj = new ITUValue(item[0],item[1],description);
+            arr.push(obj);
         }
-
+       
         return arr;
     }
 
     saveAll = () => {
-        // let data = this.props.surveyReducer.dataValueITU;
+        const dataDescription = this.props.surveyReducer.dataValueDescription;
+        const data = this.props.surveyReducer.dataValueITU;
+        const surveyData = this.props.surveyReducer;
         
-        // let dataConvert = this.convertToObject(data);
-        // axios.post("/add-data-survey",{data: dataConvert})
-        //     .then(response=>{
-        //         //const data= response.data;
-                
-        //     });
-        let surveyData = this.props.surveyReducer;
-        let survey = {
+        const dataConvert = this.convertToObject(data,dataDescription);
+        
+        const survey = {
             tenMH: surveyData.tenMH,
             nguoiDuocKS: surveyData.nguoiDuocKS,
             nguoiKS: surveyData.nguoiKS,
@@ -224,9 +215,18 @@ class Survey extends React.Component {
             q10: surveyData.q10,
             q11: surveyData.q11,
         } 
-        axios.post('/save-survey-qa', { data: survey }).then((res) => {
-                console.log(res)
-            })
+        axios.post('/save-survey-qa', { data: survey })
+            .then((res) => {
+                axios.post("/add-data-survey",
+                        { data: dataConvert,
+                          id_qa: res.data.id,
+                          idMon : this.props.subjectId
+                        })
+                    .then(response => {
+                        //const data= response.data;
+                        
+                    });
+            });
     }
 
     render() {

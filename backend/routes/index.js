@@ -308,12 +308,16 @@ router.post('/save-danhgia', function (req, res) {
 })
 
 
-router.post('/save-tainguyenmonhoc', function (req, res) {
-  Model8.save(req.body.data, function (err, description) {
+
+router.post('/save-tainguyenmonhoc', function(req, res) {
+  Model8.save(req.body, function(err, description) {
     if (err) {
       console.log(err);
+      res.end("0")
     }
-    res.end("done");
+
+    res.end("1");
+
   })
 })
 
@@ -785,7 +789,17 @@ router.get('/get-loaitainguyen', function (req, res) {
   })
 })
 
-router.post('/add-loaitainguyen', function (req, res) {
+
+router.get('/get-loaitainguyen1',function(req,res){
+  Model8.getLoaiTaiNguyen1(function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
+})
+
+router.post('/add-loaitainguyen',function(req,res){
   const data = req.body.data;
   Model8.addLoaiTaiNguyen(data, function (err, result) {
     if (err) {
@@ -854,7 +868,21 @@ router.get('/get-tainguyenmonhoc/:id', function (req, res) {
   })
 })
 
-router.get('/get-standardoutput-7/:id', function (req, res) {
+
+router.get('/get-tainguyenmonhoc1/:id',function(req,res){
+  let id = req.params
+  Model8.getTaiNguyenMonHoc1(id,function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
+})
+
+
+
+
+router.get('/get-standardoutput-7/:id', function(req, res) {
   let id = req.params;
   Model7.getStandardOutput(id, function (err, result) {
     if (err) {
@@ -980,8 +1008,10 @@ router.get('/get-data-survey', function (req, res) {
 
 router.post('/add-data-survey', function (req, res) {
   const data = req.body.data;
+  const id_qa = req.body.id_qa;
+  const idMon = req.body.idMon;
 
-  ModelSurvey.addData(data, (result) => {
+  ModelSurvey.addData(data, id_qa, idMon, (result) => {
     //res.send(result)
   });
 })
@@ -1019,19 +1049,12 @@ router.get('/get-survey/:id', function (req, res) {
   })
 })
 
-router.post('/check-exist-ttcid', function (req, res) {
-  let data = req.body;
-  MatrixModel.checkExistTTCId(data, result => {
-    res.send(result);
-  })
-})
 
-router.post('/update-to-edit-matrix', function (req, res) {
+router.post('/add-to-edit-matrix', function(req, res) {
   let data = req.body;
-  MatrixModel.updateMatrix(data, result => {
-    // console.log(result);
-  })
+    MatrixModel.addMatrix(data, result => {
+      // console.log(result);
+    })
   res.send("ok");
-
 })
 module.exports = router;

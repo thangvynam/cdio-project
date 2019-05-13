@@ -231,12 +231,13 @@ router.post('/save-danhgia',function(req,res){
 
 
 router.post('/save-tainguyenmonhoc', function(req, res) {
-  Model8.save(req.body.data, function(err, description) {
+  Model8.save(req.body, function(err, description) {
     if (err) {
       console.log(err);
+      res.end("0")
     }
-    res.end("done");
-  })   
+    res.end("1");
+  })
 })
 
 router.post('/test',function(req,res){

@@ -257,7 +257,7 @@ async componentWillReceiveProps(nextProps){
   }
 }
 
-  onMultiDelete = () => {
+  onMultiDelete = () => { 
     const selectedRow = this.state.selectedRowKeys;
 
     // delete one

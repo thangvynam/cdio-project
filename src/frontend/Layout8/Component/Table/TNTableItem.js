@@ -230,8 +230,6 @@ class TNTableItem extends Component {
 
   getData() {
     return axios.get(`/get-tainguyenmonhoc/${this.props.subjectid}`).then(response => {
-        console.log(response.data);
-        console.log("ALAHOBELELE")
         return response.data
     }).catch(function(error){
       console.log(error)

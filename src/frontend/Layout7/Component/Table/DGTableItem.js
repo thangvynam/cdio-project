@@ -328,15 +328,23 @@ class itemLayout7ReducerItem extends React.Component {
 
       //vị trí thăngf con cuối cùng
       indexChildren = indexChildren + index;
+
+      //nếu chỉ có 1 thằng chủ đề
       if ((index === 0 && indexChildren === this.props.itemLayout7Reducer.previewInfo.length) || this.props.itemLayout7Reducer.previewInfo.length === 1) {
         console.log("1");
         this.props.itemLayout7Reducer.previewInfo = [];
-      } else if (index === 0 || indexChildren === this.props.itemLayout7Reducer.previewInfo.length) {
+      }
+      // nếu nó là thằng chủ đề đầu tiên trong list
+      else if (index === 0 || indexChildren === this.props.itemLayout7Reducer.previewInfo.length) {
         console.log("2");
         this.props.itemLayout7Reducer.previewInfo.splice(index, indexChildren);
-      } else {
+      }
+      //ngược lại 
+      else {
         console.log("3")
         let listKey = [];
+
+        //delete từ vị trí index tới index + indexChildren
         for (let i = index; i < index + indexChildren; i++) {
           console.log(this.props.itemLayout7Reducer.previewInfo[i])
           this.props.itemLayout7Reducer.previewInfo[i].mathanhphan = this.props.itemLayout7Reducer.previewInfo[i + indexChildren].mathanhphan;
@@ -352,10 +360,14 @@ class itemLayout7ReducerItem extends React.Component {
 
 
     }
+
+    //Nếu key không phải là chủ đề - nếu key là thằng con cuối cùng
     else if (key === this.props.itemLayout7Reducer.previewInfo[this.props.itemLayout7Reducer.previewInfo.length - 1].key) {
       this.props.itemLayout7Reducer.previewInfo.splice(this.props.itemLayout7Reducer.previewInfo.length - 1, 1);
       newData.previewInfo = this.props.itemLayout7Reducer.previewInfo;
-    } else {
+    }
+    //trường hợ pcòn lại 
+    else {
       console.log(this.props.itemLayout7Reducer.previewInfo);
       let index = 0;
       for (let i = 0; i < this.props.itemLayout7Reducer.previewInfo.length; i++) {
@@ -647,7 +659,7 @@ class itemLayout7ReducerItem extends React.Component {
       responseDanhGia.push(temp);
     }
   
-    return tainguyenmonhoc;
+    return responseDanhGia;
   };
 
 
@@ -708,7 +720,7 @@ class itemLayout7ReducerItem extends React.Component {
         <Table
           components={components}
           bordered
-          dataSource={this.props.itemLayout7Reducer.previewInfo}
+          dataSource={this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 0)}
           columns={columns}
           rowSelection={rowSelection}
           rowClassName="editable-row"

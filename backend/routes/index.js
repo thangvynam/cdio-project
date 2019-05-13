@@ -707,6 +707,15 @@ router.get('/get-loaitainguyen',function(req,res){
   })
 })
 
+router.get('/get-loaitainguyen1',function(req,res){
+  Model8.getLoaiTaiNguyen1(function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
+})
+
 router.post('/add-loaitainguyen',function(req,res){
   const data = req.body.data;
   Model8.addLoaiTaiNguyen(data,function(err,result){
@@ -775,6 +784,19 @@ router.get('/get-tainguyenmonhoc/:id',function(req,res){
     res.end(JSON.stringify(result));
   })
 })
+
+router.get('/get-tainguyenmonhoc1/:id',function(req,res){
+  let id = req.params
+  Model8.getTaiNguyenMonHoc1(id,function(err,result){
+    if(err){
+      res.end("0");
+    }
+    res.end(JSON.stringify(result));
+  })
+})
+
+
+
 
 router.get('/get-standardoutput-7/:id', function(req, res) {
   let id = req.params;

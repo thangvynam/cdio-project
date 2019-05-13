@@ -1,5 +1,4 @@
-import { ADD_TNDATA, CHANGE_TNDATA,SAVE_LOAI_TAI_NGUYEN,SAVE_TEMP_DATA_LAYOUT_8,SAVE_ALL_DATA_LAYOUT_8, IS_LOADED_8, CDR_DANHGIA } from '../Constant/ActionType';
-import { stat } from 'fs';
+import { ADD_TNDATA, CHANGE_TNDATA,SAVE_LOAI_TAI_NGUYEN,SAVE_TEMP_DATA_LAYOUT_8,SAVE_ALL_DATA_LAYOUT_8, IS_LOADED_8, CDR_DANHGIA, UPDATE_TNDATA } from '../Constant/ActionType';
 import axios from 'axios';
 
 const addTNDataState = {
@@ -29,6 +28,12 @@ const itemLayout8Reducer = (state = addTNDataState, action) => {
             return{
                 ...state,
                 previewInfo: action.data,
+            }
+        }
+        case UPDATE_TNDATA:{
+            return{
+                ...state,
+                previewInfo : action.data,
             }
         }
         case CHANGE_TNDATA:{

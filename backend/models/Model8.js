@@ -5,8 +5,7 @@ var Model8 = (data) => {
 }
 
 
-<<<<<<< HEAD
-Model8.getLoaiTaiNguyen = (result) => {
+Model8.getLoaiTaiNguyen1 = (result) => {
     sql.query(`select * from tnmh_loai_tai_nguyen where del_flag = 0`, (err, res) => {
         if (err) {
             console.log("err: ", err);
@@ -17,12 +16,15 @@ Model8.getLoaiTaiNguyen = (result) => {
     });
 }
 
-Model8.getTaiNguyenMonHoc = (id, result) => {
+Model8.getTaiNguyenMonHoc1 = (id, result) => {
     sql.query(`select * from tai_nguyen_mon_hoc where thong_tin_chung_id = ${id.id} and del_flag = 0`, (err, res) => {
         if (err) {
             console.log("err: ", err);
             return result(err, null);
-=======
+        }
+    })
+}
+
 Model8.getLoaiTaiNguyen = (result)=>{
     sql.query(`select * from tnmh_loai_tai_nguyen where id != -1 ORDER by loai`,(err,res)=>{
       if(err){
@@ -105,7 +107,6 @@ Model8.getTaiNguyenMonHoc = (id,result) => {
         if(err){
           console.log("err: ",err);
           return result(err,null);
->>>>>>> 9f51c07e81c681d0c3dfbf8272203683a5d1ae8b
         }
         else
             return result(null, res);

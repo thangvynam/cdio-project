@@ -152,85 +152,85 @@ import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
 //   }
 // ];
 
-const href = "/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey";
+ const href = "/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey";
 
-const myData = [
-  {
-    "mon": "OOP",
-    "giaovien": "phu",
-    "ITU": [
-      {
-        "id": "1.1.1",
-        "data": {
-          "cdr": "T*T*T*U*U*U",
-          "id": "1*2*3*1*2*3"
-        }
-      },
-      {
-        "id": "1.1.2",
-        "data": {
-          "cdr": "T*T*T*U*U*U",
-          "id": "1*2*3*1*2*3"
-        }
-      },
-      {
-        "id": "1.1.3",
-        "data": {
-          "cdr": "T*T*U*U*I",
-          "id": "1*2*1*2*3"
-        }
-      },
-      {
-        "id": "1.2.1",
-        "data": {
-          "cdr": "-",
-          "id": "-"
-        }
-      },
-      {
-        "id": "1.2.2",
-        "data": {
-          "cdr": "I*T",
-          "id": "1*1"
-        }
-      },
-      {
-        "id": "1.2.3",
-        "data": {
-          "cdr": "-",
-          "id": "-"
-        }
-      }
-    ]
-  },
-  {
-    "mon": "Design Patern",
-    "giaovien": "John",
-    "ITU": [
-      {
-        "id": "2.1.1",
-        "data": {
-          "cdr": "T*U",
-          "id": "1*3"
-        }
-      },
-      {
-        "id": "2.1.2",
-        "data": {
-          "cdr": "T*T*T*U",
-          "id": "1*2*3*3"
-        }
-      },
-      {
-        "id": "2.1.3",
-        "data": {
-          "cdr": "T*T*U*U*I",
-          "id": "1*2*1*2*3"
-        }
-      }
-    ]
-  }
-]
+// const myData = [
+//   {
+//     "mon": "OOP",
+//     "giaovien": "phu",
+//     "itu": [
+//       {
+//         "id": "1.1.1",
+//         "data": {
+//           "cdr": "T*T*T*U*U*U",
+//           "id": "1*2*3*1*2*3"
+//         }
+//       },
+//       {
+//         "id": "1.1.2",
+//         "data": {
+//           "cdr": "T*T*T*U*U*U",
+//           "id": "1*2*3*1*2*3"
+//         }
+//       },
+//       {
+//         "id": "1.1.3",
+//         "data": {
+//           "cdr": "T*T*U*U*I",
+//           "id": "1*2*1*2*3"
+//         }
+//       },
+//       {
+//         "id": "1.2.1",
+//         "data": {
+//           "cdr": "-",
+//           "id": "-"
+//         }
+//       },
+//       {
+//         "id": "1.2.2",
+//         "data": {
+//           "cdr": "I*T",
+//           "id": "1*1"
+//         }
+//       },
+//       {
+//         "id": "1.2.3",
+//         "data": {
+//           "cdr": "-",
+//           "id": "-"
+//         }
+//       }
+//     ]
+//   },
+//   {
+//     "mon": "Design Patern",
+//     "giaovien": "John",
+//     "itu": [
+//       {
+//         "id": "2.1.1",
+//         "data": {
+//           "cdr": "T*U",
+//           "id": "1*3"
+//         }
+//       },
+//       {
+//         "id": "2.1.2",
+//         "data": {
+//           "cdr": "T*T*T*U",
+//           "id": "1*2*3*3"
+//         }
+//       },
+//       {
+//         "id": "2.1.3",
+//         "data": {
+//           "cdr": "T*T*U*U*I",
+//           "id": "1*2*1*2*3"
+//         }
+//       }
+//     ]
+//   }
+// ]
 
 
 class SurveyMatrix extends Component {
@@ -255,8 +255,8 @@ class SurveyMatrix extends Component {
   getCDRHeader = (myData) => {
     const arrCDR = [];
     for (const subject of myData) {
-      if (!_.isUndefined(subject['ITU'])) {
-        subject['ITU'].map(x => arrCDR.push(x['id']))
+      if (!_.isUndefined(subject['itu']) && subject['itu'].length > 0) {
+        subject['itu'].map(x => arrCDR.push(x['id']))
       }
     }
     return arrCDR;
@@ -272,10 +272,10 @@ class SurveyMatrix extends Component {
     return result;
   }
 
-  getDataLink = (data, ITU) => {
+  getDataLink = (data, itu) => {
     let dataLink = [];
     for (let i = 0; i < data[0].length; i++) {
-      if (data[0][i] === ITU) {
+      if (data[0][i] === itu) {
         let obj = [];
         obj.push(data[0][i]);
         obj.push(data[1][i]);
@@ -285,13 +285,11 @@ class SurveyMatrix extends Component {
     return dataLink;
   }
 
-  showITU = (text) => {
+  showitu = (text) => {
     //T*T*T*U*U*U/1*2*3*1*2*3
     let value = "-";
     let data = (!_.isEmpty(text) && text !== "-/-") ? text.split('/') : [];
     if (!_.isEmpty(data)) {
-      // console.log("data I : " + data[0].split('I').length)
-      // console.log("length I : " + data[0].split('I').length-1);
       let tagRender = [];
       let countI = data[0].split('I').length - 1;
       let countT = data[0].split('T').length - 1;
@@ -307,7 +305,6 @@ class SurveyMatrix extends Component {
             })}
           </div>
         );
-        // const a = this.groupCDRWithID("I", data);
         tagRender.push(
           <Popover content={content}>
             <Tag style={{ fontSize: "8pt", fontWeight: "bold", color: "purple" }}>{countI}I</Tag>
@@ -316,8 +313,6 @@ class SurveyMatrix extends Component {
       }
       if (countT > 0) {
         const dataLink = this.getDataLink(data, 'T');
-        // console.log(dataLink)
-
         const content = (
           <div className="popover">
             {dataLink.map((item, index) => {
@@ -331,7 +326,7 @@ class SurveyMatrix extends Component {
             <Tag style={{ fontSize: "8pt", fontWeight: "bold", color: "gold" }}>{countT}T</Tag>
           </Popover>)
       }
-      if (countU > 0) {
+      if (countU > 0) { 
         const dataLink = this.getDataLink(data, 'U');
 
         const content = (
@@ -359,7 +354,7 @@ class SurveyMatrix extends Component {
         key: `${child}`,
         align: "center",
         render: (text) => <div>
-          {this.showITU(text)}
+          {this.showitu(text)}
         </div>
       })
     }
@@ -398,11 +393,11 @@ class SurveyMatrix extends Component {
     ];
     let groups = this.createGroupCDR(this.getCDRHeader(myData), 0);
     if (!(_.isEmpty(groups))) {
-      _.toArray(groups).map((group, index) => {
+      _.toArray(groups).map((group) => {
         header.push({
-          title: `${group[index][0]}`,
-          key: `${group[index][0]}`,
-          dataIndex: `${group[index][0]}`,
+          title: `${group[0][0]}`,
+          key: `${group[0][0]}`,
+          dataIndex: `${group[0][0]}`,
           children:
             this.createSecondTitleHeader(group)
         })
@@ -420,7 +415,7 @@ class SurveyMatrix extends Component {
         'mon': subject['mon'],
         'giaovien': subject['giaovien'],
       };
-      subject['ITU'].map((x, index) => {
+      subject['itu'].map((x, index) => {
         dataSubject = { ...dataSubject, [x['id']]: `${x['data']['cdr'] + "/" + x['data']['id']}` }
       })
       data.push(dataSubject);
@@ -453,6 +448,7 @@ class SurveyMatrix extends Component {
       hideDefaultSelections: true,
       onSelection: this.onSelection,
     };
+    console.log(this.props.dataSurveyMatrix);
     // this.createHeaderMatrix(myData);
     return (
       !_.isEmpty(this.props.dataSurveyMatrix) && (<div>
@@ -463,7 +459,7 @@ class SurveyMatrix extends Component {
               let data = []
               let key = this.state.selectedRowKeys
               key.forEach(element => {
-                let obj = myData[element];
+                let obj = this.props.dataSurveyMatrix[element];
                 obj.subjectId = 8;
                 data.push(obj)
               });

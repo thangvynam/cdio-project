@@ -200,7 +200,7 @@ router.post('/login', function (req, res) {
         });
       }
       else {
-        jwt.sign({ user }, 'secretkey', { expiresIn: '60s' }, (err, token) => {
+        jwt.sign({ user }, 'secretkey', { expiresIn: '3600s' }, (err, token) => {
           res.json({
             message: 'Success',
             token,

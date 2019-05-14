@@ -46,7 +46,6 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
-var testTemp = '';
 class EditableCell extends React.Component {
   constructor(props) {
     super(props);
@@ -313,6 +312,7 @@ class itemLayout7ReducerItem extends React.Component {
     
   }
   onDelete = (newData, key) => {
+    //nếu key là chủ đề . xóa hết tất cả thằng con trong chủ đề đó .
     if (this.isExist(key)) {
       let index = 0;
       let indexChildren = 0;
@@ -320,20 +320,31 @@ class itemLayout7ReducerItem extends React.Component {
         if (key === this.props.itemLayout7Reducer.previewInfo[i].key) {
           index = i;
         }
+        //vị trí của thằng con cuối cùng
         if (this.isChildren(key, this.props.itemLayout7Reducer.previewInfo[i].key)) {
           indexChildren++;
         }
       }
+
+      //vị trí thăngf con cuối cùng
       indexChildren = indexChildren + index;
+
+      //nếu chỉ có 1 thằng chủ đề
       if ((index === 0 && indexChildren === this.props.itemLayout7Reducer.previewInfo.length) || this.props.itemLayout7Reducer.previewInfo.length === 1) {
         console.log("1");
         this.props.itemLayout7Reducer.previewInfo = [];
-      } else if (index === 0 || indexChildren === this.props.itemLayout7Reducer.previewInfo.length) {
+      }
+      // nếu nó là thằng chủ đề đầu tiên trong list
+      else if (index === 0 || indexChildren === this.props.itemLayout7Reducer.previewInfo.length) {
         console.log("2");
         this.props.itemLayout7Reducer.previewInfo.splice(index, indexChildren);
-      } else {
+      }
+      //ngược lại 
+      else {
         console.log("3")
         let listKey = [];
+
+        //delete từ vị trí index tới index + indexChildren
         for (let i = index; i < index + indexChildren; i++) {
           console.log(this.props.itemLayout7Reducer.previewInfo[i])
           this.props.itemLayout7Reducer.previewInfo[i].mathanhphan = this.props.itemLayout7Reducer.previewInfo[i + indexChildren].mathanhphan;
@@ -349,10 +360,14 @@ class itemLayout7ReducerItem extends React.Component {
 
 
     }
+
+    //Nếu key không phải là chủ đề - nếu key là thằng con cuối cùng
     else if (key === this.props.itemLayout7Reducer.previewInfo[this.props.itemLayout7Reducer.previewInfo.length - 1].key) {
       this.props.itemLayout7Reducer.previewInfo.splice(this.props.itemLayout7Reducer.previewInfo.length - 1, 1);
       newData.previewInfo = this.props.itemLayout7Reducer.previewInfo;
-    } else {
+    }
+    //trường hợ pcòn lại 
+    else {
       console.log(this.props.itemLayout7Reducer.previewInfo);
       let index = 0;
       for (let i = 0; i < this.props.itemLayout7Reducer.previewInfo.length; i++) {
@@ -567,6 +582,7 @@ class itemLayout7ReducerItem extends React.Component {
     });
   };
 
+  //kiểm tra là con 
   isChildren(value, children) {
     for (let i = 0; i < value.length; i++) {
       if (children[i] !== value[i]) {
@@ -634,9 +650,21 @@ class itemLayout7ReducerItem extends React.Component {
 
   }
 
+  setIndexForItem = () => {
+    let responseDanhGia = [];
+    let  danhGia = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag===0);
+    for (let i = 0; i < danhGia.length; i++) {
+      let temp = danhGia[i];
+      temp.index = i;
+      responseDanhGia.push(temp);
+    }
+  
+    return responseDanhGia;
+  };
 
 
   render() {
+    console.log(this.props.itemLayout7Reducer.previewInfo)
     const components = {
       body: {
         row: EditableFormRow,
@@ -692,7 +720,7 @@ class itemLayout7ReducerItem extends React.Component {
         <Table
           components={components}
           bordered
-          dataSource={this.props.itemLayout7Reducer.previewInfo}
+          dataSource={this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 0)}
           columns={columns}
           rowSelection={rowSelection}
           rowClassName="editable-row"

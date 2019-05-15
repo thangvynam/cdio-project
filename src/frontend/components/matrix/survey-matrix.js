@@ -152,7 +152,7 @@ import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
 //   }
 // ];
 
- const href = "/ctdt/ctdt-1/itusurvey/ktt-1/2/itusurvey";
+const href = "/ctdt/ctdt-1/itusurvey/view/2/itusurvey";
 
 // const myData = [
 //   {
@@ -274,11 +274,18 @@ class SurveyMatrix extends Component {
 
   getDataLink = (data, itu) => {
     let dataLink = [];
-    for (let i = 0; i < data[0].length; i++) {
-      if (data[0][i] === itu) {
+  
+    let listITU = data[0].split('*');
+    let listIds = data[1].split('*');
+
+    listITU.splice(listITU.length-1,1);
+    listIds.splice(listIds.length-1,1);
+
+    for (let i = 0; i < listITU.length; i++) {
+      if (listITU[i] === itu) {
         let obj = [];
-        obj.push(data[0][i]);
-        obj.push(data[1][i]);
+        obj.push(listITU[i]);
+        obj.push(listIds[i]);
         dataLink.push(obj);
       }
     }
@@ -297,14 +304,16 @@ class SurveyMatrix extends Component {
 
       if (countI > 0) {
         const dataLink = this.getDataLink(data, 'I');
+
         const content = (
           <div className="popover">
-            {dataLink.map((item, index) => {
+            {dataLink.map(item => {
 
               return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
         );
+        
         tagRender.push(
           <Popover content={content}>
             <Tag style={{ fontSize: "8pt", fontWeight: "bold", color: "purple" }}>{countI}I</Tag>
@@ -315,8 +324,7 @@ class SurveyMatrix extends Component {
         const dataLink = this.getDataLink(data, 'T');
         const content = (
           <div className="popover">
-            {dataLink.map((item, index) => {
-              console.log(item);
+            {dataLink.map(item=> {
               return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
@@ -331,7 +339,7 @@ class SurveyMatrix extends Component {
 
         const content = (
           <div className="popover">
-            {dataLink.map((item, index) => {
+            {dataLink.map(item => {
               return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
@@ -366,9 +374,9 @@ class SurveyMatrix extends Component {
     let header = [];
     _.toArray(groups).map((smallGroup, index) => {
       header.push({
-        title: `${smallGroup[index].slice(0, 3)}`,
-        key: `${smallGroup[index].slice(0, 3)}`,
-        dataIndex: `${group[index].slice(0.3)}`,
+        title: `${smallGroup[0].slice(0, 3)}`,
+        key: `${smallGroup[0].slice(0, 3)}`,
+        dataIndex: `${group[0].slice(0.3)}`,
         children: this.createThirdTitleHeader(smallGroup)
       })
     })

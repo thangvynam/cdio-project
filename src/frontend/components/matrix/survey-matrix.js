@@ -281,6 +281,23 @@ class SurveyMatrix extends Component {
     listITU.splice(listITU.length-1,1);
     listIds.splice(listIds.length-1,1);
 
+    // let listIndexDelete = [];
+
+    // for(let i=0;i<listITU.length-1;i++){
+    //   for(let j=i+1;j<listITU.length;j++){
+    //       if(listITU[i]===listITU[j]){
+    //         if(listIds[i]===listIds[j]){
+    //           listIndexDelete.push(i);
+    //         }
+    //       }
+    //   }
+    // }
+
+    // for(let i=0;i<listIndexDelete.length;i++){
+    //   delete listITU[listIndexDelete[i]];
+    //   delete listIds[listIndexDelete[i]];
+    // }
+
     for (let i = 0; i < listITU.length; i++) {
       if (listITU[i] === itu) {
         let obj = [];
@@ -369,10 +386,16 @@ class SurveyMatrix extends Component {
     return header;
   }
 
+  deduplicate = (arr) => {
+    let set = new Set(arr);
+    return [...set];
+  }
+
   createSecondTitleHeader = (group) => {
     const groups = this.createGroupCDR(group, 2);
     let header = [];
-    _.toArray(groups).map((smallGroup, index) => {
+    _.toArray(groups).map((gr, index) => {
+      let smallGroup = this.deduplicate(_.toArray(gr));
       header.push({
         title: `${smallGroup[0].slice(0, 3)}`,
         key: `${smallGroup[0].slice(0, 3)}`,
@@ -382,6 +405,7 @@ class SurveyMatrix extends Component {
     })
     return header;
   }
+
 
   createGroupCDR = (data, index) => {
     let result = _.chain(data)
@@ -486,7 +510,7 @@ class SurveyMatrix extends Component {
           rowSelection={rowSelection}
           columns={this.createHeaderMatrix(this.props.dataSurveyMatrix)}
           dataSource={this.createDataMatrix(this.props.dataSurveyMatrix)}
-          scroll={{ x: 1500 }}
+          scroll={{ x: 2000 }}
           style={{ marginTop: '25px' }}
         />
       </div>)

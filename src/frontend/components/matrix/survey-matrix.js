@@ -7,6 +7,7 @@ import { Link } from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
 import axios from 'axios';
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
 
 // const columns = [
@@ -250,6 +251,9 @@ class SurveyMatrix extends Component {
     })
   }
 
+  componentDidUpdate(){
+    this.addClassExport();
+  }
 
   //---Create Header---//
   getCDRHeader = (myData) => {
@@ -274,12 +278,12 @@ class SurveyMatrix extends Component {
 
   getDataLink = (data, itu) => {
     let dataLink = [];
-  
+
     let listITU = data[0].split('*');
     let listIds = data[1].split('*');
 
-    listITU.splice(listITU.length-1,1);
-    listIds.splice(listIds.length-1,1);
+    listITU.splice(listITU.length - 1, 1);
+    listIds.splice(listIds.length - 1, 1);
 
     // let listIndexDelete = [];
 
@@ -330,7 +334,7 @@ class SurveyMatrix extends Component {
             })}
           </div>
         );
-        
+
         tagRender.push(
           <Popover content={content}>
             <Tag style={{ fontSize: "8pt", fontWeight: "bold", color: "purple" }}>{countI}I</Tag>
@@ -341,7 +345,7 @@ class SurveyMatrix extends Component {
         const dataLink = this.getDataLink(data, 'T');
         const content = (
           <div className="popover">
-            {dataLink.map(item=> {
+            {dataLink.map(item => {
               return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
             })}
           </div>
@@ -351,7 +355,7 @@ class SurveyMatrix extends Component {
             <Tag style={{ fontSize: "8pt", fontWeight: "bold", color: "gold" }}>{countT}T</Tag>
           </Popover>)
       }
-      if (countU > 0) { 
+      if (countU > 0) {
         const dataLink = this.getDataLink(data, 'U');
 
         const content = (
@@ -417,7 +421,7 @@ class SurveyMatrix extends Component {
   createHeaderMatrix = (myData) => {
     let header = [
       {
-        title: 'Môn Học', width: 100, dataIndex: 'mon', key: 'mon', fixed: 'left',
+        title: 'Môn Học', width: 100, dataIndex: 'mon', key: 'mon', fixed: 'left', 
       },
       {
         title: 'GV trưởng nhóm', width: 100, dataIndex: 'giaovien', key: 'giaovien', fixed: 'left',
@@ -472,6 +476,23 @@ class SurveyMatrix extends Component {
     return -1;
   }
 
+
+  //Export
+  addClassExport = () => {
+    const table = document.getElementsByTagName('table')[0];
+    if (!_.isEmpty(table)) {
+      if (table.getAttribute('id') !== "table-to-xls") {
+        table.setAttribute('id', "table-to-xls");
+        for (let i = 0; i < table.tHead.getElementsByTagName('th').length; i++) {
+          table.tHead
+            .getElementsByTagName('th')[i]
+            .setAttribute('style', 'background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)')
+        }
+      }
+
+    }
+  }
+
   render() {
     const { selectedRowKeys } = this.state;
     const rowSelection = {
@@ -486,25 +507,33 @@ class SurveyMatrix extends Component {
       !_.isEmpty(this.props.dataSurveyMatrix) && (<div>
         <p></p>
 
-        <Button 
-            onClick={() => {
-              let data = []
-              let key = this.state.selectedRowKeys
-              key.forEach(element => {
-                let obj = this.props.dataSurveyMatrix[element];
-                obj.subjectId = 8;
-                data.push(obj)
-              });
-              console.log(data)
-              if (data.length > 0) {
-                axios.post('/add-to-edit-matrix', data).then(res => {
-                  console.log(res);
-                })
-              }
-            } 
-            }>
-            Lưu
+        <Button
+          onClick={() => {
+            let data = []
+            let key = this.state.selectedRowKeys
+            key.forEach(element => {
+              let obj = this.props.dataSurveyMatrix[element];
+              obj.subjectId = 8;
+              data.push(obj)
+            });
+            console.log(data)
+            if (data.length > 0) {
+              axios.post('/add-to-edit-matrix', data).then(res => {
+                console.log(res);
+              })
+            }
+          }
+          }>
+          Lưu
           </Button>
+        <ReactHTMLTableToExcel
+          id="test-table-xls-button"
+          className="download-table-xls-button btn btn-outline-warning"
+          table="table-to-xls"
+          filename="survey-matrix-export"
+          sheet="tablexls"
+          buttonText="Export"
+        />
         <Table
           bordered
           rowSelection={rowSelection}

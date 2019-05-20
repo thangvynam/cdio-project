@@ -963,7 +963,7 @@ getSubjectName = (subjectList, id) => {
         return (
           <div>
             {this.state.notifications}
-          <div style={{ marginBottom: 16,  marginTop: 16}}>
+            {this.props.isReview === true ? null : <div style={{ marginBottom: 16,  marginTop: 16}}>
           <Button
             type="danger"
             onClick={this.showModal}
@@ -988,7 +988,7 @@ getSubjectName = (subjectList, id) => {
           >
             Lưu lại
           </Button>
-          </div>
+          </div>}
           
             <Table bordered 
             components={components}

@@ -299,11 +299,12 @@ router.post('/save-data-2', function (req, res) {
 })
 
 router.post('/save-danhgia', function (req, res) {
-  Model7.save(req.body.data, function (err, description) {
+  Model7.save(req.body, function (err, description) {
     if (err) {
       console.log(err);
+      res.end("0")
     }
-    res.end("done");
+    res.end("1");
   })
 })
 
@@ -315,11 +316,12 @@ router.post('/save-tainguyenmonhoc', function(req, res) {
       console.log(err);
       res.end("0")
     }
-
     res.end("1");
 
   })
 })
+
+
 
 router.post('/test', function (req, res) {
   Model7.test(req.body.data, function (err, description) {

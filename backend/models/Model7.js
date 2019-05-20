@@ -281,7 +281,11 @@ Model7.getCDR = (body,result) => {
             }
     
           }
+
+
         }
+
+        result(null,"done");
       })
   }
 

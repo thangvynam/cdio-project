@@ -145,6 +145,8 @@ Model8.save = (data, result) => {
                     if (err) {
                         console.log("err: ", err);
                         return result(err, null);
+                    }else{
+                        result(null,res);
                     }
                 });
             }else{
@@ -152,6 +154,8 @@ Model8.save = (data, result) => {
                 if (err) {
                     console.log("err: ", err);
                     return result(err, null);
+                }else{
+                    result(null,res);
                 }
             });
         }

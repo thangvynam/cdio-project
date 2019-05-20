@@ -271,7 +271,10 @@ class DGFormItem extends Component {
                     }
                     console.log(data);
                     let dataReturn = {};
+                    console.log("isAdd2Rows:");
+                    console.log(isAdd2Rows)
                     if (isAdd2Rows === true) {
+                      console.log("is add 2 rows")
                       dataReturn = newData.concat(data);
                     } else {
                       dataReturn = previewInfo.concat(data);
@@ -304,7 +307,7 @@ class DGFormItem extends Component {
     }
   }
   render() {
-    console.log(this.props.itemLayout7Reducer.isLoaded)
+    // console.log(this.props.itemLayout7Reducer.isLoaded)
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {

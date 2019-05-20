@@ -322,7 +322,7 @@ class EditMatrix extends Component {
   }
 
   render() {
-
+    console.log(this.props.editMatrix)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];

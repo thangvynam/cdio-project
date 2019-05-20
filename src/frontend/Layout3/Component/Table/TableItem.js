@@ -381,7 +381,7 @@ async componentWillReceiveProps(nextProps){
 
       return (
         <div>
-          <div style={{ marginBottom: 16, marginTop: 10 }}>
+          {this.props.isReview === true ? null : <div style={{ marginBottom: 16, marginTop: 10 }}>
           <Button
             type="danger"
             onClick={this.showModal}
@@ -397,8 +397,8 @@ async componentWillReceiveProps(nextProps){
             onClick={() => this.props.saveAll(this.props.subjectid)}
           >
             Lưu tất cả
-          </Button>
-          </div>  
+          </Button>}
+          </div>}
           <Table
             components={components}
             bordered

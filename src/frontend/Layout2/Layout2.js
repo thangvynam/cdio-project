@@ -14,12 +14,12 @@ class Layout2 extends Component {
                     <div className="col-sm-11" >
                         <br />
                         <h1 style={{textAlign: "center"}}>MÔ TẢ MÔN HỌC</h1>
-                        <FormMoTa />
+                        {this.props.isReview === true ? null : <FormMoTa />}
                         <br />
                         <Tooltip placement="topLeft" >
                             <Button style={{color: "red", margin: "auto", width: "100%"}}>(Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)</Button>
                         </Tooltip>
-                        <TableItem />
+                        <TableItem isReview={this.props.isReview}/>
                         <br/>
                         <br/>
                         <LogForm/>

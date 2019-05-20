@@ -477,6 +477,7 @@ class TableItem extends Component {
   }
     return (
       <div>
+        {this.props.isReview === true ? null : <div>
         <Button
           style={{ marginBottom: 16, marginTop: 10 }}
           type="danger"
@@ -494,6 +495,7 @@ class TableItem extends Component {
           >
             Lưu tất cả
         </Button>
+        </div>}
         <Table
           components={components}
           bordered

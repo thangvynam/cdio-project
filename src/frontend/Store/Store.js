@@ -25,6 +25,7 @@ import { createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import { editMatrixReducer, editMatrixEditStateReducer, isLoadEditMatrixReducer } from '../Reducers/editMatrixReducer';
 import surveyReducer from '../Reducers/surveyReducer';
+import teacherReducer from '../Reducers/teacherReducer';
 //const middleware = [ thunk, logger ];
 const middleware = [ thunk];
 
@@ -68,7 +69,8 @@ const allReducers = redux.combineReducers({
     benchmarkMatrix: benchmarkReducer,
     logReducer: logReducer,
     surveyReducer: surveyReducer,
-    authentication: authenticationReducer
+    authentication: authenticationReducer,
+    teacherlist: teacherReducer,
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

@@ -14,14 +14,14 @@ class Layout7 extends Component {
                 <div className="col-sm-11" >
                     <br/>
                     <h2 style={{textAlign: "center"}}>DANH SÁCH ĐÁNH GIÁ</h2>
-                    <DGForm />
+                    {this.props.isReview === true ? null : <DGForm />}
                     <br />
                     <Tooltip placement="topLeft">
                         <Button style={{ color: "red", margin: "auto", width: "100%", height: "50px" }}>(Mô tả các thành phần bài tập, bài thi, đồ án... dùng để đánh giá kết quả của sinh viên khi tham gia môn học này. <br /> Bên cạnh mỗi nhóm bài tập, bài thi... cần có tỉ lệ % điểm tương ứng) </Button>
                     </Tooltip>
                     <br />
                     <Element name="test1" className="element" >
-                        <DGTableItem />
+                        <DGTableItem isReview={this.props.isReview}/>
                     </Element>
                 </div>
             </div>

@@ -14,7 +14,7 @@ class Layout4 extends Component {
           <div className="col-sm-11" >
             <br/>
             <h1 style={{textAlign: "center"}}>CHUẨN ĐẦU RA MÔN HỌC</h1>
-            <CDRForm/>
+            {this.props.isReview === true ? null : <CDRForm/>}
             <br />
             <Tooltip placement="topLeft" >
               <Button style={{color: "red", margin: "auto", width: "100%", height: "100px"}}>(Hướng dẫn: Mô tả chi tiết các chuẩn đầu ra của môn học. Ứng với mỗi mục tiêu ở mục phía trên có
@@ -23,7 +23,7 @@ mục tiêu môn học. Mức độ được thể hiện bằng các ký hiệu
 từ mô tả được sử dụng từ các động từ <br />chi tiết của Bloom cho mức độ tương ứng – xem thêm bảng các
 động từ Bloom chi tiết cho ngành kỹ thuật.)</Button>
             </Tooltip>
-            <CDRTableItem />
+            <CDRTableItem isReview={this.props.isReview}/>
           </div>
         </div>
       </div>

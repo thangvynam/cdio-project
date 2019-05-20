@@ -254,6 +254,7 @@ class Home extends Component {
             let ctdt = this.props.match.params.ctdt;
             let khoi = this.props.match.params.khoi;
             let parent = this.props.match.params.parent;
+            let tab = this.props.match.params.tab;
         
             if(parent !== "" && parent !== undefined && parent !== null) {
                 if(!this.checkParentExist(this.props.parentitem, parent)) {
@@ -283,6 +284,11 @@ class Home extends Component {
                                                         console.log(4)
                                                         return <Page404/>;
                                                     }  
+                                                }
+                                                else {
+                                                    if(tab != "itusurvey") {
+                                                        return <Page404/>;
+                                                    }
                                                 }
                                             }
                                             else {

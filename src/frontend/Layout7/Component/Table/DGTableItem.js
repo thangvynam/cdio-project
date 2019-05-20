@@ -699,7 +699,7 @@ class itemLayout7ReducerItem extends React.Component {
 
     return (
       <div>
-        <div style={{ marginBottom: 16, marginTop: 16 }}>
+        {this.props.isReview === true ? null : <div style={{ marginBottom: 16, marginTop: 16 }}>
           <Button
             type="danger"
             onClick={this.showModal}
@@ -716,7 +716,7 @@ class itemLayout7ReducerItem extends React.Component {
           >
             Lưu tât cả
           </Button>
-        </div>
+        </div>}
         <Table
           components={components}
           bordered

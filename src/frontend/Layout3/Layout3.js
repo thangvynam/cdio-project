@@ -12,7 +12,7 @@ class Layout3 extends Component {
                     <div className="col-sm-11" >
                         <br />
                         <h1 style={{textAlign: "center"}}>MỤC TIÊU MÔN HỌC</h1>
-                        <MainForm />
+                        {this.props.isReview === true ? null : <MainForm />}
                         <br />
                         <Tooltip placement="topLeft">
                             <Button style={{color: "red", margin: "auto", width: "100%", height: "50px"}}>
@@ -21,7 +21,7 @@ Bloom ở mức độ nhóm. <br/>Mỗi mục tiêu môn học được mapping 
                                 </span>
                             </Button>
                         </Tooltip>
-                        <TableItem/>
+                        <TableItem isReview={this.props.isReview}/>
                     </div>
                 </div>
             </div>

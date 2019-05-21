@@ -47,7 +47,7 @@ export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 export const CDR_CDIO = 'CDR_CDIO';
-
+export const LOAD_TEACHER = 'LOAD_TEACHER';
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -223,6 +223,13 @@ export function subjectList(newSubjectList) {
     return {
         type: SUBJECT_LIST,
         subjectlist: newSubjectList
+    };
+}
+
+export function teacherList(newTeacherList) {
+    return {
+        type: LOAD_TEACHER,
+        teacherlist: newTeacherList
     };
 }
 
@@ -446,5 +453,7 @@ export const MENUITEM = {
     XUAT_FILE_PDF:'xuat-file',
     DE_CUONG_MON_HOC: 'de-cuong-mon-hoc',
     TAB_2: 'tab-2',
-    ITU_SURVEY: 'itusurvey'
+    ITU_SURVEY: 'itusurvey',
+    PHAN_CONG: 'phan-cong',
+    REVIEW: 'review'
 };

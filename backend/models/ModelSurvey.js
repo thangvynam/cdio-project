@@ -47,7 +47,7 @@ ModelSurvey.addData = (data, id_qa, idMon, result) => {
             let resultValue = '';
             
             element.value.forEach(value => {
-                resultValue += value;
+                resultValue += value + ',';
             });
 
             query(`INSERT INTO survey VALUES 

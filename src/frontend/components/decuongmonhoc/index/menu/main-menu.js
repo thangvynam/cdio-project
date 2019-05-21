@@ -46,7 +46,7 @@ class MenuLeft extends Component {
         }
         else if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && (this.props.content_tab === ""
     || this.props.content_tab === undefined) && this.checkSubjectExist(this.props.content_monhoc) === true) {
-        return <Redirect to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_khoi}/${this.props.content_monhoc}/thong-tin-chung`}/>
+        return <Redirect to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_khoi}/${this.props.content_monhoc}/phan-cong`}/>
     }
     }
 
@@ -54,12 +54,24 @@ class MenuLeft extends Component {
         const menuItemsCollapse = [];
         for(let i = 0;i < this.props.parentitem.length;i++) {
             if(this.props.content_ctdt !== "" && this.props.content_ctdt !== undefined && this.props.content_ctdt !== null && this.props.parentitem[i].id === "ctdt") {
-                menuItemsCollapse.push(<Menu.Item key={this.props.parentitem[i].id} onClick={() => this.onClick(this.props.parentitem[i].id)}>
+                let ctdtIndex = this.getCtdt(this.props.ctdt, this.props.content_ctdt);
+                if(this.props.parentitem[i].id ===  this.props.content_parent) {
+                    menuItemsCollapse.push(<Menu.Item key={this.props.ctdt[ctdtIndex].id} onClick={() => this.onClick(this.props.ctdt[ctdtIndex].id)}>
+                    <Link to={`/${this.props.content_parent}/${this.props.ctdt[ctdtIndex].id}`} >
+                        <Icon type="dashboard" />
+                        <span>{this.props.ctdt[ctdtIndex].name}</span>
+                    </Link>
+                    </Menu.Item>)
+                }
+                else {
+                    menuItemsCollapse.push(<Menu.Item key={this.props.parentitem[i].id} onClick={() => this.onClick(this.props.parentitem[i].id)}>
                     <Link to={`/${this.props.parentitem[i].id}`} >
                         <Icon type="dashboard" />
                         <span>{this.props.parentitem[i].name}</span>
                     </Link>
                     </Menu.Item>)
+                }
+                
                 Object.keys(this.props.menuItem).map((key, id) => {
                     menuItemsCollapse.push(<Menu.Item key={key} onClick={() => this.onClick(key)}>
                     <Link style={{paddingLeft: "20px"}} to={`/${this.props.parentitem[i].id}/${this.props.content_ctdt}/${key}`} >
@@ -78,66 +90,85 @@ class MenuLeft extends Component {
                                 </Link>
                                 </Menu.Item>)
                                 if(this.props.content_monhoc !== "" && this.props.content_monhoc !== undefined && this.props.ctdt[indexCtdt].children[j].id === this.props.content_khoi) {
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.THONG_TIN_CHUNG}>
-                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.THONG_TIN_CHUNG}>
-                                        <Icon type="dashboard" />
-                                        <span>Thông tin chung</span>
+                                if(this.props.content_tab === "phan-cong") {
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.PHAN_CONG}>
+                                        <Link style={{paddingLeft: "60px"}} to={MENUITEM.PHAN_CONG}>
+                                            <Icon type="dashboard" />
+                                            <span>Phân công giáo viên</span>
+                                        </Link>
+                                    </Menu.Item>)
+                                }
+                                else if(this.props.content_tab === "review") {
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.REVIEW}>
+                                        <Link style={{paddingLeft: "60px"}} to={MENUITEM.REVIEW}>
+                                            <Icon type="dashboard" />
+                                            <span>Review Syllabus</span>
+                                        </Link>
+                                    </Menu.Item>)
+                                }
+                                else {
+                                
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.THONG_TIN_CHUNG}>
+                                        <Link style={{paddingLeft: "60px"}} to={MENUITEM.THONG_TIN_CHUNG}>
+                                            <Icon type="dashboard" />
+                                            <span>Thông tin chung</span>
+                                        </Link>
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.MO_TA_MON_HOC}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.MO_TA_MON_HOC}>
+                                        <Icon type="pay-circle" />
+                                        <span>Mô tả môn học</span>
                                     </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.MO_TA_MON_HOC}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.MO_TA_MON_HOC}>
-                                    <Icon type="pay-circle" />
-                                    <span>Mô tả môn học</span>
-                                </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.MUC_TIEU_MON_HOC}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.MUC_TIEU_MON_HOC}>
-                                    <Icon type="inbox" />
-                                    <span>Mục tiêu môn học</span>
-                                </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.CHUAN_DAU_RA}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.CHUAN_DAU_RA}>
-                                    <Icon type="table" />
-                                    <span>Chuẩn đầu ra môn học</span>
-                                </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.GIANG_DAY_LY_THUYET}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.GIANG_DAY_LY_THUYET}>
-                                    <Icon type="read" />
-                                    <span>Kế hoạch giảng dạy lý thuyết</span>
-                                </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.GIANG_DAY_THUC_HANH}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.GIANG_DAY_THUC_HANH}>
-                                    <Icon type="sync" />
-                                    <span>Kế hoạch giảng dạy thực hành</span>
-                                </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.DANH_GIA}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.DANH_GIA}>
-                                    <Icon type="file-text" />
-                                    <span>Đánh giá</span>
-                                </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.TAI_NGUYEN_MON_HOC}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.TAI_NGUYEN_MON_HOC}>
-                                    <Icon type="database" />
-                                    <span>Tài nguyên môn học</span>
-                                </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.QUY_DINH_CHUNG}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.QUY_DINH_CHUNG}>
-                                    <Icon type="reconciliation" />
-                                    <span>Các quy định chung</span>
-                                </Link>
-                                </Menu.Item>)
-                                menuItemsCollapse.push(<Menu.Item key={MENUITEM.XUAT_FILE_PDF}>
-                                <Link style={{paddingLeft: "60px"}} to={MENUITEM.XUAT_FILE_PDF}>
-                                    <Icon type="file-pdf" />
-                                    <span>Xuất file PDF</span>
-                                </Link>
-                                </Menu.Item>)
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.MUC_TIEU_MON_HOC}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.MUC_TIEU_MON_HOC}>
+                                        <Icon type="inbox" />
+                                        <span>Mục tiêu môn học</span>
+                                    </Link>
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.CHUAN_DAU_RA}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.CHUAN_DAU_RA}>
+                                        <Icon type="table" />
+                                        <span>Chuẩn đầu ra môn học</span>
+                                    </Link>
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.GIANG_DAY_LY_THUYET}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.GIANG_DAY_LY_THUYET}>
+                                        <Icon type="read" />
+                                        <span>Kế hoạch giảng dạy lý thuyết</span>
+                                    </Link>
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.GIANG_DAY_THUC_HANH}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.GIANG_DAY_THUC_HANH}>
+                                        <Icon type="sync" />
+                                        <span>Kế hoạch giảng dạy thực hành</span>
+                                    </Link>
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.DANH_GIA}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.DANH_GIA}>
+                                        <Icon type="file-text" />
+                                        <span>Đánh giá</span>
+                                    </Link>
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.TAI_NGUYEN_MON_HOC}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.TAI_NGUYEN_MON_HOC}>
+                                        <Icon type="database" />
+                                        <span>Tài nguyên môn học</span>
+                                    </Link>
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.QUY_DINH_CHUNG}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.QUY_DINH_CHUNG}>
+                                        <Icon type="reconciliation" />
+                                        <span>Các quy định chung</span>
+                                    </Link>
+                                    </Menu.Item>)
+                                    menuItemsCollapse.push(<Menu.Item key={MENUITEM.XUAT_FILE_PDF}>
+                                    <Link style={{paddingLeft: "60px"}} to={MENUITEM.XUAT_FILE_PDF}>
+                                        <Icon type="file-pdf" />
+                                        <span>Xuất file PDF</span>
+                                    </Link>
+                                    </Menu.Item>)
+                                }
                             }
                             }
                         }
@@ -169,6 +200,7 @@ class MenuLeft extends Component {
                 selectedKeys={this.props.content_tab !== "" && this.props.content_tab !== undefined ? [this.props.content_tab] 
                 : this.props.content_khoi !== "" && this.props.content_khoi !== undefined ? [this.props.content_khoi] 
                 : this.props.content_type !== "" && this.props.content_type !== undefined ? [this.props.content_type]  
+                : this.props.content_ctdt !== "" && this.props.content_ctdt !== undefined ? [this.props.content_ctdt]
                 : this.props.defaultSelectedKeys}
                 children={menuItemsCollapse}
             >

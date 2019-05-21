@@ -98,7 +98,7 @@ class Matrix extends Component {
     }
 
     componentDidUpdate() {
-        this.showAA()
+        this.addClassExport()
     }
 
     createGroupCDR = (data, index) => {
@@ -309,13 +309,13 @@ class Matrix extends Component {
         });
     }
 
-    showAA = () => {
-        const A = document.getElementsByTagName('table')[0];
-        if (!_.isEmpty(A)) {
-            if (A.getAttribute('id') !== "table-to-xls") {
-                A.setAttribute('id', "table-to-xls");
-                for (let i = 0; i < A.tHead.getElementsByTagName('th').length; i++) {
-                    A.tHead
+    addClassExport = () => {
+        const table = document.getElementsByTagName('table')[0];
+        if (!_.isEmpty(table)) {
+            if (table.getAttribute('id') !== "table-to-xls") {
+                table.setAttribute('id', "table-to-xls");
+                for (let i = 0; i < table.tHead.getElementsByTagName('th').length; i++) {
+                    table.tHead
                         .getElementsByTagName('th')[i]
                         .setAttribute('style', 'background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)')
                 }

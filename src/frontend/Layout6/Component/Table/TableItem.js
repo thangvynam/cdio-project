@@ -664,7 +664,7 @@ class TableItem extends Component {
 
     return (
       <div>
-        <div style={{ marginBottom: 16 }}>
+        {this.props.isReview === true ? null : <div style={{ marginBottom: 16 }}>
           <Button
             type="danger"
             onClick={this.showModal}
@@ -679,7 +679,7 @@ class TableItem extends Component {
           <Button style={{ float: "right" }} type="primary" onClick={this.onSaveAll}>
             Lưu thay đổi
           </Button>
-        </div>
+        </div>}
         <Table
           components={components}
           bordered

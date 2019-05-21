@@ -27,6 +27,8 @@ import SurveyMatrix from '../matrix/survey-matrix';
 import { nextTick } from 'q';
 import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
+import PhanCong from './phancong';
+import ReviewSyllabus from './reviewsyllabus';
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -259,6 +261,24 @@ class Content extends Component {
                 break;
             }
 
+            case MENUITEM.PHAN_CONG: {
+                content_layout = (
+                    <React.Fragment>
+                        <PhanCong content_monhoc={this.props.content_monhoc}/>
+                    </React.Fragment>
+                )
+                break;
+            }
+
+            case MENUITEM.REVIEW: {
+                content_layout = (
+                    <React.Fragment>
+                        <ReviewSyllabus idMH={this.props.content_monhoc}/>
+                    </React.Fragment>
+                )
+                break;
+            }
+
             case undefined: {
                 {
                     content_layout = type === "de-cuong-mon-hoc"  ? (
@@ -280,11 +300,14 @@ class Content extends Component {
                                                         <List.Item.Meta
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
-                                                            khoi !== "" && khoi !== undefined ? <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
+                                                            khoi !== "" && khoi !== undefined ? 
+                                                            item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            : <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }
                                                         />
                                                         </List.Item>
+                                                        
                                                 </div>
 
                                             </Col>
@@ -333,7 +356,7 @@ class Content extends Component {
                                     
                                     : type === "view-survey" ? <ViewSurvey />
                                     : content_layout = ctdt !== "" && ctdt !== undefined ? (
-                                        <div>component nhóm 1</div>
+                                         <div>component nhóm 1</div>
                                     )
                                     : content_layout = parent === "ctdt"  ? (
                                         <React.Fragment>

@@ -3,7 +3,7 @@ import {
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
-import { changeDGData, addDGData, deleteDGData, saveAllDGData, isLoaded7 } from '../../../Constant/ActionType';
+import { changeDGData, addDGData, deleteDGData, saveAllDGData, isLoaded7 ,updateChudeDanhGia, updateCDRDanhGia} from '../../../Constant/ActionType';
 import React, { Component } from 'react';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
@@ -433,6 +433,24 @@ class itemLayout7ReducerItem extends React.Component {
 
   }
   getData() {
+    var self = this;
+      axios.get('/get-chude')
+        .then(function (response) {
+          self.props.onGetChude(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+
+      axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
+        .then(function (response) {
+
+          self.props.onGetCDR(response.data);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+        
     var listDG = [];
     var listCDRDG = [];
     var listCDR = [];
@@ -448,6 +466,7 @@ class itemLayout7ReducerItem extends React.Component {
           listStringId = listStringId + ',' + item.id;
         }
       })
+      
       axios.post(`/get-cdrdanhgia`, { data: listStringId }).then(response2 => {
         if (response2.data === null || response2.data === undefined || response2.data.length === 0) return;
         listCDRDG = response2.data
@@ -482,13 +501,13 @@ class itemLayout7ReducerItem extends React.Component {
             }
             result.push({ danhgia: listDG[i], chuandaura: cdrResponse });
           }
-         
           var chude = this.props.itemLayout7Reducer.chudeDanhGia;
           var previewInfo = [];
           for (let i = 0; i < chude.length; i++) {
             let haveFather = false;
             for (let j = 0; j < result.length; j++) {
               let str = result[j].danhgia.ma.substring(0, chude[i].ma_chu_de.length);
+             
               if (str === chude[i].ma_chu_de) {
                 if (!haveFather) {
                   haveFather = true;
@@ -524,10 +543,15 @@ class itemLayout7ReducerItem extends React.Component {
                   }
                   previewInfo = previewInfo.concat(data);
                 }
+               
               }
             }
           }
-          this.sortValues(previewInfo.filter(item => item.del_flag !== 1));
+          if (previewInfo.filter(item => item.del_flag !== 1).length > 1) {
+            this.sortValues(previewInfo.filter(item => item.del_flag !== 1));
+      
+          }
+      
           this.props.onAddDGData(previewInfo);
         })
       })
@@ -538,6 +562,7 @@ class itemLayout7ReducerItem extends React.Component {
 
 
   componentWillMount() {
+
     if (this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout7Reducer.isLoaded === false) {
       this.getData();
     }
@@ -564,58 +589,67 @@ class itemLayout7ReducerItem extends React.Component {
   }
 
 
-  sortValues(checkedValues) {
-    for (let i = 0; i < checkedValues.length; i++) {
-      if (!this.isExist(checkedValues[i].mathanhphan) && checkedValues[i].mathanhphan[0] === '\xa0') {
-
-        checkedValues[i].mathanhphan = checkedValues[i].mathanhphan.slice(3, checkedValues[i].mathanhphan.length);
+  sortValues(previewInfo) {
+    // cắt khoảng trắng trước các mã thành phần 
+    for (let i = 0; i < previewInfo.length; i++) {
+      if (!this.isExist(previewInfo[i].mathanhphan) && previewInfo[i].mathanhphan[0] === '\xa0') {
+        previewInfo[i].mathanhphan = previewInfo[i].mathanhphan.slice(3, previewInfo[i].mathanhphan.length);
       }
     }
-    for (let i = 0; i < checkedValues.length - 1; i++) {
-      for (let j = i + 1; j < checkedValues.length; j++) {
-        if (checkedValues[j].mathanhphan < checkedValues[i].mathanhphan) {
-          let temp = checkedValues[j];
-          checkedValues[j] = checkedValues[i];
-          checkedValues[i] = temp;
+
+    //sort Value theo thứ tự
+    for (let i = 0; i < previewInfo.length - 1; i++) {
+      for (let j = i + 1; j < previewInfo.length; j++) {
+        if (previewInfo[j].mathanhphan < previewInfo[i].mathanhphan) {
+          let temp = previewInfo[j];
+          previewInfo[j] = previewInfo[i];
+          previewInfo[i] = temp;
         }
       }
     }
+
+
+    //find vị trí các parent
     let index = [];
-    for (let i = 0; i < checkedValues.length; i++) {
-      if (this.isExist(checkedValues[i].mathanhphan)) {
+    for (let i = 0; i < previewInfo.length; i++) {
+      if (this.isExist(previewInfo[i].mathanhphan)) {
         index.push(i);
       }
     }
+
+    //nếu chỉ có 1 parent
     if (index.length === 1) {
 
       let totalTile = 0;
-      for (let j = 1; j < checkedValues.length; j++) {
-        let newTile = checkedValues[j].tile.slice(0, checkedValues[j].tile.length - 1);
+      for (let j = 1; j < previewInfo.length; j++) {
+        let newTile = previewInfo[j].tile.slice(0, previewInfo[j].tile.length - 1);
         totalTile += parseFloat(newTile);
       }
 
-      checkedValues[index[0]].tile = totalTile + '%';
-    } else {
+      previewInfo[index[0]].tile = totalTile + '%';
+    }
+    //nếu có nhiều parent 
+    else {
       for (let i = 0; i < index.length - 1; i++) {
         let totalTile = 0;
         for (let j = index[i] + 1; j < index[i + 1]; j++) {
-          let newTile = checkedValues[j].tile.slice(0, checkedValues[j].tile.length - 1);
+          let newTile = previewInfo[j].tile.slice(0, previewInfo[j].tile.length - 1);
           totalTile += parseFloat(newTile);
         }
-        checkedValues[index[i]].tile = totalTile + '%';
+        previewInfo[index[i]].tile = totalTile + '%';
       }
       let totalTile = 0;
-      for (let i = index[index.length - 1] + 1; i < checkedValues.length; i++) {
-        let newTile = checkedValues[i].tile.slice(0, checkedValues[i].tile.length - 1);
+      for (let i = index[index.length - 1] + 1; i < previewInfo.length; i++) {
+        let newTile = previewInfo[i].tile.slice(0, previewInfo[i].tile.length - 1);
         totalTile += parseFloat(newTile);
-
       }
-      checkedValues[index[index.length - 1]].tile = totalTile + '%';
+     
+      previewInfo[index[index.length - 1]].tile = totalTile + '%';
     }
 
-    for (let i = 0; i < checkedValues.length; i++) {
-      if (!this.isExist(checkedValues[i].mathanhphan)) {
-        checkedValues[i].mathanhphan = '\xa0\xa0\xa0' + checkedValues[i].mathanhphan;
+    for (let i = 0; i < previewInfo.length; i++) {
+      if (!this.isExist(previewInfo[i].mathanhphan)) {
+        previewInfo[i].mathanhphan = '\xa0\xa0\xa0' + previewInfo[i].mathanhphan;
       }
     }
 
@@ -717,6 +751,8 @@ const mapDispatchToProps = (dispatch) => {
     onDeleteDGData: deleteDGData,
     isLoaded: isLoaded7,
     onSaveAllData: saveAllDGData,
+    onGetChude: updateChudeDanhGia,
+    onGetCDR: updateCDRDanhGia,
   }, dispatch);
 }
 

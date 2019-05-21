@@ -377,10 +377,11 @@ class SurveyMatrix extends Component {
   createThirdTitleHeader = (group) => {
     let header = [];
     for (const child of group) {
+      let titleChild = child.split('.') || [];
       header.push({
-        title: `${child}`,
+        title: _.toNumber(`${titleChild[0]}${titleChild[1]}${titleChild[2]}`),
         dataIndex: `${child}`,
-        key: `${child}`,
+        key: `${child}`,  
         align: "center",
         render: (text) => <div>
           {this.showitu(text)}
@@ -483,11 +484,11 @@ class SurveyMatrix extends Component {
     if (!_.isEmpty(table)) {
       if (table.getAttribute('id') !== "table-to-xls") {
         table.setAttribute('id', "table-to-xls");
-        for (let i = 0; i < table.tHead.getElementsByTagName('th').length; i++) {
-          table.tHead
-            .getElementsByTagName('th')[i]
-            .setAttribute('style', 'background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)')
-        }
+        // for (let i = 0; i < table.tHead.getElementsByTagName('th').length; i++) {
+        //   table.tHead
+        //     .getElementsByTagName('th')[i]
+        //     .setAttribute('style', 'background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)')
+        // }
       }
 
     }
@@ -501,7 +502,10 @@ class SurveyMatrix extends Component {
       hideDefaultSelections: true,
       onSelection: this.onSelection,
     };
-    console.log(this.props.dataSurveyMatrix);
+    if(!_.isEmpty(this.props.dataSurveyMatrix)){
+      console.log(this.createHeaderMatrix(this.props.dataSurveyMatrix));
+    }
+   
     // this.createHeaderMatrix(myData);
     return (
       !_.isEmpty(this.props.dataSurveyMatrix) && (<div>

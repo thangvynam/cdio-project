@@ -1054,9 +1054,8 @@ router.get('/get-survey/:id', function (req, res) {
 
 router.post('/add-to-edit-matrix', function(req, res) {
   let data = req.body;
-    MatrixModel.addMatrix(data, result => {
-      // console.log(result);
+    MatrixModel.addMatrix(data, (result) => {
+      return res.end(result);
     })
-  res.send("ok");
 })
 module.exports = router;

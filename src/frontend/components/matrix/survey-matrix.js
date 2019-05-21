@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Tooltip, Tag, Popover, Button } from 'antd';
+import { Table, Tooltip, Tag, Popover, Button, notification } from 'antd';
 import { connect } from 'react-redux';
 import { pathToFileURL } from 'url';
 import { isUndefined } from 'util';
@@ -9,6 +9,13 @@ import './matrix.css'
 import axios from 'axios';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: 'Thông báo',
+    description: 'Lưu dữ liệu thành công',
+  });
+};
 
 // const columns = [
 //   {
@@ -517,12 +524,15 @@ class SurveyMatrix extends Component {
             let key = this.state.selectedRowKeys
             key.forEach(element => {
               let obj = this.props.dataSurveyMatrix[element];
-              obj.subjectId = 8;
               data.push(obj)
             });
-            console.log(data)
             if (data.length > 0) {
               axios.post('/add-to-edit-matrix', data).then(res => {
+                console.log(res);
+                
+                if (res.data === 1) {
+                  openNotificationWithIcon('success')
+                }
                 console.log(res);
               })
             }

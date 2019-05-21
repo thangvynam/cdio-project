@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { Table, Form, Input, Checkbox, Icon, Tooltip, Button, Tag, Upload, message } from 'antd';
 import "./matrix.css";
+import _ from 'lodash';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { editMatrix, editMatrixEditState, isLoadEditMatrix, cdrCdio } from '../../Constant/ActionType';
@@ -77,9 +78,6 @@ class EditableCell extends React.Component {
                           </div>
                         </div>
                       </Checkbox.Group>
-
-
-
                     )}
                   </FormItem>
                 ) : (
@@ -116,13 +114,11 @@ class EditMatrix extends Component {
     this.state = {
       levels: [],
       tempMatrix: [],
-      isLoadMatrix: "false"
+      isLoadMatrix: "false",
+      cols: {},
+      rows: {}
     }
-
   }
-
-
-
 
   getIndex = (matrix, key) => {
     for (let i = 0; i < matrix.length; i++) {
@@ -315,14 +311,17 @@ class EditMatrix extends Component {
       }
       else {
         //DATA IMPORT
-        console.log(resp);
+        console.log(resp.rows);
+        this.setState({
+          cols: resp.cols,
+          rows: resp.rows
+        })
       }
     });
 
   }
 
   render() {
-    console.log(this.props.editMatrix)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];
@@ -430,37 +429,38 @@ class EditMatrix extends Component {
         <div style={{ margin: "10px" }}>
           <Button onClick={this.saveAll}>Lưu lại</Button>
           <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} />
-            <Table bordered
-              components={components}
-              rowClassName={() => 'editable-row'}
-              dataSource={dataSource}
-              columns={columns}
-              scroll={{ x: 1500 }}
-              size="small"
-            />
+          <Table bordered
+            components={components}
+            rowClassName={() => 'editable-row'}
+            dataSource={dataSource}
+            columns={columns}
+            scroll={{ x: 1500 }}
+            size="small"
+          />
+          {!_.isEmpty(this.state.rows) && <OutTable data={this.state.rows} columns={this.state.cols} tableClassName="ExcelTable2007" tableHeaderRowClass="heading" />}
         </div>
       </React.Fragment>
-        )
-      }
-    }
-    
+    )
+  }
+}
+
 const mapStateToProps = (state) => {
   return {
-          editMatrix: state.editmatrix,
-        editMatrixEditState: state.editmatrixeditstate,
-        subjectList: state.subjectlist,
-        isLoadEditMatrix: state.isloadeditmatrix,
-        cdrCdio: state.cdrcdio
-      }
-    }
+    editMatrix: state.editmatrix,
+    editMatrixEditState: state.editmatrixeditstate,
+    subjectList: state.subjectlist,
+    isLoadEditMatrix: state.isloadeditmatrix,
+    cdrCdio: state.cdrcdio
+  }
+}
 const mapDispatchToProps = (dispatch) => {
 
   return bindActionCreators({
-          updateEditMatrixEditState: editMatrixEditState,
-        updateEditMatrix: editMatrix,
-        updateIsLoadEditMatrix: isLoadEditMatrix,
-        updateCdrCdio: cdrCdio
-      }, dispatch);
-    
-    }
+    updateEditMatrixEditState: editMatrixEditState,
+    updateEditMatrix: editMatrix,
+    updateIsLoadEditMatrix: isLoadEditMatrix,
+    updateCdrCdio: cdrCdio
+  }, dispatch);
+
+}
 export default connect(mapStateToProps, mapDispatchToProps)(EditMatrix);

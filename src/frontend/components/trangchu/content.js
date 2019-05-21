@@ -301,7 +301,7 @@ class Content extends Component {
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
                                                             khoi !== "" && khoi !== undefined ? 
-                                                            item.Id === 2 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }

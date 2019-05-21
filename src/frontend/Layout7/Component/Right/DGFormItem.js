@@ -5,7 +5,6 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeDGData, addDGData, saveTempDGData, updateChudeDanhGia, updateCDRDanhGia } from '../../../Constant/ActionType';
-import axios from "axios"
 
 var temp = '';
 
@@ -93,29 +92,29 @@ class DGFormItem extends Component {
     this.props.onSaveTempDGData(tempInfo);
   }
 
-  componentWillMount() {
-    if (this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" ) {
-      var self = this;
-      axios.get('/get-chude')
-        .then(function (response) {
-          self.props.onGetChude(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+  // componentWillMount() {
+  //   if (this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" ) {
+  //     var self = this;
+  //     axios.get('/get-chude')
+  //       .then(function (response) {
+  //         self.props.onGetChude(response.data);
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
 
-      axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
-        .then(function (response) {
+  //     axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
+  //       .then(function (response) {
 
-          self.props.onGetCDR(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+  //         self.props.onGetCDR(response.data);
+  //       })
+  //       .catch(function (error) {
+  //         console.log(error);
+  //       });
 
-    }
+  //   }
 
-  }
+  // }
 
   getIdfromNameChude(name) {
     for (let i = 0; i < this.props.itemLayout7Reducer.chudeDanhGia.length; i++) {
@@ -155,99 +154,126 @@ class DGFormItem extends Component {
                   let tenthanhphan = this.props.itemLayout7Reducer.tempInfo.tenthanhphan;
                   let mota = this.props.itemLayout7Reducer.tempInfo.mota;
                   let tile = this.props.itemLayout7Reducer.tempInfo.tile;
-                  if (chude === 'BTTL') {
-                    let flag = true;
-                    mathanhphan = 'BTTL#' + mathanhphan;
-                    for (let i = 0; i < previewInfo.length; i++) {
-                      if ('BTTL' === previewInfo[i].mathanhphan) {
-                        flag = false;
+                  let chudeDanhGia = this.props.itemLayout7Reducer.chudeDanhGia;
+                  for(let m = 0 ;m< chudeDanhGia.length;m++){
+                    if(chude === chudeDanhGia[m].ma_chu_de){
+                      let flag = true;
+                      mathanhphan = chudeDanhGia[m].ma_chu_de + '#' + mathanhphan;
+                      for(let i=0;i<previewInfo.length;i++){
+                        if(chudeDanhGia[m].ma_chu_de===previewInfo[i].mathanhphan){
+                          flag = false;
+                        }
                       }
-                    }
-                    if (flag === true) {
+                      if (flag === true) {
 
-                      let dataFather = {
-                        key: 'BTTL',
-                        chude: this.getIdfromNameChude(chude),
-                        standardOutput: [],
-                        mathanhphan: 'BTTL',
-                        tenthanhphan: 'Bài tập tại lớp',
-                        mota: '',
-                        tile: '',
-                        del_flag : -1,
-                      };
-                      newData = previewInfo.concat(dataFather);
-                      isAdd2Rows = true;
-                    }
-                  } else if (chude === 'BTVN') {
-                    let flag = true;
-
-                    mathanhphan = 'BTVN#' + mathanhphan;
-                    for (let i = 0; i < previewInfo.length; i++) {
-                      if ('BTVN' === previewInfo[i].mathanhphan) {
-                        flag = false;
+                        let dataFather = {
+                          key: chudeDanhGia[m].ma_chu_de,
+                          chude: this.getIdfromNameChude(chude),
+                          standardOutput: [],
+                          mathanhphan: chudeDanhGia[m].ma_chu_de,
+                          tenthanhphan: chudeDanhGia[m].ten_chu_de,
+                          mota: '',
+                          tile: '',
+                          del_flag : -1,
+                        };
+                        newData = previewInfo.concat(dataFather);
+                        isAdd2Rows = true;
                       }
-                    }
-                    if (flag === true) {
-                      let dataFather = {
-                        key: 'BTVN',
-                        chude: this.getIdfromNameChude(chude),
-                        standardOutput: [],
-                        mathanhphan: 'BTVN',
-                        tenthanhphan: 'Bài tập về nhà',
-                        mota: '',
-                        tile: '',
-                        del_flag : -1,
-                      };
-                      newData = previewInfo.concat(dataFather);
-                      isAdd2Rows = true;
-                    }
-                  } else if (chude === 'DAMH') {
-                    let flag = true;
-                    mathanhphan = 'DAMH#' + mathanhphan;
-                    for (let i = 0; i < previewInfo.length; i++) {
-                      if ('DAMH' === previewInfo[i].mathanhphan) {
-                        flag = false;
-                      }
-                    }
-                    if (flag === true) {
-
-                      let dataFather = {
-                        key: 'DAMH',
-                        chude: this.getIdfromNameChude(chude),
-                        standardOutput: [],
-                        mathanhphan: 'DAMH',
-                        tenthanhphan: 'Đồ án môn học',
-                        mota: '',
-                        tile: '',
-                        del_flag : -1,
-                      };
-                      newData = previewInfo.concat(dataFather);
-                      isAdd2Rows = true;
-                    }
-                  } else if (chude === 'LTCK') {
-                    let flag = true;
-                    mathanhphan = 'LTCK#' + mathanhphan;
-                    for (let i = 0; i < previewInfo.length; i++) {
-                      if ('LTCK' === previewInfo[i].mathanhphan) {
-                        flag = false;
-                      }
-
-                    }
-                    if (flag === true) {
-                      let dataFather = {
-                        key: 'LTCK',
-                        chude: this.getIdfromNameChude(chude),
-                        standardOutput: [],
-                        mathanhphan: 'LTCK',
-                        tenthanhphan: 'Thi lý thuyết cuối kỳ',
-                        mota: '',
-                        tile: '',
-                        del_flag : -1,
-                      };
-                      newData = previewInfo.concat(dataFather);
-                      isAdd2Rows = true;
                     }
                   }
+                  // if (chude === 'BTTL') {
+                  //   let flag = true;
+                  //   mathanhphan = 'BTTL#' + mathanhphan;
+                  //   for (let i = 0; i < previewInfo.length; i++) {
+                  //     if ('BTTL' === previewInfo[i].mathanhphan) {
+                  //       flag = false;
+                  //     }
+                  //   }
+                  //   if (flag === true) {
+
+                  //     let dataFather = {
+                  //       key: 'BTTL',
+                  //       chude: this.getIdfromNameChude(chude),
+                  //       standardOutput: [],
+                  //       mathanhphan: 'BTTL',
+                  //       tenthanhphan: 'Bài tập tại lớp',
+                  //       mota: '',
+                  //       tile: '',
+                  //       del_flag : -1,
+                  //     };
+                  //     newData = previewInfo.concat(dataFather);
+                  //     isAdd2Rows = true;
+                  //   }
+                  // } else if (chude === 'BTVN') {
+                  //   let flag = true;
+
+                  //   mathanhphan = 'BTVN#' + mathanhphan;
+                  //   for (let i = 0; i < previewInfo.length; i++) {
+                  //     if ('BTVN' === previewInfo[i].mathanhphan) {
+                  //       flag = false;
+                  //     }
+                  //   }
+                  //   if (flag === true) {
+                  //     let dataFather = {
+                  //       key: 'BTVN',
+                  //       chude: this.getIdfromNameChude(chude),
+                  //       standardOutput: [],
+                  //       mathanhphan: 'BTVN',
+                  //       tenthanhphan: 'Bài tập về nhà',
+                  //       mota: '',
+                  //       tile: '',
+                  //       del_flag : -1,
+                  //     };
+                  //     newData = previewInfo.concat(dataFather);
+                  //     isAdd2Rows = true;
+                  //   }
+                  // } else if (chude === 'DAMH') {
+                  //   let flag = true;
+                  //   mathanhphan = 'DAMH#' + mathanhphan;
+                  //   for (let i = 0; i < previewInfo.length; i++) {
+                  //     if ('DAMH' === previewInfo[i].mathanhphan) {
+                  //       flag = false;
+                  //     }
+                  //   }
+                  //   if (flag === true) {
+
+                  //     let dataFather = {
+                  //       key: 'DAMH',
+                  //       chude: this.getIdfromNameChude(chude),
+                  //       standardOutput: [],
+                  //       mathanhphan: 'DAMH',
+                  //       tenthanhphan: 'Đồ án môn học',
+                  //       mota: '',
+                  //       tile: '',
+                  //       del_flag : -1,
+                  //     };
+                  //     newData = previewInfo.concat(dataFather);
+                  //     isAdd2Rows = true;
+                  //   }
+                  // } else if (chude === 'LTCK') {
+                  //   let flag = true;
+                  //   mathanhphan = 'LTCK#' + mathanhphan;
+                  //   for (let i = 0; i < previewInfo.length; i++) {
+                  //     if ('LTCK' === previewInfo[i].mathanhphan) {
+                  //       flag = false;
+                  //     }
+
+                  //   }
+                  //   if (flag === true) {
+                  //     let dataFather = {
+                  //       key: 'LTCK',
+                  //       chude: this.getIdfromNameChude(chude),
+                  //       standardOutput: [],
+                  //       mathanhphan: 'LTCK',
+                  //       tenthanhphan: 'Thi lý thuyết cuối kỳ',
+                  //       mota: '',
+                  //       tile: '',
+                  //       del_flag : -1,
+                  //     };
+                  //     newData = previewInfo.concat(dataFather);
+                  //     isAdd2Rows = true;
+                  //   }
+                  // }
                   for (let i = 0; i < previewInfo.length; i++) {
 
                     if (mathanhphan === previewInfo[i].key) {
@@ -269,17 +295,13 @@ class DGFormItem extends Component {
                       id : -1,
                       del_flag : 0,
                     }
-                    console.log(data);
                     let dataReturn = {};
-                    console.log("isAdd2Rows:");
-                    console.log(isAdd2Rows)
+                   
                     if (isAdd2Rows === true) {
-                      console.log("is add 2 rows")
                       dataReturn = newData.concat(data);
                     } else {
                       dataReturn = previewInfo.concat(data);
                     }
-                    console.log(dataReturn);
                     this.props.onAddDGData(dataReturn);
                     message.info("Thêm thành công!");
                     isAdd2Rows = false;

@@ -577,6 +577,7 @@ class TableItem extends Component {
         duration: 1
       });
      }
+     axios.post('/save-log', { data: this.props.itemLayout6Reducer.logData })
 
      this.getDataTable(this.state.subjectId);
    });

@@ -3,7 +3,7 @@ import axios from 'axios';
 import {ADD_DATA, DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
         SAVE_DATA_LAYOUT_5, CHANGE_DATA, ADD_DATA_LAYOUT_5,
         COLLECT_DATA_REQUEST_5, COLLECT_DATA_HDD, COLLECT_DATA_DG,
-        REFRESH_DATA, COLLECT_DATA_CDR} from '../Constant/ActionType';
+        REFRESH_DATA, COLLECT_DATA_CDR,SAVE_LOG} from '../Constant/ActionType';
 
 const itemMenuInitialState = {
     previewInfo: [],
@@ -15,7 +15,9 @@ const itemMenuInitialState = {
     result:-1,
     teachingActsData : [],
     evalActsData : [],
-    standardOutputData:[]
+    standardOutputData:[],
+    logData: [],
+
 }
 
 const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
@@ -132,7 +134,23 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
                 standardOutputData : action.data
             }
         }
-
+        case SAVE_LOG: {
+            if(action.muc_de_cuong === 'giang-day-ly-thuyet'){
+                let obj = {
+                    ten: action.ten,
+                    timestamp: action.timestamp,
+                    noi_dung: action.noi_dung,
+                    muc_de_cuong: action.muc_de_cuong,
+                    thong_tin_chung_id: action.thong_tin_chung_id
+                }
+                return {
+                    ...state,
+                    logData: [...state.logData, obj]
+                }
+            }else{
+                return {...state,}
+            }
+        }
         default:
             return state
     

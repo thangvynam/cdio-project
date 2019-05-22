@@ -4,6 +4,7 @@ import { Element } from "react-scroll";
 import MainForm from "./Component/Main/MainForm";
 import TableItem from "./Component/Table/TableItem";
 import { Tooltip, Button } from "antd";
+import LogForm from '../Log/LogForm';
 
 class Layout6 extends Component {
   render() {
@@ -38,6 +39,10 @@ class Layout6 extends Component {
             <Element name="test1" className="element">
               <TableItem isReview={this.props.isReview}/>
             </Element>
+            <br/>
+            <br/>
+            <LogForm/>
+            <br/>
           </div>
         </div>
       </div>

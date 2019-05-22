@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Button,
    Input, Cascader, notification } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb,saveLogObject } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
@@ -787,6 +787,7 @@ getSubjectName = (subjectList, id) => {
       const newData = this.props.cdrtable;
       
       const index = newData.previewInfo.findIndex(item => key === item.key);
+      let dataTemp  = newData.previewInfo[index];
       if (index > -1) {
         const item = newData.previewInfo[index];
         newData.previewInfo.splice(index, 1, {
@@ -796,6 +797,9 @@ getSubjectName = (subjectList, id) => {
       } else {
         newData.previewInfo.push(row);
       }
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+      
       for(let i = 0;i < newData.previewInfo[key - 1].levels.length - 1;i++){
         for (let j = i + 1; j < newData.previewInfo[key - 1].levels.length; j++) {
           if (newData.previewInfo[key - 1].levels[j] < newData.previewInfo[key - 1].levels[i]) {
@@ -808,7 +812,6 @@ getSubjectName = (subjectList, id) => {
     }
       let newItems = newData.previewInfo[key - 1];
     
-      this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung chuẩn đầu ra môn học thành: ${newItems.cdr}, ${newItems.level_verb}, ${newItems.description}, ${newItems.level}`, this.props.logReducer.contentTab, this.props.subjectId);
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');
@@ -1036,9 +1039,10 @@ const mapDispatchToProps = (dispatch) => {
     updateIsLoad: isLoad,
     updateIsLoadEditMatrix: isLoadEditMatrix,
     updateEditMatrix: editMatrix,
-    saveLog: saveLog,
     updateCdrmdhd: cdrmdhd,
     updateCdrmdhdDB: cdrmdhddb,
+    onSaveLog : saveLog,
+    onSaveReducer : saveLogObject
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

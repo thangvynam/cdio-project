@@ -1,14 +1,15 @@
 import {
-  Table, Input, Button, Popconfirm, Form, Divider, Tag, InputNumber, Select, Modal, message,notification
+  Table, Input, Button, Popconfirm, Form, Divider, Tag, InputNumber, Select, Modal, message, notification
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
-import { changeDGData, addDGData, deleteDGData, saveAllDGData, isLoaded7 ,updateChudeDanhGia, updateCDRDanhGia} from '../../../Constant/ActionType';
+import { changeDGData, addDGData, deleteDGData, saveAllDGData, isLoaded7, updateChudeDanhGia, updateCDRDanhGia, saveLog, saveLogObject } from '../../../Constant/ActionType';
 import React, { Component } from 'react';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from 'react-redux';
 import axios from "axios"
+import { getCurrTime } from '../../../utils/Time';
 
 const { Option } = Select;
 
@@ -233,6 +234,16 @@ class itemLayout7ReducerItem extends React.Component {
     return true;
   }
 
+  getStringFromCDR(CDR) {
+    let temp = '';
+    for (let i = 0; i < CDR.length; i++) {
+      temp += CDR[i] + " , ";
+    }
+    temp = temp.substring(0, temp.length - 3);
+    console.log(temp);
+    return temp;
+  }
+
   save(form, key) {
     form.validateFields((error, row) => {
       if (error) {
@@ -251,6 +262,7 @@ class itemLayout7ReducerItem extends React.Component {
       const newData = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
 
       const index = newData.findIndex(item => key === item.key);
+      let dataTemp = newData[index];
       if (index > -1) {
         const item = newData[index];
         newData.splice(index, 1, {
@@ -260,6 +272,13 @@ class itemLayout7ReducerItem extends React.Component {
       } else {
         newData.previewInfo.push(row);
       }
+
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa đánh giá: [Mã: ${dataTemp.key},Tên: ${dataTemp.tenthanhphan},Mô tả (gợi ý): ${dataTemp.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(dataTemp.standardOutput)},Tỉ lệ: ${dataTemp.tile}] -> 
+      [Mã: ${dataTemp.key},Tên: ${row.tenthanhphan},Mô tả (gợi ý): ${row.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(row.standardOutput)},Tỉ lệ: ${row.tile}]`,
+        this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa đánh giá: [Mã: ${dataTemp.key},Tên: ${dataTemp.tenthanhphan},Mô tả (gợi ý): ${dataTemp.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(dataTemp.standardOutput)},Tỉ lệ: ${dataTemp.tile}] -> 
+      [Mã: ${dataTemp.key},Tên: ${row.tenthanhphan},Mô tả (gợi ý): ${row.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(row.standardOutput)},Tỉ lệ: ${row.tile}]`, this.props.logReducer.contentTab, this.props.subjectId)
+
       this.props.onAddDGData(newData);
       this.setState({ editingKey: "" });
     });
@@ -267,8 +286,8 @@ class itemLayout7ReducerItem extends React.Component {
 
   isEmptyChildrenChude(value) {
     let chude = this.props.itemLayout7Reducer.chudeDanhGia;
-    let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1 );
- 
+    let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
+
     for (let i = 0; i < chude.length; i++) {
       if (chude[i].ma_chu_de === value.substring(0, chude[i].ma_chu_de.length)) {
         let index = 0;
@@ -288,11 +307,16 @@ class itemLayout7ReducerItem extends React.Component {
 
 
   handleDelete(key) {
+    let previewInfo = this.props.itemLayout7Reducer.previewInfo;
+    let index = previewInfo.findIndex(item => item.key === key);
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].mathanhphan}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].mathanhphan}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+
     this.onDelete(key);
     this.setState({ selectedRowKeys: [], editingKey: "" });
 
     let chude = this.props.itemLayout7Reducer.chudeDanhGia;
-    
+
     if (this.isEmptyChildrenChude(key)) {
       for (let i = 0; i < chude.length; i++) {
         if (chude[i].ma_chu_de === key.substring(0, chude[i].ma_chu_de.length)) {
@@ -304,7 +328,7 @@ class itemLayout7ReducerItem extends React.Component {
 
   onDelete = (key) => {
     //nếu key là chủ đề . xóa hết tất cả thằng con trong chủ đề đó .
-    let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter( item => item.del_flag !== 1);
+    let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
     if (this.isExist(key)) {
       let index = 0;
       let indexChildren = 0;
@@ -330,14 +354,14 @@ class itemLayout7ReducerItem extends React.Component {
       }
       // nếu nó là thằng chủ đề đầu tiên trong list hoặc là thằng cuối cùng
       else if (index === 0 || indexChildren === previewInfo.length) {
-      
+
         for (let i = index; i < indexChildren; i++) {
           previewInfo[i].del_flag = 1;
         }
       }
       //ngược lại 
       else {
-      
+
         //delete từ vị trí index tới index + indexChildren
         for (let i = index; i < index + indexChildren; i++) {
           previewInfo[i].del_flag = 1;
@@ -346,11 +370,11 @@ class itemLayout7ReducerItem extends React.Component {
 
 
     }
-    else{
-      let temp = previewInfo.findIndex(item => item.key===key);
+    else {
+      let temp = previewInfo.findIndex(item => item.key === key);
       previewInfo[temp].del_flag = 1;
     }
-    
+
     this.props.onAddDGData(previewInfo)
   }
 
@@ -379,12 +403,18 @@ class itemLayout7ReducerItem extends React.Component {
     let chude = this.props.itemLayout7Reducer.chudeDanhGia;
     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1)
     if (this.state.selectedRowKeys.length === previewInfo.length) {
+      for (let i = 0; i < previewInfo.length; i++) {
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].mathanhphan}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].mathanhphan}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+      }
       previewInfo = [];
     } else {
       for (let i = 0; i < this.state.selectedRowKeys.length; i++) {
         let key = this.state.selectedRowKeys[i];
         this.onDelete(key);
-
+        let index = previewInfo.findIndex(item => item.key === key);
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].mathanhphan}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].mathanhphan}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
         if (this.isEmptyChildrenChude(key)) {
           for (let i = 0; i < chude.length; i++) {
             if (chude[i].ma_chu_de === key.substring(0, chude[i].ma_chu_de.length)) {
@@ -393,7 +423,7 @@ class itemLayout7ReducerItem extends React.Component {
           }
         }
       }
-      
+
     }
     this.setState({ selectedRowKeys: [], editingKey: "" });
   }
@@ -414,43 +444,44 @@ class itemLayout7ReducerItem extends React.Component {
         description: table,
       }
 
-      axios.post(`/save-danhgia`,obj)
-      .then(response => {
-        if(response.data === 1){
-         notification["success"]({
-           message: "Cập nhật thành công",
-           duration: 1
-         });
-        }
-        else{
-         notification["error"]({
-           message: "Cập nhật thất bại",
-           duration: 1
-         });
-        }
-      });
+      axios.post(`/save-danhgia`, obj)
+        .then(response => {
+          if (response.data === 1) {
+            notification["success"]({
+              message: "Cập nhật thành công",
+              duration: 1
+            });
+          }
+          else {
+            notification["error"]({
+              message: "Cập nhật thất bại",
+              duration: 1
+            });
+          }
+        });
+      axios.post('/save-log', { data: this.props.itemLayout7Reducer.logData })
     }
 
   }
   getData() {
     var self = this;
-      axios.get('/get-chude')
-        .then(function (response) {
-          self.props.onGetChude(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+    axios.get('/get-chude')
+      .then(function (response) {
+        self.props.onGetChude(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
-      axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
-        .then(function (response) {
+    axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
+      .then(function (response) {
 
-          self.props.onGetCDR(response.data);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-        
+        self.props.onGetCDR(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
     var listDG = [];
     var listCDRDG = [];
     var listCDR = [];
@@ -466,7 +497,7 @@ class itemLayout7ReducerItem extends React.Component {
           listStringId = listStringId + ',' + item.id;
         }
       })
-      
+
       axios.post(`/get-cdrdanhgia`, { data: listStringId }).then(response2 => {
         if (response2.data === null || response2.data === undefined || response2.data.length === 0) return;
         listCDRDG = response2.data
@@ -507,7 +538,7 @@ class itemLayout7ReducerItem extends React.Component {
             let haveFather = false;
             for (let j = 0; j < result.length; j++) {
               let str = result[j].danhgia.ma.substring(0, chude[i].ma_chu_de.length);
-             
+
               if (str === chude[i].ma_chu_de) {
                 if (!haveFather) {
                   haveFather = true;
@@ -543,15 +574,15 @@ class itemLayout7ReducerItem extends React.Component {
                   }
                   previewInfo = previewInfo.concat(data);
                 }
-               
+
               }
             }
           }
           if (previewInfo.filter(item => item.del_flag !== 1).length > 1) {
             this.sortValues(previewInfo.filter(item => item.del_flag !== 1));
-      
+
           }
-      
+
           this.props.onAddDGData(previewInfo);
         })
       })
@@ -643,7 +674,7 @@ class itemLayout7ReducerItem extends React.Component {
         let newTile = previewInfo[i].tile.slice(0, previewInfo[i].tile.length - 1);
         totalTile += parseFloat(newTile);
       }
-     
+
       previewInfo[index[index.length - 1]].tile = totalTile + '%';
     }
 
@@ -741,6 +772,8 @@ const mapStateToProps = (state) => {
   return {
     itemLayout7Reducer: state.itemLayout7Reducer,
     subjectId: state.subjectid,
+    logReducer: state.logReducer
+
   }
 }
 
@@ -753,6 +786,8 @@ const mapDispatchToProps = (dispatch) => {
     onSaveAllData: saveAllDGData,
     onGetChude: updateChudeDanhGia,
     onGetCDR: updateCDRDanhGia,
+    onSaveLog: saveLog,
+    onSaveReducer: saveLogObject
   }, dispatch);
 }
 

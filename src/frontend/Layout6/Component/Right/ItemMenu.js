@@ -12,10 +12,11 @@ import {
 import { Link } from "react-scroll";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
-import { addItemKHGDTH, changeTempKHGDTH, changeMapKHGDTH } from "../../../Constant/ActionType";
+import { addItemKHGDTH, changeTempKHGDTH, changeMapKHGDTH, saveLog, saveLogObject } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
+import { getCurrTime } from '../../../utils/Time';
 
 
 const { Option } = Select;
@@ -62,7 +63,7 @@ class ItemMenu extends Component {
     this.state = {
       //teachingActs: new Map(),
       //evalActs: new Map(),
-     // standardOutput: new Map(),
+      // standardOutput: new Map(),
       isRedirectTab7: false,
       standard_item: [],
 
@@ -77,14 +78,14 @@ class ItemMenu extends Component {
   // }
 
   componentDidMount() {
-    if(this.props.subjectId !== null 
-      && this.props.subjectId !== undefined && this.props.subjectId!== "") {
-       this.onGetItemMenu(this.props.subjectId);
-      }
+    if (this.props.subjectId !== null
+      && this.props.subjectId !== undefined && this.props.subjectId !== "") {
+      this.onGetItemMenu(this.props.subjectId);
+    }
   }
 
 
-  onGetItemMenu = (subjectId)=>{
+  onGetItemMenu = (subjectId) => {
 
     let mapId = {
       teachingActs: new Map(),
@@ -92,11 +93,11 @@ class ItemMenu extends Component {
       evalActs: new Map(),
     }
 
-    axios.get("/get-teachingacts-6").then(response=>{
-      const data= response.data;
+    axios.get("/get-teachingacts-6").then(response => {
+      const data = response.data;
       let map = new Map();
-      data.forEach((item,index)=>{
-        map.set(item.hoat_dong,item.id);
+      data.forEach((item, index) => {
+        map.set(item.hoat_dong, item.id);
       })
 
       //this.setState({teachingActs:map});
@@ -104,52 +105,47 @@ class ItemMenu extends Component {
 
     });
 
-    axios.get(`/get-eval-acts-6/${subjectId}`).then(response=>{
-      const data= response.data;
+    axios.get(`/get-eval-acts-6/${subjectId}`).then(response => {
+      const data = response.data;
       let map = new Map();
-      data.forEach((item,index)=>{
-        map.set(item.ma,item.id);
+      data.forEach((item, index) => {
+        map.set(item.ma, item.id);
       })
 
       //this.setState({evalActs:map});
       mapId.evalActs = map;
     });
 
-    axios.get(`/get-standard-output-6/${subjectId}`).then(response=>{
-      const data= response.data;
+    axios.get(`/get-standard-output-6/${subjectId}`).then(response => {
+      const data = response.data;
       let array = [];
       let map = new Map();
-      data.forEach((item,index)=>{
+      data.forEach((item, index) => {
         let temp = {
           value: item.muc_tieu,
           label: item.muc_tieu,
           children: [],
         }
-        item.cdr.forEach((itemCdr,_)=>{
+        item.cdr.forEach((itemCdr, _) => {
           let tempCdr = {
             value: itemCdr.chuan_dau_ra,
             label: itemCdr.chuan_dau_ra
           }
           temp.children.push(tempCdr);
-          map.set(itemCdr.chuan_dau_ra,itemCdr.id);
+          map.set(itemCdr.chuan_dau_ra, itemCdr.id);
         })
         array.push(temp);
       })
 
-     // this.setState({standard_item:array,standardOutput:map});
-     mapId.standardOutput = map;
-     
-     this.setState({standard_item:array});
+      // this.setState({standard_item:array,standardOutput:map});
+      mapId.standardOutput = map;
+
+      this.setState({ standard_item: array });
     });
-   
+
     this.props.onChangeMapKHGDTH(mapId);
 
   }
-
-
-
-
-
 
   onChangeStandar = (value) => {
     if (value.length < 2) return;
@@ -173,6 +169,7 @@ class ItemMenu extends Component {
     tempInfo["standardOutput"] = newArray;
     this.props.onChangeTempKHGDTH(tempInfo);
   };
+
   showStandard = () => {
     let temp = "";
     let tempInfo = this.props.itemKHGDTH.tempInfo;
@@ -181,6 +178,11 @@ class ItemMenu extends Component {
     }
     return temp;
   };
+
+  getStringFromCDR(CDR) {
+    let temp = CDR.substring(0, CDR.length - 3);
+    return temp;
+  }
 
   handleSubmit = () => {
 
@@ -204,18 +206,22 @@ class ItemMenu extends Component {
     previewData.evalActs = tempInfo.evalActs;
     previewData.del_flag = 0;
 
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+
+
     this.props.onAddItemKHGDTH(JSON.stringify(previewData));
     this.props.nextStep();
     this.props.form.resetFields();
     this.isSubmit = true;
 
-    let resetTemp  = {
-      titleName : '',
-      teachingActs : [],
-      standardOutput : [],
-      evalActs : [],
-  }
-  this.props.onChangeTempKHGDTH(resetTemp);
+    let resetTemp = {
+      titleName: '',
+      teachingActs: [],
+      standardOutput: [],
+      evalActs: [],
+    }
+    this.props.onChangeTempKHGDTH(resetTemp);
 
   };
 
@@ -233,6 +239,7 @@ class ItemMenu extends Component {
     this.props.onChangeTempKHGDTH(tempInfo);
     //this.setState({ teachingActs: value });
   }
+
   handleChangeEvalActs(value) {
     let tempInfo = this.props.itemKHGDTH.tempInfo;
     tempInfo["evalActs"] = value;
@@ -273,7 +280,7 @@ class ItemMenu extends Component {
       this.isSubmit = false;
       return null;
     }
-    if (label.length > 0) return label[label.length -1];
+    if (label.length > 0) return label[label.length - 1];
   };
 
   render() {
@@ -281,14 +288,14 @@ class ItemMenu extends Component {
 
     var teachingActs = [];
     var evalActs = [];
-    
-    for(const acts of this.props.itemKHGDTH.mapIdForValue.teachingActs.keys()){
+
+    for (const acts of this.props.itemKHGDTH.mapIdForValue.teachingActs.keys()) {
       teachingActs.push(acts);
     }
-    for(const acts of this.props.itemKHGDTH.mapIdForValue.evalActs.keys()){
+    for (const acts of this.props.itemKHGDTH.mapIdForValue.evalActs.keys()) {
       evalActs.push(acts);
     }
-    
+
 
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
@@ -302,9 +309,9 @@ class ItemMenu extends Component {
         childrenEvalActs.push(<Option key={evalActs[i]}>{evalActs[i]}</Option>);
       }
     }
-    
+
     init();
-    
+
     const formItemLayout = {
       labelCol: {
         xs: { span: 12 },
@@ -408,17 +415,17 @@ class ItemMenu extends Component {
               }
             >
               <div style={{ float: "left", width: "74%" }}>
-              {getFieldDecorator("evalActs", {
-                initialValue: this.props.itemKHGDTH.tempInfo.evalActs
-              })(
-                <Select
-                  mode="multiple"
-                  style={{ width: "100%" }}
-                  placeholder="Chọn hoạt động"
-                  onChange={value => this.handleChangeEvalActs(value)}
-                >
-                  {childrenEvalActs}
-                </Select>
+                {getFieldDecorator("evalActs", {
+                  initialValue: this.props.itemKHGDTH.tempInfo.evalActs
+                })(
+                  <Select
+                    mode="multiple"
+                    style={{ width: "100%" }}
+                    placeholder="Chọn hoạt động"
+                    onChange={value => this.handleChangeEvalActs(value)}
+                  >
+                    {childrenEvalActs}
+                  </Select>
                 )}
               </div>
               <div style={{ float: "left" }}>
@@ -455,6 +462,7 @@ const mapStateToProps = state => {
   return {
     itemKHGDTH: state.itemLayout6Reducer,
     subjectId: state.subjectid,
+    logReducer: state.logReducer,
 
   };
 };
@@ -464,7 +472,10 @@ const mapDispatchToProps = dispatch => {
     {
       onAddItemKHGDTH: addItemKHGDTH,
       onChangeTempKHGDTH: changeTempKHGDTH,
-      onChangeMapKHGDTH:changeMapKHGDTH,
+      onChangeMapKHGDTH: changeMapKHGDTH,
+
+      onSaveLog: saveLog,
+      onSaveReducer: saveLogObject
     },
     dispatch
   );

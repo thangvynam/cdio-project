@@ -80,7 +80,6 @@ export const CHANGE_TNDATA = 'CHANGE_TNDATA';
 export const UPDATE_TNDATA  = 'UPDATE_TNDATA';
 export const SAVE_TEMP_DATA_LAYOUT_8 = "SAVE_TEMP_DATA_LAYOUT_8";
 export const SAVE_LOAI_TAI_NGUYEN = 'SAVE_LOAI_TAI_NGUYEN';
-export const SAVE_ALL_DATA_LAYOUT_8 = "SAVE_ALL_DATA_LAYOUT_8";
 export const IS_LOADED_8 = 'IS_LOADED_8';
 
 // layout 5
@@ -112,6 +111,17 @@ export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_
         muc_de_cuong: muc_de_cuong,
         thong_tin_chung_id: thong_tin_chung_id
     };
+}
+
+export function saveLogObject(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id){
+    return {
+        type : SAVE_LOG_OBJECT,
+        ten: ten,
+        timestamp : timestamp,
+        noi_dung : noi_dung,
+        muc_de_cuong : muc_de_cuong,
+        thong_tin_chung_id : thong_tin_chung_id,
+    }
 }
 
 export function addCDRData(newCDRData) {
@@ -375,14 +385,6 @@ export function saveTempTNData(tempTNData){
         data: tempTNData
     }
 }
-
-export function saveAllTNData(TNData){
-    return{
-        type: SAVE_ALL_DATA_LAYOUT_8,
-        data: TNData
-    }
-}
-
 
 export function saveAllDGData(DGData){
     return{

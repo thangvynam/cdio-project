@@ -59,6 +59,7 @@ class EditableCell extends React.Component {
 class TableItem extends Component {
   constructor(props) {
     super(props);
+    this.dataSource = [];
     this.columns = [
       {
         title: "Nội dung",
@@ -125,26 +126,21 @@ class TableItem extends Component {
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
 
-    // delete one
-    if (selectedRow.length === 1) {
-      this.handleDelete(selectedRow[0]);
-      return;
-    }
-
-    //delete all
-    // if (selectedRow.length === this.props.itemRule.previewInfo.length) {
-    //   this.props.onUpdateRules([]);
-    //   this.setState({ selectedRowKeys: [], editingKey: "" });
-    //   return;
-    // }
-
     let ruleitems = this.props.itemRule.previewInfo;
-    for (let i = 0; i < selectedRow.length; i++) {
-      ruleitems[selectedRow[i]].del_flag = 1;
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa quy định chung: ${ruleitems[selectedRow[i]].content}`, this.props.logReducer.contentTab, this.props.subjectId)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa quy định chung: ${ruleitems[selectedRow[i]].content}`, this.props.logReducer.contentTab, this.props.subjectId)
+
+    for(let i = 0; i<selectedRow.length;i++){
+      let id = this.dataSource[selectedRow[i]].id;
+      for(let j=0;j<ruleitems.length;j++){
+        if(ruleitems[j].id===id) {
+ruleitems[j].del_flag = 1;
+ this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa quy định chung: ${ruleitems[j].content}`, this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa quy định chung: ${ruleitems[j].content}`, this.props.logReducer.contentTab, this.props.subjectId)
+
+}
+      }
 
     }
+
     this.props.onUpdateRules(ruleitems);
     this.setState({ selectedRowKeys: [], editingKey: "" });
   };
@@ -163,14 +159,12 @@ class TableItem extends Component {
   };
 
   handleDelete(index) {
-    // this.props.onDeleteItemRule(index);
-    let ruleitems = this.props.itemRule.previewInfo;
-    ruleitems[index].del_flag = 1;
-
-    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa quy định chung: ${ruleitems[index].content}`, this.props.logReducer.contentTab, this.props.subjectId)
+   let ruleitems = this.props.itemRule.previewInfo;
+   ruleitems[index].del_flag = 1;
+this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa quy định chung: ${ruleitems[index].content}`, this.props.logReducer.contentTab, this.props.subjectId)
     this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa quy định chung: ${ruleitems[index].content}`, this.props.logReducer.contentTab, this.props.subjectId)
 
-    this.props.onUpdateRules(ruleitems);
+   this.props.onUpdateRules(ruleitems);
 
     this.setState({ selectedRowKeys: [], editingKey: "" });
   }
@@ -210,7 +204,7 @@ class TableItem extends Component {
       temp.index = i;
       itemRuleTable.push(temp);
     }
-    return itemRuleTable.filter((item, _) => item.del_flag === 0);
+    return this.dataSource = itemRuleTable.filter((item,_) => item.del_flag ===0);
   };
 
   onSaveAll = () => {
@@ -333,6 +327,7 @@ class TableItem extends Component {
           rowClassName="editable-row"
           dataSource={this.setIndexForItem()}
           style={{ wordWrap: "break-word", whiteSpace: "pre-line" }}
+          rowKey = {record=>record.index}
         />
       </div>
     );

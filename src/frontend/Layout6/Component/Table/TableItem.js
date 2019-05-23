@@ -238,6 +238,8 @@ class TableItem extends Component {
       subjectId: -1,
     };
 
+    this.dataSource = [];
+
     this.columns = [
       {
         title: "Tuần",
@@ -427,7 +429,6 @@ class TableItem extends Component {
     //   newData[i].key = i + 1;
     // }
 
-    console.log("index: ",index);
     let newData = this.props.itemKHGDTH.previewInfo;
     newData[index].del_flag = 1;
 
@@ -460,34 +461,43 @@ class TableItem extends Component {
 
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
-
-    // delete one
-    if (selectedRow.length === 1) {
-      this.handleDelete(selectedRow[0]);
-      return;
-    }
-
-    //delete all
-    // if (selectedRow.length === this.props.itemKHGDTH.previewInfo.length) {
-    //   this.props.onUpdateKHGDTH([]);
-    //   this.setState({ selectedRowKeys: [], editingKey: "" });
+   
+    // // delete one
+    // if (selectedRow.length === 1) {
+    //   this.handleDelete(selectedRow[0]-1);
     //   return;
     // }
 
-    let KHitems = this.props.itemKHGDTH.previewInfo;
-    // const filteredItems = KHitems.filter(
-    //   (_, index) => !selectedRow.includes(index + 1)
-    // );
+    // let KHitems = this.props.itemKHGDTH.previewInfo;
+    // console.log("bb: ",KHitems);
 
-    // for (let i = 0; i < filteredItems.length; i++) {
-    //   filteredItems[i].key = i + 1;
+    
+    // for(let i = 0;i<selectedRow.length;i++){
+    //   KHitems[selectedRow[i]-1].del_flag = 1;
     // }
-    for(let i = 0;i<selectedRow.length;i++){
-      KHitems[selectedRow[i]].del_flag = 1;
+    // let key = 1;
+    // for(let i = 0;i<KHitems.length;i++){
+    //   if(KHitems[i].del_flag===0){
+    //     KHitems[i].key = key;
+    //     key++;
+    //   }
+    // }
 
-    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${KHitems[selectedRow[i]].titleName} ; Chuẩn đầu ra : ${KHitems[selectedRow[i]].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${KHitems[selectedRow[i]].teachingActs} ; Hoạt động đánh giá: ${KHitems[selectedRow[i]].evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
-    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${KHitems[selectedRow[i]].titleName} ; Chuẩn đầu ra : ${KHitems[selectedRow[i]].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${KHitems[selectedRow[i]].teachingActs} ; Hoạt động đánh giá: ${KHitems[selectedRow[i]].evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+    let KHitems = this.props.itemKHGDTH.previewInfo;
 
+    for(let i = 0; i<selectedRow.length;i++){
+      let id = this.dataSource[selectedRow[i]-1].id;
+      for(let j=0;j<KHitems.length;j++){
+        if(KHitems[j].id===id) {
+          KHitems[j].del_flag = 1;
+ this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${KHitems[j].titleName} ; Chuẩn đầu ra : ${KHitems[j].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${KHitems[j].teachingActs} ; Hoạt động đánh giá: ${KHitems[j].evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${KHitems[j].titleName} ; Chuẩn đầu ra : ${KHitems[j].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${KHitems[j].teachingActs} ; Hoạt động đánh giá: ${KHitems[j].evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+
+
+}
+      }
+
+   
     }
     let key = 1;
     for(let i = 0;i<KHitems.length;i++){
@@ -496,6 +506,7 @@ class TableItem extends Component {
         key++;
       }
     }
+    
 
     this.props.onUpdateKHGDTH(KHitems);
     this.setState({ selectedRowKeys: [], editingKey: "" });
@@ -617,8 +628,8 @@ class TableItem extends Component {
       console.log("data: ",data);
       this.props.onUpdateKHGDTH(data);
     });
+    
   }
-
 
   setIndexForItem = ()=>{
     let itemKHTHTable = [];
@@ -628,13 +639,14 @@ class TableItem extends Component {
       temp.index = i;
       itemKHTHTable.push(temp);
     }
-    return itemKHTHTable.filter((item,_) => item.del_flag ===0);
+    return this.dataSource = itemKHTHTable.filter((item,_) => item.del_flag ===0);  
   }
 
 
 
 
   render() {
+
     var components = {};
     var columns = [];
 

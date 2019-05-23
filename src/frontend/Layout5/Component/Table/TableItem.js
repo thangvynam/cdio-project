@@ -427,8 +427,6 @@ class TableItem extends Component {
 
   render() {
     var components = {};
-    var columns = [];
-
     this.props.itemLayout5Reducer.changeEditStateState == ""
       ? (components = {
         body: {

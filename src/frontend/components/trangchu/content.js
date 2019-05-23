@@ -29,6 +29,7 @@ import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
 import PhanCong from './phancong';
 import ReviewSyllabus from './reviewsyllabus';
+import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -390,7 +391,9 @@ class Content extends Component {
                 
                                             </div>
                                         </React.Fragment>
-                                    ) : null;
+                                    )
+                                    :content_layout=parent==="cdr"?<React.Fragment><OutcomeStandard /></React.Fragment>
+                                     : null;
 
                 }; break;
 

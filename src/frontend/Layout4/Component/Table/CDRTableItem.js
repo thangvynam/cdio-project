@@ -487,14 +487,14 @@ class CDRTableItem extends Component {
    })
   }
 
-  loadTable = (self, id) => {
+  loadTable = (id) => {
     axios.post('/collect-data-4', { data: {thong_tin_chung_id: id}})
     .then(function (response) {
     const tableData = {
       previewInfo: []
     };
     for(let i = 0;i < response.data.length;i++) {
-      let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhddb, response.data[i].cdrmh_muc_do_hanh_dong_id);
+      let cdrmdhd = this.getCdrmdhd(this.props.cdrmdhddb, response.data[i].cdrmh_muc_do_hanh_dong_id);
       let data = {
       key: (i + 1).toString(),
       cdr: response.data[i].chuan_dau_ra,
@@ -506,7 +506,7 @@ class CDRTableItem extends Component {
       }
       tableData.previewInfo.push(data);
     }
-      self.props.onAddCDRData(tableData);
+    this.props.onAddCDRData(tableData);
         })
       .catch(function (error) {
           console.log(error);
@@ -559,7 +559,6 @@ getSubjectName = (subjectList, id) => {
   }
 
   componentDidMount() {
-    var self = this;
     // axios.get('/collect-cdrmdhd-4')
     // .then(function (response) {
     //     let cdrmdhd = self.props.cdrmdhd;
@@ -646,17 +645,16 @@ getSubjectName = (subjectList, id) => {
 
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
       this.props.updateIsLoad("true");
-      this.loadTable(self, self.state.id);
+      this.loadTable(this.state.id);
     }
   }
   
   componentWillReceiveProps(nextProps) {
     this.setState({id: nextProps.subjectId})
-    var self = this;
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
       this.props.updateIsLoad("true");
       //this.loadGap();
-      this.loadTable(self, self.state.id);
+      this.loadTable(this.state.id);
     }
 }
 
@@ -873,8 +871,7 @@ getSubjectName = (subjectList, id) => {
         }
       })
     axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}});
-    var self = this;
-    this.loadTable(self, self.state.id);
+    this.loadTable(this.state.id);
     //this.loadGap();
     this.props.updateIsLoad("false");
     openNotificationWithIcon('success');

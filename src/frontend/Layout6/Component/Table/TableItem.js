@@ -312,7 +312,7 @@ class TableItem extends Component {
       {
         title: "Action",
         key: "action",
-        render: (text, record) => {
+        render: this.props.isReview === true ? null : (text, record) => {
           const editable = this.isEditing(record);
 
           return (
@@ -696,11 +696,11 @@ class TableItem extends Component {
           components={components}
           bordered
           columns={this.state.editingKey === "" ? this.columns : columns}
-          rowSelection={rowSelection}
+          rowSelection={this.props.isReview === true ? null : rowSelection}
           rowClassName="editable-row"
           // dataSource={this.props.itemKHGDTH.previewInfo.filter((item,_) => item.del_flag ===0)}
           dataSource = {this.setIndexForItem()}
-          onRow={
+          onRow={this.props.isReview === true ? null : 
             this.state.editingKey === ""
               ? (record, index) => ({
                   index,

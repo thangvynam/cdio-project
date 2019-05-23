@@ -86,7 +86,7 @@ class TableItem extends Component {
     }, {
       title: 'Thao tác',
       key: 'action',
-      render: (text, record) => {
+      render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
         return (
           <div>

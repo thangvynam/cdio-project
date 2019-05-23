@@ -70,7 +70,7 @@ class TableItem extends Component {
       {
         title: "Thao tác",
         key: "action",
-        render: (text, record) => {
+        render: this.props.isReview === true ? null : (text, record) => {
           const editable = this.isEditing(record);
 
           return (
@@ -328,7 +328,7 @@ class TableItem extends Component {
         <Table
           components={components}
           bordered
-          rowSelection={rowSelection}
+          rowSelection={this.props.isReview === true ? null : rowSelection}
           columns={columns}
           rowClassName="editable-row"
           dataSource={this.setIndexForItem()}

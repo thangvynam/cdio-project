@@ -34,6 +34,7 @@ export const CHANGE_LEVEL_DATA = 'CHANGE_LEVEL_DATA';
 export const SELECTED_VERB = 'SELECTED_VERB';
 export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
 export const MENU_ITEM = 'MENU_ITEM';
+export const PARENT_ITEM = 'PARENT_ITEM';
 export const CTDT = 'CTDT';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
@@ -46,7 +47,7 @@ export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 export const CDR_CDIO = 'CDR_CDIO';
-
+export const LOAD_TEACHER = 'LOAD_TEACHER';
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -79,7 +80,6 @@ export const CHANGE_TNDATA = 'CHANGE_TNDATA';
 export const UPDATE_TNDATA  = 'UPDATE_TNDATA';
 export const SAVE_TEMP_DATA_LAYOUT_8 = "SAVE_TEMP_DATA_LAYOUT_8";
 export const SAVE_LOAI_TAI_NGUYEN = 'SAVE_LOAI_TAI_NGUYEN';
-export const SAVE_ALL_DATA_LAYOUT_8 = "SAVE_ALL_DATA_LAYOUT_8";
 export const IS_LOADED_8 = 'IS_LOADED_8';
 
 // layout 5
@@ -100,6 +100,7 @@ export const SAVE_COMMENT = "SAVE_COMMENT";
 
 // Survey
 export const CHANGE_VALUE_ITU_SURVEY = "CHANGE_VALUE_ITU_SURVEY";
+export const CHANGE_VALUE_DESCRIPTION_SURVEY = "CHANGE_VALUE_DESCRIPTION_SURVEY";
 
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {
@@ -110,6 +111,17 @@ export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_
         muc_de_cuong: muc_de_cuong,
         thong_tin_chung_id: thong_tin_chung_id
     };
+}
+
+export function saveLogObject(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id){
+    return {
+        type : SAVE_LOG_OBJECT,
+        ten: ten,
+        timestamp : timestamp,
+        noi_dung : noi_dung,
+        muc_de_cuong : muc_de_cuong,
+        thong_tin_chung_id : thong_tin_chung_id,
+    }
 }
 
 export function addCDRData(newCDRData) {
@@ -189,6 +201,13 @@ export function menuItem(newMenuItem) {
     };
 }
 
+export function parentItem(newParentItem) {
+    return {
+        type: PARENT_ITEM,
+        parentitem: newParentItem
+    };
+}
+
 export function ctdt(newCtdt) {
     return {
         type: CTDT,
@@ -214,6 +233,13 @@ export function subjectList(newSubjectList) {
     return {
         type: SUBJECT_LIST,
         subjectlist: newSubjectList
+    };
+}
+
+export function teacherList(newTeacherList) {
+    return {
+        type: LOAD_TEACHER,
+        teacherlist: newTeacherList
     };
 }
 
@@ -360,14 +386,6 @@ export function saveTempTNData(tempTNData){
     }
 }
 
-export function saveAllTNData(TNData){
-    return{
-        type: SAVE_ALL_DATA_LAYOUT_8,
-        data: TNData
-    }
-}
-
-
 export function saveAllDGData(DGData){
     return{
         type: SAVE_ALL_DATA_LAYOUT_7,
@@ -436,5 +454,8 @@ export const MENUITEM = {
     TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc',
     XUAT_FILE_PDF:'xuat-file',
     DE_CUONG_MON_HOC: 'de-cuong-mon-hoc',
-    TAB_2: 'tab-2'
+    TAB_2: 'tab-2',
+    ITU_SURVEY: 'itusurvey',
+    PHAN_CONG: 'phan-cong',
+    REVIEW: 'review'
 };

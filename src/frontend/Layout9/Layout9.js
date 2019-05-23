@@ -16,15 +16,15 @@ class Layout9 extends Component {
             <h2 style={{ textAlign: "center" }}>
               CÁC QUY ĐỊNH CHUNG
                 </h2>
-            <MainForm />
+                {this.props.isReview === true ? null : <MainForm />}
             <br /><br />
             
             <Element name="test1" className="element">
-              <TableItem />
+              <TableItem isReview={this.props.isReview}/>
             </Element>
             <br/>
             <br/>
-            <LogForm/>
+            <LogForm />
             <br/>
             <br/>
           </div>

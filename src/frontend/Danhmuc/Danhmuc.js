@@ -12,11 +12,16 @@ import {
   Icon,
   Select,
   message,
-  Tag
+  Tag,
+  Menu, 
+  Dropdown
 } from "antd";
 import MucDoHanhDong from "./MucDoHanhDong";
 import axios from "axios";
 import _ from "lodash";
+import MucDoHanhDong from './MucDoHanhDong';
+import ChuDeDanhGia from './ChuDeDanhGia';
+import TNMH_LoaiTaiNguyen from './TNMH_LoaiTaiNguyen';
 
 const Panel = Collapse.Panel;
 const Option = Select.Option;
@@ -30,6 +35,9 @@ const formItemLayout = {
     sm: { span: 16 }
   }
 };
+let itemClick = '';
+let value = '';
+let keyItem = '';
 
 function callback(key) {
   console.log(key);
@@ -425,11 +433,13 @@ class Danhmuc extends Component {
                 dataSource={this.setIndexForItem()}
                 style={{ wordWrap: "break-word", whiteSpace: "pre-line" }}
                 rowKey = {record=>record.index}
-              />
+              />         
             </div>
           </Panel>
         </Collapse>
         <MucDoHanhDong />
+        <ChuDeDanhGia/>
+         <TNMH_LoaiTaiNguyen/>
       </div>
     );
   }

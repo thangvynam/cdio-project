@@ -164,7 +164,7 @@ class TableItem extends Component {
     }, {
       title: 'Thao tác',
       key: 'action',
-      render: (text, record) => {
+      render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
         return (
           <div>
@@ -257,7 +257,7 @@ async componentWillReceiveProps(nextProps){
   }
 }
 
-  onMultiDelete = () => {
+  onMultiDelete = () => { 
     const selectedRow = this.state.selectedRowKeys;
 
     // delete one
@@ -381,7 +381,7 @@ async componentWillReceiveProps(nextProps){
 
       return (
         <div>
-          <div style={{ marginBottom: 16, marginTop: 10 }}>
+          {this.props.isReview === true ? null : <div style={{ marginBottom: 16, marginTop: 10 }}>
           <Button
             type="danger"
             onClick={this.showModal}
@@ -397,12 +397,12 @@ async componentWillReceiveProps(nextProps){
             onClick={() => this.props.saveAll(this.props.subjectid)}
           >
             Lưu tất cả
-          </Button>
-          </div>  
+          </Button>}
+          </div>}
           <Table
             components={components}
             bordered
-            rowSelection={rowSelection}
+            rowSelection={this.props.isReview === true ? null : rowSelection}
             dataSource={this.setIndexForItem()}
             columns={columns}
             rowClassName="editable-row"

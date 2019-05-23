@@ -4,7 +4,8 @@ import {
   UPDATE_RULES,
   CHANGE_TEMP_RULES,
   CHANGE_ISLOADED_RULES,
-  RESET_TAB
+  RESET_TAB,
+  SAVE_LOG
 } from "../Constant/ActionType";
 
 const initialState = {
@@ -18,7 +19,9 @@ const initialState = {
   tempInfo:{
     content:'',
   },
-  isLoaded:false
+  isLoaded:false,
+  logData: [],
+
 };
 
 
@@ -61,7 +64,23 @@ const itemLayout9Reducer = (state = initialState, action) => {
           }
           
         }
-      
+        case SAVE_LOG: {
+          if(action.muc_de_cuong === 'quy-dinh-chung'){
+              let obj = {
+                  ten: action.ten,
+                  timestamp: action.timestamp,
+                  noi_dung: action.noi_dung,
+                  muc_de_cuong: action.muc_de_cuong,
+                  thong_tin_chung_id: action.thong_tin_chung_id
+              }
+              return {
+                  ...state,
+                  logData: [...state.logData, obj]
+              }
+          }else{
+              return {...state,}
+          }
+      }
 
     default:
       return state;

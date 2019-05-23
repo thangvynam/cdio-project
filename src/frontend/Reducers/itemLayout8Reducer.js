@@ -1,6 +1,4 @@
-import { ADD_TNDATA, CHANGE_TNDATA,SAVE_LOAI_TAI_NGUYEN,SAVE_TEMP_DATA_LAYOUT_8,SAVE_ALL_DATA_LAYOUT_8, IS_LOADED_8, CDR_DANHGIA } from '../Constant/ActionType';
-import { stat } from 'fs';
-import axios from 'axios';
+import { SAVE_LOG,ADD_TNDATA, CHANGE_TNDATA,SAVE_LOAI_TAI_NGUYEN,SAVE_TEMP_DATA_LAYOUT_8, IS_LOADED_8, CDR_DANHGIA, UPDATE_TNDATA } from '../Constant/ActionType';
 
 const addTNDataState = {
     previewInfo: [],
@@ -19,6 +17,8 @@ const addTNDataState = {
         link: ''
     },
     loaitainguyenState : [],
+    logData: [],
+
 };
 
 
@@ -29,6 +29,12 @@ const itemLayout8Reducer = (state = addTNDataState, action) => {
             return{
                 ...state,
                 previewInfo: action.data,
+            }
+        }
+        case UPDATE_TNDATA:{
+            return{
+                ...state,
+                previewInfo : action.data,
             }
         }
         case CHANGE_TNDATA:{
@@ -49,17 +55,29 @@ const itemLayout8Reducer = (state = addTNDataState, action) => {
                 tempInfo : action.data
             }
         }
-        case SAVE_ALL_DATA_LAYOUT_8 : {
-           axios.post('/save-tainguyenmonhoc', { data: action.data })
-            return {
-                ...state,
-            }
-        }
+        
         case IS_LOADED_8: {
             return{
                 ...state,
                 isLoaded : action.data
             }
+        }
+        case SAVE_LOG: {
+            if(action.muc_de_cuong === 'tai-nguyen-mon-hoc'){
+                let obj = {
+                    ten: action.ten,
+                    timestamp: action.timestamp,
+                    noi_dung: action.noi_dung,
+                    muc_de_cuong: action.muc_de_cuong,
+                    thong_tin_chung_id: action.thong_tin_chung_id
+                }
+                return {
+                    ...state,
+                    logData: [...state.logData, obj]
+                }
+            }
+            else return {...state}
+            
         }
         
         default:

@@ -86,7 +86,7 @@ class TableItem extends Component {
     }, {
       title: 'Thao tác',
       key: 'action',
-      render: (text, record) => {
+      render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
         return (
           <div>
@@ -209,16 +209,16 @@ class TableItem extends Component {
       return (
         <div>          
           <div style={{ marginBottom: 16, marginTop: 10 }}>
-          <Button></Button>
+          {this.props.isReview === true ? null : <Button></Button>}
 
-           <Button style={{float: "right"}}
+           {this.props.isReview === true ? null : <Button style={{float: "right"}}
             onClick={() => {
               this.props.saveAll(this.props.subjectid)
               openNotificationWithIcon('success')
             } 
             }>
             Lưu tất cả
-          </Button>
+          </Button>}
           </div>
           <Table
             components={components}

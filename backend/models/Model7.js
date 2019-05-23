@@ -17,8 +17,75 @@ Model7.addDanhGia = (data, result) => {
     })
 }
 
+Model7.addChuDe = (data, result) => {
+  sql.query(`INSERT INTO chu_de_danh_gia (ma_chu_de, ten_chu_de) VALUES ('${data.ma_chu_de}', '${data.ten_chu_de}')`,
+  (err,res) => {
+      if(err) {
+          console.log("Error model 7 : ", err);
+          result(null,err)
+      }else{
+          result(null,res);
+      }
+  })
+}
+
+Model7.updateChuDe = (data, result) => {
+  sql.query(`update chu_de_danh_gia
+          set ma_chu_de = '${data.ma_chu_de}',
+              ten_chu_de = '${data.ten_chu_de}'
+          where id = ${data.id}`,
+      (err, res) => {
+          if (err) {
+              console.log("error:", err);
+              result(null, err)
+          } else {
+              result(null, res);
+          }
+      })
+}
+
+Model7.deletechudefromdanhgia = (data, result) => {
+  let idString = "(" + data.toString() + ")";
+      sql.query(`update danh_gia set chu_de_danh_gia_id = -1 where (chu_de_danh_gia_id) IN ${idString}`,
+      (err, res) => {
+          if (err) {
+              console.log("error:", err);
+              result(null, err)
+          } else {
+              result(null, res);
+          }
+      })
+  
+}
+
+Model7.deletedanhgia = (data, result) => {
+      sql.query(`update danh_gia set del_flag = 1 where (chu_de_danh_gia_id) = -1`,
+      (err, res) => {
+          if (err) {
+              console.log("error:", err);
+              result(null, err)
+          } else {
+              result(null, res);
+          }
+      })
+  
+}
+
+Model7.deleteChuDe = (data, result) => {
+  let idString = "(" + data.toString() + ")";
+      sql.query(`delete from chu_de_danh_gia where (id) IN ${idString}`,
+      (err, res) => {
+          if (err) {
+              console.log("error:", err);
+              result(null, err)
+          } else {
+              result(null, res);
+          }
+      })
+}
+
 Model7.getChude = (result) => {
-    sql.query(`select * from chu_de_danh_gia where del_flag = 0`,(err,res)=>{
+    sql.query(`select * from chu_de_danh_gia where id != -1 ORDER by ma_chu_de`,(err,res)=>{
         if(err){
           console.log("err: ",err);
           return result(err,null);
@@ -214,7 +281,11 @@ Model7.getCDR = (body,result) => {
             }
     
           }
+
+
         }
+
+        result(null,"done");
       })
   }
 

@@ -27,3 +27,9 @@
 .bar-chart-mixed{
     margin-top: 15px;
 }
+
+.popover a{
+    display: block;
+    padding: 5px;
+    width : 90px;
+}

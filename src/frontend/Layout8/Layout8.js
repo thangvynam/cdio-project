@@ -3,6 +3,7 @@ import TNForm from './Component/Main/TNForm';
 import TNTableItem from './Component/Table/TNTableItem';
 import { Tooltip, Button } from 'antd';
 import { Element } from 'react-scroll';
+import LogForm from '../Log/LogForm';
 
 class Layout8 extends Component {
   render() {
@@ -14,11 +15,15 @@ class Layout8 extends Component {
                 <div className="col-sm-11" >
                     <br/>
                     <h2 style={{textAlign: "center"}}>TÀI NGUYÊN MÔN HỌC</h2>
-                    <TNForm />
+                    {this.props.isReview === true ? null : <TNForm />}
                     <br />
                     <Element name="test1" className="element" >
-                        <TNTableItem />
+                        <TNTableItem isReview={this.props.isReview}/>
                     </Element>
+                    <br/>
+                    <br/>
+                    <LogForm/>
+                    <br/>
                 </div>
             </div>
         </div>

@@ -11,12 +11,13 @@ import {
   Select,notification
 } from "antd";
 import { connect } from "react-redux";
-import { updateKHGDTH, changeIsLoadedKHTH } from "../../../Constant/ActionType";
+import { updateKHGDTH, changeIsLoadedKHTH,saveLog,saveLogObject } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import TextArea from "antd/lib/input/TextArea";
 import axios from "axios";
+import { getCurrTime } from '../../../utils/Time';
 
 const { Option } = Select;
 
@@ -313,7 +314,7 @@ class TableItem extends Component {
       {
         title: "Action",
         key: "action",
-        render: (text, record) => {
+        render: this.props.isReview === true ? null : (text, record) => {
           const editable = this.isEditing(record);
 
           return (
@@ -399,14 +400,16 @@ class TableItem extends Component {
         return;
       }
 
-     
-
       var newItems = this.props.itemKHGDTH.previewInfo;
       const item = newItems[index];
       newItems.splice(index, 1, {
         ...item,
         ...row
       });
+
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa kế hoạch giảng dạy thực hành:[Chủ đề : ${item.titleName} ; Chuẩn đầu ra : ${item.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${item.teachingActs} ; Hoạt động đánh giá: ${item.evalActs}] -> [Chủ đề : ${newItems[index].titleName} ; Chuẩn đầu ra : ${newItems[index].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${newItems[index].teachingActs} ; Hoạt động đánh giá: ${newItems[index].evalActs}]`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa kế hoạch giảng dạy thực hành:[Chủ đề : ${item.titleName} ; Chuẩn đầu ra : ${item.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${item.teachingActs} ; Hoạt động đánh giá: ${item.evalActs}] -> [Chủ đề : ${newItems[index].titleName} ; Chuẩn đầu ra : ${newItems[index].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${newItems[index].teachingActs} ; Hoạt động đánh giá: ${newItems[index].evalActs}]`, this.props.logReducer.contentTab, this.props.subjectId)
+
       this.props.onUpdateKHGDTH(newItems);
        this.setState({ editingKey: "" });
     });
@@ -428,6 +431,10 @@ class TableItem extends Component {
 
     let newData = this.props.itemKHGDTH.previewInfo;
     newData[index].del_flag = 1;
+
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${newData[index].titleName} ; Chuẩn đầu ra : ${newData[index].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${newData[index].teachingActs} ; Hoạt động đánh giá: ${newData[index].evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${newData[index].titleName} ; Chuẩn đầu ra : ${newData[index].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${newData[index].teachingActs} ; Hoạt động đánh giá: ${newData[index].evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+
     let key = 1;
     for(let i = 0;i<newData.length;i++){
       if(newData[i].del_flag===0){
@@ -481,8 +488,16 @@ class TableItem extends Component {
     for(let i = 0; i<selectedRow.length;i++){
       let id = this.dataSource[selectedRow[i]-1].id;
       for(let j=0;j<KHitems.length;j++){
-        if(KHitems[j].id===id) KHitems[j].del_flag = 1;
+        if(KHitems[j].id===id) {
+          KHitems[j].del_flag = 1;
+ this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${KHitems[j].titleName} ; Chuẩn đầu ra : ${KHitems[j].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${KHitems[j].teachingActs} ; Hoạt động đánh giá: ${KHitems[j].evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${KHitems[j].titleName} ; Chuẩn đầu ra : ${KHitems[j].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${KHitems[j].teachingActs} ; Hoạt động đánh giá: ${KHitems[j].evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+
+
+}
       }
+
+   
     }
     let key = 1;
     for(let i = 0;i<KHitems.length;i++){
@@ -573,6 +588,7 @@ class TableItem extends Component {
         duration: 1
       });
      }
+     axios.post('/save-log', { data: this.props.itemKHGDTH.logData })
 
      this.getDataTable(this.state.subjectId);
    });
@@ -672,7 +688,7 @@ class TableItem extends Component {
 
     return (
       <div>
-        <div style={{ marginBottom: 16 }}>
+        {this.props.isReview === true ? null : <div style={{ marginBottom: 16 }}>
           <Button
             type="danger"
             onClick={this.showModal}
@@ -687,16 +703,16 @@ class TableItem extends Component {
           <Button style={{ float: "right" }} type="primary" onClick={this.onSaveAll}>
             Lưu thay đổi
           </Button>
-        </div>
+        </div>}
         <Table
           components={components}
           bordered
           columns={this.state.editingKey === "" ? this.columns : columns}
-          rowSelection={rowSelection}
+          rowSelection={this.props.isReview === true ? null : rowSelection}
           rowClassName="editable-row"
           // dataSource={this.props.itemKHGDTH.previewInfo.filter((item,_) => item.del_flag ===0)}
           dataSource = {this.setIndexForItem()}
-          onRow={
+          onRow={this.props.isReview === true ? null : 
             this.state.editingKey === ""
               ? (record, index) => ({
                   index,
@@ -714,6 +730,7 @@ const mapStateToProps = state => {
   return {
     itemKHGDTH: state.itemLayout6Reducer,
     subjectId: state.subjectid,
+    logReducer: state.logReducer,
 
   };
 };
@@ -722,6 +739,9 @@ const mapDispatchToProps = dispatch => {
     {
       onUpdateKHGDTH: updateKHGDTH,
       onChangeIsLoaded:changeIsLoadedKHTH,
+
+    onSaveLog : saveLog,
+    onSaveReducer : saveLogObject
     },
     dispatch
   );

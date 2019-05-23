@@ -39,16 +39,20 @@ const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
             }
 
         case SAVE_LOG: {
-            let obj = {
-                ten: action.ten,
-                timestamp: action.timestamp,
-                noi_dung: action.noi_dung,
-                muc_de_cuong: action.muc_de_cuong,
-                thong_tin_chung_id: action.thong_tin_chung_id
-            }
-            return {
-                ...state,
-                logData: [...state.logData, obj]
+            if(action.muc_de_cuong === 'mo-ta-mon-hoc'){
+                let obj = {
+                    ten: action.ten,
+                    timestamp: action.timestamp,
+                    noi_dung: action.noi_dung,
+                    muc_de_cuong: action.muc_de_cuong,
+                    thong_tin_chung_id: action.thong_tin_chung_id
+                }
+                return {
+                    ...state,
+                    logData: [...state.logData, obj]
+                }
+            }else{
+                return {...state,}
             }
         }
         default:

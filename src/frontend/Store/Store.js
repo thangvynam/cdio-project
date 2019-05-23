@@ -15,7 +15,9 @@ import itemLayout6Reducer from "../Reducers/ItemLayout6Reducer";
 import itemLayout9Reducer from "../Reducers/ItemLayout9Reducer";
 import matrixReducer from "../Reducers/matrixReducer";
 import benchmarkReducer from "../Reducers/benchmarkMatrixReducer";
-import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer, cdrCdioReducer, ctdtReducer } from '../Reducers/homePageReducer';
+import surveyMatrixReducer from "../Reducers/surveyMatrixReducer";
+import authenticationReducer from "../Reducers/authentcationReducer";
+import { menuItemReducer, subjectIdReducer, subjectListReducer, subjectMasoReducer, cdrCdioReducer, ctdtReducer, parentItemReducer } from '../Reducers/homePageReducer';
 import logReducer from "../Reducers/logReducer"
 
 import { createStore, applyMiddleware} from 'redux';
@@ -23,6 +25,7 @@ import { createStore, applyMiddleware} from 'redux';
 import thunk from 'redux-thunk';
 import { editMatrixReducer, editMatrixEditStateReducer, isLoadEditMatrixReducer } from '../Reducers/editMatrixReducer';
 import surveyReducer from '../Reducers/surveyReducer';
+import teacherReducer from '../Reducers/teacherReducer';
 //const middleware = [ thunk, logger ];
 const middleware = [ thunk];
 
@@ -52,6 +55,7 @@ const allReducers = redux.combineReducers({
     // tndata: changeTNDataReducer,
     // loaitainguyenReducer: loaiTaiNguyenReducer,
     menuitem: menuItemReducer,
+    parentitem: parentItemReducer,
     ctdt: ctdtReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,
@@ -61,9 +65,12 @@ const allReducers = redux.combineReducers({
     editmatrixeditstate: editMatrixEditStateReducer,
     isloadeditmatrix: isLoadEditMatrixReducer,
     matrix: matrixReducer,
+    surveyMatrix: surveyMatrixReducer,
     benchmarkMatrix: benchmarkReducer,
     logReducer: logReducer,
-    surveyReducer: surveyReducer
+    surveyReducer: surveyReducer,
+    authentication: authenticationReducer,
+    teacherlist: teacherReducer,
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

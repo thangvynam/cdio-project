@@ -16,6 +16,10 @@ class MenuMota extends Component {
         description.replace('\n', '<br/>')
         this.props.saveTemp(description);
     }
+
+    componentDidMount(){
+        console.log(this.props.logReducer)
+    }
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {

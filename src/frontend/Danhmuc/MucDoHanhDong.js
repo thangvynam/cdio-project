@@ -13,7 +13,7 @@ const formItemLayout = {
     },
     wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 16 },
+        sm: { span: 12 },
     },
 };
 
@@ -140,6 +140,7 @@ class MucDoHanhDong extends Component {
           {
             title: 'Action',
             key: 'action',
+            align: "center",
             render: (text, record) => {
               const editable = this.isEditing(record);
               return(

@@ -8,6 +8,8 @@ import { getLevel, getPos } from '../utils/Tree';
 import "./Survey.css";
 import TableSurvey from './TableSurvey';
 
+const  queryString = require('query-string');
+
 class Node {
     constructor(data) {
         this.data = data;
@@ -16,20 +18,42 @@ class Node {
 }
 
 class ITUValue{
-    constructor(key, value) {
+    constructor(key, value, description) {
         this.key = key;
         this.value = value;
+        this.description = description;
     }
 }
 
-class Survey extends Component {
-    state = {
-        tree: [],
+class Survey extends React.Component {
+    constructor(props){
+        super(props);
+        this.state = {
+            tree: [],
+            resultQA : null,
+            resultITU : null,
+        }
     }
 
     componentDidMount() {
-        let tree = [];
+
+        const parsed = queryString.parse(window.location.search);
+
+        if(parsed.id){
+            const id = parsed.id;
+            axios.get(`/get-surveyqa/${id}`).then(res => {
+                this.setState ({ 
+                    resultQA : res.data[0],
+                })
+            })
+            axios.get(`/get-survey/${id}`).then(res => {
+                this.setState({
+                    resultITU : res.data,
+                },()=>console.log(this.state.resultITU))
+            })
+        }          
         
+        let tree = [];
         axios.get("/get-data-survey").then((res) => {
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
@@ -103,6 +127,10 @@ class Survey extends Component {
             });
             this.setState({ tree: tree })
         })
+        
+        
+
+        
     }
 
     genForm() {
@@ -140,6 +168,7 @@ class Survey extends Component {
                     htmlDOM.push(
                         <TableSurvey
                             data={dataChildren}
+                            resultITU={this.state.resultITU}
                         />
                     )
                 }
@@ -148,36 +177,55 @@ class Survey extends Component {
         return htmlDOM;
     }
 
-    convertToObject = (data) => {
-        const iterator = data[Symbol.iterator]();
-        let count = 0;
-        let key = '';
-        let value = '';
+    convertToObject = (data,dataDescription) => {
+        const iteratorData = data[Symbol.iterator]();
+        //const iteratorDataDescription = dataDescription[Symbol.iterator]();
+    
         let arr = [];
 
-        for (let item of iterator) {
-            if (count % 2 == 0) {
-                key = item;
-            } else {
-                value = item;
-
-                const obj = new ITUValue(key,value);
-                arr.push(obj);
-            }
-            count++;
+        for (let item of iteratorData) {
+            const description = typeof dataDescription.get(item[0]) !== 'undefined' ? dataDescription.get(item[0]) : '';
+            const obj = new ITUValue(item[0],item[1],description);
+            arr.push(obj);
         }
-
+       
         return arr;
     }
 
     saveAll = () => {
-        let data = this.props.surveyReducer.dataValueITU;
+        const dataDescription = this.props.surveyReducer.dataValueDescription;
+        const data = this.props.surveyReducer.dataValueITU;
+        const surveyData = this.props.surveyReducer;
         
-        let dataConvert = this.convertToObject(data);
-        axios.post("/add-data-survey",{data: dataConvert})
-            .then(response=>{
-                //const data= response.data;
-                
+        const dataConvert = this.convertToObject(data,dataDescription);
+        
+        const survey = {
+            tenMH: surveyData.tenMH,
+            nguoiDuocKS: surveyData.nguoiDuocKS,
+            nguoiKS: surveyData.nguoiKS,
+            q1: surveyData.q1,
+            q2: surveyData.q2,
+            q3: surveyData.q3,
+            q4: surveyData.q4,
+            q5: surveyData.q5,
+            q6: surveyData.q6,
+            q7: surveyData.q7,
+            q8: surveyData.q8,
+            q9: surveyData.q9,
+            q10: surveyData.q10,
+            q11: surveyData.q11,
+        } 
+        axios.post('/save-survey-qa', { data: survey })
+            .then((res) => {
+                axios.post("/add-data-survey",
+                        { data: dataConvert,
+                          id_qa: res.data.id,
+                          idMon : this.props.subjectId
+                        })
+                    .then(response => {
+                        //const data= response.data;
+                        
+                    });
             });
     }
 
@@ -203,7 +251,7 @@ class Survey extends Component {
                             <div className="col-sm-12" >
                                 <br />
                                 <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
-                                {/* <FormSurvey /> */}
+                                <FormSurvey subjectName={this.props.subjectName} result={this.state.resultQA}/>
                                 <br />
                                 <div style={{ paddingLeft: "1em" }}>
                                     {this.genForm()}
@@ -211,10 +259,12 @@ class Survey extends Component {
                                 <Form.Item {...tailFormItemLayout}>
                                     <div>
                                         <Button 
+                                            disabled={queryString.parse(window.location.search).id ? true : false}
                                             type="primary"
                                             onClick={() => {this.saveAll()}}
                                             style={{ marginLeft: "2em" }}>
                                             Gửi<Icon type="right" />
+                                            
                                         </Button>
                                     </div>
                                 </Form.Item>
@@ -229,15 +279,14 @@ class Survey extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-        surveyReducer: state.surveyReducer
+        surveyReducer: state.surveyReducer,
+        subjectId: state.subjectid,
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        // saveAll: () => {
-        //     console.log("sads")
-        // }
+       
     }
 }
 

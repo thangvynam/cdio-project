@@ -1,4 +1,4 @@
-import { ADD_ITEM_KHGDTH, UPDATE_KHGDTH, CHANGE_TEMP_KHGDTH, CHANGE_MAP_KHGDTH, CHANGE_ISLOADED_KHTH,RESET_TAB } from '../Constant/ActionType';
+import { SAVE_LOG,ADD_ITEM_KHGDTH, UPDATE_KHGDTH, CHANGE_TEMP_KHGDTH, CHANGE_MAP_KHGDTH, CHANGE_ISLOADED_KHTH,RESET_TAB } from '../Constant/ActionType';
 
 const initialState = {
     previewInfo: [
@@ -35,7 +35,9 @@ const initialState = {
         standardOutput:new Map(),
         evalActs: new Map(),
     },
-    isLoaded:false
+    isLoaded:false,
+    logData: [],
+
 }
 const itemLayout6Reducer = (state = initialState, action) => {
     switch (action.type) {
@@ -76,6 +78,23 @@ const itemLayout6Reducer = (state = initialState, action) => {
                 }
                 
               }
+              case SAVE_LOG: {
+                if(action.muc_de_cuong === 'giang-day-thuc-hanh'){
+                    let obj = {
+                        ten: action.ten,
+                        timestamp: action.timestamp,
+                        noi_dung: action.noi_dung,
+                        muc_de_cuong: action.muc_de_cuong,
+                        thong_tin_chung_id: action.thong_tin_chung_id
+                    }
+                    return {
+                        ...state,
+                        logData: [...state.logData, obj]
+                    }
+                }else{
+                    return {...state,}
+                }
+            }
         default:
             return state
     }

@@ -4,8 +4,10 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeTNData, addTNData, saveTempTNData ,saveLoaiTaiNguyen} from '../../../Constant/ActionType';
+import { changeTNData, addTNData, saveTempTNData ,saveLoaiTaiNguyen, saveLog,saveLogObject} from '../../../Constant/ActionType';
 import axios from 'axios';
+import { getCurrTime } from '../../../utils/Time';
+
 
 class TNFormItem extends Component {
   constructor(props){
@@ -58,7 +60,7 @@ class TNFormItem extends Component {
       if (this.props.itemLayout8Reducer.tempInfo.mota === "" || this.props.itemLayout8Reducer.tempInfo.mota === undefined) {
         message.error("Chưa nhập mô tả");
       } else {
-        let index = this.props.itemLayout8Reducer.previewInfo.length ;
+        let index = this.props.itemLayout8Reducer.previewInfo.filter(item => item.del_flag===0).length ;
 
         let data = {
           key: index,
@@ -66,10 +68,15 @@ class TNFormItem extends Component {
           loai: this.props.itemLayout8Reducer.tempInfo.loai[0],
           mota: this.props.itemLayout8Reducer.tempInfo.mota,
           link: this.props.itemLayout8Reducer.tempInfo.link,
+          id : -1,
+          del_flag : 0,
         }
         let newData = {};
         newData = this.props.itemLayout8Reducer.previewInfo.concat(data);
-      
+
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.subjectId)
+        
         this.props.onAddTNData(newData);
 
         message.info("Thêm thành công!");
@@ -181,6 +188,8 @@ const mapStateToProps = (state) => {
     tndata: state.tndata,
     itemLayout8Reducer: state.itemLayout8Reducer,
     subjectId : state.subjectid,
+    logReducer: state.logReducer
+
   };
 }
 const mapDispatchToProps = (dispatch) => {
@@ -189,6 +198,8 @@ const mapDispatchToProps = (dispatch) => {
     onChangeTNData: changeTNData,
     onSaveTempTNData : saveTempTNData,
     updateLoaitainguyen: saveLoaiTaiNguyen,
+    onSaveLog : saveLog,
+    onSaveReducer : saveLogObject
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TNFormItem);

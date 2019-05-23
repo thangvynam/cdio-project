@@ -1,0 +1,14 @@
+.login-warp.login-custom {
+    width: 100%;
+    margin-top: 50px;
+}
+
+.antd-pro-login-login {
+    width: 30%;
+    margin: auto;
+}
+
+.login-warp.login-custom .ant-btn{
+    width: 100%;
+    margin-top: 5%;
+}

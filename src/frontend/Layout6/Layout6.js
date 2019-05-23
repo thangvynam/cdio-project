@@ -4,6 +4,7 @@ import { Element } from "react-scroll";
 import MainForm from "./Component/Main/MainForm";
 import TableItem from "./Component/Table/TableItem";
 import { Tooltip, Button } from "antd";
+import LogForm from '../Log/LogForm';
 
 class Layout6 extends Component {
   render() {
@@ -16,7 +17,7 @@ class Layout6 extends Component {
             <h2 style={{ textAlign: "center" }}>
               DANH SÁCH KẾ HOẠCH GIẢNG DẠY THỰC HÀNH
             </h2>
-            <MainForm />
+            {this.props.isReview === true ? null : <MainForm />}
             <br />
             <Tooltip placement="topLeft">
               <Button
@@ -36,8 +37,12 @@ class Layout6 extends Component {
             <br />
             <br/>
             <Element name="test1" className="element">
-              <TableItem />
+              <TableItem isReview={this.props.isReview}/>
             </Element>
+            <br/>
+            <br/>
+            <LogForm/>
+            <br/>
           </div>
         </div>
       </div>

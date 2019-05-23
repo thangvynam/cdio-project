@@ -4,12 +4,18 @@ import axios from 'axios'
 
 const collectDataRequest = (id) => {
     return (dispatch) => {
-        return axios.get(`/collect-data/${id}`)
+        return axios(`/collect-data/${id}`, {
+            method: "GET",
+            headers: {
+                'Content-Type': 'application/json',
+                "token": `${localStorage.getItem('token')}`
+            }
+        })
             .then(function (response) {
                 dispatch(fetchData(response.data));
             })
             .catch(function (error) {
-                console.log(error);
+                window.location.href = 'http://localhost:3000/';
             });
     }
 }

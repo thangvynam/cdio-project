@@ -80,19 +80,24 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
             return {
                 ...state
             }
-        case SAVE_LOG: {
-                let obj = {
-                    ten: action.ten,
-                    timestamp: action.timestamp,
-                    noi_dung: action.noi_dung,
-                    muc_de_cuong: action.muc_de_cuong,
-                    thong_tin_chung_id: action.thong_tin_chung_id
+        
+            case SAVE_LOG: {
+                if(action.muc_de_cuong === 'muc-tieu-mon-hoc'){
+                    let obj = {
+                        ten: action.ten,
+                        timestamp: action.timestamp,
+                        noi_dung: action.noi_dung,
+                        muc_de_cuong: action.muc_de_cuong,
+                        thong_tin_chung_id: action.thong_tin_chung_id
+                    }
+                    return {
+                        ...state,
+                        logData: [...state.logData, obj]
+                    }
+                }else{
+                    return {...state,}
                 }
-                return {
-                    ...state,
-                    logData: [...state.logData, obj]
-                }
-            }   
+            }
         case SET_CDR: {
             let arr = action.data;
             arr.forEach(element => {

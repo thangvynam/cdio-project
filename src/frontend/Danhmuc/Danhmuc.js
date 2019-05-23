@@ -16,7 +16,6 @@ import {
   Menu, 
   Dropdown
 } from "antd";
-import MucDoHanhDong from "./MucDoHanhDong";
 import axios from "axios";
 import _ from "lodash";
 import MucDoHanhDong from './MucDoHanhDong';

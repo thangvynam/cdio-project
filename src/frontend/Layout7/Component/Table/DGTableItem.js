@@ -170,7 +170,7 @@ class itemLayout7ReducerItem extends React.Component {
     {
       title: 'Action',
       key: 'action',
-      render: (text, record) => {
+      render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
         if (this.isExist(record.mathanhphan)) return;
         return (
@@ -757,7 +757,7 @@ class itemLayout7ReducerItem extends React.Component {
           bordered
           dataSource={this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1)}
           columns={columns}
-          rowSelection={rowSelection}
+          rowSelection={this.props.isReview === true ? null : rowSelection}
           rowClassName="editable-row"
           pagination={{
             onChange: this.cancel,

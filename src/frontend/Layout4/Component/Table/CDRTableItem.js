@@ -240,7 +240,7 @@ class CDRTableItem extends Component {
     }, {
       title: 'Action',
       key: 'action',
-      render: (text, record) => {
+      render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
         return(
         <div>
@@ -506,7 +506,7 @@ class CDRTableItem extends Component {
       }
       tableData.previewInfo.push(data);
     }
-      self.props.onAddCDRData(tableData)
+      self.props.onAddCDRData(tableData);
         })
       .catch(function (error) {
           console.log(error);
@@ -965,7 +965,7 @@ getSubjectName = (subjectList, id) => {
 
         return (
           <div>
-            {this.state.notifications}
+            {this.props.isReview === true ? null : this.state.notifications}
             {this.props.isReview === true ? null : <div style={{ marginBottom: 16,  marginTop: 16}}>
           <Button
             type="danger"
@@ -995,10 +995,10 @@ getSubjectName = (subjectList, id) => {
           
             <Table bordered 
             components={components}
-            rowSelection={rowSelection} 
+            rowSelection={this.props.isReview === true ? null : rowSelection} 
             columns={this.props.cdreditstate === '' ? this.columns : columns} 
             dataSource={CDRTable.previewInfo.filter(item => item.del_flag === 0)}
-            onRow={
+            onRow={this.props.isReview === true ? null : 
               this.props.cdreditstate === '' ?
               (record, index) => ({
               index,

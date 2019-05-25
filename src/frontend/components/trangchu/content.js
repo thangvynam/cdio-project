@@ -29,11 +29,14 @@ import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
 import PhanCong from './phancong';
 import ReviewSyllabus from './reviewsyllabus';
+//CDIO1
 import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
 import SubjectManage from "../../CDIO1/containers/SubjectManage";
 import FaProManage from "../../CDIO1/containers/FaProManage";
 import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
 import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
+import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
+//END CDIO1
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -154,6 +157,10 @@ class Content extends Component {
         }
         return false;
     }
+
+    componentDidMount = () => {
+      this.props.onLoadEduPrograms();
+    };
 
     render() {
         var subjectList = [];
@@ -382,7 +389,7 @@ class Content extends Component {
                                                                         <List.Item.Meta
                                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                                             title={
-                                                                                <Link to={`/${parent}/${item.id}`}><div className="list-item">{`${item.id} - ${item.name}`}</div></Link> 
+                                                                                <Link to={`/${parent}/${item.Id}`}><div className="list-item">{`${item.Id} - ${item.EduName}`}</div></Link> 
                                                                             }
                                                                         />
                                                                 </List.Item>
@@ -442,6 +449,7 @@ const mapDispatchToProps = (dispatch) => {
         updateIsLoadEditMatrix: isLoadEditMatrix,
         onChangeCDRData: changeCDRData,
         onUpdateVerb: selectedVerb,
+         onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms
     }, dispatch);
 
 }

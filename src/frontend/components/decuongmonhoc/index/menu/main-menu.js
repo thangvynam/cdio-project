@@ -28,7 +28,7 @@ class MenuLeft extends Component {
 
     getCtdt = (Ctdt, ctdt) => {
         for(let i = 0;i < Ctdt.length;i++) {
-            if(Ctdt[i].id === ctdt) {
+            if(Ctdt[i].Id === ctdt) {
                 return i;
             }
         }
@@ -60,10 +60,10 @@ class MenuLeft extends Component {
                 if(ctdtIndex !== -1) {
                     
                     if(this.props.parentitem[i].id ===  this.props.content_parent) {
-                        menuItemsCollapse.push(<Menu.Item key={this.props.ctdt[ctdtIndex].id} onClick={() => this.onClick(this.props.ctdt[ctdtIndex].id)}>
-                        <Link to={`/${this.props.content_parent}/${this.props.ctdt[ctdtIndex].id}`} >
+                        menuItemsCollapse.push(<Menu.Item key={this.props.ctdt[ctdtIndex].Id} onClick={() => this.onClick(this.props.ctdt[ctdtIndex].Id)}>
+                        <Link to={`/${this.props.content_parent}/${this.props.ctdt[ctdtIndex].Id}`} >
                             <Icon type="dashboard" />
-                            <span>{this.props.ctdt[ctdtIndex].name}</span>
+                            <span>{this.props.ctdt[ctdtIndex].EduName}</span>
                         </Link>
                         </Menu.Item>)
                     }
@@ -88,7 +88,7 @@ class MenuLeft extends Component {
                             
                                 for(let j = 0;j < this.props.ktt.children.length;j++) {
                                     menuItemsCollapse.push(<Menu.Item key={this.props.ktt.children[j].id} onClick={() => this.onClick(this.props.ktt.children[j].id)}>
-                                    <Link style={{paddingLeft: "40px"}} to={`/${this.props.parentitem[i].id}/${this.props.ctdt[ctdtIndex].id}/${key}/${this.props.ktt.children[j].id}`} >
+                                    <Link style={{paddingLeft: "40px"}} to={`/${this.props.parentitem[i].id}/${this.props.ctdt[ctdtIndex].Id}/${key}/${this.props.ktt.children[j].id}`} >
                                         <Icon type="dashboard" />
                                         <span>{this.props.ktt.children[j].name}</span>
                                     </Link>

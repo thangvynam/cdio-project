@@ -227,6 +227,7 @@ export default class OutcomeStandardCom extends Component {
         </Link>
         <Button
           title="Tạo bản sao"
+          hidden={true}
           onClick={() => this.onDuplicate(data.Id)}
           theme="info"
           style={{ marginRight: ".3em", padding: "8px" }}

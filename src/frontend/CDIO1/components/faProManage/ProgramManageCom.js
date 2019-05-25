@@ -191,7 +191,7 @@ export default class ProgramManageCom extends Component {
               <Column sortable={true} field="NameProgram" header="Tên" />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "4em" }}
+                style={{ textAlign: "center", width: "6em" }}
               />
             </DataTable>
           </Col>

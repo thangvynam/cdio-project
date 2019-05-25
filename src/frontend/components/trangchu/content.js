@@ -31,11 +31,16 @@ import PhanCong from './phancong';
 import ReviewSyllabus from './reviewsyllabus';
 //CDIO1
 import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
+import EducationProgram from "../../CDIO1/containers/EducationProgram";
 import SubjectManage from "../../CDIO1/containers/SubjectManage";
 import FaProManage from "../../CDIO1/containers/FaProManage";
 import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
 import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
+import * as facultiesAction from "../../CDIO1/actions/facultiesAction";
+import * as programsAction from "../../CDIO1/actions/programsAction";
+import * as levelsAction from "../../CDIO1/actions/levelsAction";
+import * as majorsAction from "../../CDIO1/actions/majorsAction";
 //END CDIO1
 const EditableContext = React.createContext();
 
@@ -371,37 +376,7 @@ class Content extends Component {
                                          <EditEducationProgram ctdt={ctdt}/>
                                     )
                                     : content_layout = parent === "ctdt"  ? (
-                                        <React.Fragment>
-                                            <div>
-                                                <List
-                                                    itemLayout="horizontal"
-                                                    dataSource={this.props.ctdt}
-                                                    renderItem={(item, id) => (
-                                                        <Row>
-                                                            <div style={{ height: "10px" }}></div>
-                                                            <Col span={1} className="col-left">
-                                                            </Col>
-                                                            <Col span={22} className="col-left">
-                
-                                                                <div className="list-border" style={{ borderRadius: "12px" }}>
-                
-                                                                <List.Item>
-                                                                        <List.Item.Meta
-                                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                                            title={
-                                                                                <Link to={`/${parent}/${item.Id}`}><div className="list-item">{`${item.Id} - ${item.EduName}`}</div></Link> 
-                                                                            }
-                                                                        />
-                                                                </List.Item>
-                                                                </div>
-                
-                                                            </Col>
-                                                        </Row>
-                                                    )}
-                                                />
-                
-                                            </div>
-                                        </React.Fragment>
+                                        <EducationProgram />
                                     )
                                     :content_layout=parent ==="cdr" ? ctdt == "edit" ? (
                                         <React.Fragment><EditOutcomeStandard/></React.Fragment>
@@ -431,12 +406,22 @@ class Content extends Component {
         )
     }
 }
+
+//Id
+//EduName
+
 const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
         menuItem: state.menuitem,
-        ctdt: state.eduPrograms
+        message: state.message,
+        ctdt: state.eduPrograms,
+        eduPrograms: state.eduPrograms,
+        faculties: state.faculties,
+        programs: state.programs,
+        levels: state.levels,
+        majors: state.majors
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -449,7 +434,12 @@ const mapDispatchToProps = (dispatch) => {
         updateIsLoadEditMatrix: isLoadEditMatrix,
         onChangeCDRData: changeCDRData,
         onUpdateVerb: selectedVerb,
-         onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms
+        onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
+        onAddEduProgram: eduProgramsAction.onAddEduProgram,
+        onLoadFaculties: facultiesAction.onLoadFaculties,
+        onLoadPrograms: programsAction.onLoadPrograms,
+        onLoadLevels: levelsAction.onLoadLevels,
+        onLoadMajors: majorsAction.onLoadMajors
     }, dispatch);
 
 }

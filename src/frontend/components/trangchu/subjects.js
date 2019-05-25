@@ -444,7 +444,7 @@ const mapStateToProps = (state) => {
         subjectId: state.subjectid,
         menuItem: state.menuitem,
         parentitem: state.parentitem,
-        ctdt: state.ctdt,
+        ctdt: state.eduPrograms,
         ktt: state.ktt,
         editMatrix: state.editmatrix,
         isLoadEditMatrix: state.isloadeditmatrix,

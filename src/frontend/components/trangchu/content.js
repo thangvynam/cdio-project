@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix, resetTab, changeCDRData, selectedVerb } from '../../Constant/ActionType';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification } from 'antd';
+import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification, Divider } from 'antd';
 import { Link } from "react-router-dom";
 import Page404 from '../../NotFound/Page404';
 import { subjectListReducer } from '../../Reducers/homePageReducer';
@@ -29,19 +29,9 @@ import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
 import PhanCong from './phancong';
 import ReviewSyllabus from './reviewsyllabus';
-//CDIO1
 import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
-import EducationProgram from "../../CDIO1/containers/EducationProgram";
 import SubjectManage from "../../CDIO1/containers/SubjectManage";
 import FaProManage from "../../CDIO1/containers/FaProManage";
-import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
-import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
-import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
-import * as facultiesAction from "../../CDIO1/actions/facultiesAction";
-import * as programsAction from "../../CDIO1/actions/programsAction";
-import * as levelsAction from "../../CDIO1/actions/levelsAction";
-import * as majorsAction from "../../CDIO1/actions/majorsAction";
-//END CDIO1
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -163,23 +153,19 @@ class Content extends Component {
         return false;
     }
 
-    componentDidMount = () => {
-      this.props.onLoadEduPrograms();
-    };
-
     render() {
         var subjectList = [];
         let type = this.props.content_type;
         let ctdt = this.props.content_ctdt;
         let khoi = this.props.content_khoi;
         let parent = this.props.content_parent;
-        switch (type) {           
+        switch (type) {
             case "de-cuong-mon-hoc": {
                 subjectList = this.props.subjectList;
             } break;
             case 'itusurvey': {
                 subjectList = this.props.subjectList;
-                
+
             } break;
 
             default: {
@@ -281,7 +267,7 @@ class Content extends Component {
             case MENUITEM.PHAN_CONG: {
                 content_layout = (
                     <React.Fragment>
-                        <PhanCong content_monhoc={this.props.content_monhoc}/>
+                        <PhanCong content_monhoc={this.props.content_monhoc} />
                     </React.Fragment>
                 )
                 break;
@@ -290,7 +276,7 @@ class Content extends Component {
             case MENUITEM.REVIEW: {
                 content_layout = (
                     <React.Fragment>
-                        <ReviewSyllabus idMH={this.props.content_monhoc}/>
+                        <ReviewSyllabus idMH={this.props.content_monhoc} />
                     </React.Fragment>
                 )
                 break;
@@ -298,9 +284,20 @@ class Content extends Component {
 
             case undefined: {
                 {
-                    content_layout = type === "de-cuong-mon-hoc"  ? (
+                    content_layout = type === "de-cuong-mon-hoc" ? (
                         <React.Fragment>
-                            <div>
+                            <Col span={22} className="col-right">
+                                <Row className="col-right-title">
+                                    <div>
+                                        <span>SYLLABUS</span>
+                                        <Divider type="vertical" />
+                                        <a href="#">Link</a>
+                                        <Divider type="vertical" />
+                                        <a href="#">Link</a>
+                                    </div>,
+                                </Row>
+                            </Col>
+                            <div className="wrapper-custom">
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={subjectList}
@@ -311,20 +308,39 @@ class Content extends Component {
                                             </Col>
                                             <Col span={22} className="col-left">
 
-                                                <div className="list-border" style={{ borderRadius: "12px" }}>
+                                            <div className="list-border" className="wrapper-subject">
 
-                                                    <List.Item>
+                                                <List.Item>
                                                         <List.Item.Meta
-                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                            avatar={
+                                                                <Avatar 
+                                                                    src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-
+                                                                    icon-isolated-on-white-background-vector-19349996.jpg" />
+                                                                }
                                                             title={
-                                                            khoi !== "" && khoi !== undefined ? 
-                                                            item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            : <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
-                                                            : <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
-                                                        }
+                                                                khoi !== "" && 
+                                                                khoi !== undefined ?
+                                                                item.Id === 2 ? 
+                                                                <Link to={
+                                                                    `/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}>
+                                                                        <span className="subject-name" style={{ color: "yellow" }} className="list-item" 
+                                                                            onClick={() => this.onClick(item.Id)}>
+                                                                            {`${item.SubjectCode} - ${item.SubjectName}`}
+                                                                        </span>
+                                                                </Link> : <div className="list-item">
+                                                                                <span className="subject-name" onClick={() => this.onClick(item.Id)}>
+                                                                                    {`${item.SubjectCode} - ${item.SubjectName}`}
+                                                                                </span>
+                                                                            </div> : 
+                                                                <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}>
+                                                                    <span className="list-item" className="subject-name" onClick={() => this.onClick(item.Id)}>
+                                                                        {`${item.SubjectCode} - ${item.SubjectName}`}
+                                                                    </span>
+                                                                </Link>
+                                                            }
                                                         />
-                                                        </List.Item>
-                                                        
+                                                    </List.Item>
+
                                                 </div>
 
                                             </Col>
@@ -336,55 +352,82 @@ class Content extends Component {
                         </React.Fragment>
                     ) : type === "matrix" ? <Matrix />
                             : type === "edit-matrix" ? <EditMatrix />
-                               : type === "survey-matrix" ? <SurveyMatrix />
-                                : type === "benchmark-matrix" ? <BenchMark />
-                                    : type === "danhmuc" ? <Danhmuc />
-                                        : type === "itusurvey" ?                        
-                                            <React.Fragment>
-                                                <div>                                         
-                                                    <List
-                                                        itemLayout="horizontal"
-                                                        dataSource={subjectList}
-                                                        renderItem={(item, id) => (
-                                                            <Row>
-                                                                <div style={{ height: "10px" }}></div>
-                                                                <Col span={1} className="col-left">
-                                                                </Col>
-                                                                <Col span={22} className="col-left">
+                                : type === "survey-matrix" ? <SurveyMatrix />
+                                    : type === "benchmark-matrix" ? <BenchMark />
+                                        : type === "danhmuc" ? <Danhmuc />
+                                            : type === "itusurvey" ?
+                                                <React.Fragment>
+                                                    <div>
+                                                        <List
+                                                            itemLayout="horizontal"
+                                                            dataSource={subjectList}
+                                                            renderItem={(item, id) => (
+                                                                <Row>
+                                                                    <div style={{ height: "10px" }}></div>
+                                                                    <Col span={1} className="col-left">
+                                                                    </Col>
+                                                                    <Col span={22} className="col-left">
 
-                                                                    <div className="list-border" style={{ borderRadius: "12px" }}>
+                                                                        <div className="list-border" style={{ borderRadius: "12px" }}>
 
-                                                                        <List.Item>
-                                                                            <List.Item.Meta
-                                                                                avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                                                title={
-                                                                                    <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
-                                                                                 }
-                                                                            />
-                                                                        </List.Item>
-                                                                    </div>
+                                                                            <List.Item>
+                                                                                <List.Item.Meta
+                                                                                    avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                                    title={
+                                                                                        <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
+                                                                                    }
+                                                                                />
+                                                                            </List.Item>
+                                                                        </div>
 
-                                                                </Col>
-                                                            </Row>
-                                                        )}
-                                                    />
-                                                </div>
-                                            </React.Fragment>
-                                    
-                                    : type === "view-survey" ? <ViewSurvey />
-                                    : content_layout = ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                         <EditEducationProgram ctdt={ctdt}/>
-                                    )
-                                    : content_layout = parent === "ctdt"  ? (
-                                        <EducationProgram />
-                                    )
-                                    :content_layout=parent ==="cdr" ? ctdt == "edit" ? (
-                                        <React.Fragment><EditOutcomeStandard/></React.Fragment>
-                                    ) 
-                                    : <React.Fragment><OutcomeStandard /></React.Fragment>
-                                    :content_layout=parent==="qlhp"?<React.Fragment><SubjectManage /></React.Fragment>
-                                    :content_layout=parent==="qlkh"?<React.Fragment><FaProManage /></React.Fragment>
-                                    : null;
+                                                                    </Col>
+                                                                </Row>
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </React.Fragment>
+
+                                                : type === "view-survey" ? <ViewSurvey />
+                                                    : content_layout = ctdt !== "" && ctdt !== undefined ? (
+                                                        <div>component nhóm 1</div>
+                                                    )
+                                                        : content_layout = parent === "ctdt" ? (
+                                                            <React.Fragment>
+                                                                <div>
+                                                                    <List
+                                                                        itemLayout="horizontal"
+                                                                        dataSource={this.props.ctdt}
+                                                                        renderItem={(item, id) => (
+                                                                            <Row>
+                                                                                <div style={{ height: "10px" }}></div>
+                                                                                <Col span={1} className="col-left">
+                                                                                </Col>
+                                                                                <Col span={22} className="col-left">
+
+                                                                                    <div className="list-border" style={{ borderRadius: "12px" }}>
+
+                                                                                        <List.Item>
+                                                                                            <List.Item.Meta
+                                                                                                avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                                                title={
+                                                                                                    <Link to={`/${parent}/${item.id}`}><div className="list-item">{`${item.id} - ${item.name}`}</div></Link>
+                                                                                                }
+                                                                                            />
+                                                                                        </List.Item>
+                                                                                    </div>
+
+                                                                                </Col>
+                                                                            </Row>
+                                                                        )}
+                                                                    />
+
+                                                                </div>
+                                                            </React.Fragment>
+                                                        )
+                                                            : content_layout = parent === "cdr" ? <React.Fragment><OutcomeStandard /></React.Fragment>
+                                                                : content_layout = parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
+                                                                    : content_layout = parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
+                                                                        : null;
 
                 }; break;
 
@@ -406,22 +449,12 @@ class Content extends Component {
         )
     }
 }
-
-//Id
-//EduName
-
 const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
         menuItem: state.menuitem,
-        message: state.message,
-        ctdt: state.eduPrograms,
-        eduPrograms: state.eduPrograms,
-        faculties: state.faculties,
-        programs: state.programs,
-        levels: state.levels,
-        majors: state.majors
+        ctdt: state.ctdt
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -434,12 +467,6 @@ const mapDispatchToProps = (dispatch) => {
         updateIsLoadEditMatrix: isLoadEditMatrix,
         onChangeCDRData: changeCDRData,
         onUpdateVerb: selectedVerb,
-        onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
-        onAddEduProgram: eduProgramsAction.onAddEduProgram,
-        onLoadFaculties: facultiesAction.onLoadFaculties,
-        onLoadPrograms: programsAction.onLoadPrograms,
-        onLoadLevels: levelsAction.onLoadLevels,
-        onLoadMajors: majorsAction.onLoadMajors
     }, dispatch);
 
 }

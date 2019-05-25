@@ -191,7 +191,7 @@ export default class FacultyManageCom extends Component {
               <Column sortable={true} field="NameFaculty" header="Tên" />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "6em" }}
+                style={{ textAlign: "center", width: "4em" }}
               />
             </DataTable>
           </Col>

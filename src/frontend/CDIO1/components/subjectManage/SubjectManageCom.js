@@ -221,7 +221,6 @@ export default class SubjectManageCom extends Component {
       <div>
         <Button
           title="Xem chi tiết"
-          hidden={true}
           onClick={() => this.onShowDetail(data.Id)}
           theme="success"
           style={{ marginRight: ".3em", padding: "8px" }}

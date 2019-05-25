@@ -3,9 +3,10 @@ import { Form, Icon, Button, message } from "antd";
 import { Link } from "react-scroll";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
-import { addItemRule, changeTempRules } from "../../../Constant/ActionType";
+import { addItemRule, changeTempRules,saveLog,saveLogObject } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import TextArea from "antd/lib/input/TextArea";
+import { getCurrTime } from '../../../utils/Time';
 
 class ItemMenu extends Component {
  
@@ -22,7 +23,9 @@ class ItemMenu extends Component {
       content: content,
       del_flag:0,
     };
-
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.subjectId)
+    
     this.props.onAddItemRule(JSON.stringify(rule));
     this.props.nextStep();
     this.props.form.resetFields();
@@ -98,7 +101,10 @@ class ItemMenu extends Component {
 
 const mapStateToProps = state => {
   return {
-    itemRule: state.itemLayout9Reducer
+    itemRule: state.itemLayout9Reducer,
+    subjectId : state.subjectid,
+    logReducer: state.logReducer
+
   };
 };
 
@@ -107,6 +113,8 @@ const mapDispatchToProps = dispatch => {
     {
       onAddItemRule: addItemRule,
       onChangeTempRule: changeTempRules,
+      onSaveLog : saveLog,
+      onSaveReducer : saveLogObject
     },
     dispatch
   );

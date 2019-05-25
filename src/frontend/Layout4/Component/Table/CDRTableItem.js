@@ -4,7 +4,7 @@ import { Table, Divider, Tag, Button,
    Input, Cascader, notification } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb,saveLogObject } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
@@ -240,7 +240,7 @@ class CDRTableItem extends Component {
     }, {
       title: 'Action',
       key: 'action',
-      render: (text, record) => {
+      render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
         return(
         <div>
@@ -487,14 +487,14 @@ class CDRTableItem extends Component {
    })
   }
 
-  loadTable = (self, id) => {
+  loadTable = (id) => {
     axios.post('/collect-data-4', { data: {thong_tin_chung_id: id}})
     .then(function (response) {
     const tableData = {
       previewInfo: []
     };
     for(let i = 0;i < response.data.length;i++) {
-      let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhddb, response.data[i].cdrmh_muc_do_hanh_dong_id);
+      let cdrmdhd = this.getCdrmdhd(this.props.cdrmdhddb, response.data[i].cdrmh_muc_do_hanh_dong_id);
       let data = {
       key: (i + 1).toString(),
       cdr: response.data[i].chuan_dau_ra,
@@ -506,7 +506,7 @@ class CDRTableItem extends Component {
       }
       tableData.previewInfo.push(data);
     }
-      self.props.onAddCDRData(tableData)
+    this.props.onAddCDRData(tableData);
         })
       .catch(function (error) {
           console.log(error);
@@ -559,7 +559,6 @@ getSubjectName = (subjectList, id) => {
   }
 
   componentDidMount() {
-    var self = this;
     // axios.get('/collect-cdrmdhd-4')
     // .then(function (response) {
     //     let cdrmdhd = self.props.cdrmdhd;
@@ -646,17 +645,16 @@ getSubjectName = (subjectList, id) => {
 
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
       this.props.updateIsLoad("true");
-      this.loadTable(self, self.state.id);
+      this.loadTable(this.state.id);
     }
   }
   
   componentWillReceiveProps(nextProps) {
     this.setState({id: nextProps.subjectId})
-    var self = this;
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
       this.props.updateIsLoad("true");
       //this.loadGap();
-      this.loadTable(self, self.state.id);
+      this.loadTable(this.state.id);
     }
 }
 
@@ -787,6 +785,7 @@ getSubjectName = (subjectList, id) => {
       const newData = this.props.cdrtable;
       
       const index = newData.previewInfo.findIndex(item => key === item.key);
+      let dataTemp  = newData.previewInfo[index];
       if (index > -1) {
         const item = newData.previewInfo[index];
         newData.previewInfo.splice(index, 1, {
@@ -796,6 +795,9 @@ getSubjectName = (subjectList, id) => {
       } else {
         newData.previewInfo.push(row);
       }
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+      
       for(let i = 0;i < newData.previewInfo[key - 1].levels.length - 1;i++){
         for (let j = i + 1; j < newData.previewInfo[key - 1].levels.length; j++) {
           if (newData.previewInfo[key - 1].levels[j] < newData.previewInfo[key - 1].levels[i]) {
@@ -808,7 +810,6 @@ getSubjectName = (subjectList, id) => {
     }
       let newItems = newData.previewInfo[key - 1];
     
-      this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung chuẩn đầu ra môn học thành: ${newItems.cdr}, ${newItems.level_verb}, ${newItems.description}, ${newItems.level}`, this.props.logReducer.contentTab, this.props.subjectId);
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');
@@ -870,8 +871,7 @@ getSubjectName = (subjectList, id) => {
         }
       })
     axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}});
-    var self = this;
-    this.loadTable(self, self.state.id);
+    this.loadTable(this.state.id);
     //this.loadGap();
     this.props.updateIsLoad("false");
     openNotificationWithIcon('success');
@@ -962,7 +962,7 @@ getSubjectName = (subjectList, id) => {
 
         return (
           <div>
-            {this.state.notifications}
+            {this.props.isReview === true ? null : this.state.notifications}
             {this.props.isReview === true ? null : <div style={{ marginBottom: 16,  marginTop: 16}}>
           <Button
             type="danger"
@@ -992,10 +992,10 @@ getSubjectName = (subjectList, id) => {
           
             <Table bordered 
             components={components}
-            rowSelection={rowSelection} 
+            rowSelection={this.props.isReview === true ? null : rowSelection} 
             columns={this.props.cdreditstate === '' ? this.columns : columns} 
             dataSource={CDRTable.previewInfo.filter(item => item.del_flag === 0)}
-            onRow={
+            onRow={this.props.isReview === true ? null : 
               this.props.cdreditstate === '' ?
               (record, index) => ({
               index,
@@ -1036,9 +1036,10 @@ const mapDispatchToProps = (dispatch) => {
     updateIsLoad: isLoad,
     updateIsLoadEditMatrix: isLoadEditMatrix,
     updateEditMatrix: editMatrix,
-    saveLog: saveLog,
     updateCdrmdhd: cdrmdhd,
     updateCdrmdhdDB: cdrmdhddb,
+    onSaveLog : saveLog,
+    onSaveReducer : saveLogObject
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

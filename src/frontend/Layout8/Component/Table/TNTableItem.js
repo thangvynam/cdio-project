@@ -7,11 +7,9 @@ import { bindActionCreators } from 'redux';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from 'react-redux';
-import { updateTNData,addTNData,saveAllTNData,isLoaded8 } from '../../../Constant/ActionType';
+import { updateTNData,addTNData,isLoaded8,saveLog,saveLogObject } from '../../../Constant/ActionType';
 import axios from 'axios';
-
-const { Option } = Select;
-
+import { getCurrTime } from '../../../utils/Time';
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -96,7 +94,7 @@ class TNTableItem extends Component {
     {
       title: 'Action',
       key: 'action',
-      render: (text, record) => {
+      render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
         return (
           <div>
@@ -129,7 +127,7 @@ class TNTableItem extends Component {
                   <Divider type="vertical" />
                   <Popconfirm
                     title="Xác nhận xóa?"
-                    onConfirm={() => this.handleDelete(record.index)}
+                    onConfirm={() => this.onMultiDelete(record.index)}
                   >
                     <a href="#a">Xóa</a>
                   </Popconfirm>
@@ -156,29 +154,13 @@ class TNTableItem extends Component {
         ...item,
         ...row
       });
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.subjectId)
+        
       this.props.onAddTNData(newItems);
       this.setState({ editingKey: "" });
     });
   }
-
-  handleDelete(index) {
-    // for(let i= index;i<this.props.itemLayout8Reducer.previewInfo.length-1;i++){
-    //   this.props.itemLayout8Reducer.previewInfo[i].loai = this.props.itemLayout8Reducer.previewInfo[i+1].loai;
-    //   this.props.itemLayout8Reducer.previewInfo[i].mota = this.props.itemLayout8Reducer.previewInfo[i+1].mota;
-    //   this.props.itemLayout8Reducer.previewInfo[i].link = this.props.itemLayout8Reducer.previewInfo[i+1].link;
-    // }
-    // for (let i = 0; i < this.props.itemLayout8Reducer.previewInfo.length; i++) {
-    //   this.props.itemLayout8Reducer.previewInfo[i].index = i;
-    //   this.props.itemLayout8Reducer.previewInfo[i].stt = i + 1;
-    // }
-    // this.props.itemLayout8Reducer.previewInfo.splice(this.props.itemLayout8Reducer.previewInfo.length - 1, 1);
-    let  newData = this.props.itemLayout8Reducer.previewInfo;
-
-    newData[index].del_flag=1;
-    this.setState({ selectedRowKeys: [], editingKey: "" });
-    this.props.onAddTNData(newData);
-  }
-
   edit(key) {
     this.setState({ editingKey: key });
   }
@@ -194,34 +176,17 @@ class TNTableItem extends Component {
     const selectedRow = this.state.selectedRowKeys;
 
     // delete one
-    if (selectedRow.length === 1) {
-      this.handleDelete(selectedRow[0]);
-      return;
-    }
-
-    //delete all
-    // if (selectedRow.length === this.props.itemLayout8Reducer.previewInfo.length) {
-    //   this.props.itemLayout8Reducer.previewInfo = [];
-    //   this.props.onUpdateTNData([]);
-    //   this.setState({ selectedRowKeys: [], editingKey: "" });
+    // if (selectedRow.length === 1) {
+    //   this.handleDelete(selectedRow[0]);
     //   return;
     // }
 
-    // let filteredItems = {previewInfo:[]}
-   
-    // let KHitems = this.props.itemLayout8Reducer.previewInfo;
-    // this.props.itemLayout8Reducer.previewInfo = KHitems.filter(
-    //   (_, index) => !selectedRow.includes(index + 1)
-    // );
-    // for (let i = 0; i < this.props.itemLayout8Reducer.previewInfo.length; i++) {
-    //   this.props.itemLayout8Reducer.previewInfo[i].key = i + 1;
-    //   this.props.itemLayout8Reducer.previewInfo[i].stt=  i+1;
-    // }
-
-    // filteredItems.previewInfo = this.props.itemLayout8Reducer.previewInfo;
     let newData = this.props.itemLayout8Reducer.previewInfo;
     for(let i=0;i<selectedRow.length;i++){
       newData[selectedRow[i]].del_flag  = 1;
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.subjectId)
+        
     }
 
     this.props.onAddTNData(newData);
@@ -229,7 +194,7 @@ class TNTableItem extends Component {
   };
 
   getData() {
-    return axios.get(`/get-tainguyenmonhoc/${this.props.subjectid}`).then(response => {
+    return axios.get(`/get-tainguyenmonhoc/${this.props.subjectId}`).then(response => {
         return response.data
     }).catch(function(error){
       console.log(error)
@@ -293,14 +258,6 @@ saveAll = () => {
     description : description,
   }
 
-  
-  // axios.post("/save-tainguyenmonhoc",obj)
-  // .then(response => {
-  //   console.log("VO DUOC SAVEALL")
-  //       console.log(response);
-  // })
-
-
   axios.post(`/save-tainguyenmonhoc`, obj)
      .then(response => {
        if(response.data === 1){
@@ -316,10 +273,10 @@ saveAll = () => {
         });
        }
      });
-
+     console.log(this.props.logReducer.logData8)
+  axios.post('/save-log', { data: this.props.itemLayout8Reducer.logData })
   let temp = this.getData();
   this.setData(temp);
-  // alert("ok")
 }
 
   showModal = () => {
@@ -383,7 +340,7 @@ saveAll = () => {
           bordered
           dataSource={this.setIndexForItem()}
           columns={columns}
-          rowSelection={rowSelection}
+          rowSelection={this.props.isReview === true ? null : rowSelection}
           rowClassName="editable-row"
           pagination={{
             onChange: this.cancel,
@@ -400,16 +357,17 @@ const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     onUpdateTNData: updateTNData,
     onAddTNData: addTNData,
-    onSaveAllData : saveAllTNData,
     isLoaded: isLoaded8,
+    onSaveLog : saveLog,
+    onSaveReducer : saveLogObject
   }, dispatch);
 } 
 
 const mapStateToProps = (state) => {
   return {
-    
     itemLayout8Reducer: state.itemLayout8Reducer,
-    subjectid: state.subjectid,
+    subjectId: state.subjectid,
+    logReducer : state.logReducer,
   }
 }
 

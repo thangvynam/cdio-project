@@ -29,6 +29,9 @@ import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
 import PhanCong from './phancong';
 import ReviewSyllabus from './reviewsyllabus';
+import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
+import SubjectManage from "../../CDIO1/containers/SubjectManage";
+import FaProManage from "../../CDIO1/containers/FaProManage";
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -301,7 +304,7 @@ class Content extends Component {
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
                                                             khoi !== "" && khoi !== undefined ? 
-                                                            item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            item.Id === 2 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }
@@ -390,7 +393,11 @@ class Content extends Component {
                 
                                             </div>
                                         </React.Fragment>
-                                    ) : null;
+                                    )
+                                    :content_layout=parent==="cdr"?<React.Fragment><OutcomeStandard /></React.Fragment>
+                                    :content_layout=parent==="qlhp"?<React.Fragment><SubjectManage /></React.Fragment>
+                                    :content_layout=parent==="qlkh"?<React.Fragment><FaProManage /></React.Fragment>
+                                    : null;
 
                 }; break;
 

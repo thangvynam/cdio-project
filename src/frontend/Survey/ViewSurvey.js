@@ -80,14 +80,11 @@ class ViewSurvey extends Component {
                                 <h1 style={{ textAlign: "center" }}>Quản lý cuộc survey</h1>
                                 <Form.Item
                                     {...formItemLayout}
-                                    label="Môn học"
+                                    label="Chương trình đào tạo"
                                 >
                                     <Select style={{ width: 370 }} onChange={handleChange}>
-                                        <Option value="Những nguyên lý cơ bản của chủ nghĩa Mác - Lê Nin">Những nguyên lý cơ bản của chủ nghĩa Mác - Lê Nin</Option>
-                                        <Option value="Đường lối cách mạng của ĐCSVN">Đường lối cách mạng của ĐCSVN</Option>
-                                        <Option value="Tư tưởng HCM">Tư tưởng HCM</Option>
-                                        <Option value="Pháp luật đại cương">Pháp luật đại cương</Option>
-                                        <Option value="Kinh tế đại cương">Kinh tế đại cương</Option>
+                                        <Option value="Chính quy">Chính quy</Option>
+                                        <Option value="Cao đẳng">Cao đẳng</Option>
                                     </Select>
                                 </Form.Item>
                                 <Form.Item

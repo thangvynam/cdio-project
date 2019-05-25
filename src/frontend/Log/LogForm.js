@@ -23,10 +23,11 @@ class LogForm extends Component {
     async componentWillReceiveProps(nextProps) { 
         let count = this.state.count;
         if(count <= 2) {
-            this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1})   
+            this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab))   
             let data = await this.getData(nextProps.logReducer.contentTab);
             this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.subjectid); 
         }               
+        
               
     }
 
@@ -36,8 +37,6 @@ class LogForm extends Component {
             contentTab: contentTab
         }
         return axios.post(`/get-log`, { data }).then(res => {
-            console.log(res.data);
-
             return res.data
         })
     }
@@ -105,7 +104,6 @@ class LogForm extends Component {
                 data.sort((a, b) => {
                     return b.thoi_gian - a.thoi_gian
                 })
-                console.log(this.props.logReducer.logComment2);
                 LogComment = data.map((itemparent, ich) => {
                     let con = this.props.logReducer.logComment2.map((itemchilren, ic) => {
                         if (itemchilren.log_id === itemparent.id) {

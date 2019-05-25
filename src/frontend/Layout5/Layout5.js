@@ -3,6 +3,7 @@ import React, { Component } from 'react';
 import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';
 import { Tooltip, Button } from 'antd';
+import LogForm from '../Log/LogForm';
 
 class Layout5 extends Component {
     render() {
@@ -22,6 +23,10 @@ ra chi tiết tương ứng với mỗi chủ đề, <br /> các hoạt động 
                         </Tooltip>
                         <br />
                         <TableItem isReview={this.props.isReview}/>
+                        <br/>
+                        <br/>
+                        <LogForm/>
+                        <br/>
                     </div>
                 </div>
             </div>

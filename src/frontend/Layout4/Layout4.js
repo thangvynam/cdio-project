@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import CDRForm from './Component/Main/CDRForm';
 import CDRTableItem from './Component/Table/CDRTableItem';
 import { Tooltip, Button } from 'antd';
+import LogForm from '../Log/LogForm';
 
 class Layout4 extends Component {
 
@@ -24,6 +25,10 @@ từ mô tả được sử dụng từ các động từ <br />chi tiết của
 động từ Bloom chi tiết cho ngành kỹ thuật.)</Button>
             </Tooltip>
             <CDRTableItem isReview={this.props.isReview}/>
+            <br/>
+            <br/>
+            <LogForm/>
+            <br/>
           </div>
         </div>
       </div>

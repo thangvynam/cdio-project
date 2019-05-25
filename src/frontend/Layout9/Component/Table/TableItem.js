@@ -1,10 +1,25 @@
 import React, { Component } from "react";
-import { Table, Divider, Button, Modal, Popconfirm, Form,notification } from "antd";
+import {
+  Table,
+  Divider,
+  Button,
+  Modal,
+  Popconfirm,
+  Form,
+  notification
+} from "antd";
 import { connect } from "react-redux";
-import { deleteItemRule, updateRules, changeIsLoadedRules } from "../../../Constant/ActionType";
+import {
+  deleteItemRule,
+  updateRules,
+  changeIsLoadedRules,
+  saveLog,
+  saveLogObject
+} from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import TextArea from "antd/lib/input/TextArea";
 import axios from "axios";
+import { getCurrTime } from "../../../utils/Time";
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -58,6 +73,7 @@ class EditableCell extends React.Component {
 class TableItem extends Component {
   constructor(props) {
     super(props);
+    this.dataSource = [];
     this.columns = [
       {
         title: "Nội dung",
@@ -69,78 +85,94 @@ class TableItem extends Component {
       {
         title: "Thao tác",
         key: "action",
-        render: (text, record) => {
-          const editable = this.isEditing(record);
+        render:
+          this.props.isReview === true
+            ? null
+            : (text, record) => {
+                const editable = this.isEditing(record);
 
-          return (
-            <div>
-              {editable ? (
-                <span>
-                  <EditableContext.Consumer>
-                    {form => (
-                      <a
-                        href="#a"
-                        onClick={() => this.onSaveEdit(form, record.index)}
-                        style={{ marginRight: 8 }}
-                      >
-                        Lưu
-                      </a>
+                return (
+                  <div>
+                    {editable ? (
+                      <span>
+                        <EditableContext.Consumer>
+                          {form => (
+                            <a
+                              href="#a"
+                              onClick={() =>
+                                this.onSaveEdit(form, record.index)
+                              }
+                              style={{ marginRight: 8 }}
+                            >
+                              Lưu
+                            </a>
+                          )}
+                        </EditableContext.Consumer>
+                        <Popconfirm
+                          title="Xác nhận hủy?"
+                          onConfirm={() => this.onCancelEdit(record.index)}
+                        >
+                          <a href="#a">Hủy</a>
+                        </Popconfirm>
+                      </span>
+                    ) : (
+                      <span>
+                        <a
+                          onClick={() => this.handleEdit(record.index)}
+                          href="#a"
+                        >
+                          Sửa
+                        </a>
+                        <Divider type="vertical" />
+                        <Popconfirm
+                          title="Xác nhận xóa?"
+                          onConfirm={() => this.handleDelete(record.index)}
+                        >
+                          <a href="#a">Xóa</a>
+                        </Popconfirm>
+                      </span>
                     )}
-                  </EditableContext.Consumer>
-                  <Popconfirm
-                    title="Xác nhận hủy?"
-                    onConfirm={() => this.onCancelEdit(record.index)}
-                  >
-                    <a href="#a">Hủy</a>
-                  </Popconfirm>
-                </span>
-              ) : (
-                <span>
-                  <a onClick={() => this.handleEdit(record.index)} href="#a">
-                    Sửa
-                  </a>
-                  <Divider type="vertical" />
-                  <Popconfirm
-                    title="Xác nhận xóa?"
-                    onConfirm={() => this.handleDelete(record.index)}
-                  >
-                    <a href="#a">Xóa</a>
-                  </Popconfirm>
-                </span>
-              )}
-            </div>
-          );
-        }
+                  </div>
+                );
+              }
       }
     ];
 
     this.state = {
       selectedRowKeys: [],
       editingKey: "",
-      idSubject: -1,
+      idSubject: -1
     };
   }
 
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
 
-    // delete one
-    if (selectedRow.length === 1) {
-      this.handleDelete(selectedRow[0]);
-      return;
-    }
-
-    //delete all
-    // if (selectedRow.length === this.props.itemRule.previewInfo.length) {
-    //   this.props.onUpdateRules([]);
-    //   this.setState({ selectedRowKeys: [], editingKey: "" });
-    //   return;
-    // }
-
     let ruleitems = this.props.itemRule.previewInfo;
-    for(let i = 0;i<selectedRow.length;i++){
-      ruleitems[selectedRow[i]].del_flag = 1;
+
+    for (let i = 0; i < selectedRow.length; i++) {
+      let id = this.dataSource[selectedRow[i]].id;
+      for (let j = 0; j < ruleitems.length; j++) {
+        if (ruleitems[j].id === id) {
+          ruleitems[j].del_flag = 1;
+          this.props.onSaveLog(
+            "Nguyen Van A",
+            getCurrTime(),
+            `Xóa quy định chung: ${ruleitems[j].content}`,
+            this.props.logReducer.contentTab,
+            this.props.subjectId
+          );
+          this.props.onSaveReducer(
+            "Nguyen Van A",
+            getCurrTime(),
+            `Xóa quy định chung: ${ruleitems[j].content}`,
+            this.props.logReducer.contentTab,
+            this.props.subjectId
+          );
+        }
+      }
     }
+
     this.props.onUpdateRules(ruleitems);
     this.setState({ selectedRowKeys: [], editingKey: "" });
   };
@@ -159,10 +191,24 @@ class TableItem extends Component {
   };
 
   handleDelete(index) {
-   // this.props.onDeleteItemRule(index);
-   let ruleitems = this.props.itemRule.previewInfo;
-   ruleitems[index].del_flag = 1;
-   this.props.onUpdateRules(ruleitems);
+    let ruleitems = this.props.itemRule.previewInfo;
+    ruleitems[index].del_flag = 1;
+    this.props.onSaveLog(
+      "Nguyen Van A",
+      getCurrTime(),
+      `Xóa quy định chung: ${ruleitems[index].content}`,
+      this.props.logReducer.contentTab,
+      this.props.subjectId
+    );
+    this.props.onSaveReducer(
+      "Nguyen Van A",
+      getCurrTime(),
+      `Xóa quy định chung: ${ruleitems[index].content}`,
+      this.props.logReducer.contentTab,
+      this.props.subjectId
+    );
+
+    this.props.onUpdateRules(ruleitems);
 
     this.setState({ selectedRowKeys: [], editingKey: "" });
   }
@@ -183,6 +229,24 @@ class TableItem extends Component {
         ...item,
         ...row
       });
+      this.props.onSaveLog(
+        "Nguyen Van A",
+        getCurrTime(),
+        `Chỉnh sửa quy định chung : ${item.content} -> ${
+          newRules[index].content
+        }`,
+        this.props.logReducer.contentTab,
+        this.props.subjectId
+      );
+      this.props.onSaveReducer(
+        "Nguyen Van A",
+        getCurrTime(),
+        `Chỉnh sửa quy định chung : ${item.content} -> ${
+          newRules[index].content
+        }`,
+        this.props.logReducer.contentTab,
+        this.props.subjectId
+      );
 
       this.props.onUpdateRules(newRules);
       this.setState({ editingKey: "" });
@@ -200,42 +264,46 @@ class TableItem extends Component {
       temp.index = i;
       itemRuleTable.push(temp);
     }
-    return itemRuleTable.filter((item,_) => item.del_flag ===0);
+    return (this.dataSource = itemRuleTable.filter(
+      (item, _) => item.del_flag === 0
+    ));
   };
 
-  onSaveAll = ()=>{
-
+  onSaveAll = () => {
     let body = {};
     body.thong_tin_chung_id = this.state.subjectId;
     body.data = this.props.itemRule.previewInfo;
-  
-    
-     axios.post("/add-data-9", body)
-     .then(response => {
-       if(response.data === 1){
+
+    axios.post("/add-data-9", body).then(response => {
+      if (response.data === 1) {
         notification["success"]({
           message: "Cập nhật thành công",
           duration: 1
         });
-       }
-       else{
+      } else {
         notification["error"]({
           message: "Cập nhật thất bại",
           duration: 1
         });
-       }
-     });
+      }
+    });
+    axios.post("/save-log", { data: this.props.itemRule.logData });
+
     this.getData(this.state.subjectId);
-    console.log("body: ",body.data);
-  }
+    console.log("body: ", body.data);
+  };
 
   componentDidMount() {
-    if(!this.props.itemRule.isLoaded && this.props.subjectId !== null 
-      && this.props.subjectId !== undefined && this.props.subjectId!== "") {
-        this.props.onChangeIsLoaded(true);
-        this.setState({subjectId:this.props.subjectId});
-        this.getData(this.props.subjectId);
-      }
+    if (
+      !this.props.itemRule.isLoaded &&
+      this.props.subjectId !== null &&
+      this.props.subjectId !== undefined &&
+      this.props.subjectId !== ""
+    ) {
+      this.props.onChangeIsLoaded(true);
+      this.setState({ subjectId: this.props.subjectId });
+      this.getData(this.props.subjectId);
+    }
   }
 
   getData(subjectId) {
@@ -255,15 +323,17 @@ class TableItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if(!this.props.itemRule.isLoaded && nextProps.subjectId !== null 
-    && nextProps.subjectId !== undefined && nextProps.subjectId !== "") {
+    if (
+      !this.props.itemRule.isLoaded &&
+      nextProps.subjectId !== null &&
+      nextProps.subjectId !== undefined &&
+      nextProps.subjectId !== ""
+    ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({subjectId:nextProps.subjectId});
+      this.setState({ subjectId: nextProps.subjectId });
       this.getData(nextProps.subjectId);
     }
   }
-
-
 
   render() {
     const components = {
@@ -296,31 +366,38 @@ class TableItem extends Component {
 
     return (
       <div>
-        {this.props.isReview === true ? null : <div style={{ marginBottom: 16 , marginTop : 16 }}>
-          <Button
-            type="danger"
-            onClick={this.showModal}
-            disabled={!hasSelected}
-          >
-            Xóa
-          </Button>
+        {this.props.isReview === true ? null : (
+          <div style={{ marginBottom: 16, marginTop: 16 }}>
+            <Button
+              type="danger"
+              onClick={this.showModal}
+              disabled={!hasSelected}
+            >
+              Xóa
+            </Button>
 
-          <span style={{ marginLeft: 8 }}>
-            {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
-          </span>
+            <span style={{ marginLeft: 8 }}>
+              {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
+            </span>
 
-          <Button style={{ float: "right" }} type="primary" onClick={this.onSaveAll}>
-            Lưu thay đổi
-          </Button>
-        </div>}
+            <Button
+              style={{ float: "right" }}
+              type="primary"
+              onClick={this.onSaveAll}
+            >
+              Lưu thay đổi
+            </Button>
+          </div>
+        )}
         <Table
           components={components}
           bordered
-          rowSelection={rowSelection}
+          rowSelection={this.props.isReview === true ? null : rowSelection}
           columns={columns}
           rowClassName="editable-row"
           dataSource={this.setIndexForItem()}
           style={{ wordWrap: "break-word", whiteSpace: "pre-line" }}
+          rowKey={record => record.index}
         />
       </div>
     );
@@ -330,6 +407,7 @@ const mapStateToProps = state => {
   return {
     itemRule: state.itemLayout9Reducer,
     subjectId: state.subjectid,
+    logReducer: state.logReducer
   };
 };
 
@@ -338,7 +416,9 @@ const mapDispatchToProps = dispatch => {
     {
       onDeleteItemRule: deleteItemRule,
       onUpdateRules: updateRules,
-      onChangeIsLoaded:changeIsLoadedRules,
+      onChangeIsLoaded: changeIsLoadedRules,
+      onSaveLog: saveLog,
+      onSaveReducer: saveLogObject
     },
     dispatch
   );

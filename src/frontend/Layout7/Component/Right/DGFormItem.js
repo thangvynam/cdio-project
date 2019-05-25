@@ -4,7 +4,8 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeDGData, addDGData, saveTempDGData, updateChudeDanhGia, updateCDRDanhGia } from '../../../Constant/ActionType';
+import { changeDGData, addDGData, saveTempDGData, updateChudeDanhGia, updateCDRDanhGia,saveLog,saveLogObject } from '../../../Constant/ActionType';
+import { getCurrTime } from '../../../utils/Time';
 
 var temp = '';
 
@@ -55,6 +56,12 @@ class DGFormItem extends Component {
     return temp2;
   }
 
+
+  getStringFromCDR(CDR){
+    let temp = CDR.substring(0,CDR.length-3);
+    return temp;
+  }
+
   displayRender = label => {
     if (this.isSubmit) {
       this.isSubmit = false;
@@ -91,30 +98,6 @@ class DGFormItem extends Component {
     tempInfo["chude"] = a;
     this.props.onSaveTempDGData(tempInfo);
   }
-
-  // componentWillMount() {
-  //   if (this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" ) {
-  //     var self = this;
-  //     axios.get('/get-chude')
-  //       .then(function (response) {
-  //         self.props.onGetChude(response.data);
-  //       })
-  //       .catch(function (error) {
-  //         console.log(error);
-  //       });
-
-  //     axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
-  //       .then(function (response) {
-
-  //         self.props.onGetCDR(response.data);
-  //       })
-  //       .catch(function (error) {
-  //         console.log(error);
-  //       });
-
-  //   }
-
-  // }
 
   getIdfromNameChude(name) {
     for (let i = 0; i < this.props.itemLayout7Reducer.chudeDanhGia.length; i++) {
@@ -181,99 +164,7 @@ class DGFormItem extends Component {
                       }
                     }
                   }
-                  // if (chude === 'BTTL') {
-                  //   let flag = true;
-                  //   mathanhphan = 'BTTL#' + mathanhphan;
-                  //   for (let i = 0; i < previewInfo.length; i++) {
-                  //     if ('BTTL' === previewInfo[i].mathanhphan) {
-                  //       flag = false;
-                  //     }
-                  //   }
-                  //   if (flag === true) {
-
-                  //     let dataFather = {
-                  //       key: 'BTTL',
-                  //       chude: this.getIdfromNameChude(chude),
-                  //       standardOutput: [],
-                  //       mathanhphan: 'BTTL',
-                  //       tenthanhphan: 'Bài tập tại lớp',
-                  //       mota: '',
-                  //       tile: '',
-                  //       del_flag : -1,
-                  //     };
-                  //     newData = previewInfo.concat(dataFather);
-                  //     isAdd2Rows = true;
-                  //   }
-                  // } else if (chude === 'BTVN') {
-                  //   let flag = true;
-
-                  //   mathanhphan = 'BTVN#' + mathanhphan;
-                  //   for (let i = 0; i < previewInfo.length; i++) {
-                  //     if ('BTVN' === previewInfo[i].mathanhphan) {
-                  //       flag = false;
-                  //     }
-                  //   }
-                  //   if (flag === true) {
-                  //     let dataFather = {
-                  //       key: 'BTVN',
-                  //       chude: this.getIdfromNameChude(chude),
-                  //       standardOutput: [],
-                  //       mathanhphan: 'BTVN',
-                  //       tenthanhphan: 'Bài tập về nhà',
-                  //       mota: '',
-                  //       tile: '',
-                  //       del_flag : -1,
-                  //     };
-                  //     newData = previewInfo.concat(dataFather);
-                  //     isAdd2Rows = true;
-                  //   }
-                  // } else if (chude === 'DAMH') {
-                  //   let flag = true;
-                  //   mathanhphan = 'DAMH#' + mathanhphan;
-                  //   for (let i = 0; i < previewInfo.length; i++) {
-                  //     if ('DAMH' === previewInfo[i].mathanhphan) {
-                  //       flag = false;
-                  //     }
-                  //   }
-                  //   if (flag === true) {
-
-                  //     let dataFather = {
-                  //       key: 'DAMH',
-                  //       chude: this.getIdfromNameChude(chude),
-                  //       standardOutput: [],
-                  //       mathanhphan: 'DAMH',
-                  //       tenthanhphan: 'Đồ án môn học',
-                  //       mota: '',
-                  //       tile: '',
-                  //       del_flag : -1,
-                  //     };
-                  //     newData = previewInfo.concat(dataFather);
-                  //     isAdd2Rows = true;
-                  //   }
-                  // } else if (chude === 'LTCK') {
-                  //   let flag = true;
-                  //   mathanhphan = 'LTCK#' + mathanhphan;
-                  //   for (let i = 0; i < previewInfo.length; i++) {
-                  //     if ('LTCK' === previewInfo[i].mathanhphan) {
-                  //       flag = false;
-                  //     }
-
-                  //   }
-                  //   if (flag === true) {
-                  //     let dataFather = {
-                  //       key: 'LTCK',
-                  //       chude: this.getIdfromNameChude(chude),
-                  //       standardOutput: [],
-                  //       mathanhphan: 'LTCK',
-                  //       tenthanhphan: 'Thi lý thuyết cuối kỳ',
-                  //       mota: '',
-                  //       tile: '',
-                  //       del_flag : -1,
-                  //     };
-                  //     newData = previewInfo.concat(dataFather);
-                  //     isAdd2Rows = true;
-                  //   }
-                  // }
+                 
                   for (let i = 0; i < previewInfo.length; i++) {
 
                     if (mathanhphan === previewInfo[i].key) {
@@ -302,6 +193,9 @@ class DGFormItem extends Component {
                     } else {
                       dataReturn = previewInfo.concat(data);
                     }
+                    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.mathanhphan}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(this.toString())}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+                    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.mathanhphan}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(this.toString())}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+                    
                     this.props.onAddDGData(dataReturn);
                     message.info("Thêm thành công!");
                     isAdd2Rows = false;
@@ -486,6 +380,7 @@ const mapStateToProps = (state) => {
     dgdata: state.dgdata,
     itemLayout7Reducer: state.itemLayout7Reducer,
     subjectId: state.subjectid,
+    logReducer: state.logReducer
   };
 }
 const mapDispatchToProps = (dispatch) => {
@@ -495,6 +390,8 @@ const mapDispatchToProps = (dispatch) => {
     onSaveTempDGData: saveTempDGData,
     onGetChude: updateChudeDanhGia,
     onGetCDR: updateCDRDanhGia,
+    onSaveLog : saveLog,
+    onSaveReducer : saveLogObject
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DGFormItem);

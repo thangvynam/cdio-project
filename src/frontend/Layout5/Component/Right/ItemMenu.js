@@ -6,9 +6,10 @@ import { Redirect } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import { getCurrTime } from '../../../utils/Time';
 
 import { ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD, COLLECT_DATA_DG, 
-    REFRESH_DATA, COLLECT_DATA_CDR } from '../../../Constant/ActionType';
+    REFRESH_DATA, COLLECT_DATA_CDR,saveLog,saveLogObject } from '../../../Constant/ActionType';
 
 const { Option } = Select;
 
@@ -357,7 +358,12 @@ class ItemMenu extends Component {
                         <Form.Item {...tailFormItemLayout}>
                             <div>
                                
-                                <Button type="primary" onClick={() => { this.props.saveAndContinue(this.props.subjectId) }} style={{ marginLeft: "2em" }}>
+                                <Button type="primary" onClick={() => {
+                    
+                                     this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+                                     this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+                                     this.props.saveAndContinue(this.props.subjectId) 
+                                     }} style={{ marginLeft: "2em" }}>
                                     Thêm<Icon type="right" />
                                 </Button>
                                 <br />
@@ -373,10 +379,13 @@ const mapStateToProps = (state) => {
     return {
         itemLayout5Reducer: state.itemLayout5Reducer,
         subjectId: state.subjectid,
+        logReducer: state.logReducer,
     }
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+        onSaveLog : saveLog,
+        onSaveReducer : saveLogObject,
         onChangeData: (titleName, teachingActs_data, standardOutput_data, evalActs_data) => {
             dispatch({
                 type: CHANGE_DATA, titleName: titleName, teachingActs: teachingActs_data,

@@ -1,0 +1,19 @@
+.align {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: row;
+  text-align: center;
+  align-items: center;
+}
+
+.export {
+  float: left;
+  text-align: left;
+  border-radius: 8px;
+  border: 1px solid #17C671;
+  display: inline-block;
+  color: #17C671;
+  padding: 6px;
+  cursor: pointer;
+}

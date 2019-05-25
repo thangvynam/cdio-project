@@ -414,7 +414,7 @@ MatrixModel.addMatrix = (body,result)=>{
                       muc_do = muc_do.substr(1);
                     }
                     if (res.length > 0) {
-                      sql.query(`INSERT INTO matrix(muc_do,thong_tin_chung_id,chuan_dau_ra_cdio_id) VALUES('${muc_do}',${item.subjectId},${res[0].Id})`,(err,res)=>{
+                      sql.query(`INSERT INTO matrix(muc_do,thong_tin_chung_id,chuan_dau_ra_cdio_id) VALUES('${muc_do}',${res1[0].Id},${res[0].Id})`,(err,res)=>{
                         if(err){
                           console.log("err: ",err);
                           return reject(err);

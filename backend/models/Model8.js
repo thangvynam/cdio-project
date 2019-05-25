@@ -141,7 +141,7 @@ Model8.save = (data, result) => {
                 })
         }else{
             if(item.link === null){
-                sql.query(`update tai_nguyen_mon_hoc set mo_ta=${item.mota},tnmh_loai_tai_nguyen_id=${item.loai},del_flag = ${item.del_flag} where thong_tin_chung_id = ${data.id} and id = ${item.id}`, (err, res) => {
+                sql.query(`update tai_nguyen_mon_hoc set mo_ta='${item.mota}',tnmh_loai_tai_nguyen_id=${item.loai},del_flag = ${item.del_flag} where thong_tin_chung_id = ${data.id} and id = ${item.id}`, (err, res) => {
                     if (err) {
                         console.log("err: ", err);
                         return result(err, null);
@@ -150,7 +150,7 @@ Model8.save = (data, result) => {
                     }
                 });
             }else{
-            sql.query(`update tai_nguyen_mon_hoc set mo_ta=${item.mota}, lien_ket='${item.link}',tnmh_loai_tai_nguyen_id=${item.loai},del_flag = ${item.del_flag} where thong_tin_chung_id = ${data.id} and id = ${item.id}`, (err, res) => {
+            sql.query(`update tai_nguyen_mon_hoc set mo_ta='${item.mota}', lien_ket='${item.link}',tnmh_loai_tai_nguyen_id=${item.loai},del_flag = ${item.del_flag} where thong_tin_chung_id = ${data.id} and id = ${item.id}`, (err, res) => {
                 if (err) {
                     console.log("err: ", err);
                     return result(err, null);

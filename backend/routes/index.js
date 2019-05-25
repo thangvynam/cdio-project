@@ -979,6 +979,23 @@ router.post('/add-hdd', function (req, res) {
     res.send(JSON.stringify(result.affectedRows));
   })
 })
+router.get('/get-danhmuc-hdd', function(req, res) {
+  DanhMucModel.get((result) => {
+    res.send(result)
+  })
+})
+router.post('/delete-hdd', function(req, res) {
+  const body = req.body;
+  DanhMucModel.deleteById(body,(result) => {
+    res.end(result);
+  })
+})
+router.post('/update-hdd', function(req, res) {
+  const body = req.body;
+  DanhMucModel.update(body,(result) => {
+    res.end(result);
+  })
+})
 
 router.get('/get-teachingacts-5', function (req, res) {
   Model5.collectHDD((result) => {

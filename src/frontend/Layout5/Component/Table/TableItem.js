@@ -285,7 +285,7 @@ class TableItem extends Component {
     {
       title: 'Thao tác',
       key: 'action',
-      render: (text, record) => {
+      render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
         return (
           <div>
@@ -427,8 +427,6 @@ class TableItem extends Component {
 
   render() {
     var components = {};
-    var columns = [];
-
     this.props.itemLayout5Reducer.changeEditStateState == ""
       ? (components = {
         body: {
@@ -500,11 +498,11 @@ class TableItem extends Component {
           components={components}
           bordered
           rowClassName="editable-row"
-          rowSelection={rowSelection}
+          rowSelection={this.props.isReview === true ? null : rowSelection}
           columns={this.props.itemLayout5Reducer.changeEditStateState === "" ? this.columns : columns}
           dataSource={this.props.itemLayout5Reducer.previewInfo.filter(element => element.del_flag == 0)}
           style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
-          onRow={
+          onRow={this.props.isReview === true ? null : 
             this.props.itemLayout5Reducer.changeEditStateState === ""
               ? (record, index) => ({
                 index,

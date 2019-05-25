@@ -8,7 +8,7 @@ import {
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog, cdrmdhd, cdrmdhddb } from '../../../Constant/ActionType';
+import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog, cdrmdhd, cdrmdhddb ,saveLogObject} from '../../../Constant/ActionType';
 import './1.css';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
@@ -175,11 +175,13 @@ class CDRFormItem extends Component {
               id: -1,
               del_flag: 0
             }
-            this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm chuẩn đầu ra môn học: ${data.cdr}, ${data.level_verb}, ${data.description}, ${data.levels}`, this.props.logReducer.contentTab, this.props.subjectId)
             var newData = this.props.cdrtable;            
             var previewInfo = this.props.cdrtable.previewInfo;
             newData.previewInfo = previewInfo.concat(data);
             
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.subjectId)
+        
             this.props.onAddCDRData(newData);
             message.info("Thêm thành công!");
             this.props.onChangeCDRData({
@@ -404,9 +406,10 @@ const mapDispatchToProps = (dispatch) => {
     onUpdateVerb: selectedVerb,
     onSelectCDRItem: selectedCDRItem,
     updateMtmh: mtmh,
-    saveLog: saveLog,
     updateCdrmdhd: cdrmdhd,
     updateCdrmdhdDB: cdrmdhddb,
+    onSaveLog : saveLog,
+    onSaveReducer : saveLogObject
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CDRFormItem);

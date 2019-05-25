@@ -3,6 +3,7 @@ import DGForm from './Component/Main/DGForm';
 import DGTableItem from './Component/Table/DGTableItem';
 import { Tooltip, Button } from 'antd';
 import { Element } from 'react-scroll';
+import LogForm from '../Log/LogForm';
 
 class Layout7 extends Component {
   render() {
@@ -23,6 +24,10 @@ class Layout7 extends Component {
                     <Element name="test1" className="element" >
                         <DGTableItem isReview={this.props.isReview}/>
                     </Element>
+                    <br/>
+                    <br/>
+                    <LogForm/>
+                    <br/>
                 </div>
             </div>
         </div>

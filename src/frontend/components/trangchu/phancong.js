@@ -7,7 +7,8 @@ class PhanCong extends Component {
     constructor(props){
         super(props);
         this.state = {
-            selecteditem: []
+            selecteditem1: [],
+            selecteditem2: []
         };
         this.columns1 = [{
           title: 'Tên',
@@ -28,8 +29,12 @@ class PhanCong extends Component {
           }];
       }
       
-      onSelectChange = (selectedRowKeys) => {
-        this.setState({selecteditem: selectedRowKeys})
+      onSelectChange1 = (selectedRowKeys) => {
+        this.setState({selecteditem1: selectedRowKeys})
+      }
+
+      onSelectChange2 = (selectedRowKeys) => {
+        this.setState({selecteditem2: selectedRowKeys})
       }
 
       isExist(subjectId, subjects) {
@@ -42,11 +47,16 @@ class PhanCong extends Component {
       }
       render() {
         
-        const selectedRowKeys = this.state.selecteditem;
-        const rowSelection = {
-            selectedRowKeys,
-            onChange: this.onSelectChange,
+        const selectedRowKeys1 = this.state.selecteditem1;
+        const selectedRowKeys2 = this.state.selecteditem2;
+        const rowSelection1 = {
+            selectedRowKeys1,
+            onChange: this.onSelectChange1,
           };
+        const rowSelection2 = {
+        selectedRowKeys2,
+        onChange: this.onSelectChange2,
+        };
           return(
               <div>
             <h1 style={{textAlign: "center"}}>PHÂN CÔNG GIÁO VIÊN</h1>
@@ -56,7 +66,7 @@ class PhanCong extends Component {
              <Col span={6}>
              <h2 style={{textAlign: "center", fontSize: "10pt"}}>Danh sách giáo viên</h2>
           <Table bordered 
-            rowSelection={rowSelection} 
+            rowSelection={rowSelection1} 
             columns={this.columns2} 
             dataSource={this.props.teacherlist.previewInfo}
             style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
@@ -68,7 +78,7 @@ class PhanCong extends Component {
              <Col span={6}>
              <h3 style={{textAlign: "center", fontSize: "10pt"}}>Danh sách giáo viên đã được phân công</h3>
           <Table bordered 
-            rowSelection={rowSelection} 
+            rowSelection={rowSelection2} 
             columns={this.columns1} 
             dataSource={this.props.teacherlist.previewInfo.filter(item => this.isExist(this.props.content_monhoc, item.subjects) === true)}
             style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}

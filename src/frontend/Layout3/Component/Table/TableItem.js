@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input } from 'antd';
+import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input, notification } from 'antd';
 import { connect } from 'react-redux';
 import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3, SAVE_LOG } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
@@ -17,6 +17,13 @@ const staActs = [
   '2.4',
   '4.1',
 ]
+
+const openNotificationWithIcon = (type) => {
+  notification[type]({
+    message: 'Thông báo',
+    description: 'Lưu dữ liệu thành công',
+  });
+};
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -232,6 +239,7 @@ async componentWillReceiveProps(nextProps){
   if (count <= 2) {
     this.setState({count: count + 1})
     let temp = await this.getData()
+    console.log(temp)
     if (temp.length > 0) {
       temp.forEach(element => {
         temp.forEach(element2 => {
@@ -244,14 +252,18 @@ async componentWillReceiveProps(nextProps){
         let newObj = {
               objectName: element.muc_tieu,
               description: element.mo_ta,
-              standActs: standActs
+              standActs: standActs,
+              del_flag: element.del_flag,
+              id: element.id,
             }            
           saveData.push(newObj);        
           standActs = []
       });
     }
-    
     saveData = this.getUnique(saveData, "objectName")
+    saveData = saveData.filter((item) => item.del_flag === 0)
+    console.log(saveData)
+
     this.props.saveAndContinue(saveData);
     this.props.setFlag(true);
   }
@@ -268,16 +280,33 @@ async componentWillReceiveProps(nextProps){
 
     //delete all
     if (selectedRow.length === this.props.itemLayout3Reducer.previewInfo.length) {
-      this.props.handleSave([]);
+      let data = [];
+      this.props.itemLayout3Reducer.previewInfo.forEach(element => {
+        element.del_flag = 1;
+        data.push(element)
+      });
+      data = this.getUnique(data, "objectName")
+      this.props.handleSave(data);
       this.setState({ selectedRowKeys: [] });
       return;
     }
 
-    let items = this.props.itemLayout3Reducer.previewInfo;
-    const filteredItems = items.filter(
-      (_, index) => !selectedRow.includes(index)
-    );
-    this.props.handleSave(filteredItems);
+    // let items = this.props.itemLayout3Reducer.previewInfo;
+    // const filteredItems = items.filter(
+    //   (_, index) => !selectedRow.includes(index)
+    // );
+    let data = [];
+    selectedRow.forEach(element => {
+      this.props.itemLayout3Reducer.previewInfo.forEach((element2, index) => {
+        if(element === index) {
+          element2.del_flag = 1;
+        }
+        data.push(element2)
+      });
+    });
+    data = this.getUnique(data, "objectName")
+    console.log(data)
+    this.props.handleSave(data);
     this.setState({ selectedRowKeys: [] });
   };
 
@@ -342,10 +371,14 @@ async componentWillReceiveProps(nextProps){
         key: i,
         objectName: items[i].objectName,
         description: items[i].description,
-        standActs: items[i].standActs
+        standActs: items[i].standActs,
+        del_flag: items[i].del_flag,
+        id: items[i].id,
       };
       data.push(temp);
     }    
+    data = data.filter((item) => item.del_flag === 0)
+    data = this.getUnique(data, "objectName")
     return data;
   };
 
@@ -394,10 +427,14 @@ async componentWillReceiveProps(nextProps){
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
            <Button style={{float: "right"}}
-            onClick={() => this.props.saveAll(this.props.subjectid)}
+            onClick={() => {
+              this.props.saveAll(this.props.subjectid)
+              openNotificationWithIcon('success')
+            }
+          }
           >
             Lưu tất cả
-          </Button>}
+          </Button>
           </div>}
           <Table
             components={components}

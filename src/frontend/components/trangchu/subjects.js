@@ -10,7 +10,7 @@ import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
 import axios from 'axios';
 import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio } from '../../Constant/ActionType';
-import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -80,17 +80,21 @@ class Home extends Component {
 
     checkCtdtExist = (Ctdt, ctdt) => {
         for(let i = 0;i < Ctdt.length;i++) {
-            if(Ctdt[i].Id === +ctdt) {
+            if(Ctdt[i].id === ctdt) {
                 return true;
             }
         }
         return false;
     }
 
-    checkKhoiExist = (ktt, khoi) => {
-        for(let i = 0;i < ktt.length;i++) {
-            if(ktt[i].id === khoi) {
-                return true;
+    checkKhoiExist = (Ctdt, ctdt, khoi) => {
+        for(let i = 0;i < Ctdt.length;i++) {
+            if(Ctdt[i].id === ctdt) {
+                for(let j = 0;j < Ctdt[i].children.length;j++) {
+                    if(Ctdt[i].children[j].id === khoi) {
+                        return true;
+                    }
+                }
             }
         }
         return false;
@@ -178,7 +182,6 @@ class Home extends Component {
         return -1;
       }
     componentDidMount() {
-        this.props.onLoadEduPrograms();
         var self = this;
         let monhoc = self.props.match.params.monhoc;
         axios.get('/collect-subjectlist')
@@ -243,6 +246,7 @@ class Home extends Component {
     axios.get("/get-cdr-cdio").then((res) => {
         self.props.updateCdrCdio(res.data)
       })
+
 }
     render() {
         if(this.state.isLoadSubjectList === "true") {
@@ -258,14 +262,12 @@ class Home extends Component {
                 }
                 else {
                     if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                        if(!this.checkCtdtExist(this.props.ctdt, ctdt) && ctdt !== "edit") {
-                          console.log(this.props.ctdt)
+                        if(!this.checkCtdtExist(this.props.ctdt, ctdt)) {
                             return <Page404/>;
                         }
                         else {
                             if(type !== "" && type !== undefined && type !== null) {
-                                if(!this.checkTypeExist(this.props.menuItem, type) || ctdt === "edit") {
-
+                                if(!this.checkTypeExist(this.props.menuItem, type)) {
                                     return <Page404/>;
                                 }
                                 else {
@@ -278,7 +280,7 @@ class Home extends Component {
                                         if(khoi !== "" && khoi !== undefined && khoi !== null) {
                                             if(khoi === "view") {
                                                 if(type !== "itusurvey") {
-                                                    if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
+                                                    if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
                                                         console.log(4)
                                                         return <Page404/>;
                                                     }  
@@ -290,7 +292,7 @@ class Home extends Component {
                                                 }
                                             }
                                             else {
-                                                if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
+                                                if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
                                                     console.log(4)
                                                     return <Page404/>;
                                                 }  
@@ -313,13 +315,13 @@ class Home extends Component {
                         if(khoi !== "" && khoi !== undefined && khoi !== null) {
                             if(khoi === "view") {
                                 if(type !== "itusurvey") {
-                                    if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
+                                    if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
                                         console.log(4)
                                         return <Page404/>;
                                     } 
                                 } 
                             } else {
-                                if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
+                                if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
                                     console.log(4)
                                     return <Page404/>;
                                 } 
@@ -446,8 +448,7 @@ const mapStateToProps = (state) => {
         subjectId: state.subjectid,
         menuItem: state.menuitem,
         parentitem: state.parentitem,
-        ctdt: state.eduPrograms,
-        ktt: state.ktt,
+        ctdt: state.ctdt,
         editMatrix: state.editmatrix,
         isLoadEditMatrix: state.isloadeditmatrix,
         cdrmdhd: state.cdrmdhd,
@@ -463,8 +464,7 @@ const mapDispatchToProps = (dispatch) => {
       updateIsLoadEditMatrix: isLoadEditMatrix,
       updateCdrmdhd: cdrmdhd,
       updateCdrmdhdDB: cdrmdhddb,
-      updateCdrCdio: cdrCdio,
-      onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
+      updateCdrCdio: cdrCdio
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

@@ -253,7 +253,7 @@ export default class MajorManageCom extends Component {
               <Column sortable={true} field="MajorName" header="Tên ngành" />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "6em" }}
+                style={{ textAlign: "center", width: "4em" }}
               />
             </DataTable>
           </Col>

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon, Button } from 'antd';
 import './../decuongmonhoc/index/index.css';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
 import Content from './content';
@@ -248,6 +248,15 @@ class Home extends Component {
       })
 
 }
+componentDidUpdate(){
+
+    window.onpopstate  = (e) => {
+        if(this.props.subjectId !== "") {
+            this.props.updateSubjectId("");
+        }
+    }
+  
+}
     render() {
         if(this.state.isLoadSubjectList === "true") {
             let type = this.props.match.params.type;
@@ -256,6 +265,7 @@ class Home extends Component {
             let parent = this.props.match.params.parent;
             let tab = this.props.match.params.tab;
         
+            
             if(parent !== "" && parent !== undefined && parent !== null) {
                 if(!this.checkParentExist(this.props.parentitem, parent)) {
                     return <Page404/>;
@@ -300,6 +310,14 @@ class Home extends Component {
                                               
                                         }
                             
+                                        else {
+                                            // this.props.updateSubjectId("");
+                                            if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
+                                                return <Redirect to={`/${parent}/${ctdt}/${type}`}/>;
+                                            }
+                                            
+                                        }
+
                                         if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
                                             if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
                                                 console.log(5)

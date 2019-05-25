@@ -5,6 +5,11 @@ import App from './App';
 import * as serviceWorker from './serviceWorker';
 import { Provider } from "react-redux";
 import {BrowserRouter } from 'react-router-dom';
+import "primereact/resources/themes/nova-light/theme.css";
+import "primereact/resources/primereact.min.css";
+import "primeicons/primeicons.css";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./frontend/CDIO1/assets/shards-dashboards.1.1.0.min.css";
 
 import store1 from './frontend/Store/Store';
 ReactDOM.render(

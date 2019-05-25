@@ -29,6 +29,9 @@ import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
 import PhanCong from './phancong';
 import ReviewSyllabus from './reviewsyllabus';
+import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
+import SubjectManage from "../../CDIO1/containers/SubjectManage";
+import FaProManage from "../../CDIO1/containers/FaProManage";
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -390,7 +393,11 @@ class Content extends Component {
                 
                                             </div>
                                         </React.Fragment>
-                                    ) : null;
+                                    )
+                                    :content_layout=parent==="cdr"?<React.Fragment><OutcomeStandard /></React.Fragment>
+                                    :content_layout=parent==="qlhp"?<React.Fragment><SubjectManage /></React.Fragment>
+                                    :content_layout=parent==="qlkh"?<React.Fragment><FaProManage /></React.Fragment>
+                                    : null;
 
                 }; break;
 

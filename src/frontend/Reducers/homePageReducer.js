@@ -131,16 +131,12 @@ const parentState = [
         name: "CHUẨN ĐẦU RA"
     },
     {
-        id: "tab-3",
-        name: "TAB 3"
+        id: "qlhp",
+        name: "QUẢN LÝ HỌC PHẦN"
     },
     {
-        id: "tab-4",
-        name: "TAB 4"
-    },
-    {
-        id: "tab-5",
-        name: "TAB 5"
+        id: "qlkh",
+        name: "QUẢN LÝ KHOA HỆ"
     }
 ]
 

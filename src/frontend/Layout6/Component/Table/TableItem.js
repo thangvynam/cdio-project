@@ -734,8 +734,6 @@ class TableItem extends Component {
 
   render() {
     var components = {};
-    var columns = [];
-
     this.state.editingKey === ""
       ? (components = {
           body: {

@@ -83,7 +83,7 @@ export function cdrCdioReducer(state = initialCdrCdio, action) {
 
 const ctdtState = [
     {
-        id: "ctdt-1",
+        id: "6",
         name: "CHÍNH QUY",
         children: [
             {
@@ -97,7 +97,7 @@ const ctdtState = [
         ]
     },
     {
-        id: "ctdt-2",
+        id: "2",
         name: "CAO ĐẲNG",
         children: [
             {

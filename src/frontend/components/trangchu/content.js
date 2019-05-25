@@ -33,6 +33,7 @@ import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
 import SubjectManage from "../../CDIO1/containers/SubjectManage";
 import FaProManage from "../../CDIO1/containers/FaProManage";
 import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
+import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -360,7 +361,7 @@ class Content extends Component {
                                     
                                     : type === "view-survey" ? <ViewSurvey />
                                     : content_layout = ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                         <div>component nhóm 1</div>
+                                         <EditEducationProgram ctdt={ctdt}/>
                                     )
                                     : content_layout = parent === "ctdt"  ? (
                                         <React.Fragment>

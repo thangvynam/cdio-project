@@ -25,9 +25,9 @@ class NavBar extends Component {
     }
 
     getCtdtName = (ctdt, id) => {
-        for (let i = 0; i < ctdt.length; i++) {
-            if (ctdt[i].id === id) {
-                return ctdt[i].name;
+        for(let i = 0;i < ctdt.length;i++) {
+            if(ctdt[i].Id === +id) {
+                return ctdt[i].EduName;
             }
         }
         return "";
@@ -110,7 +110,8 @@ const mapStateToProps = (state) => {
     return {
         menuItem: state.menuitem,
         parentitem: state.parentitem,
-        ctdt: state.ctdt
+        ctdt: state.eduPrograms,
+        ktt: state.ktt
     }
 }
 

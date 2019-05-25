@@ -190,6 +190,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             myObj.objectName = objectName.toUpperCase();
             myObj.description = description;
             myObj.standActs = temp;
+            myObj.id = -1
+            myObj.del_flag = 0;
             if (objectName === '' || description === '' || temp.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
             }

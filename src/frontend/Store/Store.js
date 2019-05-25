@@ -48,24 +48,7 @@ import surveyReducer from "../Reducers/surveyReducer";
 import teacherReducer from "../Reducers/teacherReducer";
 
 // start CDIO1 reducers
-import { message } from "../CDIO1/reducers/message";
-import { users } from "../CDIO1/reducers/users";
-import { faculties } from "../CDIO1/reducers/faculties";
-import { programs } from "../CDIO1/reducers/programs";
-import { subjects } from "../CDIO1/reducers/subjects";
-import { usingEduPro } from "../CDIO1/reducers/usingEduPro";
-import { outcomeStandards } from "../CDIO1/reducers/outcomeStandards";
-import { infoOutcomeStandard } from "../CDIO1/reducers/infoOutcomeStandard";
-import { detailOutcomeStandard } from "../CDIO1/reducers/detailOutcomeStandard";
-import { revisions } from "../CDIO1/reducers/revisions";
-import { levels } from "../CDIO1/reducers/levels";
-import { majors } from "../CDIO1/reducers/majors";
-import { eduPrograms } from "../CDIO1/reducers/eduPrograms";
-import { infoEduProgram } from "../CDIO1/reducers/infoEduProgram";
-import { detailEduProgram } from "../CDIO1/reducers/detailEduProgram";
-import { contentNodes } from "../CDIO1/reducers/_contentNodes";
-import { scheduleNodes } from "../CDIO1/reducers/_scheduleNodes";
-import { targetNodes } from "../CDIO1/reducers/_targetNodes";
+import cdio1 from "../CDIO1/reducers/cdio1";
 // end CDIO1 reducers
 
 //const middleware = [ thunk, logger ];
@@ -112,27 +95,7 @@ const allReducers = redux.combineReducers({
   surveyReducer: surveyReducer,
   authentication: authenticationReducer,
   teacherlist: teacherReducer,
-
-  faculties,
-  programs,
-  subjects,
-  usingEduPro,
-  outcomeStandards,
-  infoOutcomeStandard,
-  detailOutcomeStandard,
-  revisions,
-  levels,
-  majors,
-  eduPrograms,
-  message,
-
-  infoEduProgram,
-  detailEduProgram,
-  contentNodes,
-  scheduleNodes,
-  targetNodes,
-
-  users
+  ...cdio1
 });
 const store1 = createStore(allReducers, applyMiddleware(...middleware));
 export default store1;

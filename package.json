@@ -43,7 +43,8 @@
     "redux-thunk": "^2.3.0",
     "shards-react": "^1.0.3",
     "shortid": "^2.2.14",
-    "xlsx": "^0.14.2"
+    "xlsx": "^0.14.2",
+    "yarn": "^1.16.0"
   },
   "scripts": {
     "start": "set PORT=3000 && react-scripts start",

@@ -262,12 +262,12 @@ class Home extends Component {
                 }
                 else {
                     if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                        if(!this.checkCtdtExist(this.props.ctdt, ctdt)) {
+                        if(!this.checkCtdtExist(this.props.ctdt, ctdt) && ctdt !== "edit") {
                             return <Page404/>;
                         }
                         else {
                             if(type !== "" && type !== undefined && type !== null) {
-                                if(!this.checkTypeExist(this.props.menuItem, type)) {
+                                if(!this.checkTypeExist(this.props.menuItem, type) || ctdt === "edit") {
                                     return <Page404/>;
                                 }
                                 else {

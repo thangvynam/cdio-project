@@ -53,7 +53,7 @@ class MenuLeft extends Component {
     render() {
         const menuItemsCollapse = [];
         for(let i = 0;i < this.props.parentitem.length;i++) {
-            if(this.props.content_ctdt !== "" && this.props.content_ctdt !== undefined && this.props.content_ctdt !== null && this.props.parentitem[i].id === "ctdt") {
+            if(this.props.content_ctdt !== "" && this.props.content_ctdt !== undefined && this.props.content_ctdt !== null && this.props.parentitem[i].id === "ctdt" && this.props.content_parent === "ctdt") {
                 let ctdtIndex = this.getCtdt(this.props.ctdt, this.props.content_ctdt);
                 if(this.props.parentitem[i].id ===  this.props.content_parent) {
                     menuItemsCollapse.push(<Menu.Item key={this.props.ctdt[ctdtIndex].id} onClick={() => this.onClick(this.props.ctdt[ctdtIndex].id)}>
@@ -200,7 +200,7 @@ class MenuLeft extends Component {
                 selectedKeys={this.props.content_tab !== "" && this.props.content_tab !== undefined ? [this.props.content_tab] 
                 : this.props.content_khoi !== "" && this.props.content_khoi !== undefined ? [this.props.content_khoi] 
                 : this.props.content_type !== "" && this.props.content_type !== undefined ? [this.props.content_type]  
-                : this.props.content_ctdt !== "" && this.props.content_ctdt !== undefined ? [this.props.content_ctdt]
+                : this.props.content_ctdt !== "edit" && this.props.content_ctdt !== "" && this.props.content_ctdt !== undefined ? [this.props.content_ctdt]
                 : this.props.defaultSelectedKeys}
                 children={menuItemsCollapse}
             >

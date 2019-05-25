@@ -7,6 +7,15 @@ import {ADD_DATA_LAYOUT_3, DELETE_DATA_LAYOUT_3,
     SET_CDR} from '../Constant/ActionType';
 import axios from 'axios';
 
+function getUnique(arr, comp) {
+    const unique = arr
+         .map(e => e[comp])
+      .map((e, i, final) => final.indexOf(e) === i && i)
+  
+      .filter(e => arr[e]).map(e => arr[e]);
+     return unique;
+  }
+
 const itemLayout3InitialState = {
     previewInfo: [
         // {objectName: "G1",
@@ -56,7 +65,9 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
             }
         }           
         case DELETE_DATA_LAYOUT_3: {
-            state.previewInfo= state.previewInfo.filter((_, item) => item !== action.key)
+            // state.previewInfo= state.previewInfo.filter((_, item) => item !== action.key)
+            state.previewInfo[action.key].del_flag = 1
+            console.log(state.previewInfo)
             return {
                 ...state,
                 previewInfo: state.previewInfo
@@ -75,6 +86,8 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
                 tempInfo: action.tempInfo
             }
         case SAVE_ALL_DATA_LAYOUT_3:
+        console.log(state.previewInfo)
+        state.previewInfo = getUnique(state.previewInfo, "objectName")
             axios.post('/save-data-3', { data: state.previewInfo, id: action.id })
             axios.post('/save-log', { data: state.logData })
             return {

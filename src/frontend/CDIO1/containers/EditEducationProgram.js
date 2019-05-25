@@ -27,9 +27,8 @@ class DetailEducationProgramTmp extends Component {
   }
 
   componentDidMount = () => {
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const id = urlParams.get("id");
-    const id = this.props.ctdt;
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id");
     this.props.onLoadEduProgram(id);
     this.props.onLoadDetailEduProgram(id);
 

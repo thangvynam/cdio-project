@@ -429,7 +429,7 @@ const mapStateToProps = (state) => {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
         menuItem: state.menuitem,
-        ctdt: state.ctdt
+        ctdt: state.eduPrograms
     }
 }
 const mapDispatchToProps = (dispatch) => {

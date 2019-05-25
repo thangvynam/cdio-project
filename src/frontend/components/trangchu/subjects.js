@@ -87,14 +87,10 @@ class Home extends Component {
         return false;
     }
 
-    checkKhoiExist = (Ctdt, ctdt, khoi) => {
-        for(let i = 0;i < Ctdt.length;i++) {
-            if(Ctdt[i].id === ctdt) {
-                for(let j = 0;j < Ctdt[i].children.length;j++) {
-                    if(Ctdt[i].children[j].id === khoi) {
-                        return true;
-                    }
-                }
+    checkKhoiExist = (ktt, khoi) => {
+        for(let i = 0;i < ktt.length;i++) {
+            if(ktt[i].id === khoi) {
+                return true;
             }
         }
         return false;
@@ -280,7 +276,7 @@ class Home extends Component {
                                         if(khoi !== "" && khoi !== undefined && khoi !== null) {
                                             if(khoi === "view") {
                                                 if(type !== "itusurvey") {
-                                                    if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                                                    if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
                                                         console.log(4)
                                                         return <Page404/>;
                                                     }  
@@ -292,7 +288,7 @@ class Home extends Component {
                                                 }
                                             }
                                             else {
-                                                if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                                                if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
                                                     console.log(4)
                                                     return <Page404/>;
                                                 }  
@@ -315,13 +311,13 @@ class Home extends Component {
                         if(khoi !== "" && khoi !== undefined && khoi !== null) {
                             if(khoi === "view") {
                                 if(type !== "itusurvey") {
-                                    if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                                    if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
                                         console.log(4)
                                         return <Page404/>;
                                     } 
                                 } 
                             } else {
-                                if(!this.checkKhoiExist(this.props.ctdt, ctdt, khoi)) {
+                                if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
                                     console.log(4)
                                     return <Page404/>;
                                 } 
@@ -449,6 +445,7 @@ const mapStateToProps = (state) => {
         menuItem: state.menuitem,
         parentitem: state.parentitem,
         ctdt: state.ctdt,
+        ktt: state.ktt,
         editMatrix: state.editmatrix,
         isLoadEditMatrix: state.isloadeditmatrix,
         cdrmdhd: state.cdrmdhd,

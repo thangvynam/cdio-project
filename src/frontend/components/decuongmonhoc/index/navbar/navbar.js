@@ -61,12 +61,12 @@ class NavBar extends Component {
         let khoi = this.props.content_khoi;
         return (
             <Menu
-                theme= {this.props.theme}
                 onClick={this.handleClick}
                 selectedKeys={[this.state.current]}
                 mode="horizontal"
+                className="navbar-ul-css"
             >
-                <Menu.Item key="1">
+                {/* <Menu.Item key="1">
                     <a href="#a" onClick={this.props.updateCollapse} >
                         <span>
                             <Icon type={this.props.isCollapse ? 'menu-unfold' : 'menu-fold'} />
@@ -81,7 +81,7 @@ class NavBar extends Component {
                         checkedChildren="Dark"
                         unCheckedChildren="Light"
                     />
-                </Menu.Item>
+                </Menu.Item> */}
                 {parent !== "" && parent !== undefined ? <Menu.Item key={parent} >
                     <Link onClick={this.onClick} to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getParentName(this.props.parentitem, parent)}</span><Icon type="right" /></Link>
                 </Menu.Item> : null}

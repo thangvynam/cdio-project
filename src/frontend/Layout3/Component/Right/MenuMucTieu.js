@@ -100,7 +100,7 @@ class MenuMucTieu extends Component {
             },
         };
         return (
-            <div style={{ border: "2px solid", borderRadius: "12px" }}>
+            <div>
                 <div style={{ marginTop: "10px" }}></div>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item

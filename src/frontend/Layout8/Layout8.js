@@ -6,29 +6,24 @@ import { Element } from 'react-scroll';
 import LogForm from '../Log/LogForm';
 
 class Layout8 extends Component {
-  render() {
-    return (
-        <div className="container">
-            <div className="row">
-                <div className="col-sm-1" >
-                </div>
-                <div className="col-sm-11" >
-                    <br/>
-                    <h2 style={{textAlign: "center"}}>TÀI NGUYÊN MÔN HỌC</h2>
+    render() {
+        return (
+            <React.Fragment>
+                <div className="section-layout">
                     {this.props.isReview === true ? null : <TNForm />}
-                    <br />
-                    <Element name="test1" className="element" >
-                        <TNTableItem isReview={this.props.isReview}/>
-                    </Element>
-                    <br/>
-                    <br/>
-                    <LogForm/>
-                    <br/>
                 </div>
-            </div>
-        </div>
-    );
-}
+                <div className="section-layout">
+                    <Element name="test1" className="element" >
+                        <TNTableItem isReview={this.props.isReview} />
+                    </Element>
+                </div>
+                <div className="section-layout">
+                    <LogForm />
+                </div>
+            </React.Fragment>
+
+        );
+    }
 }
 
 export default Layout8;

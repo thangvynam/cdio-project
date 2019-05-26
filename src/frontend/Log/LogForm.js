@@ -136,7 +136,7 @@ class LogForm extends Component {
             }
         }
         return (
-            <div className="container1">
+            <div className="">
                 <div className="center-col">
                     {LogComment}
                 </div>

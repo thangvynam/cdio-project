@@ -46,7 +46,7 @@ class Dashboard extends Component {
                     />
                 </Col>
                 <Col span={22}  className="col-right">
-                    <Row>
+                    <Row className="navbar-css">
                         <NavBar
                             updateCollapse={this.updateCollapse}
                             isCollapse={this.state.collapse}

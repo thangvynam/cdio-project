@@ -17,7 +17,7 @@ class MenuMota extends Component {
         this.props.saveTemp(description);
     }
 
-    componentDidMount(){
+    componentDidMount() {
         console.log(this.props.logReducer)
     }
     render() {
@@ -46,47 +46,45 @@ class MenuMota extends Component {
             },
         };
         return (
-            <div style={{ border: "2px solid", borderRadius: "12px" }}>
-                <div style={{ marginTop: "10px" }}></div>
+            <React.Fragment>
+
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item
                         {...formItemLayout}
                         label="Mô tả môn học"
                     >
                         {getFieldDecorator('description', {
-                            rules: [ {
+                            rules: [{
                                 required: true, message: 'Vui lòng nhập nội dung mô tả',
                             }],
                             initialValue: this.props.itemLayout2Reducer.tempInfo
-                        })(<TextArea onChange={this.handleDesInputChange} />)}
-                        
+                        })(<TextArea rows={4} onChange={this.handleDesInputChange} />)}
+
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>
-                        <div>
-                            <Button type="primary" onClick={() => { 
+                            <Button type="primary" onClick={() => {
                                 this.props.itemLayout2Reducer.tempInfo = ''
                                 this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.subjectid)
                                 this.props.saveReducer("Nguyen Van A", getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.subjectid)
-                                this.props.saveAndContinue() ;
-                                }} style={{ marginLeft: "2em" }}>
-                                Thêm<Icon type="right" />
+                                this.props.saveAndContinue();
+                            }} style={{ marginLeft: "15%" }}>
+                                Thêm
                             </Button>
-                        </div>
                     </Form.Item>
                 </Form>
-            </div>
+            </React.Fragment>
         );
     }
 }
 
 const mapStateToProps = (state, ownProps) => {
     return {
-      itemLayout2Reducer: state.itemLayout2Reducer,
-      subjectid: state.subjectid,
-      logReducer: state.logReducer
+        itemLayout2Reducer: state.itemLayout2Reducer,
+        subjectid: state.subjectid,
+        logReducer: state.logReducer
     }
-  }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 
@@ -98,17 +96,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             else {
                 dispatch({ type: ADD_DATA_LAYOUT_2, description: description });
                 ownProps.form.resetFields()
-                ownProps.nextStep();      
+                ownProps.nextStep();
             }
         },
         saveTemp: (description) => {
-            dispatch({type: SAVE_TEMP_DATA_LAYOUT_2, description})
+            dispatch({ type: SAVE_TEMP_DATA_LAYOUT_2, description })
         },
         saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-            dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
+            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
         },
         saveReducer: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-            dispatch({type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
+            dispatch({ type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
         }
     }
 }

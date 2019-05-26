@@ -118,7 +118,7 @@ class TNFormItem extends Component {
 
 
     return (
-      <div style={{ border: "2px solid", borderRadius: "12px" }}>
+      <div>
         <div style={{ marginTop: "10px" }}></div>
         <Form onSubmit={this.addTNData}>
           <Form.Item
@@ -173,7 +173,7 @@ class TNFormItem extends Component {
             xs: { span: 24, offset: 0 },
             sm: { span: 16, offset: 8 },
           }}>
-            <div>
+            <div style={{marginLeft:"15%"}}>
               <Button type="primary" size="large" icon="plus" onClick={this.addTNData}>Thêm</Button>
             </div>
           </Form.Item>

@@ -349,7 +349,7 @@ class ItemMenu extends Component {
       <div>
         {this.checkRedirect()}
 
-        <div style={{ border: "2px solid", borderRadius: "12px" }}>
+        <div>
           <div style={{ marginTop: "10px" }} />
           <Form onSubmit={this.handleSubmit}>
             <Form.Item {...formItemLayout} label="Tên chủ đề">
@@ -430,7 +430,7 @@ class ItemMenu extends Component {
               </div>
               <div style={{ float: "left" }}>
                 <Button type="primary" onClick={this.moveLayout7}>
-                  Nhập đánh giá <Icon type="right" />
+                  Nhập đánh giá
                 </Button>
               </div>
             </Form.Item>
@@ -443,10 +443,10 @@ class ItemMenu extends Component {
                   onClick={() => {
                     this.handleSubmit();
                   }}
-                  style={{ marginLeft: "2em" }}
+                  style={{ marginLeft: "15%" }}
                 >
                   Continue
-                  <Icon type="right" />
+                  
                 </Button>
                 <br />
               </div>

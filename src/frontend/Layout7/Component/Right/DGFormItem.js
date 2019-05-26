@@ -247,7 +247,7 @@ class DGFormItem extends Component {
     };
 
     return (
-      <div style={{ border: "2px solid", borderRadius: "12px" }}>
+      <div>
         <div style={{ marginTop: "10px" }}></div>
         <Form onSubmit={this.addDGData}>
           <Form.Item
@@ -365,7 +365,7 @@ class DGFormItem extends Component {
             xs: { span: 24, offset: 0 },
             sm: { span: 16, offset: 8 },
           }}>
-            <div>
+            <div style={{marginLeft:"15%"}}>
               <Button type="primary" size="large" icon="plus" onClick={this.addDGData}>Thêm</Button>
             </div>
           </Form.Item>

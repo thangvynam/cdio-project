@@ -304,7 +304,7 @@ class CDRFormItem extends Component {
       return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>
     });
     return (
-      <div style={{ border: "2px solid", borderRadius: "12px" }}>
+      <div >
         <div style={{ marginTop: "10px" }}></div>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item
@@ -377,8 +377,8 @@ class CDRFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div>
-              <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
-                Continue<Icon type="right" />
+              <Button type="primary" style={{ marginLeft: "15%" }} onClick={this.addCDRData}>
+                Continue
               </Button>
             </div>
           </Form.Item>

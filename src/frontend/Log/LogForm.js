@@ -100,10 +100,13 @@ class LogForm extends Component {
         if(this.props.logReducer.renderComment || !this.props.logReducer.renderComment){
             
             if(data) {
-            
-                data.sort((a, b) => {
-                    return b.thoi_gian - a.thoi_gian
-                })
+                try {
+                    data.sort((a, b) => {
+                        return b.thoi_gian - a.thoi_gian
+                    })
+                } catch (error) {
+                    return error
+                } 
                 LogComment = data.map((itemparent, ich) => {
                     let con = this.props.logReducer.logComment2.map((itemchilren, ic) => {
                         if (itemchilren.log_id === itemparent.id) {
@@ -136,7 +139,7 @@ class LogForm extends Component {
             }
         }
         return (
-            <div className="container1">
+            <div className="">
                 <div className="center-col">
                     {LogComment}
                 </div>

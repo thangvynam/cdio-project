@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon, Button } from 'antd';
 import './../decuongmonhoc/index/index.css';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
 import Content from './content';
@@ -244,6 +244,16 @@ class Home extends Component {
         self.props.updateCdrCdio(res.data)
       })
 }
+componentDidUpdate(){
+
+    window.onpopstate  = (e) => {
+        if(this.props.subjectId !== "") {
+            console.log("cc")
+            this.props.updateSubjectId("");
+        }
+   }
+  
+      }
     render() {
         if(this.state.isLoadSubjectList === "true") {
             let type = this.props.match.params.type;
@@ -297,7 +307,7 @@ class Home extends Component {
                                             }
                                               
                                         }
-                            
+                                        
                                         if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
                                             if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
                                                 console.log(5)

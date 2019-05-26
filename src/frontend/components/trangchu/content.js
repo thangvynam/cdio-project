@@ -474,11 +474,13 @@ class Content extends Component {
                                                         <List.Item.Meta
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
-                                                                khoi !== "" && khoi !== undefined ?
-                                                                    item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span className="subject-name" style={{ color: "yellow" }} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                                        : <div className="list-item"><span className="subject-name" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
-                                                                    : <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}><span className="list-item subject-name" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            }
+
+                                                            khoi !== "" && khoi !== undefined ? 
+                                                            item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            : <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            : <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
+                                                        }
+
                                                         />
                                                     </List.Item>
 
@@ -492,55 +494,58 @@ class Content extends Component {
                         </React.Fragment>
                     ) : type === "matrix" ? <Matrix />
                             : type === "edit-matrix" ? <EditMatrix />
-                                : type === "survey-matrix" ? <SurveyMatrix />
-                                    : type === "benchmark-matrix" ? <BenchMark />
-                                        : type === "danhmuc" ? <Danhmuc />
-                                            : type === "itusurvey" ?
-                                                <React.Fragment>
-                                                    <div>
-                                                        <List
-                                                            itemLayout="horizontal"
-                                                            dataSource={subjectList}
-                                                            renderItem={(item, id) => (
-                                                                <Row>
-                                                                    <div style={{ height: "10px" }}></div>
-                                                                    <Col span={1} className="col-left">
-                                                                    </Col>
-                                                                    <Col span={22} className="col-left">
 
-                                                                        <div className="list-border" style={{ borderRadius: "12px" }}>
+                               : type === "survey-matrix" ? <SurveyMatrix />
+                                : type === "benchmark-matrix" ? <BenchMark />
+                                    : type === "danhmuc" ? <Danhmuc />
+                                        : type === "itusurvey" ?                        
+                                            <React.Fragment>
+                                                <div>                                         
+                                                    <List
+                                                        itemLayout="horizontal"
+                                                        dataSource={subjectList}
+                                                        renderItem={(item, id) => (
+                                                            <Row>
+                                                                <div style={{ height: "10px" }}></div>
+                                                                <Col span={1} className="col-left">
+                                                                </Col>
+                                                                <Col span={22} className="col-left">
 
-                                                                            <List.Item>
-                                                                                <List.Item.Meta
-                                                                                    avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                                                    title={
-                                                                                        <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
-                                                                                    }
-                                                                                />
-                                                                            </List.Item>
-                                                                        </div>
+                                                                    <div className="list-border" style={{ borderRadius: "12px" }}>
 
-                                                                    </Col>
-                                                                </Row>
-                                                            )}
-                                                        />
-                                                    </div>
-                                                </React.Fragment>
+                                                                        <List.Item>
+                                                                            <List.Item.Meta
+                                                                                avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                                title={
+                                                                                    <Link to={`/${parent}/${ctdt}/${type}/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                                                    // <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
+                                                                                 }
+                                                                            />
+                                                                        </List.Item>
+                                                                    </div>
 
-                                                : type === "view-survey" ? <ViewSurvey />
-                                                    : content_layout = ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                                        <EditEducationProgram ctdt={ctdt} />
-                                                    )
-                                                        : content_layout = parent === "ctdt" ? (
-                                                            <EducationProgram />
-                                                        )
-                                                            : content_layout = parent === "cdr" ? ctdt == "edit" ? (
-                                                                <React.Fragment><EditOutcomeStandard /></React.Fragment>
-                                                            )
-                                                                : <React.Fragment><OutcomeStandard /></React.Fragment>
-                                                                : content_layout = parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
-                                                                    : content_layout = parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
-                                                                        : null;
+                                                                </Col>
+                                                            </Row>
+                                                        )}
+                                                    />
+                                                </div>
+                                            </React.Fragment>
+                                    
+                                    : type === "view-survey" ? <ViewSurvey />
+                                    : content_layout = ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
+                                         <EditEducationProgram ctdt={ctdt}/>
+                                    )
+                                    : content_layout = parent === "ctdt"  ? (
+                                        <EducationProgram />
+                                    )
+                                    :content_layout=parent ==="cdr" ? ctdt == "edit" ? (
+                                        <React.Fragment><EditOutcomeStandard/></React.Fragment>
+                                    ) 
+                                    : <React.Fragment><OutcomeStandard /></React.Fragment>
+                                    :content_layout=parent==="qlhp"?<React.Fragment><SubjectManage /></React.Fragment>
+                                    :content_layout=parent==="qlkh"?<React.Fragment><FaProManage /></React.Fragment>
+                                    : null;
+
 
                 }; break;
 

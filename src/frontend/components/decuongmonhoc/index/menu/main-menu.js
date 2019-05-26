@@ -47,27 +47,34 @@ class MenuLeft extends Component {
       (this.props.content_monhoc === "" ||
         this.props.content_monhoc === undefined)
     ) {
-      return (
-        <Redirect
-          to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
-            this.props.content_type
-            }/view/${this.props.subjectId}/itusurvey`}
-        />
-      );
+
+      // return (
+      //   <Redirect
+      //     to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
+      //       this.props.content_type
+      //     }/view/${this.props.subjectId}/itusurvey`}
+      //   />
+      // );
+
     }
     if (
       this.props.subjectId !== "" &&
       this.props.subjectId !== undefined &&
       (this.props.content_monhoc === "" ||
         this.props.content_monhoc === undefined)
-    ) {
-      return (
-        <Redirect
-          to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
-            this.props.content_type
-            }/${this.props.content_khoi}/${this.props.subjectId}/thong-tin-chung`}
-        />
-      );
+
+      ) {
+        if(this.props.content_khoi !== "" && this.props.content_khoi !== undefined) {
+
+        }
+      // return (
+      //   <Redirect
+      //     to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
+      //       this.props.content_type
+      //     }/${this.props.content_khoi}/${this.props.subjectId}/thong-tin-chung`}
+      //   />
+      // );
+
     } else if (
       this.props.content_monhoc !== "" &&
       this.props.content_monhoc !== undefined &&

@@ -66,6 +66,10 @@ export const onSaveContentProgram = contentProgram => {
       contentProgram.iddetail
     }`;
     let params = {};
+    console.log("Content");
+    console.log(contentProgram.contentNodes);
+    
+    
     params.data = JSON.stringify(contentProgram.contentNodes);
     axios
       .post(req, params, {

@@ -26,6 +26,7 @@ export default class ContentProgramCom extends React.Component {
       isDialogRoot: false,
       isDialogChild: false,
       isDialogTable: false,
+      isDialogDelete: false,
       nameValue: "", // title of row
       isTable: false, // check is table,
       filterSubjects: [],
@@ -170,9 +171,12 @@ export default class ContentProgramCom extends React.Component {
   };
 
   // Delete
-  deleteNode = node => {
-    const root = logic.deleteNode(this.state.nodes, node);
-    this.setState({ nodes: root });
+  deleteNode = () => {
+    const root = logic.deleteNode(this.state.nodes, this.state.node);
+    this.setState({ 
+      nodes: root,
+      isDialogDelete: false
+    });
   };
 
   // update
@@ -282,6 +286,13 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
+  isShowDialogDelete = node =>{
+    this.setState({
+      isDialogDelete : true,
+      node: node
+    })
+  }
+
   onHideDialogRoot = () => {
     this.setState({ isDialogRoot: false });
   };
@@ -296,6 +307,10 @@ export default class ContentProgramCom extends React.Component {
       isDialogTable: false
     });
   };
+
+  onHideDialogDelete = () =>{
+    this.setState({ isDialogDelete: false })
+  }
 
   handleChangeValue = e => {
     this.setState({ nameValue: e.target.value });
@@ -394,40 +409,40 @@ export default class ContentProgramCom extends React.Component {
             <i className="material-icons">playlist_add</i>
           </Button>
         ) : (
-          <span>
-            {this.isCanAdd(node) && (
+            <span>
+              {this.isCanAdd(node) && (
+                <Button
+                  onClick={() => this.isShowDialogChild(node)}
+                  onMouseOver={() => this.mouseOver(node)}
+                  theme="success"
+                  style={{ marginRight: ".3em", padding: "8px" }}
+                  title={`Thêm cấp con của ${this.state.nodeHover}`}
+                >
+                  <i className="material-icons">add</i>
+                </Button>
+              )}
               <Button
-                onClick={() => this.isShowDialogChild(node)}
-                onMouseOver={() => this.mouseOver(node)}
-                theme="success"
+                onClick={() => this.upSameLevel(node)}
+                onMouseOver={() => this.mouseOverUp(node)}
+                theme="info"
                 style={{ marginRight: ".3em", padding: "8px" }}
-                title={`Thêm cấp con của ${this.state.nodeHover}`}
+                title={`Lên cấp ${this.state.nodeHover}`}
               >
-                <i className="material-icons">add</i>
+                <i className="material-icons">arrow_upward</i>
               </Button>
-            )}
-            <Button
-              onClick={() => this.upSameLevel(node)}
-              onMouseOver={() => this.mouseOverUp(node)}
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title={`Lên cấp ${this.state.nodeHover}`}
-            >
-              <i className="material-icons">arrow_upward</i>
-            </Button>
-            <Button
-              onClick={() => this.downSameLevel(node)}
-              // onMouseOver = {() => this.mouseOverDown(node)}
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
+              <Button
+                onClick={() => this.downSameLevel(node)}
+                // onMouseOver = {() => this.mouseOverDown(node)}
+                theme="info"
+                style={{ marginRight: ".3em", padding: "8px" }}
               //title={`Xuống xấp ${this.state.nodeHover}`}
-            >
-              <i className="material-icons">arrow_downward</i>
-            </Button>
-          </span>
-        )}
+              >
+                <i className="material-icons">arrow_downward</i>
+              </Button>
+            </span>
+          )}
         <Button
-          onClick={() => this.deleteNode(node)}
+          onClick={() => this.isShowDialogDelete(node)}
           onMouseOver={() => this.mouseOver(node)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
@@ -513,6 +528,17 @@ export default class ContentProgramCom extends React.Component {
       </Button>
     </div>
   );
+
+  footerDialogDelete = (
+    <div>
+      <Button onClick={this.deleteNode} theme="success">
+        Xóa
+      </Button>
+      <Button onClick={this.onHideDialogDelete} theme="secondary">
+        Hủy
+      </Button>
+    </div>
+  )
 
   render() {
     return (
@@ -788,6 +814,20 @@ export default class ContentProgramCom extends React.Component {
             </Col>
           </Row>
         </Dialog>
+
+        {/* Dialoag delete */}
+        <Dialog
+          header="Xóa"
+          visible={this.state.isDialogDelete}
+          onHide={() => this.onHideDialogDelete()}
+          style={{ width: "50vw" }}
+          footer={this.footerDialogDelete}
+        >
+          <p>
+          {`Bạn thực sự muốn xóa cấp ${this.state.node.key}`}
+          </p>
+        </Dialog>
+
       </div>
     );
   }

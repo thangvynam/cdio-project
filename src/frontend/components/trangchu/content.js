@@ -29,9 +29,19 @@ import Survey from '../../Survey/Survey';
 import ViewSurvey from '../../Survey/ViewSurvey';
 import PhanCong from './phancong';
 import ReviewSyllabus from './reviewsyllabus';
+//CDIO1
 import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
+import EducationProgram from "../../CDIO1/containers/EducationProgram";
 import SubjectManage from "../../CDIO1/containers/SubjectManage";
 import FaProManage from "../../CDIO1/containers/FaProManage";
+import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
+import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
+import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
+import * as facultiesAction from "../../CDIO1/actions/facultiesAction";
+import * as programsAction from "../../CDIO1/actions/programsAction";
+import * as levelsAction from "../../CDIO1/actions/levelsAction";
+import * as majorsAction from "../../CDIO1/actions/majorsAction";
+//END CDIO1
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -152,6 +162,10 @@ class Content extends Component {
         }
         return false;
     }
+
+    componentDidMount = () => {
+      this.props.onLoadEduPrograms();
+    };
 
     render() {
         var subjectList = [];
@@ -304,7 +318,7 @@ class Content extends Component {
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
                                                             khoi !== "" && khoi !== undefined ? 
-                                                            item.Id === 2 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }
@@ -358,43 +372,16 @@ class Content extends Component {
                                             </React.Fragment>
                                     
                                     : type === "view-survey" ? <ViewSurvey />
-                                    : content_layout = ctdt !== "" && ctdt !== undefined ? (
-                                         <div>component nhóm 1</div>
+                                    : content_layout = ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
+                                         <EditEducationProgram ctdt={ctdt}/>
                                     )
                                     : content_layout = parent === "ctdt"  ? (
-                                        <React.Fragment>
-                                            <div>
-                                                <List
-                                                    itemLayout="horizontal"
-                                                    dataSource={this.props.ctdt}
-                                                    renderItem={(item, id) => (
-                                                        <Row>
-                                                            <div style={{ height: "10px" }}></div>
-                                                            <Col span={1} className="col-left">
-                                                            </Col>
-                                                            <Col span={22} className="col-left">
-                
-                                                                <div className="list-border" style={{ borderRadius: "12px" }}>
-                
-                                                                <List.Item>
-                                                                        <List.Item.Meta
-                                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                                            title={
-                                                                                <Link to={`/${parent}/${item.id}`}><div className="list-item">{`${item.id} - ${item.name}`}</div></Link> 
-                                                                            }
-                                                                        />
-                                                                </List.Item>
-                                                                </div>
-                
-                                                            </Col>
-                                                        </Row>
-                                                    )}
-                                                />
-                
-                                            </div>
-                                        </React.Fragment>
+                                        <EducationProgram />
                                     )
-                                    :content_layout=parent==="cdr"?<React.Fragment><OutcomeStandard /></React.Fragment>
+                                    :content_layout=parent ==="cdr" ? ctdt == "edit" ? (
+                                        <React.Fragment><EditOutcomeStandard/></React.Fragment>
+                                    ) 
+                                    : <React.Fragment><OutcomeStandard /></React.Fragment>
                                     :content_layout=parent==="qlhp"?<React.Fragment><SubjectManage /></React.Fragment>
                                     :content_layout=parent==="qlkh"?<React.Fragment><FaProManage /></React.Fragment>
                                     : null;
@@ -419,12 +406,22 @@ class Content extends Component {
         )
     }
 }
+
+//Id
+//EduName
+
 const mapStateToProps = (state) => {
     return {
         subjectList: state.subjectlist,
         subjectId: state.subjectid,
         menuItem: state.menuitem,
-        ctdt: state.ctdt
+        message: state.message,
+        ctdt: state.eduPrograms,
+        eduPrograms: state.eduPrograms,
+        faculties: state.faculties,
+        programs: state.programs,
+        levels: state.levels,
+        majors: state.majors
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -437,6 +434,12 @@ const mapDispatchToProps = (dispatch) => {
         updateIsLoadEditMatrix: isLoadEditMatrix,
         onChangeCDRData: changeCDRData,
         onUpdateVerb: selectedVerb,
+        onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
+        onAddEduProgram: eduProgramsAction.onAddEduProgram,
+        onLoadFaculties: facultiesAction.onLoadFaculties,
+        onLoadPrograms: programsAction.onLoadPrograms,
+        onLoadLevels: levelsAction.onLoadLevels,
+        onLoadMajors: majorsAction.onLoadMajors
     }, dispatch);
 
 }

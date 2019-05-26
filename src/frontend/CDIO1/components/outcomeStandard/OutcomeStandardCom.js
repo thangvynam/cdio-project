@@ -6,6 +6,7 @@ import { TreeTable } from "primereact/treetable";
 import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
+import { Link } from "react-router-dom";
 
 export default class OutcomeStandardCom extends Component {
   constructor(props) {
@@ -214,16 +215,19 @@ export default class OutcomeStandardCom extends Component {
   actionTemplate = (data, column) => {
     return (
       <div>
-        <Button
-          title="Chỉnh sửa"
-          onClick={() => this.onEdit(data.Id)}
-          theme="success"
-          style={{ marginRight: ".3em", padding: "8px" }}
-        >
-          <i className="material-icons">edit</i>
-        </Button>
+        {/*onClick={() => this.onEdit(data.Id)}*/}
+        <Link to={`/cdr/edit?id=${data.Id}`}>
+          <Button
+            title="Chỉnh sửa"
+            theme="success"
+            style={{ marginRight: ".3em", padding: "8px" }}
+          >
+            <i className="material-icons">edit</i>
+          </Button>
+        </Link>
         <Button
           title="Tạo bản sao"
+          hidden={true}
           onClick={() => this.onDuplicate(data.Id)}
           theme="info"
           style={{ marginRight: ".3em", padding: "8px" }}

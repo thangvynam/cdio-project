@@ -36,6 +36,7 @@ export const SELECTED_TEMP_VERB = 'SELECTED_TEMP_VERB';
 export const MENU_ITEM = 'MENU_ITEM';
 export const PARENT_ITEM = 'PARENT_ITEM';
 export const CTDT = 'CTDT';
+export const KTT = 'KTT';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
 export const SUBJECT_ID = 'SUBJECT_ID';
 export const SUBJECT_MASO = 'SUBJECT_MASO';
@@ -212,6 +213,13 @@ export function ctdt(newCtdt) {
     return {
         type: CTDT,
         ctdt: newCtdt
+    };
+}
+
+export function ktt(newKtt) {
+    return {
+        type: KTT,
+        ktt: newKtt
     };
 }
 

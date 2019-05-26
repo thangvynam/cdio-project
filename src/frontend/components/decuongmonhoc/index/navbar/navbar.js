@@ -42,14 +42,10 @@ class NavBar extends Component {
         return "";
     }
 
-    getKhoiName = (ctdtId ,ctdt, id) => {
-        for(let i = 0;i < ctdt.length;i++) {
-            if(ctdt[i].id === ctdtId) {
-                for(let j = 0;j < ctdt[i].children.length;j++) {
-                    if( ctdt[i].children[j].id === id) {
-                        return  ctdt[i].children[j].name;
-                    }
-                }
+    getKhoiName = (ktt, id) => {
+        for(let i = 0;i < ktt.length;i++) {
+            if(ktt[i].id === id) {
+                return  ktt[i].name;  
             } 
         }
         return "";
@@ -96,7 +92,7 @@ class NavBar extends Component {
                     <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getTypeName(this.props.menuItem, type)}</span><Icon type="right" /></Link>
                 </Menu.Item> : null}
                 {khoi !== "" && khoi !== undefined && khoi !== "view" ? <Menu.Item key={khoi} >
-                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getKhoiName(ctdt, this.props.ctdt, khoi)}</span><Icon type="right" /></Link>
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getKhoiName(this.props.ktt.children, khoi)}</span><Icon type="right" /></Link>
                 </Menu.Item> : null}
                <Menu.Item key={this.props.subjectName} >
                     <span style={{ textAlign: "center", fontSize: "10pt" }}>{this.props.subjectName}</span>
@@ -110,7 +106,8 @@ const mapStateToProps = (state) => {
     return {
         menuItem: state.menuitem,
         parentitem: state.parentitem,
-        ctdt: state.ctdt
+        ctdt: state.ctdt,
+        ktt: state.ktt
     }
 }
 

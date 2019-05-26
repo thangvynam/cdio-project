@@ -181,6 +181,7 @@ class Home extends Component {
         this.props.onLoadEduPrograms();
         var self = this;
         let monhoc = self.props.match.params.monhoc;
+        //axios.get('http://172.29.64.132:3001/collect-subjectlist')
         axios.get('/collect-subjectlist')
      .then( (response) => {
        self.props.updateSubjectList(response.data);

@@ -59,14 +59,16 @@ class ItemMenu extends Component {
         axios.get("/get-teachingacts-5").then(response => {
             const data = response.data;
             let map = new Map();
+            
+            if (data != null) {
+                data.forEach((item, index) => {
+                    map.set(item.hoat_dong, index);
+                });
+                mapId.teachingActs = map;
 
-            data.forEach((item, index) => {
-                map.set(item.hoat_dong, index);
-            })
-
-            mapId.teachingActs = map;
-
-            this.props.saveDataValue(mapId.teachingActs)
+                this.props.saveDataValue(mapId.teachingActs)
+            }
+            
         });
 
         axios.post("/get-evalact-5", { data: this.props.subjectId })
@@ -74,13 +76,14 @@ class ItemMenu extends Component {
                 const data = response.data;
                 let map = new Map();
 
-                data.forEach((item, index) => {
-                    map.set(index, item.ma);
-                })
+                if (data != null) {
+                    data.forEach((item, index) => {
+                        map.set(index, item.ma);
+                    })
+                    mapId.evalActs = map;
 
-                mapId.evalActs = map;
-
-                this.props.saveDataValueDG(mapId.evalActs)
+                    this.props.saveDataValueDG(mapId.evalActs)
+                }
             })
 
         axios.post("/get-standard-output-5", { data: this.props.subjectId })
@@ -89,29 +92,30 @@ class ItemMenu extends Component {
                 let array = [];
                 let map = new Map();
 
-                data.forEach((item) => {
-                    let temp = {
-                        value: item.muc_tieu,
-                        label: item.muc_tieu,
-                        children: [],
-                    }
-
-                    item.cdr.forEach((itemCdr, _) => {
-                        let tempCdr = {
-                            value: itemCdr.chuan_dau_ra,
-                            label: itemCdr.chuan_dau_ra
+                if (data != null) {
+                    data.forEach((item) => {
+                        let temp = {
+                            value: item.muc_tieu,
+                            label: item.muc_tieu,
+                            children: [],
                         }
-                        temp.children.push(tempCdr);
-                        map.set(itemCdr.chuan_dau_ra, itemCdr.id);
-                    })
 
-                    array.push(temp);
-                })
+                        item.cdr.forEach((itemCdr, _) => {
+                            let tempCdr = {
+                                value: itemCdr.chuan_dau_ra,
+                                label: itemCdr.chuan_dau_ra
+                            }
+                            temp.children.push(tempCdr);
+                            map.set(itemCdr.chuan_dau_ra, itemCdr.id);
+                        })
 
-                // this.setState({standard_item:array,standardOutput:map});
-                mapId.standardOutput = map;
+                        array.push(temp);
+                    });
+                    // this.setState({standard_item:array,standardOutput:map});
+                    mapId.standardOutput = map;
 
-                this.props.saveDataValueCDR(array)
+                    this.props.saveDataValueCDR(array)
+                }
             });
     }
 

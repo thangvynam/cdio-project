@@ -4,7 +4,6 @@ import ItemMenu from '../Right/ItemMenu';
 
 const WrappedRegistrationForm = Form.create({ name: 'register' })(ItemMenu); 
 
-
 class MainForm extends Component {
 
     state = {

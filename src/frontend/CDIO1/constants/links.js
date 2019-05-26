@@ -1,5 +1,6 @@
 export const LINK = "http://localhost:3001";
 
+//export const LINK = "http://172.29.64.132:3001";
 // user
 export const LOGIN = `${LINK}/user/login/`;
 export const LOAD_USERS = `${LINK}/user/getlist/`;

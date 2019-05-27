@@ -11,6 +11,9 @@ import Page404 from '../../NotFound/Page404';
 import axios from 'axios';
 import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
+import $ from "./../../helpers/services";
+ 
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -182,7 +185,8 @@ class Home extends Component {
         var self = this;
         let monhoc = self.props.match.params.monhoc;
         //axios.get('http://172.29.64.132:3001/collect-subjectlist')
-        axios.get('/collect-subjectlist')
+        //axios.get('/collect-subjectlist')
+         $.collectSubjectList()
      .then( (response) => {
        self.props.updateSubjectList(response.data);
        this.setState({isLoadSubjectList: "true"});

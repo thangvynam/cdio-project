@@ -20,6 +20,7 @@ import { bindActionCreators } from "redux";
 import TextArea from "antd/lib/input/TextArea";
 import axios from "axios";
 import { getCurrTime } from "../../../utils/Time";
+import $ from './../../../helpers/services';
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -307,7 +308,8 @@ class TableItem extends Component {
   }
 
   getData(subjectId) {
-    axios.get(`/get-data-9/${subjectId}`).then(response => {
+    //axios.get(`/get-data-9/${subjectId}`).then(response => {
+    $.getData9(subjectId).then(response => {
       const data = response.data;
       let array = [];
       data.forEach((item, index) => {

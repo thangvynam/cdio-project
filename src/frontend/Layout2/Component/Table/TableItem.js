@@ -5,6 +5,7 @@ import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2, IS_LOADE
 import TextArea from "antd/lib/input/TextArea"; 
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services';
 
 const FormItem = Form.Item
 const EditableContext = React.createContext();
@@ -124,7 +125,8 @@ class TableItem extends Component {
   }
 
   async getData() {
-    return axios.get(`/get-data-2/${this.props.subjectid}`).then(res => {
+    //return axios.get(`/get-data-2/${this.props.subjectid}`).then(res => {
+    return $.getData2(this.props.subjectid).then(res => {
         return res.data
     }).then(resp => {
         return resp.Description;

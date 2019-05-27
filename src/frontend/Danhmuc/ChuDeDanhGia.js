@@ -4,6 +4,7 @@ import { Collapse, Form, Input, Menu, Icon,
       Select, Modal, Table, Tag, Popconfirm,
     Divider, notification } from 'antd';
 import axios from 'axios';
+import $ from './../helpers/services';
 
 const Panel = Collapse.Panel;
 const formItemLayout = {
@@ -164,7 +165,7 @@ class ChuDeDanhGia extends Component {
       };
 
       loadTable = () => {
-        axios.get('/get-chude').then((res) => {
+        $.getChuDe().then((res) => {
           let data = [];
           for(let i = 0;i < res.data.length;i++) {
             data.push({

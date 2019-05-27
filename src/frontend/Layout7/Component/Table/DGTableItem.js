@@ -10,6 +10,7 @@ import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from 'react-redux';
 import axios from "axios"
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services'
 
 const { Option } = Select;
 
@@ -465,7 +466,7 @@ class itemLayout7ReducerItem extends React.Component {
   }
   getData() {
     var self = this;
-    axios.get('/get-chude')
+    $.getChuDe()
       .then(function (response) {
         self.props.onGetChude(response.data);
       })
@@ -473,7 +474,8 @@ class itemLayout7ReducerItem extends React.Component {
         console.log(error);
       });
 
-    axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
+    //axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
+    $.getStandardOutput7(this.props.subjectId)
       .then(function (response) {
 
         self.props.onGetCDR(response.data);
@@ -486,7 +488,8 @@ class itemLayout7ReducerItem extends React.Component {
     var listCDRDG = [];
     var listCDR = [];
     var result = [];
-    axios.get(`/get-danhgia/${this.props.subjectId}`).then(response => {
+    //axios.get(`/get-danhgia/${this.props.subjectId}`).then(response => {
+    $.getDanhGia(this.props.subjectId).then(response => {
       if (response.data === null || response.data === undefined || response.data.length === 0) return;
       let listStringId = '';
       listDG = response.data;

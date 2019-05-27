@@ -7,7 +7,8 @@ import { bindActionCreators } from 'redux';
 import { editMatrix, editMatrixEditState, isLoadEditMatrix, cdrCdio } from '../../Constant/ActionType';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import axios from 'axios';
-import $ from "./../../helpers/services";
+import $ from './../../helpers/services';
+
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();

@@ -43,7 +43,8 @@ import * as levelsAction from "../../CDIO1/actions/levelsAction";
 import * as majorsAction from "../../CDIO1/actions/majorsAction";
 //END CDIO1
 
-import $ from "./../../helpers/services";
+import $ from './../../helpers/services';
+
 
 const EditableContext = React.createContext();
 
@@ -55,6 +56,7 @@ const openNotificationWithIcon = (type) => {
 };
 
 class Content extends Component {
+
 
     // state = { visible: false, isEditting: "" }
     // addSubject = () => {
@@ -143,6 +145,7 @@ class Content extends Component {
     //         isEditting: "",
     //     });
     // }
+
 
     onClick = (id) => {
         this.props.updateIsLoad("false");
@@ -421,7 +424,9 @@ class Content extends Component {
                                 <a href="#">Link</a>
                             </div>,
                                 </Row>
-                        <PhanCong content_monhoc={this.props.content_monhoc} />
+                        <div className="wrapper-custom-layout">
+                            <PhanCong content_monhoc={this.props.content_monhoc} />
+                        </div>
                     </React.Fragment>
                 )
                 break;
@@ -439,7 +444,9 @@ class Content extends Component {
                                 <a href="#">Link</a>
                             </div>,
                                 </Row>
-                        <ReviewSyllabus idMH={this.props.content_monhoc} />
+                        <div className="wrapper-custom-layout">
+                            <ReviewSyllabus idMH={this.props.content_monhoc} />
+                        </div>
                     </React.Fragment>
                 )
                 break;
@@ -497,63 +504,71 @@ class Content extends Component {
                         </React.Fragment>
                     ) : type === "matrix" ? <Matrix />
                             : type === "edit-matrix" ? <EditMatrix />
+                                : type === "survey-matrix" ? <SurveyMatrix />
+                                    : type === "benchmark-matrix" ? <BenchMark />
+                                        : type === "danhmuc" ? <Danhmuc />
+                                            : type === "itusurvey" ?
+                                                <React.Fragment>
+                                                    <div>
+                                                        <List
+                                                            itemLayout="horizontal"
+                                                            dataSource={subjectList}
+                                                            renderItem={(item, id) => (
+                                                                <Row>
+                                                                    <div style={{ height: "10px" }}></div>
+                                                                    <Col span={1} className="col-left">
+                                                                    </Col>
+                                                                    <Col span={22} className="col-left">
 
-                               : type === "survey-matrix" ? <SurveyMatrix />
-                                : type === "benchmark-matrix" ? <BenchMark />
-                                    : type === "danhmuc" ? <Danhmuc />
-                                        : type === "itusurvey" ?                        
-                                            <React.Fragment>
-                                                <div>                                         
-                                                    <List
-                                                        itemLayout="horizontal"
-                                                        dataSource={subjectList}
-                                                        renderItem={(item, id) => (
-                                                            <Row>
-                                                                <div style={{ height: "10px" }}></div>
-                                                                <Col span={1} className="col-left">
-                                                                </Col>
-                                                                <Col span={22} className="col-left">
+                                                                        <div className="list-border" style={{ borderRadius: "12px" }}>
 
-                                                                    <div className="list-border" style={{ borderRadius: "12px" }}>
+                                                                            <List.Item>
+                                                                                <List.Item.Meta
+                                                                                    avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                                    title={
+                                                                                        <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
+                                                                                    }
+                                                                                />
+                                                                            </List.Item>
+                                                                        </div>
 
-                                                                        <List.Item>
-                                                                            <List.Item.Meta
-                                                                                avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                                                title={
-                                                                                    <Link to={`/${parent}/${ctdt}/${type}/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                                                    // <div className="list-item"><span onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></div>
-                                                                                 }
-                                                                            />
-                                                                        </List.Item>
-                                                                    </div>
+                                                                    </Col>
+                                                                </Row>
+                                                            )}
+                                                        />
+                                                    </div>
+                                                </React.Fragment>
 
-                                                                </Col>
+                                                : type === "view-survey" ? (
+                                                    <React.Fragment>
+                                                        <Row className="col-right-title">
+                                                            <div>
+                                                                <span>Xem Khảo Sát</span>
+                                                                <Divider type="vertical" />
+                                                                <a href="#">Link</a>
+                                                                <Divider type="vertical" />
+                                                                <a href="#">Link</a>
+                                                            </div>,
                                                             </Row>
-                                                        )}
-                                                    />
-                                                </div>
-                                            </React.Fragment>
-                                    
-                                    : type === "view-survey" ? <ViewSurvey />
-                                    : content_layout = ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                         <EditEducationProgram ctdt={ctdt}/>
-                                    )
-                                    : content_layout = parent === "ctdt"  ? (
-                                        <EducationProgram />
-                                    )
-                                    :content_layout=parent ==="cdr" ? ctdt == "edit" ? (
-                                        <React.Fragment><EditOutcomeStandard/></React.Fragment>
-                                    ) 
-                                    : <React.Fragment><OutcomeStandard /></React.Fragment>
-                                    :content_layout=parent==="qlhp"?<React.Fragment><SubjectManage /></React.Fragment>
-                                    :content_layout=parent==="qlkh"?<React.Fragment><FaProManage /></React.Fragment>
-                                    : null;
-
-
+                                                        <div className="wrapper-custom-layout">
+                                                            <ViewSurvey />
+                                                        </div>
+                                                    </React.Fragment>
+                                                ) : content_layout = ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
+                                                    <EditEducationProgram ctdt={ctdt} />
+                                                )
+                                                    : content_layout = parent === "ctdt" ? (
+                                                        <EducationProgram />
+                                                    )
+                                                        : content_layout = parent === "cdr" ? ctdt == "edit" ? (
+                                                            <React.Fragment><EditOutcomeStandard /></React.Fragment>
+                                                        )
+                                                            : <React.Fragment><OutcomeStandard /></React.Fragment>
+                                                            : content_layout = parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
+                                                                : content_layout = parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
+                                                                    : null;
                 }; break;
-
             }
-
             default: {
                 content_layout = (
                     <React.Fragment>

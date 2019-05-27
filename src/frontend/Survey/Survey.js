@@ -7,6 +7,7 @@ import FormSurvey from "./FormSurvey";
 import { getLevel, getPos } from '../utils/Tree';
 import "./Survey.css";
 import TableSurvey from './TableSurvey';
+import $ from './../helpers/services'
 
 const  queryString = require('query-string');
 
@@ -41,12 +42,14 @@ class Survey extends React.Component {
 
         if(parsed.id){
             const id = parsed.id;
-            axios.get(`/get-surveyqa/${id}`).then(res => {
+            //axios.get(`/get-surveyqa/${id}`).then(res => {
+            $.getSurveyQA(id).then(res => {
                 this.setState ({ 
                     resultQA : res.data[0],
                 })
             })
-            axios.get(`/get-survey/${id}`).then(res => {
+            //axios.get(`/get-survey/${id}`).then(res => {
+                $.getSurvey(id).then(res => {
                 this.setState({
                     resultITU : res.data,
                 },()=>console.log(this.state.resultITU))
@@ -54,7 +57,7 @@ class Survey extends React.Component {
         }          
         
         let tree = [];
-        axios.get("/get-data-survey").then((res) => {
+        $.getDataSurvey().then((res) => {
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
                 let pos0 = getPos(element.keyRow, 0);

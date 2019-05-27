@@ -9,6 +9,7 @@ import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import axios from 'axios';
 import $ from './../../helpers/services';
 
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -225,7 +226,7 @@ class EditMatrix extends Component {
 
       })
     }
-    axios.post('/update-standard-matrix', data).then(alert("ok"));
+    $.updateStandardMatrix(data).then(alert("ok"));
 
   }
 
@@ -258,6 +259,7 @@ class EditMatrix extends Component {
 
 
   componentDidMount() {
+
     $.getStandardMatrix().then((res) => {
       this.setState({ tempMatrix: res.data });
     })

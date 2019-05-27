@@ -194,7 +194,9 @@ class Home extends Component {
     .catch(function (error) {
        console.log(error);
     });     
-    $.collectCDRMDHD_4()
+
+    $.collectCdrmdhd4()
+
     .then(function (response) {
         let cdrmdhd = self.props.cdrmdhd;
         for(let i = 0;i < response.data.length;i++) {
@@ -245,7 +247,9 @@ class Home extends Component {
     this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
         self.props.updateSubjectId(monhoc) 
     }
+
     $.getCDR_CDIO().then((res) => {
+
         self.props.updateCdrCdio(res.data)
       })
 }
@@ -253,7 +257,7 @@ componentDidUpdate(){
 
     window.onpopstate  = (e) => {
         if(this.props.subjectId !== "") {
-            console.log("cc")
+            
             this.props.updateSubjectId("");
         }
    }
@@ -275,7 +279,7 @@ componentDidUpdate(){
                     if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
                         if(!this.checkCtdtExist(this.props.ctdt, ctdt) && ctdt !== "edit") {
                           console.log(this.props.ctdt)
-                            return <Page404/>;
+                            //return <Page404/>;
                         }
                         else {
                             if(type !== "" && type !== undefined && type !== null) {

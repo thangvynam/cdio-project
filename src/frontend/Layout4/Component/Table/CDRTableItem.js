@@ -9,6 +9,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from "../../../helpers/services";
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -407,12 +408,11 @@ class CDRTableItem extends Component {
 
   loadGap = () => {
 
-    axios.post('/collect-mtmh-has-cdrcdio', {data: {thong_tin_chung_id: this.state.id}}).then((res) => {
-      
-      axios.post('/collect-mucdo-mtmh-has-cdrcdio', {data: res.data}).then((response) => {
+    $.collectMtmhHasCdrCdio({data: {thong_tin_chung_id: this.state.id}}).then((res) => {
+      $.collectMucdoMtmhHasCdrCdio({data: res.data}).then((response) => {
           let arr = [];
           for(let i = 0;i < response.data.length;i++) {
-            let keyrow = response.data[i].cdr.split("-");
+            let keyrow = response.data[i].cdr.split(".");
             keyrow.splice(keyrow.length - 1, 1);
             let index = this.isExistInArr(keyrow.join("."), arr);
             if(index !== -1) {
@@ -489,7 +489,7 @@ class CDRTableItem extends Component {
 
   loadTable = () => {
     var self = this;
-    axios.post('/collect-data-4', { data: {thong_tin_chung_id: self.state.id}})
+    $.collectData4({ data: {thong_tin_chung_id: self.state.id}})
     .then(function (response) {
     const tableData = {
       previewInfo: []
@@ -608,40 +608,40 @@ getSubjectName = (subjectList, id) => {
     // });
    
     if(this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
-    //   if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
-    //     this.props.updateIsLoadEditMatrix("true");
-    //     axios.get('/get-reality-matrix');
-    //     axios.get("/get-standard-matrix").then((res) => {
-    //         let data = [];
-    //         for(let i = 0;i < res.data.length;i++) {
-    //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-    //             if(index !== -1) {
-    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-    //                 if(cdr_cdio !== "") {
-    //                     data[index][cdr_cdio] = res.data[i].muc_do;
-    //                 }
-    //             }
-    //             else {  
-    //                 let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-    //                 if(subjectName !== "" && cdr_cdio !== "") {
-    //                     data.push({
-    //                         key: res.data[i].thong_tin_chung_id,
-    //                         hocky: 1,
-    //                         hocphan: subjectName,
-    //                         gvtruongnhom: 'NULL'
-    //                     })
+      if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
+        this.props.updateIsLoadEditMatrix("true");
+        $.getRealityMatrix();
+        $.getStandardMatrix().then((res) => {
+            let data = [];
+            for(let i = 0;i < res.data.length;i++) {
+                let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                if(index !== -1) {
+                    let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                    if(cdr_cdio !== "") {
+                        data[index][cdr_cdio] = res.data[i].muc_do;
+                    }
+                }
+                else {  
+                    let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                    let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                    if(subjectName !== "" && cdr_cdio !== "") {
+                        data.push({
+                            key: res.data[i].thong_tin_chung_id,
+                            hocky: 1,
+                            hocphan: subjectName,
+                            gvtruongnhom: 'NULL'
+                        })
 
-    //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-    //                 }
+                        data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                    }
                     
-    //             }
-    //         }
-    //         this.props.updateEditMatrix(data);
-    //       })
+                }
+            }
+            this.props.updateEditMatrix(data);
+          })
           
-    // }
-    //   this.loadGap();
+    }
+      this.loadGap();
     }
 
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
@@ -654,7 +654,7 @@ getSubjectName = (subjectList, id) => {
     this.setState({id: nextProps.subjectId})
     if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
       this.props.updateIsLoad("true");
-      //this.loadGap();
+      this.loadGap();
       this.loadTable();
     }
 }
@@ -871,9 +871,9 @@ getSubjectName = (subjectList, id) => {
           cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(item.level_verb[0], item.level_verb[1]),
         }
       })
-    axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}});
+    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.subjectId}});
     this.loadTable();
-    //this.loadGap();
+    this.loadGap();
     this.props.updateIsLoad("false");
     openNotificationWithIcon('success');
     //axios.post('/save-log', { data: this.props.logData });

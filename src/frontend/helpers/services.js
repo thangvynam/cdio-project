@@ -11,17 +11,24 @@ import $ from 'axios';
 //     })
 // }
 
-
+//subject
 const collectSubjectList = () => {
     let url = _.COLLECT_SUBJECT_LIST;
     return $.get(url);
 }
 
 
+//edit matrix
+const updateStandardMatrix = (data) => {
+    let url = _.UPDATE_STANDARD_MATRIX;
+    return $.post(url, data);
+
+
 //Matrix
 const getBenchmarkMatrix = () => {
     let url = _.GET_BENCHMARK_MATRIX;
     return $.get(url);
+
 }
 
 const getStandardMatrix = () => {
@@ -31,6 +38,43 @@ const getStandardMatrix = () => {
 
 const getRealityMatrix = () => {
     let url = _.GET_REALITY_MATRIX;
+    return $.get(url);
+}
+
+
+//tab 4
+const collectCdrmdhd4 = () => {
+    let url = _.COLLECT_CDR_MDHD4;
+    return $.get(url);
+}
+
+const collectMtmh = (data) => {
+    let url = _.COLLECT_MTMH;
+    return $.post(url, data);
+}
+
+const collectMtmhHasCdrCdio = (data) => {
+    let url = _.COLLECT_MTMH_HAS_CDR_CDIO;
+    return $.post(url, data);
+}
+
+const collectMucdoMtmhHasCdrCdio = (data) => {
+    let url = _.COLLECT_MUCDO_MTMH_HAS_CDR_CDIO;
+    return $.post(url, data);
+}
+
+const collectData4 = (data) => {
+    let url = _.COLLECT_DATA4;
+    return $.post(url, data);
+}
+
+const saveData4 = (data) => {
+    let url = _.SAVE_DATA4;
+    return $.post(url, data);
+}
+
+const getTeacherList = () => {
+    let url = _.GET_TEACHER_LIST;
     return $.get(url);
 }
 
@@ -44,10 +88,6 @@ const getMatrixSurvey = () => {
     return $.get(url);
 }
 
-const collectCDRMDHD_4 = () => {
-    let url = _.COLLECT_CDRMDHD_4;
-    return $.get(url);
-}
 
 const getChuDe = () => {
     let url = _.GET_CHUDE;
@@ -138,14 +178,29 @@ const getDataSurvey = () => {
     let url = _.GET_DATA_SURVEY;
     return $.get(url);
 }
+
 export default{
+    //subject
     collectSubjectList,
+
+
+    //edit matrix
+    updateStandardMatrix,
+
+    //tab 4
+    collectCdrmdhd4,
+    collectMtmh,
+    collectMtmhHasCdrCdio,
+    collectMucdoMtmhHasCdrCdio,
+    collectData4,
+    saveData4,
+    getTeacherList,
+
     getBenchmarkMatrix,
     getStandardMatrix,
     getRealityMatrix,
     getCDR_CDIO,
     getMatrixSurvey,
-    collectCDRMDHD_4,
     getChuDe,
     getLoaiTaiNguyen,
     getData2,
@@ -164,4 +219,5 @@ export default{
     getSurveyQA,
     getSurvey,
     getDataSurvey
+
 }

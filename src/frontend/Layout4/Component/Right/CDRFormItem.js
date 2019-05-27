@@ -12,6 +12,7 @@ import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog
 import './1.css';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from "../../../helpers/services";
 
 const formItemLayout = {
   labelCol: {
@@ -205,7 +206,7 @@ class CDRFormItem extends Component {
       this.setState({isLoaded: true});
       var self = this;
       if(this.state.id !== "" && this.state.id !== undefined) {
-        axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.state.id}})
+        $.collectMtmh({ data: {thong_tin_chung_id: this.state.id}})
         .then(function (response) {
             self.props.updateMtmh(response.data);
             
@@ -286,7 +287,7 @@ class CDRFormItem extends Component {
     if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== ""){
       var self = this;
       if(this.state.id !== "" && this.state.id !== undefined) {
-        axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.props.subjectId}})
+        $.collectMtmh({ data: {thong_tin_chung_id: this.props.subjectId}})
         .then(function (response) {
             self.props.updateMtmh(response.data);
             

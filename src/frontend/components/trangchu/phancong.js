@@ -1,7 +1,10 @@
 import React, { Component } from "react";
-import { Table, Divider, Tag, Row, Col, Button, Icon } from 'antd';
-import { connect } from 'react-redux';
+import { Table, Divider, Tag, Row, Col, Button, Icon, Popconfirm } from 'antd';
+import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
+import axios from 'axios';
+import $ from "./../../helpers/services";
+import { teacherList } from "../../Constant/ActionType";
 
 class PhanCong extends Component {
   constructor(props) {
@@ -19,16 +22,29 @@ class PhanCong extends Component {
       render: text => <p>{text}</p>,
     }];
 
-    this.columns2 = [{
-      title: 'Tên',
-      dataIndex: 'name',
-      key: 'name',
-      width: 100,
-      editable: true,
-      render: text => <p>{text}</p>,
-    }];
-  }
 
+        this.columns2 = [{
+            title: 'Tên',
+            dataIndex: 'name',
+            key: 'name',
+            width: 100,
+            editable: true,
+            render: text => <p>{text}</p>,
+          }, {
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => {
+              return(
+              <div>
+                  <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.handleDelete(record.key)}>
+                        <a href="#a">Xóa</a>
+                      </Popconfirm>
+                    
+              </div>
+            )},
+          }];
+      }
+      
   onSelectChange1 = (selectedRowKeys) => {
     this.setState({ selecteditem1: selectedRowKeys })
   }
@@ -45,6 +61,18 @@ class PhanCong extends Component {
     }
     return false;
   }
+
+
+
+      componentDidMount() {
+       // axios.get('localhost:3001/get-teacher-list')
+       $.getTeacherList()
+        .then(res => {
+          console.log(res.data);
+          this.props.updateTeacherList(res.data);
+        })
+      }
+
   render() {
 
     const selectedRowKeys1 = this.state.selecteditem1;
@@ -83,7 +111,7 @@ class PhanCong extends Component {
               pagination = {{ position: 'none' }}
               rowSelection={rowSelection2}
               columns={this.columns1}
-              dataSource={this.props.teacherlist.previewInfo.filter(item => this.isExist(this.props.content_monhoc, item.subjects) === true)}
+              dataSource={[]}
               style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
             />
           </div>
@@ -98,9 +126,11 @@ const mapStateToProps = (state) => {
   }
 }
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
 
-  }, dispatch);
-}
+    return bindActionCreators({
+        updateTeacherList: teacherList
+    }, dispatch);
+  }
+
 export default connect(mapStateToProps, mapDispatchToProps)(PhanCong);
 

@@ -45,6 +45,7 @@ import * as majorsAction from "../../CDIO1/actions/majorsAction";
 
 import $ from './../../helpers/services';
 
+
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -56,93 +57,95 @@ const openNotificationWithIcon = (type) => {
 
 class Content extends Component {
 
-    state = { visible: false, isEditting: "" }
-    addSubject = () => {
-        this.setState({
-            visible: true,
-        });
-    }
 
-    handleOk = (e) => {
-        let id = document.getElementById("subject-id").value;
-        let name = document.getElementById("subject-name").value;
-        if (id === "" || id === undefined) {
-            message.warning("Chưa nhập mã môn học!")
-        }
-        else {
-            if (name === "" || name === undefined) {
-                message.warning("Chưa nhập tên môn học!")
-            }
-            else {
-                axios.post('/add-subject', { data: { SubjectCode: id, SubjectName: name } }).then((res) => {
-                    var self = this;
-                    $.collectSubjectList()
-                        .then(function (response) {
-                            self.props.updateSubjectList(response.data);
-                        })
-                        .catch(function (error) {
-                            console.log(error);
-                        });
-                });
+    // state = { visible: false, isEditting: "" }
+    // addSubject = () => {
+    //     this.setState({
+    //         visible: true,
+    //     });
+    // }
 
-                this.props.updateIsLoadEditMatrix("false");
-                this.setState({
-                    visible: false,
-                });
-                openNotificationWithIcon('success');
-            }
-        }
+    // handleOk = (e) => {
+    //     let id = document.getElementById("subject-id").value;
+    //     let name = document.getElementById("subject-name").value;
+    //     if (id === "" || id === undefined) {
+    //         message.warning("Chưa nhập mã môn học!")
+    //     }
+    //     else {
+    //         if (name === "" || name === undefined) {
+    //             message.warning("Chưa nhập tên môn học!")
+    //         }
+    //         else {
+    //             axios.post('/add-subject', { data: { SubjectCode: id, SubjectName: name } }).then((res) => {
+    //                 var self = this;
+    //                 axios.get('/collect-subjectlist')
+    //                     .then(function (response) {
+    //                         self.props.updateSubjectList(response.data);
+    //                     })
+    //                     .catch(function (error) {
+    //                         console.log(error);
+    //                     });
+    //             });
+
+    //             this.props.updateIsLoadEditMatrix("false");
+    //             this.setState({
+    //                 visible: false,
+    //             });
+    //             openNotificationWithIcon('success');
+    //         }
+    //     }
 
 
-    }
+    // }
 
-    handleCancel = (e) => {
-        this.setState({
-            visible: false,
-        });
-    }
-    handleDelete = (id) => {
-        let type = this.props.content_type;
+    // handleCancel = (e) => {
+    //     this.setState({
+    //         visible: false,
+    //     });
+    // }
+    // handleDelete = (id) => {
+    //     let type = this.props.content_type;
 
-        if (id !== -1) {
-            const data = this.props.subjectList;
-            axios.post('/delete-subject', { data: { Id: data[id].Id } });
-            data.splice(id, 1);
-            this.props.updateSubjectList(data);
-            this.props.updateIsLoadEditMatrix("false");
-            this.setState({
-                visible: false,
-            });
-        }
-    }
+    //     if (id !== -1) {
+    //         const data = this.props.subjectList;
+    //         axios.post('/delete-subject', { data: { Id: data[id].Id } });
+    //         data.splice(id, 1);
+    //         this.props.updateSubjectList(data);
+    //         this.props.updateIsLoadEditMatrix("false");
+    //         this.setState({
+    //             visible: false,
+    //         });
+    //     }
+    // }
 
-    edit = (id) => {
-        this.setState({
-            isEditting: id,
-        });
-    }
+    // edit = (id) => {
+    //     this.setState({
+    //         isEditting: id,
+    //     });
+    // }
 
-    save = (index) => {
-        let id = document.getElementById("subject-id-edit").value;
-        let name = document.getElementById("subject-name-edit").value;
-        let type = this.props.content_type;
-        const data = this.props.subjectList;
-        axios.post('/edit-subject', { data: { Id: data[index].Id, SubjectCode_editted: id, SubjectName: name } });
-        data[index].SubjectCode = id;
-        data[index].SubjectName = name;
+    // save = (index) => {
+    //     let id = document.getElementById("subject-id-edit").value;
+    //     let name = document.getElementById("subject-name-edit").value;
+    //     let type = this.props.content_type;
+    //     const data = this.props.subjectList;
+    //     axios.post('/edit-subject', { data: { Id: data[index].Id, SubjectCode_editted: id, SubjectName: name } });
+    //     data[index].SubjectCode = id;
+    //     data[index].SubjectName = name;
 
-        this.props.updateSubjectList(data);
-        this.props.updateIsLoadEditMatrix("false");
-        this.setState({
-            isEditting: "",
-        });
-    }
+    //     this.props.updateSubjectList(data);
+    //     this.props.updateIsLoadEditMatrix("false");
+    //     this.setState({
+    //         isEditting: "",
+    //     });
+    // }
 
-    cancel = () => {
-        this.setState({
-            isEditting: "",
-        });
-    }
+    // cancel = () => {
+    //     this.setState({
+    //         isEditting: "",
+    //     });
+    // }
+
 
     onClick = (id) => {
         this.props.updateIsLoad("false");
@@ -157,14 +160,14 @@ class Content extends Component {
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
     }
 
-    checkSubjectExist = (subjectlist, monhoc) => {
-        for (let i = 0; i < subjectlist.length; i++) {
-            if (subjectlist[i].Id.toString() === monhoc.toString()) {
-                return true;
-            }
-        }
-        return false;
-    }
+    // checkSubjectExist = (subjectlist, monhoc) => {
+    //     for (let i = 0; i < subjectlist.length; i++) {
+    //         if (subjectlist[i].Id.toString() === monhoc.toString()) {
+    //             return true;
+    //         }
+    //     }
+    //     return false;
+    // }
 
     componentDidMount = () => {
         this.props.onLoadEduPrograms();

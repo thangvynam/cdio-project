@@ -245,7 +245,7 @@ class Home extends Component {
     this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
         self.props.updateSubjectId(monhoc) 
     }
-    $.getCDR_CDIO.then((res) => {
+    $.getCDR_CDIO().then((res) => {
         self.props.updateCdrCdio(res.data)
       })
 }

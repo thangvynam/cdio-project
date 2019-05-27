@@ -23,6 +23,7 @@ import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import TextArea from "antd/lib/input/TextArea";
 import axios from "axios";
+import $ from './../../../helpers/services';
 import { getCurrTime } from "../../../utils/Time";
 
 const { Option } = Select;
@@ -712,7 +713,9 @@ class TableItem extends Component {
   }
 
   getDataTable = idSubject => {
-    axios.get(`/get-data-6/${idSubject}`).then(response => {
+    //axios.get(`/get-data-6/${idSubject}`)
+    $.getData6(idSubject)
+    .then(response => {
       const data = response.data;
       console.log("data: ", data);
       this.props.onUpdateKHGDTH(data);

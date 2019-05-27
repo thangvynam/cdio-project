@@ -6,6 +6,7 @@ import { Table, Icon, Tag, Modal, Button } from 'antd';
 import { getDataBenchMarkMatrix } from './../../Constant/matrix/matrixAction';
 import { Bar } from 'react-chartjs-2';
 import './matrix.css';
+import $ from './../../helpers/services';
 
 
 const myData = {
@@ -168,9 +169,10 @@ class BenchMark extends Component {
             isLoading: false,
         }
     }
-
+   
     componentDidMount() {
-        axios.get('/get-benchmark-matrix').then((res) => {
+        $.getBenchmarkMatrix()
+        .then((res) => {
             //this.props.getDataBenchMarkMatrix(res.data);
             this.props.getDataBenchMarkMatrix(myData);
         })

@@ -8,7 +8,8 @@ import { connect } from 'react-redux';
 import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, SAVE_LOG, SET_CDR } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
 import { getCurrTime } from '../../../utils/Time';
-import axios from 'axios'
+import axios from 'axios';
+import $ from './../../../helpers/services';
 
 const { Option } = Select;
 
@@ -36,7 +37,7 @@ class MenuMucTieu extends Component {
     }
 
     async getCDR() {
-        return axios.get("/get-cdr-3").then(res => {
+        return $.getCDR_3().then(res => {
             return res.data
         })
     }

@@ -194,7 +194,7 @@ class Home extends Component {
     .catch(function (error) {
        console.log(error);
     });     
-    axios.get('/collect-cdrmdhd-4')
+    $.collectCDRMDHD_4()
     .then(function (response) {
         let cdrmdhd = self.props.cdrmdhd;
         for(let i = 0;i < response.data.length;i++) {
@@ -245,7 +245,7 @@ class Home extends Component {
     this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
         self.props.updateSubjectId(monhoc) 
     }
-    axios.get("/get-cdr-cdio").then((res) => {
+    $.getCDR_CDIO.then((res) => {
         self.props.updateCdrCdio(res.data)
       })
 }

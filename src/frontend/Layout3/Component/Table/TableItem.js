@@ -5,6 +5,7 @@ import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_D
 import TextArea from "antd/lib/input/TextArea"; 
 import axios from 'axios'
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services';
 
 const { Option } = Select;
 const confirm = Modal.confirm;
@@ -47,7 +48,7 @@ class EditableCell extends React.Component {
   }
 
   async getCDR() {
-    return axios.get("/get-cdr-3").then(res => {
+    return $.getCDR_3().then(res => {
         return res.data
     })
 }
@@ -216,7 +217,8 @@ class TableItem extends Component {
   }
 
 async getData() {
-  return axios.get(`/get-data-3/${this.props.subjectid}`).then(res => {
+  //return axios.get(`/get-data-3/${this.props.subjectid}`).then(res => {
+  return $.getData3(this.props.subjectid).then(res => {
     return res.data
   }).then(resp => {
     return resp;

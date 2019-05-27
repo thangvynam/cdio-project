@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./1.css"
 import { connect } from 'react-redux';
 import axios from 'axios';
+import $ from './../helpers/services'
 import { Form, Button, Input } from 'antd';
 import { SAVE_LOG_DATA,SAVE_COMMENT } from "../Constant/ActionType"
 import CommentLog from "../Comment/Comment"
@@ -177,7 +178,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         dispatch({ type: SAVE_COMMENT, obj:obj });
     },
     getComment:()=>{
-        axios.get(`/get-comment`)
+        $.getComment()
             .then(res => {
                 let data = res.data;
                 for(let obj of data){

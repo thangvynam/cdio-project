@@ -9,6 +9,7 @@ import './matrix.css'
 import axios from 'axios';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
+import $ from './../../helpers/services'
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -251,7 +252,7 @@ class SurveyMatrix extends Component {
   }
 
   componentDidMount() {
-    axios.get('/get-matrix-survey').then((res) => {
+    $.getMatrixSurvey().then((res) => {
       //this.props.getDataBenchMarkMatrix(res.data);
       console.log(res.data)
       this.props.getDataSurveyMatrix(res.data);

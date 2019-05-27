@@ -42,6 +42,9 @@ import * as programsAction from "../../CDIO1/actions/programsAction";
 import * as levelsAction from "../../CDIO1/actions/levelsAction";
 import * as majorsAction from "../../CDIO1/actions/majorsAction";
 //END CDIO1
+
+import $ from './../../helpers/services';
+
 const EditableContext = React.createContext();
 
 const openNotificationWithIcon = (type) => {
@@ -73,7 +76,7 @@ class Content extends Component {
             else {
                 axios.post('/add-subject', { data: { SubjectCode: id, SubjectName: name } }).then((res) => {
                     var self = this;
-                    axios.get('/collect-subjectlist')
+                    $.collectSubjectList()
                         .then(function (response) {
                             self.props.updateSubjectList(response.data);
                         })

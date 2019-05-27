@@ -7,6 +7,7 @@ import { bindActionCreators } from 'redux';
 import { editMatrix, editMatrixEditState, isLoadEditMatrix, cdrCdio } from '../../Constant/ActionType';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import axios from 'axios';
+import $ from "./../../helpers/services";
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -224,7 +225,7 @@ class EditMatrix extends Component {
 
       })
     }
-    axios.post('/update-standard-matrix', data).then(alert("ok"));
+    $.updateStandardMatrix(data).then(alert("ok"));
 
   }
 
@@ -258,13 +259,13 @@ class EditMatrix extends Component {
 
   componentDidMount() {
 
-    axios.get("/get-standard-matrix").then((res) => {
+    $.getStandardMatrix().then((res) => {
       this.setState({ tempMatrix: res.data });
     })
     if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
-      axios.get('/get-reality-matrix');
-      axios.get("/get-standard-matrix").then((res) => {
+      $.getRealityMatrix();
+      $.getStandardMatrix().then((res) => {
         let data = [];
         for (let i = 0; i < res.data.length; i++) {
           let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);

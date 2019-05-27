@@ -9,6 +9,7 @@ import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from "../../../helpers/services";
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -407,9 +408,9 @@ class CDRTableItem extends Component {
 
   loadGap = () => {
 
-    axios.post('/collect-mtmh-has-cdrcdio', {data: {thong_tin_chung_id: this.state.id}}).then((res) => {
+    $.collectMtmhHasCdrCdio({data: {thong_tin_chung_id: this.state.id}}).then((res) => {
       
-      axios.post('/collect-mucdo-mtmh-has-cdrcdio', {data: res.data}).then((response) => {
+      $.collectMucdoMtmhHasCdrCdio({data: res.data}).then((response) => {
           let arr = [];
           for(let i = 0;i < response.data.length;i++) {
             let keyrow = response.data[i].cdr.split("-");
@@ -489,7 +490,7 @@ class CDRTableItem extends Component {
 
   loadTable = () => {
     var self = this;
-    axios.post('/collect-data-4', { data: {thong_tin_chung_id: self.state.id}})
+    $.collectData4({ data: {thong_tin_chung_id: self.state.id}})
     .then(function (response) {
     const tableData = {
       previewInfo: []
@@ -871,7 +872,7 @@ getSubjectName = (subjectList, id) => {
           cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(item.level_verb[0], item.level_verb[1]),
         }
       })
-    axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}});
+    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.subjectId}});
     this.loadTable();
     //this.loadGap();
     this.props.updateIsLoad("false");

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Divider, Tag, Row, Col, Button, Icon } from 'antd';
+import { Table, Divider, Tag, Row, Col, Button, Icon, Popconfirm } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 
@@ -26,6 +26,18 @@ class PhanCong extends Component {
             width: 100,
             editable: true,
             render: text => <p>{text}</p>,
+          }, {
+            title: 'Action',
+            key: 'action',
+            render: (text, record) => {
+              return(
+              <div>
+                  <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.handleDelete(record.key)}>
+                        <a href="#a">Xóa</a>
+                      </Popconfirm>
+                    
+              </div>
+            )},
           }];
       }
       
@@ -67,7 +79,7 @@ class PhanCong extends Component {
              <h2 style={{textAlign: "center", fontSize: "10pt"}}>Danh sách giáo viên</h2>
           <Table bordered 
             rowSelection={rowSelection1} 
-            columns={this.columns2} 
+            columns={this.columns1} 
             dataSource={this.props.teacherlist.previewInfo}
             style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
              />
@@ -79,7 +91,7 @@ class PhanCong extends Component {
              <h3 style={{textAlign: "center", fontSize: "10pt"}}>Danh sách giáo viên đã được phân công</h3>
           <Table bordered 
             rowSelection={rowSelection2} 
-            columns={this.columns1} 
+            columns={this.columns2} 
             dataSource={this.props.teacherlist.previewInfo.filter(item => this.isExist(this.props.content_monhoc, item.subjects) === true)}
             style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
              />

@@ -10,6 +10,7 @@ import { connect } from 'react-redux';
 import { updateTNData,addTNData,isLoaded8,saveLog,saveLogObject } from '../../../Constant/ActionType';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services';
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -194,7 +195,8 @@ class TNTableItem extends Component {
   };
 
   getData() {
-    return axios.get(`/get-tainguyenmonhoc/${this.props.subjectId}`).then(response => {
+    //return axios.get(`/get-tainguyenmonhoc/${this.props.subjectId}`).then(response => {
+    return $.getTaiNguyenMonHoc(this.props.subjectId).then(response => {
         return response.data
     }).catch(function(error){
       console.log(error)

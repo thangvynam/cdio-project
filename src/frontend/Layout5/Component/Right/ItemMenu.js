@@ -6,6 +6,7 @@ import { Redirect } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
 import axios from 'axios';
+import $ from './../../../helpers/services';
 import { getCurrTime } from '../../../utils/Time';
 
 import {
@@ -56,7 +57,7 @@ class ItemMenu extends Component {
             evalActs: new Map(),
         }
 
-        axios.get("/get-teachingacts-5").then(response => {
+        $.getTeachingActs_5().then(response => {
             const data = response.data;
             let map = new Map();
             

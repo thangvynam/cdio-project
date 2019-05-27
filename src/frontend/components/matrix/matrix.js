@@ -8,6 +8,7 @@ import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import "./matrix.css";
 import { editMatrix, isLoadEditMatrix } from '../../Constant/ActionType';
+import $ from './../../helpers/services';
 
 class Matrix extends Component {
     constructor(props) {
@@ -52,7 +53,7 @@ class Matrix extends Component {
         this.setState({ isLoading: true })
         if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
             this.props.updateIsLoadEditMatrix("true");
-            axios.get("/get-standard-matrix").then((res) => {
+            $.getStandardMatrix().then((res) => {
                 let data = [];
                 for (let i = 0; i < res.data.length; i++) {
                     let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -82,8 +83,8 @@ class Matrix extends Component {
             })
 
         }
-        var a = axios.get('/get-reality-matrix');
-        var b = axios.get('/get-cdr-cdio');
+        var a = $.getRealityMatrix();
+        var b = $.getCDR_CDIO();
         Promise.all([a, b])
             .then((res) => {
                 this.props.getDataMatrix(res)

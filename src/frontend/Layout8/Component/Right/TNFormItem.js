@@ -7,6 +7,7 @@ import { connect } from 'react-redux';
 import { changeTNData, addTNData, saveTempTNData ,saveLoaiTaiNguyen, saveLog,saveLogObject} from '../../../Constant/ActionType';
 import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services';
 
 
 class TNFormItem extends Component {
@@ -42,7 +43,7 @@ class TNFormItem extends Component {
   async componentDidMount(){
     if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout8Reducer.isLoaded === false){
       var self = this;
-        await axios.get('/get-loaitainguyen')
+        await $.getLoaiTaiNguyen()
         .then(function (response) {
             self.props.updateLoaitainguyen(response.data);
           })

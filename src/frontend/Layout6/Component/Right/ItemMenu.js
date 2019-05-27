@@ -17,6 +17,7 @@ import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import axios from "axios";
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services';
 
 
 const { Option } = Select;
@@ -93,7 +94,7 @@ class ItemMenu extends Component {
       evalActs: new Map(),
     }
 
-    axios.get("/get-teachingacts-6").then(response => {
+    $.getTeachingActs_6().then(response => {
       const data = response.data;
       let map = new Map();
       data.forEach((item, index) => {
@@ -105,7 +106,8 @@ class ItemMenu extends Component {
 
     });
 
-    axios.get(`/get-eval-acts-6/${subjectId}`).then(response => {
+    //axios.get(`/get-eval-acts-6/${subjectId}`).then(response => {
+    $.getEvalActs6(subjectId).then(response => {
       const data = response.data;
       let map = new Map();
       data.forEach((item, index) => {
@@ -116,7 +118,8 @@ class ItemMenu extends Component {
       mapId.evalActs = map;
     });
 
-    axios.get(`/get-standard-output-6/${subjectId}`).then(response => {
+    //axios.get(`/get-standard-output-6/${subjectId}`).then(response => {
+    $.getStandardOutput6(subjectId).then(response => {
       const data = response.data;
       let array = [];
       let map = new Map();

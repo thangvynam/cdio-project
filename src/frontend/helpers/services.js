@@ -22,7 +22,7 @@ const collectSubjectList = () => {
 const updateStandardMatrix = (data) => {
     let url = _.UPDATE_STANDARD_MATRIX;
     return $.post(url, data);
-
+}
 
 //Matrix
 const getBenchmarkMatrix = () => {

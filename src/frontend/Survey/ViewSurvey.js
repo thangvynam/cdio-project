@@ -15,12 +15,12 @@ function handleChange(value) {
     nameTitle = value;
 }
 
-function onChange(date,dateString) {
+function onChange(date, dateString) {
     rangeTime = dateString;
 }
 
 class ItemSurvey {
-    constructor(data,rangeTime) {
+    constructor(data, rangeTime) {
         this.title = data;
         this.rangeTime = rangeTime;
     }
@@ -29,7 +29,7 @@ class ItemSurvey {
 class ViewSurvey extends Component {
 
     state = {
-        listSurvey : []
+        listSurvey: []
     }
 
     genForm() {
@@ -39,21 +39,21 @@ class ViewSurvey extends Component {
             console.log(survey);
             htmlDom.push(
                 <ItemVIewSurvey
-                    title = {survey.title}
-                    dateFrom = {survey.rangeTime[0]}
-                    dateTo = {survey.rangeTime[1]}
+                    title={survey.title}
+                    dateFrom={survey.rangeTime[0]}
+                    dateTo={survey.rangeTime[1]}
                 />
             );
         });
-        
+
         return htmlDom;
     }
 
     create = () => {
-        let obj = new ItemSurvey(nameTitle,rangeTime);
-       
+        let obj = new ItemSurvey(nameTitle, rangeTime);
+
         this.setState({
-            listSurvey: [...this.state.listSurvey,obj]
+            listSurvey: [...this.state.listSurvey, obj]
         });
     }
 
@@ -71,51 +71,42 @@ class ViewSurvey extends Component {
         };
 
         return (
-            <div className="container1">
-                <div className="center-col">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm-12" >
-                                <br />
-                                <h1 style={{ textAlign: "center" }}>Quản lý cuộc survey</h1>
-                                <Form.Item
-                                    {...formItemLayout}
-                                    label="Chương trình đào tạo"
-                                >
-                                    <Select style={{ width: 370 }} onChange={handleChange}>
-                                        <Option value="Chính quy">Chính quy</Option>
-                                        <Option value="Cao đẳng">Cao đẳng</Option>
-                                    </Select>
-                                </Form.Item>
-                                <Form.Item
-                                    {...formItemLayout}
-                                    label="Khoảng thời gian"
-                                >
-                                    <RangePicker onChange={onChange} />
-                                </Form.Item>
-                                <Form.Item
-                                    {...formItemLayout} >
-                                    <center>
-                                        <Button 
-                                            type="primary" 
-                                            style={{ marginLeft: "2em" }}
-                                            onClick={this.create}
-                                        >
-                                            Tạo <Icon type="plus" />
-                                        </Button>
-                                        <br />
-                                    </center>
-                                </Form.Item>
-                                <br />
-                                {/* <ItemVIewSurvey 
+            <div className="section-layout">
+                <Form.Item
+                    {...formItemLayout}
+                    label="Chương trình đào tạo"
+                >
+                    <Select style={{ width: 370 }} onChange={handleChange}>
+                        <Option value="Chính quy">Chính quy</Option>
+                        <Option value="Cao đẳng">Cao đẳng</Option>
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    {...formItemLayout}
+                    label="Khoảng thời gian"
+                >
+                    <RangePicker onChange={onChange} />
+                </Form.Item>
+                <Form.Item
+                    {...formItemLayout} >
+                    <center>
+                        <Button
+                            type="primary"
+                            style={{ marginLeft: "2em" }}
+                            onClick={this.create}
+                        >
+                            Tạo <Icon type="plus" />
+                        </Button>
+                        <br />
+                    </center>
+                </Form.Item>
+                <br />
+                {/* <ItemVIewSurvey 
                                     title = "Nam"
                                 /> */}
-                                {this.genForm()}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                {this.genForm()}
             </div>
+
         );
     }
 }

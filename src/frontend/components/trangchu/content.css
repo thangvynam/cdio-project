@@ -66,3 +66,24 @@ span.subject-name{
     font-size: 1.1rem;
     color: white;
 }
+
+/* Phân Công */
+.wrapper-flex{
+    display: flex;
+}
+
+.col-flex-left, .col-flex-right{
+    width: 40% ;
+}
+
+.col-flex-center{
+    width: 16%;
+    align-self: center;
+    margin: 0px 2%;
+}
+
+span.phancong-icon{
+    position: relative;
+    bottom: 2px;
+    left: 5px;
+}

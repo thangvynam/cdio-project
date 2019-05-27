@@ -2,6 +2,9 @@ import React, { Component } from "react";
 import { Table, Divider, Tag, Row, Col, Button, Icon, Popconfirm } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
+import axios from 'axios';
+import $ from "./../../helpers/services";
+import { teacherList } from "../../Constant/ActionType";
 
 class PhanCong extends Component {
     constructor(props){
@@ -57,6 +60,15 @@ class PhanCong extends Component {
           }
           return false;
       }
+
+      componentDidMount() {
+       // axios.get('localhost:3001/get-teacher-list')
+       $.getTeacherList()
+        .then(res => {
+          console.log(res.data);
+          this.props.updateTeacherList(res.data);
+        })
+      }
       render() {
         
         const selectedRowKeys1 = this.state.selecteditem1;
@@ -92,7 +104,7 @@ class PhanCong extends Component {
           <Table bordered 
             rowSelection={rowSelection2} 
             columns={this.columns2} 
-            dataSource={this.props.teacherlist.previewInfo.filter(item => this.isExist(this.props.content_monhoc, item.subjects) === true)}
+            dataSource={[]}
             style={{ wordWrap: "break-word", whiteSpace: 'pre-line'}}
              />
              </Col>
@@ -108,7 +120,7 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-
+        updateTeacherList: teacherList
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(PhanCong);

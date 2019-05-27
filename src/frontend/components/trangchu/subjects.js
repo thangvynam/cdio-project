@@ -275,7 +275,7 @@ componentDidUpdate(){
                     if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
                         if(!this.checkCtdtExist(this.props.ctdt, ctdt) && ctdt !== "edit") {
                           console.log(this.props.ctdt)
-                            return <Page404/>;
+                            //return <Page404/>;
                         }
                         else {
                             if(type !== "" && type !== undefined && type !== null) {

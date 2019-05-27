@@ -18,4 +18,5 @@ export default{
     COLLECT_MUCDO_MTMH_HAS_CDR_CDIO: baseUrl + '/collect-mucdo-mtmh-has-cdrcdio',
     COLLECT_DATA4: baseUrl + '/collect-data-4',
     SAVE_DATA4: baseUrl + '/save-data-4',
+    GET_TEACHER_LIST: baseUrl + '/get-teacher-list',
 }   

@@ -69,6 +69,11 @@ const saveData4 = (data) => {
     return $.post(url, data);
 }
 
+const getTeacherList = () => {
+    let url = _.GET_TEACHER_LIST;
+    return $.get(url);
+}
+
 export default{
     //subject
     collectSubjectList,
@@ -86,4 +91,5 @@ export default{
     collectMucdoMtmhHasCdrCdio,
     collectData4,
     saveData4,
+    getTeacherList,
 }

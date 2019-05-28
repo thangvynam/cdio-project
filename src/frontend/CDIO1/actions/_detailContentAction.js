@@ -62,9 +62,7 @@ const afterSaveContentProgramSuccess = (contentNodes, errorMessage) => ({
 
 export const onSaveContentProgram = contentProgram => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${
-      contentProgram.iddetail
-    }`;
+    let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${contentProgram.iddetail}`;
     let params = {};
     params.data = JSON.stringify(contentProgram.contentNodes);
     axios

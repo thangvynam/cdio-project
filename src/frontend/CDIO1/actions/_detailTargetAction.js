@@ -85,7 +85,7 @@ export const onSaveTargetProgram = targetProgram => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(saveTargetProgramSuccess(targetProgram.targetNodes,res));
+          dispatch(saveTargetProgramSuccess(targetProgram.targetNodes, res));
         } else {
           let chirp = {
             message: `Lưu mục tiêu đào tạo thất bại`,

@@ -71,12 +71,12 @@ export const filterSubjects = (e, subjects) => {
     const re = new RegExp(e.query.toLowerCase());
     const results = subjects
       ? subjects.filter(item => {
-        return re.test(item.SubjectName.toLowerCase());
-      })
+          return re.test(item.SubjectName.toLowerCase());
+        })
       : [];
     return results;
-  }catch(err){
-   return []; 
+  } catch (err) {
+    return [];
   }
 };
 
@@ -348,10 +348,10 @@ export const updateBlocks = (subjects, ...agru) => {
     } else {
       subject.isAccumulation = agru[2];
     }
-    if(subject.nameBlock.startsWith("BB") && !agru[2]){
+    if (subject.nameBlock.startsWith("BB") && !agru[2]) {
       subject.nameBlock += ` -- Không tích lũy`;
     }
-    if(subject.nameBlock.startsWith("TC") && !agru[3]){
+    if (subject.nameBlock.startsWith("TC") && !agru[3]) {
       subject.nameBlock += ` -- Không tích lũy`;
     }
     return arr.concat(subject);
@@ -382,7 +382,6 @@ export const updateAccumulationAndCredit = (subjects, ...agru) => {
 };
 
 export const totalCreditsOfTable = subjects => {
-
   const groups = groupBy(subjects, item => {
     return item.nameBlock;
   });
@@ -393,12 +392,17 @@ export const totalCreditsOfTable = subjects => {
         return (totalCredit += +subject.Credit);
       }, 0));
     }
-    return (blocks[0].isAccumulation ? total += +blocks[0].optionCredit : total += 0);
+    return blocks[0].isAccumulation
+      ? (total += +blocks[0].optionCredit)
+      : (total += 0);
   }, 0);
   return x;
 };
 
 export const convertDbToTreeNodes = (data, subjects) => {
+  if (!data.eduContents) {
+    return [];
+  }
   const contentPro = sortKeyRow([...data.eduContents]);
   const blocks = [...data.subjectBlocks];
   const detailBlocks = [...data.detailBlocks];
@@ -459,7 +463,7 @@ const sortKeyRow = arr => {
     }
     return key1.length - key2.length;
   });
-}
+};
 
 const findNode = (nodes, key) => {
   // case root = 7.1.... => 1.1...

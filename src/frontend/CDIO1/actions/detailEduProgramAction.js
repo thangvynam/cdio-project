@@ -36,6 +36,9 @@ export const onLoadDetailEduProgram = id => {
           };
           dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramError(res));
+          dispatch(contentAction.loadContentProgramError(res));
+          dispatch(scheduleAction.loadScheduleProgramError(res));
+          dispatch(targetAction.loadTargetProgramError(res));
         }
       })
       .catch(err => {
@@ -45,6 +48,9 @@ export const onLoadDetailEduProgram = id => {
         };
         dispatch(message.message(chirp));
         dispatch(loadDetailEduProgramError(err));
+        dispatch(contentAction.loadContentProgramError(err));
+        dispatch(scheduleAction.loadScheduleProgramError(err));
+        dispatch(targetAction.loadTargetProgramError(err));
       });
   };
 };
@@ -58,6 +64,18 @@ export const saveDetailEduProgramError = errorMessage => ({
   type: cst.SAVE_DETAIL_EDUPROGRAM_ERROR,
   errorMessage
 });
+
+export const afterLoadDetailEduProgramE3 = id => {
+  return (dispatch, getState) => {
+    let req = `${links.LOAD_DETAIL_EDUPROGRAM}?ideduprog=${id}`;
+    axios.get(req).then(res => {
+      const detailEduProgram = res.data.data;
+      if (detailEduProgram) {
+        dispatch(loadDetailEduProgramSuccess(detailEduProgram));
+      }
+    });
+  };
+};
 
 // infoEduProgram,
 // detailEduProgram,
@@ -83,9 +101,10 @@ export const onSaveDetailEduProgram = data => {
           dispatch(saveDetailEduProgramSuccess(res));
           let chirp = {
             message: `Lưu thông tin CTĐT thành công`,
-            isRight: 0
+            isRight: 1
           };
           dispatch(message.message(chirp));
+          dispatch(afterLoadDetailEduProgramE3(data.detailEduProgram.ideduprogram));
         } else {
           dispatch(saveDetailEduProgramError(res));
           let chirp = {
@@ -103,8 +122,8 @@ export const onSaveDetailEduProgram = data => {
         };
         dispatch(message.message(chirp));
       });
-      dispatch(contentAction.onSaveContentProgram(data.contentProgram));
-      dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
-      dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
+    dispatch(contentAction.onSaveContentProgram(data.contentProgram));
+    dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
+    dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
   };
 };

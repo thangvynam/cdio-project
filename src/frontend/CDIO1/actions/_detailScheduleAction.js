@@ -79,7 +79,7 @@ export const onSaveScheduleProgram = scheduleProgram => {
           dispatch(saveScheduleProgramSuccess(scheduleProgram.scheduleNodes, res));
           let chirp = {
             message: `Lưu kế hoạch giảng dạy thành công`,
-            isRight: 0
+            isRight: 1
           };
           dispatch(message.message(chirp));
         } else {

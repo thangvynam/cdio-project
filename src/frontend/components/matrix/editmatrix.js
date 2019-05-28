@@ -261,15 +261,19 @@ class EditMatrix extends Component {
   componentDidMount() {
 
     $.getStandardMatrix().then((res) => {
+      
       this.setState({ tempMatrix: res.data });
     })
     if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
-      $.getRealityMatrix();
+      //$.getRealityMatrix();
       $.getStandardMatrix().then((res) => {
+        console.log(res.data)
+        console.log(this.props.cdrCdio)
         let data = [];
         for (let i = 0; i < res.data.length; i++) {
           let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+          //console.log(index)
           if (index !== -1) {
             let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
             if (cdr_cdio !== "") {
@@ -292,6 +296,7 @@ class EditMatrix extends Component {
 
           }
         }
+        console.log(data)
         this.props.updateEditMatrix(data);
       })
 
@@ -324,6 +329,7 @@ class EditMatrix extends Component {
   }
 
   render() {
+    console.log(this.props.editMatrix)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];
@@ -348,48 +354,56 @@ class EditMatrix extends Component {
       this.sortLevels(secondColumn);
       this.sortLevels(thirdColumn);
 
-      const thirdColumnMapped = thirdColumn.map((key) => {
-        return {
-          title: key,
-          dataIndex: key,
-          key: key,
-          width: 90,
-          align: "center",
-          editable: true,
-          render: (text, record) => <div>
-            <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{text}</Tag>
-            <Tooltip placement="bottom" title="Edit"><Icon onClick={() => this.onClickEdit(record, key)} type="edit" style={{ cursor: "pointer" }} /></Tooltip>
-          </div>,
-        }
-      });
-
-      const secondColumnMapped = secondColumn.map((key) => {
-        let children = [];
-        for (let i = 0; i < thirdColumnMapped.length; i++) {
-          if (thirdColumnMapped[i].title.split(".")[0] + "." +
-            thirdColumnMapped[i].title.split(".")[1] === key)
-            children.push(thirdColumnMapped[i]);
-        }
-        return {
-          title: key,
-          dataIndex: key,
-          key: key,
-          children: children
-        }
-      })
-
-      firstColumnMapped = firstColumn.map((key) => {
-        let children = [];
-        for (let i = 0; i < secondColumnMapped.length; i++) {
-          if (secondColumnMapped[i].title.split(".")[0] === key)
-            children.push(secondColumnMapped[i]);
-        }
-        return {
-          title: key,
-          key: key,
-          children: children
-        }
-      })
+      const thirdColumnMapped = [];
+      if(thirdColumn.length > 0) {
+        thirdColumnMapped = thirdColumn.map((key) => {
+          return {
+            title: key,
+            dataIndex: key,
+            key: key,
+            width: 90,
+            align: "center",
+            editable: true,
+            render: (text, record) => <div>
+              <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{text}</Tag>
+              <Tooltip placement="bottom" title="Edit"><Icon onClick={() => this.onClickEdit(record, key)} type="edit" style={{ cursor: "pointer" }} /></Tooltip>
+            </div>,
+          }
+        });
+      }
+      const secondColumnMapped = [];
+      if(secondColumn.length > 0) {
+        secondColumnMapped = secondColumn.map((key) => {
+          let children = [];
+          for (let i = 0; i < thirdColumnMapped.length; i++) {
+            if (thirdColumnMapped[i].title.split(".")[0] + "." +
+              thirdColumnMapped[i].title.split(".")[1] === key)
+              children.push(thirdColumnMapped[i]);
+          }
+          return {
+            title: key,
+            dataIndex: key,
+            key: key,
+            children: children
+          }
+        });
+      }
+      
+      if(firstColumn.length > 0) {
+        firstColumnMapped = firstColumn.map((key) => {
+          let children = [];
+          for (let i = 0; i < secondColumnMapped.length; i++) {
+            if (secondColumnMapped[i].title.split(".")[0] === key)
+              children.push(secondColumnMapped[i]);
+          }
+          return {
+            title: key,
+            key: key,
+            children: children
+          }
+        });
+      }
+      
     }
 
     const columns = this.columns.concat(firstColumnMapped).map((col) => {

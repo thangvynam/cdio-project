@@ -859,7 +859,9 @@ getSubjectName = (subjectList, id) => {
     return -1;
   }
   saveAll = () => {
-    let data = this.props.cdrtable.previewInfo.map((item) => {
+    let data = [];
+    if(this.props.cdrtable.previewInfo.length > 0) {
+      data = this.props.cdrtable.previewInfo.map((item) => {
       
         return {
           cdr: item.cdr,
@@ -870,7 +872,9 @@ getSubjectName = (subjectList, id) => {
           muc_tieu_mon_hoc_id: this.getMtmhId(item.cdr.split(".")[0]),
           cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(item.level_verb[0], item.level_verb[1]),
         }
-      })
+      });
+    }
+    
     $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.subjectId}});
     this.loadTable();
     this.loadGap();
@@ -894,7 +898,9 @@ getSubjectName = (subjectList, id) => {
           row:  DragableBodyRow
         },
       }
-      let cdrmdhd_level  = this.props.cdrmdhd.map((item, key) => {
+      let cdrmdhd_level = [];
+      if(this.props.cdrmdhd.length > 0) {
+        cdrmdhd_level = this.props.cdrmdhd.map((item, key) => {
           let child_level_1 = [];
           for(let i = 0;i < item.children.length;i++) {
             child_level_1.push({
@@ -907,7 +913,9 @@ getSubjectName = (subjectList, id) => {
             label: item.label,
             children: child_level_1
           }
-        })
+        });
+      }
+      
       
       
       

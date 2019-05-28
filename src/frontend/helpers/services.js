@@ -195,6 +195,21 @@ const getDataSurvey = () => {
     return $.get(url);
 }
 
+const addData6 = (data)=>{
+    let url = _.ADD_DATA_6;
+    return $.post(url, data);
+}
+
+const addData9 = (data)=>{
+    let url = _.ADD_DATA_9;
+    return $.post(url, data);
+}
+
+const saveLog = (data)=>{
+    let url = _.SAVE_LOG;
+    return $.post(url, data);
+}
+
 export default{
     //subject
     collectSubjectList,
@@ -237,6 +252,9 @@ export default{
     getComment,
     getSurveyQA,
     getSurvey,
-    getDataSurvey
+    getDataSurvey,
+    addData6,
+    saveLog,
+    addData9,
 
 }

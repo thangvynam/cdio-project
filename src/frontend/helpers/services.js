@@ -195,6 +195,77 @@ const getDataSurvey = () => {
     return $.get(url);
 }
 
+//danhmuc
+const updateCdrmdhd = (data) => {
+    let url = _.UPDATE_CDRMDHD;
+    return $.post(url, data);
+}
+
+const deleteCdrmdhdFromCdr = (data) => {
+    let url = _.DELETE_CDRMDHD_FROM_CDR;
+    return $.post(url, data);
+}
+
+const deleteCdrmdhd = (data) => {
+    let url = _.DELETE_CDRMDHD;
+    return $.post(url, data);
+}
+
+const addCdrmdhd = (data) => {
+    let url = _.ADD_CDRMDHD;
+    return $.post(url, data);
+}
+
+const updateChude = (data) => {
+    let url = _.UPDATE_CHUDE;
+    return $.post(url, data);
+}
+
+const deleteChudeFromDanhgia = (data) => {
+    let url = _.DELETE_CHUDE_FROM_DANHGIA;
+    return $.post(url, data);
+}
+
+const deleteDanhgia = (data) => {
+    let url = _.DELETE_DANHGIA;
+    return $.post(url, data);
+}
+
+const deleteChude = (data) => {
+    let url = _.DELETE_CHUDE;
+    return $.post(url, data);
+}
+
+const addChude = (data) => {
+    let url = _.ADD_CHUDE;
+    return $.post(url, data);
+}
+
+const updateLoaitainguyen = (data) => {
+    let url = _.UPDATE_LOAITAINGUYEN;
+    return $.post(url, data);
+}
+
+const deleteLoaitainguyenFromTainguyen = (data) => {
+    let url = _.DELETE_LOAITAINGUYEN_FROM_TAINGUYEN;
+    return $.post(url, data);
+}
+
+const deleteTainguyen = (data) => {
+    let url = _.DELETE_TAINGUYEN;
+    return $.post(url, data);
+}
+
+const deleteLoaitainguyen = (data) => {
+    let url = _.DELETE_LOAITAINGUYEN;
+    return $.post(url, data);
+}
+
+const addLoaitainguyen = (data) => {
+    let url = _.ADD_LOAITAINGUYEN;
+    return $.post(url, data);
+}
+
 export default{
     //subject
     collectSubjectList,
@@ -237,6 +308,9 @@ export default{
     getComment,
     getSurveyQA,
     getSurvey,
-    getDataSurvey
+    getDataSurvey,
+
+    //danhmuc
+
 
 }

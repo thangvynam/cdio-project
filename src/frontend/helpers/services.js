@@ -281,6 +281,16 @@ const saveLog = (data)=>{
     return $.post(url, data);
 }
 
+const saveData8 = (data) => {
+    let url = _.SAVE_DATA_8;
+    return $.post(url,data);
+}
+
+const saveData7 = (data) => {
+    let url = _.SAVE_DATA_7;
+    return $.post(url,data);
+}
+
 export default{
     //subject
     collectSubjectList,
@@ -346,4 +356,6 @@ export default{
     saveLog,
     addData9,
 
+    saveData7,
+    saveData8,
 }

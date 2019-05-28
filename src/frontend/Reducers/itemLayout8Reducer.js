@@ -16,7 +16,7 @@ const addTNDataState = {
         mota: '',
         link: ''
     },
-    loaitainguyenState : [],
+    loaitainguyen : [],
     logData: [],
 
 };
@@ -46,7 +46,7 @@ const itemLayout8Reducer = (state = addTNDataState, action) => {
         case SAVE_LOAI_TAI_NGUYEN:{
             return {
                 ...state,
-                loaitainguyenState: action.data
+                loaitainguyen: action.data
             }
         }
         case SAVE_TEMP_DATA_LAYOUT_8:{

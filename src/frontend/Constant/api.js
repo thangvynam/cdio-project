@@ -35,6 +35,21 @@ export default{
     //Danh muc
     GET_CHUDE: baseUrl + '/get-chude',
     GET_LOAITAINGUYEN: baseUrl + '/get-loaitainguyen',
+    
+    UPDATE_CDRMDHD: baseUrl + '/update-cdrmdhd',
+    DELETE_CDRMDHD_FROM_CDR: baseUrl + '/delete-cdrmdhd-from-cdr',
+    DELETE_CDRMDHD: baseUrl + '/delete-cdrmdhd',
+    ADD_CDRMDHD: baseUrl + '/add-cdrmdhd',
+    UPDATE_CHUDE: baseUrl + '/update-chude',
+    DELETE_CHUDE_FROM_DANHGIA: baseUrl + '/delete-chude-from-danhgia',
+    DELETE_DANHGIA: baseUrl + '/delete-danhgia',
+    DELETE_CHUDE: baseUrl + '/delete-chude',
+    ADD_CHUDE: baseUrl + '/add-chude',
+    UPDATE_LOAITAINGUYEN: baseUrl + '/update-loaitainguyen',
+    DELETE_LOAITAINGUYEN_FROM_TAINGUYEN: baseUrl + '/delete-loaitainguyen-from-tainguyen',
+    DELETE_TAINGUYEN: baseUrl + '/delete-tainguyen',
+    DELETE_LOAITAINGUYEN: baseUrl + '/delete-loaitainguyen',
+    ADD_LOAITAINGUYEN: baseUrl + '/add-loaitainguyen',
     //Layout
     GET_TEACHINGACTS_5: baseUrl + '/get-teachingacts-5',
     GET_TEACHINGACTS_6: baseUrl + '/get-teachingacts-6',

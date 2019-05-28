@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input, notification } from 'antd';
 import { connect } from 'react-redux';
-import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3, SAVE_LOG } from '../../../Constant/ActionType';
+import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3, SAVE_LOG ,SAVE_LOG_OBJECT} from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
 import axios from 'axios'
 import { getCurrTime } from '../../../utils/Time';
@@ -11,13 +11,6 @@ const { Option } = Select;
 const confirm = Modal.confirm;
 const FormItem = Form.Item
 const EditableContext = React.createContext();
-const staActs = [
-  '1.1',
-  '2.2',
-  '2.3',
-  '2.4',
-  '4.1',
-]
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -359,8 +352,14 @@ async componentWillReceiveProps(nextProps){
         ...item,
         ...row
       });
+
+      console.log(item);
+      console.log(newItems[index])
+
       this.props.handleSave(newItems, key);
-      this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mục tiêu môn học thành: ${newItems[key].objectName}, ${newItems[key].description}, ${newItems[key].standActs}`, this.props.logReducer.contentTab, this.props.subjectid);
+      this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.subjectid)
+      this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.subjectid)
+
       this.setState({ editingKey: "" });
     });
   }
@@ -478,7 +477,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     },
     saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
       dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
-    }
+    },
+    saveReducer: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
+      dispatch({ type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
+  }
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(TableItem);

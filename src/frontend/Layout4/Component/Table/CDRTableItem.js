@@ -666,8 +666,9 @@ getSubjectName = (subjectList, id) => {
 
   OnDelete = (cdrtable, key) => {
     let deleteData = cdrtable.previewInfo[key - 1]    
-    this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: ${deleteData.cdr}, ${deleteData.level_verb}, ${deleteData.description}, ${deleteData.levels}`, this.props.logReducer.contentTab, this.props.subjectId);
-
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+    
     if(key === cdrtable.previewInfo.length){
       //cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
       cdrtable.previewInfo[key - 1].del_flag = 1;
@@ -709,6 +710,11 @@ getSubjectName = (subjectList, id) => {
     var cdrtable = this.props.cdrtable;
     var cdrselecteditem = this.props.cdrselecteditem;    
     for(let i = 0;i < cdrselecteditem.length;i++){
+      let deleteData = cdrtable.previewInfo[cdrselecteditem[i] - 1];
+
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+      
       if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
         //cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
         cdrtable.previewInfo[cdrtable.previewInfo.length - 1].del_flag = 1;
@@ -796,6 +802,7 @@ getSubjectName = (subjectList, id) => {
       } else {
         newData.previewInfo.push(row);
       }
+
       this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
       this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
       
@@ -809,8 +816,7 @@ getSubjectName = (subjectList, id) => {
         }
       
     }
-      let newItems = newData.previewInfo[key - 1];
-    
+
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');

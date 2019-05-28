@@ -46,7 +46,6 @@ import {
   isLoadEditMatrixReducer
 } from "../Reducers/editMatrixReducer";
 import surveyReducer from "../Reducers/surveyReducer";
-import teacherReducer from "../Reducers/teacherReducer";
 
 // start CDIO1 reducers
 import cdio1 from "../CDIO1/reducers/cdio1";
@@ -97,7 +96,6 @@ const allReducers = redux.combineReducers({
     logReducer: logReducer,
     surveyReducer: surveyReducer,
     authentication: authenticationReducer,
-    teacherlist: teacherReducer,
     ...cdio1
 
 });

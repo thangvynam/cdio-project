@@ -48,7 +48,7 @@ export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 export const CDR_CDIO = 'CDR_CDIO';
-export const LOAD_TEACHER = 'LOAD_TEACHER';
+
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -244,12 +244,7 @@ export function subjectList(newSubjectList) {
     };
 }
 
-export function teacherList(newTeacherList) {
-    return {
-        type: LOAD_TEACHER,
-        teacherlist: newTeacherList
-    };
-}
+
 
 export function cdrCdio(newCdrCdio) {
     return {

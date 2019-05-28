@@ -311,6 +311,18 @@ export default{
     getDataSurvey,
 
     //danhmuc
-
-
+    updateCdrmdhd,
+    deleteCdrmdhdFromCdr,
+    deleteCdrmdhd,
+    addCdrmdhd,
+    updateChude,
+    deleteChudeFromDanhgia,
+    deleteDanhgia,
+    deleteChude,
+    addChude,
+    updateLoaitainguyen,
+    deleteLoaitainguyenFromTainguyen,
+    deleteTainguyen,
+    deleteLoaitainguyen,
+    addLoaitainguyen
 }

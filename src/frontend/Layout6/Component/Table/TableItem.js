@@ -659,8 +659,10 @@ class TableItem extends Component {
       body.data.push(temp);
     });
 
-    console.log("body", body.data);
-    axios.post("/add-data-6", body).then(response => {
+    //console.log("body", body.data);
+    //axios.post("/add-data-6", body)
+    $.addData6(body)
+    .then(response => {
       if (response.data === 1) {
         notification["success"]({
           message: "Cập nhật thành công",
@@ -672,8 +674,8 @@ class TableItem extends Component {
           duration: 1
         });
       }
-      axios.post("/save-log", { data: this.props.itemKHGDTH.logData });
-
+      //axios.post("/save-log", { data: this.props.itemKHGDTH.logData });
+      $.saveLog({ data: this.props.itemKHGDTH.logData });
       this.getDataTable(this.state.subjectId);
     });
   };

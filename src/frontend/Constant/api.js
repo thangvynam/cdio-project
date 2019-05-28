@@ -64,7 +64,13 @@ export default{
     GET_SURVEY: baseUrl + '/get-survey',
     GET_DATA_SURVEY: baseUrl + '/get-data-survey',
 
+    //tab 69
+    ADD_DATA_6:baseUrl + '/add-data-6',
+    ADD_DATA_9:baseUrl + '/add-data-9',
 
+
+    //log
+    SAVE_LOG:baseUrl + '/save-log',
 
 }
 

@@ -201,36 +201,6 @@ export default class TitleCom extends React.Component {
             />
           </Col>
         </Row>
-        <br />
-        <Row>
-          <Col lg="1" md="1" sm="1" />
-          <Col lg="3" md="3" sm="3">
-            Thời gian đào tạo:
-          </Col>
-          <Col lg="6" md="6" sm="6">
-            <FormInput
-              type="text"
-              readOnly
-              value={this.props.eduYear}
-              className="mb-2"
-            />
-          </Col>
-        </Row>
-        <br />
-        <Row>
-          <Col lg="1" md="1" sm="1" />
-          <Col lg="3" md="3" sm="3">
-            Khối lượng kiến thức toàn khóa:
-          </Col>
-          <Col lg="6" md="6" sm="6">
-            <FormInput
-              type="text"
-              readOnly
-              value={this.props.sumCredit}
-              className="mb-2"
-            />
-          </Col>
-        </Row>
       </div>
     );
   }

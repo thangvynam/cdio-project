@@ -195,6 +195,7 @@ const getDataSurvey = () => {
     return $.get(url);
 }
 
+
 //danhmuc
 const updateCdrmdhd = (data) => {
     let url = _.UPDATE_CDRMDHD;
@@ -263,6 +264,19 @@ const deleteLoaitainguyen = (data) => {
 
 const addLoaitainguyen = (data) => {
     let url = _.ADD_LOAITAINGUYEN;
+
+const addData6 = (data)=>{
+    let url = _.ADD_DATA_6;
+    return $.post(url, data);
+}
+
+const addData9 = (data)=>{
+    let url = _.ADD_DATA_9;
+    return $.post(url, data);
+}
+
+const saveLog = (data)=>{
+    let url = _.SAVE_LOG;
     return $.post(url, data);
 }
 
@@ -310,6 +324,7 @@ export default{
     getSurvey,
     getDataSurvey,
 
+
     //danhmuc
     updateCdrmdhd,
     deleteCdrmdhdFromCdr,
@@ -325,4 +340,9 @@ export default{
     deleteTainguyen,
     deleteLoaitainguyen,
     addLoaitainguyen
+
+    addData6,
+    saveLog,
+    addData9,
+
 }

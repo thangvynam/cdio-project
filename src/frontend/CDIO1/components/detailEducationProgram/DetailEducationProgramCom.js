@@ -171,24 +171,16 @@ export default class DetailEducationProgramCom extends React.Component {
   componentWillReceiveProps(nextProps) {
     const data = event.receiveProps(nextProps);
 
-    if (nextProps.contentNodes.eduContents) {
+    if (nextProps.contentNodes) {
       this.ContentProgramCom.current.getContentNodes(
         nextProps.contentNodes,
         nextProps.subjects
       );
-    } else if (nextProps.contentNodes.isRevert) {
-      this.ContentProgramCom.current.getContentNodesFromRevert(
-        nextProps.contentNodes
-      );
     }
 
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
-    if (
-      JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes)
-    )
-      this.ScheduleEducationCom.current.getScheduleNodes(
-        nextProps.scheduleNodes
-      );
+    if (JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes))
+      this.ScheduleEducationCom.current.getScheduleNodes(nextProps.scheduleNodes);
 
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     if (JSON.stringify(targetNodes) !== JSON.stringify(nextProps.targetNodes))

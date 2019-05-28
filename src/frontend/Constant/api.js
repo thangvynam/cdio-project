@@ -68,6 +68,10 @@ export default{
     ADD_DATA_6:baseUrl + '/add-data-6',
     ADD_DATA_9:baseUrl + '/add-data-9',
 
+    //tab 7,8
+    SAVE_DATA_8 : baseUrl + '/save-tainguyenmonhoc',
+    SAVE_DATA_7 : baseUrl + '/save-danhgia',
+
 
     //log
     SAVE_LOG:baseUrl + '/save-log',

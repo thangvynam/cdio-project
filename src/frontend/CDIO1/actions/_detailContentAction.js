@@ -75,6 +75,11 @@ export const onSaveContentProgram = contentProgram => {
       })
       .then(res => {
         if (res.data.code === "OK") {
+          let chirp = {
+            message: `Lưu nội dung chương trình thành công`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
           dispatch(
             afterSaveContentProgramSuccess(
               { nodes: contentProgram.nodes, isRevert: true },

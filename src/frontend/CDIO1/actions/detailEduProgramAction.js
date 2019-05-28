@@ -49,35 +49,6 @@ export const onLoadDetailEduProgram = id => {
   };
 };
 
-export const onLoadDetailEduProgramAfterSave = id => {
-  return (dispatch, getState) => {
-    let req = `${links.LOAD_DETAIL_EDUPROGRAM}?ideduprog=${id}`;
-    axios
-      .get(req)
-      .then(res => {
-        const detailEduProgram = res.data.data;
-        if (detailEduProgram) {
-          dispatch(loadDetailEduProgramSuccess(detailEduProgram));
-        } else {
-          let chirp = {
-            message: `Chưa có dữ liệu`,
-            isRight: 0
-          };
-          dispatch(message.message(chirp));
-          dispatch(loadDetailEduProgramError(res));
-        }
-      })
-      .catch(err => {
-        let chirp = {
-          message: `Tải chi tiết CTĐT thất bại`,
-          isRight: 0
-        };
-        dispatch(message.message(chirp));
-        dispatch(loadDetailEduProgramError(err));
-      });
-  };
-};
-
 export const saveDetailEduProgramSuccess = successMessage => ({
   type: cst.SAVE_DETAIL_EDUPROGRAM_SUCCESS,
   successMessage
@@ -101,10 +72,6 @@ export const onSaveDetailEduProgram = data => {
     }`;
     let params = {};
     params.data = JSON.stringify(data.detailEduProgram);
-    // where to put actions LOL
-    dispatch(contentAction.onSaveContentProgram(data));
-    dispatch(scheduleAction.onSaveScheduleProgram(data));
-    dispatch(targetAction.onSaveTargetProgram(data));
     axios
       .post(req, params, {
         headers: {
@@ -114,6 +81,11 @@ export const onSaveDetailEduProgram = data => {
       .then(res => {
         if (res.data.code === 1) {
           dispatch(saveDetailEduProgramSuccess(res));
+          let chirp = {
+            message: `Lưu thông tin CTĐT thành công`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
         } else {
           dispatch(saveDetailEduProgramError(res));
           let chirp = {
@@ -131,5 +103,8 @@ export const onSaveDetailEduProgram = data => {
         };
         dispatch(message.message(chirp));
       });
+      dispatch(contentAction.onSaveContentProgram(data.contentProgram));
+      dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
+      dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
   };
 };

@@ -49,9 +49,10 @@ export const onloadScheduleProgram = idDetail => {
   };
 };
 
-export const saveScheduleProgramSuccess = successMessage => ({
+export const saveScheduleProgramSuccess = (scheduleNodes, successMessage) => ({
   type: cst.SAVE_SCHEDULE_EDUPROGRAM_SUCCESS,
-  successMessage
+  successMessage,
+  scheduleNodes
 });
 
 export const saveScheduleProgramError = (scheduleNodes, errorMessage) => ({
@@ -75,7 +76,12 @@ export const onSaveScheduleProgram = scheduleProgram => {
       })
       .then(res => {
         if (res.data.code === 1) {
-          dispatch(saveScheduleProgramSuccess(res));
+          dispatch(saveScheduleProgramSuccess(scheduleProgram.scheduleNodes, res));
+          let chirp = {
+            message: `Lưu kế hoạch giảng dạy thành công`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
         } else {
           let chirp = {
             message: `Lưu kế hoạch giảng dạy thất bại`,

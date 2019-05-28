@@ -45,9 +45,10 @@ export const onLoadTargetProgram = idDetail => {
   };
 };
 
-export const saveTargetProgramSuccess = successMessage => ({
+export const saveTargetProgramSuccess = (targetNodes, successMessage) => ({
   type: cst.SAVE_TARGET_EDUPROGRAM_SUCCESS,
-  successMessage
+  successMessage,
+  targetNodes
 });
 
 export const saveTargetProgramError = (targetNodes, errorMessage) => ({
@@ -64,10 +65,11 @@ export const onSaveTargetProgram = targetProgram => {
     let params = {};
     const outdata = [];
     const level = logic.getMaxLevel(targetProgram.targetNodes);
-    commonLogic.createSaveDataForTarget(targetProgram.targetNodes, outdata, level);
-
-    console.error(outdata)
-
+    commonLogic.createSaveDataForTarget(
+      targetProgram.targetNodes,
+      outdata,
+      level
+    );
 
     params.data = JSON.stringify(outdata);
     axios
@@ -83,7 +85,7 @@ export const onSaveTargetProgram = targetProgram => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(saveTargetProgramSuccess(res));
+          dispatch(saveTargetProgramSuccess(targetProgram.targetNodes,res));
         } else {
           let chirp = {
             message: `Lưu mục tiêu đào tạo thất bại`,

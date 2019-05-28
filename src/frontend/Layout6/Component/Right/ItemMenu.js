@@ -21,42 +21,6 @@ import $ from './../../../helpers/services';
 
 
 const { Option } = Select;
-// const standard_item = [
-//   {
-//     value: "G1",
-//     label: "G1",
-//     children: [
-//       {
-//         value: ".1",
-//         label: ".1"
-//       },
-//       {
-//         value: ".2",
-//         label: ".2"
-//       },
-//       {
-//         value: ".3",
-//         label: ".3"
-//       }
-//     ]
-//   },
-//   {
-//     value: "G2",
-//     label: "G2",
-//     children: [
-//       {
-//         value: ".1",
-//         label: ".1"
-//       },
-//       {
-//         value: ".2",
-//         label: ".2"
-//       }
-//     ]
-//   }
-// ];
-
-//const evalActs = ["BTVN#1", "BTTL#1", "DAMH#1"];
 
 class ItemMenu extends Component {
   constructor(props) {

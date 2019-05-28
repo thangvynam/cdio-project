@@ -1,23 +1,25 @@
 import React, { Component } from "react";
-import { Table, Divider, Tag, Row, Col, Button, Icon, Popconfirm } from 'antd';
+import { Table, Divider, Tag, Row, Col, Button, Icon, Popconfirm, Modal, message } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import axios from 'axios';
 import $ from "./../../helpers/services";
-import { teacherList } from "../../Constant/ActionType";
 
 class PhanCong extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      visible: false,
       selecteditem1: [],
-      selecteditem2: []
+      selecteditem2: [],
+      teacherList: [],
+      teacherListReview: []
     };
     this.columns1 = [{
       title: 'Tên',
       dataIndex: 'name',
       key: 'name',
-      width: 100,
+      width: 500,
       editable: true,
       render: text => <p>{text}</p>,
     }];
@@ -27,7 +29,7 @@ class PhanCong extends Component {
             title: 'Tên',
             dataIndex: 'name',
             key: 'name',
-            width: 100,
+            width: 500,
             editable: true,
             render: text => <p>{text}</p>,
           }, {
@@ -45,6 +47,74 @@ class PhanCong extends Component {
           }];
       }
       
+
+      handleDelete = (key) => {
+        $.deleteTeacherReview([key])
+        .then(res => {
+          $.getTeacherList({thong_tin_chung_id: this.props.subjectId})
+        .then(res => {
+          let resdata = res.data;
+          let data = [];
+          if(resdata.length > 0) {
+            data = resdata.map(item => {
+              return {key: item.id,
+              ...item}
+            })
+            
+          }
+          this.setState({teacherList: data})
+        })
+
+        $.getTeacherListReview({thong_tin_chung_id: this.props.subjectId})
+        .then(res => {
+          let resdata = res.data;
+          let data = [];
+          if(resdata.length > 0) {
+            data = resdata.map(item => {
+              return {key: item.id,
+              ...item}
+            })
+            
+          }
+          this.setState({teacherListReview: data})
+        })
+        this.setState({selecteditem1: [], selecteditem2: []});
+        })
+      }
+
+      delete = () => {
+        $.deleteTeacherReview(this.state.selecteditem2)
+        .then(res => {
+          $.getTeacherList({thong_tin_chung_id: this.props.subjectId})
+        .then(res => {
+          let resdata = res.data;
+          let data = [];
+          if(resdata.length > 0) {
+            data = resdata.map(item => {
+              return {key: item.id,
+              ...item}
+            })
+            
+          }
+          this.setState({teacherList: data})
+        })
+
+        $.getTeacherListReview({thong_tin_chung_id: this.props.subjectId})
+        .then(res => {
+          let resdata = res.data;
+          let data = [];
+          if(resdata.length > 0) {
+            data = resdata.map(item => {
+              return {key: item.id,
+              ...item}
+            })
+            
+          }
+          this.setState({teacherListReview: data})
+        })
+        this.setState({selecteditem1: [], selecteditem2: []});
+        })
+      }
   onSelectChange1 = (selectedRowKeys) => {
     this.setState({ selecteditem1: selectedRowKeys })
   }
@@ -62,21 +132,104 @@ class PhanCong extends Component {
     return false;
   }
 
+  showModal = () => {
+    this.setState({
+      visible: true,
+    });
+  }
 
+  handleOk = (e) => {
+    this.delete();
+    this.setState({
+      visible: false,
+    });
+    
+  }
 
+  handleCancel = (e) => {
+    this.setState({
+      visible: false,
+    });
+  }
+
+  phanCong = () => {
+    if(this.state.selecteditem1.length > 0) {
+      $.addTeacherReview({idTeacher: this.state.selecteditem1, idTTC: this.props.subjectId})
+      .then(res => {
+        $.getTeacherList({thong_tin_chung_id: this.props.subjectId})
+        .then(res => {
+          let resdata = res.data;
+          let data = [];
+          if(resdata.length > 0) {
+            data = resdata.map(item => {
+              return {key: item.id,
+              ...item}
+            })
+            
+          }
+          this.setState({teacherList: data})
+        })
+
+        $.getTeacherListReview({thong_tin_chung_id: this.props.subjectId})
+        .then(res => {
+          let resdata = res.data;
+          let data = [];
+          if(resdata.length > 0) {
+            data = resdata.map(item => {
+              return {key: item.id,
+              ...item}
+            })
+            
+          }
+          this.setState({teacherListReview: data})
+        })
+      })
+    }
+    else {
+      message.info("Chọn ít nhất một giáo viên!");
+    }
+    this.setState({selecteditem1: [], selecteditem2: []});
+  }
       componentDidMount() {
        // axios.get('localhost:3001/get-teacher-list')
-       $.getTeacherList()
+       $.getTeacherList({thong_tin_chung_id: this.props.subjectId})
         .then(res => {
-          console.log(res.data);
-          this.props.updateTeacherList(res.data);
+          let resdata = res.data;
+          let data = [];
+          if(resdata.length > 0) {
+            data = resdata.map(item => {
+              return {key: item.id,
+              ...item}
+            })
+            
+          }
+          this.setState({teacherList: data})
+        })
+
+        $.getTeacherListReview({thong_tin_chung_id: this.props.subjectId})
+        .then(res => {
+          let resdata = res.data;
+          let data = [];
+          if(resdata.length > 0) {
+            data = resdata.map(item => {
+              return {key: item.id,
+              ...item}
+            })
+            
+          }
+          this.setState({teacherListReview: data})
         })
       }
 
   render() {
-
+    
+    const hasSelected = this.state.selecteditem2.length > 0;
     const selectedRowKeys1 = this.state.selecteditem1;
     const selectedRowKeys2 = this.state.selecteditem2;
+    console.log(selectedRowKeys1)
+    console.log(selectedRowKeys2)
+    console.log(this.state.teacherList)
+    console.log(this.state.teacherListReview)
     const rowSelection1 = {
       selectedRowKeys1,
       width: "20",
@@ -92,26 +245,49 @@ class PhanCong extends Component {
         <div className="wrapper-flex">
           <div className="col-flex-left">
             <h2 style={{ textAlign: "center", fontSize: "11pt", color: "#03a9f4d4" }}>Danh sách giáo viên</h2>
+            <div style={{height: "30px"}}/>
             <Table
               pagination = {{ position: 'none' }}
               rowSelection={rowSelection1}
-              columns={this.columns2}
-              dataSource={this.props.teacherlist.previewInfo}
+              columns={this.columns1}
+              dataSource={this.state.teacherList}
               style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
             />
           </div>
           <div className="col-flex-center">
-            <Button className="button-phancong" style={{ backgroundColor:"#03a9f4d4", color: "white" }}>
+            <Button onClick={this.phanCong} className="button-phancong" style={{ backgroundColor:"#03a9f4d4", color: "white" }}>
               Phân công <span className="phancong-icon"><Icon type="double-right" /></span>
             </Button>
           </div>
           <div className="col-flex-right">
             <h3 style={{ textAlign: "center", fontSize: "11pt",  color: "#03a9f4d4" }}>Danh sách giáo viên đã được phân công</h3>
+            <div>
+          <Button
+            type="danger"
+            onClick={this.showModal}
+            disabled={!hasSelected}
+            style={{height: "30px"}}
+          >
+            Delete
+          </Button>
+          <Modal
+          title="Cảnh báo"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <p>Xóa những mục đã chọn?</p>
+          
+        </Modal>
+          <span style={{ marginLeft: 8 }}>
+            {hasSelected ? `Đã chọn ${this.state.selecteditem2.length} mục` : ''}
+          </span>
+          </div>
             <Table 
               pagination = {{ position: 'none' }}
               rowSelection={rowSelection2}
-              columns={this.columns1}
-              dataSource={[]}
+              columns={this.columns2}
+              dataSource={this.state.teacherListReview}
               style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
             />
           </div>
@@ -121,14 +297,12 @@ class PhanCong extends Component {
 }
 const mapStateToProps = (state) => {
   return {
-    teacherlist: state.teacherlist,
     subjectId: state.subjectid
   }
 }
 const mapDispatchToProps = (dispatch) => {
 
     return bindActionCreators({
-        updateTeacherList: teacherList
     }, dispatch);
   }
 

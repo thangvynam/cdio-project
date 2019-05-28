@@ -275,7 +275,9 @@ class TableItem extends Component {
     body.thong_tin_chung_id = this.state.subjectId;
     body.data = this.props.itemRule.previewInfo;
 
-    axios.post("/add-data-9", body).then(response => {
+    //axios.post("/add-data-9", body)
+    $.addData9(body)
+    .then(response => {
       if (response.data === 1) {
         notification["success"]({
           message: "Cập nhật thành công",
@@ -288,7 +290,9 @@ class TableItem extends Component {
         });
       }
     });
-    axios.post("/save-log", { data: this.props.itemRule.logData });
+
+    //axios.post("/save-log", { data: this.props.itemRule.logData });
+    $.saveLog({ data: this.props.itemRule.logData });
 
     this.getData(this.state.subjectId);
     console.log("body: ", body.data);

@@ -6,6 +6,9 @@ export const scheduleNodes = (state = [], action) => {
       return action.scheduleNodes;
     case types.LOAD_SCHEDULE_EDUPROGRAM_ERROR:
       return [];
+    case types.SAVE_SCHEDULE_EDUPROGRAM_SUCCESS:
+    case types.SAVE_SCHEDULE_EDUPROGRAM_ERROR:
+      return action.scheduleNodes;
     default:
       return state;
   }

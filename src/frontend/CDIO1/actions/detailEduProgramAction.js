@@ -102,9 +102,9 @@ export const onSaveDetailEduProgram = data => {
     let params = {};
     params.data = JSON.stringify(data.detailEduProgram);
     // where to put actions LOL
-    dispatch(contentAction.onSaveContentProgram(data.contentProgram));
-    dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
-    dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
+    dispatch(contentAction.onSaveContentProgram(data));
+    dispatch(scheduleAction.onSaveScheduleProgram(data));
+    dispatch(targetAction.onSaveTargetProgram(data));
     axios
       .post(req, params, {
         headers: {

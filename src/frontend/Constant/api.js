@@ -14,7 +14,9 @@ export default{
     COLLECT_DATA4: baseUrl + '/collect-data-4',
     SAVE_DATA4: baseUrl + '/save-data-4',
     GET_TEACHER_LIST: baseUrl + '/get-teacher-list',
-
+    GET_TEACHER_LIST_REVIEW: baseUrl + '/get-teacher-list-review',
+    DELETE_TEACHER_REVIEW: baseUrl + '/delete-teacher-review',
+    ADD_TEACHER_REVIEW: baseUrl + '/add-teacher-review',
 
     //Subject
     COLLECT_SUBJECT_LIST: baseUrl + '/collect-subjectlist',

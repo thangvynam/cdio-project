@@ -73,11 +73,27 @@ const saveData4 = (data) => {
     return $.post(url, data);
 }
 
-const getTeacherList = () => {
+const getTeacherList = (data) => {
     let url = _.GET_TEACHER_LIST;
-    return $.get(url);
+    return $.post(url, data);
 }
 
+const getTeacherListReview = (data) => {
+    let url = _.GET_TEACHER_LIST_REVIEW;
+    return $.post(url, data);
+}
+
+const deleteTeacherReview = (data) => {
+    let url = _.DELETE_TEACHER_REVIEW;
+    return $.post(url, data);
+}
+
+const addTeacherReview = (data) => {
+    let url = _.ADD_TEACHER_REVIEW;
+    return $.post(url, data);
+}
+
+//
 const getCDR_CDIO = () => {
     let url = _.GET_CDR_CDIO;
     return $.get(url);
@@ -195,7 +211,10 @@ export default{
     collectData4,
     saveData4,
     getTeacherList,
-
+    getTeacherListReview,
+    deleteTeacherReview,
+    addTeacherReview,
+    
     getBenchmarkMatrix,
     getStandardMatrix,
     getRealityMatrix,

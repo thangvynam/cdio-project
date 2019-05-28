@@ -264,6 +264,7 @@ const deleteLoaitainguyen = (data) => {
 
 const addLoaitainguyen = (data) => {
     let url = _.ADD_LOAITAINGUYEN;
+}
 
 const addData6 = (data)=>{
     let url = _.ADD_DATA_6;
@@ -339,7 +340,7 @@ export default{
     deleteLoaitainguyenFromTainguyen,
     deleteTainguyen,
     deleteLoaitainguyen,
-    addLoaitainguyen
+    addLoaitainguyen,
 
     addData6,
     saveLog,

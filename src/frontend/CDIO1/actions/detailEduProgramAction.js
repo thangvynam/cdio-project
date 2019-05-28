@@ -94,8 +94,6 @@ export const saveDetailEduProgramError = errorMessage => ({
 // scheduleProgram,
 // targetProgram
 
-
-
 export const onSaveDetailEduProgram = data => {
   return (dispatch, getState) => {
     let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprogram=${
@@ -103,6 +101,10 @@ export const onSaveDetailEduProgram = data => {
     }`;
     let params = {};
     params.data = JSON.stringify(data.detailEduProgram);
+    // where to put actions LOL
+    dispatch(contentAction.onSaveContentProgram(data.contentProgram));
+    dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
+    dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
     axios
       .post(req, params, {
         headers: {
@@ -112,14 +114,10 @@ export const onSaveDetailEduProgram = data => {
       .then(res => {
         if (res.data.code === 1) {
           dispatch(saveDetailEduProgramSuccess(res));
-          // where to put actions LOL
-          dispatch(contentAction.onSaveContentProgram(data.contentProgram));
-          dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
-          dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
         } else {
           dispatch(saveDetailEduProgramError(res));
           let chirp = {
-            message: `Lưu các danh mục CTĐT thất bại`,
+            message: `Lưu thông tin CTĐT thất bại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
@@ -128,20 +126,10 @@ export const onSaveDetailEduProgram = data => {
       .catch(err => {
         dispatch(saveDetailEduProgramError(err));
         let chirp = {
-          message: `Lưu các danh mục CTĐT thất bại`,
+          message: `Lưu thông tin CTĐT thất bại`,
           isRight: 0
         };
         dispatch(message.message(chirp));
       });
   };
 };
-
-// Promise.resolve(
-//   dispatch(contentAction.onSaveContentProgram(data.contentProgram))
-// ).then(() => {
-//   Promise.resolve(
-//     dispatch(targetAction.onSaveTargetProgram(data.targetProgram))
-//   ).then(() => {
-//       dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram))
-//   });
-// });

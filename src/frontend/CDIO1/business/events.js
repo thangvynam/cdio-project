@@ -88,7 +88,7 @@ export const onSaveDetail = (prop, state) => {
     iddetail: prop.detailEduProgram.Id ? prop.detailEduProgram.Id : 0,
     dateedited: new Date().toISOString(),
     datecreated: new Date().toISOString(),
-    idoutcome: state.IdOutcome,
+    idoutcome: state.IdOutcome > 0 ? state.IdOutcome : null,
     osusednode: state.OSUsedNode
   };
   return detailEduProgram;

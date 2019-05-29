@@ -9,17 +9,11 @@ import Login from "./frontend/CDIO1/containers/Login";
 import { PrivateRoute } from "./PrivateRoute";
 class App extends Component {
 
-  checkUser = (user) => {
-    if(user !== "" && user !== undefined && user !== null) {
-      return true;
-    }
-    return false;
-  }
   render() {
-    let isUserExist = this.checkUser(localStorage.getItem('user'));
+    let user = localStorage.getItem('user');
     return (
       <Switch>
-        <Route exact path="/" component={isUserExist ? Home : Login} />
+        <Route exact path="/" component={user ? Home : Login} />
         <Route exact path="/:parent/" component={Subject} />
         <Route exact path="/:parent/:ctdt/" component={Subject} />
         <Route exact path="/:parent/:ctdt/:type/" component={Subject} />

@@ -17,7 +17,7 @@ Bloom ở mức độ nhóm. <br />Mỗi mục tiêu môn học được mapping
                                 </span>
                         </Button>
                     </Tooltip>
-                    <TableItem isReview={this.props.isReview} />
+                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
                 </div>
             </React.Fragment>
         );

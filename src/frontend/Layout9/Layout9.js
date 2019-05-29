@@ -14,7 +14,7 @@ class Layout9 extends Component {
         </div>
         <div className="section-layout">
           <Element name="test1" className="element">
-            <TableItem isReview={this.props.isReview} />
+            <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
           </Element>
         </div>
         <div className="section-layout">

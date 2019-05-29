@@ -21,7 +21,7 @@ mục tiêu môn học. Mức độ được thể hiện bằng các ký hiệu
 từ mô tả được sử dụng từ các động từ <br />chi tiết của Bloom cho mức độ tương ứng – xem thêm bảng các
 động từ Bloom chi tiết cho ngành kỹ thuật.)</Button>
           </Tooltip>
-          <CDRTableItem isReview={this.props.isReview} />
+          <CDRTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
         </div>
         <div className="section-layout">
           <LogForm />

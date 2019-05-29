@@ -408,7 +408,7 @@ class CDRTableItem extends Component {
 
   loadGap = () => {
 
-    $.collectMtmhHasCdrCdio({data: {thong_tin_chung_id: this.state.id}}).then((res) => {
+    $.collectMtmhHasCdrCdio({data: {thong_tin_chung_id: this.props.monhoc}}).then((res) => {
       $.collectMucdoMtmhHasCdrCdio({data: res.data}).then((response) => {
           let arr = [];
           for(let i = 0;i < response.data.length;i++) {
@@ -439,7 +439,7 @@ class CDRTableItem extends Component {
           }
           let editMatrixArr = [];
           for(let i = 0;i < this.props.editMatrix.length;i++) {
-            if(this.props.editMatrix[i].key.toString() === this.state.id.toString()) {
+            if(this.props.editMatrix[i].key.toString() === this.props.monhoc.toString()) {
               for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
                 let key = Object.keys(this.props.editMatrix[i])[j];
                 if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
@@ -489,7 +489,7 @@ class CDRTableItem extends Component {
 
   loadTable = () => {
     var self = this;
-    $.collectData4({ data: {thong_tin_chung_id: self.state.id}})
+    $.collectData4({ data: {thong_tin_chung_id: self.props.monhoc}})
     .then(function (response) {
     const tableData = {
       previewInfo: []
@@ -607,7 +607,7 @@ getSubjectName = (subjectList, id) => {
     //   console.log(error);
     // });
    
-    if(this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    if(this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
       if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
         this.props.updateIsLoadEditMatrix("true");
         $.getRealityMatrix();
@@ -644,7 +644,7 @@ getSubjectName = (subjectList, id) => {
       this.loadGap();
     }
 
-    if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    if(this.props.isLoad === "false" && this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
       this.props.updateIsLoad("true");
       this.loadTable();
     }
@@ -652,7 +652,7 @@ getSubjectName = (subjectList, id) => {
   
   componentWillReceiveProps(nextProps) {
     this.setState({id: nextProps.subjectId})
-    if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    if(this.props.isLoad === "false" && this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
       this.props.updateIsLoad("true");
       this.loadGap();
       this.loadTable();
@@ -875,7 +875,7 @@ getSubjectName = (subjectList, id) => {
       });
     }
     
-    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.subjectId}});
+    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.monhoc}});
     this.loadTable();
     this.loadGap();
     this.props.updateIsLoad("false");

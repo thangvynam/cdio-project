@@ -17,7 +17,7 @@ class Layout2 extends Component {
                             (Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)
                             </Button>
                     </Tooltip>
-                    <TableItem isReview={this.props.isReview} />
+                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
                 </div>
 
                 <div className="section-layout">

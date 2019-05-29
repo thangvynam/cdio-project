@@ -14,7 +14,7 @@ class Layout8 extends Component {
                 </div>
                 <div className="section-layout">
                     <Element name="test1" className="element" >
-                        <TNTableItem isReview={this.props.isReview} />
+                        <TNTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
                     </Element>
                 </div>
                 <div className="section-layout">

@@ -193,7 +193,7 @@ class ItemMenu extends Component {
     redirect() {
         if (this.state.redirectTab7) {
             return (
-                <Redirect to="/de-cuong-mon-hoc/danh-gia" />
+                <Redirect to="danh-gia" />
             );
         }
     }

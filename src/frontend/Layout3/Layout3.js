@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';
 import { Tooltip, Button } from 'antd';
+import LogForm from '../Log/LogForm';
+
 class Layout3 extends Component {
     render() {
         return (
@@ -17,7 +19,13 @@ Bloom ở mức độ nhóm. <br />Mỗi mục tiêu môn học được mapping
                                 </span>
                         </Button>
                     </Tooltip>
+
                     <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
+
+                    <br />
+                    <br />
+                    <LogForm />
+                    <br />
                 </div>
             </React.Fragment>
         );

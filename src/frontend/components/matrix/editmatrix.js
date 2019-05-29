@@ -363,7 +363,7 @@ class EditMatrix extends Component {
       this.sortLevels(secondColumn);
       this.sortLevels(thirdColumn);
 
-      const thirdColumnMapped = [];
+      let thirdColumnMapped = [];
       if(thirdColumn.length > 0) {
         thirdColumnMapped = thirdColumn.map((key) => {
           return {
@@ -380,7 +380,7 @@ class EditMatrix extends Component {
           }
         });
       }
-      const secondColumnMapped = [];
+      let secondColumnMapped = [];
       if(secondColumn.length > 0) {
         secondColumnMapped = secondColumn.map((key) => {
           let children = [];

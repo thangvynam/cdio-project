@@ -178,6 +178,7 @@ class Content extends Component {
         let type = this.props.content_type;
         let ctdt = this.props.content_ctdt;
         let khoi = this.props.content_khoi;
+        let monhoc = this.props.content_monhoc;
         let parent = this.props.content_parent;
         switch (type) {
             case "de-cuong-mon-hoc": {
@@ -234,7 +235,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout2 />
+                            <Layout2 monhoc={monhoc}/>
                         </div>
                     </React.Fragment>
                 ); break;
@@ -252,7 +253,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout3 />
+                            <Layout3 monhoc={monhoc}/>
                         </div>
                     </React.Fragment >
                 ); break;
@@ -270,7 +271,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout4 />
+                            <Layout4 monhoc={monhoc}/>
                         </div>
                     </React.Fragment>
                 ); break;
@@ -288,7 +289,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout5 />
+                            <Layout5 monhoc={monhoc}/>
                         </div>
                     </React.Fragment>
                 ); break;
@@ -306,7 +307,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout6 />
+                            <Layout6 monhoc={monhoc}/>
                         </div>
                     </React.Fragment>
                 ); break;
@@ -324,7 +325,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout7 />
+                            <Layout7 monhoc={monhoc}/>
                         </div>
                     </React.Fragment>
                 ); break;
@@ -342,7 +343,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout8 />
+                            <Layout8 monhoc={monhoc}/>
                         </div>
                     </React.Fragment>
                 ); break;
@@ -360,7 +361,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout9 />
+                            <Layout9 monhoc={monhoc}/>
                         </div>
                     </React.Fragment>
                 ); break;
@@ -397,7 +398,7 @@ class Content extends Component {
                                 <a href="#">Link</a>
                             </div>,
                                 </Row>
-                        <ThongTinChung />
+                        <ThongTinChung idMH={this.props.content_monhoc}/>
                     </React.Fragment>
                 ); break
             }
@@ -414,7 +415,7 @@ class Content extends Component {
                                 <a href="#">Link</a>
                             </div>,
                                 </Row>
-                        <Survey subjectName={this.props.subjectName} />
+                        <Survey subjectName={this.props.subjectName} monhoc={monhoc}/>
                     </React.Fragment>
                 )
                 break;

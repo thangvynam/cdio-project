@@ -243,18 +243,18 @@ class Home extends Component {
       })
 }
 
-
-
 componentDidUpdate(){
 
     window.onpopstate  = (e) => {
         if(this.props.subjectId !== "") {
+
             
             this.props.updateSubjectId("");
         }
    }
   
       }
+
     render() {
         
         //if(this.state.isLoad=== true || this.props.match.params.ctdt === "" || this.props.match.params.ctdt === undefined) {
@@ -265,7 +265,7 @@ componentDidUpdate(){
             let parent = this.props.match.params.parent;
             let tab = this.props.match.params.tab;
         
-            //check param 1
+
             if(parent !== "" && parent !== undefined && parent !== null) {
                 if(!this.checkParentExist(this.props.parentitem, parent)) {
                     console.log("wrong param 1")
@@ -349,9 +349,11 @@ componentDidUpdate(){
                                                 }
                                             }
                                         }
+
                                         else {
                                             if(khoi !== "" && khoi !== undefined && khoi !== null) {
                                                 console.log("param 4 must be null")
+
                                                 return <Page404/>;
                                             }
                                         }

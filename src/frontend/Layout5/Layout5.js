@@ -19,7 +19,7 @@ ra chi tiết tương ứng với mỗi chủ đề, <br /> các hoạt động 
                     </Tooltip>
                 </div>
                 <div className="section-layout">
-                    <TableItem isReview={this.props.isReview} />
+                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
                 </div>
                 <div className="section-layout">
                     <LogForm />

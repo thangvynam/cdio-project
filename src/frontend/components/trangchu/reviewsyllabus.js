@@ -38,7 +38,6 @@ class ReviewSyllabus extends Component {
 }
 const mapStateToProps = (state) => {
     return {
-        teacherlist: state.teacherlist,
         subjectId: state.subjectid
     }
 }

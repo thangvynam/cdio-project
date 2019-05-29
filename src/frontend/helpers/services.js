@@ -13,10 +13,14 @@ import $ from 'axios';
 
 //subject
 const collectSubjectList = () => {
-    let url = _.COLLECT_SUBJECT_LIST;
+    let url = _.GET_BLOCK_SUBJECT;
     return $.get(url);
 }
 
+const getBlockSubject = (id) => {
+    let url = _.GET_BLOCK_SUBJECT;
+    return $.get(url + id);
+}
 
 //edit matrix
 const updateStandardMatrix = (data) => {
@@ -294,7 +298,7 @@ const saveData7 = (data) => {
 export default{
     //subject
     collectSubjectList,
-
+    getBlockSubject,
 
     //edit matrix
     updateStandardMatrix,

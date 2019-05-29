@@ -38,6 +38,8 @@ export const PARENT_ITEM = 'PARENT_ITEM';
 export const CTDT = 'CTDT';
 export const KTT = 'KTT';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
+export const DATA_CTDT = 'DATA_CTDT';
+export const ISLOADED_DATA_CTDT = 'ISLOADED_DATA_CTDT';
 export const SUBJECT_ID = 'SUBJECT_ID';
 export const SUBJECT_MASO = 'SUBJECT_MASO';
 export const CDRMDHD_DB = 'CDRMDHD_DB';
@@ -244,6 +246,19 @@ export function subjectList(newSubjectList) {
     };
 }
 
+export function dataCtdt(newDataCtdt) {
+    return {
+        type: DATA_CTDT,
+        data: newDataCtdt
+    };
+}
+
+export function isLoadedDataCtdt(newIsLoadedData) {
+    return {
+        type: ISLOADED_DATA_CTDT,
+        data: newIsLoadedData
+    };
+}
 
 
 export function cdrCdio(newCdrCdio) {

@@ -1,6 +1,5 @@
-export const LINK = "http://localhost:3001";
+const LINK = window.env.REACT_APP_API_PREFIX;
 
-//export const LINK = "http://172.29.64.132:3001";
 // user
 export const LOGIN = `${LINK}/user/login/`;
 export const LOAD_USERS = `${LINK}/user/getlist/`;
@@ -34,6 +33,7 @@ export const SAVE_EDUPROGRAM = `${LINK}/eduprogram/update/`;
 // detail eduProgram links
 export const LOAD_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/get/`;
 export const SAVE_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/update/`;
+export const ADD_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/add/`;
 
 export const LOAD_CONTENT_EDUPROGRAM = `${LINK}/eduprogcontent/get/`;
 export const SAVE_CONTENT_EDUPROGRAM = `${LINK}/eduprogcontent/add/`;

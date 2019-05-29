@@ -272,6 +272,7 @@ export const convertDBToTreeNodeForEduPro = arrDB => {
     }
     return (nodes = addChildOSUsed(nodes, parentNode, row.NameRow));
   }, []);
+  return nodes;
 };
 
 

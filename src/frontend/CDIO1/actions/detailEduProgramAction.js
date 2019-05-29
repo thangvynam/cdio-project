@@ -36,6 +36,7 @@ export const onLoadDetailEduProgram = id => {
           };
           dispatch(message.message(chirp));
           dispatch(loadDetailEduProgramError(res));
+          // where to put actions LOL
           dispatch(contentAction.loadContentProgramError(res));
           dispatch(scheduleAction.loadScheduleProgramError(res));
           dispatch(targetAction.loadTargetProgramError(res));
@@ -48,6 +49,7 @@ export const onLoadDetailEduProgram = id => {
         };
         dispatch(message.message(chirp));
         dispatch(loadDetailEduProgramError(err));
+        // where to put actions LOL
         dispatch(contentAction.loadContentProgramError(err));
         dispatch(scheduleAction.loadScheduleProgramError(err));
         dispatch(targetAction.loadTargetProgramError(err));
@@ -65,7 +67,7 @@ export const saveDetailEduProgramError = errorMessage => ({
   errorMessage
 });
 
-export const afterLoadDetailEduProgramE3 = id => {
+export const afterSaveDetailEduProgramE3 = id => {
   return (dispatch, getState) => {
     let req = `${links.LOAD_DETAIL_EDUPROGRAM}?ideduprog=${id}`;
     axios.get(req).then(res => {
@@ -85,9 +87,14 @@ export const afterLoadDetailEduProgramE3 = id => {
 
 export const onSaveDetailEduProgram = data => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprogram=${
-      data.detailEduProgram.ideduprogram
-    }`;
+    let req =
+      data.detailEduProgram.iddetail > 0
+        ? `${links.SAVE_DETAIL_EDUPROGRAM}?ideduprogram=${
+            data.detailEduProgram.ideduprogram
+          }`
+        : `${links.ADD_DETAIL_EDUPROGRAM}?ideduprogram=${
+            data.detailEduProgram.ideduprogram
+          }`;
     let params = {};
     params.data = JSON.stringify(data.detailEduProgram);
     axios
@@ -104,7 +111,11 @@ export const onSaveDetailEduProgram = data => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(afterLoadDetailEduProgramE3(data.detailEduProgram.ideduprogram));
+          dispatch(afterSaveDetailEduProgramE3(data.detailEduProgram.ideduprogram));
+          // where to put actions LOL
+          dispatch(contentAction.onSaveContentProgram(data.contentProgram));
+          dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
+          dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
         } else {
           dispatch(saveDetailEduProgramError(res));
           let chirp = {
@@ -122,8 +133,5 @@ export const onSaveDetailEduProgram = data => {
         };
         dispatch(message.message(chirp));
       });
-    dispatch(contentAction.onSaveContentProgram(data.contentProgram));
-    dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
-    dispatch(targetAction.onSaveTargetProgram(data.targetProgram));
   };
 };

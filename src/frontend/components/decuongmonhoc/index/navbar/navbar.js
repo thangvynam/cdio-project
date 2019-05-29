@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Switch } from 'antd';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import "./navbar_css.css"
 import { subjectId } from '../../../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-
+import UserActionCom from '../../../../CDIO1/components/UserActionCom';
 class NavBar extends Component {
     state = {
         current: 'mail',
@@ -68,6 +68,7 @@ class NavBar extends Component {
         let type = this.props.content_type;
         let khoi = this.props.content_khoi;
         return (
+            <div>
             <Menu
                 onClick={this.handleClick}
                 selectedKeys={[this.state.current]}
@@ -106,6 +107,8 @@ class NavBar extends Component {
                     <span style={{ textAlign: "center", fontSize: "10pt" }}>{this.props.subjectName}</span>
                 </Menu.Item>
             </Menu>
+            <div style={{float: "right", paddingTop: "5px",}}><UserActionCom/></div>
+            </div>
         );
     }
 }

@@ -45,7 +45,7 @@ export default class LoginCom extends Component {
   };
 
   render() {
-    if (localStorage.getItem("user")) return <Redirect to="/home" />;
+    if (localStorage.getItem("user")) return <Redirect to="/" />;
 
     return (
       <Container>
@@ -78,7 +78,7 @@ export default class LoginCom extends Component {
                       <Col xs="6">
                         <Button
                           tag={Link}
-                          to="/home"
+                          to="#"
                           color="primary"
                           className="px-4"
                           onClick={this.onLogIn}

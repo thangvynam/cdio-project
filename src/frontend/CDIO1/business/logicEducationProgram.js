@@ -508,3 +508,19 @@ const subjectsOfDetailBlock = (idDetailBlock, subjects) => {
       : results;
   }, []);
 };
+
+export const findCreditByNameBlock =(node, nameBlock) =>{
+  const subjects = node.data.subjects;
+  const groups = groupBy(subjects, item => {
+    return item.nameBlock;
+  });
+
+  for(let i=0; i< groups.length; i++){
+    const blocks = groups[i];
+    const name = blocks[0].nameBlock;
+    if(name.startsWith("TC") && name.includes(nameBlock)){
+      return blocks[0].optionCredit;
+    }
+  }
+  return 0;
+};

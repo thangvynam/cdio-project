@@ -5,7 +5,6 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeTNData, addTNData, saveTempTNData ,saveLoaiTaiNguyen, saveLog,saveLogObject} from '../../../Constant/ActionType';
-import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
 import $ from './../../../helpers/services';
 
@@ -135,7 +134,7 @@ class TNFormItem extends Component {
             ],
             initialValue: this.props.itemLayout8Reducer.tempInfo.loai
           })
-            (<Cascader options={this.props.itemLayout8Reducer.loaitainguyenState.map(item => {
+            (<Cascader options={this.props.itemLayout8Reducer.loaitainguyen.map(item => {
               return {value :item.loai,label : item.loai}
             })} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />)}
           </Form.Item>

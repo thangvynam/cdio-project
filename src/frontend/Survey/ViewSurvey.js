@@ -58,6 +58,7 @@ class ViewSurvey extends Component {
     }
 
     render() {
+        console.log(this.props.ctdt);
 
         const formItemLayout = {
             labelCol: {
@@ -77,8 +78,9 @@ class ViewSurvey extends Component {
                     label="Chương trình đào tạo"
                 >
                     <Select style={{ width: 370 }} onChange={handleChange}>
-                        <Option value="Chính quy">Chính quy</Option>
-                        <Option value="Cao đẳng">Cao đẳng</Option>
+                        {this.props.ctdt ? this.props.ctdt.map(item => {
+                            return <Option value={item.Id}>{item.EduName}</Option>
+                        }) : <Option></Option>}
                     </Select>
                 </Form.Item>
                 <Form.Item
@@ -113,7 +115,7 @@ class ViewSurvey extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-
+        ctdt: state.eduPrograms,
     }
 }
 

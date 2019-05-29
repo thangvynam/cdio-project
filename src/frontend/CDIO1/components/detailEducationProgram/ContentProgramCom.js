@@ -355,7 +355,7 @@ export default class ContentProgramCom extends React.Component {
 
   filterBlocks = e => {
     this.setState({
-      filterBlocks: logic.blocksOfTable(this.state.node)
+      filterBlocks: logic.blocksOfTable(this.state.node),
     });
   };
 
@@ -379,7 +379,11 @@ export default class ContentProgramCom extends React.Component {
     if (this.state.isRequired) {
       this.setState({ descriptionBlockBB: e.value });
     } else {
-      this.setState({ descriptionBlockTC: e.value });
+      const credit = logic.findCreditByNameBlock(this.state.node, e.value);
+      this.setState({ 
+        descriptionBlockTC: e.value,
+        optionalCredit: credit
+      });
     }
   };
 

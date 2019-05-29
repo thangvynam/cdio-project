@@ -11,15 +11,17 @@ class App extends Component {
   render() {
     return (
       <Switch>
-        <Route exact path="/" component={Login} />
-        <PrivateRoute exact path="/home" component={Home} />
-        <PrivateRoute exact path="/:parent/" component={Subject} />
-        <PrivateRoute exact path="/:parent/:ctdt/" component={Subject} />
-        <PrivateRoute exact path="/:parent/:ctdt/:type/" component={Subject} />
-        <PrivateRoute exact path="/:parent/:ctdt/:type/:khoi/" component={Subject} />
-        <PrivateRoute exact path="/:parent/:ctdt/:type/:khoi/:monhoc/" component={Subject} />
-        <PrivateRoute exact path="/:parent/:ctdt/:type/:khoi/:monhoc/:tab" component={Subject} />
-        <PrivateRoute component={Page404}/>
+
+        <Route exact path="/" component={Home} />
+        {/* <Route exact path="/home" component={Home} /> */}
+        <Route exact path="/:parent/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:khoi/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:khoi/:monhoc/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:khoi/:monhoc/:tab" component={Subject} />
+        <Route component={Page404}/>
+
       </Switch>
     );
   }

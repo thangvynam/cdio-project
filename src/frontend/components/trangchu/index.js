@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon, Button } from 'antd';
 import './../decuongmonhoc/index/index.css';
-import { Link } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
 
@@ -35,6 +35,7 @@ class Home extends Component {
     }
 
     render() {
+        if (!localStorage.getItem("user")) return <Redirect to="/" />;
         let GirdLayout;
         if (this.state.collapse) {
             GirdLayout = (<Row>

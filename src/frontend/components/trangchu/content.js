@@ -40,6 +40,7 @@ import * as facultiesAction from "../../CDIO1/actions/facultiesAction";
 import * as programsAction from "../../CDIO1/actions/programsAction";
 import * as levelsAction from "../../CDIO1/actions/levelsAction";
 import * as majorsAction from "../../CDIO1/actions/majorsAction";
+import UserActionCom from '../../CDIO1/components/UserActionCom';
 //END CDIO1
 
 import $ from './../../helpers/services';
@@ -590,6 +591,7 @@ class Content extends Component {
         return (
             <React.Fragment>
 
+                {/* <div style={{float: "right", paddingTop: "5px",}}><UserActionCom/></div> */}
                 {content_layout}
             </React.Fragment>
         )

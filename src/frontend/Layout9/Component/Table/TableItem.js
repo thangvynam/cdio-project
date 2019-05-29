@@ -289,13 +289,14 @@ class TableItem extends Component {
           duration: 1
         });
       }
+
+      $.saveLog({ data: this.props.itemRule.logData });
+
+      this.getData(this.state.subjectId);
     });
 
     //axios.post("/save-log", { data: this.props.itemRule.logData });
-    $.saveLog({ data: this.props.itemRule.logData });
-
-    this.getData(this.state.subjectId);
-    console.log("body: ", body.data);
+   
   };
 
   componentDidMount() {

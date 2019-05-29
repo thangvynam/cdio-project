@@ -23,7 +23,7 @@ class MenuLeft extends Component {
 
   checkSubjectExist = monhoc => {
     for (let i = 0; i < this.props.subjectList.length; i++) {
-      if (this.props.subjectList[i].Id.toString() === monhoc.toString()) {
+      if (this.props.subjectList[i].Id === +monhoc) {
         return true;
       }
     }
@@ -31,63 +31,37 @@ class MenuLeft extends Component {
   };
 
   getCtdt = (Ctdt, ctdt) => {
-    for (let i = 0; i < Ctdt.length; i++) {
-      if (Ctdt[i].Id === +ctdt) {
-        return i;
+      for (let i = 0; i < Ctdt.length; i++) {
+        if (Ctdt[i].Id === +ctdt) {
+          return i;
+        }
       }
-    }
     return -1;
   };
+
   redirect = () => {
     this.props.updateContentTab(this.props.content_tab);
-    if (
-      this.props.content_type === "itusurvey" &&
-      this.props.subjectId !== "" &&
-      this.props.subjectId !== undefined &&
-      (this.props.content_monhoc === "" ||
-        this.props.content_monhoc === undefined)
-    ) {
-
-      // return (
-      //   <Redirect
-      //     to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
-      //       this.props.content_type
-      //     }/view/${this.props.subjectId}/itusurvey`}
-      //   />
-      // );
-
-    }
-    if (
-      this.props.subjectId !== "" &&
-      this.props.subjectId !== undefined &&
-      (this.props.content_monhoc === "" ||
-        this.props.content_monhoc === undefined)
-
-      ) {
-        if(this.props.content_khoi !== "" && this.props.content_khoi !== undefined) {
-
-        }
-      // return (
-      //   <Redirect
-      //     to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
-      //       this.props.content_type
-      //     }/${this.props.content_khoi}/${this.props.subjectId}/thong-tin-chung`}
-      //   />
-      // );
-
-    } else if (
-      this.props.content_monhoc !== "" &&
-      this.props.content_monhoc !== undefined &&
-      (this.props.content_tab === "" || this.props.content_tab === undefined) &&
-      this.checkSubjectExist(this.props.content_monhoc) === true
-    ) {
-      return (
-        <Redirect
-          to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
-            this.props.content_type
-            }/${this.props.content_khoi}/${this.props.content_monhoc}/phan-cong`}
-        />
-      );
+    if (this.props.content_monhoc !== "" &&
+      this.props.content_monhoc !== undefined && this.props.content_monhoc !== null &&
+      (this.props.content_tab === "" || this.props.content_tab === undefined && this.props.content_tab === null)
+    ) 
+    {
+      if(this.props.content_type === "de-cuong-mon-hoc") {
+        return (
+          <Redirect
+            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}
+            /${this.props.content_khoi}/${this.props.content_monhoc}/phan-cong`}
+          />
+        );
+      }
+      else if(this.props.content_type === "itusurvey") {
+        return (
+          <Redirect
+            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}
+            /${this.props.content_khoi}/${this.props.content_monhoc}/itusurvey`}
+          />
+        );
+      }
     }
   };
 
@@ -150,29 +124,30 @@ class MenuLeft extends Component {
             //let indexCtdt = this.getCtdt(this.props.ctdt, this.props.content_ctdt);
             if (
               this.props.content_type === "de-cuong-mon-hoc" &&
-              key === "de-cuong-mon-hoc"
+              key === "de-cuong-mon-hoc" &&  this.props.dataCtdt !== undefined
+              &&  this.props.dataCtdt !== null
             ) {
-              for (let j = 0; j < this.props.ktt.children.length; j++) {
+              for (let j = 0; j < this.props.dataCtdt.length; j++) {
                 menuItemsCollapse.push(
                   <Menu.Item
-                    key={this.props.ktt.children[j].id}
-                    onClick={() => this.onClick(this.props.ktt.children[j].id)}
+                    key={this.props.dataCtdt[j].Id}
+                    onClick={() => this.onClick(this.props.dataCtdt[j].Id)}
                   >
                     <Link
                       style={{ paddingLeft: "40px" }}
                       to={`/${this.props.parentitem[i].id}/${
                         this.props.ctdt[ctdtIndex].Id
-                        }/${key}/${this.props.ktt.children[j].id}`}
+                        }/${key}/${this.props.dataCtdt[j].Id}`}
                     >
                       <Icon type="dashboard" />
-                      <span>{this.props.ktt.children[j].name}</span>
+                      <span>{this.props.dataCtdt[j].NameBlock}</span>
                     </Link>
                   </Menu.Item>
                 );
                 if (
                   this.props.content_monhoc !== "" &&
                   this.props.content_monhoc !== undefined &&
-                  this.props.ktt.children[j].id === this.props.content_khoi
+                  this.props.dataCtdt[j].Id === +this.props.content_khoi
                 ) {
                   if (this.props.content_tab === "phan-cong") {
                     menuItemsCollapse.push(
@@ -358,9 +333,8 @@ const mapStateToProps = state => {
     subjectId: state.subjectid,
     subjectList: state.subjectlist,
     subjectMaso: state.subjectmaso,
-    //ctdt: state.ctdt,
-    ktt: state.ktt,
-    ctdt: state.eduPrograms
+    ctdt: state.eduPrograms,
+    dataCtdt: state.datactdt.data
   };
 };
 const mapDispatchToProps = dispatch => {

@@ -208,6 +208,7 @@ class CDRFormItem extends Component {
       if(this.state.id !== "" && this.state.id !== undefined) {
         $.collectMtmh({ data: {thong_tin_chung_id: this.state.id}})
         .then(function (response) {
+          console.log(response.data)
             self.props.updateMtmh(response.data);
             
           })
@@ -289,6 +290,7 @@ class CDRFormItem extends Component {
       if(this.state.id !== "" && this.state.id !== undefined) {
         $.collectMtmh({ data: {thong_tin_chung_id: this.props.subjectId}})
         .then(function (response) {
+          console.log(response.data)
             self.props.updateMtmh(response.data);
             
           })
@@ -301,9 +303,12 @@ class CDRFormItem extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const CDROption = this.props.mtmh.map((key) => {
-      return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>
-    });
+    let CDROption = [];
+    if(this.props.mtmh.length > 0) {
+      CDROption = this.props.mtmh.map((key) => {
+        return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>
+      });
+    } 
     return (
       <div >
         <div style={{ marginTop: "10px" }}></div>

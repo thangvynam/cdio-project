@@ -25,11 +25,14 @@ class NavBar extends Component {
     }
 
     getCtdtName = (ctdt, id) => {
-        for(let i = 0;i < ctdt.length;i++) {
-            if(ctdt[i].Id === +id) {
-                return ctdt[i].EduName;
+        if(ctdt !== undefined && ctdt !== null) {
+            for(let i = 0;i < ctdt.length;i++) {
+                if(ctdt[i].Id === +id) {
+                    return ctdt[i].EduName;
+                }
             }
         }
+        
         return "";
     }
 
@@ -42,12 +45,15 @@ class NavBar extends Component {
         return "";
     }
 
-    getKhoiName = (ktt, id) => {
-        for(let i = 0;i < ktt.length;i++) {
-            if(ktt[i].id === id) {
-                return  ktt[i].name;  
-            } 
+    getKhoiName = (dataCtdt, id) => {
+        if(dataCtdt !== undefined && dataCtdt !== null) {
+            for(let i = 0;i < dataCtdt.length;i++) {
+                if(dataCtdt[i].Id === +id) {
+                    return  dataCtdt[i].NameBlock;  
+                } 
+            }
         }
+        
         return "";
     }
 
@@ -86,13 +92,13 @@ class NavBar extends Component {
                     <Link onClick={this.onClick} to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getParentName(this.props.parentitem, parent)}</span><Icon type="right" /></Link>
                 </Menu.Item> : null}
                 {ctdt !== "" && ctdt !== undefined ? <Menu.Item key={ctdt} >
-                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getCtdtName(this.props.ctdt, ctdt)}</span><Icon type="right" /></Link>
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{ctdt === "edit" ? "Edit" : this.getCtdtName(this.props.ctdt, ctdt)}</span><Icon type="right" /></Link>
                 </Menu.Item> : null}
                 {type !== "" && type !== undefined ? <Menu.Item key={type} >
                     <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getTypeName(this.props.menuItem, type)}</span><Icon type="right" /></Link>
                 </Menu.Item> : null}
                 {khoi !== "" && khoi !== undefined && khoi !== "view" ? <Menu.Item key={khoi} >
-                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getKhoiName(this.props.ktt.children, khoi)}</span><Icon type="right" /></Link>
+                    <Link onClick={this.onClick} to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt" }}>{this.getKhoiName(this.props.dataCtdt, khoi)}</span><Icon type="right" /></Link>
                 </Menu.Item> : null}
                <Menu.Item key={this.props.subjectName} >
                     <span style={{ textAlign: "center", fontSize: "10pt" }}>{this.props.subjectName}</span>
@@ -107,7 +113,7 @@ const mapStateToProps = (state) => {
         menuItem: state.menuitem,
         parentitem: state.parentitem,
         ctdt: state.eduPrograms,
-        ktt: state.ktt
+        dataCtdt: state.datactdt.data
     }
 }
 

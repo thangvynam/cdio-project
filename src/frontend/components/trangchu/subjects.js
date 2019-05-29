@@ -9,7 +9,7 @@ import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
 import axios from 'axios';
-import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio } from '../../Constant/ActionType';
+import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
  
@@ -23,7 +23,7 @@ class Home extends Component {
             isShow: false,
             colorTheme: false,
             cdr_cdio: [],
-            isLoadSubjectList: "false"
+            isLoad: false
         }
     }
 
@@ -45,9 +45,9 @@ class Home extends Component {
         })
     }
 
-    checkSubjectExist = (subjectlist, monhoc) => {
+    checkSubjectExist = (subjectlist, monhoc, khoi) => {
         for(let i = 0;i < subjectlist.length;i++) {
-            if(subjectlist[i].Id.toString() === monhoc.toString()) {
+            if(subjectlist[i].Id === +monhoc && subjectlist[i].IdSubjectBlock === +khoi) {
                 return true;
             }
         }
@@ -72,14 +72,6 @@ class Home extends Component {
         return false;
     }
 
-    checkParentExist = (parent, id) => {
-        for(let i = 0;i < parent.length;i++) {
-            if(parent[i].id === id) {
-                return true;
-            }
-        }
-        return false;
-    }
 
     checkCtdtExist = (Ctdt, ctdt) => {
         for(let i = 0;i < Ctdt.length;i++) {
@@ -90,9 +82,9 @@ class Home extends Component {
         return false;
     }
 
-    checkKhoiExist = (ktt, khoi) => {
-        for(let i = 0;i < ktt.length;i++) {
-            if(ktt[i].id === khoi) {
+    checkKhoiExist = (dataCtdt, khoi) => {
+        for(let i = 0;i < dataCtdt.length;i++) {
+            if(dataCtdt[i].Id === +khoi) {
                 return true;
             }
         }
@@ -127,41 +119,6 @@ class Home extends Component {
       }
 
 
-    componentWillReceiveProps(nextProps) {
-        // if(this.props.isLoadEditMatrix === "false" &&  nextProps.subjectList.length > 0) {
-        //     this.props.updateIsLoadEditMatrix("true");
-        //     axios.get('/get-reality-matrix');
-        //     axios.get("/get-standard-matrix").then((res) => {
-        //         let data = [];
-        //         for(let i = 0;i < res.data.length;i++) {
-        //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-        //             if(index !== -1) {
-        //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-        //                 if(cdr_cdio !== "") {
-        //                     data[index][cdr_cdio] = res.data[i].muc_do;
-        //                 }
-        //             }
-        //             else {  
-        //                 let subjectName = this.getSubjectName( nextProps.subjectList, res.data[i].thong_tin_chung_id);
-        //                 let cdr_cdio = this.getCdrCdio(this.state.cdr_cdio, res.data[i].chuan_dau_ra_cdio_id);
-        //                 if(subjectName !== "" && cdr_cdio !== "") {
-        //                     data.push({
-        //                         key: res.data[i].thong_tin_chung_id,
-        //                         hocky: 1,
-        //                         hocphan: subjectName,
-        //                         gvtruongnhom: 'NULL'
-        //                     })
-
-        //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-        //                 }
-                        
-        //             }
-        //         }
-        //         this.props.updateEditMatrix(data);
-        //       })
-              
-        // }
-      }
 
       checkLevel_1_Exist = (level_1, cdrmdhd) => {
         for(let i = 0;i < cdrmdhd.length;i++) {
@@ -186,17 +143,40 @@ class Home extends Component {
         let monhoc = self.props.match.params.monhoc;
         //axios.get('http://172.29.64.132:3001/collect-subjectlist')
         //axios.get('/collect-subjectlist')
-         $.collectSubjectList()
-     .then( (response) => {
-       self.props.updateSubjectList(response.data);
-       this.setState({isLoadSubjectList: "true"});
-     })
-    .catch(function (error) {
-       console.log(error);
-    });     
+    //      $.collectSubjectList()
+    //  .then( (response) => {
+    //    //self.props.updateSubjectList(response.data);
+    //    this.setState({isLoadSubjectList: "true"});
+    //  })
+    // .catch(function (error) {
+    //    console.log(error);
+    // });     
+    let ctdt = self.props.match.params.ctdt;
+    if(ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
+        $.getBlockSubject(ctdt)
+        .then(res => {
+        let resData = res.data.data;
+        let dataSubject = [];
+        let dataCtdt = [];
+        if(resData !== undefined && resData !== null) {
+            console.log(resData);
+            for(let i = 0;i < resData.length;i++) {
+            dataCtdt = dataCtdt.concat(resData[i].block);
+            for(let j = 0;j < resData[i].block.length;j++) {
+                dataSubject = dataSubject.concat(resData[i].block[j].subjects);
+            }
+            }
+        }
+        dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+        this.props.updateSubjectList(dataSubject);
+        this.props.updateDataCtdt(dataCtdt);
+        this.props.updateIsLoadedDataCtdt(true);
+        })
+    }
+    
+    
 
     $.collectCdrmdhd4()
-
     .then(function (response) {
         let cdrmdhd = self.props.cdrmdhd;
         for(let i = 0;i < response.data.length;i++) {
@@ -253,6 +233,9 @@ class Home extends Component {
         self.props.updateCdrCdio(res.data)
       })
 }
+
+
+
 componentDidUpdate(){
 
     window.onpopstate  = (e) => {
@@ -264,103 +247,113 @@ componentDidUpdate(){
   
       }
     render() {
-        if(this.state.isLoadSubjectList === "true") {
+        
+        //if(this.state.isLoad=== true || this.props.match.params.ctdt === "" || this.props.match.params.ctdt === undefined) {
             let type = this.props.match.params.type;
             let ctdt = this.props.match.params.ctdt;
             let khoi = this.props.match.params.khoi;
+            let monhoc = this.props.match.params.monhoc;
             let parent = this.props.match.params.parent;
             let tab = this.props.match.params.tab;
         
+            //check param 1
             if(parent !== "" && parent !== undefined && parent !== null) {
                 if(!this.checkParentExist(this.props.parentitem, parent)) {
+                    console.log("wrong param 1")
                     return <Page404/>;
                 }
                 else {
-                    if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                        if(!this.checkCtdtExist(this.props.ctdt, ctdt) && ctdt !== "edit") {
-                          console.log(this.props.ctdt)
-                            //return <Page404/>;
+                    if(parent === "qlhp" || parent === "qlkh") {
+                        //check param 2
+                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                            console.log("param 2 must null")
+                                return <Page404/>;
                         }
-                        else {
-                            if(type !== "" && type !== undefined && type !== null) {
-                                if(!this.checkTypeExist(this.props.menuItem, type) || ctdt === "edit") {
-
+                    }
+                    else if(parent === "cdr"){
+                        //check param 2
+                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                            if(ctdt === "edit") {
+                                //check param 3
+                                if(type !== "" && type !== undefined && type !== null) {
+                                    console.log("param 3 must be null")
                                     return <Page404/>;
                                 }
-                                else {
-                                    if(type !== "de-cuong-mon-hoc" && type !== 'itusurvey') {
-                                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                                            return <Page404/>;
-                                        }
+                            }
+                            else {
+                                console.log("wrong param 2")
+                                return <Page404/>;
+                            }
+                        }
+                    }
+                    else {
+                        //check param 2
+                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                            if(!this.checkCtdtExist(this.props.ctdt, ctdt)) {
+                                console.log("wrong param 2")
+                                return <Page404/>;
+                            }
+                            else {
+                                //check param 3
+                                if(type !== "" && type !== undefined && type !== null) {
+                                    if(!this.checkTypeExist(this.props.menuItem, type)) {
+                                        console.log("wrong param 3")
+                                        return <Page404/>;
                                     }
                                     else {
-                                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                                            if(khoi === "view") {
-                                                if(type !== "itusurvey") {
-                                                    if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
-                                                        console.log(4)
-                                                        return <Page404/>;
-                                                    }  
+                                        //check param 4
+                                        if(type === "de-cuong-mon-hoc") {
+                                            if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                                                if(!this.checkKhoiExist(this.props.dataCtdt, khoi)) {
+                                                    console.log("wrong param 4")
+                                                    return <Page404/>;
                                                 }
                                                 else {
-                                                    if(tab != "itusurvey") {
+                                                    //check param 5
+                                                    if(monhoc !== "" && monhoc !== undefined && monhoc !== null) {
+                                                        if(!this.checkSubjectExist(this.props.subjectList, monhoc, khoi)) {
+                                                            console.log("wrong param 5")
+                                                            return <Page404/>;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        else if(type === "itusurvey") {
+                                            if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                                                if(khoi !== "view") {
+                                                    console.log("wrong param 4")
+                                                    return <Page404/>;
+                                                }
+                                                else {
+                                                    //check param 5
+                                                    if(monhoc !== "" && monhoc !== undefined && monhoc !==null) {
+                                                        if(!this.checkSubjectExist(this.props.subjectList, monhoc, khoi)) {
+                                                            console.log("wrong param 5")
+                                                            return <Page404/>;
+                                                        }
+                                                    }
+                                                    else {
+                                                        console.log("param 5 cannot be null")
                                                         return <Page404/>;
                                                     }
                                                 }
                                             }
-                                            else {
-                                                if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
-                                                    console.log(4)
-                                                    return <Page404/>;
-                                                }  
-                                            }
-                                              
                                         }
-                                        
-                                        if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
-                                            if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
-                                                console.log(5)
+                                        else {
+                                            if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                                                console.log("param 4 must be null")
                                                 return <Page404/>;
-                                            }    
+                                            }
                                         }
                                     }
-                                } 
-                            }
-                        } 
-                    }
-                    else {
-                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                            if(khoi === "view") {
-                                if(type !== "itusurvey") {
-                                    if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
-                                        console.log(4)
-                                        return <Page404/>;
-                                    } 
-                                } 
-                            } else {
-                                if(!this.checkKhoiExist(this.props.ktt.children, khoi)) {
-                                    console.log(4)
-                                    return <Page404/>;
-                                } 
+                                }
                             }
                         }
-                           
-            
-                        if(this.props.match.params.monhoc !== "" && this.props.match.params.monhoc !== undefined && this.props.match.params.monhoc !== null) {
-                            if(!this.checkSubjectExist(this.props.subjectList, this.props.match.params.monhoc)) {
-                                console.log(5)
-                                return <Page404/>;
-                            }    
-                        }
-                    }
-                } 
+                    } 
+                }
             }
 
-            
-
-            
-
-            
             let subjectName = this.getSubjectName(this.props.subjectList, this.props.match.params.monhoc);
             let GirdLayout;
             if (this.state.collapse) {
@@ -452,10 +445,10 @@ componentDidUpdate(){
                     {GirdLayout}
                 </React.Fragment>
             )
-    }
-    else {
-        return <div>Loading...</div>
-    }
+    //}
+    // else {
+    //     return <div>Loading...</div>
+    // }
     }
 }
 
@@ -466,12 +459,13 @@ const mapStateToProps = (state) => {
         menuItem: state.menuitem,
         parentitem: state.parentitem,
         ctdt: state.eduPrograms,
-        ktt: state.ktt,
         editMatrix: state.editmatrix,
         isLoadEditMatrix: state.isloadeditmatrix,
         cdrmdhd: state.cdrmdhd,
         cdrmdhddb: state.cdrmdhddb,
-        cdrCdio: state.cdrcdio
+        cdrCdio: state.cdrcdio,
+        dataCtdt: state.datactdt.data,
+        isLoadedDataCtdt: state.datactdt.isLoaded,
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -484,6 +478,8 @@ const mapDispatchToProps = (dispatch) => {
       updateCdrmdhdDB: cdrmdhddb,
       updateCdrCdio: cdrCdio,
       onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
+      updateDataCtdt: dataCtdt,
+      updateIsLoadedDataCtdt: isLoadedDataCtdt
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

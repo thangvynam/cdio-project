@@ -46,7 +46,7 @@ import {
   isLoadEditMatrixReducer
 } from "../Reducers/editMatrixReducer";
 import surveyReducer from "../Reducers/surveyReducer";
-
+import {dataCtdtReducer} from "../Reducers/dataCtdtReducer";
 // start CDIO1 reducers
 import cdio1 from "../CDIO1/reducers/cdio1";
 // end CDIO1 reducers
@@ -96,6 +96,7 @@ const allReducers = redux.combineReducers({
     logReducer: logReducer,
     surveyReducer: surveyReducer,
     authentication: authenticationReducer,
+    datactdt: dataCtdtReducer,
     ...cdio1
 
 });

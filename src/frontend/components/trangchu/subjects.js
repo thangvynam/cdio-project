@@ -54,6 +54,15 @@ class Home extends Component {
         return false;
     }
 
+    checkSubjectExist2 = (subjectlist, monhoc) => {
+        for(let i = 0;i < subjectlist.length;i++) {
+            if(subjectlist[i].Id === +monhoc) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     checkTypeExist = (menuItem, type) => {
         for(let i = 0;i < Object.keys(menuItem).length;i++) {
             if(Object.keys(menuItem)[i] === type) {
@@ -328,7 +337,7 @@ componentDidUpdate(){
                                                 else {
                                                     //check param 5
                                                     if(monhoc !== "" && monhoc !== undefined && monhoc !==null) {
-                                                        if(!this.checkSubjectExist(this.props.subjectList, monhoc, khoi)) {
+                                                        if(!this.checkSubjectExist2(this.props.subjectList, monhoc)) {
                                                             console.log("wrong param 5")
                                                             return <Page404/>;
                                                         }

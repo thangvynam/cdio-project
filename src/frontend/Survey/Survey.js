@@ -218,13 +218,15 @@ class Survey extends React.Component {
             q10: surveyData.q10,
             q11: surveyData.q11,
         } 
-        axios.post('/save-survey-qa', { data: survey })
+        // axios.post('/save-survey-qa', { data: survey })
+        $.saveSurveyQA(survey)
             .then((res) => {
-                axios.post("/add-data-survey",
-                        { data: dataConvert,
-                          id_qa: res.data.id,
-                          idMon : this.props.subjectId
-                        })
+                // axios.post("/add-data-survey",
+                //         { data: dataConvert,
+                //           id_qa: res.data.id,
+                //           idMon : this.props.subjectId
+                //         })
+                    $.saveSurvey(dataConvert, res.data.id, this.props.subjectId)
                     .then(response => {
                         //const data= response.data;
                         

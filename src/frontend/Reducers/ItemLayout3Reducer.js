@@ -6,6 +6,7 @@ import {ADD_DATA_LAYOUT_3, DELETE_DATA_LAYOUT_3,
     SAVE_LOG,
     SET_CDR} from '../Constant/ActionType';
 import axios from 'axios';
+import $ from '../../frontend/helpers/services';
 
 function getUnique(arr, comp) {
     const unique = arr
@@ -88,8 +89,10 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
         case SAVE_ALL_DATA_LAYOUT_3:
         console.log(state.previewInfo)
         state.previewInfo = getUnique(state.previewInfo, "objectName")
-            axios.post('/save-data-3', { data: state.previewInfo, id: action.id })
-            axios.post('/save-log', { data: state.logData })
+            // axios.post('/save-data-3', { data: state.previewInfo, id: action.id })
+            // axios.post('/save-log', { data: state.logData })
+            $.postData3(state.previewInfo, action.id);
+            $.saveLog({data: state.logData})
             return {
                 ...state
             }

@@ -144,6 +144,39 @@ const getData2 = (param) => {
     return $.get(url);
 }
 
+const postData2 = (data, id) => {
+    let url = _.POST_DATA_2;
+    return $.post(url, { data: data, id: id })
+}
+
+const postData3 = (data, id) => {
+    let url = _.POST_DATA_3;
+    return $.post(url, { data: data, id: id })
+}
+
+const addSurveyMatrix = (data) => {
+    let url = _.ADD_SURVEY_MATRIX;
+    return $.post(url, {data})
+}
+
+const exportFile = (data) => {
+    let url = _.EXPORT_FILE;
+    return $.post(url, {data})
+}
+
+const saveSurveyQA = (data) => {
+    let url = _.SAVE_SURVEY_QA;
+    return $.post(url, {data})
+}
+
+const saveSurvey = (dataConvert, id, subjectId) => {
+    let url = _.SAVE_SURVEY;
+    return $.post(url, {
+        data: dataConvert,
+        id_qa: id,
+        idMon : subjectId})
+}
+
 const getData3 = (param) => {
     let url = `${_.GET_DATA_3}/${param}`;
     return $.get(url);
@@ -337,6 +370,12 @@ export default{
     getChuDe,
     getLoaiTaiNguyen,
     getData2,
+    postData2,
+    postData3,
+    addSurveyMatrix,
+    exportFile,
+    saveSurvey,
+    saveSurveyQA,
     getCDR_3,
     getData3,
     getTeachingActs_5,

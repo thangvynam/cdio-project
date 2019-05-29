@@ -528,7 +528,9 @@ class SurveyMatrix extends Component {
               data.push(obj)
             });
             if (data.length > 0) {
-              axios.post('/add-to-edit-matrix', data).then(res => {
+              // axios.post('/add-to-edit-matrix', data)
+              $.addSurveyMatrix(data)
+              .then(res => {
                 console.log(res);
                 
                 if (res.data === 1) {

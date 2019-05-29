@@ -5,6 +5,7 @@ import { connect } from 'react-redux';
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
 import { Checkbox, message, Input, Upload, Button, Icon } from 'antd';
+import $ from '../helpers/services';
 
 const plainOptions = [
     'Thông tin chung',
@@ -95,7 +96,9 @@ class ExportFile extends Component {
 
         this.addDataMap(function (obj) {
             self.setState({ loading: 0 });
-            axios.post('/exportfile', { data: JSON.stringify(obj) }).then(res => {
+            // axios.post('/exportfile', { data: JSON.stringify(obj) })
+            $.exportFile(JSON.stringify(obj))
+            .then(res => {
                 if (res.data == 1) {
                     self.setState({ loading: 1 });
                 }

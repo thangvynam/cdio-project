@@ -55,7 +55,7 @@ class DetailEducationProgramTmp extends Component {
         this.props.updateSubjectList(dataSubject);
         this.props.updateDataCtdt(dataCtdt);
         this.props.updateIsLoadedDataCtdt(true);
-      })
+      }})
 
     //}
 

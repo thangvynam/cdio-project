@@ -295,6 +295,16 @@ const saveData7 = (data) => {
     return $.post(url,data);
 }
 
+const collectData1 = (param) => {
+    let url = `${_.COLLECT_DATA1}/${param}`;
+    return $.get(url);
+} 
+
+const updateData1 = (param, data) => {
+    let url = `${_.UPDATE_DATA1}/${param}`;
+    return $.post(url,data);
+}
+
 export default{
     //subject
     collectSubjectList,
@@ -302,6 +312,10 @@ export default{
 
     //edit matrix
     updateStandardMatrix,
+
+    //tab 1
+    collectData1,
+    updateData1,
 
     //tab 4
     collectCdrmdhd4,

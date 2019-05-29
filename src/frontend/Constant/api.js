@@ -6,6 +6,9 @@ export default{
     //edit matrix
     UPDATE_STANDARD_MATRIX: baseUrl + '/update-standard-matrix',
 
+    //tab 1
+    COLLECT_DATA1: baseUrl + '/collect-data',
+    UPDATE_DATA1: baseUrl + '/update-data',
     //tab 4
     COLLECT_CDR_MDHD4: baseUrl + '/collect-cdrmdhd-4',
     COLLECT_MTMH: baseUrl + '/collect-mtmh',

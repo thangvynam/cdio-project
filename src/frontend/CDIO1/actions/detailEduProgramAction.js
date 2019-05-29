@@ -111,7 +111,14 @@ export const onSaveDetailEduProgram = data => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(afterSaveDetailEduProgramE3(data.detailEduProgram.ideduprogram));
+          if (res.data.iddetail && !data.detailEduProgram.iddetail) {
+            data.contentProgram.iddetail = res.data.iddetail;
+            data.scheduleProgram.iddetail = res.data.iddetail;
+            data.targetProgram.iddetail = res.data.iddetail;
+          }
+          dispatch(
+            afterSaveDetailEduProgramE3(data.detailEduProgram.ideduprogram)
+          );
           // where to put actions LOL
           dispatch(contentAction.onSaveContentProgram(data.contentProgram));
           dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));

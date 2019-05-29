@@ -62,7 +62,7 @@ export const saveTargetProgramError = (targetNodes, errorMessage) => ({
 
 export const onSaveTargetProgram = targetProgram => {
   return (dispatch, getState) => {
-    let req = `${links.ADD_TARGET_EDUPROGRAM}?iddetail=${
+    let req = `${links.SAVE_TARGET_EDUPROGRAM}?iddetail=${
       targetProgram.iddetail
     }`;
     let params = {};

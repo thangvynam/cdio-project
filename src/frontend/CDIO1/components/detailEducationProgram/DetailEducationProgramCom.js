@@ -32,7 +32,7 @@ export default class DetailEducationProgramCom extends React.Component {
       // end states for Title
       // states for TargetEdu
       OSUsedNode: "",
-      IdOutcome: 0,
+      IdOutcome: null,
       //end states for TargetEdu
       // states this Component
       eduYear: 0,

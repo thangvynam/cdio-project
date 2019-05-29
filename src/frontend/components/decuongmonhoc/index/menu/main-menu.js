@@ -43,14 +43,13 @@ class MenuLeft extends Component {
     this.props.updateContentTab(this.props.content_tab);
     if (this.props.content_monhoc !== "" &&
       this.props.content_monhoc !== undefined && this.props.content_monhoc !== null &&
-      (this.props.content_tab === "" || this.props.content_tab === undefined && this.props.content_tab === null)
+      (this.props.content_tab === "" || this.props.content_tab === undefined || this.props.content_tab === null)
     ) 
     {
       if(this.props.content_type === "de-cuong-mon-hoc") {
         return (
           <Redirect
-            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}
-            /${this.props.content_khoi}/${this.props.content_monhoc}/phan-cong`}
+            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_khoi}/${this.props.content_monhoc}/thong-tin-chung`}
           />
         );
       }

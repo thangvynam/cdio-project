@@ -33,7 +33,6 @@ class DetailEducationProgramTmp extends Component {
   componentDidMount = () => {
     // const urlParams = new URLSearchParams(window.location.search);
     // const id = urlParams.get("id");
-    console.log("vo r ma")
     const id = this.props.ctdt;
     //if(this.props.isLoadedDataCtdt === false) {
       $.getBlockSubject(id)
@@ -52,7 +51,6 @@ class DetailEducationProgramTmp extends Component {
         dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
         this.props.updateSubjectList(dataSubject);
         this.props.updateDataCtdt(dataCtdt);
-        console.log("vo r ma")
         this.props.updateIsLoadedDataCtdt(true);
       })
     //}

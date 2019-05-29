@@ -13,14 +13,14 @@ import {
   Select,
   message,
   Tag,
-  Menu, 
+  Menu,
   Dropdown
 } from "antd";
-import axios from "axios";
 import _ from "lodash";
 import MucDoHanhDong from './MucDoHanhDong';
 import ChuDeDanhGia from './ChuDeDanhGia';
 import TNMH_LoaiTaiNguyen from './TNMH_LoaiTaiNguyen';
+import $ from './../helpers/services';
 
 const Panel = Collapse.Panel;
 const Option = Select.Option;
@@ -80,8 +80,8 @@ class EditableCell extends React.Component {
                   })(<Input />)}
                 </FormItem>
               ) : (
-                restProps.children
-              )}
+                  restProps.children
+                )}
             </td>
           );
         }}
@@ -147,19 +147,19 @@ class Danhmuc extends Component {
                   </Popconfirm>
                 </span>
               ) : (
-                <span>
-                  <a onClick={() => this.handleEdit(record.index)} href="#a">
-                    Sửa
+                  <span>
+                    <a onClick={() => this.handleEdit(record.index)} href="#a">
+                      Sửa
                   </a>
-                  <Divider type="vertical" />
-                  <Popconfirm
-                    title="Xác nhận xóa?"
-                    onConfirm={() => this.handleDelete(record.index)}
-                  >
-                    <a href="#a">Xóa</a>
-                  </Popconfirm>
-                </span>
-              )}
+                    <Divider type="vertical" />
+                    <Popconfirm
+                      title="Xác nhận xóa?"
+                      onConfirm={() => this.handleDelete(record.index)}
+                    >
+                      <a href="#a">Xóa</a>
+                    </Popconfirm>
+                  </span>
+                )}
             </div>
           );
         }
@@ -175,7 +175,7 @@ class Danhmuc extends Component {
     };
   }
 
- 
+
 
   save = () => {
     if (_.isEmpty(this.state.value)) {
@@ -186,9 +186,8 @@ class Danhmuc extends Component {
       value: this.state.value,
       keyItem: this.state.keyItem
     };
-    axios
-      .post("/add-hdd", { data: obj })
-      .then(function(response) {
+    $.addHDD({data: obj})
+      .then(function (response) {
         if (response.data == 1) {
           notification["success"]({
             message: "Lưu thành công",
@@ -196,18 +195,19 @@ class Danhmuc extends Component {
           });
         }
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
         notification["error"]({
           message: "Lưu thất bại",
           duration: 1
-        });      })
-      .finally(function() {      
+        });
+      })
+      .finally(function () {
       });
 
-      this.props.form.resetFields();
-      this.setState({value:""});
-      this.getData();
+    this.props.form.resetFields();
+    this.setState({ value: "" });
+    this.getData();
   };
   handleInputChange = e => {
     this.setState({ value: e.target.value });
@@ -217,18 +217,17 @@ class Danhmuc extends Component {
     this.setState({ keyItem: value });
   };
   componentDidMount() {
-   this.getData();
+    this.getData();
   }
 
-  getData = ()=>{
-    axios
-    .get("/get-danhmuc-hdd")
-    .then(res => {
-      this.setState({ dataSource: res.data });
-    })
-    .catch(err => {
-      console.log("err: ", err);
-    });
+  getData = () => {
+    $.getDanhmucHDD()
+      .then(res => {
+        this.setState({ dataSource: res.data });
+      })
+      .catch(err => {
+        console.log("err: ", err);
+      });
   }
 
   handleEdit(index) {
@@ -251,15 +250,15 @@ class Danhmuc extends Component {
 
       let body = {
         id: newData[index].id,
-        hoat_dong:newData[index].hoat_dong
+        hoat_dong: newData[index].hoat_dong
 
       }
-      axios.post("/update-hdd",body).then(res=>{
-        if(res.data === 1){
+      $.updateDanhmucHDD(body).then(res => {
+        if (res.data === 1) {
           this.getData();
         }
       })
-    
+
       this.setState({ editingKey: "" });
     });
   }
@@ -286,48 +285,48 @@ class Danhmuc extends Component {
       title: "Xóa các mục đã chọn?",
       content: "",
       onOk: this.onMultiDelete,
-      onCancel() {}
+      onCancel() { }
     });
   };
 
-  handleDelete = (index)=>{
+  handleDelete = (index) => {
     let body = [];
-    let item = {};  
+    let item = {};
     item.id = this.state.dataSource[index].id;
     item.type = this.state.dataSource[index].loai_hoat_dong;
 
     body.push(item);
 
-      axios.post(`/delete-hdd`,body).then(response=>{
-        if(response.data === 1){
-          this.getData();
-        }
-       
-      });
-  
+    $.deleteDanhmucHDD(body).then(response => {
+      if (response.data === 1) {
+        this.getData();
+      }
+
+    });
+
   }
 
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
     let body = [];
-    for(let i = 0;i<selectedRow.length;i++){
+    for (let i = 0; i < selectedRow.length; i++) {
       let item = {};
       item.id = this.state.dataSource[selectedRow[i]].id;
       item.type = this.state.dataSource[selectedRow[i]].loai_hoat_dong;
       body.push(item);
     }
-
-    axios.post(`/delete-hdd`,body).then(response=>{
-      if(response.data === 1){
+    
+    $.deleteDanhmucHDD(body).then(response => {
+      if (response.data === 1) {
         this.getData();
       }
-     
+
     });
-     
+
     this.setState({ selectedRowKeys: [], editingKey: "" });
   };
 
-  
+
   render() {
     const { getFieldDecorator } = this.props.form;
 
@@ -372,16 +371,16 @@ class Danhmuc extends Component {
               />
             </Form.Item> */}
 
-          <Form.Item {...formItemLayout} label="Hoạt động">
-            {getFieldDecorator("name", {
-              rules: [
-                {
-                  required: true,
-                  message: "Vui lòng nhập hoạt động"
-                },
-              ],
-            })(<Input onChange={this.handleInputChange}/>)}
-          </Form.Item>
+            <Form.Item {...formItemLayout} label="Hoạt động">
+              {getFieldDecorator("name", {
+                rules: [
+                  {
+                    required: true,
+                    message: "Vui lòng nhập hoạt động"
+                  },
+                ],
+              })(<Input onChange={this.handleInputChange} />)}
+            </Form.Item>
 
             <Form.Item {...formItemLayout} label="Loại">
               <Select
@@ -431,14 +430,14 @@ class Danhmuc extends Component {
                 rowClassName="editable-row"
                 dataSource={this.setIndexForItem()}
                 style={{ wordWrap: "break-word", whiteSpace: "pre-line" }}
-                rowKey = {record=>record.index}
-              />         
+                rowKey={record => record.index}
+              />
             </div>
           </Panel>
         </Collapse>
         <MucDoHanhDong />
-        <ChuDeDanhGia/>
-         <TNMH_LoaiTaiNguyen/>
+        <ChuDeDanhGia />
+        <TNMH_LoaiTaiNguyen />
       </div>
     );
   }

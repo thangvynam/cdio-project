@@ -338,6 +338,86 @@ const updateData1 = (param, data) => {
     return $.post(url,data);
 }
 
+const addToEditMatrix = (data) => {
+    let url = _.ADD_TO_EDIT_MATRIX;
+    return $.post(url,data);
+}
+
+const addHDD = (data) => {
+    let url = _.ADD_HDD;
+    return $.post(url,data);
+}
+
+const getDanhmucHDD = () => {
+    let url = _.GET_HDD;
+    return $.get(url);
+}
+
+const updateDanhmucHDD = (data) => {
+    let url = _.UPDATE_HDD;
+    return $.post(url,data);
+}
+
+const deleteDanhmucHDD = (data) => {
+    let url = _.DELETE_HDD;
+    return $.post(url,data);
+}
+
+const getEvalActs5 = (data) => {
+    let url = _.GET_EVAL_ACTS_5;
+    return $.post(url,data);
+}
+
+const getStandardOutput5 = (data) => {
+    let url =_.GET_STANDARD_OUTPUT_5;
+    return $.post(url,data);
+}
+
+const collectData5 = (data) => {
+    let url = _.COLLECT_DATA5;
+    return $.post(url,data);
+}
+
+const getCDRDanhgia = (data) => {
+    let url = _.getCDRDanhgia;
+    return $.post(url,data);
+}
+
+const getCDR_7 = (data) => {
+    let url = _.getCDR_7;
+    return $.post(url,data);
+}
+
+const getLog = (data) => {
+    let url = _.GET_LOG;
+    return $.post(url,data);
+}
+
+const addComment2 = (data) => {
+    let url = _.ADD_COMMENT2;
+    return $.post(url,data);
+}
+
+const saveData2 = (data) => {
+    let url = _.SAVE_DATA_2;
+    return $.post(url,data);
+}
+
+const saveData3 = (data) => {
+    let url = _.SAVE_DATA_3;
+    return $.post(url,data);
+}
+
+const addData5 = (data) => {
+    let url = _.ADD_DATA_5;
+    return $.post(url,data);
+}
+
+const addDataSurvey =(data) => {
+    let url = _.ADD_DATA_SURVEY;
+    return $.post(url,data);
+}
+
 export default{
     //subject
     collectSubjectList,
@@ -408,11 +488,37 @@ export default{
     deleteTainguyen,
     deleteLoaitainguyen,
     addLoaitainguyen,
+    addHDD,
+    getDanhmucHDD,
+    updateDanhmucHDD,
+    deleteDanhmucHDD,
 
     addData6,
-    saveLog,
     addData9,
 
     saveData7,
     saveData8,
+    getCDRDanhgia,
+    getCDR_7,
+
+    saveLog,
+    getLog,
+    
+
+    //survey
+    addToEditMatrix,
+    saveSurveyQA,
+    addDataSurvey,
+    
+    //export file
+    exportFile,
+
+    getEvalActs5,
+    getStandardOutput5,
+    collectData5,
+
+    addComment2,
+    saveData2,
+    saveData3,
+    addData5,
 }

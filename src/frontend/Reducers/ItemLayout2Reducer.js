@@ -1,6 +1,5 @@
 import {ADD_DATA_LAYOUT_2, SAVE_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG} from '../Constant/ActionType';
-import axios from 'axios';
-import $ from '../../frontend/helpers/services';
+import $ from './../helpers/services'
 
 const itemLayout2InitialState = {
     previewInfo: '',
@@ -32,11 +31,9 @@ const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
             return {
                 ...state, tempInfo: action.description
             }
-        case SAVE_ALL_DATA_LAYOUT_2:        
-            // axios.post('/save-data-2', { data: state.previewInfo, id: action.id })
-            $.postData2(state.previewInfo, action.id);
-            $.saveLog({data: state.logData})
-            // axios.post('/save-log', { data: state.logData })
+        case SAVE_ALL_DATA_LAYOUT_2:   
+                $.saveData2({data: state.previewInfo,id : action.id})
+                $.saveLog({data: state.logData})
             return {
                 ...state
             }

@@ -15,7 +15,6 @@ import { connect } from "react-redux";
 import { addItemKHGDTH, changeTempKHGDTH, changeMapKHGDTH, saveLog, saveLogObject } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
 import { getCurrTime } from '../../../utils/Time';
 import $ from './../../../helpers/services';
 
@@ -70,7 +69,6 @@ class ItemMenu extends Component {
 
     });
 
-    //axios.get(`/get-eval-acts-6/${subjectId}`).then(response => {
     $.getEvalActs6(subjectId).then(response => {
       const data = response.data;
       let map = new Map();
@@ -82,7 +80,6 @@ class ItemMenu extends Component {
       mapId.evalActs = map;
     });
 
-    //axios.get(`/get-standard-output-6/${subjectId}`).then(response => {
     $.getStandardOutput6(subjectId).then(response => {
       const data = response.data;
       let array = [];

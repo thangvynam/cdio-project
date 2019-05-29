@@ -6,7 +6,6 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { editMatrix, editMatrixEditState, isLoadEditMatrix, cdrCdio } from '../../Constant/ActionType';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
-import axios from 'axios';
 import $ from './../../helpers/services';
 
 

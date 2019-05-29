@@ -1,6 +1,5 @@
 import * as Types from '../../Constant/matrix/matrixActionType';
 import _ from 'lodash';
-import axios from 'axios';
 
 const getDataMatrix = (newData)=>{
     return {

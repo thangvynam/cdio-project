@@ -1,6 +1,5 @@
 import * as Types from '../../Constant/thong-tin-chung/actionTypes';
 import _ from 'lodash'
-import axios from 'axios'
 import $ from './../../helpers/services'
 
 const collectDataRequest = (id) => {

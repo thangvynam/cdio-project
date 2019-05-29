@@ -3,7 +3,6 @@ import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input, no
 import { connect } from 'react-redux';
 import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3, SAVE_LOG ,SAVE_LOG_OBJECT} from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
-import axios from 'axios'
 import { getCurrTime } from '../../../utils/Time';
 import $ from './../../../helpers/services';
 
@@ -210,7 +209,6 @@ class TableItem extends Component {
   }
 
 async getData() {
-  //return axios.get(`/get-data-3/${this.props.subjectid}`).then(res => {
   return $.getData3(this.props.subjectid).then(res => {
     return res.data
   }).then(resp => {

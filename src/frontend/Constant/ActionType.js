@@ -75,7 +75,6 @@ export const SAVE_TEMP_DATA_LAYOUT_7 = "SAVE_TEMP_DATA_LAYOUT_7";
 export const CHUDE_DANHGIA = "CHUDE_DANHGIA";
 export const IS_LOADED_7= 'IS_LOADED_7';
 export const CDR_DANHGIA = "CDR_DANHGIA";
-export const SAVE_ALL_DATA_LAYOUT_7 = "SAVE_ALL_DATA_LAYOUT_7";
 
 //layout 8
 export const ADD_TNDATA = 'ADD_TNDATA';
@@ -401,13 +400,6 @@ export function saveTempTNData(tempTNData){
     return{
         type: SAVE_TEMP_DATA_LAYOUT_8,
         data: tempTNData
-    }
-}
-
-export function saveAllDGData(DGData){
-    return{
-        type: SAVE_ALL_DATA_LAYOUT_7,
-        data: DGData
     }
 }
 

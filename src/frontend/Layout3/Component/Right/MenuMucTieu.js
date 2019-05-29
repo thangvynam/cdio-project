@@ -8,7 +8,6 @@ import { connect } from 'react-redux';
 import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, SAVE_LOG, SET_CDR, SAVE_LOG_OBJECT } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
 import { getCurrTime } from '../../../utils/Time';
-import axios from 'axios';
 import $ from './../../../helpers/services';
 
 const { Option } = Select;

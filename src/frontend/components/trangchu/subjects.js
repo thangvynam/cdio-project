@@ -8,7 +8,6 @@ import Content from './content';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
-import axios from 'axios';
 import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";

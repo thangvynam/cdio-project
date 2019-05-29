@@ -3,7 +3,6 @@ import { Collapse, Form, Input, Menu, Icon,
      Button, Dropdown, message, Row, Col,
       Select, Modal, Table, Tag, Popconfirm,
     Divider, notification } from 'antd';
-import axios from 'axios';
 import $ from './../helpers/services'
 
 const Panel = Collapse.Panel;

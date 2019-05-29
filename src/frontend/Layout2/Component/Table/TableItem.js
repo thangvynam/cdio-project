@@ -3,7 +3,6 @@ import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, notification } fr
 import { connect } from 'react-redux';
 import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG, IS_LOAD_LOG, SAVE_LOG_OBJECT } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
-import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
 import $ from './../../../helpers/services';
 
@@ -125,7 +124,6 @@ class TableItem extends Component {
   }
 
   async getData() {
-    //return axios.get(`/get-data-2/${this.props.subjectid}`).then(res => {
     return $.getData2(this.props.subjectid).then(res => {
         return res.data
     }).then(resp => {
@@ -168,8 +166,8 @@ class TableItem extends Component {
           ...row,
         });
         this.props.handleSave(newData);
-        this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
-        this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
+        this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
+        this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
         this.props.setFlag2(true);   
         this.setState({ editingKey: "" });
     });
@@ -215,7 +213,7 @@ class TableItem extends Component {
 
            {this.props.isReview === true ? null : <Button style={{float: "right"}}
             onClick={() => {
-              this.props.saveAll(this.props.subjectid)
+              this.props.saveAll(this.props.monhoc)
               openNotificationWithIcon('success')
             } 
             }>

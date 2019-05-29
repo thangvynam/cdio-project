@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import { Form, Button, Icon } from 'antd';
 
 import FormSurvey from "./FormSurvey";
@@ -217,14 +216,15 @@ class Survey extends React.Component {
             q9: surveyData.q9,
             q10: surveyData.q10,
             q11: surveyData.q11,
-        } 
-        axios.post('/save-survey-qa', { data: survey })
+        }
+
+        $.saveSurveyQA({data:survey})
             .then((res) => {
-                axios.post("/add-data-survey",
-                        { data: dataConvert,
-                          id_qa: res.data.id,
-                          idMon : this.props.subjectId
-                        })
+                $.addDataSurvey({ data: dataConvert,
+                    id_qa: res.data.id,
+                    idMon : this.props.subjectId
+                  })
+                
                     .then(response => {
                         //const data= response.data;
                         

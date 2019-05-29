@@ -10,7 +10,6 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog, cdrmdhd, cdrmdhddb ,saveLogObject} from '../../../Constant/ActionType';
 import './1.css';
-import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
 import $ from "../../../helpers/services";
 

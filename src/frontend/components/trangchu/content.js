@@ -19,7 +19,6 @@ import Layout7 from '../../Layout7/Layout7';
 import Layout8 from '../../Layout8/Layout8';
 import Danhmuc from '../../Danhmuc/Danhmuc';
 import ExportFile from '../../ExportFIle/ExportFile';
-import axios from 'axios';
 import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
 import BenchMark from '../matrix/benchmark-matrix';
@@ -496,7 +495,7 @@ class Content extends Component {
 
                                                             khoi !== "" && khoi !== undefined && khoi !== null ? 
                                                             item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            : <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/mo-ta-mon-hoc`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            : <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }
 

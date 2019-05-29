@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import { Table, Divider, Tag, Row, Col, Button, Icon, Popconfirm, Modal, message } from 'antd';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import axios from 'axios';
 import $ from "./../../helpers/services";
 
 class PhanCong extends Component {

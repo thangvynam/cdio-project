@@ -6,7 +6,6 @@ import { isUndefined } from 'util';
 import { Link } from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
-import axios from 'axios';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
 import $ from './../../helpers/services'
@@ -528,7 +527,7 @@ class SurveyMatrix extends Component {
               data.push(obj)
             });
             if (data.length > 0) {
-              axios.post('/add-to-edit-matrix', data).then(res => {
+              $.addToEditMatrix(data).then(res => {
                 console.log(res);
                 
                 if (res.data === 1) {

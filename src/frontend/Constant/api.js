@@ -33,6 +33,12 @@ export default{
     GET_CDR_CDIO: baseUrl + '/get-cdr-cdio',
     GET_CDR_3: baseUrl + '/get-cdr-3',
     GET_DATA_2: baseUrl + '/get-data-2',
+    POST_DATA_2: baseUrl + '/save-data-2',
+    POST_DATA_3: baseUrl + '/save-data-3',
+    ADD_SURVEY_MATRIX: baseUrl + '/add-to-edit-matrix',
+    SAVE_SURVEY_QA: baseUrl + '/save-survey-qa',
+    SAVE_SURVEY: baseUrl + '/add-data-survey',
+    EXPORT_FILE: baseUrl + '/exportfile',
     GET_DATA_3: baseUrl + '/get-data-3',
     GET_DATA_6: baseUrl + '/get-data-6',
     GET_DATA_9: baseUrl + '/get-data-9',
@@ -54,6 +60,11 @@ export default{
     DELETE_TAINGUYEN: baseUrl + '/delete-tainguyen',
     DELETE_LOAITAINGUYEN: baseUrl + '/delete-loaitainguyen',
     ADD_LOAITAINGUYEN: baseUrl + '/add-loaitainguyen',
+    ADD_HDD : baseUrl + '/add-hdd',
+    GET_HDD: baseUrl + '/get-danhmuc-hdd',
+    UPDATE_HDD : baseUrl + '/update-hdd',
+    DELETE_HDD : baseUrl + '/delete-hdd',
+
     //Layout
     GET_TEACHINGACTS_5: baseUrl + '/get-teachingacts-5',
     GET_TEACHINGACTS_6: baseUrl + '/get-teachingacts-6',
@@ -63,10 +74,13 @@ export default{
     GET_DANH_GIA: baseUrl + '/get-danhgia',
     GET_TAINGUYENMONHOC: baseUrl + '/get-tainguyenmonhoc',
     GET_COMMENT: baseUrl + '/get-comment',
+
     //Survey
     GET_SURVEYQA: baseUrl + '/get-surveyqa',
     GET_SURVEY: baseUrl + '/get-survey',
     GET_DATA_SURVEY: baseUrl + '/get-data-survey',
+    ADD_TO_EDIT_MATRIX : baseUrl + '/add-to-edit-matrix',
+    ADD_DATA_SURVEY : baseUrl + 'add-data-survey',
 
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',
@@ -75,10 +89,26 @@ export default{
     //tab 7,8
     SAVE_DATA_8 : baseUrl + '/save-tainguyenmonhoc',
     SAVE_DATA_7 : baseUrl + '/save-danhgia',
-
+    GET_CDR_DANHGIA : baseUrl + '/get-cdrdanhgia',
+    GET_CDR_7 : baseUrl + '/get-cdr-7',
 
     //log
     SAVE_LOG:baseUrl + '/save-log',
+    GET_LOG : baseUrl + '/get-log',
+
+    GET_EVAL_ACTS_5 : baseUrl + '/get-evalact-5',
+    GET_STANDARD_OUTPUT_5 : baseUrl + '/get-standard-output-5',
+    COLLECT_DATA5 : baseUrl + '/collect-data-5',
+
+    
+    ADD_COMMENT2 : baseUrl + '/add-comment-2',
+    SAVE_DATA_2 : baseUrl + '/save-data-2',
+    SAVE_DATA_3 : baseUrl + '/save-data-3',
+
+    ADD_DATA_5 : baseUrl + '/add-data-5',
+
+
+    
 
 }
 

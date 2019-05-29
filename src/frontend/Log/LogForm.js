@@ -36,7 +36,8 @@ class LogForm extends Component {
             subjectid: this.props.subjectid,
             contentTab: contentTab
         }
-        return axios.post(`/get-log`, { data }).then(res => {
+        
+        return $.getLog({data}).then(res => {
             return res.data
         })
     }
@@ -169,7 +170,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             content : content,
             thoi_gian : getCurrTime(),
         }
-        axios.post('/add-comment-2', { data:obj })
+        $.addComment2({data:obj})
+        // axios.post('/add-comment-2', { data:obj })
             .then(res => {
                 console.log(res)
             })

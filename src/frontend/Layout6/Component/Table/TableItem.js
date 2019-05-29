@@ -436,7 +436,7 @@ class TableItem extends Component {
           newItems[index].teachingActs
         } ; Hoạt động đánh giá: ${newItems[index].evalActs}]`,
         this.props.logReducer.contentTab,
-        this.props.subjectId
+        this.props.monhoc
       );
       this.props.onSaveReducer(
         "Nguyen Van A",
@@ -455,7 +455,7 @@ class TableItem extends Component {
           newItems[index].teachingActs
         } ; Hoạt động đánh giá: ${newItems[index].evalActs}]`,
         this.props.logReducer.contentTab,
-        this.props.subjectId
+        this.props.monhoc
       );
 
       this.props.onUpdateKHGDTH(newItems);
@@ -491,7 +491,7 @@ class TableItem extends Component {
         newData[index].teachingActs
       } ; Hoạt động đánh giá: ${newData[index].evalActs}`,
       this.props.logReducer.contentTab,
-      this.props.subjectId
+      this.props.monhoc
     );
     this.props.onSaveReducer(
       "Nguyen Van A",
@@ -504,7 +504,7 @@ class TableItem extends Component {
         newData[index].teachingActs
       } ; Hoạt động đánh giá: ${newData[index].evalActs}`,
       this.props.logReducer.contentTab,
-      this.props.subjectId
+      this.props.monhoc
     );
 
     let key = 1;
@@ -572,7 +572,7 @@ class TableItem extends Component {
               KHitems[j].teachingActs
             } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
             this.props.logReducer.contentTab,
-            this.props.subjectId
+            this.props.monhoc
           );
           this.props.onSaveReducer(
             "Nguyen Van A",
@@ -585,7 +585,7 @@ class TableItem extends Component {
               KHitems[j].teachingActs
             } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
             this.props.logReducer.contentTab,
-            this.props.subjectId
+            this.props.monhoc
           );
         }
       }
@@ -682,17 +682,17 @@ class TableItem extends Component {
   componentDidMount() {
     if (
       !this.props.itemKHGDTH.isLoaded &&
-      this.props.subjectId !== null &&
-      this.props.subjectId !== undefined &&
-      this.props.subjectId !== ""
+      this.props.monhoc !== null &&
+      this.props.monhoc !== undefined &&
+      this.props.monhoc !== ""
     ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({ subjectId: this.props.subjectId });
-      // axios.get(`/get-data-6/${this.props.subjectId}`).then(response => {
+      this.setState({ subjectId: this.props.monhoc });
+      // axios.get(`/get-data-6/${this.props.monhoc}`).then(response => {
       //   const data = response.data;
       //   this.props.onUpdateKHGDTH(data);
       // });
-      this.getDataTable(this.props.subjectId);
+      this.getDataTable(this.props.monhoc);
     }
   }
 
@@ -704,7 +704,7 @@ class TableItem extends Component {
       nextProps.subjectId !== ""
     ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({ subjectId: this.props.subjectId });
+      this.setState({ subjectId: this.props.monhoc });
       // axios.get(`/get-data-6/${nextProps.subjectId}`).then(response => {
       //   const data = response.data;
       //   this.props.onUpdateKHGDTH(data);

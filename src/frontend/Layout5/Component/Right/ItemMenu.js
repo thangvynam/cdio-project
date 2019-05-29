@@ -5,7 +5,6 @@ import {
 import { Redirect } from 'react-router-dom';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import axios from 'axios';
 import $ from './../../../helpers/services';
 import { getCurrTime } from '../../../utils/Time';
 
@@ -71,8 +70,7 @@ class ItemMenu extends Component {
             }
             
         });
-
-        axios.post("/get-evalact-5", { data: this.props.subjectId })
+        $.getEvalActs5({data: this.props.subjectId})
             .then(response => {
                 const data = response.data;
                 let map = new Map();
@@ -87,7 +85,7 @@ class ItemMenu extends Component {
                 }
             })
 
-        axios.post("/get-standard-output-5", { data: this.props.subjectId })
+            $.getStandardOutput5({data: this.props.subjectId})
             .then(response => {
                 const data = response.data;
                 let array = [];
@@ -464,8 +462,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
         collectDataRequest: (id) => {
             let newArr = [];
-
-            axios.post('/collect-data-5', { data: id })
+            $.collectData5({data: id})
                 .then(function (response) {
                     for (let i = 0; i < response.data.length; i++) {
                         let data = {

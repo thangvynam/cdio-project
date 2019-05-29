@@ -18,7 +18,6 @@ import {
 } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import TextArea from "antd/lib/input/TextArea";
-import axios from "axios";
 import { getCurrTime } from "../../../utils/Time";
 import $ from './../../../helpers/services';
 

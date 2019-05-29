@@ -7,7 +7,6 @@ import { bindActionCreators } from 'redux';
 import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb,saveLogObject } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
-import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
 import $ from "../../../helpers/services";
 
@@ -891,6 +890,7 @@ getSubjectName = (subjectList, id) => {
     this.loadGap();
     this.props.updateIsLoad("false");
     openNotificationWithIcon('success');
+    $.saveLog({data: this.props.logData})
     //axios.post('/save-log', { data: this.props.logData });
     
   }

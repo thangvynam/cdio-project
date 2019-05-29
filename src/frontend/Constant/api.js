@@ -20,6 +20,7 @@ export default{
 
     //Subject
     COLLECT_SUBJECT_LIST: baseUrl + '/collect-subjectlist',
+    GET_BLOCK_SUBJECT: baseUrl + '/eduprogcontent/getBlockSubjects?id=',
     //Matrix
     GET_BENCHMARK_MATRIX: baseUrl + '/get-benchmark-matrix',
     GET_STANDARD_MATRIX: baseUrl + '/get-standard-matrix',

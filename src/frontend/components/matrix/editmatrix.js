@@ -123,11 +123,14 @@ class EditMatrix extends Component {
   }
 
   getIndex = (matrix, key) => {
-    for (let i = 0; i < matrix.length; i++) {
-      if (matrix[i].key === key) {
-        return i;
+    if(matrix !== undefined && matrix !== null) {
+      for (let i = 0; i < matrix.length; i++) {
+        if (matrix[i].key === key) {
+          return i;
+        }
       }
     }
+    
     return -1;
   }
   handleSave = (record, dataIndex) => {
@@ -196,20 +199,26 @@ class EditMatrix extends Component {
   }
 
   getMatrixId = (matrix, thong_tin_chung_id, cdr_cdrio_id) => {
-    for (let i = 0; i < matrix.length; i++) {
-      if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
-        return matrix[i].id;
+    if(matrix !== undefined && matrix !== null) {
+      for (let i = 0; i < matrix.length; i++) {
+        if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
+          return matrix[i].id;
+        }
       }
     }
+    
     return -1;
   }
 
   getCdrCdioId = (cdr_cdio, cdr) => {
-    for (let i = 0; i < cdr_cdio.length; i++) {
-      if (cdr_cdio[i].cdr === cdr) {
-        return cdr_cdio[i].id;
+    if(cdr_cdio !== undefined && cdr_cdio !== null) {
+      for (let i = 0; i < cdr_cdio.length; i++) {
+        if (cdr_cdio[i].cdr === cdr) {
+          return cdr_cdio[i].id;
+        }
       }
     }
+    
     return -1;
   }
   saveAll = () => {

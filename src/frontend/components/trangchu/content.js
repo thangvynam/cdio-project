@@ -181,7 +181,15 @@ class Content extends Component {
         let parent = this.props.content_parent;
         switch (type) {
             case "de-cuong-mon-hoc": {
-                subjectList = this.props.subjectList;
+                if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                    subjectList = this.props.subjectList.filter(item => 
+                        item.IdSubjectBlock === +khoi
+                    );
+                }
+                else {
+                    subjectList = this.props.subjectList;
+                }
+                
             } break;
             case 'itusurvey': {
                 subjectList = this.props.subjectList;
@@ -485,10 +493,10 @@ class Content extends Component {
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
 
-                                                            khoi !== "" && khoi !== undefined ? 
+                                                            khoi !== "" && khoi !== undefined && khoi !== null ? 
                                                             item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            : <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            : <Link to={`/${parent}/${ctdt}/${type}/ktt-1/${item.Id}`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
+                                                            : <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/mo-ta-mon-hoc`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }
 
                                                         />

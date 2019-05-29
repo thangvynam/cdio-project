@@ -95,7 +95,7 @@ class ExportFile extends Component {
 
         this.addDataMap(function (obj) {
             self.setState({ loading: 0 });
-            $.exportFile({data: JSON.stringify(obj) }).then(res => {
+            $.exportFile(JSON.stringify(obj)).then(res => {
                 if (res.data == 1) {
                     self.setState({ loading: 1 });
                 }

@@ -218,13 +218,9 @@ class Survey extends React.Component {
             q11: surveyData.q11,
         }
 
-        $.saveSurveyQA({data:survey})
+        $.saveSurveyQA(survey)
             .then((res) => {
-                $.addDataSurvey({ data: dataConvert,
-                    id_qa: res.data.id,
-                    idMon : this.props.subjectId
-                  })
-                
+                $.addDataSurvey(dataConvert, res.data.id, this.props.subjectId)
                     .then(response => {
                         //const data= response.data;
                         

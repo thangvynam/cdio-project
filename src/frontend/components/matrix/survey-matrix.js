@@ -527,7 +527,7 @@ class SurveyMatrix extends Component {
               data.push(obj)
             });
             if (data.length > 0) {
-              $.addToEditMatrix(data).then(res => {
+              $.addSurveyMatrix(data).then(res => {
                 console.log(res);
                 
                 if (res.data === 1) {

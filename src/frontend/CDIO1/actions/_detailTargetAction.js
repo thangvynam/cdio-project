@@ -4,6 +4,7 @@ import * as links from "../constants/links";
 import * as message from "./message";
 
 import * as commonLogic from "../business/commonEducation";
+import * as targetLogic from "../business/logicTargetEducation";
 import * as logic from "../business/";
 
 export const loadTargetProgramSuccess = targetNodes => ({
@@ -22,7 +23,9 @@ export const onLoadTargetProgram = idDetail => {
     axios
       .get(req)
       .then(res => {
-        const targetNodes = res.data.data;
+        const data = res.data.data;
+        const targetNodes = targetLogic.convertDBToTreeNodeForEduPro(data);
+        console.log(targetNodes);
         if (targetNodes) {
           dispatch(loadTargetProgramSuccess(targetNodes));
         } else {
@@ -59,7 +62,7 @@ export const saveTargetProgramError = (targetNodes, errorMessage) => ({
 
 export const onSaveTargetProgram = targetProgram => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_TARGET_EDUPROGRAM}?iddetail=${
+    let req = `${links.ADD_TARGET_EDUPROGRAM}?iddetail=${
       targetProgram.iddetail
     }`;
     let params = {};
@@ -70,6 +73,10 @@ export const onSaveTargetProgram = targetProgram => {
       outdata,
       level
     );
+
+    const targetNodes = targetLogic.convertDBToTreeNodeForEduPro(outdata);
+    console.log(targetNodes);
+    console.log(outdata);
 
     params.data = JSON.stringify(outdata);
     axios

@@ -29,7 +29,6 @@ class LogForm extends Component {
             this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.subjectid); 
         }               
         
-              
     }
 
     async getData(contentTab) {
@@ -181,21 +180,22 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         $.getComment()
             .then(res => {
                 let data = res.data;
-                for(let obj of data){
-                    const sample = {
-                        log_id : obj.log_id,
-                        id : obj.id,
-                        nguoi_gui : obj.nguoi_gui,
-                        content : obj.noi_dung,
-                        thoi_gian : obj.thoi_gian,
+
+                if (data != null) {
+                    for(let obj of data){
+                        const sample = {
+                            log_id : obj.log_id,
+                            id : obj.id,
+                            nguoi_gui : obj.nguoi_gui,
+                            content : obj.noi_dung,
+                            thoi_gian : obj.thoi_gian,
+                        }
+                        console.log(sample)
+                        dispatch({ type: SAVE_COMMENT, obj:sample });
                     }
-                    console.log(sample)
-                    dispatch({ type: SAVE_COMMENT, obj:sample });
                 }
-                
-            })
+            });
     }
-    
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LogForm);

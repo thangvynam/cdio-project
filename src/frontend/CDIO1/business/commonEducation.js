@@ -159,9 +159,9 @@ export const createSaveDataForTarget = (nodes, outData, level) => {
       for (var j = 0; j < length; j++) {
         KeyRow = KeyRow + ".";
       }
-      let KeyName = nodes[i].data.name;
+      let NameRow = nodes[i].data.name;
       let OSUsed = nodes[i].OSUsed ? nodes[i].OSUsed : false;
-      tmpObj = { KeyRow, KeyName, OSUsed };
+      tmpObj = { KeyRow, NameRow, OSUsed };
 
       outData.push(tmpObj);
       tmpObj = {};

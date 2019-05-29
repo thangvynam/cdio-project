@@ -310,8 +310,8 @@ class itemLayout7ReducerItem extends React.Component {
   handleDelete(key) {
     let previewInfo = this.props.itemLayout7Reducer.previewInfo;
     let index = previewInfo.findIndex(item => item.key === key);
-    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].mathanhphan}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
-    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].mathanhphan}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
 
     this.onDelete(key);
     this.setState({ selectedRowKeys: [], editingKey: "" });
@@ -330,6 +330,7 @@ class itemLayout7ReducerItem extends React.Component {
   onDelete = (key) => {
     //nếu key là chủ đề . xóa hết tất cả thằng con trong chủ đề đó .
     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
+    
     if (this.isExist(key)) {
       let index = 0;
       let indexChildren = 0;
@@ -405,17 +406,18 @@ class itemLayout7ReducerItem extends React.Component {
     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1)
     if (this.state.selectedRowKeys.length === previewInfo.length) {
       for (let i = 0; i < previewInfo.length; i++) {
-        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].mathanhphan}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
-        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].mathanhphan}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].key}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].key}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        previewInfo[i].del_flag = 1;
       }
-      previewInfo = [];
+      // previewInfo = [];
     } else {
       for (let i = 0; i < this.state.selectedRowKeys.length; i++) {
         let key = this.state.selectedRowKeys[i];
         this.onDelete(key);
         let index = previewInfo.findIndex(item => item.key === key);
-        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].mathanhphan}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
-        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].mathanhphan}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
         if (this.isEmptyChildrenChude(key)) {
           for (let i = 0; i < chude.length; i++) {
             if (chude[i].ma_chu_de === key.substring(0, chude[i].ma_chu_de.length)) {
@@ -445,7 +447,8 @@ class itemLayout7ReducerItem extends React.Component {
         description: table,
       }
 
-      axios.post(`/save-danhgia`, obj)
+      // axios.post(`/save-danhgia`, obj)
+      $.saveData7(obj)
         .then(response => {
           if (response.data === 1) {
             notification["success"]({
@@ -460,7 +463,8 @@ class itemLayout7ReducerItem extends React.Component {
             });
           }
         });
-      axios.post('/save-log', { data: this.props.itemLayout7Reducer.logData })
+        $.saveLog({ data: this.props.itemLayout7Reducer.logData })
+      // axios.post('/save-log', { data: this.props.itemLayout7Reducer.logData })
     }
 
   }

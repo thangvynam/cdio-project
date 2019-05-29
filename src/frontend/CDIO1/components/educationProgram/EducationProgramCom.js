@@ -165,7 +165,6 @@ export default class EduProgramCom extends Component {
   actionTemplate = (data, column) => {
     return (
       <div>
-            {/*onClick={() => this.onEdit(data.Id)}*/}
         <Link to={`/ctdt/${data.Id}`}>
           <Button
             title="Chỉnh sửa"

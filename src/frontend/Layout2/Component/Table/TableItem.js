@@ -168,8 +168,8 @@ class TableItem extends Component {
           ...row,
         });
         this.props.handleSave(newData);
-        this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
-        this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.subjectid);
+        this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
+        this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
         this.props.setFlag2(true);   
         this.setState({ editingKey: "" });
     });
@@ -215,7 +215,7 @@ class TableItem extends Component {
 
            {this.props.isReview === true ? null : <Button style={{float: "right"}}
             onClick={() => {
-              this.props.saveAll(this.props.subjectid)
+              this.props.saveAll(this.props.monhoc)
               openNotificationWithIcon('success')
             } 
             }>

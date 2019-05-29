@@ -3,7 +3,7 @@ import {
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
-import { changeDGData, addDGData, deleteDGData, saveAllDGData, isLoaded7, updateChudeDanhGia, updateCDRDanhGia, saveLog, saveLogObject } from '../../../Constant/ActionType';
+import { changeDGData, addDGData, deleteDGData, isLoaded7, updateChudeDanhGia, updateCDRDanhGia, saveLog, saveLogObject } from '../../../Constant/ActionType';
 import React, { Component } from 'react';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
@@ -276,9 +276,9 @@ class itemLayout7ReducerItem extends React.Component {
 
       this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa đánh giá: [Mã: ${dataTemp.key},Tên: ${dataTemp.tenthanhphan},Mô tả (gợi ý): ${dataTemp.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(dataTemp.standardOutput)},Tỉ lệ: ${dataTemp.tile}] -> 
       [Mã: ${dataTemp.key},Tên: ${row.tenthanhphan},Mô tả (gợi ý): ${row.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(row.standardOutput)},Tỉ lệ: ${row.tile}]`,
-        this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.logReducer.contentTab, this.props.monhoc)
       this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa đánh giá: [Mã: ${dataTemp.key},Tên: ${dataTemp.tenthanhphan},Mô tả (gợi ý): ${dataTemp.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(dataTemp.standardOutput)},Tỉ lệ: ${dataTemp.tile}] -> 
-      [Mã: ${dataTemp.key},Tên: ${row.tenthanhphan},Mô tả (gợi ý): ${row.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(row.standardOutput)},Tỉ lệ: ${row.tile}]`, this.props.logReducer.contentTab, this.props.subjectId)
+      [Mã: ${dataTemp.key},Tên: ${row.tenthanhphan},Mô tả (gợi ý): ${row.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(row.standardOutput)},Tỉ lệ: ${row.tile}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.props.onAddDGData(newData);
       this.setState({ editingKey: "" });
@@ -310,8 +310,8 @@ class itemLayout7ReducerItem extends React.Component {
   handleDelete(key) {
     let previewInfo = this.props.itemLayout7Reducer.previewInfo;
     let index = previewInfo.findIndex(item => item.key === key);
-    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
-    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
 
     this.onDelete(key);
     this.setState({ selectedRowKeys: [], editingKey: "" });
@@ -406,8 +406,8 @@ class itemLayout7ReducerItem extends React.Component {
     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1)
     if (this.state.selectedRowKeys.length === previewInfo.length) {
       for (let i = 0; i < previewInfo.length; i++) {
-        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].key}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
-        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].key}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].key}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].key}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
         previewInfo[i].del_flag = 1;
       }
       // previewInfo = [];
@@ -416,8 +416,8 @@ class itemLayout7ReducerItem extends React.Component {
         let key = this.state.selectedRowKeys[i];
         this.onDelete(key);
         let index = previewInfo.findIndex(item => item.key === key);
-        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
-        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
         if (this.isEmptyChildrenChude(key)) {
           for (let i = 0; i < chude.length; i++) {
             if (chude[i].ma_chu_de === key.substring(0, chude[i].ma_chu_de.length)) {
@@ -443,7 +443,7 @@ class itemLayout7ReducerItem extends React.Component {
       message.error("Tổng tỉ lệ phải bằng 100% , vui lòng kiểm tra lại!")
     } else {
       let obj = {
-        thongtinchungid: this.props.subjectId,
+        thongtinchungid: this.props.monhoc,
         description: table,
       }
 
@@ -478,8 +478,8 @@ class itemLayout7ReducerItem extends React.Component {
         console.log(error);
       });
 
-    //axios.get(`/get-standardoutput-7/${this.props.subjectId}`)
-    $.getStandardOutput7(this.props.subjectId)
+    //axios.get(`/get-standardoutput-7/${this.props.monhoc}`)
+    $.getStandardOutput7(this.props.monhoc)
       .then(function (response) {
 
         self.props.onGetCDR(response.data);
@@ -492,9 +492,9 @@ class itemLayout7ReducerItem extends React.Component {
     var listCDRDG = [];
     var listCDR = [];
     var result = [];
-    //axios.get(`/get-danhgia/${this.props.subjectId}`).then(response => {
-    $.getDanhGia(this.props.subjectId).then(response => {
-      if (response.data === null || response.data === undefined || response.data.length === 0) return;
+    //axios.get(`/get-danhgia/${this.props.monhoc}`).then(response => {
+    $.getDanhGia(this.props.monhoc).then(response => {
+      if (response === null || response.data === null || response.data === undefined || response.data.length === 0) return;
       let listStringId = '';
       listDG = response.data;
       response.data.forEach(item => {
@@ -506,7 +506,7 @@ class itemLayout7ReducerItem extends React.Component {
       })
 
       axios.post(`/get-cdrdanhgia`, { data: listStringId }).then(response2 => {
-        if (response2.data === null || response2.data === undefined || response2.data.length === 0) return;
+        if (response2 === null || response2.data === null || response2.data === undefined || response2.data.length === 0) return;
         listCDRDG = response2.data
         let listCDRDGString = '';
         listCDRDG.forEach(item => {
@@ -517,11 +517,8 @@ class itemLayout7ReducerItem extends React.Component {
           }
         })
         axios.post(`/get-cdr-7`, { data: listCDRDGString }).then(response3 => {
-          if (response3.data === null || response3.data === undefined || response3.data.length === 0) return;
+          if (response3 === null || response3.data === null || response3.data === undefined || response3.data.length === 0) return;
           listCDR = response3.data;
-
-
-
           for (let i = 0; i < listDG.length; i++) {
 
             let cdrResponse = [];
@@ -601,7 +598,7 @@ class itemLayout7ReducerItem extends React.Component {
 
   componentWillMount() {
 
-    if (this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout7Reducer.isLoaded === false) {
+    if (this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "" && this.props.itemLayout7Reducer.isLoaded === false) {
       this.getData();
     }
   }
@@ -790,7 +787,6 @@ const mapDispatchToProps = (dispatch) => {
     onChangeDGData: changeDGData,
     onDeleteDGData: deleteDGData,
     isLoaded: isLoaded7,
-    onSaveAllData: saveAllDGData,
     onGetChude: updateChudeDanhGia,
     onGetCDR: updateCDRDanhGia,
     onSaveLog: saveLog,

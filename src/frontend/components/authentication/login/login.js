@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import Login from 'ant-design-pro/lib/Login';
 import { Alert, Checkbox } from 'antd';
-import axios from 'axios';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { userPostFetch } from './../../../Constant/auth/authAction';

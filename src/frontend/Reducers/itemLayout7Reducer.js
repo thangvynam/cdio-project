@@ -1,5 +1,7 @@
 import {SAVE_LOG, ADD_DGDATA, CHANGE_DGDATA, CHUDE_DANHGIA,IS_LOADED_7,CDR_DANHGIA,SAVE_ALL_DATA_LAYOUT_7 } from '../Constant/ActionType';
-import axios from 'axios';
+import $ from './../helpers/services'
+
+
 const addDGDataState = {
     previewInfo: [],
     tempInfo: {
@@ -46,12 +48,7 @@ export function itemLayout7Reducer(state = addDGDataState, action) {
                 chuandaura : action.data
             }
         }
-        case SAVE_ALL_DATA_LAYOUT_7:{
-            axios.post('/save-danhgia',{data: action.data})
-            return {
-                ...state,
-            }
-        }
+     
         case SAVE_LOG: {
             if(action.muc_de_cuong === 'danh-gia'){
                 let obj = {

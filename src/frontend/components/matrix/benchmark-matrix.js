@@ -1,5 +1,4 @@
 import React, { Component } from 'react'
-import axios from 'axios';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 import { Table, Icon, Tag, Modal, Button } from 'antd';

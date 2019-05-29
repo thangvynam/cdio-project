@@ -22,7 +22,6 @@ import { bindActionCreators } from "redux";
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import TextArea from "antd/lib/input/TextArea";
-import axios from "axios";
 import $ from './../../../helpers/services';
 import { getCurrTime } from "../../../utils/Time";
 

@@ -19,7 +19,6 @@ import Layout7 from '../../Layout7/Layout7';
 import Layout8 from '../../Layout8/Layout8';
 import Danhmuc from '../../Danhmuc/Danhmuc';
 import ExportFile from '../../ExportFIle/ExportFile';
-import axios from 'axios';
 import Matrix from '../matrix/matrix';
 import EditMatrix from '../matrix/editmatrix';
 import BenchMark from '../matrix/benchmark-matrix';

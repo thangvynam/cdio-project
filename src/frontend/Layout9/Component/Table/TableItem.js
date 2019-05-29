@@ -160,14 +160,14 @@ class TableItem extends Component {
             getCurrTime(),
             `Xóa quy định chung: ${ruleitems[j].content}`,
             this.props.logReducer.contentTab,
-            this.props.subjectId
+            this.props.monhoc
           );
           this.props.onSaveReducer(
             "Nguyen Van A",
             getCurrTime(),
             `Xóa quy định chung: ${ruleitems[j].content}`,
             this.props.logReducer.contentTab,
-            this.props.subjectId
+            this.props.monhoc
           );
         }
       }
@@ -198,14 +198,14 @@ class TableItem extends Component {
       getCurrTime(),
       `Xóa quy định chung: ${ruleitems[index].content}`,
       this.props.logReducer.contentTab,
-      this.props.subjectId
+      this.props.monhoc
     );
     this.props.onSaveReducer(
       "Nguyen Van A",
       getCurrTime(),
       `Xóa quy định chung: ${ruleitems[index].content}`,
       this.props.logReducer.contentTab,
-      this.props.subjectId
+      this.props.monhoc
     );
 
     this.props.onUpdateRules(ruleitems);
@@ -236,7 +236,7 @@ class TableItem extends Component {
           newRules[index].content
         }`,
         this.props.logReducer.contentTab,
-        this.props.subjectId
+        this.props.monhoc
       );
       this.props.onSaveReducer(
         "Nguyen Van A",
@@ -245,7 +245,7 @@ class TableItem extends Component {
           newRules[index].content
         }`,
         this.props.logReducer.contentTab,
-        this.props.subjectId
+        this.props.monhoc
       );
 
       this.props.onUpdateRules(newRules);
@@ -301,13 +301,13 @@ class TableItem extends Component {
   componentDidMount() {
     if (
       !this.props.itemRule.isLoaded &&
-      this.props.subjectId !== null &&
-      this.props.subjectId !== undefined &&
-      this.props.subjectId !== ""
+      this.props.monhoc !== null &&
+      this.props.monhoc !== undefined &&
+      this.props.monhoc !== ""
     ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({ subjectId: this.props.subjectId });
-      this.getData(this.props.subjectId);
+      this.setState({ subjectId: this.props.monhoc });
+      this.getData(this.props.monhoc);
     }
   }
 
@@ -342,6 +342,7 @@ class TableItem extends Component {
   }
 
   render() {
+    console.log(this.props.monhoc)
     const components = {
       body: {
         row: EditableFormRow,

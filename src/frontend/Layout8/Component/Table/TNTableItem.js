@@ -154,8 +154,8 @@ class TNTableItem extends Component {
         ...item,
         ...row
       });
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.subjectId)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.props.onAddTNData(newItems);
       this.setState({ editingKey: "" });
@@ -180,8 +180,8 @@ class TNTableItem extends Component {
     for (let i = 0; i < selectedRow.length; i++) {
       newData[selectedRow[i]].del_flag = 1;
 
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.subjectId)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.subjectId)
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.monhoc)
     }
 
     this.props.onAddTNData(newData);
@@ -189,7 +189,7 @@ class TNTableItem extends Component {
   };
 
   getData() {
-    return $.getTaiNguyenMonHoc(this.props.subjectId).then(response => {
+    return $.getTaiNguyenMonHoc(this.props.monhoc).then(response => {
       return response.data
     }).catch(function (error) {
       console.log(error)
@@ -246,7 +246,7 @@ class TNTableItem extends Component {
   saveAll = () => {
 
     let loaitainguyen = this.props.itemLayout8Reducer.loaitainguyen;
-    let id = this.props.subjectId;
+    let id = this.props.monhoc;
     let description = this.props.itemLayout8Reducer.previewInfo;
     let obj = {
       loaitainguyen: loaitainguyen,
@@ -285,7 +285,6 @@ class TNTableItem extends Component {
   };
 
   render() {
-    console.log(this.props.itemLayout8Reducer.loaitainguyen)
     const components = {
       body: {
         row: EditableFormRow,

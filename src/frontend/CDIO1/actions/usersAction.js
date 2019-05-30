@@ -14,6 +14,16 @@ export const logInError = errorMessage => ({
   errorMessage
 });
 
+export const logOutSuccess = () => ({
+  type: cst.LOG_OUT
+});
+
+export const onLogOut = () => {
+  return (dispatch, getState) => {
+    dispatch(logOutSuccess());
+  };
+};
+
 export const onLogIn = user => {
   return (dispatch, getState) => {
     let link = `${links.LOGIN}`;
@@ -53,7 +63,8 @@ export const onLogIn = user => {
               isRight: 1
             };
             dispatch(message.message(chirp));
-            dispatch(logInSuccess(res.data, res));
+            const user = res.data.data;
+            dispatch(logInSuccess(user, res));
           });
         }
       })

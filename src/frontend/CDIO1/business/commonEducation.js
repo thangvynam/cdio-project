@@ -217,7 +217,7 @@ const createArrayFor8 = (nodes, outData) => {
       let data = nodes[i].data;
       if (data.isTable) {
         const subjects = data.subjects.map(subject => {
-          subject.nameBlock[0].indexOf("BB") === 0
+          subject.nameBlock.indexOf("BB") === 0
             ? (subject.option = "BB")
             : (subject.option = "TC");
           return subject;

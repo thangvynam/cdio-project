@@ -5,7 +5,7 @@ import "./navbar_css.css"
 import { subjectId } from '../../../../Constant/ActionType';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
-import UserActionCom from '../../../../CDIO1/components/UserActionCom';
+import UserAction from '../../../../CDIO1/containers/UserAction';
 class NavBar extends Component {
     state = {
         current: 'mail',
@@ -107,7 +107,7 @@ class NavBar extends Component {
                     <span style={{ textAlign: "center", fontSize: "10pt" }}>{this.props.subjectName}</span>
                 </Menu.Item>
             </Menu>
-            <div style={{float: "right", paddingTop: "5px",}}><UserActionCom/></div>
+            <div style={{float: "right", paddingTop: "5px",}}><UserAction/></div>
             </div>
         );
     }

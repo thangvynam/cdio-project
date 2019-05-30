@@ -6,6 +6,8 @@ export const user = (state = {}, action) => {
       return action.user;
     case types.LOG_IN_ERROR:
       return {};
+    case types.LOG_OUT:
+      return {};
     default:
       return state;
   }

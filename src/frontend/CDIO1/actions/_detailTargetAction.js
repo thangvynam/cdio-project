@@ -24,6 +24,7 @@ export const onLoadTargetProgram = idDetail => {
       .get(req)
       .then(res => {
         const data = res.data.data;
+        console.error(data)
         const targetNodes = targetLogic.convertDBToTreeNodeForEduPro(data);
         console.log(targetNodes);
         if (targetNodes) {

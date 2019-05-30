@@ -277,7 +277,6 @@ class EditMatrix extends Component {
       //$.getRealityMatrix();
       $.getStandardMatrix().then((res) => {
         console.log(res.data)
-        console.log(this.props.cdrCdio)
         let data = [];
         for (let i = 0; i < res.data.length; i++) {
           let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -304,7 +303,6 @@ class EditMatrix extends Component {
 
           }
         }
-        console.log(data)
         this.props.updateEditMatrix(data);
       })
 
@@ -337,7 +335,6 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.props.editMatrix)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];

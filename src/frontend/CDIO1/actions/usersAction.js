@@ -116,3 +116,63 @@ export const onLoadUsers = () => {
       });
   };
 };
+
+export const registerUserSuccess = successMessage => ({
+  type: cst.LOAD_USERS_SUCCESS,
+  successMessage
+});
+
+export const registerUserError = errorMessage => ({
+  type: cst.LOAD_USERS_ERROR,
+  errorMessage
+});
+
+export const onRegisterUser = user => {
+  return (dispatch, getState) => {
+    let req = links.REGISTER_USER;
+    let params = {};
+    params.data = JSON.stringify(user);
+    axios
+      .post(req, params, {
+        headers: {
+          "Content-Type": "application/json"
+        }
+      })
+      .then(res => {
+        if (res.data.code === 1) {
+          dispatch(registerUserSuccess(res));
+          dispatch(onLoadUsers());
+          let chirp = {
+            message: `Đăng kí thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
+        } else if (res.data.code === -3) {
+          dispatch(registerUserError(res));
+          dispatch(onLoadUsers());
+          let chirp = {
+            message: `Username đã tồn tại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        } else {
+          dispatch(registerUserError(res));
+          dispatch(onLoadUsers());
+          let chirp = {
+            message: `Đăng kí thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        }
+      })
+      .catch(err => {
+        dispatch(registerUserError(err));
+        dispatch(onLoadUsers());
+        let chirp = {
+          message: `Đăng kí thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+      });
+  };
+};

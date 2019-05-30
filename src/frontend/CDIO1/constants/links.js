@@ -3,6 +3,7 @@ const LINK = window.env.REACT_APP_API_PREFIX;
 // user
 export const LOGIN = `${LINK}/user/login/`;
 export const LOAD_USERS = `${LINK}/user/getlist/`;
+export const REGISTER_USER = `${LINK}/user/register/`;
 
 // levels links
 export const LOAD_LEVELS = `${LINK}/level/getlist/`;

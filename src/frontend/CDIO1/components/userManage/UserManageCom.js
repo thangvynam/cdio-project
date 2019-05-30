@@ -51,6 +51,16 @@ export default class UserManageCom extends Component {
   };
 
   onCloseAndCreate = () => {
+    // request.Username = body.username;
+    // request.Name = body.name;
+    // request.Email = body.email;
+    // request.Role = body.role;
+    this.props.onRegisterUser({
+      username: "MinhNhat",
+      name: "MinhNhat",
+      email: "mocking.key118@gmail.com",
+      role: "ADMIN"
+    });
     this.setState({ visible: false });
   };
 
@@ -219,6 +229,7 @@ export default class UserManageCom extends Component {
         </Col>
       </Row>
     );
+    console.log(this.props.users);
 
     return (
       <div>
@@ -233,8 +244,8 @@ export default class UserManageCom extends Component {
               emptyMessage="No records found"
               value={this.props.users}
             >
-              <Column sortable={true} field="Username" header="Tên" />
-              <Column sortable={true} field="Role" header="Chức vụ" />
+              <Column sortable={true} field="name" header="Tên" />
+              <Column sortable={true} field="mail" header="Mail" />
               <Column
                 body={this.actionTemplate}
                 style={{ textAlign: "center", width: "4em" }}

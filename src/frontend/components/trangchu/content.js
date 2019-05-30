@@ -495,7 +495,7 @@ class Content extends Component {
                                                             title={
 
                                                             khoi !== "" && khoi !== undefined && khoi !== null ? 
-                                                            item.Id === 1 ? <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            item.Id === 2 ? <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }

@@ -117,7 +117,7 @@ class Matrix extends Component {
         return "";
     }
     checkGAPandReturnResult = (text, textMatrix) => {
-        if (textMatrix !== "") {
+        if (textMatrix !== "" && textMatrix !== undefined && textMatrix !== null) {
             if (text === "-") {
                 if (text !== textMatrix) {
                     let textArr = textMatrix.split(",");

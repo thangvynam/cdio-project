@@ -256,6 +256,7 @@ componentDidUpdate(){
 
     render() {
         if (!localStorage.getItem("user")) return <Redirect to="/" />;
+        console.log(localStorage)
         //if(this.state.isLoad=== true || this.props.match.params.ctdt === "" || this.props.match.params.ctdt === undefined) {
             let type = this.props.match.params.type;
             let ctdt = this.props.match.params.ctdt;

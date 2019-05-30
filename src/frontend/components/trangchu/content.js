@@ -33,6 +33,7 @@ import OutcomeStandard from "../../CDIO1/containers/OutcomeStandard";
 import EducationProgram from "../../CDIO1/containers/EducationProgram";
 import SubjectManage from "../../CDIO1/containers/SubjectManage";
 import FaProManage from "../../CDIO1/containers/FaProManage";
+import UserManage from "../../CDIO1/containers/UserManage";
 import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
 import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
@@ -40,7 +41,6 @@ import * as facultiesAction from "../../CDIO1/actions/facultiesAction";
 import * as programsAction from "../../CDIO1/actions/programsAction";
 import * as levelsAction from "../../CDIO1/actions/levelsAction";
 import * as majorsAction from "../../CDIO1/actions/majorsAction";
-import UserActionCom from '../../CDIO1/components/UserActionCom';
 //END CDIO1
 
 import $ from './../../helpers/services';
@@ -577,6 +577,7 @@ class Content extends Component {
                                                             : <React.Fragment><OutcomeStandard /></React.Fragment>
                                                             : content_layout = parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
                                                                 : content_layout = parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
+                                                                  : content_layout = parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
                                                                     : null;
                 }; break;
             }

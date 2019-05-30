@@ -55,16 +55,15 @@ export const onLogIn = user => {
             dispatch(logInError(res));
           });
         } else if (res.data.code === 1) {
+          console.log(res.data);
           Promise.resolve(
-            localStorage.setItem("user", JSON.stringify(res.data.token))
+            localStorage.setItem("user", JSON.stringify(res.data))
           ).then(() => {
             let chirp = {
               message: `Đăng nhập thành công`,
               isRight: 1
             };
             dispatch(message.message(chirp));
-            const user = res.data.data;
-            dispatch(logInSuccess(user, res));
           });
         }
       })

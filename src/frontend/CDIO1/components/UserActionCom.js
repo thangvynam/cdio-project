@@ -31,7 +31,9 @@ export default class UserActionCom extends React.Component {
     return (
       <NavItem tag={Dropdown} caret toggle={this.toggleUserActions}>
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
-          <span className="d-none d-md-inline-block">{this.props.user ? this.props.user.Name : "N/a"}</span>
+          <span className="d-none d-md-inline-block">
+            {JSON.parse(localStorage.getItem("user")).data.Name}
+          </span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
           <DropdownItem tag={Link} to="user-profile">
@@ -45,9 +47,7 @@ export default class UserActionCom extends React.Component {
             tag={Link}
             to="/"
             onClick={() => {
-              Promise.resolve(localStorage.removeItem("user")).then(() => {
-                this.props.onLogOut();
-              });
+              localStorage.removeItem("user");
             }}
             className="text-danger"
           >

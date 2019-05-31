@@ -254,34 +254,10 @@ export default class TeachingManageCom extends Component {
               ref={el => (this.dt = el)}
               globalFilter={this.state.globalFilter}
               emptyMessage="No records found"
-              value={this.props.eduPrograms}
+              value={this.props.subjects}
             >
-              <Column field="EduName" header="Tên" style={{ width: "5em" }} />
-              <Column
-                field="LevelName"
-                header="Trình độ"
-                style={{ width: "2em" }}
-              />
-              <Column
-                field="MajorCode"
-                header="Mã ngành"
-                style={{ width: "2em" }}
-              />
-              <Column
-                field="MajorName"
-                header="Ngành"
-                style={{ width: "3em" }}
-              />
-              <Column
-                field="NameProgram"
-                header="Hệ (Loại hình)"
-                style={{ width: "2em" }}
-              />
-              <Column
-                field="SchoolYear"
-                header="Khóa tuyển"
-                style={{ width: "1em" }}
-              />
+              <Column field="SubjectCode" header="Mã" style={{ width: "2em" }} />
+              <Column field="SubjectName" header="Tên" style={{ width: "5em" }} />
               <Column
                 body={this.actionTemplate}
                 style={{ textAlign: "center", width: "1em" }}

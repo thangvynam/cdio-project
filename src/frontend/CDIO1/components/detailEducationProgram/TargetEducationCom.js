@@ -23,7 +23,6 @@ export default class TargetEducationCom extends Component {
       osVisible: false,
       isData: false,
       detailOsVisible: false,
-      os: [],
       tmpIdOutcome: 0,
       deleteAlertVisible: false
     };
@@ -161,12 +160,19 @@ export default class TargetEducationCom extends Component {
     this.setState({ targetVisible: false });
   };
 
-  onShowDetailOS = IdOutcome => {
-    this.props.onLoadDetailOutcomeStandard(IdOutcome);
-    this.setState({
-      tmpIdOutcome: IdOutcome,
-      detailOsVisible: true
-    });
+  onAddOutcomeStandard = IdOutcome => {
+    if (
+      this.state.targetNode === "" ||
+      this.state.targetNode.children.length !== 0
+    ) {
+      alert("Không thể thêm chuẩn đầu ra ở node này!!");
+    } else {
+      const nodes = [...this.state.targetNodes];
+      targetLogic.updateOSUsedNode(nodes, this.state.targetNode.key);
+      this.props.onSaveOutcomeUsed(IdOutcome, this.state.targetNode.key);
+      this.setState({ targetNodes: nodes, targetNode: "" });
+    }
+    this.onHideTargetDialog();
   };
 
   onHideDetailOS = () => {
@@ -254,12 +260,12 @@ export default class TargetEducationCom extends Component {
     return (
       <div>
         <Button
-          title="Xem chi tiết"
-          onClick={() => this.onShowDetailOS(data.Id)}
+          title="Thêm Chuẩn đầu ra này"
+          onClick={() => this.onAddOutcomeStandard(data.Id)}
           theme="success"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
-          <i className="material-icons">search</i>
+          <i className="material-icons">add</i>
         </Button>
       </div>
     );

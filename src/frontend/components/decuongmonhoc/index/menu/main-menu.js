@@ -39,6 +39,41 @@ class MenuLeft extends Component {
     return -1;
   };
 
+  checkAdmin = (role) => {
+    if(role.indexOf("ADMIN") > -1) {
+        return true;
+    }
+    return false;
+}
+
+  checkTeacherBlock = (block) => {
+    for(let i = 0;i < block.subjects.length;i++) {
+      if(this.checkInTeacherSubject(this.props.teacherSubject, block.subjects[i].IdSubject)
+        || this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, block.subjects[i].IdSubject)) {
+          return true;
+        }
+    }
+    return false;
+  }
+
+  checkInTeacherSubject = (teacherSubject, idSubject) => {
+    for(let i = 0;i < teacherSubject.length;i++) {
+        if(teacherSubject[i].IdSubject === idSubject) {
+            return true;
+        }
+    }
+    return false;
+  }
+
+  checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+      for(let i = 0;i < teacherReviewSubject.length;i++) {
+          if(teacherReviewSubject[i].idTTC === idSubject) {
+              return true;
+          }
+      }
+      return false;
+  }
+
   redirect = () => {
     this.props.updateContentTab(this.props.content_tab);
     if (this.props.content_monhoc !== "" &&
@@ -107,42 +142,104 @@ class MenuLeft extends Component {
           }
 
           Object.keys(this.props.menuItem).map((key, id) => {
-            menuItemsCollapse.push(
-              <Menu.Item key={key} onClick={() => this.onClick(key)}>
-                <Link
-                  style={{ paddingLeft: "20px" }}
-                  to={`/${this.props.parentitem[i].id}/${
-                    this.props.content_ctdt
-                    }/${key}`}
-                >
-                  <Icon type="dashboard" />
-                  <span>{this.props.menuItem[key].name}</span>
-                </Link>
-              </Menu.Item>
-            );
-            //let indexCtdt = this.getCtdt(this.props.ctdt, this.props.content_ctdt);
-            if (
-              this.props.content_type === "de-cuong-mon-hoc" &&
-              key === "de-cuong-mon-hoc" &&  this.props.dataCtdt !== undefined
-              &&  this.props.dataCtdt !== null
-            ) {
-              for (let j = 0; j < this.props.dataCtdt.length; j++) {
+            if(key === "matrix") {
+              if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
                 menuItemsCollapse.push(
-                  <Menu.Item
-                    key={this.props.dataCtdt[j].Id}
-                    onClick={() => this.onClick(this.props.dataCtdt[j].Id)}
-                  >
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
                     <Link
-                      style={{ paddingLeft: "40px" }}
+                      style={{ paddingLeft: "20px" }}
                       to={`/${this.props.parentitem[i].id}/${
-                        this.props.ctdt[ctdtIndex].Id
-                        }/${key}/${this.props.dataCtdt[j].Id}`}
+                        this.props.content_ctdt
+                        }/${key}`}
                     >
                       <Icon type="dashboard" />
-                      <span>{this.props.dataCtdt[j].NameBlock}</span>
+                      <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
                 );
+              }
+            }
+            else if(key === "edit-matrix") {
+              if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
+            else {
+              menuItemsCollapse.push(
+                <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                  <Link
+                    style={{ paddingLeft: "20px" }}
+                    to={`/${this.props.parentitem[i].id}/${
+                      this.props.content_ctdt
+                      }/${key}`}
+                  >
+                    <Icon type="dashboard" />
+                    <span>{this.props.menuItem[key].name}</span>
+                  </Link>
+                </Menu.Item>
+              );
+            }
+            
+
+            //let indexCtdt = this.getCtdt(this.props.ctdt, this.props.content_ctdt);
+            if (
+              this.props.content_type === "de-cuong-mon-hoc" 
+              && key === "de-cuong-mon-hoc" 
+              &&  this.props.dataCtdt !== undefined
+              &&  this.props.dataCtdt !== null
+            ) {
+              for (let j = 0; j < this.props.dataCtdt.length; j++) {
+                if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                  menuItemsCollapse.push(
+                    <Menu.Item
+                      key={this.props.dataCtdt[j].Id}
+                      onClick={() => this.onClick(this.props.dataCtdt[j].Id)}
+                    >
+                      <Link
+                        style={{ paddingLeft: "40px" }}
+                        to={`/${this.props.parentitem[i].id}/${
+                          this.props.ctdt[ctdtIndex].Id
+                          }/${key}/${this.props.dataCtdt[j].Id}`}
+                      >
+                        <Icon type="dashboard" />
+                        <span>{this.props.dataCtdt[j].NameBlock}</span>
+                      </Link>
+                    </Menu.Item>
+                  );
+                }
+                else {
+                  if(this.checkTeacherBlock(this.props.dataCtdt[j])) {
+                    menuItemsCollapse.push(
+                      <Menu.Item
+                        key={this.props.dataCtdt[j].Id}
+                        onClick={() => this.onClick(this.props.dataCtdt[j].Id)}
+                      >
+                        <Link
+                          style={{ paddingLeft: "40px" }}
+                          to={`/${this.props.parentitem[i].id}/${
+                            this.props.ctdt[ctdtIndex].Id
+                            }/${key}/${this.props.dataCtdt[j].Id}`}
+                        >
+                          <Icon type="dashboard" />
+                          <span>{this.props.dataCtdt[j].NameBlock}</span>
+                        </Link>
+                      </Menu.Item>
+                    );
+                  }
+                }
+
                 if (
                   this.props.content_monhoc !== "" &&
                   this.props.content_monhoc !== undefined &&
@@ -156,7 +253,7 @@ class MenuLeft extends Component {
                           to={MENUITEM.PHAN_CONG}
                         >
                           <Icon type="dashboard" />
-                          <span>Phân công giáo viên</span>
+                          <span>Phân công review</span>
                         </Link>
                       </Menu.Item>
                     );
@@ -168,7 +265,7 @@ class MenuLeft extends Component {
                           to={MENUITEM.REVIEW}
                         >
                           <Icon type="dashboard" />
-                          <span>Review Syllabus</span>
+                          <span>Review môn học</span>
                         </Link>
                       </Menu.Item>
                     );
@@ -279,7 +376,23 @@ class MenuLeft extends Component {
             }
           });
         }
-      } else {
+      } 
+      else if(this.props.parentitem[i].id === "danh-muc") {
+        if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+      else {
         menuItemsCollapse.push(
           <Menu.Item
             key={this.props.parentitem[i].id}
@@ -333,7 +446,9 @@ const mapStateToProps = state => {
     subjectList: state.subjectlist,
     subjectMaso: state.subjectmaso,
     ctdt: state.eduPrograms,
-    dataCtdt: state.datactdt.data
+    dataCtdt: state.datactdt.data,
+    teacherSubject: state.datactdt.teacherSubject,
+    teacherReviewSubject: state.datactdt.teacherReviewSubject,
   };
 };
 const mapDispatchToProps = dispatch => {

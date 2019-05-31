@@ -21,9 +21,6 @@ const initialState = {
     "edit-matrix": {
         name: "EDIT-MATRIX"
     },
-    "danhmuc": {
-        name: "DANH MỤC"
-    },
     "itusurvey": {
         name: "ITU SURVEY"
     },
@@ -91,6 +88,10 @@ const parentState = [
     {
         id: "ctdt",
         name: "CHƯƠNG TRÌNH ĐÀO TẠO"
+    },
+    {
+        id: "danh-muc",
+        name: "DANH MỤC"
     },
     {
         id: "cdr",

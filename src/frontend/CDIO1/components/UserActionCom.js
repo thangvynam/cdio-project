@@ -36,11 +36,8 @@ export default class UserActionCom extends React.Component {
           </span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>
-          <DropdownItem tag={Link} to="user-profile">
+          <DropdownItem tag={Link} to="info">
             <i className="material-icons">&#xE7FD;</i> Trang cá nhân
-          </DropdownItem>
-          <DropdownItem tag={Link} to="edit-user-profile">
-            <i className="material-icons">&#xE8B8;</i> Cập nhật
           </DropdownItem>
           <DropdownItem divider />
           <DropdownItem

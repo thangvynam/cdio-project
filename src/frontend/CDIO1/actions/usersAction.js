@@ -107,7 +107,7 @@ export const onLoadUsers = () => {
       })
       .catch(err => {
         let chirp = {
-          message: `Tải người dùng thất bại`,
+          message: `Tải danh sách người dùng thất bại`,
           isRight: 0
         };
         dispatch(message.message(chirp));
@@ -136,8 +136,7 @@ export const onRegisterUser = user => {
       .post(req, params, {
         headers: {
           "Content-Type": "application/x-www-form-urlencoded",
-          "authorization":
-            localStorage.getItem("user")
+          authorization: localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
             : ""
         }
@@ -155,7 +154,7 @@ export const onRegisterUser = user => {
           dispatch(registerUserError(res));
           dispatch(onLoadUsers());
           let chirp = {
-            message: `Username đã tồn tại`,
+            message: `Tên tài khoản đã tồn tại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
@@ -177,6 +176,108 @@ export const onRegisterUser = user => {
           isRight: 0
         };
         dispatch(message.message(chirp));
+      });
+  };
+};
+
+export const changePassSuccess = successMessage => ({
+  type: cst.CHANGE_PASS_SUCCESS,
+  successMessage
+});
+
+export const changePassError = errorMessage => ({
+  type: cst.CHANGE_PASS_ERROR,
+  errorMessage
+});
+
+export const onChangePass = user => {
+  return (dispatch, getState) => {
+    let req = links.CHANGE_PASS;
+    let params = {};
+    params.data = JSON.stringify(user);
+    axios
+      .post(req, params, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
+      .then(res => {
+        if (res.data.code === 1) {
+          dispatch(changePassSuccess(res));
+          let chirp = {
+            message: `Thay đổi mật khẩu thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
+        } else if (res.data.code === -3) {
+          dispatch(changePassError(res));
+          dispatch(onLoadUsers());
+          let chirp = {
+            message: `Thay đổi mật khẩu thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        } else {
+          dispatch(changePassError(res));
+          dispatch(onLoadUsers());
+          let chirp = {
+            message: `Thay đổi mật khẩu thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        }
+      })
+      .catch(err => {
+        dispatch(changePassError(err));
+        dispatch(onLoadUsers());
+        let chirp = {
+          message: `Thay đổi mật khẩu thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+      });
+  };
+};
+
+export const getInfoSuccess = (user, successMessage) => ({
+  type: cst.GET_INFO_SUCCESS,
+  successMessage,
+  user
+});
+
+export const getInfoError = errorMessage => ({
+  type: cst.GET_INFO_ERROR,
+  errorMessage
+});
+
+export const onGetInfo = iduser => {
+  return (dispatch, getState) => {
+    let req = `${links.GET_INFO}?iduser=${iduser}`;
+    axios
+      .get(req)
+      .then(res => {
+        const user = res.data.data;
+        if (user) {
+          dispatch(getInfoSuccess(user, res));
+        } else {
+          let chirp = {
+            message: `Chưa có dữ liệu`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+          dispatch(getInfoError(res));
+        }
+      })
+      .catch(err => {
+        let chirp = {
+          message: `Tải người dùng thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+        dispatch(getInfoError(err));
       });
   };
 };

@@ -4,6 +4,8 @@ const LINK = window.env.REACT_APP_API_PREFIX;
 export const LOGIN = `${LINK}/user/login/`;
 export const LOAD_USERS = `${LINK}/user/getlist/`;
 export const REGISTER_USER = `${LINK}/user/register/`;
+export const CHANGE_PASS = `${LINK}/user/changepass/`;
+export const GET_INFO = `${LINK}/user/getinfo/`;
 
 // levels links
 export const LOAD_LEVELS = `${LINK}/level/getlist/`;

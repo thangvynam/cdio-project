@@ -21,8 +21,8 @@ class TeachingManageTemp extends Component {
   }
 
   componentDidMount = () => {
-     let link=window.location.href.replace( /(^.+)(\w\d+\w)(.+$)/i,'$2');
-     console.log(link)
+    // let link = window.location.href.replace(/(^.+)(\w\d+\w)(.+$)/i, "$2");
+    // console.log(link);
     const getData = async () => {
       const id = this.props.ctdt;
       await this.props.onLoadDetailEduProgram(id);
@@ -51,9 +51,7 @@ class TeachingManageTemp extends Component {
 
         <Row>
           <Col lg="12" md="12">
-            <TeachingManageCom
-              subjects={subjects}
-            />
+            <TeachingManageCom subjects={subjects} />
           </Col>
         </Row>
       </Container>

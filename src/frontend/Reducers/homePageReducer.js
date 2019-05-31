@@ -107,6 +107,10 @@ const parentState = [
     {
         id: "qlgd",
         name: "QUẢN LÝ NGƯỜI DÙNG"
+    },
+    {
+        id: "info",
+        name: "THÔNG TIN TÀI KHOẢN"
     }
 ]
 

@@ -37,6 +37,7 @@ import UserManage from "../../CDIO1/containers/UserManage";
 import TeachingManage from "../../CDIO1/containers/TeachingManage";
 import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
 import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
+import UserInfo from "../../CDIO1/containers/UserInfo";
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import * as facultiesAction from "../../CDIO1/actions/facultiesAction";
 import * as programsAction from "../../CDIO1/actions/programsAction";
@@ -638,6 +639,7 @@ class Content extends Component {
                                                             : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
                                                                 : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
                                                                   : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
+                                                                  :parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
                                                                     : null;
                 }; break;
             }

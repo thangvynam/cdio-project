@@ -9,6 +9,7 @@ import PageTitle from "../components/PageTitle";
 
 import * as blocksAction from "../actions/_blocksAction";
 import * as detailEduProgramAction from "../actions/detailEduProgramAction";
+import * as usersAction from "../actions/usersAction";
 
 import * as commonLogic from "../business/commonEducation";
 
@@ -21,14 +22,8 @@ class TeachingManageTemp extends Component {
   }
 
   componentDidMount = () => {
-    // let link = window.location.href.replace(/(^.+)(\w\d+\w)(.+$)/i, "$2");
-    // console.log(link);
-    const getData = async () => {
-      const id = this.props.ctdt;
-      await this.props.onLoadDetailEduProgram(id);
-      await this.props.onLoadBlocks(this.props.detailEduProgram.Id);
-    };
-    getData();
+     this.props.onLoadBlocks(this.props.detailEduProgram.Id);
+     this.props.onLoadUsers();
   };
 
   render() {
@@ -51,7 +46,7 @@ class TeachingManageTemp extends Component {
 
         <Row>
           <Col lg="12" md="12">
-            <TeachingManageCom subjects={subjects} />
+            <TeachingManageCom users={this.props.users} subjects={subjects} />
           </Col>
         </Row>
       </Container>
@@ -62,10 +57,12 @@ class TeachingManageTemp extends Component {
 const mapStateToProps = state => ({
   message: state.message,
   blocks: state.blocks,
-  detailEduProgram: state.detailEduProgram
+  detailEduProgram: state.detailEduProgram,
+  users: state.users
 });
 
 export default connect(mapStateToProps, {
   onLoadBlocks: blocksAction.onLoadBlocks,
-  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram
+  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
+  onLoadUsers: usersAction.onLoadUsers
 })(TeachingManageTemp);

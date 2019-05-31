@@ -614,7 +614,7 @@ class TableItem extends Component {
   onSaveAll = () => {
     const itemKHGDTH = this.props.itemKHGDTH;
     var body = {};
-    body.thong_tin_chung_id = this.state.subjectId;
+    body.thong_tin_chung_id = this.props.monhoc;
     body.data = [];
     itemKHGDTH.previewInfo.forEach((item, index) => {
       let temp = {};
@@ -675,7 +675,7 @@ class TableItem extends Component {
       }
       //axios.post("/save-log", { data: this.props.itemKHGDTH.logData });
       $.saveLog({ data: this.props.itemKHGDTH.logData });
-      this.getDataTable(this.state.subjectId);
+      this.getDataTable(this.props.monhoc);
     });
   };
 
@@ -709,7 +709,7 @@ class TableItem extends Component {
       //   const data = response.data;
       //   this.props.onUpdateKHGDTH(data);
       // });
-      this.getDataTable(nextProps.subjectId);
+      this.getDataTable(this.props.monhoc);
     }
   }
 

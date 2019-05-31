@@ -3,6 +3,9 @@ const initialState = {
     "chuan-dau-ra" :{
         name: "CHUẨN ĐẦU RA",
     },
+    "phan-cong-giang-day" :{
+        name: "PHÂN CÔNG GIẢNG DẠY",
+    },
     "de-cuong-mon-hoc" :{
         name: "ĐỀ CƯƠNG MÔN HỌC",
     },

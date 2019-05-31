@@ -171,8 +171,6 @@ class Content extends Component {
 
     checkInTeacherSubject = (teacherSubject, idSubject) => {
         for(let i = 0;i < teacherSubject.length;i++) {
-            console.log(idSubject)
-            console.log(teacherSubject[i].IdSubject)
             if(teacherSubject[i].IdSubject === idSubject) {
                 return true;
             }
@@ -548,9 +546,9 @@ class Content extends Component {
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
 
-                                                            khoi !== "" && khoi !== undefined && khoi !== null ? 
-                                                            item.Id === 2 ? <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/review`}><span style={{color: "yellow"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            : <Link to={`/${parent}/${ctdt}/${type}/${khoi}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            !this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role) ? 
+                                                            this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.Id) ? <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }
 
@@ -622,6 +620,9 @@ class Content extends Component {
                                                 )
                                                 : type === "chuan-dau-ra" ? (
                                                     <EditOutcomeStandard/>
+                                                )
+                                                : type === "phan-cong-giang-day" ? (
+                                                    <h1>CDIO1 - PHAN CONG GIANG DAY</h1>
                                                 )
                                                 : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                                                     <EditEducationProgram ctdt={ctdt} />

@@ -271,7 +271,7 @@ class TableItem extends Component {
 
   onSaveAll = () => {
     let body = {};
-    body.thong_tin_chung_id = this.state.subjectId;
+    body.thong_tin_chung_id = this.props.monhoc;
     body.data = this.props.itemRule.previewInfo;
 
     //axios.post("/add-data-9", body)
@@ -291,7 +291,7 @@ class TableItem extends Component {
 
       $.saveLog({ data: this.props.itemRule.logData });
 
-      this.getData(this.state.subjectId);
+      this.getData(this.props.monhoc);
     });
 
     //axios.post("/save-log", { data: this.props.itemRule.logData });
@@ -336,8 +336,8 @@ class TableItem extends Component {
       nextProps.subjectId !== ""
     ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({ subjectId: nextProps.subjectId });
-      this.getData(nextProps.subjectId);
+      this.setState({ subjectId: this.props.monhoc });
+      this.getData(this.props.monhoc);
     }
   }
 

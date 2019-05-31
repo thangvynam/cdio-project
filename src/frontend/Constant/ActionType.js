@@ -479,8 +479,6 @@ export const MENUITEM = {
     QUY_DINH_CHUNG: 'quy-dinh-chung',
     TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc',
     XUAT_FILE_PDF:'xuat-file',
-    DE_CUONG_MON_HOC: 'de-cuong-mon-hoc',
-    TAB_2: 'tab-2',
     ITU_SURVEY: 'itusurvey',
     PHAN_CONG: 'phan-cong',
     REVIEW: 'review'

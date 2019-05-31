@@ -8,7 +8,7 @@ import Content from './content';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
-import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject } from '../../Constant/ActionType';
+import { MENUITEM, subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
  
@@ -108,6 +108,15 @@ class Home extends Component {
         return -1;
     }
 
+    checkTabExist = (MENUITEM, tab) => {
+        for(let i = 0;i < Object.keys(MENUITEM).length;i++) {
+            if(MENUITEM[Object.keys(MENUITEM)[i]] === tab) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     getCdrCdio = (cdr_cdio, id) => {
       for(let i = 0;i < cdr_cdio.length;i++) {
           if(cdr_cdio[i].id === id)  {
@@ -167,7 +176,6 @@ class Home extends Component {
         let dataSubject = [];
         let dataCtdt = [];
         if(resData !== undefined && resData !== null) {
-            console.log(resData);
             for(let i = 0;i < resData.length;i++) {
             dataCtdt = dataCtdt.concat(resData[i].block);
             for(let j = 0;j < resData[i].block.length;j++) {
@@ -254,12 +262,17 @@ class Home extends Component {
       })
 }
 
+    checkAdmin = (role) => {
+        if(role.indexOf("ADMIN") > -1) {
+            return true;
+        }
+        return false;
+    }
+
 componentDidUpdate(){
 
     window.onpopstate  = (e) => {
-        if(this.props.subjectId !== "") {
-
-            
+        if(this.props.subjectId !== "") { 
             this.props.updateSubjectId("");
         }
    }
@@ -268,8 +281,6 @@ componentDidUpdate(){
 
     render() {
         if (!localStorage.getItem("user")) return <Redirect to="/" />;
-        console.log(this.props.subjectList)
-        //if(this.state.isLoad=== true || this.props.match.params.ctdt === "" || this.props.match.params.ctdt === undefined) {
             let type = this.props.match.params.type;
             let ctdt = this.props.match.params.ctdt;
             let khoi = this.props.match.params.khoi;
@@ -288,7 +299,7 @@ componentDidUpdate(){
                         //check param 2
                         if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
                             console.log("param 2 must null")
-                                return <Page404/>;
+                            return <Page404/>;
                         }
                     }
                     else if(parent === "cdr"){
@@ -306,6 +317,18 @@ componentDidUpdate(){
                                 return <Page404/>;
                             }
                         }
+                    }
+                    else if(parent === "danh-muc") {
+                        //check role
+                        if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                            console.log("danhmuc admin only")
+                            return <Page404/>;
+                        }
+                        //check param 2
+                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                            console.log("param 2 must null")
+                            return <Page404/>;
+                        }     
                     }
                     else {
                         //check param 2
@@ -336,6 +359,19 @@ componentDidUpdate(){
                                                             console.log("wrong param 5")
                                                             return <Page404/>;
                                                         }
+                                                        else {
+                                                            //check param 6
+                                                            if(!this.checkTabExist(MENUITEM, tab)) {
+                                                                console.log("wrong param 6")
+                                                                return <Page404/>;
+                                                            }
+                                                            else {
+                                                                if(tab === "itusurvey") {
+                                                                    console.log("wrong param 6")
+                                                                    return <Page404/>;
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -353,6 +389,19 @@ componentDidUpdate(){
                                                             console.log("wrong param 5")
                                                             return <Page404/>;
                                                         }
+                                                        else {
+                                                            //check param 6
+                                                            if(!this.checkTabExist(MENUITEM, tab)) {
+                                                                console.log("wrong param 6")
+                                                                return <Page404/>;
+                                                            }
+                                                            else {
+                                                                if(tab !== "itusurvey") {
+                                                                    console.log("wrong param 6")
+                                                                    return <Page404/>;
+                                                                }
+                                                            }
+                                                        }
                                                     }
                                                     else {
                                                         console.log("param 5 cannot be null")
@@ -363,6 +412,18 @@ componentDidUpdate(){
                                         }
 
                                         else {
+                                            if(type === "matrix") {
+                                                if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                                                    console.log("matrix teacher only")
+                                                    return <Page404/>;
+                                                }
+                                            }
+                                            if(type === "edit-matrix") {
+                                                if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                                                    console.log("editmatrix admin only")
+                                                    return <Page404/>;
+                                                }
+                                            }
                                             if(khoi !== "" && khoi !== undefined && khoi !== null) {
                                                 console.log("param 4 must be null")
 

@@ -525,7 +525,7 @@ class Content extends Component {
                                         <a href="#">Link</a>
                                         <Divider type="vertical" />
                                         <a href="#">Link</a>
-                                    </div>,
+                                    </div>
                                 </Row>
                             </Col>
                             <div className="wrapper-custom">
@@ -547,7 +547,7 @@ class Content extends Component {
                                                             title={
 
                                                             !this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role) ? 
-                                                            this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.Id) ? <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.Id) ? <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }
@@ -563,81 +563,82 @@ class Content extends Component {
                                 />
                             </div>
                         </React.Fragment>
-                    ) : type === "matrix" ? <Matrix />
-                            : type === "edit-matrix" ? <EditMatrix />
-                                : type === "survey-matrix" ? <SurveyMatrix />
-                                    : type === "benchmark-matrix" ? <BenchMark />
-                                        : type === "danhmuc" ? <Danhmuc />
-                                            : type === "itusurvey" ?
-                                                <React.Fragment>
-                                                    <div>
-                                                        <List
-                                                            itemLayout="horizontal"
-                                                            dataSource={subjectList}
-                                                            renderItem={(item, id) => (
-                                                                <Row>
-                                                                    <div style={{ height: "10px" }}></div>
-                                                                    <Col span={1} className="col-left">
-                                                                    </Col>
-                                                                    <Col span={22} className="col-left">
+                    ) 
+                    : type === "matrix" ? <Matrix />
+                    : type === "edit-matrix" ? <EditMatrix />
+                    : type === "survey-matrix" ? <SurveyMatrix />
+                    : type === "benchmark-matrix" ? <BenchMark />
+                    : type === "itusurvey" ?
+                        <React.Fragment>
+                            <div>
+                                <List
+                                    itemLayout="horizontal"
+                                    dataSource={subjectList}
+                                    renderItem={(item, id) => (
+                                        <Row>
+                                            <div style={{ height: "10px" }}></div>
+                                            <Col span={1} className="col-left">
+                                            </Col>
+                                            <Col span={22} className="col-left">
 
-                                                                        <div className="list-border" style={{ borderRadius: "12px" }}>
+                                                <div className="list-border" style={{ borderRadius: "12px" }}>
 
-                                                                            <List.Item>
-                                                                                <List.Item.Meta
-                                                                                
-                                                                                    avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                                                    title={
-                                                                                        <Link to={`/${parent}/${ctdt}/${type}/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                                                        
-                                                                                    }
-                                                                                />
-                                                                            </List.Item>
-                                                                        </div>
-
-                                                                    </Col>
-                                                                </Row>
-                                                            )}
+                                                    <List.Item>
+                                                        <List.Item.Meta
+                                                        
+                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                            title={
+                                                                <Link to={`/${parent}/${ctdt}/${type}/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                                
+                                                            }
                                                         />
-                                                    </div>
-                                                </React.Fragment>
+                                                    </List.Item>
+                                                </div>
 
-                                                : type === "view-survey" ? (
-                                                    <React.Fragment>
-                                                        <Row className="col-right-title">
-                                                            <div>
-                                                                <span>Xem Khảo Sát</span>
-                                                                <Divider type="vertical" />
-                                                                <a href="#">Link</a>
-                                                                <Divider type="vertical" />
-                                                                <a href="#">Link</a>
-                                                            </div>,
-                                                            </Row>
-                                                        <div className="wrapper-custom-layout">
-                                                            <ViewSurvey />
-                                                        </div>
-                                                    </React.Fragment>
-                                                )
-                                                : type === "chuan-dau-ra" ? (
-                                                    <EditOutcomeStandard/>
-                                                )
-                                                : type === "phan-cong-giang-day" ? (
-                                                    <h1>CDIO1 - PHAN CONG GIANG DAY</h1>
-                                                )
-                                                : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                                    <EditEducationProgram ctdt={ctdt} />
-                                                )
-                                                    : parent === "ctdt" ? (
-                                                        <EducationProgram />
-                                                    )
-                                                        : parent === "cdr" ? ctdt == "edit" ? (
-                                                            <React.Fragment><EditOutcomeStandard /></React.Fragment>
-                                                        )
-                                                            : <React.Fragment><OutcomeStandard /></React.Fragment>
-                                                            : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
-                                                                : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
-                                                                  : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
-                                                                    : null;
+                                            </Col>
+                                        </Row>
+                                    )}
+                                />
+                            </div>
+                        </React.Fragment>
+
+                    : type === "view-survey" ? (
+                        <React.Fragment>
+                            <Row className="col-right-title">
+                                <div>
+                                    <span>Xem Khảo Sát</span>
+                                    <Divider type="vertical" />
+                                    <a href="#">Link</a>
+                                    <Divider type="vertical" />
+                                    <a href="#">Link</a>
+                                </div>,
+                                </Row>
+                            <div className="wrapper-custom-layout">
+                                <ViewSurvey />
+                            </div>
+                        </React.Fragment>
+                    )
+                    : type === "chuan-dau-ra" ? (
+                        <EditOutcomeStandard/>
+                    )
+                    : type === "phan-cong-giang-day" ? (
+                        <h1>CDIO1 - PHAN CONG GIANG DAY</h1>
+                    )
+                    : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
+                        <EditEducationProgram ctdt={ctdt} />
+                    )
+                    : parent === "ctdt" ? (
+                        <EducationProgram />
+                    )
+                    : parent === "danh-muc" ? <Danhmuc />
+                    : parent === "cdr" ? ctdt == "edit" ? (
+                        <React.Fragment><EditOutcomeStandard /></React.Fragment>
+                    )
+                    : <React.Fragment><OutcomeStandard /></React.Fragment>
+                    : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
+                    : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
+                    : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
+                    : null;
                 }; break;
             }
             default: {
@@ -650,8 +651,6 @@ class Content extends Component {
         }
         return (
             <React.Fragment>
-
-                {/* <div style={{float: "right", paddingTop: "5px",}}><UserActionCom/></div> */}
                 {content_layout}
             </React.Fragment>
         )

@@ -50,6 +50,8 @@ export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 export const CDR_CDIO = 'CDR_CDIO';
+export const TEACHER_SUBJECT = 'TEACHER_SUBJECT';
+export const TEACHER_REVIEW_SUBJECT = 'TEACHER_REVIEW_SUBJECT';
 
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
@@ -249,6 +251,20 @@ export function dataCtdt(newDataCtdt) {
     return {
         type: DATA_CTDT,
         data: newDataCtdt
+    };
+}
+
+export function teacherSubject(newTeacherSubject) {
+    return {
+        type: TEACHER_SUBJECT,
+        data: newTeacherSubject
+    };
+}
+
+export function teacherReviewSubject(newTeacherReviewSubject) {
+    return {
+        type: TEACHER_REVIEW_SUBJECT,
+        data: newTeacherReviewSubject
     };
 }
 

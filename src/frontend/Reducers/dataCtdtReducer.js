@@ -1,9 +1,11 @@
-import { DATA_CTDT, ISLOADED_DATA_CTDT } from '../Constant/ActionType';
+import { DATA_CTDT, ISLOADED_DATA_CTDT, TEACHER_SUBJECT, TEACHER_REVIEW_SUBJECT } from '../Constant/ActionType';
 
 
 const initialState = {
     data: [],
-    isLoaded: false
+    isLoaded: false,
+    teacherSubject: [],
+    teacherReviewSubject: []
 }
 
 
@@ -17,6 +19,14 @@ export function dataCtdtReducer(state = initialState, action) {
         case ISLOADED_DATA_CTDT:
             return {...state,
                 isLoaded: action.data 
+            };
+        case TEACHER_SUBJECT:
+        return {...state,
+            teacherSubject: action.data 
+        };
+        case TEACHER_REVIEW_SUBJECT:
+            return {...state,
+                teacherReviewSubject: action.data 
             };
         default: 
         return state;

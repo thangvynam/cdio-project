@@ -31,9 +31,8 @@ import {
   subjectListReducer,
   subjectMasoReducer,
   cdrCdioReducer,
-  ctdtReducer,
   parentItemReducer,
-  kttReducer
+
 } from "../Reducers/homePageReducer";
 import logReducer from "../Reducers/logReducer";
 
@@ -81,8 +80,6 @@ const allReducers = redux.combineReducers({
     // loaitainguyenReducer: loaiTaiNguyenReducer,
     menuitem: menuItemReducer,
     parentitem: parentItemReducer,
-    ctdt: ctdtReducer,
-    ktt: kttReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,
     subjectlist: subjectListReducer,

@@ -169,6 +169,32 @@ class Content extends Component {
     //     return false;
     // }
 
+    checkInTeacherSubject = (teacherSubject, idSubject) => {
+        for(let i = 0;i < teacherSubject.length;i++) {
+            console.log(idSubject)
+            console.log(teacherSubject[i].IdSubject)
+            if(teacherSubject[i].IdSubject === idSubject) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+        for(let i = 0;i < teacherReviewSubject.length;i++) {
+            if(teacherReviewSubject[i].idTTC === idSubject) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    checkAdmin = (role) => {
+        if(role.indexOf("ADMIN") > -1) {
+            return true;
+        }
+        return false;
+    }
     componentDidMount = () => {
         this.props.onLoadEduPrograms();
     };
@@ -182,18 +208,46 @@ class Content extends Component {
         let parent = this.props.content_parent;
         switch (type) {
             case "de-cuong-mon-hoc": {
-                if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                    subjectList = this.props.subjectList.filter(item => 
-                        item.IdSubjectBlock === +khoi
-                    );
+                if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                    if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                        subjectList = this.props.subjectList.filter(item => 
+                            item.IdSubjectBlock === +khoi && item.del_flat != 1
+                        );
+                    }
+                    else {
+                        subjectList = this.props.subjectList.filter(item => 
+                            item.del_flat != 1
+                        );
+                    }
                 }
                 else {
-                    subjectList = this.props.subjectList;
+                    if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                        subjectList = this.props.subjectList.filter(item => 
+                            item.IdSubjectBlock === +khoi 
+                            && item.del_flat != 1
+                            && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
+                            || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                        );
+                    }
+                    else {
+                        subjectList = this.props.subjectList.filter(item => 
+                            item.del_flat != 1
+                            && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
+                            || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                        );
+                    }
                 }
+                
                 
             } break;
             case 'itusurvey': {
-                subjectList = this.props.subjectList;
+                
+                subjectList = this.props.subjectList.filter(item => 
+                    item.del_flat != 1
+                    && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
+                    || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                );;
+                
 
             } break;
 
@@ -565,19 +619,23 @@ class Content extends Component {
                                                             <ViewSurvey />
                                                         </div>
                                                     </React.Fragment>
-                                                ) : content_layout = ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
+                                                )
+                                                : type === "chuan-dau-ra" ? (
+                                                    <h1>CDIO1 - CHUAN DAU RA</h1>
+                                                )
+                                                : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                                                     <EditEducationProgram ctdt={ctdt} />
                                                 )
-                                                    : content_layout = parent === "ctdt" ? (
+                                                    : parent === "ctdt" ? (
                                                         <EducationProgram />
                                                     )
-                                                        : content_layout = parent === "cdr" ? ctdt == "edit" ? (
+                                                        : parent === "cdr" ? ctdt == "edit" ? (
                                                             <React.Fragment><EditOutcomeStandard /></React.Fragment>
                                                         )
                                                             : <React.Fragment><OutcomeStandard /></React.Fragment>
-                                                            : content_layout = parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
-                                                                : content_layout = parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
-                                                                  : content_layout = parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
+                                                            : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
+                                                                : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
+                                                                  : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
                                                                     : null;
                 }; break;
             }
@@ -613,7 +671,9 @@ const mapStateToProps = (state) => {
         faculties: state.faculties,
         programs: state.programs,
         levels: state.levels,
-        majors: state.majors
+        majors: state.majors,
+        teacherSubject: state.datactdt.teacherSubject,
+        teacherReviewSubject: state.datactdt.teacherReviewSubject,
     }
 }
 const mapDispatchToProps = (dispatch) => {

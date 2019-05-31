@@ -34,6 +34,7 @@ import EducationProgram from "../../CDIO1/containers/EducationProgram";
 import SubjectManage from "../../CDIO1/containers/SubjectManage";
 import FaProManage from "../../CDIO1/containers/FaProManage";
 import UserManage from "../../CDIO1/containers/UserManage";
+import TeachingManage from "../../CDIO1/containers/TeachingManage";
 import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
 import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
@@ -619,10 +620,10 @@ class Content extends Component {
                                                     </React.Fragment>
                                                 )
                                                 : type === "chuan-dau-ra" ? (
-                                                    <EditOutcomeStandard/>
+                                                    <EditOutcomeStandard ctdt={ctdt}/>
                                                 )
                                                 : type === "phan-cong-giang-day" ? (
-                                                    <h1>CDIO1 - PHAN CONG GIANG DAY</h1>
+                                                    <TeachingManage ctdt={ctdt}/>
                                                 )
                                                 : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                                                     <EditEducationProgram ctdt={ctdt} />

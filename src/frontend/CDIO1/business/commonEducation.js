@@ -299,3 +299,16 @@ export const createDataFor6 = (nodes, sumCredit) => {
     }
   }
 };
+
+export const getSubjects = blocks => {
+  const array = blocks.reduce((arr, cur) => {
+    const tmpArr = cur.block.reduce((childArr, childCur) => {
+      const tmpSbjects = childCur.subjects.reduce((subjects, subjectCur) => {
+        return [...subjects, subjectCur];
+      }, []);
+      return [...childArr, ...tmpSbjects];
+    }, []);
+    return [...arr, ...tmpArr];
+  }, []);
+  return array;
+};

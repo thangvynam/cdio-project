@@ -11,6 +11,7 @@ class App extends Component {
 
   render() {
     let user = localStorage.getItem('user');
+    console.log(user)
     return (
       <Switch>
         <Route exact path="/" component={user ? Home : Login} />

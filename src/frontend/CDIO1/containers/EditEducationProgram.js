@@ -25,7 +25,9 @@ import $ from "../../helpers/services";
 import {
   subjectList,
   dataCtdt,
-  isLoadedDataCtdt
+  isLoadedDataCtdt,
+  teacherSubject,
+  teacherReviewSubject
 } from "../../Constant/ActionType";
 //END CDIO-2 api
 class DetailEducationProgramTmp extends Component {
@@ -55,6 +57,18 @@ class DetailEducationProgramTmp extends Component {
         this.props.updateSubjectList(dataSubject);
         this.props.updateDataCtdt(dataCtdt);
         this.props.updateIsLoadedDataCtdt(true);
+        $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+        .then(res => { 
+          if(res.data !== undefined && res.data !== null){
+            this.props.updateTeacherSubject(res.data);
+          }
+        });
+        $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+        .then(res => {
+          if(res.data !== undefined && res.data !== null){
+            this.props.updateTeacherReviewSubject(res.data);
+          }
+        });
       }})
 
     //}
@@ -159,5 +173,7 @@ export default connect(mapStateToProps, {
   //cdio-2
   updateSubjectList: subjectList,
   updateDataCtdt: dataCtdt,
-  updateIsLoadedDataCtdt: isLoadedDataCtdt
+  updateIsLoadedDataCtdt: isLoadedDataCtdt,
+  updateTeacherSubject: teacherSubject,
+  updateTeacherReviewSubject: teacherReviewSubject
 })(DetailEducationProgramTmp);

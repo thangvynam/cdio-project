@@ -8,7 +8,7 @@ import Content from './content';
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
-import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt } from '../../Constant/ActionType';
+import { subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
  
@@ -179,6 +179,18 @@ class Home extends Component {
         this.props.updateSubjectList(dataSubject);
         this.props.updateDataCtdt(dataCtdt);
         this.props.updateIsLoadedDataCtdt(true);
+        $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+        .then(res => { 
+          if(res.data !== undefined && res.data !== null){
+            this.props.updateTeacherSubject(res.data);
+          }
+        });
+        $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+        .then(res => {
+          if(res.data !== undefined && res.data !== null){
+            this.props.updateTeacherReviewSubject(res.data);
+          }
+        });
         })
     }
     
@@ -256,7 +268,7 @@ componentDidUpdate(){
 
     render() {
         if (!localStorage.getItem("user")) return <Redirect to="/" />;
-        console.log(localStorage)
+        console.log(this.props.subjectList)
         //if(this.state.isLoad=== true || this.props.match.params.ctdt === "" || this.props.match.params.ctdt === undefined) {
             let type = this.props.match.params.type;
             let ctdt = this.props.match.params.ctdt;
@@ -490,7 +502,9 @@ const mapDispatchToProps = (dispatch) => {
       updateCdrCdio: cdrCdio,
       onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
       updateDataCtdt: dataCtdt,
-      updateIsLoadedDataCtdt: isLoadedDataCtdt
+      updateIsLoadedDataCtdt: isLoadedDataCtdt,
+      updateTeacherSubject: teacherSubject,
+    updateTeacherReviewSubject: teacherReviewSubject
     }, dispatch);
   }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

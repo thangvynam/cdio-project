@@ -15,7 +15,10 @@ export default class UserManageCom extends Component {
       roles: [],
       deleteVisible: false,
       id: 0,
-      globalFilter: ""
+      globalFilter: "",
+      name: "",
+      username: "",
+      email: ""
     };
   }
 
@@ -51,15 +54,12 @@ export default class UserManageCom extends Component {
   };
 
   onCloseAndCreate = () => {
-    // request.Username = body.username;
-    // request.Name = body.name;
-    // request.Email = body.email;
-    // request.Role = body.role;
+    console.log(this.state.roles)
     this.props.onRegisterUser({
-      username: "MinhNhat",
-      name: "MinhNhat",
-      email: "mocking.key118@gmail.com",
-      role: "ADMIN"
+      username: this.state.username,
+      name: this.state.name,
+      email: this.state.email,
+      role: this.state.roles
     });
     this.setState({ visible: false });
   };
@@ -85,6 +85,24 @@ export default class UserManageCom extends Component {
       id: 0
     });
   };
+
+  onChangeUsername = e => {
+    this.setState({
+      username: e.target.value,
+    });
+  }
+
+  onChangeName = e => {
+    this.setState({
+      name: e.target.value,
+    });
+  }
+
+  onChangeEmail = e => {
+    this.setState({
+      email: e.target.value,
+    });
+  }
 
   render() {
     const dialog = (
@@ -117,24 +135,38 @@ export default class UserManageCom extends Component {
         }
       >
         <Row>
-          <Col lg="2" md="2" sm="2">
-            Tên người dùng:
-          </Col>
           <Col lg="4" md="4" sm="4">
+            Họ và tên:
+          </Col>
+          <Col lg="8" md="8" sm="8">
             <FormInput
               type="text"
-              value={this.state.userName}
+              value={this.state.name}
+              onChange={this.onChangeName}
+              placeholder="Họ và tên"
+              className="mb-2"
+            />
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            Tên người dùng:
+          </Col>
+          <Col lg="8" md="8" sm="8">
+            <FormInput
+              type="text"
+              value={this.state.username}
+              onChange={this.onChangeUsername}
               placeholder="Tên..."
               className="mb-2"
             />
           </Col>
-          <Col lg="2" md="2" sm="2">
+          <Col lg="4" md="4" sm="4">
             Mail người dùng:
           </Col>
-          <Col lg="4" md="4" sm="4">
+          <Col lg="8" md="8" sm="8">
             <FormInput
               type="text"
-              value={this.state.userMail}
+              value={this.state.email}
+              onChange={this.onChangeEmail}
               placeholder="thienthien@gmail.com"
               className="mb-2"
             />
@@ -144,9 +176,9 @@ export default class UserManageCom extends Component {
         <Row>
           <Col lg="12" md="12" sm="12">
             Các chức vụ:{" "}
-            {this.state.roles.map(ele => (
+           {/* {this.state.roles.map(ele => (
               <span style={{ color: "#007BFF" }}>{ele} . </span>
-            ))}
+            ))}*/}
           </Col>
           <Col lg="12" md="12" sm="12">
             <br />
@@ -154,23 +186,56 @@ export default class UserManageCom extends Component {
           <Col lg="4" md="4" sm="4">
             <Checkbox
               inputId="1"
-              value="Chỉnh sửa CĐR"
+              value={1}
               onChange={this.onRoleChange}
-              checked={this.state.roles.includes("Chỉnh sửa CĐR")}
+              checked={this.state.roles.includes(1)}
             />
             <label htmlFor="1" className="p-checkbox-label">
-              Chỉnh sửa CĐR
+              ADMIN
             </label>
           </Col>
           <Col lg="4" md="4" sm="4">
             <Checkbox
               inputId="2"
-              value="Chỉnh sửa CTĐT"
+              value={2}
               onChange={this.onRoleChange}
-              checked={this.state.roles.includes("Chỉnh sửa CTĐT")}
+              checked={this.state.roles.includes(2)}
             />
             <label htmlFor="2" className="p-checkbox-label">
-              Chỉnh sửa CTĐT
+              BIEN SOAN
+            </label>
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            <Checkbox
+              inputId="3"
+              value={3}
+              onChange={this.onRoleChange}
+              checked={this.state.roles.includes(3)}
+            />
+            <label htmlFor="3" className="p-checkbox-label">
+              QUAN_LY_SURVEY
+            </label>
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            <Checkbox
+              inputId="4"
+              value={4}
+              onChange={this.onRoleChange}
+              checked={this.state.roles.includes(4)}
+            />
+            <label htmlFor="4" className="p-checkbox-label">
+              VIEW_SYLLABUS
+            </label>
+          </Col>
+          <Col lg="4" md="4" sm="4">
+            <Checkbox
+              inputId="5"
+              value={5}
+              onChange={this.onRoleChange}
+              checked={this.state.roles.includes(5)}
+            />
+            <label htmlFor="5" className="p-checkbox-label">
+              TEACHER
             </label>
           </Col>
         </Row>
@@ -229,7 +294,6 @@ export default class UserManageCom extends Component {
         </Col>
       </Row>
     );
-    console.log(this.props.users);
 
     return (
       <div>

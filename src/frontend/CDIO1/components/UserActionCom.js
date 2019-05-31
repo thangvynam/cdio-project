@@ -32,7 +32,7 @@ export default class UserActionCom extends React.Component {
       <NavItem tag={Dropdown} caret toggle={this.toggleUserActions}>
         <DropdownToggle caret tag={NavLink} className="text-nowrap px-3">
           <span className="d-none d-md-inline-block">
-            {localStorage.getItem("user")?JSON.parse(localStorage.getItem("user")).data.Name:"N/a"}
+            {localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Name : "N/a"}
           </span>
         </DropdownToggle>
         <Collapse tag={DropdownMenu} right small open={this.state.visible}>

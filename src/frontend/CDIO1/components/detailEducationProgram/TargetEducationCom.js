@@ -71,7 +71,7 @@ export default class TargetEducationCom extends Component {
     );
     this.setState({
       targetNodes: data
-    });    
+    });
   };
 
   // delete
@@ -164,9 +164,8 @@ export default class TargetEducationCom extends Component {
   onShowDetailOS = IdOutcome => {
     this.props.onLoadDetailOutcomeStandard(IdOutcome);
     this.setState({
-      detailOsVisible: true,
-      os: this.props.detailOutcomeStandard,
-      tmpIdOutcome: IdOutcome
+      tmpIdOutcome: IdOutcome,
+      detailOsVisible: true
     });
   };
 
@@ -413,7 +412,7 @@ export default class TargetEducationCom extends Component {
                 sm="12"
                 style={{ overflowY: "scroll", height: "320px" }}
               >
-                <TreeTable value={this.state.os}>
+                <TreeTable value={this.props.detailOutcomeStandard}>
                   <Column field="displayName" header="Tên dòng" expander />
                 </TreeTable>
               </Col>

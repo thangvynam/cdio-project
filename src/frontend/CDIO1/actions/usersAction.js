@@ -55,7 +55,6 @@ export const onLogIn = user => {
             dispatch(logInError(res));
           });
         } else if (res.data.code === 1) {
-          console.log(res.data);
           Promise.resolve(
             localStorage.setItem("user", JSON.stringify(res.data))
           ).then(() => {
@@ -132,10 +131,15 @@ export const onRegisterUser = user => {
     let req = links.REGISTER_USER;
     let params = {};
     params.data = JSON.stringify(user);
+    console.log(params.data);
     axios
       .post(req, params, {
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
+          "authorization":
+            localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
         }
       })
       .then(res => {

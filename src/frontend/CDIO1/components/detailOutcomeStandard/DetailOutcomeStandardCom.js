@@ -476,7 +476,7 @@ export default class DetailOutcomeStandardCom extends Component {
               onClick={this.onSave}
               disabled={this.state.isSaveBtnDisabled}
             >
-              <i className="material-icons">save</i> Lưu CĐR
+              <i className="material-icons">save</i> Lưu CĐR (bản chính)
             </Button>
             <Button
               style={{ margin: "0 10px" }}

@@ -148,7 +148,7 @@ export default class UserManageCom extends Component {
             />
           </Col>
           <Col lg="4" md="4" sm="4">
-            Tên người dùng:
+            Tên tài khoản:
           </Col>
           <Col lg="8" md="8" sm="8">
             <FormInput

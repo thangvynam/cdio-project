@@ -135,7 +135,7 @@ export const onRegisterUser = user => {
     axios
       .post(req, params, {
         headers: {
-          "Content-Type": "application/json",
+          "Content-Type": "application/x-www-form-urlencoded",
           "authorization":
             localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token

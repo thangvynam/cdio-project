@@ -23,7 +23,9 @@ class EditOutcomeStandardTmp extends Component {
 
   componentDidMount = () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
+    const id = urlParams.get("id")
+      ? urlParams.get("id")
+      : +this.props.detailEduProgram.IdOutcome;
     this.props.onLoadDetailOutcomeStandard(id);
     this.props.onLoadRevisions(id);
     this.props.onLoadOutcomeStandard(id);
@@ -92,7 +94,8 @@ const mapStateToProps = state => ({
   message: state.message,
   revisions: state.revisions,
   infoOutcomeStandard: state.infoOutcomeStandard,
-  detailOutcomeStandard: state.detailOutcomeStandard
+  detailOutcomeStandard: state.detailOutcomeStandard,
+  detailEduProgram: state.detailEduProgram
 });
 
 export default connect(mapStateToProps, {

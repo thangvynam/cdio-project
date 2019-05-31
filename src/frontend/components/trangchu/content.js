@@ -621,7 +621,7 @@ class Content extends Component {
                                                     </React.Fragment>
                                                 )
                                                 : type === "chuan-dau-ra" ? (
-                                                    <h1>CDIO1 - CHUAN DAU RA</h1>
+                                                    <EditOutcomeStandard/>
                                                 )
                                                 : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                                                     <EditEducationProgram ctdt={ctdt} />

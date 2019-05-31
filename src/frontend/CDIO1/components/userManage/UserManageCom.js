@@ -309,7 +309,7 @@ export default class UserManageCom extends Component {
               value={this.props.users}
             >
               <Column sortable={true} field="name" header="Tên" />
-              <Column sortable={true} field="mail" header="Mail" />
+              <Column sortable={true} field="email" header="Mail" />
               <Column
                 body={this.actionTemplate}
                 style={{ textAlign: "center", width: "4em" }}

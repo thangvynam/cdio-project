@@ -38,6 +38,7 @@ export const addRoot = (data, name) => {
       name: name,
       displayName: `${key}. ${name}`
     },
+    OSUsed: false,
     children: []
   };
   nodes.push(node);
@@ -54,6 +55,7 @@ export const addChild = (data, nodeParent, name) => {
       name: `${name}`,
       displayName: `${key}. ${name}`
     },
+    OSUsed: false,
     children: []
   };
   nodeParent.children.push(node);

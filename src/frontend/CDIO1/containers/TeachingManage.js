@@ -7,8 +7,10 @@ import TeachingManageCom from "../components/teachingManage/TeachingManageCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import * as eduProgramsAction from "../actions/eduProgramsAction";
-import * as subjectsAction from "../actions/subjectsAction";
+import * as blocksAction from "../actions/_blocksAction";
+import * as detailEduProgramAction from "../actions/detailEduProgramAction";
+
+import * as commonLogic from "../business/commonEducation";
 
 import { connect } from "react-redux";
 
@@ -19,11 +21,18 @@ class TeachingManageTemp extends Component {
   }
 
   componentDidMount = () => {
-    this.props.onLoadSubjects();
-    this.props.onLoadEduPrograms();
+     let link=window.location.href.replace( /(^.+)(\w\d+\w)(.+$)/i,'$2');
+     console.log(link)
+    const getData = async () => {
+      const id = this.props.ctdt;
+      await this.props.onLoadDetailEduProgram(id);
+      await this.props.onLoadBlocks(this.props.detailEduProgram.Id);
+    };
+    getData();
   };
 
   render() {
+    const subjects = commonLogic.getSubjects(this.props.blocks);
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
@@ -43,8 +52,7 @@ class TeachingManageTemp extends Component {
         <Row>
           <Col lg="12" md="12">
             <TeachingManageCom
-              subjects={this.props.subjects}
-              eduPrograms={this.props.eduPrograms}
+              subjects={subjects}
             />
           </Col>
         </Row>
@@ -55,11 +63,11 @@ class TeachingManageTemp extends Component {
 
 const mapStateToProps = state => ({
   message: state.message,
-  subjects: state.subjects,
-  eduPrograms: state.eduPrograms
+  blocks: state.blocks,
+  detailEduProgram: state.detailEduProgram
 });
 
 export default connect(mapStateToProps, {
-  onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
-  onLoadSubjects: subjectsAction.onLoadSubjects
+  onLoadBlocks: blocksAction.onLoadBlocks,
+  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram
 })(TeachingManageTemp);

@@ -29,6 +29,8 @@ export default class ContentProgramCom extends React.Component {
       isDialogDelete: false,
       nameValue: "", // title of row
       isTable: false, // check is table,
+      isTitle: false, // check is Title,
+      isAnyTable: false, // check is add any table,
       filterSubjects: [],
       optionSubjects: [],
       listSubjects: [], // add into table
@@ -399,6 +401,32 @@ export default class ContentProgramCom extends React.Component {
     return true;
   };
 
+  // on check
+
+  onCheckAddTitle = () =>{
+    this.setState({
+      isTitle: true,
+      isTable: false,
+      isAnyTable: false
+    });
+  }
+
+  onCheckAddTable = () =>{
+    this.setState({
+      isTable: true,
+      isTitle: false,
+      isAnyTable: false
+    });
+  }
+
+  onCheckAddAnyTable = () =>{
+    this.setState({
+      isAnyTable: true,
+      isTable: false,
+      isTitle: false
+    });
+  }
+
   // Template
   actionTemplate(node, column) {
     return (
@@ -598,8 +626,8 @@ export default class ContentProgramCom extends React.Component {
           <Row>
             <Col lg="2" md="2" sm="4">
               <Checkbox
-                checked={!this.state.isTable}
-                onChange={e => this.setState({ isTable: false })}
+                checked={this.state.isTitle}
+                onChange={this.onCheckAddTitle}
               />
               <label htmlFor="cb2" className="p-checkbox-label">
                 Thêm cấp
@@ -608,10 +636,19 @@ export default class ContentProgramCom extends React.Component {
             <Col lg="2" md="2" sm="4">
               <Checkbox
                 checked={this.state.isTable}
-                onChange={e => this.setState({ isTable: true })}
+                onChange={this.onCheckAddTable}
               />
               <label htmlFor="cb2" className="p-checkbox-label">
                 Thêm bảng
+              </label>
+            </Col>
+            <Col lg="4" md="4" sm="4">
+              <Checkbox
+                checked={this.state.isAnyTable}
+                onChange={this.onCheckAddAnyTable}
+              />
+              <label htmlFor="cb2" className="p-checkbox-label">
+                Thêm học phần tự do
               </label>
             </Col>
           </Row>
@@ -620,7 +657,7 @@ export default class ContentProgramCom extends React.Component {
           <Row>
             <Col>
               <InputText
-                hidden={this.state.isTable}
+                hidden={!this.state.isTitle}
                 type="text"
                 value={this.state.nameValue}
                 onChange={this.handleChangeValue}
@@ -643,6 +680,24 @@ export default class ContentProgramCom extends React.Component {
                 <Column header="Bài Tập" />
                 <Column header="Description" />
               </DataTable>
+            </div>
+          </Row>
+           {/* is add any table */}
+           <Row>
+            <div hidden={!this.state.isAnyTable}>
+            <Col lg="4" md="4" sm="4">
+              <AutoComplete
+                field="SubjectName"
+                value={this.state.optionSubjects}
+                dropdown={true}
+                onChange={e => this.onChangeListSubjects(e)}
+                size={40}
+                placeholder="Toán rời rạc"
+                minLength={1}
+                suggestions={this.state.filterSubjects}
+                completeMethod={e => this.filterSubjects(e)}
+              />
+            </Col>
             </div>
           </Row>
         </Dialog>
@@ -831,6 +886,8 @@ export default class ContentProgramCom extends React.Component {
           {`Bạn thực sự muốn xóa cấp ${this.state.node.key}`}
           </p>
         </Dialog>
+
+
 
       </div>
     );

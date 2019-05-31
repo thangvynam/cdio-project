@@ -24,9 +24,7 @@ export const onLoadTargetProgram = idDetail => {
       .get(req)
       .then(res => {
         const data = res.data.data;
-        console.error(data)
         const targetNodes = targetLogic.convertDBToTreeNodeForEduPro(data);
-        console.log(targetNodes);
         if (targetNodes) {
           dispatch(loadTargetProgramSuccess(targetNodes));
         } else {
@@ -63,7 +61,8 @@ export const saveTargetProgramError = (targetNodes, errorMessage) => ({
 
 export const onSaveTargetProgram = targetProgram => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_TARGET_EDUPROGRAM}?iddetail=${
+    debugger;
+    let req = `${links.ADD_TARGET_EDUPROGRAM}?iddetail=${
       targetProgram.iddetail
     }`;
     let params = {};
@@ -74,10 +73,7 @@ export const onSaveTargetProgram = targetProgram => {
       outdata,
       level
     );
-
-    const targetNodes = targetLogic.convertDBToTreeNodeForEduPro(outdata);
-    console.log(targetNodes);
-    console.log(outdata);
+  
 
     params.data = JSON.stringify(outdata);
     axios

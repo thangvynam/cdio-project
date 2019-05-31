@@ -621,6 +621,9 @@ class Content extends Component {
                                                 : type === "chuan-dau-ra" ? (
                                                     <h1>CDIO1 - CHUAN DAU RA</h1>
                                                 )
+                                                : type === "phan-cong-giang-day" ? (
+                                                    <h1>CDIO1 - PHAN CONG GIANG DAY</h1>
+                                                )
                                                 : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                                                     <EditEducationProgram ctdt={ctdt} />
                                                 )

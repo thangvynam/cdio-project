@@ -31,7 +31,7 @@ export default class TargetEducationCom extends Component {
 
   // get targetNodes from redux
   getTargetNodes = targetNodes => {
-    // this.setState({ targetNodes: targetNodes });
+    this.setState({ targetNodes: targetNodes });
   };
   // end get targetNodes from redux
 
@@ -191,8 +191,7 @@ export default class TargetEducationCom extends Component {
   onTargetSubmit = () => {
     if (
       this.state.targetNode === "" ||
-      this.state.targetNode.children.length !== 0 ||
-      this.state.os.length === 0
+      this.state.targetNode.children.length !== 0
     ) {
       alert("Không thể thêm chuẩn đầu ra ở node này!!");
     } else {

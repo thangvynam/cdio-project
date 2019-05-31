@@ -50,7 +50,7 @@ class PhanCong extends Component {
       handleDelete = (key) => {
         $.deleteTeacherReview([key])
         .then(res => {
-          $.getTeacherList({thong_tin_chung_id: this.props.subjectId})
+          $.getTeacherList({thong_tin_chung_id: this.props.subjectId, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -84,7 +84,7 @@ class PhanCong extends Component {
       delete = () => {
         $.deleteTeacherReview(this.state.selecteditem2)
         .then(res => {
-          $.getTeacherList({thong_tin_chung_id: this.props.subjectId})
+          $.getTeacherList({thong_tin_chung_id: this.props.subjectId, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -155,7 +155,7 @@ class PhanCong extends Component {
     if(this.state.selecteditem1.length > 0) {
       $.addTeacherReview({idTeacher: this.state.selecteditem1, idTTC: this.props.subjectId})
       .then(res => {
-        $.getTeacherList({thong_tin_chung_id: this.props.subjectId})
+        $.getTeacherList({thong_tin_chung_id: this.props.subjectId, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -191,7 +191,7 @@ class PhanCong extends Component {
   }
       componentDidMount() {
        // axios.get('localhost:3001/get-teacher-list')
-       $.getTeacherList({thong_tin_chung_id: this.props.subjectId})
+       $.getTeacherList({thong_tin_chung_id: this.props.subjectId, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];

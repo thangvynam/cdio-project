@@ -625,28 +625,24 @@ class Content extends Component {
                       <EditOutcomeStandard ctdt={ctdt}/>
                     )
                     : type === "phan-cong-giang-day" ? (
-                        <h1>CDIO1 - PHAN CONG GIANG DAY</h1>
+                        <TeachingManage ctdt={ctdt}/>
                     )
                     : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                         <EditEducationProgram ctdt={ctdt} />
-                    )
-                    : type === "phan-cong-giang-day" ? (
-                      <TeachingManage ctdt={ctdt}/>
                     )
                     : parent === "ctdt" ? (
                         <EducationProgram />
                     )
                     : parent === "danh-muc" ? <Danhmuc />
-                    : parent === "cdr" ? ctdt == "edit" ? (
+                    : parent === "cdr" ? ctdt === "edit" ? (
                         <React.Fragment><EditOutcomeStandard /></React.Fragment>
                     )
                     : <React.Fragment><OutcomeStandard /></React.Fragment>
                     : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
                     : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
                     : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
-                    :parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
+                    : parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
                     : null;
-
                 }; break;
             }
             default: {

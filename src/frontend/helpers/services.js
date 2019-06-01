@@ -1,15 +1,22 @@
 import _ from '../Constant/api';
 import $ from 'axios';
+import ld from 'lodash';
 
-
-// const setStorage = (userObj) => {
-//     console.log(userObj)
-//     return new Promise((resolve, reject) => {
-//         localStorage.setItem('user', JSON.stringify(userObj))
-//         $.defaults.headers.common['Authorization'] = " ";
-//         resolve()
-//     })
-// }
+const setStorage = (userObj) => {
+    return new Promise((resolve, reject) => {
+        let convertObj = JSON.stringify(userObj) || {};
+        localStorage.setItem('user', convertObj)
+        //$.defaults.headers.common['Content-Type'] = "application/x-www-form-urlencoded";
+        $.defaults.headers.common['authorization'] = !ld.isEmpty(convertObj) 
+        ? "JWT " + JSON.parse(convertObj).token
+        : "" ;
+        const aa = !ld.isEmpty(convertObj) 
+        ? "JWT " + JSON.parse(convertObj).token
+        : "" ;
+        console.log("Â", aa);
+        resolve()
+    })
+}
 
 //subject
 const collectSubjectList = () => {
@@ -69,6 +76,11 @@ const collectMucdoMtmhHasCdrCdio = (data) => {
 
 const collectData4 = (data) => {
     let url = _.COLLECT_DATA4;
+    return $.post(url, data);
+}
+
+const authenMe = (data) => {
+    let url = _.AUTHEN_ME;
     return $.post(url, data);
 }
 
@@ -428,6 +440,8 @@ const addDataSurvey =(data) => {
 }
 
 export default{
+    //localStorage
+    setStorage,
     //subject
     collectSubjectList,
     getBlockSubject,
@@ -514,6 +528,8 @@ export default{
 
     saveLog,
     getLog,
+
+    authenMe,
     
 
     //survey

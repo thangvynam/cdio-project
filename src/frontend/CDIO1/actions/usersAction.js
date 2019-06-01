@@ -2,6 +2,7 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
+import $ from './../../helpers/services';
 
 export const logInSuccess = (user, successMessage) => ({
   type: cst.LOG_IN_SUCCESS,
@@ -56,7 +57,8 @@ export const onLogIn = user => {
           });
         } else if (res.data.code === 1) {
           Promise.resolve(
-            localStorage.setItem("user", JSON.stringify(res.data))
+            //localStorage.setItem("user", JSON.stringify(res.data))
+            $.setStorage(res.data)
           ).then(() => {
             let chirp = {
               message: `Đăng nhập thành công`,
@@ -131,7 +133,7 @@ export const onRegisterUser = user => {
     let req = links.REGISTER_USER;
     let params = {};
     params.data = JSON.stringify(user);
-    console.log(params.data);
+    console.log("Register ",params.data);
     axios
       .post(req, params, {
         headers: {

@@ -455,6 +455,7 @@ class SurveyMatrix extends Component {
   createDataMatrix = (myData) => {
     const data = [];
     for (const subject of myData) {
+      console.log(subject['mon']);
       let dataSubject = {
         'mon': subject['mon'],
         'giaovien': subject['giaovien'],

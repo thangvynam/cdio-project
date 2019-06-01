@@ -42,13 +42,26 @@ class DetailEducationProgramTmp extends Component {
     }
     return false;
 }
-
 checkChuNhiem = (role) => {
-  if(role.indexOf("CHUNHIEM") > -1) {
-      return true;
+    if(role.indexOf("CHUNHIEM") > -1) {
+        return true;
+    }
+    return false;
   }
-  return false;
-}
+
+  checkBienSoan = (role) => {
+    if(role.indexOf("BIEN SOAN") > -1) {
+        return true;
+    }
+    return false;
+  }
+
+  checkTeacher = (role) => {
+    if(role.indexOf("TEACHER") > -1) {
+        return true;
+    }
+    return false;
+  }
 
 checkInTeacherSubject = (teacherSubject, idSubject) => {
   for(let i = 0;i < teacherSubject.length;i++) {
@@ -86,6 +99,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
           }
         }
         dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+        
         $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => { 
           if(res.data !== undefined && res.data !== null){
@@ -96,18 +110,18 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
             if(res.data !== undefined && res.data !== null){
               this.props.updateTeacherReviewSubject(res.data);
             }
-            if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-
+            if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) || 
+            this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
               dataSubject = dataSubject.filter(item => 
                   item.del_flat != 1
               );
-              
+              this.props.updateSubjectList(dataSubject);
             }
             else {
               dataSubject = dataSubject.filter(item => 
                     item.del_flat != 1
-                    && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                    || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                    &&
+                     (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject))
                 );
                 this.props.updateSubjectList(dataSubject);
             }

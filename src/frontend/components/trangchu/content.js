@@ -45,6 +45,7 @@ import * as levelsAction from "../../CDIO1/actions/levelsAction";
 import * as majorsAction from "../../CDIO1/actions/majorsAction";
 //END CDIO1
 
+import Direction from './direction';
 import $ from './../../helpers/services';
 
 
@@ -203,9 +204,33 @@ class Content extends Component {
         return false;
       }
 
+      checkBienSoan = (role) => {
+        if(role.indexOf("BIEN SOAN") > -1) {
+            return true;
+        }
+        return false;
+      }
+
+      checkTeacher = (role) => {
+        if(role.indexOf("TEACHER") > -1) {
+            return true;
+        }
+        return false;
+      }
+
+
     componentDidMount = () => {
         this.props.onLoadEduPrograms();
     };
+
+    getSubjectName = (subjectList, id) => {
+        for(let i = 0;i < subjectList.length;i++) {
+            if(subjectList[i].Id.toString() === id) {
+                return subjectList[i].SubjectName;
+            }
+        }
+        return "";
+      }
 
     render() {
         var subjectList = [];
@@ -214,6 +239,7 @@ class Content extends Component {
         let khoi = this.props.content_khoi;
         let monhoc = this.props.content_monhoc;
         let parent = this.props.content_parent;
+        let subjectName = this.getSubjectName(this.props.subjectList, monhoc);
         switch (type) {
             case "de-cuong-mon-hoc": {
                 if(khoi !== "" && khoi !== undefined && khoi !== null) {
@@ -251,6 +277,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Thông Tin Chung</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -265,6 +298,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Mô Tả Môn Học</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
 
                             </div>,
                                 </Row>
@@ -280,6 +320,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Mục Tiêu Môn Học</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
 
                             </div>,
                                 </Row>
@@ -295,6 +342,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Chuẩn Đẩu Ra</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -309,6 +363,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Kế Hoạch Giảng Dạy Lý Thuyết</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -323,6 +384,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Kế Hoạch Giảng Dạy Thực Hành</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -337,6 +405,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Đánh Giá</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -351,6 +426,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Tài Nguyên Môn Học</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -365,6 +447,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Quy Định Chung</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -380,6 +469,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Xuất File PDF</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -395,6 +491,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Thông Tin Chung</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <ThongTinChung idMH={this.props.content_monhoc}/>
@@ -408,6 +511,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>ITU_SURVEY</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <Survey subjectName={this.props.subjectName} monhoc={monhoc}/>
@@ -422,6 +532,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Phân Công</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -438,6 +555,13 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Review</span>
+                                <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -456,6 +580,13 @@ class Content extends Component {
                                 <Row className="col-right-title">
                                     <div>
                                         <span>SYLLABUS</span>
+                                        <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                                     </div>
                                 </Row>
                             </Col>
@@ -483,9 +614,10 @@ class Content extends Component {
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
 
-                                                            !this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) ? 
-                                                            this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.Id) ? <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
-                                                            : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role) ? 
+                                                            <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
+                                                            : this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role) ? 
+                                                            <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                         }
 
@@ -571,10 +703,13 @@ class Content extends Component {
                             <Row className="col-right-title">
                                 <div>
                                     <span>Xem Khảo Sát</span>
-                                    <Divider type="vertical" />
-                                    <a href="#">Link</a>
-                                    <Divider type="vertical" />
-                                    <a href="#">Link</a>
+                                    <Direction
+                                        subjectName={subjectName}
+                                        content_khoi={khoi}
+                                        content_ctdt={ctdt}
+                                        content_parent={parent}
+                                        content_type={type}
+                                    />
                                 </div>,
                                 </Row>
                             <div className="wrapper-custom-layout">

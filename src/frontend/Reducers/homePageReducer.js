@@ -9,9 +9,6 @@ const initialState = {
     "de-cuong-mon-hoc" :{
         name: "ĐỀ CƯƠNG MÔN HỌC",
     },
-    "survey-matrix" :{
-        name: "SURVEY MATRIX",
-    },
     "matrix": {
         name: "MATRIX",
     },
@@ -113,7 +110,11 @@ const parentState = [
     {
         id: "view-survey",
         name: "QUẢN LÝ SURVEY"
-    }
+    },
+    {
+        id: "survey-matrix",
+        name: "SURVEY MATRIX",
+    },
     
 ]
 

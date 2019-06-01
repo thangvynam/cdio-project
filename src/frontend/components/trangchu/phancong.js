@@ -221,14 +221,12 @@ class PhanCong extends Component {
       }
 
   render() {
-    
     const hasSelected = this.state.selecteditem2.length > 0;
     const selectedRowKeys1 = this.state.selecteditem1;
     const selectedRowKeys2 = this.state.selecteditem2;
-    console.log(selectedRowKeys1)
-    console.log(selectedRowKeys2)
-    console.log(this.state.teacherList)
-    console.log(this.state.teacherListReview)
+    console.log("bang 1------" + selectedRowKeys1)
+    console.log("bang 2------" + selectedRowKeys2)
+
     const rowSelection1 = {
       selectedRowKeys1,
       width: "20",

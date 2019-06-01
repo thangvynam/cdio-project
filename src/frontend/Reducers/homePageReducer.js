@@ -107,9 +107,14 @@ const parentState = [
         name: "QUẢN LÝ NGƯỜI DÙNG"
     },
     {
+        id: "info",
+        name: "THÔNG TIN TÀI KHOẢN"
+    },
+    {
         id: "view-survey",
         name: "QUẢN LÝ SURVEY"
     }
+    
 ]
 
 export function parentItemReducer(state = parentState, action) {

@@ -49,8 +49,14 @@ class EditOutcomeStandardTmp extends Component {
       ? `${infoOutcomeStandard.NameOutcomeStandard}`
       : `Chưa tải được`;
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id")
+      ? urlParams.get("id")
+      : +this.props.detailEduProgram.IdOutcome;
+
     return (
-      <Container fluid className="main-content-container px-4">
+      id
+      ?<Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
@@ -86,6 +92,7 @@ class EditOutcomeStandardTmp extends Component {
           </Col>
         </Row>
       </Container>
+      :<h1>Chưa có chuẩn đầu ra</h1>
     );
   }
 }

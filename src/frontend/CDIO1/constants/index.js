@@ -5,6 +5,12 @@ export const MESSAGE = "MESSAGE";
 export const LOG_IN_SUCCESS = "LOG_IN_SUCCESS";
 export const LOG_IN_ERROR = "LOG_IN_ERROR";
 
+export const CHANGE_PASS_SUCCESS = "CHANGE_PASS_SUCCESS";
+export const CHANGE_PASS_ERROR = "CHANGE_PASS_ERROR";
+
+export const GET_INFO_SUCCESS = "GET_INFO_SUCCESS";
+export const GET_INFO_ERROR = "GET_INFO_ERROR";
+
 export const LOG_OUT = "LOG_OUT";
 
 // users actions

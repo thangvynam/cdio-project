@@ -1,6 +1,6 @@
 import { message } from "./message";
 import { users } from "./users";
-// import { user } from "./user";
+import { user } from "./user";
 import { faculties } from "./faculties";
 import { programs } from "./programs";
 import { subjects } from "./subjects";
@@ -40,7 +40,7 @@ const cdio1 = {
   targetNodes,
   blocks,
 
-  // user,
+  user,
   users,
 };
 

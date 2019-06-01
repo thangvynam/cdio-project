@@ -25,14 +25,14 @@ class ReviewSyllabus extends Component {
         return (
             <div>
                 <ThongTinChung isReview={true} idMH={this.props.idMH} />
-                <Layout2 isReview={true} />
-                <Layout3 isReview={true} />
-                <Layout4 isReview={true} />
-                <Layout5 isReview={true} />
-                <Layout6 isReview={true} />
-                <Layout7 isReview={true} />
-                <Layout8 isReview={true} />
-                <Layout9 isReview={true} />
+                <Layout2 isReview={true} monhoc={this.props.idMH}/>
+                <Layout3 isReview={true} monhoc={this.props.idMH}/>
+                <Layout4 isReview={true} monhoc={this.props.idMH}/>
+                <Layout5 isReview={true} monhoc={this.props.idMH}/>
+                <Layout6 isReview={true} monhoc={this.props.idMH}/>
+                <Layout7 isReview={true} monhoc={this.props.idMH}/>
+                <Layout8 isReview={true} monhoc={this.props.idMH}/>
+                <Layout9 isReview={true} monhoc={this.props.idMH}/>
             </div>)
     }
 }

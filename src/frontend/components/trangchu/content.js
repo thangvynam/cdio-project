@@ -37,6 +37,7 @@ import UserManage from "../../CDIO1/containers/UserManage";
 import TeachingManage from "../../CDIO1/containers/TeachingManage";
 import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
 import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
+import UserInfo from "../../CDIO1/containers/UserInfo";
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import * as facultiesAction from "../../CDIO1/actions/facultiesAction";
 import * as programsAction from "../../CDIO1/actions/programsAction";
@@ -604,10 +605,10 @@ class Content extends Component {
                         </React.Fragment>
 
                     : type === "chuan-dau-ra" ? (
-                        <EditOutcomeStandard/>
+                      <EditOutcomeStandard ctdt={ctdt}/>
                     )
                     : type === "phan-cong-giang-day" ? (
-                        <h1>CDIO1 - PHAN CONG GIANG DAY</h1>
+                        <TeachingManage ctdt={ctdt}/>
                     )
                     : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                         <EditEducationProgram ctdt={ctdt} />
@@ -616,7 +617,7 @@ class Content extends Component {
                         <EducationProgram />
                     )
                     : parent === "danh-muc" ? <Danhmuc />
-                    : parent === "cdr" ? ctdt == "edit" ? (
+                    : parent === "cdr" ? ctdt === "edit" ? (
                         <React.Fragment><EditOutcomeStandard /></React.Fragment>
                     )
                     : <React.Fragment><OutcomeStandard /></React.Fragment>
@@ -639,8 +640,8 @@ class Content extends Component {
                             </div>
                         </React.Fragment>
                     )
+                    : parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
                     : null;
-
                 }; break;
             }
             default: {

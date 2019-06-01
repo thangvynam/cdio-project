@@ -1,41 +1,42 @@
 import React, { Component } from "react";
-import { Container, Row, Col } from "shards-react";
+import {
+  Container,
+  Row,
+  Col
+} from "shards-react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import TeachingManageCom from "../components/teachingManage/TeachingManageCom";
+import UserInfoCom from "../components/UserInfoCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import * as blocksAction from "../actions/_blocksAction";
-import * as detailEduProgramAction from "../actions/detailEduProgramAction";
 import * as usersAction from "../actions/usersAction";
-
-import * as commonLogic from "../business/commonEducation";
 
 import { connect } from "react-redux";
 
-class TeachingManageTemp extends Component {
+class UserInfoTemp extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   componentDidMount = () => {
-     this.props.onLoadBlocks(this.props.detailEduProgram.Id);
-     this.props.onLoadUsers();
+    // const id = localStorage.getItem("user")
+    //   ? JSON.parse(localStorage.getItem("user")).data.Id
+    //   : 0;
+    // this.props.onGetInfo(id);
   };
 
   render() {
-    const subjects = commonLogic.getSubjects(this.props.blocks);
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="12"
-              title="PHÂN CÔNG GIÁO VIÊN"
-              subtitle="quản lý"
+              title="TÀI KHOẢN"
+              subtitle="thông tin"
               className="text-sm-left"
             />
           </Col>
@@ -43,10 +44,10 @@ class TeachingManageTemp extends Component {
             <AlertCom message={this.props.message} />
           </Col>
         </Row>
-
+        <hr />
         <Row>
           <Col lg="12" md="12">
-            <TeachingManageCom users={this.props.users} subjects={subjects} />
+            <UserInfoCom onChangePass={this.props.onChangePass} />
           </Col>
         </Row>
       </Container>
@@ -56,13 +57,10 @@ class TeachingManageTemp extends Component {
 
 const mapStateToProps = state => ({
   message: state.message,
-  blocks: state.blocks,
-  detailEduProgram: state.detailEduProgram,
-  users: state.users
+  user: state.user
 });
 
 export default connect(mapStateToProps, {
-  onLoadBlocks: blocksAction.onLoadBlocks,
-  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
-  onLoadUsers: usersAction.onLoadUsers
-})(TeachingManageTemp);
+  onGetInfo: usersAction.onGetInfo,
+  onChangePass: usersAction.onChangePass
+})(UserInfoTemp);

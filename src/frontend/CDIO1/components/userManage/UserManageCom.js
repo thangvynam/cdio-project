@@ -18,7 +18,8 @@ export default class UserManageCom extends Component {
       globalFilter: "",
       name: "",
       username: "",
-      email: ""
+      email: "",
+      data: {}
     };
   }
 
@@ -262,11 +263,7 @@ export default class UserManageCom extends Component {
           onHide={this.onHideDeleteVisible}
         >
           {`Bạn thực sự muốn xóa người dùng ${
-            this.state.id !== 0
-              ? this.props.users.filter(row => row.Id === this.state.id)[0]
-                  .Username
-              : ""
-          }`}
+            this.state.data.username}`}
         </Dialog>
       </div>
     );
@@ -315,7 +312,9 @@ export default class UserManageCom extends Component {
                 return user;
               })}
             >
+              <Column sortable={true} field="id" header="Id" />
               <Column sortable={true} field="name" header="Tên" />
+              <Column sortable={true} field="username" header="Tên tài khoản" />
               <Column sortable={true} field="email" header="Mail" />
               <Column sortable={true} field="roleText" header="Role" />
               <Column

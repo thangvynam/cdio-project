@@ -140,7 +140,6 @@ export const onRegisterUser = user => {
     let req = links.REGISTER_USER;
     let params = {};
     params.data = JSON.stringify(user);
-    console.log("Register ",params.data);
     axios
       .post(req, params, {
         headers: {
@@ -212,7 +211,6 @@ export const onChangePass = user => {
         }
       })
       .then(res => {
-        console.log(res);
         if (res.data.code === 1) {
           dispatch(changePassSuccess(res));
           let chirp = {
@@ -312,7 +310,6 @@ export const onDeleteUser = username => {
         }
       })
       .then(res => {
-        console.log(res)
         if (res.data.code === 1) {
           dispatch(deleteUserSuccess(res));
           let chirp = {

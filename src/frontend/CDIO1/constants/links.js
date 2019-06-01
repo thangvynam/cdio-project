@@ -51,6 +51,8 @@ export const SAVE_TARGET_EDUPROGRAM = `${LINK}/edupurpose/update/`;
 
 export const LOAD_BLOCKS = `${LINK}/eduprogcontent/getBlockSubjects/`;
 
+export const ADD_TEACHER = `${LINK}/detailblock/addteacher/`;
+
 // subjects links
 export const LOAD_SUBJECTS = `${LINK}/subject/getlist/`;
 export const ADD_SUBJECT = `${LINK}/subject/add/`;

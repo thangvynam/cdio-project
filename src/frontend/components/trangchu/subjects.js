@@ -13,6 +13,7 @@ import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
 import NewNav from '../decuongmonhoc/index/navbar/newnav';
 import Direction from './direction';
+import _ from 'lodash';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -25,6 +26,27 @@ class Home extends Component {
             isLoad: false
         }
     }
+
+    // componentWillMount(){
+    //     console.log("sadsad");
+    //     if (!_.isNull(localStorage.getItem("user")) ){
+    //       let user = JSON.parse(localStorage.getItem("user"));
+    //       $.authenMe({ "access": user.token }).then(res => {
+    //         if (res.data.status === 200) {
+    //           localStorage.clear();
+    //           $.setStorage(res.data)
+    //         }
+    //         else{
+    //               localStorage.clear();
+    //               this.props.history.push('/')
+    //         }
+    //       })
+    //     }
+    //     else this.props.history.push('/');
+    //   }
+    
+
+
 
     updateCollapse = () => {
         this.setState({
@@ -173,24 +195,35 @@ class Home extends Component {
       }
 
     componentDidMount() {
-        this.props.onLoadEduPrograms();
-        var self = this;
-        let monhoc = self.props.match.params.monhoc;
-        //axios.get('http://172.29.64.132:3001/collect-subjectlist')
-        //axios.get('/collect-subjectlist')
-    //      $.collectSubjectList()
-    //  .then( (response) => {
-    //    //self.props.updateSubjectList(response.data);
-    //    this.setState({isLoadSubjectList: "true"});
-    //  })
-    // .catch(function (error) {
-    //    console.log(error);
-    // });     
-    let ctdt = self.props.match.params.ctdt;
-    if(ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
-        $.getBlockSubject(ctdt).then(res => {
-            let resData = res.data.data;
-            let dataSubject = [];
+
+        if (!_.isNull(localStorage.getItem("user")) ){
+            let user = JSON.parse(localStorage.getItem("user"));
+            $.authenMe({ "access": user.token }).then(res => {
+              if (res.data.status === 200) {
+                localStorage.clear();
+                $.setStorage(res.data)
+
+
+
+                ///
+            this.props.onLoadEduPrograms();
+            var self = this;
+            let monhoc = self.props.match.params.monhoc;
+            //axios.get('http://172.29.64.132:3001/collect-subjectlist')
+            //axios.get('/collect-subjectlist')
+        //      $.collectSubjectList()
+        //  .then( (response) => {
+        //    //self.props.updateSubjectList(response.data);
+        //    this.setState({isLoadSubjectList: "true"});
+        //  })
+        // .catch(function (error) {
+        //    console.log(error);
+        // });     
+        let ctdt = self.props.match.params.ctdt;
+        if(ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
+            $.getBlockSubject(ctdt).then(res => {
+                let resData = res.data.data;
+                let dataSubject = [];
             let dataCtdt = [];
             if (resData !== undefined && resData !== null) {
               for (let i = 0; i < resData.length; i++) {
@@ -292,6 +325,25 @@ class Home extends Component {
 
         self.props.updateCdrCdio(res.data)
       })
+///
+
+
+
+
+
+
+
+
+                    
+                }
+                else{
+                        localStorage.clear();
+                        this.props.history.push('/')
+                }
+                })
+            }
+            else this.props.history.push('/');
+
 }
 
     checkAdmin = (role) => {
@@ -332,7 +384,7 @@ componentDidUpdate(){
       }
 
     render() {
-        if (!localStorage.getItem("user")) return <Redirect to="/" />;
+            if (!localStorage.getItem("user")) return <Redirect to="/" />;
             let type = this.props.match.params.type;
             let ctdt = this.props.match.params.ctdt;
             let khoi = this.props.match.params.khoi;

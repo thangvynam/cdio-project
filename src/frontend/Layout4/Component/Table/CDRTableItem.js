@@ -616,7 +616,7 @@ getSubjectName = (subjectList, id) => {
         let data = {
             data: subjectListId
         }
-        $.getStandardMatrix(data).then((res) => {
+        $.getStandardMatrix(data.data).then((res) => {
             let data = [];
             for(let i = 0;i < res.data.length;i++) {
                 let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);

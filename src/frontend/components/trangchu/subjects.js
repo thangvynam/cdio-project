@@ -12,7 +12,7 @@ import { MENUITEM, subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMa
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
 import NewNav from '../decuongmonhoc/index/navbar/newnav';
-
+import Direction from './direction';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -368,13 +368,13 @@ componentDidUpdate(){
                             return <Page404/>;
                         }     
                     }
-                    else if(parent === "ctdt") {
-                        //check role
-                        if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                            console.log("ctdt not for admin")
-                            return <Page404/>;
-                        }  
-                    }
+                    // else if(parent === "ctdt") {
+                    //     //check role
+                    //     if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                    //         console.log("ctdt not for admin")
+                    //         return <Page404/>;
+                    //     }  
+                    // }
                     else if(parent === "view-survey") {
                         //check role
                         if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
@@ -509,17 +509,16 @@ componentDidUpdate(){
                     </Col>
                     <Col span={22} className="col-right">
                         <Row>
-                            <NavBar
-                                updateCollapse={this.updateCollapse}
-                                isCollapse={this.state.collapse}
-                                theme={this.state.theme}
-                                themeCollaps={this.themeCollaps}
-                                subjectName={subjectName}
-                                content_khoi={this.props.match.params.khoi}
-                                content_ctdt={this.props.match.params.ctdt}
-                                content_parent={this.props.match.params.parent}
-                                content_type={this.props.match.params.type}
-                            />
+                            <Direction
+                            updateCollapse={this.updateCollapse}
+                            isCollapse={this.state.collapse}
+                            theme={this.state.theme}
+                            themeCollaps={this.themeCollaps}
+                            subjectName={subjectName}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
+                            content_parent={this.props.match.params.parent}
+                            content_type={this.props.match.params.type}/>
                         </Row>
                         <Row >
                         <Content content_type={this.props.match.params.type}
@@ -551,17 +550,16 @@ componentDidUpdate(){
                     </Col>
                     <Col span={19} className="col-right">
                         <Row>
-                            <NavBar
-                                updateCollapse={this.updateCollapse}
-                                isCollapse={this.state.collapse}
-                                theme={this.state.theme}
-                                themeCollaps={this.themeCollaps}
-                                subjectName={subjectName}
-                                content_khoi={this.props.match.params.khoi}
-                                content_ctdt={this.props.match.params.ctdt}
-                                content_parent={this.props.match.params.parent}
-                                content_type={this.props.match.params.type}
-                            />
+                        <Direction
+                            updateCollapse={this.updateCollapse}
+                            isCollapse={this.state.collapse}
+                            theme={this.state.theme}
+                            themeCollaps={this.themeCollaps}
+                            subjectName={subjectName}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
+                            content_parent={this.props.match.params.parent}
+                            content_type={this.props.match.params.type}/>
                         </Row>
                         <Row>
                         <Content content_type = {this.props.match.params.type}

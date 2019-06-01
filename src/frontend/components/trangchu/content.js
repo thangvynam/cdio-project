@@ -232,7 +232,7 @@ class Content extends Component {
             case 'itusurvey': {
                 
                 subjectList = this.props.subjectList.filter(item => 
-                    item.del_flat != 1
+                    item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
                 );;
                 
 
@@ -251,10 +251,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Thông Tin Chung</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -269,10 +265,7 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Mô Tả Môn Học</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
+
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -287,10 +280,7 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Mục Tiêu Môn Học</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
+
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -305,10 +295,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Chuẩn Đẩu Ra</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -323,10 +309,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Kế Hoạch Giảng Dạy Lý Thuyết</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -341,10 +323,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Kế Hoạch Giảng Dạy Thực Hành</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -359,10 +337,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Đánh Giá</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -377,10 +351,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Tài Nguyên Môn Học</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -395,10 +365,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Quy Định Chung</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -414,10 +380,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Xuất File PDF</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -433,10 +395,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Thông Tin Chung</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <ThongTinChung idMH={this.props.content_monhoc}/>
@@ -450,10 +408,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>ITU_SURVEY</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <Survey subjectName={this.props.subjectName} monhoc={monhoc}/>
@@ -468,10 +422,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Phân Công</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -488,10 +438,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Review</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -510,10 +456,6 @@ class Content extends Component {
                                 <Row className="col-right-title">
                                     <div>
                                         <span>SYLLABUS</span>
-                                        <Divider type="vertical" />
-                                        <a href="#">Link</a>
-                                        <Divider type="vertical" />
-                                        <a href="#">Link</a>
                                     </div>
                                 </Row>
                             </Col>

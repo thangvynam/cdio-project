@@ -7,7 +7,7 @@ import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { AutoComplete } from "primereact/autocomplete";
-// import { RadioButton } from "primereact/radiobutton";
+import { Checkbox } from "primereact/checkbox";
 
 import "../../assets/common.css";
 
@@ -37,8 +37,9 @@ export default class DetailOutcomeStandardCom extends Component {
       keys: null,
       isSaveBtnDisabled: false,
       deleteReAlertVisible: false,
-      idRevision: 0
-      // isShowEvaluate: true
+      idRevision: 0,
+      commentVisible: false,
+      comment: ""
     };
   }
 
@@ -413,20 +414,6 @@ export default class DetailOutcomeStandardCom extends Component {
             </Button>
           </React.Fragment>
         )}
-        {JSON.parse(localStorage.getItem("user")).data.Role.includes(
-          "ADMIN"
-        ) && (
-          <React.Fragment>
-            <Button
-              onClick={() => console.log("Bình luận")}
-              theme="primary"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title="Bình luận"
-            >
-              <i className="material-icons">question_answer</i>
-            </Button>
-          </React.Fragment>
-        )}
       </div>
     );
   };
@@ -483,10 +470,23 @@ export default class DetailOutcomeStandardCom extends Component {
     return (
       <div className="p-grid content-section implementation">
         <Row>
+          <Col lg="1" md="1" sm="1">
+            <Button
+              onClick={() =>
+                this.setState({
+                  commentVisible: true
+                })
+              }
+              theme="primary"
+              title="Bình luận"
+            >
+              <i className="material-icons">question_answer</i>
+            </Button>
+          </Col>
           {JSON.parse(localStorage.getItem("user")).data.Role.includes(
             "BIEN_SOAN"
           ) && (
-            <Col lg="8" md="8" sm="8">
+            <Col lg="6" md="6" sm="6">
               <Button
                 style={{ margin: "0 10px" }}
                 theme="success"
@@ -512,7 +512,9 @@ export default class DetailOutcomeStandardCom extends Component {
             </Col>
           )}
           <Col lg="2" md="2" sm="2">
-            <DataInputCom handleFile={this.handleFile} />
+            {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+              "BIEN_SOAN"
+            ) && <DataInputCom handleFile={this.handleFile} />}
           </Col>
           <Col lg="2" md="2" sm="2">
             <label onClick={this.onShowExportCom} className="export">
@@ -526,17 +528,27 @@ export default class DetailOutcomeStandardCom extends Component {
               <Column
                 field="displayName"
                 header="Tên dòng"
-                editor={this.nameEditor}
+                editor={
+                  JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                    "BIEN_SOAN"
+                  )
+                    ? this.nameEditor
+                    : null
+                }
                 expander
               />
               <Column
                 header={
-                  <Button
-                    onClick={() => this.onClickDialogRoot()}
-                    theme="success"
-                  >
-                    <i className="material-icons">add</i> Thêm cấp
-                  </Button>
+                  JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                    "BIEN_SOAN"
+                  ) && (
+                    <Button
+                      onClick={() => this.onClickDialogRoot()}
+                      theme="success"
+                    >
+                      <i className="material-icons">add</i> Thêm cấp
+                    </Button>
+                  )
                 }
                 body={this.actionTemplate}
                 style={{ textAlign: "center", width: "15em" }}
@@ -690,7 +702,143 @@ export default class DetailOutcomeStandardCom extends Component {
             }`}
           </Dialog>
         </div>
+
+        <div>
+          <Dialog
+            header="Bình luận"
+            visible={this.state.commentVisible}
+            style={{ width: "50vw" }}
+            footer={
+              <div>
+                {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                  "TEACHER"
+                ) && (
+                  <Button onClick={this.onComment} theme="primary">
+                    Bình luận
+                  </Button>
+                )}
+
+                {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                  "BIEN_SOAN"
+                ) && (
+                  <Button onClick={this.onCheck} theme="success">
+                    Xác nhận hoàn thành
+                  </Button>
+                )}
+
+                <Button
+                  onClick={() =>
+                    this.setState({
+                      commentVisible: false
+                    })
+                  }
+                  theme="secondary"
+                >
+                  Đóng
+                </Button>
+              </div>
+            }
+            onHide={() =>
+              this.setState({
+                commentVisible: false
+              })
+            }
+          >
+            <Row>
+              <Col lg="12" md="12" sm="12">
+                <ul>
+                  {data.map(val => (
+                    <li onClick={() => console.log("hello")}>
+                      <label htmlFor={val.id} className="p-checkbox-label">
+                        {val.iddone > 0 ? (
+                          <React.Fragment>
+                            <strike>
+                              <span
+                                style={{ color: "#007BFF" }}
+                                className="font-weight-bold"
+                              >
+                                {" "}
+                                {val.username} (mục: {val.key}) yêu cầu
+                              </span>: {val.content}
+                              &nbsp;=> được thực hiện bởi&nbsp;
+                              <span
+                                style={{ color: "#007BFF" }}
+                                className="font-weight-bold"
+                              >
+                                {val.userdone}
+                              </span>
+                            </strike>
+                          </React.Fragment>
+                        ) : (
+                          <React.Fragment>
+                            <span
+                              style={{ color: "#007BFF" }}
+                              className="font-weight-bold"
+                            >
+                              {" "}
+                              {val.username} (mục: {val.key}) yêu cầu
+                            </span>: {val.content}
+                          </React.Fragment>
+                        )}
+                      </label>
+                    </li>
+                  ))}
+                </ul>
+              </Col>
+            </Row>
+            <hr />
+            <Row>
+              {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                "TEACHER"
+              ) && (
+                <React.Fragment>
+                  <Col lg="12" md="12" sm="12">
+                    <InputText
+                      value={this.state.comment}
+                      onChange={e => this.setState({ comment: e.target.value })}
+                    />
+                  </Col>
+                </React.Fragment>
+              )}
+            </Row>
+          </Dialog>
+        </div>
       </div>
     );
   }
 }
+
+let data = [
+  {
+    id: 1,
+    username: "vu",
+    content: "hello world",
+    key: "1.2.3",
+    userdone: "thien",
+    iddone: 1
+  },
+  {
+    id: 2,
+    username: "truong",
+    content: "hello world",
+    key: "1.2.3",
+    userdone: null,
+    iddone: 0
+  },
+  {
+    id: 3,
+    username: "cam",
+    content: "hello world",
+    key: "1.2.3",
+    userdone: "cuong",
+    iddone: 2
+  },
+  {
+    id: 4,
+    username: "lam",
+    content: "hello world",
+    key: "1.2.3",
+    userdone: "phat",
+    iddone: 3
+  }
+];

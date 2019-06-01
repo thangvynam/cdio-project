@@ -312,7 +312,6 @@ export default class UserManageCom extends Component {
                 return user;
               })}
             >
-              <Column sortable={true} field="id" header="Id" />
               <Column sortable={true} field="name" header="Tên" />
               <Column sortable={true} field="username" header="Tên tài khoản" />
               <Column sortable={true} field="email" header="Mail" />

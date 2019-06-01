@@ -47,7 +47,7 @@ class UserInfoTemp extends Component {
         <hr />
         <Row>
           <Col lg="12" md="12">
-            <UserInfoCom />
+            <UserInfoCom onChangePass={this.props.onChangePass} />
           </Col>
         </Row>
       </Container>
@@ -61,5 +61,6 @@ const mapStateToProps = state => ({
 });
 
 export default connect(mapStateToProps, {
-  onGetInfo: usersAction.onGetInfo
+  onGetInfo: usersAction.onGetInfo,
+  onChangePass: usersAction.onChangePass
 })(UserInfoTemp);

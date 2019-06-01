@@ -54,13 +54,13 @@ export default class UserManageCom extends Component {
   };
 
   onCloseAndCreate = () => {
-    console.log(this.state.roles)
-    this.props.onRegisterUser({
+    const user = {
       username: this.state.username,
       name: this.state.name,
       email: this.state.email,
       role: this.state.roles
-    });
+    };
+    this.props.onRegisterUser(user);
     this.setState({ visible: false });
   };
 
@@ -88,21 +88,21 @@ export default class UserManageCom extends Component {
 
   onChangeUsername = e => {
     this.setState({
-      username: e.target.value,
+      username: e.target.value
     });
-  }
+  };
 
   onChangeName = e => {
     this.setState({
-      name: e.target.value,
+      name: e.target.value
     });
-  }
+  };
 
   onChangeEmail = e => {
     this.setState({
-      email: e.target.value,
+      email: e.target.value
     });
-  }
+  };
 
   render() {
     const dialog = (
@@ -176,7 +176,7 @@ export default class UserManageCom extends Component {
         <Row>
           <Col lg="12" md="12" sm="12">
             Các chức vụ:{" "}
-           {/* {this.state.roles.map(ele => (
+            {/* {this.state.roles.map(ele => (
               <span style={{ color: "#007BFF" }}>{ele} . </span>
             ))}*/}
           </Col>
@@ -202,7 +202,7 @@ export default class UserManageCom extends Component {
               checked={this.state.roles.includes(2)}
             />
             <label htmlFor="2" className="p-checkbox-label">
-              BIEN SOAN
+              BIEN_SOAN
             </label>
           </Col>
           <Col lg="4" md="4" sm="4">

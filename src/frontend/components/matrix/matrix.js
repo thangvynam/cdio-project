@@ -106,8 +106,9 @@ class Matrix extends Component {
     }
 
     componentDidMount() {
-        this.setState({ isLoading: true })
+        
         if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+            this.setState({ isLoading: true })
             this.props.updateIsLoadEditMatrix("true");
             let subjectListId = [];
         this.props.subjectList.map(item => {
@@ -394,7 +395,7 @@ class Matrix extends Component {
     render() {
         const { isLoading, isShow } = this.state;
         return (
-            this.props.editMatrix && <React.Fragment>
+            this.props.isLoadEditMatrix === "true" && <React.Fragment>
                 {
                     !isLoading
                     && !_.isEmpty(this.props.dataMatrix)
@@ -414,7 +415,7 @@ class Matrix extends Component {
                             sheet="tablexls"
                             buttonText="Export"
                         />
-                        {this.props.editMatrix.length > 0 ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
+                        {this.props.editMatrix.length <= 0 ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
                         <Table
                             bordered
                             columns={this.createColumn(this.props.dataMatrix)}

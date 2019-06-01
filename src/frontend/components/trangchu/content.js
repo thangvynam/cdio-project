@@ -205,7 +205,7 @@ class Content extends Component {
       }
 
       checkBienSoan = (role) => {
-        if(role.indexOf("BIEN SOAN") > -1) {
+        if(role.indexOf("BIEN_SOAN") > -1) {
             return true;
         }
         return false;
@@ -635,7 +635,7 @@ class Content extends Component {
                     ) 
                     : type === "matrix" ? <Matrix khoi={khoi}/>
                     : type === "edit-matrix" ? <EditMatrix />
-                    : type === "survey-matrix" ? <SurveyMatrix />
+                    // : type === "survey-matrix" ? <SurveyMatrix />
                     : type === "benchmark-matrix" ? <BenchMark />
                     : type === "itusurvey" ?
                         <React.Fragment>
@@ -698,6 +698,7 @@ class Content extends Component {
                     : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
                     : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
                     : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
+                    : parent === "survey-matrix" ? <SurveyMatrix />
                     : parent === "view-survey" ? (
                         <React.Fragment>
                             <Row className="col-right-title">

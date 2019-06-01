@@ -471,7 +471,7 @@ export function resetTab(){
 export const MENUITEM = {
     THONG_TIN_CHUNG: 'thong-tin-chung',
     MO_TA_MON_HOC: 'mo-ta-mon-hoc',
-    CHUAN_DAU_RA: 'chuan-dau-ra',
+    CHUAN_DAU_RA: 'chuan-dau-ra-mh',
     DANH_GIA: 'danh-gia',
     GIANG_DAY_LY_THUYET: 'giang-day-ly-thuyet',
     GIANG_DAY_THUC_HANH: 'giang-day-thuc-hanh',

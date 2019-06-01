@@ -397,6 +397,7 @@ class Matrix extends Component {
                             sheet="tablexls"
                             buttonText="Export"
                         />
+                        {this.props.editMatrix.length > 0 ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
                         <Table
                             bordered
                             columns={this.createColumn(this.props.dataMatrix)}

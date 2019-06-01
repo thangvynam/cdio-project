@@ -609,8 +609,14 @@ getSubjectName = (subjectList, id) => {
     if(this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
       if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
         this.props.updateIsLoadEditMatrix("true");
-        $.getRealityMatrix();
-        $.getStandardMatrix().then((res) => {
+        let subjectListId = [];
+        this.props.subjectList.map(item => {
+            subjectListId.push(item.IdSubject);
+        })
+        let data = {
+            data: subjectListId
+        }
+        $.getStandardMatrix(data).then((res) => {
             let data = [];
             for(let i = 0;i < res.data.length;i++) {
                 let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);

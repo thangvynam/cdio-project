@@ -388,12 +388,12 @@ const collectData5 = (data) => {
 }
 
 const getCDRDanhgia = (data) => {
-    let url = _.getCDRDanhgia;
+    let url = _.GET_CDR_DANHGIA;
     return $.post(url,data);
 }
 
 const getCDR_7 = (data) => {
-    let url = _.getCDR_7;
+    let url = _.GET_CDR_7;
     return $.post(url,data);
 }
 

@@ -155,17 +155,18 @@ class TableItem extends Component {
       for (let j = 0; j < ruleitems.length; j++) {
         if (ruleitems[j].id === id) {
           ruleitems[j].del_flag = 1;
+          let message = `Xóa quy định chung: ${ruleitems[j].content}`;
           this.props.onSaveLog(
             "Nguyen Van A",
             getCurrTime(),
-            `Xóa quy định chung: ${ruleitems[j].content}`,
+            message,
             this.props.logReducer.contentTab,
             this.props.monhoc
           );
           this.props.onSaveReducer(
             "Nguyen Van A",
             getCurrTime(),
-            `Xóa quy định chung: ${ruleitems[j].content}`,
+            message,
             this.props.logReducer.contentTab,
             this.props.monhoc
           );
@@ -193,17 +194,18 @@ class TableItem extends Component {
   handleDelete(index) {
     let ruleitems = this.props.itemRule.previewInfo;
     ruleitems[index].del_flag = 1;
+    let message = `Xóa quy định chung: ${ruleitems[index].content}`;
     this.props.onSaveLog(
       "Nguyen Van A",
       getCurrTime(),
-      `Xóa quy định chung: ${ruleitems[index].content}`,
+      message,
       this.props.logReducer.contentTab,
       this.props.monhoc
     );
     this.props.onSaveReducer(
       "Nguyen Van A",
       getCurrTime(),
-      `Xóa quy định chung: ${ruleitems[index].content}`,
+      message,
       this.props.logReducer.contentTab,
       this.props.monhoc
     );
@@ -229,21 +231,18 @@ class TableItem extends Component {
         ...item,
         ...row
       });
+      let message = `Chỉnh sửa quy định chung : [${item.content}] -> [${newRules[index].content}]`;
       this.props.onSaveLog(
         "Nguyen Van A",
         getCurrTime(),
-        `Chỉnh sửa quy định chung : ${item.content} -> ${
-          newRules[index].content
-        }`,
+        message,
         this.props.logReducer.contentTab,
         this.props.monhoc
       );
       this.props.onSaveReducer(
         "Nguyen Van A",
         getCurrTime(),
-        `Chỉnh sửa quy định chung : ${item.content} -> ${
-          newRules[index].content
-        }`,
+        message,
         this.props.logReducer.contentTab,
         this.props.monhoc
       );
@@ -274,7 +273,6 @@ class TableItem extends Component {
     body.thong_tin_chung_id = this.props.monhoc;
     body.data = this.props.itemRule.previewInfo;
 
-    //axios.post("/add-data-9", body)
     $.addData9(body)
     .then(response => {
       if (response.data === 1) {
@@ -293,8 +291,6 @@ class TableItem extends Component {
 
       this.getData(this.props.monhoc);
     });
-
-    //axios.post("/save-log", { data: this.props.itemRule.logData });
    
   };
 
@@ -312,7 +308,6 @@ class TableItem extends Component {
   }
 
   getData(subjectId) {
-    //axios.get(`/get-data-9/${subjectId}`).then(response => {
     $.getData9(subjectId).then(response => {
       const data = response.data;
       let array = [];
@@ -342,7 +337,6 @@ class TableItem extends Component {
   }
 
   render() {
-    console.log(this.props.monhoc)
     const components = {
       body: {
         row: EditableFormRow,

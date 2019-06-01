@@ -273,12 +273,10 @@ class itemLayout7ReducerItem extends React.Component {
       } else {
         newData.previewInfo.push(row);
       }
-
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa đánh giá: [Mã: ${dataTemp.key},Tên: ${dataTemp.tenthanhphan},Mô tả (gợi ý): ${dataTemp.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(dataTemp.standardOutput)},Tỉ lệ: ${dataTemp.tile}] -> 
-      [Mã: ${dataTemp.key},Tên: ${row.tenthanhphan},Mô tả (gợi ý): ${row.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(row.standardOutput)},Tỉ lệ: ${row.tile}]`,
-        this.props.logReducer.contentTab, this.props.monhoc)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa đánh giá: [Mã: ${dataTemp.key},Tên: ${dataTemp.tenthanhphan},Mô tả (gợi ý): ${dataTemp.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(dataTemp.standardOutput)},Tỉ lệ: ${dataTemp.tile}] -> 
-      [Mã: ${dataTemp.key},Tên: ${row.tenthanhphan},Mô tả (gợi ý): ${row.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(row.standardOutput)},Tỉ lệ: ${row.tile}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      let message = `Chỉnh sửa đánh giá: [Mã: ${dataTemp.key},Tên: ${dataTemp.tenthanhphan},Mô tả (gợi ý): ${dataTemp.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(dataTemp.standardOutput)},Tỉ lệ: ${dataTemp.tile}]` +
+        `-> [Mã: ${dataTemp.key},Tên: ${row.tenthanhphan},Mô tả (gợi ý): ${row.mota},Các chuẩn đầu ra được đánh giá: ${this.getStringFromCDR(row.standardOutput)},Tỉ lệ: ${row.tile}]`;
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.props.onAddDGData(newData);
       this.setState({ editingKey: "" });
@@ -330,7 +328,7 @@ class itemLayout7ReducerItem extends React.Component {
   onDelete = (key) => {
     //nếu key là chủ đề . xóa hết tất cả thằng con trong chủ đề đó .
     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
-    
+
     if (this.isExist(key)) {
       let index = 0;
       let indexChildren = 0;
@@ -410,14 +408,14 @@ class itemLayout7ReducerItem extends React.Component {
         this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[i].key}, Tên : ${previewInfo[i].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[i].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[i].standardOutput)}, Tỉ lệ : ${previewInfo[i].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
         previewInfo[i].del_flag = 1;
       }
-      // previewInfo = [];
+
     } else {
       for (let i = 0; i < this.state.selectedRowKeys.length; i++) {
         let key = this.state.selectedRowKeys[i];
         this.onDelete(key);
         let index = previewInfo.findIndex(item => item.key === key);
-        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
-        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${this.getStringFromCDR(previewInfo[index].standardOutput)}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${previewInfo[index].standardOutput}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${previewInfo[index].standardOutput}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
         if (this.isEmptyChildrenChude(key)) {
           for (let i = 0; i < chude.length; i++) {
             if (chude[i].ma_chu_de === key.substring(0, chude[i].ma_chu_de.length)) {
@@ -447,7 +445,6 @@ class itemLayout7ReducerItem extends React.Component {
         description: table,
       }
 
-      // axios.post(`/save-danhgia`, obj)
       $.saveData7(obj)
         .then(response => {
           if (response.data === 1) {
@@ -463,8 +460,7 @@ class itemLayout7ReducerItem extends React.Component {
             });
           }
         });
-        $.saveLog({ data: this.props.itemLayout7Reducer.logData })
-      // axios.post('/save-log', { data: this.props.itemLayout7Reducer.logData })
+      $.saveLog({ data: this.props.itemLayout7Reducer.logData })
     }
 
   }
@@ -478,7 +474,6 @@ class itemLayout7ReducerItem extends React.Component {
         console.log(error);
       });
 
-    //axios.get(`/get-standardoutput-7/${this.props.monhoc}`)
     $.getStandardOutput7(this.props.monhoc)
       .then(function (response) {
 
@@ -492,7 +487,7 @@ class itemLayout7ReducerItem extends React.Component {
     var listCDRDG = [];
     var listCDR = [];
     var result = [];
-    //axios.get(`/get-danhgia/${this.props.monhoc}`).then(response => {
+
     $.getDanhGia(this.props.monhoc).then(response => {
       if (response === null || response.data === null || response.data === undefined || response.data.length === 0) return;
       let listStringId = '';
@@ -505,7 +500,7 @@ class itemLayout7ReducerItem extends React.Component {
         }
       })
 
-      axios.post(`/get-cdrdanhgia`, { data: listStringId }).then(response2 => {
+      $.getCDRDanhgia({ data: listStringId }).then(response2 => {
         if (response2 === null || response2.data === null || response2.data === undefined || response2.data.length === 0) return;
         listCDRDG = response2.data
         let listCDRDGString = '';
@@ -516,7 +511,7 @@ class itemLayout7ReducerItem extends React.Component {
             listCDRDGString = listCDRDGString + ',' + item.chuan_dau_ra_mon_hoc_id;
           }
         })
-        axios.post(`/get-cdr-7`, { data: listCDRDGString }).then(response3 => {
+        $.getCDR_7({ data: listCDRDGString }).then(response3 => {
           if (response3 === null || response3.data === null || response3.data === undefined || response3.data.length === 0) return;
           listCDR = response3.data;
           for (let i = 0; i < listDG.length; i++) {
@@ -582,6 +577,7 @@ class itemLayout7ReducerItem extends React.Component {
               }
             }
           }
+
           if (previewInfo.filter(item => item.del_flag !== 1).length > 1) {
             this.sortValues(previewInfo.filter(item => item.del_flag !== 1));
 

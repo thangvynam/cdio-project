@@ -31,9 +31,8 @@ import {
   subjectListReducer,
   subjectMasoReducer,
   cdrCdioReducer,
-  ctdtReducer,
   parentItemReducer,
-  kttReducer
+
 } from "../Reducers/homePageReducer";
 import logReducer from "../Reducers/logReducer";
 
@@ -46,8 +45,7 @@ import {
   isLoadEditMatrixReducer
 } from "../Reducers/editMatrixReducer";
 import surveyReducer from "../Reducers/surveyReducer";
-import teacherReducer from "../Reducers/teacherReducer";
-
+import {dataCtdtReducer} from "../Reducers/dataCtdtReducer";
 // start CDIO1 reducers
 import cdio1 from "../CDIO1/reducers/cdio1";
 // end CDIO1 reducers
@@ -82,8 +80,6 @@ const allReducers = redux.combineReducers({
     // loaitainguyenReducer: loaiTaiNguyenReducer,
     menuitem: menuItemReducer,
     parentitem: parentItemReducer,
-    ctdt: ctdtReducer,
-    ktt: kttReducer,
     subjectid: subjectIdReducer,
     subjectmaso: subjectMasoReducer,
     subjectlist: subjectListReducer,
@@ -97,7 +93,7 @@ const allReducers = redux.combineReducers({
     logReducer: logReducer,
     surveyReducer: surveyReducer,
     authentication: authenticationReducer,
-    teacherlist: teacherReducer,
+    datactdt: dataCtdtReducer,
     ...cdio1
 
 });

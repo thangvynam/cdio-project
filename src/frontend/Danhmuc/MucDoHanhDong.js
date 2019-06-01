@@ -3,7 +3,7 @@ import { Collapse, Form, Input, Menu, Icon,
      Button, Dropdown, message, Row, Col,
       Select, Modal, Table, Tag, Popconfirm,
     Divider, notification } from 'antd';
-import axios from 'axios';
+import $ from './../helpers/services'
 
 const Panel = Collapse.Panel;
 const formItemLayout = {
@@ -197,7 +197,7 @@ class MucDoHanhDong extends Component {
       };
 
       loadTable = () => {
-        axios.get('/collect-cdrmdhd-4').then((res) => {
+        $.collectCdrmdhd4().then((res) => {
           let data = [];
           for(let i = 0;i < res.data.length;i++) {
             data.push({
@@ -215,7 +215,7 @@ class MucDoHanhDong extends Component {
           if (error) {
             return;
           }
-          axios.post("/update-cdrmdhd", { data: {id: key, muc_do_1: row.muc_do_1, muc_do_2: row.muc_do_2, muc_do_3: row.muc_do_3}}).then(
+          $.updateCdrmdhd({ data: {id: key, muc_do_1: row.muc_do_1, muc_do_2: row.muc_do_2, muc_do_3: row.muc_do_3}}).then(
             res => {
               this.loadTable();
               this.setState({editstate: ''});
@@ -231,9 +231,9 @@ class MucDoHanhDong extends Component {
 
       
       handleDelete = (key) => {
-        axios.post("/delete-cdrmdhd-from-cdr", { data: [key]}).then(
+        $.deleteCdrmdhdFromCdr({ data: [key]}).then(
           res => {
-            axios.post("/delete-cdrmdhd", { data: [key]}).then(
+            $.deleteCdrmdhd({ data: [key]}).then(
               res => {
                 this.loadTable();
                 this.setState({editstate: ''});
@@ -247,9 +247,9 @@ class MucDoHanhDong extends Component {
       handleOk = () => {
         console.log(this.state.selecteditem);
         let data = [];
-        axios.post("/delete-cdrmdhd-from-cdr", { data: this.state.selecteditem}).then(
+        $.deleteCdrmdhdFromCdr({ data: this.state.selecteditem}).then(
           res => {
-            axios.post("/delete-cdrmdhd", { data: this.state.selecteditem}).then(
+            $.deleteCdrmdhd({ data: this.state.selecteditem}).then(
               res => {
                 this.loadTable();
                 this.setState({editstate: ''});
@@ -287,7 +287,7 @@ class MucDoHanhDong extends Component {
               message.warning("Chưa nhập động từ!");
             }
             else {
-              axios.post("/add-cdrmdhd", { data: {muc_do_1: muc_do_1, muc_do_2: this.state.level_select, muc_do_3: muc_do_3}}).then(
+             $.addCdrmdhd({ data: {muc_do_1: muc_do_1, muc_do_2: this.state.level_select, muc_do_3: muc_do_3}}).then(
                 res => {
                   this.loadTable();
                   openNotificationWithIcon('success');

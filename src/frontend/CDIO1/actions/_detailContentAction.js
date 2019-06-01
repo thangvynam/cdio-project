@@ -43,9 +43,10 @@ export const onLoadContentProgram = idDetail => {
   };
 };
 
-export const saveContentProgramSuccess = successMessage => ({
+export const saveContentProgramSuccess = (contentNodes, successMessage) => ({
   type: cst.SAVE_CONTENT_EDUPROGRAM_SUCCESS,
-  successMessage
+  successMessage,
+  contentNodes
 });
 
 export const saveContentProgramError = (contentNodes, errorMessage) => ({
@@ -54,17 +55,9 @@ export const saveContentProgramError = (contentNodes, errorMessage) => ({
   contentNodes
 });
 
-const afterSaveContentProgramSuccess = (contentNodes, errorMessage) => ({
-  type: cst.SAVE_CONTENT_EDUPROGRAM_SUCCESS,
-  errorMessage,
-  contentNodes
-});
-
 export const onSaveContentProgram = contentProgram => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${
-      contentProgram.iddetail
-    }`;
+    let req = `${links.SAVE_CONTENT_EDUPROGRAM}?ideduprog=${contentProgram.iddetail}`;
     let params = {};
     params.data = JSON.stringify(contentProgram.contentNodes);
     axios
@@ -75,24 +68,18 @@ export const onSaveContentProgram = contentProgram => {
       })
       .then(res => {
         if (res.data.code === "OK") {
-          dispatch(
-            afterSaveContentProgramSuccess(
-              { nodes: contentProgram.nodes, isRevert: true },
-              res
-            )
-          );
+          dispatch(onLoadContentProgram(contentProgram.iddetail));
+          let chirp = {
+            message: `Lưu nội dung chương trình thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
         } else {
           let chirp = {
             message: `Lưu nội dung chương trình thất bại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(
-            saveContentProgramError(
-              { nodes: contentProgram.nodes, isRevert: true },
-              res
-            )
-          );
         }
       })
       .catch(err => {
@@ -101,10 +88,6 @@ export const onSaveContentProgram = contentProgram => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        saveContentProgramError(
-          { nodes: contentProgram.nodes, isRevert: true },
-          err
-        );
       });
   };
 };

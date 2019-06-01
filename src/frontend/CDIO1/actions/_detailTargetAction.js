@@ -4,6 +4,7 @@ import * as links from "../constants/links";
 import * as message from "./message";
 
 import * as commonLogic from "../business/commonEducation";
+import * as targetLogic from "../business/logicTargetEducation";
 import * as logic from "../business/";
 
 export const loadTargetProgramSuccess = targetNodes => ({
@@ -22,7 +23,8 @@ export const onLoadTargetProgram = idDetail => {
     axios
       .get(req)
       .then(res => {
-        const targetNodes = res.data.data;
+        const data = res.data.data;
+        const targetNodes = targetLogic.convertDBToTreeNodeForEduPro(data);
         if (targetNodes) {
           dispatch(loadTargetProgramSuccess(targetNodes));
         } else {
@@ -45,9 +47,10 @@ export const onLoadTargetProgram = idDetail => {
   };
 };
 
-export const saveTargetProgramSuccess = successMessage => ({
+export const saveTargetProgramSuccess = (targetNodes, successMessage) => ({
   type: cst.SAVE_TARGET_EDUPROGRAM_SUCCESS,
-  successMessage
+  successMessage,
+  targetNodes
 });
 
 export const saveTargetProgramError = (targetNodes, errorMessage) => ({
@@ -58,16 +61,19 @@ export const saveTargetProgramError = (targetNodes, errorMessage) => ({
 
 export const onSaveTargetProgram = targetProgram => {
   return (dispatch, getState) => {
-    let req = `${links.SAVE_TARGET_EDUPROGRAM}?iddetail=${
+    debugger;
+    let req = `${links.ADD_TARGET_EDUPROGRAM}?iddetail=${
       targetProgram.iddetail
     }`;
     let params = {};
     const outdata = [];
     const level = logic.getMaxLevel(targetProgram.targetNodes);
-    commonLogic.createSaveDataForTarget(targetProgram.targetNodes, outdata, level);
-
-    console.error(outdata)
-
+    commonLogic.createSaveDataForTarget(
+      targetProgram.targetNodes,
+      outdata,
+      level
+    );
+  
 
     params.data = JSON.stringify(outdata);
     axios
@@ -83,7 +89,7 @@ export const onSaveTargetProgram = targetProgram => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(saveTargetProgramSuccess(res));
+          dispatch(saveTargetProgramSuccess(targetProgram.targetNodes, res));
         } else {
           let chirp = {
             message: `Lưu mục tiêu đào tạo thất bại`,

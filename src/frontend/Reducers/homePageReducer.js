@@ -1,5 +1,11 @@
 import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, CTDT, PARENT_ITEM , KTT} from '../Constant/ActionType';
 const initialState = {
+    "chuan-dau-ra" :{
+        name: "CHUẨN ĐẦU RA",
+    },
+    "phan-cong-giang-day" :{
+        name: "PHÂN CÔNG GIẢNG DẠY",
+    },
     "de-cuong-mon-hoc" :{
         name: "ĐỀ CƯƠNG MÔN HỌC",
     },
@@ -14,9 +20,6 @@ const initialState = {
     },
     "edit-matrix": {
         name: "EDIT-MATRIX"
-    },
-    "danhmuc": {
-        name: "DANH MỤC"
     },
     "itusurvey": {
         name: "ITU SURVEY"
@@ -81,55 +84,14 @@ export function cdrCdioReducer(state = initialCdrCdio, action) {
     }
 }
 
-const ctdtState = [
-    {
-        id: "6",
-        name: "CHÍNH QUY",
-    },
-    {
-        id: "2",
-        name: "CAO ĐẲNG",
-    }
-];
-export function ctdtReducer(state = ctdtState, action) {
-
-    switch(action.type) {
-        case CTDT:
-        return action.ctdt;
-        default: 
-        return state;
-    }
-}
-
-const kttState = {
-        id: "6",
-        name: "CHÍNH QUY",
-        children: [
-            {
-                id: "ktt-1",
-                name: "KHỐI KIẾN THỨC TOÁN HỌC"
-            },
-            {
-                id: "ktt-2",
-                name: "KHỐI KIẾN THỨC VẬT LÝ"
-            }
-        ]
-    }
-;
-export function kttReducer(state = kttState, action) {
-
-    switch(action.type) {
-        case KTT:
-        return action.ktt;
-        default: 
-        return state;
-    }
-}
-
 const parentState = [
     {
         id: "ctdt",
         name: "CHƯƠNG TRÌNH ĐÀO TẠO"
+    },
+    {
+        id: "danh-muc",
+        name: "DANH MỤC"
     },
     {
         id: "cdr",
@@ -142,6 +104,14 @@ const parentState = [
     {
         id: "qlkh",
         name: "QUẢN LÝ KHOA HỆ"
+    },
+    {
+        id: "qlgd",
+        name: "QUẢN LÝ NGƯỜI DÙNG"
+    },
+    {
+        id: "info",
+        name: "THÔNG TIN TÀI KHOẢN"
     }
 ]
 

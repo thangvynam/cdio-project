@@ -10,8 +10,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog, cdrmdhd, cdrmdhddb ,saveLogObject} from '../../../Constant/ActionType';
 import './1.css';
-import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from "../../../helpers/services";
 
 const formItemLayout = {
   labelCol: {
@@ -205,8 +205,9 @@ class CDRFormItem extends Component {
       this.setState({isLoaded: true});
       var self = this;
       if(this.state.id !== "" && this.state.id !== undefined) {
-        axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.state.id}})
+        $.collectMtmh({ data: {thong_tin_chung_id: this.state.id}})
         .then(function (response) {
+          console.log(response.data)
             self.props.updateMtmh(response.data);
             
           })
@@ -286,8 +287,9 @@ class CDRFormItem extends Component {
     if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== ""){
       var self = this;
       if(this.state.id !== "" && this.state.id !== undefined) {
-        axios.post('/collect-mtmh', { data: {thong_tin_chung_id: this.props.subjectId}})
+        $.collectMtmh({ data: {thong_tin_chung_id: this.props.subjectId}})
         .then(function (response) {
+          console.log(response.data)
             self.props.updateMtmh(response.data);
             
           })
@@ -300,11 +302,14 @@ class CDRFormItem extends Component {
 
   render() {
     const { getFieldDecorator } = this.props.form;
-    const CDROption = this.props.mtmh.map((key) => {
-      return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>
-    });
+    let CDROption = [];
+    if(this.props.mtmh.length > 0) {
+      CDROption = this.props.mtmh.map((key) => {
+        return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>
+      });
+    } 
     return (
-      <div style={{ border: "2px solid", borderRadius: "12px" }}>
+      <div >
         <div style={{ marginTop: "10px" }}></div>
         <Form onSubmit={this.handleSubmit}>
           <Form.Item
@@ -377,8 +382,8 @@ class CDRFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div>
-              <Button type="primary" style={{ marginLeft: "2em" }} onClick={this.addCDRData}>
-                Continue<Icon type="right" />
+              <Button type="primary" style={{ marginLeft: "15%" }} onClick={this.addCDRData}>
+                Continue
               </Button>
             </div>
           </Form.Item>

@@ -1,14 +1,13 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
-import axios from 'axios';
 import {
   Form, Input, Card, Button, notification, Icon, Tooltip
 
 } from 'antd';
 
 import './thong-tin-chung.css'
-import { updateTTCRequest, collectDataRequest} from './../Constant/thong-tin-chung/actions';
+import { updateTTCRequest, collectDataRequest } from './../Constant/thong-tin-chung/actions';
 
 class ThongTinChung extends Component {
   constructor(props) {
@@ -65,13 +64,10 @@ class ThongTinChung extends Component {
     const { dataTTC, tempData } = this.props;
 
     return (
-      (!_.isEmpty(dataTTC) && <div className="container">
-        <div className="row">
-          <div className="col-sm-1" ></div>
-          <div className="col-sm-11" >
-            <h1 style={{ textAlign: "center" }}>THÔNG TIN CHUNG</h1>
-            <div className="card_TTC" >
-              <Form  onSubmit={this.handleSubmit}>
+      (!_.isEmpty(dataTTC) && 
+      <div className="section-layout">
+            <div className="" >
+              <Form onSubmit={this.handleSubmit}>
                 <Form.Item
                   {...formItemLayout}
                   label="Tên Môn Học (Tiếng Việt):">
@@ -117,21 +113,6 @@ class ThongTinChung extends Component {
                     <Input disabled={this.props.isReview === true ? true : false} name="maMonHoc" type="text" />
                   )}
                 </Form.Item>
-                {/* <Form.Item
-                  {...formItemLayout}
-                  label="Thuộc Tính Kiến Thức:">
-                  {getFieldDecorator('khoiKienThuc', {
-                    rules: [
-                      {
-                        type: 'string', message: 'The input is not valid ',
-                      }, {
-                        required: true, message: 'Please input your Knowledge Attributes!',
-                      }],
-                    initialValue: dataTTC['khoiKienThuc'],
-                  })(
-                    <Input name="khoiKienThuc" type="text" />
-                  )}
-                </Form.Item> */}
                 <Form.Item
                   {...formItemLayout}
                   label="Số Tín Chỉ: ">
@@ -184,21 +165,6 @@ class ThongTinChung extends Component {
                     <Input disabled={this.props.isReview === true ? true : false} className="inputNumber" name="tietTuHoc" type="number" />
                   )}
                 </Form.Item>
-                {/* <Form.Item
-                  {...formItemLayout}
-                  label="Các Môn Tiên Quyết:">
-                  {getFieldDecorator('monTienQuyet', {
-                    rules: [
-                      {
-                        type: 'string', message: 'The input is not valid ',
-                      }, {
-                        required: true, message: 'Please input Prerequisite Subjects!',
-                      }],
-                    initialValue: dataTTC['monTienQuyet'],
-                  })(
-                    <Input name="monTienQuyet" type="text" />
-                  )}
-                </Form.Item> */}
                 <Form.Item>
                   {this.props.isReview === true ? null : <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
                     Update
@@ -206,9 +172,11 @@ class ThongTinChung extends Component {
                 </Form.Item>
               </Form>
             </div>
-          </div>
-        </div>
-      </div>)
+
+    
+      </div>
+      )
+     
     )
   }
 }

@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import "./1.css"
 import { connect } from 'react-redux';
 import axios from 'axios';
+import $ from './../helpers/services'
 import { Form, Button, Input } from 'antd';
 import { SAVE_LOG_DATA,SAVE_COMMENT } from "../Constant/ActionType"
 import CommentLog from "../Comment/Comment"
@@ -28,7 +29,6 @@ class LogForm extends Component {
             this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.subjectid); 
         }               
         
-              
     }
 
     async getData(contentTab) {
@@ -36,7 +36,8 @@ class LogForm extends Component {
             subjectid: this.props.subjectid,
             contentTab: contentTab
         }
-        return axios.post(`/get-log`, { data }).then(res => {
+        
+        return $.getLog({data}).then(res => {
             return res.data
         })
     }
@@ -139,7 +140,7 @@ class LogForm extends Component {
             }
         }
         return (
-            <div className="container1">
+            <div className="">
                 <div className="center-col">
                     {LogComment}
                 </div>
@@ -169,7 +170,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             content : content,
             thoi_gian : getCurrTime(),
         }
-        axios.post('/add-comment-2', { data:obj })
+        $.addComment2({data:obj})
+        // axios.post('/add-comment-2', { data:obj })
             .then(res => {
                 console.log(res)
             })
@@ -177,24 +179,25 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         dispatch({ type: SAVE_COMMENT, obj:obj });
     },
     getComment:()=>{
-        axios.get(`/get-comment`)
+        $.getComment()
             .then(res => {
                 let data = res.data;
-                for(let obj of data){
-                    const sample = {
-                        log_id : obj.log_id,
-                        id : obj.id,
-                        nguoi_gui : obj.nguoi_gui,
-                        content : obj.noi_dung,
-                        thoi_gian : obj.thoi_gian,
+
+                if (data != null) {
+                    for(let obj of data){
+                        const sample = {
+                            log_id : obj.log_id,
+                            id : obj.id,
+                            nguoi_gui : obj.nguoi_gui,
+                            content : obj.noi_dung,
+                            thoi_gian : obj.thoi_gian,
+                        }
+                        console.log(sample)
+                        dispatch({ type: SAVE_COMMENT, obj:sample });
                     }
-                    console.log(sample)
-                    dispatch({ type: SAVE_COMMENT, obj:sample });
                 }
-                
-            })
+            });
     }
-    
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LogForm);

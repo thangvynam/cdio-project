@@ -23,7 +23,6 @@ export default class TargetEducationCom extends Component {
       osVisible: false,
       isData: false,
       detailOsVisible: false,
-      os: [],
       tmpIdOutcome: 0,
       deleteAlertVisible: false
     };
@@ -31,7 +30,7 @@ export default class TargetEducationCom extends Component {
 
   // get targetNodes from redux
   getTargetNodes = targetNodes => {
-    // this.setState({ targetNodes: targetNodes });
+    this.setState({ targetNodes: targetNodes });
   };
   // end get targetNodes from redux
 
@@ -71,7 +70,7 @@ export default class TargetEducationCom extends Component {
     );
     this.setState({
       targetNodes: data
-    });    
+    });
   };
 
   // delete
@@ -161,13 +160,19 @@ export default class TargetEducationCom extends Component {
     this.setState({ targetVisible: false });
   };
 
-  onShowDetailOS = IdOutcome => {
-    this.props.onLoadDetailOutcomeStandard(IdOutcome);
-    this.setState({
-      detailOsVisible: true,
-      os: this.props.detailOutcomeStandard,
-      tmpIdOutcome: IdOutcome
-    });
+  onAddOutcomeStandard = IdOutcome => {
+    if (
+      this.state.targetNode === "" ||
+      this.state.targetNode.children.length !== 0
+    ) {
+      alert("Không thể thêm chuẩn đầu ra ở node này!!");
+    } else {
+      const nodes = [...this.state.targetNodes];
+      targetLogic.updateOSUsedNode(nodes, this.state.targetNode.key);
+      this.props.onSaveOutcomeUsed(IdOutcome, this.state.targetNode.key);
+      this.setState({ targetNodes: nodes, targetNode: "" });
+    }
+    this.onHideTargetDialog();
   };
 
   onHideDetailOS = () => {
@@ -192,8 +197,7 @@ export default class TargetEducationCom extends Component {
   onTargetSubmit = () => {
     if (
       this.state.targetNode === "" ||
-      this.state.targetNode.children.length !== 0 ||
-      this.state.os.length === 0
+      this.state.targetNode.children.length !== 0
     ) {
       alert("Không thể thêm chuẩn đầu ra ở node này!!");
     } else {
@@ -256,12 +260,12 @@ export default class TargetEducationCom extends Component {
     return (
       <div>
         <Button
-          title="Xem chi tiết"
-          onClick={() => this.onShowDetailOS(data.Id)}
+          title="Thêm Chuẩn đầu ra này"
+          onClick={() => this.onAddOutcomeStandard(data.Id)}
           theme="success"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
-          <i className="material-icons">search</i>
+          <i className="material-icons">add</i>
         </Button>
       </div>
     );
@@ -413,7 +417,7 @@ export default class TargetEducationCom extends Component {
                 sm="12"
                 style={{ overflowY: "scroll", height: "320px" }}
               >
-                <TreeTable value={this.state.os}>
+                <TreeTable value={this.props.detailOutcomeStandard}>
                   <Column field="displayName" header="Tên dòng" expander />
                 </TreeTable>
               </Col>

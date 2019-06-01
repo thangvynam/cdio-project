@@ -3,7 +3,7 @@ import { Collapse, Form, Input, Menu, Icon,
      Button, Dropdown, message, Row, Col,
       Select, Modal, Table, Tag, Popconfirm,
     Divider, notification } from 'antd';
-import axios from 'axios';
+import $ from './../helpers/services';
 
 const Panel = Collapse.Panel;
 const formItemLayout = {
@@ -164,7 +164,7 @@ class ChuDeDanhGia extends Component {
       };
 
       loadTable = () => {
-        axios.get('/get-chude').then((res) => {
+        $.getChuDe().then((res) => {
           let data = [];
           for(let i = 0;i < res.data.length;i++) {
             data.push({
@@ -181,7 +181,7 @@ class ChuDeDanhGia extends Component {
           if (error) {
             return;
           }
-          axios.post("/update-chude", { data: {id: key, ma_chu_de: row.ma_chu_de, ten_chu_de: row.ten_chu_de}}).then(
+          $.updateChude({ data: {id: key, ma_chu_de: row.ma_chu_de, ten_chu_de: row.ten_chu_de}}).then(
             res => {
               this.loadTable();
               this.setState({editstate: ''});
@@ -197,11 +197,11 @@ class ChuDeDanhGia extends Component {
 
       
       handleDelete = (key) => {
-        axios.post("/delete-chude-from-danhgia", { data: [key]}).then(
+        $.deleteChudeFromDanhgia({ data: [key]}).then(
           res => {
-            axios.post("/delete-danhgia", { data: [key]}).then(
+            $.deleteDanhgia({ data: [key]}).then(
                 res => {
-                    axios.post("/delete-chude", { data: [key]}).then(
+                   $.deleteChude({ data: [key]}).then(
                         res => {
                           this.loadTable();
                           this.setState({editstate: ''});
@@ -215,11 +215,11 @@ class ChuDeDanhGia extends Component {
 
       handleOk = () => {
         let data = [];
-        axios.post("/delete-chude-from-danhgia", { data: this.state.selecteditem}).then(
+        $.deleteChudeFromDanhgia({ data: this.state.selecteditem}).then(
           res => {
-            axios.post("/delete-danhgia", { data: this.state.selecteditem}).then(
+            $.deleteDanhgia({ data: this.state.selecteditem}).then(
                 res => {
-                    axios.post("/delete-chude", { data: this.state.selecteditem}).then(
+                    $.deleteChude({ data: this.state.selecteditem}).then(
                         res => {
                           this.loadTable();
                           this.setState({editstate: ''});
@@ -251,7 +251,7 @@ class ChuDeDanhGia extends Component {
           }
           else {
            
-              axios.post("/add-chude", { data: {ma_chu_de: ma_chu_de, ten_chu_de: ten_chu_de}}).then(
+              $.addChude({ data: {ma_chu_de: ma_chu_de, ten_chu_de: ten_chu_de}}).then(
                 res => {
                   this.loadTable();
                   openNotificationWithIcon('success');

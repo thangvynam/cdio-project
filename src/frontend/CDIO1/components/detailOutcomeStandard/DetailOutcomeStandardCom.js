@@ -373,46 +373,66 @@ export default class DetailOutcomeStandardCom extends Component {
   actionTemplate = (node, column) => {
     return (
       <div>
-        <Button
-          onClick={() => this.onClickDialog(node)}
-          theme="success"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title="Thêm cấp con"
-        >
-          <i className="material-icons">add</i>
-        </Button>
-        <Button
-          onClick={() => this.upSameLevel(node)}
-          theme="info"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title="Lên cùng cấp"
-        >
-          <i className="material-icons">arrow_upward</i>
-        </Button>
-        <Button
-          onClick={() => this.downSameLevel(node)}
-          theme="info"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title="Xuống cùng cấp"
-        >
-          <i className="material-icons">arrow_downward</i>
-        </Button>
-        {/*<Button
-          onClick={() => this.onShowDialogDragNode(node)}
-          theme="info"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title="Chuyển cấp"
-        >
-          <i className="material-icons">swap_vert</i>
-        </Button>*/}
-        <Button
-          onClick={() => this.onShowDeleteAlert(node)}
-          theme="secondary"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Xóa cấp ${node.key}`}
-        >
-          <i className="material-icons">delete_sweep</i>
-        </Button>
+        {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+          "BIEN_SOAN"
+        ) && (
+          <React.Fragment>
+            <Button
+              onClick={() => this.onClickDialog(node)}
+              theme="success"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title="Thêm cấp con"
+            >
+              <i className="material-icons">add</i>
+            </Button>
+            <Button
+              onClick={() => this.upSameLevel(node)}
+              theme="info"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title="Lên cùng cấp"
+            >
+              <i className="material-icons">arrow_upward</i>
+            </Button>
+            <Button
+              onClick={() => this.downSameLevel(node)}
+              theme="info"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title="Xuống cùng cấp"
+            >
+              <i className="material-icons">arrow_downward</i>
+            </Button>
+            <Button
+              onClick={() => this.onShowDeleteAlert(node)}
+              theme="secondary"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title={`Xóa cấp ${node.key}`}
+            >
+              <i className="material-icons">delete_sweep</i>
+            </Button>
+          </React.Fragment>
+        )}
+        {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+          "TEACHER"
+        ) && (
+          <React.Fragment>
+            <Button
+              onClick={() => console.log("Đánh giá")}
+              theme="primary"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title="Đánh giá"
+            >
+              <i className="material-icons">thumbs_up_down</i>
+            </Button>
+            <Button
+              onClick={() => console.log("Bình luận")}
+              theme="primary"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title="Bình luận"
+            >
+              <i className="material-icons">question_answer</i>
+            </Button>
+          </React.Fragment>
+        )}
       </div>
     );
   };
@@ -469,38 +489,39 @@ export default class DetailOutcomeStandardCom extends Component {
     return (
       <div className="p-grid content-section implementation">
         <Row>
-          <Col lg="8" md="8" sm="8">
-            <Button
-              style={{ margin: "0 10px" }}
-              theme="success"
-              onClick={this.onSave}
-              disabled={this.state.isSaveBtnDisabled}
-            >
-              <i className="material-icons">save</i> Lưu CĐR
-            </Button>
-            <Button
-              style={{ margin: "0 10px" }}
-              theme="success"
-              onClick={this.onSeeRevisions}
-            >
-              <i className="material-icons">history</i> Xem các phiên bản
-            </Button>
-            <Button
-              style={{ margin: "0 10px" }}
-              theme="success"
-              onClick={this.onShowSaveRevision}
-            >
-              <i className="material-icons">change_history</i> Lưu phiên bản
-            </Button>
-          </Col>
+          {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+            "BIEN_SOAN"
+          ) && (
+            <Col lg="8" md="8" sm="8">
+              <Button
+                style={{ margin: "0 10px" }}
+                theme="success"
+                onClick={this.onSave}
+                disabled={this.state.isSaveBtnDisabled}
+              >
+                <i className="material-icons">save</i> Lưu CĐR (bản chính)
+              </Button>
+              <Button
+                style={{ margin: "0 10px" }}
+                theme="success"
+                onClick={this.onSeeRevisions}
+              >
+                <i className="material-icons">history</i> Xem các phiên bản
+              </Button>
+              <Button
+                style={{ margin: "0 10px" }}
+                theme="success"
+                onClick={this.onShowSaveRevision}
+              >
+                <i className="material-icons">change_history</i> Lưu phiên bản
+              </Button>
+            </Col>
+          )}
           <Col lg="2" md="2" sm="2">
             <DataInputCom handleFile={this.handleFile} />
           </Col>
           <Col lg="2" md="2" sm="2">
-            <label
-              onClick={this.onShowExportCom}
-              className="export"
-            >
+            <label onClick={this.onShowExportCom} className="export">
               <i className="material-icons">save_alt</i> Tạo file Excel
             </label>
           </Col>
@@ -524,7 +545,7 @@ export default class DetailOutcomeStandardCom extends Component {
                   </Button>
                 }
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "12em" }}
+                style={{ textAlign: "center", width: "18em" }}
               />
             </TreeTable>
           </Col>

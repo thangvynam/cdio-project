@@ -38,6 +38,7 @@ export const addRoot = (data, name) => {
       name: name,
       displayName: `${key}. ${name}`
     },
+    OSUsed: false,
     children: []
   };
   nodes.push(node);
@@ -49,6 +50,25 @@ export const addChild = (data, nodeParent, name) => {
   const key = `${nodeParent.key}.${length + 1}`;
 
   const node = {
+    key: key,
+    data: {
+      name: `${name}`,
+      displayName: `${key}. ${name}`
+    },
+    OSUsed: false,
+    children: []
+  };
+  nodeParent.children.push(node);
+  data = common.updateNode(data, nodeParent);
+  return data;
+};
+
+export const addChildOSUsed = (data, nodeParent, name) => {
+  const length = nodeParent.children.length;
+  const key = `${nodeParent.key}.${length + 1}`;
+
+  const node = {
+    OSUsed: true,
     key: key,
     data: {
       name: `${name}`,
@@ -238,4 +258,32 @@ export const findNodeByKey = (nodes, key) => {
   return { ...node };
 };
 
-export const convertDBToTreeNodeForEduPro = arrDB => {};
+export const convertDBToTreeNodeForEduPro = arrDB => {
+  if(!arrDB.length){
+    return [];
+  }
+  // convert -> nodes
+  const nodes = arrDB.reduce((nodes, row) => {
+    const rank = common.getRank(row.KeyRow);
+    if (rank === 2) {
+      return (nodes = addRoot(nodes, row.NameRow));
+    }
+    const parentNode = findParentNode(nodes, row.KeyRow);
+    if(!row.OSUsed){
+      return (nodes = addChild(nodes, parentNode, row.NameRow));
+    }
+    return (nodes = addChildOSUsed(nodes, parentNode, row.NameRow));
+  }, []);
+  return nodes;
+};
+
+
+const findParentNode = (nodes, key) => {
+  let parentKey = common.parentKey(key);
+  // case root = 1.1.... => 1.1...
+  if (key[0] === "1") {
+    const firstDot = parentKey.indexOf(".");
+    parentKey = parentKey.slice(firstDot + 1, parentKey.length);
+  }
+  return common.findNodeByKey(nodes, parentKey);
+};

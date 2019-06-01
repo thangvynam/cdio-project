@@ -6,9 +6,9 @@ import { isUndefined } from 'util';
 import { Link } from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
-import axios from 'axios';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
+import $ from './../../helpers/services'
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -251,7 +251,7 @@ class SurveyMatrix extends Component {
   }
 
   componentDidMount() {
-    axios.get('/get-matrix-survey').then((res) => {
+    $.getMatrixSurvey().then((res) => {
       //this.props.getDataBenchMarkMatrix(res.data);
       console.log(res.data)
       this.props.getDataSurveyMatrix(res.data);
@@ -527,7 +527,7 @@ class SurveyMatrix extends Component {
               data.push(obj)
             });
             if (data.length > 0) {
-              axios.post('/add-to-edit-matrix', data).then(res => {
+              $.addSurveyMatrix(data).then(res => {
                 console.log(res);
                 
                 if (res.data === 1) {

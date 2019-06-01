@@ -159,9 +159,9 @@ export const createSaveDataForTarget = (nodes, outData, level) => {
       for (var j = 0; j < length; j++) {
         KeyRow = KeyRow + ".";
       }
-      let KeyName = nodes[i].data.name;
+      let NameRow = nodes[i].data.name;
       let OSUsed = nodes[i].OSUsed ? nodes[i].OSUsed : false;
-      tmpObj = { KeyRow, KeyName, OSUsed };
+      tmpObj = { KeyRow, NameRow, OSUsed };
 
       outData.push(tmpObj);
       tmpObj = {};
@@ -217,7 +217,7 @@ const createArrayFor8 = (nodes, outData) => {
       let data = nodes[i].data;
       if (data.isTable) {
         const subjects = data.subjects.map(subject => {
-          subject.nameBlock[0].indexOf("BB") === 0
+          subject.nameBlock.indexOf("BB") === 0
             ? (subject.option = "BB")
             : (subject.option = "TC");
           return subject;
@@ -298,4 +298,17 @@ export const createDataFor6 = (nodes, sumCredit) => {
       createDataFor6(children, sumCredit);
     }
   }
+};
+
+export const getSubjects = blocks => {
+  const array = blocks.reduce((arr, cur) => {
+    const tmpArr = cur.block.reduce((childArr, childCur) => {
+      const tmpSbjects = childCur.subjects.reduce((subjects, subjectCur) => {
+        return [...subjects, subjectCur];
+      }, []);
+      return [...childArr, ...tmpSbjects];
+    }, []);
+    return [...arr, ...tmpArr];
+  }, []);
+  return array;
 };

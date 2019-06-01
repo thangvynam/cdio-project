@@ -23,7 +23,9 @@ class EditOutcomeStandardTmp extends Component {
 
   componentDidMount = () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id");
+    const id = urlParams.get("id")
+      ? urlParams.get("id")
+      : +this.props.detailEduProgram.IdOutcome;
     this.props.onLoadDetailOutcomeStandard(id);
     this.props.onLoadRevisions(id);
     this.props.onLoadOutcomeStandard(id);
@@ -47,8 +49,14 @@ class EditOutcomeStandardTmp extends Component {
       ? `${infoOutcomeStandard.NameOutcomeStandard}`
       : `Chưa tải được`;
 
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get("id")
+      ? urlParams.get("id")
+      : +this.props.detailEduProgram.IdOutcome;
+
     return (
-      <Container fluid className="main-content-container px-4">
+      id
+      ?<Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
@@ -84,6 +92,7 @@ class EditOutcomeStandardTmp extends Component {
           </Col>
         </Row>
       </Container>
+      :<h1>Chưa có chuẩn đầu ra</h1>
     );
   }
 }
@@ -92,7 +101,8 @@ const mapStateToProps = state => ({
   message: state.message,
   revisions: state.revisions,
   infoOutcomeStandard: state.infoOutcomeStandard,
-  detailOutcomeStandard: state.detailOutcomeStandard
+  detailOutcomeStandard: state.detailOutcomeStandard,
+  detailEduProgram: state.detailEduProgram
 });
 
 export default connect(mapStateToProps, {

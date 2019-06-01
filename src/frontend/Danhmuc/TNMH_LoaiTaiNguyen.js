@@ -3,8 +3,7 @@ import { Collapse, Form, Input, Menu, Icon,
      Button, Dropdown, message, Row, Col,
       Select, Modal, Table, Tag, Popconfirm,
     Divider, notification } from 'antd';
-import axios from 'axios';
-
+import $ from './../helpers/services';
 const Panel = Collapse.Panel;
 const formItemLayout = {
     labelCol: {
@@ -156,7 +155,7 @@ class TNMH_LoaiTaiNguyen extends Component {
       };
 
       loadTable = () => {
-        axios.get('/get-loaitainguyen').then((res) => {
+        $.getLoaiTaiNguyen().then((res) => {
           let data = [];
           for(let i = 0;i < res.data.length;i++) {
             data.push({
@@ -172,7 +171,7 @@ class TNMH_LoaiTaiNguyen extends Component {
           if (error) {
             return;
           }
-          axios.post("/update-loaitainguyen", { data: {id: key, loai: row.loai}}).then(
+          $.updateLoaitainguyen({ data: {id: key, loai: row.loai}}).then(
             res => {
               this.loadTable();
               this.setState({editstate: ''});
@@ -188,11 +187,11 @@ class TNMH_LoaiTaiNguyen extends Component {
 
       
       handleDelete = (key) => {
-        axios.post("/delete-loaitainguyen-from-tainguyen", { data: [key]}).then(
+       $.deleteLoaitainguyenFromTainguyen({ data: [key]}).then(
           res => {
-            axios.post("/delete-tainguyen", { data: [key]}).then(
+           $.deleteTainguyen({ data: [key]}).then(
                 res => {
-                    axios.post("/delete-loaitainguyen", { data: [key]}).then(
+                   $.deleteLoaitainguyen({ data: [key]}).then(
                         res => {
                           this.loadTable();
                           this.setState({editstate: ''});
@@ -206,11 +205,11 @@ class TNMH_LoaiTaiNguyen extends Component {
 
       handleOk = () => {
         let data = [];
-        axios.post("/delete-loaitainguyen-from-tainguyen", { data: this.state.selecteditem}).then(
+       $.deleteLoaitainguyenFromTainguyen({ data: this.state.selecteditem}).then(
           res => {
-            axios.post("/delete-tainguyen", { data: this.state.selecteditem}).then(
+           $.deleteTainguyen({ data: this.state.selecteditem}).then(
                 res => {
-                    axios.post("/delete-loaitainguyen", { data: this.state.selecteditem}).then(
+                    $.deleteLoaitainguyen({ data: this.state.selecteditem}).then(
                         res => {
                           this.loadTable();
                           this.setState({editstate: ''});
@@ -236,7 +235,7 @@ class TNMH_LoaiTaiNguyen extends Component {
           message.warning("Chưa nhập loại tài nguyên!");
         }
         else {
-            axios.post("/add-loaitainguyen", { data: {loai: loai}}).then(
+           $.addLoaitainguyen({ data: {loai: loai}}).then(
             res => {
                 this.loadTable();
                 openNotificationWithIcon('success');

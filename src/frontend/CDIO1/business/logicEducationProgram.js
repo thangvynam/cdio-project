@@ -67,13 +67,17 @@ export const deleteNode = (nodes, node) => {
 };
 
 export const filterSubjects = (e, subjects) => {
-  const re = new RegExp(e.query.toLowerCase());
-  const results = subjects
-    ? subjects.filter(item => {
-        return re.test(item.SubjectName.toLowerCase());
-      })
-    : [];
-  return results;
+  try {
+    const re = new RegExp(e.query.toLowerCase());
+    const results = subjects
+      ? subjects.filter(item => {
+          return re.test(item.SubjectName.toLowerCase());
+        })
+      : [];
+    return results;
+  } catch (err) {
+    return [];
+  }
 };
 
 export const headerGroup = (
@@ -156,6 +160,7 @@ export const convertTreenodeToArr = (nodes, arr = []) => {
   const length = nodes.length;
   for (let i = 0; i < length; i++) {
     const node = { ...nodes[i] };
+    node.data.displayName = "";
     if (node.children && node.children.length) {
       node.children = [];
     }
@@ -328,19 +333,26 @@ const groupBy = (array, f) => {
 
 export const updateBlocks = (subjects, ...agru) => {
   return subjects.reduce((arr, subject) => {
-    if (subject.nameBlock.startsWith("BB") && agru[0]) {
+    if (subject.nameBlock.startsWith("BB") && agru[0].length) {
       subject.nameBlock += `( ${agru[0]} )`;
       subject.isAccumulation = agru[2];
-    } else if (subject.nameBlock.startsWith("TC") && agru[1]) {
+    } else if (subject.nameBlock.startsWith("TC") && agru[1].length) {
       subject.nameBlock += `( ${agru[1]} ) : Học ${agru[4]} chỉ`;
+      subject.nameBlock += !agru[3] ? ` -- Không tích lũy` : ``;
       subject.isAccumulation = agru[3];
       subject.optionCredit = agru[4];
     } else if (subject.nameBlock.startsWith("TC")) {
-      subject.nameBlock += `: Học ${agru[4]} chỉ`;
+      subject.nameBlock += ` : Học ${agru[4]} chỉ`;
       subject.isAccumulation = agru[3];
       subject.optionCredit = agru[4];
     } else {
       subject.isAccumulation = agru[2];
+    }
+    if (subject.nameBlock.startsWith("BB") && !agru[2]) {
+      subject.nameBlock += ` -- Không tích lũy`;
+    }
+    if (subject.nameBlock.startsWith("TC") && !agru[3]) {
+      subject.nameBlock += ` -- Không tích lũy`;
     }
     return arr.concat(subject);
   }, []);
@@ -374,18 +386,24 @@ export const totalCreditsOfTable = subjects => {
     return item.nameBlock;
   });
 
-  return groups.reduce((total, blocks) => {
-    if (blocks[0].nameBlock.startsWith("BB")) {
+  const x = groups.reduce((total, blocks) => {
+    if (blocks[0].nameBlock.startsWith("BB") && blocks[0].isAccumulation) {
       return (total += blocks.reduce((totalCredit, subject) => {
         return (totalCredit += +subject.Credit);
       }, 0));
     }
-    return (total += +blocks[0].optionCredit);
+    return blocks[0].isAccumulation
+      ? (total += +blocks[0].optionCredit)
+      : (total += 0);
   }, 0);
+  return x;
 };
 
 export const convertDbToTreeNodes = (data, subjects) => {
-  const contentPro = [...data.eduContents];
+  if (!data.eduContents) {
+    return [];
+  }
+  const contentPro = sortKeyRow([...data.eduContents]);
   const blocks = [...data.subjectBlocks];
   const detailBlocks = [...data.detailBlocks];
   // convert -> nodes
@@ -415,6 +433,9 @@ export const convertDbToTreeNodes = (data, subjects) => {
     subjectsOfBlock.map(subject => {
       subject.nameBlock = block.NameBlock;
       subject.isAccumulation = block.isAccumulated;
+      if (block.NameBlock.startsWith("TC")) {
+        subject.optionCredit = block.Credit;
+      }
       subject.parentKey = block.KeyRow;
       node.data.subjects.push(subject);
       node.data.totalCredits = totalCreditsOfTable(node.data.subjects);
@@ -431,6 +452,17 @@ const findParentNode = (nodes, key) => {
     parentKey = parentKey.slice(firstDot + 1, parentKey.length);
   }
   return common.findNodeByKey(nodes, parentKey);
+};
+
+const sortKeyRow = arr => {
+  return arr.sort((a, b) => {
+    const key1 = a.KeyRow;
+    const key2 = b.KeyRow;
+    if (key1 === key2) {
+      return key1.localeCompare(key2);
+    }
+    return key1.length - key2.length;
+  });
 };
 
 const findNode = (nodes, key) => {
@@ -475,4 +507,20 @@ const subjectsOfDetailBlock = (idDetailBlock, subjects) => {
       ? results.concat(subject)
       : results;
   }, []);
+};
+
+export const findCreditByNameBlock =(node, nameBlock) =>{
+  const subjects = node.data.subjects;
+  const groups = groupBy(subjects, item => {
+    return item.nameBlock;
+  });
+
+  for(let i=0; i< groups.length; i++){
+    const blocks = groups[i];
+    const name = blocks[0].nameBlock;
+    if(name.startsWith("TC") && name.includes(nameBlock)){
+      return blocks[0].optionCredit;
+    }
+  }
+  return 0;
 };

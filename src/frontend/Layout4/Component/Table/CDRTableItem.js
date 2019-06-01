@@ -7,8 +7,8 @@ import { bindActionCreators } from 'redux';
 import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb,saveLogObject } from '../../../Constant/ActionType';
 import HTML5Backend from 'react-dnd-html5-backend';
 import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
-import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from "../../../helpers/services";
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -187,7 +187,7 @@ class CDRTableItem extends Component {
   constructor(props){
     super(props);
     this.state = {
-      id: this.props.subjectId,
+      id: this.props.monhoc,
       visible: false,
       isLoaded: false,
       notifications: []
@@ -407,12 +407,11 @@ class CDRTableItem extends Component {
 
   loadGap = () => {
 
-    axios.post('/collect-mtmh-has-cdrcdio', {data: {thong_tin_chung_id: this.state.id}}).then((res) => {
-      
-      axios.post('/collect-mucdo-mtmh-has-cdrcdio', {data: res.data}).then((response) => {
+    $.collectMtmhHasCdrCdio({data: {thong_tin_chung_id: this.props.monhoc}}).then((res) => {
+      $.collectMucdoMtmhHasCdrCdio({data: res.data}).then((response) => {
           let arr = [];
           for(let i = 0;i < response.data.length;i++) {
-            let keyrow = response.data[i].cdr.split("-");
+            let keyrow = response.data[i].cdr.split(".");
             keyrow.splice(keyrow.length - 1, 1);
             let index = this.isExistInArr(keyrow.join("."), arr);
             if(index !== -1) {
@@ -439,7 +438,7 @@ class CDRTableItem extends Component {
           }
           let editMatrixArr = [];
           for(let i = 0;i < this.props.editMatrix.length;i++) {
-            if(this.props.editMatrix[i].key.toString() === this.state.id.toString()) {
+            if(this.props.editMatrix[i].key.toString() === this.props.monhoc.toString()) {
               for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
                 let key = Object.keys(this.props.editMatrix[i])[j];
                 if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
@@ -489,7 +488,7 @@ class CDRTableItem extends Component {
 
   loadTable = () => {
     var self = this;
-    axios.post('/collect-data-4', { data: {thong_tin_chung_id: self.state.id}})
+    $.collectData4({ data: {thong_tin_chung_id: self.props.monhoc}})
     .then(function (response) {
     const tableData = {
       previewInfo: []
@@ -607,44 +606,44 @@ getSubjectName = (subjectList, id) => {
     //   console.log(error);
     // });
    
-    if(this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
-    //   if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
-    //     this.props.updateIsLoadEditMatrix("true");
-    //     axios.get('/get-reality-matrix');
-    //     axios.get("/get-standard-matrix").then((res) => {
-    //         let data = [];
-    //         for(let i = 0;i < res.data.length;i++) {
-    //             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-    //             if(index !== -1) {
-    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-    //                 if(cdr_cdio !== "") {
-    //                     data[index][cdr_cdio] = res.data[i].muc_do;
-    //                 }
-    //             }
-    //             else {  
-    //                 let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-    //                 let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-    //                 if(subjectName !== "" && cdr_cdio !== "") {
-    //                     data.push({
-    //                         key: res.data[i].thong_tin_chung_id,
-    //                         hocky: 1,
-    //                         hocphan: subjectName,
-    //                         gvtruongnhom: 'NULL'
-    //                     })
+    if(this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
+      if(this.props.isLoadEditMatrix === "false" &&  this.props.subjectList.length > 0) {
+        this.props.updateIsLoadEditMatrix("true");
+        $.getRealityMatrix();
+        $.getStandardMatrix().then((res) => {
+            let data = [];
+            for(let i = 0;i < res.data.length;i++) {
+                let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                if(index !== -1) {
+                    let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                    if(cdr_cdio !== "") {
+                        data[index][cdr_cdio] = res.data[i].muc_do;
+                    }
+                }
+                else {  
+                    let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                    let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                    if(subjectName !== "" && cdr_cdio !== "") {
+                        data.push({
+                            key: res.data[i].thong_tin_chung_id,
+                            hocky: 1,
+                            hocphan: subjectName,
+                            gvtruongnhom: 'NULL'
+                        })
 
-    //                     data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-    //                 }
+                        data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                    }
                     
-    //             }
-    //         }
-    //         this.props.updateEditMatrix(data);
-    //       })
+                }
+            }
+            this.props.updateEditMatrix(data);
+          })
           
-    // }
-    //   this.loadGap();
+    }
+      this.loadGap();
     }
 
-    if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    if(this.props.isLoad === "false" && this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
       this.props.updateIsLoad("true");
       this.loadTable();
     }
@@ -652,9 +651,9 @@ getSubjectName = (subjectList, id) => {
   
   componentWillReceiveProps(nextProps) {
     this.setState({id: nextProps.subjectId})
-    if(this.props.isLoad === "false" && this.state.id !== null && this.state.id !== undefined && this.state.id !== "") {
+    if(this.props.isLoad === "false" && this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
       this.props.updateIsLoad("true");
-      //this.loadGap();
+      this.loadGap();
       this.loadTable();
     }
 }
@@ -666,8 +665,11 @@ getSubjectName = (subjectList, id) => {
 
   OnDelete = (cdrtable, key) => {
     let deleteData = cdrtable.previewInfo[key - 1]    
-    this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: ${deleteData.cdr}, ${deleteData.level_verb}, ${deleteData.description}, ${deleteData.levels}`, this.props.logReducer.contentTab, this.props.subjectId);
 
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+
+    
     if(key === cdrtable.previewInfo.length){
       //cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
       cdrtable.previewInfo[key - 1].del_flag = 1;
@@ -709,6 +711,12 @@ getSubjectName = (subjectList, id) => {
     var cdrtable = this.props.cdrtable;
     var cdrselecteditem = this.props.cdrselecteditem;    
     for(let i = 0;i < cdrselecteditem.length;i++){
+      let deleteData = cdrtable.previewInfo[cdrselecteditem[i] - 1];
+
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+
+      
       if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
         //cdrtable.previewInfo.splice(cdrtable.previewInfo.length - 1, 1);
         cdrtable.previewInfo[cdrtable.previewInfo.length - 1].del_flag = 1;
@@ -796,8 +804,11 @@ getSubjectName = (subjectList, id) => {
       } else {
         newData.previewInfo.push(row);
       }
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.subjectId)
+
+
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+
       
       for(let i = 0;i < newData.previewInfo[key - 1].levels.length - 1;i++){
         for (let j = i + 1; j < newData.previewInfo[key - 1].levels.length; j++) {
@@ -809,8 +820,7 @@ getSubjectName = (subjectList, id) => {
         }
       
     }
-      let newItems = newData.previewInfo[key - 1];
-    
+
       this.props.onAddCDRData(newData);
       this.props.onSelectCDRItem([]);
       this.props.onChangeEditState('');
@@ -859,7 +869,9 @@ getSubjectName = (subjectList, id) => {
     return -1;
   }
   saveAll = () => {
-    let data = this.props.cdrtable.previewInfo.map((item) => {
+    let data = [];
+    if(this.props.cdrtable.previewInfo.length > 0) {
+      data = this.props.cdrtable.previewInfo.map((item) => {
       
         return {
           cdr: item.cdr,
@@ -870,12 +882,15 @@ getSubjectName = (subjectList, id) => {
           muc_tieu_mon_hoc_id: this.getMtmhId(item.cdr.split(".")[0]),
           cdrmh_muc_do_hanh_dong_id: this.getCdrmdhdId(item.level_verb[0], item.level_verb[1]),
         }
-      })
-    axios.post('/save-data-4', { data: {data: data, thong_tin_chung_id: this.props.subjectId}});
+      });
+    }
+    
+    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.monhoc}});
     this.loadTable();
-    //this.loadGap();
+    this.loadGap();
     this.props.updateIsLoad("false");
     openNotificationWithIcon('success');
+    $.saveLog({data: this.props.logData})
     //axios.post('/save-log', { data: this.props.logData });
     
   }
@@ -894,7 +909,9 @@ getSubjectName = (subjectList, id) => {
           row:  DragableBodyRow
         },
       }
-      let cdrmdhd_level  = this.props.cdrmdhd.map((item, key) => {
+      let cdrmdhd_level = [];
+      if(this.props.cdrmdhd.length > 0) {
+        cdrmdhd_level = this.props.cdrmdhd.map((item, key) => {
           let child_level_1 = [];
           for(let i = 0;i < item.children.length;i++) {
             child_level_1.push({
@@ -907,7 +924,9 @@ getSubjectName = (subjectList, id) => {
             label: item.label,
             children: child_level_1
           }
-        })
+        });
+      }
+      
       
       
       

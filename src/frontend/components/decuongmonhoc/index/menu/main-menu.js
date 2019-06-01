@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Menu, Icon } from "antd";
+import { Menu, Icon, Tooltip } from "antd";
 import { Link } from "react-router-dom";
 import {
   MENUITEM,
@@ -23,7 +23,7 @@ class MenuLeft extends Component {
 
   checkSubjectExist = monhoc => {
     for (let i = 0; i < this.props.subjectList.length; i++) {
-      if (this.props.subjectList[i].Id.toString() === monhoc.toString()) {
+      if (this.props.subjectList[i].Id === +monhoc) {
         return true;
       }
     }
@@ -31,56 +31,71 @@ class MenuLeft extends Component {
   };
 
   getCtdt = (Ctdt, ctdt) => {
-    for (let i = 0; i < Ctdt.length; i++) {
-      if (Ctdt[i].Id === +ctdt) {
-        return i;
+      for (let i = 0; i < Ctdt.length; i++) {
+        if (Ctdt[i].Id === +ctdt) {
+          return i;
+        }
       }
-    }
     return -1;
   };
+
+  checkAdmin = (role) => {
+    if(role.indexOf("ADMIN") > -1) {
+        return true;
+    }
+    return false;
+}
+
+  checkTeacherBlock = (block) => {
+    for(let i = 0;i < block.subjects.length;i++) {
+      if(this.checkInTeacherSubject(this.props.teacherSubject, block.subjects[i].IdSubject)
+        || this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, block.subjects[i].IdSubject)) {
+          return true;
+        }
+    }
+    return false;
+  }
+
+  checkInTeacherSubject = (teacherSubject, idSubject) => {
+    for(let i = 0;i < teacherSubject.length;i++) {
+        if(teacherSubject[i].IdSubject === idSubject) {
+            return true;
+        }
+    }
+    return false;
+  }
+
+  checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+      for(let i = 0;i < teacherReviewSubject.length;i++) {
+          if(teacherReviewSubject[i].idTTC === idSubject) {
+              return true;
+          }
+      }
+      return false;
+  }
+
   redirect = () => {
     this.props.updateContentTab(this.props.content_tab);
-    if (
-      this.props.content_type === "itusurvey" &&
-      this.props.subjectId !== "" &&
-      this.props.subjectId !== undefined &&
-      (this.props.content_monhoc === "" ||
-        this.props.content_monhoc === undefined)
-    ) {
-      return (
-        <Redirect
-          to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
-            this.props.content_type
-          }/view/${this.props.subjectId}/itusurvey`}
-        />
-      );
-    }
-    if (
-      this.props.subjectId !== "" &&
-      this.props.subjectId !== undefined &&
-      (this.props.content_monhoc === "" ||
-        this.props.content_monhoc === undefined)
-    ) {
-      return (
-        <Redirect
-          to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
-            this.props.content_type
-          }/${this.props.content_khoi}/${this.props.subjectId}/thong-tin-chung`}
-        />
-      );
-    } else if (
-      this.props.content_monhoc !== "" &&
-      this.props.content_monhoc !== undefined &&
-      (this.props.content_tab === "" || this.props.content_tab === undefined) &&
-      this.checkSubjectExist(this.props.content_monhoc) === true
-    ) {
-      return (
-        <Redirect
-          to={`/${this.props.content_parent}/${this.props.content_ctdt}/${
-            this.props.content_type
-          }/${this.props.content_khoi}/${this.props.content_monhoc}/phan-cong`}
-        />
-      );
+    if (this.props.content_monhoc !== "" &&
+      this.props.content_monhoc !== undefined && this.props.content_monhoc !== null &&
+      (this.props.content_tab === "" || this.props.content_tab === undefined || this.props.content_tab === null)
+    ) 
+    {
+      if(this.props.content_type === "de-cuong-mon-hoc") {
+        return (
+          <Redirect
+            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_khoi}/${this.props.content_monhoc}/thong-tin-chung`}
+          />
+        );
+      }
+      else if(this.props.content_type === "itusurvey") {
+        return (
+          <Redirect
+            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}
+            /${this.props.content_khoi}/${this.props.content_monhoc}/itusurvey`}
+          />
+        );
+      }
     }
   };
 
@@ -105,7 +120,7 @@ class MenuLeft extends Component {
                 <Link
                   to={`/${this.props.content_parent}/${
                     this.props.ctdt[ctdtIndex].Id
-                  }`}
+                    }`}
                 >
                   <Icon type="dashboard" />
                   <span>{this.props.ctdt[ctdtIndex].EduName}</span>
@@ -127,45 +142,108 @@ class MenuLeft extends Component {
           }
 
           Object.keys(this.props.menuItem).map((key, id) => {
-            menuItemsCollapse.push(
-              <Menu.Item key={key} onClick={() => this.onClick(key)}>
-                <Link
-                  style={{ paddingLeft: "20px" }}
-                  to={`/${this.props.parentitem[i].id}/${
-                    this.props.content_ctdt
-                  }/${key}`}
-                >
-                  <Icon type="dashboard" />
-                  <span>{this.props.menuItem[key].name}</span>
-                </Link>
-              </Menu.Item>
-            );
-            //let indexCtdt = this.getCtdt(this.props.ctdt, this.props.content_ctdt);
-            if (
-              this.props.content_type === "de-cuong-mon-hoc" &&
-              key === "de-cuong-mon-hoc"
-            ) {
-              for (let j = 0; j < this.props.ktt.children.length; j++) {
+            if(key === "matrix") {
+              if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
                 menuItemsCollapse.push(
-                  <Menu.Item
-                    key={this.props.ktt.children[j].id}
-                    onClick={() => this.onClick(this.props.ktt.children[j].id)}
-                  >
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
                     <Link
-                      style={{ paddingLeft: "40px" }}
+                      style={{ paddingLeft: "20px" }}
                       to={`/${this.props.parentitem[i].id}/${
-                        this.props.ctdt[ctdtIndex].Id
-                      }/${key}/${this.props.ktt.children[j].id}`}
+                        this.props.content_ctdt
+                        }/${key}`}
                     >
                       <Icon type="dashboard" />
-                      <span>{this.props.ktt.children[j].name}</span>
+                      <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
                 );
+              }
+            }
+            else if(key === "edit-matrix") {
+              if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
+            else {
+              menuItemsCollapse.push(
+                <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                  <Link
+                    style={{ paddingLeft: "20px" }}
+                    to={`/${this.props.parentitem[i].id}/${
+                      this.props.content_ctdt
+                      }/${key}`}
+                  >
+                    <Icon type="dashboard" />
+                    <span>{this.props.menuItem[key].name}</span>
+                  </Link>
+                </Menu.Item>
+              );
+            }
+            
+
+            //let indexCtdt = this.getCtdt(this.props.ctdt, this.props.content_ctdt);
+            if (
+              this.props.content_type === "de-cuong-mon-hoc" 
+              && key === "de-cuong-mon-hoc" 
+              &&  this.props.dataCtdt !== undefined
+              &&  this.props.dataCtdt !== null
+            ) {
+              for (let j = 0; j < this.props.dataCtdt.length; j++) {
+                if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                  menuItemsCollapse.push(
+                    <Menu.Item
+                      key={this.props.dataCtdt[j].Id}
+                      onClick={() => this.onClick(this.props.dataCtdt[j].Id)}
+                    >
+                      <Link
+                        style={{ paddingLeft: "40px" }}
+                        to={`/${this.props.parentitem[i].id}/${
+                          this.props.ctdt[ctdtIndex].Id
+                          }/${key}/${this.props.dataCtdt[j].Id}`}
+                      >
+                        <Icon type="dashboard" />
+                        <span>{this.props.dataCtdt[j].NameBlock}</span>
+                      </Link>
+                    </Menu.Item>
+                  );
+                }
+                else {
+                  if(this.checkTeacherBlock(this.props.dataCtdt[j])) {
+                    menuItemsCollapse.push(
+                      <Menu.Item
+                        key={this.props.dataCtdt[j].Id}
+                        onClick={() => this.onClick(this.props.dataCtdt[j].Id)}
+                      >
+                        <Link
+                          style={{ paddingLeft: "40px" }}
+                          to={`/${this.props.parentitem[i].id}/${
+                            this.props.ctdt[ctdtIndex].Id
+                            }/${key}/${this.props.dataCtdt[j].Id}`}
+                        >
+                          <Icon type="dashboard" />
+                          <span>{this.props.dataCtdt[j].NameBlock}</span>
+                        </Link>
+                      </Menu.Item>
+                    );
+                  }
+                }
+
                 if (
                   this.props.content_monhoc !== "" &&
                   this.props.content_monhoc !== undefined &&
-                  this.props.ktt.children[j].id === this.props.content_khoi
+                  this.props.dataCtdt[j].Id === +this.props.content_khoi
                 ) {
                   if (this.props.content_tab === "phan-cong") {
                     menuItemsCollapse.push(
@@ -175,7 +253,7 @@ class MenuLeft extends Component {
                           to={MENUITEM.PHAN_CONG}
                         >
                           <Icon type="dashboard" />
-                          <span>Phân công giáo viên</span>
+                          <span>Phân công review</span>
                         </Link>
                       </Menu.Item>
                     );
@@ -187,119 +265,109 @@ class MenuLeft extends Component {
                           to={MENUITEM.REVIEW}
                         >
                           <Icon type="dashboard" />
-                          <span>Review Syllabus</span>
+                          <span>Review môn học</span>
                         </Link>
                       </Menu.Item>
                     );
                   } else {
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.THONG_TIN_CHUNG}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.THONG_TIN_CHUNG}
-                        >
-                          <Icon type="dashboard" />
-                          <span>Thông tin chung</span>
-                        </Link>
+                        <Tooltip title="Thông tin chung">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.THONG_TIN_CHUNG}>
+                            <Icon type="dashboard" />
+                            <span>Thông tin chung</span>
+                          </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.MO_TA_MON_HOC}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.MO_TA_MON_HOC}
-                        >
+                        <Tooltip title="Mô tả môn học"><Link style={{ paddingLeft: "60px" }} to={MENUITEM.MO_TA_MON_HOC}>
                           <Icon type="pay-circle" />
                           <span>Mô tả môn học</span>
                         </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.MUC_TIEU_MON_HOC}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.MUC_TIEU_MON_HOC}
-                        >
-                          <Icon type="inbox" />
-                          <span>Mục tiêu môn học</span>
-                        </Link>
+                        <Tooltip title="Mục tiêu môn học">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.MUC_TIEU_MON_HOC}>
+                            <Icon type="inbox" />
+                            <span>Mục tiêu môn học</span>
+                          </Link>
+                        </Tooltip>
+
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.CHUAN_DAU_RA}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.CHUAN_DAU_RA}
-                        >
-                          <Icon type="table" />
-                          <span>Chuẩn đầu ra môn học</span>
-                        </Link>
+                        <Tooltip title="Chuẩn đầu ra môn học">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.CHUAN_DAU_RA}>
+                            <Icon type="table" />
+                            <span>Chuẩn đầu ra môn học</span>
+                          </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.GIANG_DAY_LY_THUYET}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.GIANG_DAY_LY_THUYET}
-                        >
-                          <Icon type="read" />
-                          <span>Kế hoạch giảng dạy lý thuyết</span>
-                        </Link>
+                        <Tooltip title="Kế hoạch giảng dạy lý thuyết">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.GIANG_DAY_LY_THUYET}>
+                            <Icon type="read" />
+                            <span>Kế hoạch giảng dạy lý thuyết</span>
+                          </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.GIANG_DAY_THUC_HANH}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.GIANG_DAY_THUC_HANH}
-                        >
-                          <Icon type="sync" />
-                          <span>Kế hoạch giảng dạy thực hành</span>
-                        </Link>
+                        <Tooltip title="Kế hoạch giảng dạy thực hành">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.GIANG_DAY_THUC_HANH}>
+                            <Icon type="sync" />
+                            <span>Kế hoạch giảng dạy thực hành</span>
+                          </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.DANH_GIA}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.DANH_GIA}
-                        >
-                          <Icon type="file-text" />
-                          <span>Đánh giá</span>
-                        </Link>
+                        <Tooltip title="Đánh giá">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.DANH_GIA}>
+                            <Icon type="file-text" />
+                            <span>Đánh giá</span>
+                          </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.TAI_NGUYEN_MON_HOC}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.TAI_NGUYEN_MON_HOC}
-                        >
-                          <Icon type="database" />
-                          <span>Tài nguyên môn học</span>
-                        </Link>
+                        <Tooltip title="Tài nguyên môn học">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.TAI_NGUYEN_MON_HOC}>
+                            <Icon type="database" />
+                            <span>Tài nguyên môn học</span>
+                          </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.QUY_DINH_CHUNG}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.QUY_DINH_CHUNG}
-                        >
-                          <Icon type="reconciliation" />
-                          <span>Các quy định chung</span>
-                        </Link>
+                        <Tooltip title="Các quy định chung">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.QUY_DINH_CHUNG}>
+                            <Icon type="reconciliation" />
+                            <span>Các quy định chung</span>
+                          </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                     menuItemsCollapse.push(
                       <Menu.Item key={MENUITEM.XUAT_FILE_PDF}>
-                        <Link
-                          style={{ paddingLeft: "60px" }}
-                          to={MENUITEM.XUAT_FILE_PDF}
-                        >
-                          <Icon type="file-pdf" />
-                          <span>Xuất file PDF</span>
-                        </Link>
+                        <Tooltip title="Xuất file PDF">
+                          <Link style={{ paddingLeft: "60px" }} to={MENUITEM.XUAT_FILE_PDF}>
+                            <Icon type="file-pdf" />
+                            <span>Xuất file PDF</span>
+                          </Link>
+                        </Tooltip>
                       </Menu.Item>
                     );
                   }
@@ -308,7 +376,23 @@ class MenuLeft extends Component {
             }
           });
         }
-      } else {
+      } 
+      else if(this.props.parentitem[i].id === "danh-muc") {
+        if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+      else {
         menuItemsCollapse.push(
           <Menu.Item
             key={this.props.parentitem[i].id}
@@ -334,7 +418,7 @@ class MenuLeft extends Component {
           defaultSelectedKeys={this.props.defaultSelectedKeys}
           selectedKeys={
             this.props.content_tab !== "" &&
-            this.props.content_tab !== undefined
+              this.props.content_tab !== undefined
               ? [this.props.content_tab]
               : this.props.content_khoi !== "" &&
                 this.props.content_khoi !== undefined
@@ -361,9 +445,10 @@ const mapStateToProps = state => {
     subjectId: state.subjectid,
     subjectList: state.subjectlist,
     subjectMaso: state.subjectmaso,
-    //ctdt: state.ctdt,
-    ktt: state.ktt,
-    ctdt: state.eduPrograms
+    ctdt: state.eduPrograms,
+    dataCtdt: state.datactdt.data,
+    teacherSubject: state.datactdt.teacherSubject,
+    teacherReviewSubject: state.datactdt.teacherReviewSubject,
   };
 };
 const mapDispatchToProps = dispatch => {

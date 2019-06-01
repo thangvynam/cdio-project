@@ -1,15 +1,15 @@
 import React, { Component } from 'react';
 import {
-  Table, Button, Popconfirm, Form, Divider, Select, Modal,notification
+  Table, Button, Popconfirm, Form, Divider, Select, Modal, notification
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
 import { DragDropContext } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from 'react-redux';
-import { updateTNData,addTNData,isLoaded8,saveLog,saveLogObject } from '../../../Constant/ActionType';
-import axios from 'axios';
+import { updateTNData, addTNData, isLoaded8, saveLog, saveLogObject } from '../../../Constant/ActionType';
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services';
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -28,7 +28,7 @@ class EditableCell extends React.Component {
     super(props);
   }
   getInput = () => {
-    return <TextArea rows = {4} style = {{width: "100%"}} />;
+    return <TextArea rows={4} style={{ width: "100%" }} />;
   };
 
   render() {
@@ -154,9 +154,9 @@ class TNTableItem extends Component {
         ...item,
         ...row
       });
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.subjectId)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.subjectId)
-        
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+
       this.props.onAddTNData(newItems);
       this.setState({ editingKey: "" });
     });
@@ -175,18 +175,13 @@ class TNTableItem extends Component {
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
 
-    // delete one
-    // if (selectedRow.length === 1) {
-    //   this.handleDelete(selectedRow[0]);
-    //   return;
-    // }
-
     let newData = this.props.itemLayout8Reducer.previewInfo;
-    for(let i=0;i<selectedRow.length;i++){
-      newData[selectedRow[i]].del_flag  = 1;
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.subjectId)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.subjectId)
-        
+
+    for (let i = 0; i < selectedRow.length; i++) {
+      newData[selectedRow[i]].del_flag = 1;
+
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.monhoc)
     }
 
     this.props.onAddTNData(newData);
@@ -194,90 +189,91 @@ class TNTableItem extends Component {
   };
 
   getData() {
-    return axios.get(`/get-tainguyenmonhoc/${this.props.subjectId}`).then(response => {
-        return response.data
-    }).catch(function(error){
+    return $.getTaiNguyenMonHoc(this.props.monhoc).then(response => {
+      return response.data
+    }).catch(function (error) {
       console.log(error)
     })
-}
+  }
 
-loaiDisplayName(value){
-  for(let i=0 ;i<this.props.itemLayout8Reducer.loaitainguyenState.length;i++){
-    if(value === this.props.itemLayout8Reducer.loaitainguyenState[i].id) {
-      return this.props.itemLayout8Reducer.loaitainguyenState[i].loai;
-    }}
-}
-
-async componentDidMount(){
-  let temp = await this.getData();
-  this.setData(temp);
-}
-
-setData = temp => {
-  let tempPreview = [];
-  if(temp!==null && temp!== undefined && this.props.itemLayout8Reducer.isLoaded === false){
-    temp.map((item,index) =>{
-      let data = {
-        id: item.id,
-        key: index,
-        index: index,
-        stt: index +1,
-        loai: this.loaiDisplayName(item.tnmh_loai_tai_nguyen_id),
-        mota: item.mo_ta,
-        link: item.lien_ket,
-        del_flag : item.del_flag,
+  loaiDisplayName(value) {
+    for (let i = 0; i < this.props.itemLayout8Reducer.loaitainguyen.length; i++) {
+      if (value === this.props.itemLayout8Reducer.loaitainguyen[i].id) {
+        return this.props.itemLayout8Reducer.loaitainguyen[i].loai;
       }
-      tempPreview.push(data);
-    })
-    this.props.isLoaded(true);
-  this.props.onAddTNData(tempPreview);
-  }
-}
-
-setIndexForItem = () => {
-  let tainguyenmonhoc = [];
-  let tnmh = this.props.itemLayout8Reducer.previewInfo.filter(item => item.del_flag===0);
-  for (let i = 0; i < tnmh.length; i++) {
-    let temp = tnmh[i];
-    temp.index = i;
-    temp.stt = i+1;
-    tainguyenmonhoc.push(temp);
+    }
   }
 
-  return tainguyenmonhoc;
-};
-
-saveAll = () => {
-
-  let loaitainguyen = this.props.itemLayout8Reducer.loaitainguyenState;
-  let id = this.props.subjectid;
-  let description = this.props.itemLayout8Reducer.previewInfo;
-  let obj = {
-    loaitainguyen : loaitainguyen,
-    id : id,
-    description : description,
+  async componentDidMount() {
+    let temp = await this.getData();
+    this.setData(temp);
   }
 
-  axios.post(`/save-tainguyenmonhoc`, obj)
-     .then(response => {
-       if(response.data === 1){
-        notification["success"]({
-          message: "Cập nhật thành công",
-          duration: 1
-        });
-       }
-       else{
-        notification["error"]({
-          message: "Cập nhật thất bại",
-          duration: 1
-        });
-       }
-     });
-     console.log(this.props.logReducer.logData8)
-  axios.post('/save-log', { data: this.props.itemLayout8Reducer.logData })
-  let temp = this.getData();
-  this.setData(temp);
-}
+  setData = temp => {
+    let tempPreview = [];
+    if (temp !== null && temp !== undefined && this.props.itemLayout8Reducer.isLoaded === false) {
+      temp.map((item, index) => {
+        let data = {
+          id: item.id,
+          key: index,
+          index: index,
+          stt: index + 1,
+          loai: this.loaiDisplayName(item.tnmh_loai_tai_nguyen_id),
+          mota: item.mo_ta,
+          link: item.lien_ket,
+          del_flag: item.del_flag,
+        }
+        tempPreview.push(data);
+      })
+      this.props.isLoaded(true);
+      this.props.onAddTNData(tempPreview);
+    }
+  }
+
+  setIndexForItem = () => {
+    let tainguyenmonhoc = [];
+    let tnmh = this.props.itemLayout8Reducer.previewInfo.filter(item => item.del_flag === 0);
+    for (let i = 0; i < tnmh.length; i++) {
+      let temp = tnmh[i];
+      temp.index = i;
+      temp.stt = i + 1;
+      tainguyenmonhoc.push(temp);
+    }
+
+    return tainguyenmonhoc;
+  };
+
+  saveAll = () => {
+
+    let loaitainguyen = this.props.itemLayout8Reducer.loaitainguyen;
+    let id = this.props.monhoc;
+    let description = this.props.itemLayout8Reducer.previewInfo;
+    let obj = {
+      loaitainguyen: loaitainguyen,
+      id: id,
+      description: description,
+    }
+    console.log(obj);
+    // axios.post(`/save-tainguyenmonhoc`, obj)
+    $.saveData8(obj)
+      .then(response => {
+        if (response.data === 1) {
+          notification["success"]({
+            message: "Cập nhật thành công",
+            duration: 1
+          });
+        }
+        else {
+          notification["error"]({
+            message: "Cập nhật thất bại",
+            duration: 1
+          });
+        }
+      });
+    $.saveLog({ data: this.props.itemLayout8Reducer.logData })
+    let temp = this.getData();
+    this.setData(temp);
+  }
 
   showModal = () => {
     confirm({
@@ -329,7 +325,7 @@ saveAll = () => {
           <span style={{ marginLeft: 8 }}>
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
-          <Button style={{float: "right"}}
+          <Button style={{ float: "right" }}
             onClick={this.saveAll}
           >
             Lưu tât cả
@@ -358,17 +354,17 @@ const mapDispatchToProps = (dispatch) => {
     onUpdateTNData: updateTNData,
     onAddTNData: addTNData,
     isLoaded: isLoaded8,
-    onSaveLog : saveLog,
-    onSaveReducer : saveLogObject
+    onSaveLog: saveLog,
+    onSaveReducer: saveLogObject
   }, dispatch);
-} 
+}
 
 const mapStateToProps = (state) => {
   return {
     itemLayout8Reducer: state.itemLayout8Reducer,
     subjectId: state.subjectid,
-    logReducer : state.logReducer,
+    logReducer: state.logReducer,
   }
 }
 
-export default connect(mapStateToProps,mapDispatchToProps)(DragDropContext(HTML5Backend)(TNTableItem));
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(TNTableItem));

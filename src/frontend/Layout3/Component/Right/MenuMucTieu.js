@@ -5,10 +5,10 @@ import {
 import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
-import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, SAVE_LOG, SET_CDR } from '../../../Constant/ActionType';
+import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, SAVE_LOG, SET_CDR, SAVE_LOG_OBJECT } from '../../../Constant/ActionType';
 import TextArea from 'antd/lib/input/TextArea';
 import { getCurrTime } from '../../../utils/Time';
-import axios from 'axios'
+import $ from './../../../helpers/services';
 
 const { Option } = Select;
 
@@ -36,7 +36,7 @@ class MenuMucTieu extends Component {
     }
 
     async getCDR() {
-        return axios.get("/get-cdr-3").then(res => {
+        return $.getCDR_3().then(res => {
             return res.data
         })
     }
@@ -47,19 +47,19 @@ class MenuMucTieu extends Component {
 
     handleObjectInputChange = (e) => {
         objectName = e.target.value;
-        let tempInfo = this.props.itemLayout3Reducer.tempInfo 
+        let tempInfo = this.props.itemLayout3Reducer.tempInfo
         tempInfo["objectName"] = objectName
         this.props.saveTemp(tempInfo)
     }
     handleDesInputChange = (e) => {
         description = e.target.value;
-        let tempInfo = this.props.itemLayout3Reducer.tempInfo 
+        let tempInfo = this.props.itemLayout3Reducer.tempInfo
         tempInfo["description"] = description
         this.props.saveTemp(tempInfo)
     }
     handleChangeStandActs = (value) => {
         temp = value
-        let tempInfo = this.props.itemLayout3Reducer.tempInfo     
+        let tempInfo = this.props.itemLayout3Reducer.tempInfo
         tempInfo["standActs"] = temp
         this.props.saveTemp(tempInfo)
     }
@@ -69,7 +69,7 @@ class MenuMucTieu extends Component {
         const cdioStandard = [];
 
         let staActs = this.props.itemLayout3Reducer.standActs;
-        
+
         function init() {
             for (let i = 0; i < staActs.length; i++) {
                 cdioStandard.push(<Option key={staActs[i].KeyRow}>{staActs[i].KeyRow}</Option>)
@@ -100,7 +100,7 @@ class MenuMucTieu extends Component {
             },
         };
         return (
-            <div style={{ border: "2px solid", borderRadius: "12px" }}>
+            <div>
                 <div style={{ marginTop: "10px" }}></div>
                 <Form onSubmit={this.handleSubmit}>
                     <Form.Item
@@ -108,14 +108,14 @@ class MenuMucTieu extends Component {
                         label="Mục tiêu"
                     >
                         {getFieldDecorator('object', {
-                            rules: [ {
+                            rules: [{
                                 required: true, message: 'Vui lòng nhập mục tiêu',
                             }],
                             initialValue: this.props.itemLayout3Reducer.tempInfo.objectName
                         })(
                             <Input onChange={this.handleObjectInputChange} />
                         )}
-                        
+
                     </Form.Item>
 
                     <Form.Item
@@ -123,14 +123,14 @@ class MenuMucTieu extends Component {
                         label="Mô tả"
                     >
                         {getFieldDecorator('description', {
-                            rules: [ {
+                            rules: [{
                                 required: true, message: 'Vui lòng nhập mô tả',
                             }],
                             initialValue: this.props.itemLayout3Reducer.tempInfo.description
                         })(
                             <TextArea onChange={this.handleDesInputChange} />
                         )}
-                        
+
                     </Form.Item>
 
                     <Form.Item
@@ -157,16 +157,25 @@ class MenuMucTieu extends Component {
 
                     <Form.Item {...tailFormItemLayout}>
                         <div>
-                            <Button type="primary" onClick={() => { 
-                                this.props.itemLayout3Reducer.tempInfo.objectName =""
-                                this.props.itemLayout3Reducer.tempInfo.description =""
+                            <Button type="primary" onClick={() => {
+                                this.props.itemLayout3Reducer.tempInfo.objectName = ""
+                                this.props.itemLayout3Reducer.tempInfo.description = ""
                                 this.props.itemLayout3Reducer.tempInfo.standActs = []
-                                this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm mục tiêu môn học: ${objectName.toUpperCase()}, ${description}, ${temp}`, this.props.logReducer.contentTab, this.props.subjectid)
-                                this.props.saveAndContinue() 
-                                }} style={{ marginLeft: "2em" }}>
+
+                                if (objectName === '' || description === '' || temp.length === 0) {
+                                    message.error("Vui lòng điền đầy đủ thông tin");
+                                } else {
+                                    this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.subjectid)
+                                    this.props.saveReducer("Nguyen Van A", getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.subjectid)
+
+                                    this.props.saveAndContinue()
+                                }
+                                // this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm mục tiêu môn học: ${objectName.toUpperCase()}, ${description}, ${temp}`, this.props.logReducer.contentTab, this.props.subjectid)
+
+                            }} style={{ marginLeft: "2em" }}>
                                 Thêm<Icon type="right" />
                             </Button>
-                            <br/>
+                            <br />
                         </div>
                     </Form.Item>
                 </Form>
@@ -177,11 +186,11 @@ class MenuMucTieu extends Component {
 
 const mapStateToProps = (state, ownProps) => {
     return {
-      itemLayout3Reducer: state.itemLayout3Reducer,
-      subjectid: state.subjectid,
-      logReducer: state.logReducer
+        itemLayout3Reducer: state.itemLayout3Reducer,
+        subjectid: state.subjectid,
+        logReducer: state.logReducer
     }
-  }
+}
 
 const mapDispatchToProps = (dispatch, ownProps) => {
 
@@ -192,28 +201,28 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             myObj.standActs = temp;
             myObj.id = -1
             myObj.del_flag = 0;
-            if (objectName === '' || description === '' || temp.length === 0) {
-                message.error("Vui lòng điền đầy đủ thông tin");
-            }
-            else {
-                ownProps.form.resetFields()
-                const myObjStr = JSON.stringify(myObj);
-                //reset
-                temp = [];
-                objectName = '';
-                description = '';
-                dispatch({ type: ADD_DATA_LAYOUT_3, item: myObjStr });
-                ownProps.nextStep();      
-            }
+
+            ownProps.form.resetFields()
+            const myObjStr = JSON.stringify(myObj);
+            //reset
+            temp = [];
+            objectName = '';
+            description = '';
+            dispatch({ type: ADD_DATA_LAYOUT_3, item: myObjStr });
+            ownProps.nextStep();
+
         },
         saveTemp: (tempInfo) => {
-            dispatch({type: SAVE_TEMP_DATA_LAYOUT_3, tempInfo})
+            dispatch({ type: SAVE_TEMP_DATA_LAYOUT_3, tempInfo })
         },
         saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-            dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
+            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
         },
         setCDR: (data) => {
-            dispatch({type: SET_CDR, data})
+            dispatch({ type: SET_CDR, data })
+        },
+        saveReducer: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
+            dispatch({ type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
         }
     }
 }

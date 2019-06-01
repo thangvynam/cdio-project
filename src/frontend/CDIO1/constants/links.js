@@ -1,8 +1,11 @@
-export const LINK = "http://localhost:3001";
+const LINK = window.env.REACT_APP_API_PREFIX;
 
 // user
 export const LOGIN = `${LINK}/user/login/`;
 export const LOAD_USERS = `${LINK}/user/getlist/`;
+export const REGISTER_USER = `${LINK}/user/register/`;
+export const CHANGE_PASS = `${LINK}/user/changepass/`;
+export const GET_INFO = `${LINK}/user/getinfo/`;
 
 // levels links
 export const LOAD_LEVELS = `${LINK}/level/getlist/`;
@@ -33,6 +36,7 @@ export const SAVE_EDUPROGRAM = `${LINK}/eduprogram/update/`;
 // detail eduProgram links
 export const LOAD_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/get/`;
 export const SAVE_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/update/`;
+export const ADD_DETAIL_EDUPROGRAM = `${LINK}/detaileduprogram/add/`;
 
 export const LOAD_CONTENT_EDUPROGRAM = `${LINK}/eduprogcontent/get/`;
 export const SAVE_CONTENT_EDUPROGRAM = `${LINK}/eduprogcontent/add/`;
@@ -43,6 +47,8 @@ export const SAVE_SCHEDULE_EDUPROGRAM = `${LINK}/teachplanblock/update/`;
 export const LOAD_TARGET_EDUPROGRAM = `${LINK}/edupurpose/get/`;
 export const ADD_TARGET_EDUPROGRAM = `${LINK}/edupurpose/add/`;
 export const SAVE_TARGET_EDUPROGRAM = `${LINK}/edupurpose/update/`;
+
+export const LOAD_BLOCKS = `${LINK}/eduprogcontent/getBlockSubjects/`;
 
 // subjects links
 export const LOAD_SUBJECTS = `${LINK}/subject/getlist/`;

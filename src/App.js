@@ -2,17 +2,19 @@ import React, { Component } from "react";
 import { Route, Switch } from "react-router-dom";
 
 import Dashboard from "./frontend/components/decuongmonhoc/index/index";
-// import Index from "./frontend/Index/Index";
 import Home from "./frontend/components/trangchu/index";
 import Subject from "./frontend/components/trangchu/subjects";
 import Page404 from "./frontend/NotFound/Page404";
-import Login from "./frontend/components/authentication/login/login.js"
+import Login from "./frontend/CDIO1/containers/Login";
+import { PrivateRoute } from "./PrivateRoute";
 class App extends Component {
+
   render() {
+    let user = localStorage.getItem('user');
+    console.log(user)
     return (
       <Switch>
-        <Route exact path="/" component={Home} />
-        {/* <Route exact path="/home" component={Home} /> */}
+        <Route exact path="/" component={user ? Home : Login} />
         <Route exact path="/:parent/" component={Subject} />
         <Route exact path="/:parent/:ctdt/" component={Subject} />
         <Route exact path="/:parent/:ctdt/:type/" component={Subject} />

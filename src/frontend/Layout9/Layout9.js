@@ -8,28 +8,19 @@ class Layout9 extends Component {
   render() {
     const items = [...Array(100)].map((val, i) => `Item ${i}`);
     return (
-      <div className="container">
-        <div className="row">
-          <div className="col-sm-1" ></div>
-          <div className="col-sm-11">
-            <br />
-            <h2 style={{ textAlign: "center" }}>
-              CÁC QUY ĐỊNH CHUNG
-                </h2>
-                {this.props.isReview === true ? null : <MainForm />}
-            <br /><br />
-            
-            <Element name="test1" className="element">
-              <TableItem isReview={this.props.isReview}/>
-            </Element>
-            <br/>
-            <br/>
-            <LogForm />
-            <br/>
-            <br/>
-          </div>
+      <React.Fragment>
+        <div className="section-layout">
+          {this.props.isReview === true ? null : <MainForm />}
         </div>
-      </div>
+        <div className="section-layout">
+          <Element name="test1" className="element">
+            <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
+          </Element>
+        </div>
+        <div className="section-layout">
+          <LogForm />
+        </div>
+      </React.Fragment>
     );
   }
 }

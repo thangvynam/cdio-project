@@ -158,6 +158,7 @@ export const onSaveEduProgram = data => {
       )
       .then(res => {
         if (res.data.code === 1) {
+          dispatch(onLoadEduProgram(data.infoEduProgram.ideduprog));
           dispatch(saveEduProgramSuccess(res));
           dispatch(detailEduProgramAction.onSaveDetailEduProgram(data));
         } else {

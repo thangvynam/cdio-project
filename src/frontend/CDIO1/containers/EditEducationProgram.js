@@ -20,6 +20,16 @@ import * as detailEduProgramAction from "../actions/detailEduProgramAction";
 
 import { connect } from "react-redux";
 
+//CDIO-2 api
+import $ from "../../helpers/services";
+import {
+  subjectList,
+  dataCtdt,
+  isLoadedDataCtdt,
+  teacherSubject,
+  teacherReviewSubject
+} from "../../Constant/ActionType";
+//END CDIO-2 api
 class DetailEducationProgramTmp extends Component {
   constructor(props) {
     super(props);
@@ -29,7 +39,40 @@ class DetailEducationProgramTmp extends Component {
   componentDidMount = () => {
     // const urlParams = new URLSearchParams(window.location.search);
     // const id = urlParams.get("id");
+
     const id = this.props.ctdt;
+    //if(this.props.isLoadedDataCtdt === false) {
+    $.getBlockSubject(id).then(res => {
+      let resData = res.data.data;
+      let dataSubject = [];
+      let dataCtdt = [];
+      if (resData !== undefined && resData !== null) {
+        for (let i = 0; i < resData.length; i++) {
+          dataCtdt = dataCtdt.concat(resData[i].block);
+          for (let j = 0; j < resData[i].block.length; j++) {
+            dataSubject = dataSubject.concat(resData[i].block[j].subjects);
+          }
+        }
+        dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+        this.props.updateSubjectList(dataSubject);
+        this.props.updateDataCtdt(dataCtdt);
+        this.props.updateIsLoadedDataCtdt(true);
+        $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+        .then(res => { 
+          if(res.data !== undefined && res.data !== null){
+            this.props.updateTeacherSubject(res.data);
+          }
+        });
+        $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+        .then(res => {
+          if(res.data !== undefined && res.data !== null){
+            this.props.updateTeacherReviewSubject(res.data);
+          }
+        });
+      }})
+
+    //}
+
     this.props.onLoadEduProgram(id);
     this.props.onLoadDetailEduProgram(id);
 
@@ -116,18 +159,21 @@ const mapStateToProps = state => ({
   targetNodes: state.targetNodes
 });
 
-export default connect(
-  mapStateToProps,
-  {
-    onLoadLevels: levelsAction.onLoadLevels,
-    onLoadMajors: majorsAction.onLoadMajors,
-    onLoadPrograms: programsAction.onLoadPrograms,
-    onLoadSubjects: subjectsAction.onLoadSubjects,
-    onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
-    onLoadDetailOutcomeStandard:
-      detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
-    onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
-    onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
-    onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram
-  }
-)(DetailEducationProgramTmp);
+export default connect(mapStateToProps, {
+  onLoadLevels: levelsAction.onLoadLevels,
+  onLoadMajors: majorsAction.onLoadMajors,
+  onLoadPrograms: programsAction.onLoadPrograms,
+  onLoadSubjects: subjectsAction.onLoadSubjects,
+  onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
+  onLoadDetailOutcomeStandard:
+    detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
+  onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
+  onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
+  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
+  //cdio-2
+  updateSubjectList: subjectList,
+  updateDataCtdt: dataCtdt,
+  updateIsLoadedDataCtdt: isLoadedDataCtdt,
+  updateTeacherSubject: teacherSubject,
+  updateTeacherReviewSubject: teacherReviewSubject
+})(DetailEducationProgramTmp);

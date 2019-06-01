@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import axios from 'axios';
 import { connect } from 'react-redux';
 
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
-import { Checkbox,message, Input, Upload, Button, Icon } from 'antd';
+import { Checkbox, message, Input, Upload, Button, Icon } from 'antd';
+import $ from './../helpers/services';
 
 const plainOptions = [
     'Thông tin chung',
@@ -84,18 +84,18 @@ class ExportFile extends Component {
                 }
             }
             callback(obj);
-        }else{
+        } else {
             message.error("Vui lòng chọn ít nhất 1 mục ");
         }
 
     }
     export = () => {
-       
+
         let self = this;
 
         this.addDataMap(function (obj) {
             self.setState({ loading: 0 });
-            axios.post('/exportfile', { data: JSON.stringify(obj) }).then(res => {
+            $.exportFile(JSON.stringify(obj)).then(res => {
                 if (res.data == 1) {
                     self.setState({ loading: 1 });
                 }
@@ -139,36 +139,30 @@ class ExportFile extends Component {
 
     render() {
         return (
-            <div className="container">
-                <div className="row">
-                    <div className="col-sm-1" >
-                    </div>
-                    <div className="col-sm-11" >
-                        <br />
-                        <h2 style={{ textAlign: "center" }}>XUẤT FILE PDF </h2>
-                        <div style={{ marginLeft: "25%" }}>
-                            <Checkbox
-                                onChange={(e) => { this.onCheckAllChange(e) }}
-                            >
-                                Chọn tất cả
+            <React.Fragment>
+                <div className="section-layout">
+                    <div className ="export-css">
+                        <Checkbox
+                            onChange={(e) => { this.onCheckAllChange(e) }}
+                        >
+                            Chọn tất cả
                                 </Checkbox>
-                        </div>
-                        <div style={{ width: "50%", margin: "0 auto " }}>
-                            <CheckboxGroup
-                                {...this.state}
-                                options={plainOptions}
-                                handleChange={this.handleChange} />
+                    </div>
+                    <div className ="export-css">
+                        <CheckboxGroup
+                            {...this.state}
+                            options={plainOptions}
+                            handleChange={this.handleChange} />
 
-                        </div>      
-                        <br/>
-                        <div style={{ width: "50%", margin: "0 auto " }}>
-                            <button onClick={this.export} type="button" class="btn btn-success">Xuất file PDF</button>
-                            <br /><br /><br />
-                            <Loader loading={this.state.loading} />
-                        </div>
+                    </div>
+                    <br />
+                    <div className ="export-css">
+                        <button onClick={this.export} type="button" class="btn btn-success">Xuất file PDF</button>
+                        <br /><br /><br />
+                        <Loader loading={this.state.loading} />
                     </div>
                 </div>
-            </div>
+            </React.Fragment>
         );
     }
 }

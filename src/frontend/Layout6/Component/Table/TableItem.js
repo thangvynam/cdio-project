@@ -22,7 +22,7 @@ import { bindActionCreators } from "redux";
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
 import HTML5Backend from "react-dnd-html5-backend";
 import TextArea from "antd/lib/input/TextArea";
-import axios from "axios";
+import $ from './../../../helpers/services';
 import { getCurrTime } from "../../../utils/Time";
 
 const { Option } = Select;
@@ -436,7 +436,7 @@ class TableItem extends Component {
           newItems[index].teachingActs
         } ; Hoạt động đánh giá: ${newItems[index].evalActs}]`,
         this.props.logReducer.contentTab,
-        this.props.subjectId
+        this.props.monhoc
       );
       this.props.onSaveReducer(
         "Nguyen Van A",
@@ -455,7 +455,7 @@ class TableItem extends Component {
           newItems[index].teachingActs
         } ; Hoạt động đánh giá: ${newItems[index].evalActs}]`,
         this.props.logReducer.contentTab,
-        this.props.subjectId
+        this.props.monhoc
       );
 
       this.props.onUpdateKHGDTH(newItems);
@@ -491,7 +491,7 @@ class TableItem extends Component {
         newData[index].teachingActs
       } ; Hoạt động đánh giá: ${newData[index].evalActs}`,
       this.props.logReducer.contentTab,
-      this.props.subjectId
+      this.props.monhoc
     );
     this.props.onSaveReducer(
       "Nguyen Van A",
@@ -504,7 +504,7 @@ class TableItem extends Component {
         newData[index].teachingActs
       } ; Hoạt động đánh giá: ${newData[index].evalActs}`,
       this.props.logReducer.contentTab,
-      this.props.subjectId
+      this.props.monhoc
     );
 
     let key = 1;
@@ -572,7 +572,7 @@ class TableItem extends Component {
               KHitems[j].teachingActs
             } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
             this.props.logReducer.contentTab,
-            this.props.subjectId
+            this.props.monhoc
           );
           this.props.onSaveReducer(
             "Nguyen Van A",
@@ -585,7 +585,7 @@ class TableItem extends Component {
               KHitems[j].teachingActs
             } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
             this.props.logReducer.contentTab,
-            this.props.subjectId
+            this.props.monhoc
           );
         }
       }
@@ -614,7 +614,7 @@ class TableItem extends Component {
   onSaveAll = () => {
     const itemKHGDTH = this.props.itemKHGDTH;
     var body = {};
-    body.thong_tin_chung_id = this.state.subjectId;
+    body.thong_tin_chung_id = this.props.monhoc;
     body.data = [];
     itemKHGDTH.previewInfo.forEach((item, index) => {
       let temp = {};
@@ -658,8 +658,10 @@ class TableItem extends Component {
       body.data.push(temp);
     });
 
-    console.log("body", body.data);
-    axios.post("/add-data-6", body).then(response => {
+    //console.log("body", body.data);
+    //axios.post("/add-data-6", body)
+    $.addData6(body)
+    .then(response => {
       if (response.data === 1) {
         notification["success"]({
           message: "Cập nhật thành công",
@@ -671,26 +673,26 @@ class TableItem extends Component {
           duration: 1
         });
       }
-      axios.post("/save-log", { data: this.props.itemKHGDTH.logData });
-
-      this.getDataTable(this.state.subjectId);
+      //axios.post("/save-log", { data: this.props.itemKHGDTH.logData });
+      $.saveLog({ data: this.props.itemKHGDTH.logData });
+      this.getDataTable(this.props.monhoc);
     });
   };
 
   componentDidMount() {
     if (
       !this.props.itemKHGDTH.isLoaded &&
-      this.props.subjectId !== null &&
-      this.props.subjectId !== undefined &&
-      this.props.subjectId !== ""
+      this.props.monhoc !== null &&
+      this.props.monhoc !== undefined &&
+      this.props.monhoc !== ""
     ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({ subjectId: this.props.subjectId });
-      // axios.get(`/get-data-6/${this.props.subjectId}`).then(response => {
+      this.setState({ subjectId: this.props.monhoc });
+      // axios.get(`/get-data-6/${this.props.monhoc}`).then(response => {
       //   const data = response.data;
       //   this.props.onUpdateKHGDTH(data);
       // });
-      this.getDataTable(this.props.subjectId);
+      this.getDataTable(this.props.monhoc);
     }
   }
 
@@ -702,17 +704,19 @@ class TableItem extends Component {
       nextProps.subjectId !== ""
     ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({ subjectId: this.props.subjectId });
+      this.setState({ subjectId: this.props.monhoc });
       // axios.get(`/get-data-6/${nextProps.subjectId}`).then(response => {
       //   const data = response.data;
       //   this.props.onUpdateKHGDTH(data);
       // });
-      this.getDataTable(nextProps.subjectId);
+      this.getDataTable(this.props.monhoc);
     }
   }
 
   getDataTable = idSubject => {
-    axios.get(`/get-data-6/${idSubject}`).then(response => {
+    //axios.get(`/get-data-6/${idSubject}`)
+    $.getData6(idSubject)
+    .then(response => {
       const data = response.data;
       console.log("data: ", data);
       this.props.onUpdateKHGDTH(data);

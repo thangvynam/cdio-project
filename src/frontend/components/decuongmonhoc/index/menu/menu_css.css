@@ -1,9 +1,15 @@
 .menu-style {
-    height: 200vh
+    height: 300vh
     
 }
 
 .list-item {
     font-size: 25pt;
     cursor: pointer
+}
+
+.col-left ul li a {
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }

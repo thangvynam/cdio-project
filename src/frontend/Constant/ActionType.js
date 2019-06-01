@@ -38,6 +38,8 @@ export const PARENT_ITEM = 'PARENT_ITEM';
 export const CTDT = 'CTDT';
 export const KTT = 'KTT';
 export const SUBJECT_LIST = 'SUBJECT_LIST';
+export const DATA_CTDT = 'DATA_CTDT';
+export const ISLOADED_DATA_CTDT = 'ISLOADED_DATA_CTDT';
 export const SUBJECT_ID = 'SUBJECT_ID';
 export const SUBJECT_MASO = 'SUBJECT_MASO';
 export const CDRMDHD_DB = 'CDRMDHD_DB';
@@ -48,7 +50,9 @@ export const EDIT_MATRIX = 'EDIT_MATRIX';
 export const EDIT_MATRIX_EDIT_STATE = 'EDIT_MATRIX_EDIT_STATE';
 export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 export const CDR_CDIO = 'CDR_CDIO';
-export const LOAD_TEACHER = 'LOAD_TEACHER';
+export const TEACHER_SUBJECT = 'TEACHER_SUBJECT';
+export const TEACHER_REVIEW_SUBJECT = 'TEACHER_REVIEW_SUBJECT';
+
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -73,7 +77,6 @@ export const SAVE_TEMP_DATA_LAYOUT_7 = "SAVE_TEMP_DATA_LAYOUT_7";
 export const CHUDE_DANHGIA = "CHUDE_DANHGIA";
 export const IS_LOADED_7= 'IS_LOADED_7';
 export const CDR_DANHGIA = "CDR_DANHGIA";
-export const SAVE_ALL_DATA_LAYOUT_7 = "SAVE_ALL_DATA_LAYOUT_7";
 
 //layout 8
 export const ADD_TNDATA = 'ADD_TNDATA';
@@ -244,12 +247,34 @@ export function subjectList(newSubjectList) {
     };
 }
 
-export function teacherList(newTeacherList) {
+export function dataCtdt(newDataCtdt) {
     return {
-        type: LOAD_TEACHER,
-        teacherlist: newTeacherList
+        type: DATA_CTDT,
+        data: newDataCtdt
     };
 }
+
+export function teacherSubject(newTeacherSubject) {
+    return {
+        type: TEACHER_SUBJECT,
+        data: newTeacherSubject
+    };
+}
+
+export function teacherReviewSubject(newTeacherReviewSubject) {
+    return {
+        type: TEACHER_REVIEW_SUBJECT,
+        data: newTeacherReviewSubject
+    };
+}
+
+export function isLoadedDataCtdt(newIsLoadedData) {
+    return {
+        type: ISLOADED_DATA_CTDT,
+        data: newIsLoadedData
+    };
+}
+
 
 export function cdrCdio(newCdrCdio) {
     return {
@@ -394,13 +419,6 @@ export function saveTempTNData(tempTNData){
     }
 }
 
-export function saveAllDGData(DGData){
-    return{
-        type: SAVE_ALL_DATA_LAYOUT_7,
-        data: DGData
-    }
-}
-
 export function saveLoaiTaiNguyen(loaitainguyen){
     return{
         type: SAVE_LOAI_TAI_NGUYEN,
@@ -461,8 +479,6 @@ export const MENUITEM = {
     QUY_DINH_CHUNG: 'quy-dinh-chung',
     TAI_NGUYEN_MON_HOC: 'tai-nguyen-mon-hoc',
     XUAT_FILE_PDF:'xuat-file',
-    DE_CUONG_MON_HOC: 'de-cuong-mon-hoc',
-    TAB_2: 'tab-2',
     ITU_SURVEY: 'itusurvey',
     PHAN_CONG: 'phan-cong',
     REVIEW: 'review'

@@ -15,47 +15,11 @@ import { connect } from "react-redux";
 import { addItemKHGDTH, changeTempKHGDTH, changeMapKHGDTH, saveLog, saveLogObject } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
-import axios from "axios";
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services';
 
 
 const { Option } = Select;
-// const standard_item = [
-//   {
-//     value: "G1",
-//     label: "G1",
-//     children: [
-//       {
-//         value: ".1",
-//         label: ".1"
-//       },
-//       {
-//         value: ".2",
-//         label: ".2"
-//       },
-//       {
-//         value: ".3",
-//         label: ".3"
-//       }
-//     ]
-//   },
-//   {
-//     value: "G2",
-//     label: "G2",
-//     children: [
-//       {
-//         value: ".1",
-//         label: ".1"
-//       },
-//       {
-//         value: ".2",
-//         label: ".2"
-//       }
-//     ]
-//   }
-// ];
-
-//const evalActs = ["BTVN#1", "BTTL#1", "DAMH#1"];
 
 class ItemMenu extends Component {
   constructor(props) {
@@ -93,7 +57,7 @@ class ItemMenu extends Component {
       evalActs: new Map(),
     }
 
-    axios.get("/get-teachingacts-6").then(response => {
+    $.getTeachingActs_6().then(response => {
       const data = response.data;
       let map = new Map();
       data.forEach((item, index) => {
@@ -105,7 +69,7 @@ class ItemMenu extends Component {
 
     });
 
-    axios.get(`/get-eval-acts-6/${subjectId}`).then(response => {
+    $.getEvalActs6(subjectId).then(response => {
       const data = response.data;
       let map = new Map();
       data.forEach((item, index) => {
@@ -116,7 +80,7 @@ class ItemMenu extends Component {
       mapId.evalActs = map;
     });
 
-    axios.get(`/get-standard-output-6/${subjectId}`).then(response => {
+    $.getStandardOutput6(subjectId).then(response => {
       const data = response.data;
       let array = [];
       let map = new Map();
@@ -349,7 +313,7 @@ class ItemMenu extends Component {
       <div>
         {this.checkRedirect()}
 
-        <div style={{ border: "2px solid", borderRadius: "12px" }}>
+        <div>
           <div style={{ marginTop: "10px" }} />
           <Form onSubmit={this.handleSubmit}>
             <Form.Item {...formItemLayout} label="Tên chủ đề">
@@ -430,7 +394,7 @@ class ItemMenu extends Component {
               </div>
               <div style={{ float: "left" }}>
                 <Button type="primary" onClick={this.moveLayout7}>
-                  Nhập đánh giá <Icon type="right" />
+                  Nhập đánh giá
                 </Button>
               </div>
             </Form.Item>
@@ -443,10 +407,10 @@ class ItemMenu extends Component {
                   onClick={() => {
                     this.handleSubmit();
                   }}
-                  style={{ marginLeft: "2em" }}
+                  style={{ marginLeft: "15%" }}
                 >
                   Continue
-                  <Icon type="right" />
+                  
                 </Button>
                 <br />
               </div>

@@ -6,7 +6,8 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { editMatrix, editMatrixEditState, isLoadEditMatrix, cdrCdio } from '../../Constant/ActionType';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
-import axios from 'axios';
+import $ from './../../helpers/services';
+
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -121,11 +122,14 @@ class EditMatrix extends Component {
   }
 
   getIndex = (matrix, key) => {
-    for (let i = 0; i < matrix.length; i++) {
-      if (matrix[i].key === key) {
-        return i;
+    if(matrix !== undefined && matrix !== null) {
+      for (let i = 0; i < matrix.length; i++) {
+        if (matrix[i].key === key) {
+          return i;
+        }
       }
     }
+    
     return -1;
   }
   handleSave = (record, dataIndex) => {
@@ -194,20 +198,26 @@ class EditMatrix extends Component {
   }
 
   getMatrixId = (matrix, thong_tin_chung_id, cdr_cdrio_id) => {
-    for (let i = 0; i < matrix.length; i++) {
-      if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
-        return matrix[i].id;
+    if(matrix !== undefined && matrix !== null) {
+      for (let i = 0; i < matrix.length; i++) {
+        if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
+          return matrix[i].id;
+        }
       }
     }
+    
     return -1;
   }
 
   getCdrCdioId = (cdr_cdio, cdr) => {
-    for (let i = 0; i < cdr_cdio.length; i++) {
-      if (cdr_cdio[i].cdr === cdr) {
-        return cdr_cdio[i].id;
+    if(cdr_cdio !== undefined && cdr_cdio !== null) {
+      for (let i = 0; i < cdr_cdio.length; i++) {
+        if (cdr_cdio[i].cdr === cdr) {
+          return cdr_cdio[i].id;
+        }
       }
     }
+    
     return -1;
   }
   saveAll = () => {
@@ -224,7 +234,7 @@ class EditMatrix extends Component {
 
       })
     }
-    axios.post('/update-standard-matrix', data).then(alert("ok"));
+    $.updateStandardMatrix(data).then(alert("ok"));
 
   }
 
@@ -258,16 +268,18 @@ class EditMatrix extends Component {
 
   componentDidMount() {
 
-    axios.get("/get-standard-matrix").then((res) => {
+    $.getStandardMatrix().then((res) => {
+      
       this.setState({ tempMatrix: res.data });
     })
     if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
-      axios.get('/get-reality-matrix');
-      axios.get("/get-standard-matrix").then((res) => {
+      //$.getRealityMatrix();
+      $.getStandardMatrix().then((res) => {
         let data = [];
         for (let i = 0; i < res.data.length; i++) {
           let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+          //console.log(index)
           if (index !== -1) {
             let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
             if (cdr_cdio !== "") {
@@ -298,6 +310,39 @@ class EditMatrix extends Component {
 
   componentWillReceiveProps(nextProps) {
     //console.log("receive")
+    if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+      this.props.updateIsLoadEditMatrix("true");
+      //$.getRealityMatrix();
+      $.getStandardMatrix().then((res) => {
+        let data = [];
+        for (let i = 0; i < res.data.length; i++) {
+          let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+          //console.log(index)
+          if (index !== -1) {
+            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+            if (cdr_cdio !== "") {
+              data[index][cdr_cdio] = res.data[i].muc_do;
+            }
+          }
+          else {
+            let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+            if (subjectName !== "" && cdr_cdio !== "") {
+              data.push({
+                key: res.data[i].thong_tin_chung_id,
+                hocky: 1,
+                hocphan: subjectName,
+                gvtruongnhom: 'NULL'
+              })
+
+              data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+            }
+
+          }
+        }
+        this.props.updateEditMatrix(data);
+      })
+    }
 
   }
 
@@ -346,48 +391,56 @@ class EditMatrix extends Component {
       this.sortLevels(secondColumn);
       this.sortLevels(thirdColumn);
 
-      const thirdColumnMapped = thirdColumn.map((key) => {
-        return {
-          title: key,
-          dataIndex: key,
-          key: key,
-          width: 90,
-          align: "center",
-          editable: true,
-          render: (text, record) => <div>
-            <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{text}</Tag>
-            <Tooltip placement="bottom" title="Edit"><Icon onClick={() => this.onClickEdit(record, key)} type="edit" style={{ cursor: "pointer" }} /></Tooltip>
-          </div>,
-        }
-      });
-
-      const secondColumnMapped = secondColumn.map((key) => {
-        let children = [];
-        for (let i = 0; i < thirdColumnMapped.length; i++) {
-          if (thirdColumnMapped[i].title.split(".")[0] + "." +
-            thirdColumnMapped[i].title.split(".")[1] === key)
-            children.push(thirdColumnMapped[i]);
-        }
-        return {
-          title: key,
-          dataIndex: key,
-          key: key,
-          children: children
-        }
-      })
-
-      firstColumnMapped = firstColumn.map((key) => {
-        let children = [];
-        for (let i = 0; i < secondColumnMapped.length; i++) {
-          if (secondColumnMapped[i].title.split(".")[0] === key)
-            children.push(secondColumnMapped[i]);
-        }
-        return {
-          title: key,
-          key: key,
-          children: children
-        }
-      })
+      let thirdColumnMapped = [];
+      if(thirdColumn.length > 0) {
+        thirdColumnMapped = thirdColumn.map((key) => {
+          return {
+            title: key,
+            dataIndex: key,
+            key: key,
+            width: 90,
+            align: "center",
+            editable: true,
+            render: (text, record) => <div>
+              <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{text}</Tag>
+              <Tooltip placement="bottom" title="Edit"><Icon onClick={() => this.onClickEdit(record, key)} type="edit" style={{ cursor: "pointer" }} /></Tooltip>
+            </div>,
+          }
+        });
+      }
+      let secondColumnMapped = [];
+      if(secondColumn.length > 0) {
+        secondColumnMapped = secondColumn.map((key) => {
+          let children = [];
+          for (let i = 0; i < thirdColumnMapped.length; i++) {
+            if (thirdColumnMapped[i].title.split(".")[0] + "." +
+              thirdColumnMapped[i].title.split(".")[1] === key)
+              children.push(thirdColumnMapped[i]);
+          }
+          return {
+            title: key,
+            dataIndex: key,
+            key: key,
+            children: children
+          }
+        });
+      }
+      
+      if(firstColumn.length > 0) {
+        firstColumnMapped = firstColumn.map((key) => {
+          let children = [];
+          for (let i = 0; i < secondColumnMapped.length; i++) {
+            if (secondColumnMapped[i].title.split(".")[0] === key)
+              children.push(secondColumnMapped[i]);
+          }
+          return {
+            title: key,
+            key: key,
+            children: children
+          }
+        });
+      }
+      
     }
 
     const columns = this.columns.concat(firstColumnMapped).map((col) => {

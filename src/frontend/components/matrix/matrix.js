@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import axios from 'axios';
 import _ from 'lodash';
 import { Table, Icon, Tag, Modal, Button } from 'antd';
 import { connect } from 'react-redux';
@@ -8,6 +7,7 @@ import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import "./matrix.css";
 import { editMatrix, isLoadEditMatrix } from '../../Constant/ActionType';
+import $ from './../../helpers/services';
 
 class Matrix extends Component {
     constructor(props) {
@@ -48,11 +48,10 @@ class Matrix extends Component {
         return "";
     }
 
-    componentDidMount() {
-        this.setState({ isLoading: true })
-        if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+    componentWillReceiveProps(nextProps) {
+        if (this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
             this.props.updateIsLoadEditMatrix("true");
-            axios.get("/get-standard-matrix").then((res) => {
+            $.getStandardMatrix().then((res) => {
                 let data = [];
                 for (let i = 0; i < res.data.length; i++) {
                     let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -82,8 +81,44 @@ class Matrix extends Component {
             })
 
         }
-        var a = axios.get('/get-reality-matrix');
-        var b = axios.get('/get-cdr-cdio');
+    }
+
+    componentDidMount() {
+        this.setState({ isLoading: true })
+        if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+            this.props.updateIsLoadEditMatrix("true");
+            $.getStandardMatrix().then((res) => {
+                let data = [];
+                for (let i = 0; i < res.data.length; i++) {
+                    let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                    if (index !== -1) {
+                        let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if (cdr_cdio !== "") {
+                            data[index][cdr_cdio] = res.data[i].muc_do;
+                        }
+                    }
+                    else {
+                        let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                        let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                        if (subjectName !== "" && cdr_cdio !== "") {
+                            data.push({
+                                key: res.data[i].thong_tin_chung_id,
+                                hocky: 1,
+                                hocphan: subjectName,
+                                gvtruongnhom: 'NULL'
+                            })
+
+                            data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                        }
+
+                    }
+                }
+                this.props.updateEditMatrix(data);
+            })
+
+        }
+        var a = $.getRealityMatrix();
+        var b = $.getCDR_CDIO();
         Promise.all([a, b])
             .then((res) => {
                 this.props.getDataMatrix(res)
@@ -117,7 +152,7 @@ class Matrix extends Component {
         return "";
     }
     checkGAPandReturnResult = (text, textMatrix) => {
-        if (textMatrix !== "") {
+        if (textMatrix !== "" && textMatrix !== undefined && textMatrix !== null) {
             if (text === "-") {
                 if (text !== textMatrix) {
                     let textArr = textMatrix.split(",");

@@ -5,8 +5,8 @@ import {
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeTNData, addTNData, saveTempTNData ,saveLoaiTaiNguyen, saveLog,saveLogObject} from '../../../Constant/ActionType';
-import axios from 'axios';
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services';
 
 
 class TNFormItem extends Component {
@@ -42,7 +42,7 @@ class TNFormItem extends Component {
   async componentDidMount(){
     if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout8Reducer.isLoaded === false){
       var self = this;
-        await axios.get('/get-loaitainguyen')
+        await $.getLoaiTaiNguyen()
         .then(function (response) {
             self.props.updateLoaitainguyen(response.data);
           })
@@ -118,7 +118,7 @@ class TNFormItem extends Component {
 
 
     return (
-      <div style={{ border: "2px solid", borderRadius: "12px" }}>
+      <div>
         <div style={{ marginTop: "10px" }}></div>
         <Form onSubmit={this.addTNData}>
           <Form.Item
@@ -134,7 +134,7 @@ class TNFormItem extends Component {
             ],
             initialValue: this.props.itemLayout8Reducer.tempInfo.loai
           })
-            (<Cascader options={this.props.itemLayout8Reducer.loaitainguyenState.map(item => {
+            (<Cascader options={this.props.itemLayout8Reducer.loaitainguyen.map(item => {
               return {value :item.loai,label : item.loai}
             })} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />)}
           </Form.Item>
@@ -173,7 +173,7 @@ class TNFormItem extends Component {
             xs: { span: 24, offset: 0 },
             sm: { span: 16, offset: 8 },
           }}>
-            <div>
+            <div style={{marginLeft:"15%"}}>
               <Button type="primary" size="large" icon="plus" onClick={this.addTNData}>Thêm</Button>
             </div>
           </Form.Item>

@@ -1,5 +1,6 @@
 import { message } from "./message";
 import { users } from "./users";
+import { user } from "./user";
 import { faculties } from "./faculties";
 import { programs } from "./programs";
 import { subjects } from "./subjects";
@@ -16,6 +17,7 @@ import { detailEduProgram } from "./detailEduProgram";
 import { contentNodes } from "./_contentNodes";
 import { scheduleNodes } from "./_scheduleNodes";
 import { targetNodes } from "./_targetNodes";
+import { blocks } from "./_blocks";
 
 const cdio1 = {
   faculties,
@@ -36,7 +38,9 @@ const cdio1 = {
   contentNodes,
   scheduleNodes,
   targetNodes,
+  blocks,
 
+  user,
   users,
 };
 

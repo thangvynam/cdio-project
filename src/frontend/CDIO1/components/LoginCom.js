@@ -78,7 +78,7 @@ export default class LoginCom extends Component {
                       <Col xs="6">
                         <Button
                           tag={Link}
-                          to="/"
+                          to="#"
                           color="primary"
                           className="px-4"
                           onClick={this.onLogIn}

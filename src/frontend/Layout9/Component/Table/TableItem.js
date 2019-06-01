@@ -18,8 +18,8 @@ import {
 } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
 import TextArea from "antd/lib/input/TextArea";
-import axios from "axios";
 import { getCurrTime } from "../../../utils/Time";
+import $ from './../../../helpers/services';
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -160,14 +160,14 @@ class TableItem extends Component {
             getCurrTime(),
             `Xóa quy định chung: ${ruleitems[j].content}`,
             this.props.logReducer.contentTab,
-            this.props.subjectId
+            this.props.monhoc
           );
           this.props.onSaveReducer(
             "Nguyen Van A",
             getCurrTime(),
             `Xóa quy định chung: ${ruleitems[j].content}`,
             this.props.logReducer.contentTab,
-            this.props.subjectId
+            this.props.monhoc
           );
         }
       }
@@ -198,14 +198,14 @@ class TableItem extends Component {
       getCurrTime(),
       `Xóa quy định chung: ${ruleitems[index].content}`,
       this.props.logReducer.contentTab,
-      this.props.subjectId
+      this.props.monhoc
     );
     this.props.onSaveReducer(
       "Nguyen Van A",
       getCurrTime(),
       `Xóa quy định chung: ${ruleitems[index].content}`,
       this.props.logReducer.contentTab,
-      this.props.subjectId
+      this.props.monhoc
     );
 
     this.props.onUpdateRules(ruleitems);
@@ -236,7 +236,7 @@ class TableItem extends Component {
           newRules[index].content
         }`,
         this.props.logReducer.contentTab,
-        this.props.subjectId
+        this.props.monhoc
       );
       this.props.onSaveReducer(
         "Nguyen Van A",
@@ -245,7 +245,7 @@ class TableItem extends Component {
           newRules[index].content
         }`,
         this.props.logReducer.contentTab,
-        this.props.subjectId
+        this.props.monhoc
       );
 
       this.props.onUpdateRules(newRules);
@@ -271,10 +271,12 @@ class TableItem extends Component {
 
   onSaveAll = () => {
     let body = {};
-    body.thong_tin_chung_id = this.state.subjectId;
+    body.thong_tin_chung_id = this.props.monhoc;
     body.data = this.props.itemRule.previewInfo;
 
-    axios.post("/add-data-9", body).then(response => {
+    //axios.post("/add-data-9", body)
+    $.addData9(body)
+    .then(response => {
       if (response.data === 1) {
         notification["success"]({
           message: "Cập nhật thành công",
@@ -286,28 +288,32 @@ class TableItem extends Component {
           duration: 1
         });
       }
-    });
-    axios.post("/save-log", { data: this.props.itemRule.logData });
 
-    this.getData(this.state.subjectId);
-    console.log("body: ", body.data);
+      $.saveLog({ data: this.props.itemRule.logData });
+
+      this.getData(this.props.monhoc);
+    });
+
+    //axios.post("/save-log", { data: this.props.itemRule.logData });
+   
   };
 
   componentDidMount() {
     if (
       !this.props.itemRule.isLoaded &&
-      this.props.subjectId !== null &&
-      this.props.subjectId !== undefined &&
-      this.props.subjectId !== ""
+      this.props.monhoc !== null &&
+      this.props.monhoc !== undefined &&
+      this.props.monhoc !== ""
     ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({ subjectId: this.props.subjectId });
-      this.getData(this.props.subjectId);
+      this.setState({ subjectId: this.props.monhoc });
+      this.getData(this.props.monhoc);
     }
   }
 
   getData(subjectId) {
-    axios.get(`/get-data-9/${subjectId}`).then(response => {
+    //axios.get(`/get-data-9/${subjectId}`).then(response => {
+    $.getData9(subjectId).then(response => {
       const data = response.data;
       let array = [];
       data.forEach((item, index) => {
@@ -330,12 +336,13 @@ class TableItem extends Component {
       nextProps.subjectId !== ""
     ) {
       this.props.onChangeIsLoaded(true);
-      this.setState({ subjectId: nextProps.subjectId });
-      this.getData(nextProps.subjectId);
+      this.setState({ subjectId: this.props.monhoc });
+      this.getData(this.props.monhoc);
     }
   }
 
   render() {
+    console.log(this.props.monhoc)
     const components = {
       body: {
         row: EditableFormRow,

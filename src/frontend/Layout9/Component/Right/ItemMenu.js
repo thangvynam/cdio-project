@@ -65,7 +65,7 @@ class ItemMenu extends Component {
       }
     };
     return (
-      <div style={{ border: "2px solid", borderRadius: "12px" }}>
+      <div>
         <div style={{ marginTop: "10px" }} />
         <Form>
           <Form.Item {...formItemLayout} label="Nội dung">
@@ -85,7 +85,7 @@ class ItemMenu extends Component {
               <Button
                 type="primary"
                 onClick={this.handleSubmit}
-                style={{ marginLeft: "2em" }}
+                style={{ marginLeft: "15%" }}
               >
                 Thêm
                 <Icon type="plus" />

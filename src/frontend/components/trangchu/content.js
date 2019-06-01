@@ -194,6 +194,14 @@ class Content extends Component {
         }
         return false;
     }
+    
+    checkChuNhiem = (role) => {
+        if(role.indexOf("CHUNHIEM") > -1) {
+            return true;
+        }
+        return false;
+      }
+
     componentDidMount = () => {
         this.props.onLoadEduPrograms();
     };
@@ -219,9 +227,6 @@ class Content extends Component {
 
                     );
                 }
-                
-                
-                
             } break;
             case 'itusurvey': {
                 
@@ -535,7 +540,7 @@ class Content extends Component {
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
 
-                                                            !this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role) ? 
+                                                            !this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) ? 
                                                             this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.Id) ? <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
@@ -598,22 +603,6 @@ class Content extends Component {
                             </div>
                         </React.Fragment>
 
-                    : type === "view-survey" ? (
-                        <React.Fragment>
-                            <Row className="col-right-title">
-                                <div>
-                                    <span>Xem Khảo Sát</span>
-                                    <Divider type="vertical" />
-                                    <a href="#">Link</a>
-                                    <Divider type="vertical" />
-                                    <a href="#">Link</a>
-                                </div>,
-                                </Row>
-                            <div className="wrapper-custom-layout">
-                                <ViewSurvey />
-                            </div>
-                        </React.Fragment>
-                    )
                     : type === "chuan-dau-ra" ? (
                         <EditOutcomeStandard/>
                     )
@@ -634,6 +623,22 @@ class Content extends Component {
                     : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
                     : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
                     : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
+                    : parent === "view-survey" ? (
+                        <React.Fragment>
+                            <Row className="col-right-title">
+                                <div>
+                                    <span>Xem Khảo Sát</span>
+                                    <Divider type="vertical" />
+                                    <a href="#">Link</a>
+                                    <Divider type="vertical" />
+                                    <a href="#">Link</a>
+                                </div>,
+                                </Row>
+                            <div className="wrapper-custom-layout">
+                                <ViewSurvey />
+                            </div>
+                        </React.Fragment>
+                    )
                     : null;
 
                 }; break;

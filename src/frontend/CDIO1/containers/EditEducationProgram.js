@@ -43,6 +43,13 @@ class DetailEducationProgramTmp extends Component {
     return false;
 }
 
+checkChuNhiem = (role) => {
+  if(role.indexOf("CHUNHIEM") > -1) {
+      return true;
+  }
+  return false;
+}
+
 checkInTeacherSubject = (teacherSubject, idSubject) => {
   for(let i = 0;i < teacherSubject.length;i++) {
       if(teacherSubject[i].IdSubject === idSubject) {
@@ -89,7 +96,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
             if(res.data !== undefined && res.data !== null){
               this.props.updateTeacherReviewSubject(res.data);
             }
-            if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+            if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
 
               dataSubject = dataSubject.filter(item => 
                   item.del_flat != 1

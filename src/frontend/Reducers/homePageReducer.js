@@ -24,9 +24,6 @@ const initialState = {
     "itusurvey": {
         name: "ITU SURVEY"
     },
-    "view-survey": {
-        name: "QUẢN LÝ SURVEY"
-    }
 }
 
 export function menuItemReducer(state = initialState, action) {
@@ -108,6 +105,10 @@ const parentState = [
     {
         id: "qlgd",
         name: "QUẢN LÝ NGƯỜI DÙNG"
+    },
+    {
+        id: "view-survey",
+        name: "QUẢN LÝ SURVEY"
     }
 ]
 

@@ -210,7 +210,7 @@ class Home extends Component {
                   if(res.data !== undefined && res.data !== null){
                     this.props.updateTeacherReviewSubject(res.data);
                   }
-                  if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                  if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
       
                     dataSubject = dataSubject.filter(item => 
                         item.del_flat != 1
@@ -300,6 +300,12 @@ class Home extends Component {
         }
         return false;
     }
+    checkChuNhiem = (role) => {
+        if(role.indexOf("CHUNHIEM") > -1) {
+            return true;
+        }
+        return false;
+      }
 
 componentDidUpdate(){
 
@@ -361,6 +367,20 @@ componentDidUpdate(){
                             console.log("param 2 must null")
                             return <Page404/>;
                         }     
+                    }
+                    else if(parent === "ctdt") {
+                        //check role
+                        if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                            console.log("ctdt not for admin")
+                            return <Page404/>;
+                        }  
+                    }
+                    else if(parent === "view-survey") {
+                        //check role
+                        if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                            console.log("danhmuc admin only")
+                            return <Page404/>;
+                        }  
                     }
                     else {
                         //check param 2

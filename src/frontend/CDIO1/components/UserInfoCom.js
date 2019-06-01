@@ -10,9 +10,17 @@ export default class UserInfoCom extends React.Component {
 
     this.state = {
       password: "",
-      newpassword: "",
       confirmpassword: ""
     };
+  }
+
+  onChangePass = () => {
+    if(this.state.password===this.state.confirmpassword&&this.state.password>5){
+      const username=localStorage.getItem("user").data.Username;
+      const password=this.state.password;
+      const user={username,password};
+      this.props.onChangePass(user);
+    }
   }
 
   render() {
@@ -47,35 +55,20 @@ export default class UserInfoCom extends React.Component {
             <Panel header="Thay đổi mật khẩu">
               <Row>
                 <Col lg="2" md="2" sm="2">
-                  Mật khẩu hiện tại:
-                </Col>
-                <Col lg="10" md="10" sm="10">
-                  <Password
-                    value={this.state.password}
-                    onChange={e => this.setState({ password: e.target.value })}
-                  />
-                </Col>
-              </Row>
-              <br />
-              <Row>
-                <Col lg="2" md="2" sm="2">
                   Mật khẩu mới:
                 </Col>
-                <Col lg="10" md="10" sm="10">
+                <Col lg="3" md="3" sm="3">
                   <Password
-                    value={this.state.newpassword}
+                    value={this.state.password}
                     onChange={e =>
-                      this.setState({ newpassword: e.target.value })
+                      this.setState({ password: e.target.value })
                     }
                   />
                 </Col>
-              </Row>
-              <br />
-              <Row>
                 <Col lg="2" md="2" sm="2">
                   Xác nhận mật khẩu:
                 </Col>
-                <Col lg="10" md="10" sm="10">
+                <Col lg="3" md="3" sm="3">
                   <Password
                     value={this.state.confirmpassword}
                     onChange={e =>
@@ -83,14 +76,10 @@ export default class UserInfoCom extends React.Component {
                     }
                   />
                 </Col>
-              </Row>
-              <br />
-              <Row>
-                <Col lg="2" md="2" sm="2" />
-                <Col lg="10" md="10" sm="10">
+                <Col lg="2" md="2" sm="2">
                   <Button
-                    title="Xóa"
                     theme="success"
+                    onChange={this.onChangePass}
                     style={{ marginRight: ".3em", padding: "8px" }}
                   >
                     <i className="material-icons">save</i>

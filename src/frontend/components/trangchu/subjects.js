@@ -11,7 +11,7 @@ import Page404 from '../../NotFound/Page404';
 import { MENUITEM, subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
- 
+import NewNav from '../decuongmonhoc/index/navbar/newnav';
 
 class Home extends Component {
     constructor(props) {
@@ -154,6 +154,24 @@ class Home extends Component {
         }
         return -1;
       }
+      checkInTeacherSubject = (teacherSubject, idSubject) => {
+        for(let i = 0;i < teacherSubject.length;i++) {
+            if(teacherSubject[i].IdSubject === idSubject) {
+                return true;
+            }
+        }
+        return false;
+      }
+      
+      checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+        for(let i = 0;i < teacherReviewSubject.length;i++) {
+            if(teacherReviewSubject[i].idTTC === idSubject) {
+                return true;
+            }
+        }
+        return false;
+      }
+
     componentDidMount() {
         this.props.onLoadEduPrograms();
         var self = this;
@@ -170,36 +188,50 @@ class Home extends Component {
     // });     
     let ctdt = self.props.match.params.ctdt;
     if(ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
-        $.getBlockSubject(ctdt)
-        .then(res => {
-        let resData = res.data.data;
-        let dataSubject = [];
-        let dataCtdt = [];
-        if(resData !== undefined && resData !== null) {
-            for(let i = 0;i < resData.length;i++) {
-            dataCtdt = dataCtdt.concat(resData[i].block);
-            for(let j = 0;j < resData[i].block.length;j++) {
-                dataSubject = dataSubject.concat(resData[i].block[j].subjects);
-            }
-            }
-        }
-        dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
-        this.props.updateSubjectList(dataSubject);
-        this.props.updateDataCtdt(dataCtdt);
-        this.props.updateIsLoadedDataCtdt(true);
-        $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-        .then(res => { 
-          if(res.data !== undefined && res.data !== null){
-            this.props.updateTeacherSubject(res.data);
-          }
-        });
-        $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-        .then(res => {
-          if(res.data !== undefined && res.data !== null){
-            this.props.updateTeacherReviewSubject(res.data);
-          }
-        });
-        })
+        $.getBlockSubject(ctdt).then(res => {
+            let resData = res.data.data;
+            let dataSubject = [];
+            let dataCtdt = [];
+            if (resData !== undefined && resData !== null) {
+              for (let i = 0; i < resData.length; i++) {
+                dataCtdt = dataCtdt.concat(resData[i].block);
+                for (let j = 0; j < resData[i].block.length; j++) {
+                  dataSubject = dataSubject.concat(resData[i].block[j].subjects);
+                }
+              }
+              dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+              $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+              .then(res => { 
+                if(res.data !== undefined && res.data !== null){
+                  this.props.updateTeacherSubject(res.data);
+                }
+                $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+                .then(res => {
+                  if(res.data !== undefined && res.data !== null){
+                    this.props.updateTeacherReviewSubject(res.data);
+                  }
+                  if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+      
+                    dataSubject = dataSubject.filter(item => 
+                        item.del_flat != 1
+                    );
+                    
+                  }
+                  else {
+                    dataSubject = dataSubject.filter(item => 
+                          item.del_flat != 1
+                          && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
+                          || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                      );
+                      this.props.updateSubjectList(dataSubject);
+                  }
+                });
+              });
+              
+              this.props.updateDataCtdt(dataCtdt);
+              this.props.updateIsLoadedDataCtdt(true);
+              
+            }})
     }
     
     
@@ -550,6 +582,8 @@ const mapStateToProps = (state) => {
         cdrCdio: state.cdrcdio,
         dataCtdt: state.datactdt.data,
         isLoadedDataCtdt: state.datactdt.isLoaded,
+        teacherSubject: state.datactdt.teacherSubject,
+        teacherReviewSubject: state.datactdt.teacherReviewSubject,
     }
 }
 const mapDispatchToProps = (dispatch) => {

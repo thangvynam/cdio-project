@@ -36,6 +36,31 @@ class DetailEducationProgramTmp extends Component {
     this.state = {};
   }
 
+  checkAdmin = (role) => {
+    if(role.indexOf("ADMIN") > -1) {
+        return true;
+    }
+    return false;
+}
+
+checkInTeacherSubject = (teacherSubject, idSubject) => {
+  for(let i = 0;i < teacherSubject.length;i++) {
+      if(teacherSubject[i].IdSubject === idSubject) {
+          return true;
+      }
+  }
+  return false;
+}
+
+checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+  for(let i = 0;i < teacherReviewSubject.length;i++) {
+      if(teacherReviewSubject[i].idTTC === idSubject) {
+          return true;
+      }
+  }
+  return false;
+}
+
   componentDidMount = () => {
     // const urlParams = new URLSearchParams(window.location.search);
     // const id = urlParams.get("id");
@@ -54,21 +79,37 @@ class DetailEducationProgramTmp extends Component {
           }
         }
         dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
-        this.props.updateSubjectList(dataSubject);
-        this.props.updateDataCtdt(dataCtdt);
-        this.props.updateIsLoadedDataCtdt(true);
         $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => { 
           if(res.data !== undefined && res.data !== null){
             this.props.updateTeacherSubject(res.data);
           }
+          $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+          .then(res => {
+            if(res.data !== undefined && res.data !== null){
+              this.props.updateTeacherReviewSubject(res.data);
+            }
+            if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+
+              dataSubject = dataSubject.filter(item => 
+                  item.del_flat != 1
+              );
+              
+            }
+            else {
+              dataSubject = dataSubject.filter(item => 
+                    item.del_flat != 1
+                    && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
+                    || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                );
+                this.props.updateSubjectList(dataSubject);
+            }
+          });
         });
-        $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-        .then(res => {
-          if(res.data !== undefined && res.data !== null){
-            this.props.updateTeacherReviewSubject(res.data);
-          }
-        });
+        
+        this.props.updateDataCtdt(dataCtdt);
+        this.props.updateIsLoadedDataCtdt(true);
+        
       }})
 
     //}
@@ -156,7 +197,9 @@ const mapStateToProps = state => ({
   detailEduProgram: state.detailEduProgram,
   contentNodes: state.contentNodes,
   scheduleNodes: state.scheduleNodes,
-  targetNodes: state.targetNodes
+  targetNodes: state.targetNodes,
+  teacherSubject: state.datactdt.teacherSubject,
+  teacherReviewSubject: state.datactdt.teacherReviewSubject,
 });
 
 export default connect(mapStateToProps, {

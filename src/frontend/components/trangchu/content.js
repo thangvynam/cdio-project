@@ -208,35 +208,19 @@ class Content extends Component {
         let parent = this.props.content_parent;
         switch (type) {
             case "de-cuong-mon-hoc": {
-                if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                    if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.IdSubjectBlock === +khoi && item.del_flat != 1
-                        );
-                    }
-                    else {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.del_flat != 1
-                        );
-                    }
+                if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                    subjectList = this.props.subjectList.filter(item => 
+                        item.IdSubjectBlock === +khoi 
+                        && item.del_flat != 1
+                    );
                 }
                 else {
-                    if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.IdSubjectBlock === +khoi 
-                            && item.del_flat != 1
-                            && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                            || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
-                        );
-                    }
-                    else {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.del_flat != 1
-                            && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                            || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
-                        );
-                    }
+                    subjectList = this.props.subjectList.filter(item => 
+                        item.del_flat != 1
+
+                    );
                 }
+                
                 
                 
             } break;
@@ -244,8 +228,6 @@ class Content extends Component {
                 
                 subjectList = this.props.subjectList.filter(item => 
                     item.del_flat != 1
-                    && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                    || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
                 );;
                 
 
@@ -534,6 +516,12 @@ class Content extends Component {
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={subjectList}
+                                    pagination={{
+                                        onChange: page => {
+                                          console.log(page);
+                                        },
+                                        pageSize: 10,
+                                      }}
                                     renderItem={(item, id) => (
                                         <Row>
                                             <div style={{ height: "10px" }}></div>
@@ -566,7 +554,7 @@ class Content extends Component {
                             </div>
                         </React.Fragment>
                     ) 
-                    : type === "matrix" ? <Matrix />
+                    : type === "matrix" ? <Matrix khoi={khoi}/>
                     : type === "edit-matrix" ? <EditMatrix />
                     : type === "survey-matrix" ? <SurveyMatrix />
                     : type === "benchmark-matrix" ? <BenchMark />
@@ -576,6 +564,12 @@ class Content extends Component {
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={subjectList}
+                                    pagination={{
+                                        onChange: page => {
+                                          console.log(page);
+                                        },
+                                        pageSize: 10,
+                                      }}
                                     renderItem={(item, id) => (
                                         <Row>
                                             <div style={{ height: "10px" }}></div>

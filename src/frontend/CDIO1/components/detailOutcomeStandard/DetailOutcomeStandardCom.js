@@ -7,6 +7,7 @@ import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { AutoComplete } from "primereact/autocomplete";
+import { RadioButton } from "primereact/radiobutton";
 
 import "../../assets/common.css";
 
@@ -36,7 +37,8 @@ export default class DetailOutcomeStandardCom extends Component {
       keys: null,
       isSaveBtnDisabled: false,
       deleteReAlertVisible: false,
-      idRevision: 0
+      idRevision: 0,
+      // isShowEvaluate: true
     };
   }
 
@@ -371,7 +373,12 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   actionTemplate = (node, column) => {
-    return (
+    return this.state.isShowEvaluate ? (
+      <div>
+      <RadioButton value={1} name="evaluate" onChange={(e) => this.setState({value: e.value})} checked={this.state.value === 1} />
+<RadioButton value={2} name="evaluate" onChange={(e) => this.setState({value: e.value})} checked={this.state.value === 2} />
+      </div>
+    ) : (
       <div>
         {JSON.parse(localStorage.getItem("user")).data.Role.includes(
           "BIEN_SOAN"
@@ -412,17 +419,9 @@ export default class DetailOutcomeStandardCom extends Component {
           </React.Fragment>
         )}
         {JSON.parse(localStorage.getItem("user")).data.Role.includes(
-          "TEACHER"
+          "ADMIN"
         ) && (
           <React.Fragment>
-            <Button
-              onClick={() => console.log("Đánh giá")}
-              theme="primary"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title="Đánh giá"
-            >
-              <i className="material-icons">thumbs_up_down</i>
-            </Button>
             <Button
               onClick={() => console.log("Bình luận")}
               theme="primary"
@@ -545,7 +544,7 @@ export default class DetailOutcomeStandardCom extends Component {
                   </Button>
                 }
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "18em" }}
+                style={{ textAlign: "center", width: "15em" }}
               />
             </TreeTable>
           </Col>

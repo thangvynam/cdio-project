@@ -154,8 +154,10 @@ class TNTableItem extends Component {
         ...item,
         ...row
       });
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.monhoc)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa tài nguyên môn học: Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link} thành Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+      let message = `Chỉnh sửa tài nguyên môn học: [Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link}] thành [Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}]`;
+
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.props.onAddTNData(newItems);
       this.setState({ editingKey: "" });
@@ -253,8 +255,7 @@ class TNTableItem extends Component {
       id: id,
       description: description,
     }
-    console.log(obj);
-    // axios.post(`/save-tainguyenmonhoc`, obj)
+
     $.saveData8(obj)
       .then(response => {
         if (response.data === 1) {
@@ -285,6 +286,7 @@ class TNTableItem extends Component {
   };
 
   render() {
+    
     const components = {
       body: {
         row: EditableFormRow,

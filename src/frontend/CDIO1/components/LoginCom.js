@@ -13,6 +13,8 @@ import {
   Row,
   FormInput
 } from "shards-react";
+import $ from './../../helpers/services';
+import _ from 'lodash';
 
 export default class LoginCom extends Component {
   constructor() {
@@ -22,6 +24,23 @@ export default class LoginCom extends Component {
       password: ""
     };
   }
+
+  componentWillMount(){
+    if (!_.isNull(localStorage.getItem("user"))){
+      let user = JSON.parse(localStorage.getItem("user"));
+      $.authenMe({ "access": user.token }).then(res => {
+        if (res.data.status === 200) {
+          localStorage.clear();
+          $.setStorage(res.data)
+        }
+        else 
+              localStorage.clear();
+      })
+    }
+  }
+
+
+
 
   handleUsernameChange = event => {
     if (event.target.value.length > 30)
@@ -45,8 +64,7 @@ export default class LoginCom extends Component {
   };
 
   render() {
-    if (localStorage.getItem("user")) return <Redirect to="/" />;
-
+    if (localStorage.getItem("user")) return <Redirect to="/home" />;
     return (
       <Container>
         <Row className="justify-content-center vertical-align-middle">

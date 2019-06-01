@@ -408,81 +408,134 @@ class CDRTableItem extends Component {
   loadGap = () => {
 
     $.collectMtmhHasCdrCdio({data: {thong_tin_chung_id: this.props.monhoc}}).then((res) => {
-      $.collectMucdoMtmhHasCdrCdio({data: res.data}).then((response) => {
-          let arr = [];
-          for(let i = 0;i < response.data.length;i++) {
-            let keyrow = response.data[i].cdr.split(".");
-            keyrow.splice(keyrow.length - 1, 1);
-            let index = this.isExistInArr(keyrow.join("."), arr);
-            if(index !== -1) {
-              arr[index].muc_do = arr[index].muc_do + "," + response.data[i].muc_do;
-              arr[index].muc_do = this.sortLevels(Array.from(new Set(arr[index].muc_do.split(",")))).toString();
-              if(arr[index].muc_do.split(",").length > 1 && arr[index].muc_do.split(",")[0] === "-") {
-                let muc_do = arr[index].muc_do.split(",");
-                muc_do.splice(0, 1);
-                arr[index].muc_do = muc_do.toString();
+      if(res.data && res.data.length > 0) {
+        //
+        $.collectMucdoMtmhHasCdrCdio({data: res.data}).then((response) => {
+            let arr = [];
+            for(let i = 0;i < response.data.length;i++) {
+              let keyrow = response.data[i].cdr.split(".");
+              keyrow.splice(keyrow.length - 1, 1);
+              let index = this.isExistInArr(keyrow.join("."), arr);
+              if(index !== -1) {
+                arr[index].muc_do = arr[index].muc_do + "," + response.data[i].muc_do;
+                arr[index].muc_do = this.sortLevels(Array.from(new Set(arr[index].muc_do.split(",")))).toString();
+                if(arr[index].muc_do.split(",").length > 1 && arr[index].muc_do.split(",")[0] === "-") {
+                  let muc_do = arr[index].muc_do.split(",");
+                  muc_do.splice(0, 1);
+                  arr[index].muc_do = muc_do.toString();
+                }
+                arr[index].muc_tieu = arr[index].muc_tieu + "," + response.data[i].muc_tieu;
+                arr[index].muc_tieu = this.sortLevels(arr[index].muc_tieu.split(",")).toString();
               }
-              arr[index].muc_tieu = arr[index].muc_tieu + "," + response.data[i].muc_tieu;
-              arr[index].muc_tieu = this.sortLevels(arr[index].muc_tieu.split(",")).toString();
-            }
-            else {
-              let muc_do = this.sortLevels(Array.from(new Set(response.data[i].muc_do.split(",")))).toString();
-              let muc_tieu = this.sortLevels(response.data[i].muc_tieu.split(",")).toString();
+              else {
+                let muc_do = this.sortLevels(Array.from(new Set(response.data[i].muc_do.split(",")))).toString();
+                let muc_tieu = this.sortLevels(response.data[i].muc_tieu.split(",")).toString();
 
-              arr.push({
-                cdr: keyrow.join("."),
-                muc_do: muc_do,
-                muc_tieu: muc_tieu
-              })
-            }
-          }
-          let editMatrixArr = [];
-          for(let i = 0;i < this.props.editMatrix.length;i++) {
-            if(this.props.editMatrix[i].key.toString() === this.props.monhoc.toString()) {
-              for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
-                let key = Object.keys(this.props.editMatrix[i])[j];
-                if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
-                editMatrixArr.push({
-                  cdr: key,
-                  muc_do: this.props.editMatrix[i][key]
+                arr.push({
+                  cdr: keyrow.join("."),
+                  muc_do: muc_do,
+                  muc_tieu: muc_tieu
                 })
               }
+            }
+            let editMatrixArr = [];
+            for(let i = 0;i < this.props.editMatrix.length;i++) {
+              if(this.props.editMatrix[i].key.toString() === this.props.monhoc.toString()) {
+                for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
+                  let key = Object.keys(this.props.editMatrix[i])[j];
+                  if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
+                  editMatrixArr.push({
+                    cdr: key,
+                    muc_do: this.props.editMatrix[i][key]
+                  })
+                }
+                }
+                break;
               }
-              break;
             }
-          }
-          let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
-          let notifications = [];
-          for(let i = 0;i < notiArr.length;i++) {
-            if(notiArr[i].state === "add") {
-            notifications.push(<div key={i}>
-              <span style={{color: "green"}}>{notiArr[i].cdr}. </span>
-              <span style={{color: "green"}}>{`Chọn ${notiArr[i].muc_do}`}</span>
-              <span>{` tại ít nhất một trong các mục tiêu: `}</span>
-              <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
-              </div>);
-            }
-            else if(notiArr[i].state === "delete") {
+            let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
+            let notifications = [];
+            for(let i = 0;i < notiArr.length;i++) {
+              if(notiArr[i].state === "add") {
               notifications.push(<div key={i}>
-              <span style={{color: "red"}}>{notiArr[i].cdr}. </span>
-              <span style={{color: "red"}}>{`Không chọn ${notiArr[i].muc_do}`}</span>
-              <span>{` tại tất cả các mục tiêu: `}</span>
-              <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
-              </div>
-              );
-            }
-            else {
-              notifications.push(<div key={i}>
-                <span style={{color: "orange"}}>Thêm</span>
-                <span> chuẩn đầu ra </span>
-                <span style={{color: "orange"}}>{notiArr[i].cdr}</span>
-                <span> vào môn học và chọn </span>
-                <span style={{color: "green"}}>{notiArr[i].muc_do}.</span>
+                <span style={{color: "green"}}>{notiArr[i].cdr}. </span>
+                <span style={{color: "green"}}>{`Chọn ${notiArr[i].muc_do}`}</span>
+                <span>{` tại ít nhất một trong các mục tiêu: `}</span>
+                <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
                 </div>);
+              }
+              else if(notiArr[i].state === "delete") {
+                notifications.push(<div key={i}>
+                <span style={{color: "red"}}>{notiArr[i].cdr}. </span>
+                <span style={{color: "red"}}>{`Không chọn ${notiArr[i].muc_do}`}</span>
+                <span>{` tại tất cả các mục tiêu: `}</span>
+                <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
+                </div>
+                );
+              }
+              else {
+                notifications.push(<div key={i}>
+                  <span style={{color: "orange"}}>Thêm</span>
+                  <span> chuẩn đầu ra </span>
+                  <span style={{color: "orange"}}>{notiArr[i].cdr}</span>
+                  <span> vào môn học và chọn </span>
+                  <span style={{color: "green"}}>{notiArr[i].muc_do}.</span>
+                  </div>);
+              }
             }
-          }
-          this.setState({notifications: notifications});
-      })
+            this.setState({notifications: notifications});
+        })
+        //
+    }
+    else {
+      let arr = [];
+      let editMatrixArr = [];
+            for(let i = 0;i < this.props.editMatrix.length;i++) {
+              if(this.props.editMatrix[i].key.toString() === this.props.monhoc.toString()) {
+                for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
+                  let key = Object.keys(this.props.editMatrix[i])[j];
+                  if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
+                  editMatrixArr.push({
+                    cdr: key,
+                    muc_do: this.props.editMatrix[i][key]
+                  })
+                }
+                }
+                break;
+              }
+            }
+            let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
+            let notifications = [];
+            for(let i = 0;i < notiArr.length;i++) {
+              if(notiArr[i].state === "add") {
+              notifications.push(<div key={i}>
+                <span style={{color: "green"}}>{notiArr[i].cdr}. </span>
+                <span style={{color: "green"}}>{`Chọn ${notiArr[i].muc_do}`}</span>
+                <span>{` tại ít nhất một trong các mục tiêu: `}</span>
+                <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
+                </div>);
+              }
+              else if(notiArr[i].state === "delete") {
+                notifications.push(<div key={i}>
+                <span style={{color: "red"}}>{notiArr[i].cdr}. </span>
+                <span style={{color: "red"}}>{`Không chọn ${notiArr[i].muc_do}`}</span>
+                <span>{` tại tất cả các mục tiêu: `}</span>
+                <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
+                </div>
+                );
+              }
+              else {
+                notifications.push(<div key={i}>
+                  <span style={{color: "orange"}}>Thêm</span>
+                  <span> chuẩn đầu ra </span>
+                  <span style={{color: "orange"}}>{notiArr[i].cdr}</span>
+                  <span> vào môn học và chọn </span>
+                  <span style={{color: "green"}}>{notiArr[i].muc_do}.</span>
+                  </div>);
+              }
+            }
+            this.setState({notifications: notifications});
+    }
    })
   }
 
@@ -616,7 +669,7 @@ getSubjectName = (subjectList, id) => {
         let data = {
             data: subjectListId
         }
-        $.getStandardMatrix(data.data).then((res) => {
+        $.getStandardMatrix(data).then((res) => {
             let data = [];
             for(let i = 0;i < res.data.length;i++) {
                 let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -916,7 +969,7 @@ getSubjectName = (subjectList, id) => {
         },
       }
       let cdrmdhd_level = [];
-      if(this.props.cdrmdhd.length > 0) {
+      if(this.props.cdrmdhd.length > 0 && this.props.cdrmdhd) {
         cdrmdhd_level = this.props.cdrmdhd.map((item, key) => {
           let child_level_1 = [];
           for(let i = 0;i < item.children.length;i++) {

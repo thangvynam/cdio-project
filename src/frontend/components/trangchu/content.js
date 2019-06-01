@@ -520,7 +520,7 @@ class Content extends Component {
                                     />
                             </div>,
                                 </Row>
-                        <Survey subjectName={this.props.subjectName} monhoc={monhoc}/>
+                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt}/>
                     </React.Fragment>
                 )
                 break;

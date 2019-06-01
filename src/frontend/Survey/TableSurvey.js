@@ -21,7 +21,11 @@ class TableSurvey extends Component {
     tableBody() {
         const data = this.props.data;
         const dataITU = this.props.resultITU;
-        // console.log(dataITU)
+        let isDone = false;
+        if (this.props.resultITU) {
+            isDone = true
+        }
+       
         let template = [];
 
         data.map(function (column) {
@@ -39,6 +43,7 @@ class TableSurvey extends Component {
                         <CheckboxSurvey 
                             id = {key}
                             defaultValue = {valueOfKey ? dataITU[valueOfKey].value : null}
+                            isDone = {isDone}
                         />
                     </td>
                     <td>

@@ -190,12 +190,19 @@ const saveSurveyQA = (data) => {
     return $.post(url, {data})
 }
 
-const saveSurvey = (dataConvert, id, subjectId) => {
+const saveSurvey = (dataConvert, id, subjectId, id_giaovien, id_ctdt) => {
     let url = _.SAVE_SURVEY;
     return $.post(url, {
         data: dataConvert,
         id_qa: id,
-        idMon : subjectId})
+        idMon : subjectId,
+        id_giaovien,
+        id_ctdt})
+}
+
+const checkStatus = (data) => {
+    let url = _.CHECK_STATUS;
+    return $.post(url, {data})
 }
 
 const getData3 = (param) => {
@@ -243,9 +250,9 @@ const getSurveyQA = (param) => {
     return $.get(url);
 }
 
-const getSurvey = (param) => {
-    let url = `${_.GET_SURVEY}/${param}`;
-    return $.get(url);
+const getSurvey = (data) => {
+    let url = `${_.GET_SURVEY}`;
+    return $.post(url, {data});
 }
 
 const getDataSurvey = () => {
@@ -548,4 +555,6 @@ export default{
     saveData2,
     saveData3,
     addData5,
+
+    checkStatus
 }

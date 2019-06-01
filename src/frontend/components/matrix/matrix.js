@@ -51,7 +51,14 @@ class Matrix extends Component {
     componentWillReceiveProps(nextProps) {
         if (this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
             this.props.updateIsLoadEditMatrix("true");
-            $.getStandardMatrix().then((res) => {
+            let subjectListId = [];
+        this.props.subjectList.map(item => {
+            subjectListId.push(item.IdSubject);
+        })
+        let data1 = {
+            data: subjectListId
+        }
+            $.getStandardMatrix(data1).then((res) => {
                 let data = [];
                 for (let i = 0; i < res.data.length; i++) {
                     let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -87,7 +94,14 @@ class Matrix extends Component {
         this.setState({ isLoading: true })
         if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
             this.props.updateIsLoadEditMatrix("true");
-            $.getStandardMatrix().then((res) => {
+            let subjectListId = [];
+        this.props.subjectList.map(item => {
+            subjectListId.push(item.IdSubject);
+        })
+        let data1 = {
+            data: subjectListId
+        }
+            $.getStandardMatrix(data1).then((res) => {
                 let data = [];
                 for (let i = 0; i < res.data.length; i++) {
                     let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -116,8 +130,8 @@ class Matrix extends Component {
                 this.props.updateEditMatrix(data);
             })
 
-        }
-        var a = $.getRealityMatrix();
+        
+        var a = $.getRealityMatrix(data1);
         var b = $.getCDR_CDIO();
         Promise.all([a, b])
             .then((res) => {
@@ -130,6 +144,7 @@ class Matrix extends Component {
             .catch((err) => {
                 console.log(err)
             })
+        }
     }
 
     componentDidUpdate() {

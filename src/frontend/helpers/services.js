@@ -29,20 +29,20 @@ const updateStandardMatrix = (data) => {
 }
 
 //Matrix
-const getBenchmarkMatrix = () => {
+const getBenchmarkMatrix = (data) => {
     let url = _.GET_BENCHMARK_MATRIX;
-    return $.get(url);
+    return $.post(url, data);
 
 }
 
-const getStandardMatrix = () => {
+const getStandardMatrix = (data) => {
     let url = _.GET_STANDARD_MATRIX;
-    return $.get(url);
+    return $.post(url, data);
 }
 
-const getRealityMatrix = () => {
+const getRealityMatrix = (data) => {
     let url = _.GET_REALITY_MATRIX;
-    return $.get(url);
+    return $.post(url, data);
 }
 
 

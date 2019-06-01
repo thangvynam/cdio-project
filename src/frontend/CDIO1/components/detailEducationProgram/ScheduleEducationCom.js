@@ -54,12 +54,13 @@ export default class ScheduleEducationCom extends React.Component {
       this.state.listSubjects,
       this.state.semesters
     );
+    console.log(data);
     let newSemester = this.state.semester;
     this.setState({
+      semesters: data,
       isDialogTable: false,
       listSubjects: [],
-      semester: ++newSemester,
-      semesters: data
+      semester: newSemester + 1
     });
   };
 
@@ -138,7 +139,7 @@ export default class ScheduleEducationCom extends React.Component {
       filterSubjects: logic.filterSubjects(
         e,
         this.state.block &&
-          Object.keys(this.state.groupSubjectsFrom7).includes(this.state.block)
+        Object.keys(this.state.groupSubjectsFrom7).includes(this.state.block)
           ? this.state.groupSubjectsFrom7[this.state.block]
           : this.state.subjectsFrom7
       )
@@ -238,7 +239,10 @@ export default class ScheduleEducationCom extends React.Component {
       <DataTable
         headerColumnGroup={headerGroup}
         responsive={true}
-        value={data.subjects}
+        value={data.subjects.map(subject => {
+          if (!subject.option) subject.option = subject.Optional ? "TC" : "BB";
+          return subject;
+        })}
         editable={true}
         reorderableRows={true}
         onRowReorder={e => this.onRowSubjectReorder(e.value, data.semester)}

@@ -11,6 +11,9 @@ export const CHANGE_PASS_ERROR = "CHANGE_PASS_ERROR";
 export const GET_INFO_SUCCESS = "GET_INFO_SUCCESS";
 export const GET_INFO_ERROR = "GET_INFO_ERROR";
 
+export const DELETE_USER_SUCCESS = "DELETE_USER_SUCCESS";
+export const DELETE_USER_ERROR = "DELETE_USER_ERROR";
+
 export const LOG_OUT = "LOG_OUT";
 
 // users actions

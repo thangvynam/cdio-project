@@ -7,7 +7,7 @@ import { Row, Col, Button } from "shards-react";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { AutoComplete } from "primereact/autocomplete";
-import { RadioButton } from "primereact/radiobutton";
+// import { RadioButton } from "primereact/radiobutton";
 
 import "../../assets/common.css";
 
@@ -37,7 +37,7 @@ export default class DetailOutcomeStandardCom extends Component {
       keys: null,
       isSaveBtnDisabled: false,
       deleteReAlertVisible: false,
-      idRevision: 0,
+      idRevision: 0
       // isShowEvaluate: true
     };
   }
@@ -373,12 +373,7 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   actionTemplate = (node, column) => {
-    return this.state.isShowEvaluate ? (
-      <div>
-      <RadioButton value={1} name="evaluate" onChange={(e) => this.setState({value: e.value})} checked={this.state.value === 1} />
-<RadioButton value={2} name="evaluate" onChange={(e) => this.setState({value: e.value})} checked={this.state.value === 2} />
-      </div>
-    ) : (
+    return (
       <div>
         {JSON.parse(localStorage.getItem("user")).data.Role.includes(
           "BIEN_SOAN"

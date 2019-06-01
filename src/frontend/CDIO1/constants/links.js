@@ -6,6 +6,7 @@ export const LOAD_USERS = `${LINK}/user/getlist/`;
 export const REGISTER_USER = `${LINK}/user/register/`;
 export const CHANGE_PASS = `${LINK}/user/changepass/`;
 export const GET_INFO = `${LINK}/user/getinfo/`;
+export const DELETE_USER = `${LINK}/user/delete/`;
 
 // levels links
 export const LOAD_LEVELS = `${LINK}/level/getlist/`;

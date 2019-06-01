@@ -91,7 +91,14 @@ export const onLoadUsers = () => {
   return (dispatch, getState) => {
     let req = links.LOAD_USERS;
     axios
-      .get(req)
+      .get(req, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
       .then(res => {
         const users = res.data.data;
         if (users === undefined || users === null) {
@@ -136,7 +143,7 @@ export const onRegisterUser = user => {
       .post(req, params, {
         headers: {
           "Content-Type": "application/json",
-          "authorization": localStorage.getItem("user")
+          authorization: localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
             : ""
         }
@@ -203,6 +210,7 @@ export const onChangePass = user => {
         }
       })
       .then(res => {
+        console.log(res);
         if (res.data.code === 1) {
           dispatch(changePassSuccess(res));
           let chirp = {
@@ -245,7 +253,7 @@ export const onGetInfo = iduser => {
   return (dispatch, getState) => {
     let req = `${links.GET_INFO}?iduser=${iduser}`;
     axios
-      .post(req, {
+      .get(req, {
         headers: {
           "Content-Type": "application/json",
           authorization: localStorage.getItem("user")
@@ -273,6 +281,61 @@ export const onGetInfo = iduser => {
         };
         dispatch(message.message(chirp));
         dispatch(getInfoError(err));
+      });
+  };
+};
+
+export const deleteUserSuccess = successMessage => ({
+  type: cst.DELETE_USER_SUCCESS,
+  successMessage
+});
+
+export const deleteUserError = errorMessage => ({
+  type: cst.DELETE_USER_ERROR,
+  errorMessage
+});
+
+export const onDeleteUser = username => {
+  return (dispatch, getState) => {
+    let req = links.DELETE_USER;
+    let params = {};
+    params.data = JSON.stringify(username);
+    axios
+      .post(req, params, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
+      .then(res => {
+        console.log(res)
+        if (res.data.code === 1) {
+          dispatch(deleteUserSuccess(res));
+          let chirp = {
+            message: `Xóa tài khoản thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
+        } else {
+          dispatch(deleteUserError(res));
+          let chirp = {
+            message: `Xóa tài khoản thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        }
+        dispatch(onLoadUsers());
+      })
+      .catch(err => {
+        dispatch(onLoadUsers());
+        dispatch(deleteUserError(err));
+        let chirp = {
+          message: `Xóa tài khoản thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
       });
   };
 };

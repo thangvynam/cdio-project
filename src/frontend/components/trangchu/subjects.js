@@ -11,8 +11,8 @@ import Page404 from '../../NotFound/Page404';
 import { MENUITEM, subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
- 
-
+import NewNav from '../decuongmonhoc/index/navbar/newnav';
+import Direction from './direction';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -154,6 +154,24 @@ class Home extends Component {
         }
         return -1;
       }
+      checkInTeacherSubject = (teacherSubject, idSubject) => {
+        for(let i = 0;i < teacherSubject.length;i++) {
+            if(teacherSubject[i].IdSubject === idSubject) {
+                return true;
+            }
+        }
+        return false;
+      }
+      
+      checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+        for(let i = 0;i < teacherReviewSubject.length;i++) {
+            if(teacherReviewSubject[i].idTTC === idSubject) {
+                return true;
+            }
+        }
+        return false;
+      }
+
     componentDidMount() {
         this.props.onLoadEduPrograms();
         var self = this;
@@ -170,36 +188,50 @@ class Home extends Component {
     // });     
     let ctdt = self.props.match.params.ctdt;
     if(ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
-        $.getBlockSubject(ctdt)
-        .then(res => {
-        let resData = res.data.data;
-        let dataSubject = [];
-        let dataCtdt = [];
-        if(resData !== undefined && resData !== null) {
-            for(let i = 0;i < resData.length;i++) {
-            dataCtdt = dataCtdt.concat(resData[i].block);
-            for(let j = 0;j < resData[i].block.length;j++) {
-                dataSubject = dataSubject.concat(resData[i].block[j].subjects);
-            }
-            }
-        }
-        dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
-        this.props.updateSubjectList(dataSubject);
-        this.props.updateDataCtdt(dataCtdt);
-        this.props.updateIsLoadedDataCtdt(true);
-        $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-        .then(res => { 
-          if(res.data !== undefined && res.data !== null){
-            this.props.updateTeacherSubject(res.data);
-          }
-        });
-        $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-        .then(res => {
-          if(res.data !== undefined && res.data !== null){
-            this.props.updateTeacherReviewSubject(res.data);
-          }
-        });
-        })
+        $.getBlockSubject(ctdt).then(res => {
+            let resData = res.data.data;
+            let dataSubject = [];
+            let dataCtdt = [];
+            if (resData !== undefined && resData !== null) {
+              for (let i = 0; i < resData.length; i++) {
+                dataCtdt = dataCtdt.concat(resData[i].block);
+                for (let j = 0; j < resData[i].block.length; j++) {
+                  dataSubject = dataSubject.concat(resData[i].block[j].subjects);
+                }
+              }
+              dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+              $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+              .then(res => { 
+                if(res.data !== undefined && res.data !== null){
+                  this.props.updateTeacherSubject(res.data);
+                }
+                $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+                .then(res => {
+                  if(res.data !== undefined && res.data !== null){
+                    this.props.updateTeacherReviewSubject(res.data);
+                  }
+                  if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+      
+                    dataSubject = dataSubject.filter(item => 
+                        item.del_flat != 1
+                    );
+                    
+                  }
+                  else {
+                    dataSubject = dataSubject.filter(item => 
+                          item.del_flat != 1
+                          && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
+                          || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                      );
+                      this.props.updateSubjectList(dataSubject);
+                  }
+                });
+              });
+              
+              this.props.updateDataCtdt(dataCtdt);
+              this.props.updateIsLoadedDataCtdt(true);
+              
+            }})
     }
     
     
@@ -268,6 +300,12 @@ class Home extends Component {
         }
         return false;
     }
+    checkChuNhiem = (role) => {
+        if(role.indexOf("CHUNHIEM") > -1) {
+            return true;
+        }
+        return false;
+      }
 
 componentDidUpdate(){
 
@@ -329,6 +367,20 @@ componentDidUpdate(){
                             console.log("param 2 must null")
                             return <Page404/>;
                         }     
+                    }
+                    // else if(parent === "ctdt") {
+                    //     //check role
+                    //     if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                    //         console.log("ctdt not for admin")
+                    //         return <Page404/>;
+                    //     }  
+                    // }
+                    else if(parent === "view-survey") {
+                        //check role
+                        if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                            console.log("danhmuc admin only")
+                            return <Page404/>;
+                        }  
                     }
                     else {
                         //check param 2
@@ -457,17 +509,16 @@ componentDidUpdate(){
                     </Col>
                     <Col span={22} className="col-right">
                         <Row>
-                            <NavBar
-                                updateCollapse={this.updateCollapse}
-                                isCollapse={this.state.collapse}
-                                theme={this.state.theme}
-                                themeCollaps={this.themeCollaps}
-                                subjectName={subjectName}
-                                content_khoi={this.props.match.params.khoi}
-                                content_ctdt={this.props.match.params.ctdt}
-                                content_parent={this.props.match.params.parent}
-                                content_type={this.props.match.params.type}
-                            />
+                            <Direction
+                            updateCollapse={this.updateCollapse}
+                            isCollapse={this.state.collapse}
+                            theme={this.state.theme}
+                            themeCollaps={this.themeCollaps}
+                            subjectName={subjectName}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
+                            content_parent={this.props.match.params.parent}
+                            content_type={this.props.match.params.type}/>
                         </Row>
                         <Row >
                         <Content content_type={this.props.match.params.type}
@@ -499,17 +550,16 @@ componentDidUpdate(){
                     </Col>
                     <Col span={19} className="col-right">
                         <Row>
-                            <NavBar
-                                updateCollapse={this.updateCollapse}
-                                isCollapse={this.state.collapse}
-                                theme={this.state.theme}
-                                themeCollaps={this.themeCollaps}
-                                subjectName={subjectName}
-                                content_khoi={this.props.match.params.khoi}
-                                content_ctdt={this.props.match.params.ctdt}
-                                content_parent={this.props.match.params.parent}
-                                content_type={this.props.match.params.type}
-                            />
+                        <Direction
+                            updateCollapse={this.updateCollapse}
+                            isCollapse={this.state.collapse}
+                            theme={this.state.theme}
+                            themeCollaps={this.themeCollaps}
+                            subjectName={subjectName}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
+                            content_parent={this.props.match.params.parent}
+                            content_type={this.props.match.params.type}/>
                         </Row>
                         <Row>
                         <Content content_type = {this.props.match.params.type}
@@ -550,6 +600,8 @@ const mapStateToProps = (state) => {
         cdrCdio: state.cdrcdio,
         dataCtdt: state.datactdt.data,
         isLoadedDataCtdt: state.datactdt.isLoaded,
+        teacherSubject: state.datactdt.teacherSubject,
+        teacherReviewSubject: state.datactdt.teacherReviewSubject,
     }
 }
 const mapDispatchToProps = (dispatch) => {

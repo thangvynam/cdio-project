@@ -46,6 +46,13 @@ class MenuLeft extends Component {
     return false;
 }
 
+  checkChuNhiem = (role) => {
+  if(role.indexOf("CHUNHIEM") > -1) {
+      return true;
+  }
+  return false;
+}
+
   checkTeacherBlock = (block) => {
     for(let i = 0;i < block.subjects.length;i++) {
       if(this.checkInTeacherSubject(this.props.teacherSubject, block.subjects[i].IdSubject)
@@ -379,6 +386,36 @@ class MenuLeft extends Component {
       } 
       else if(this.props.parentitem[i].id === "danh-muc") {
         if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+      // else if(this.props.parentitem[i].id === "ctdt") {
+      //   if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+      //     menuItemsCollapse.push(
+      //       <Menu.Item
+      //         key={this.props.parentitem[i].id}
+      //         onClick={() => this.onClick(this.props.parentitem[i].id)}
+      //       >
+      //         <Link to={`/${this.props.parentitem[i].id}`}>
+      //           <Icon type="dashboard" />
+      //           <span>{this.props.parentitem[i].name}</span>
+      //         </Link>
+      //       </Menu.Item>
+      //     );
+      //   }
+      // }
+      else if(this.props.parentitem[i].id === "view-survey") {
+        if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
           menuItemsCollapse.push(
             <Menu.Item
               key={this.props.parentitem[i].id}

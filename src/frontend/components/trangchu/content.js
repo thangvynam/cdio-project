@@ -195,6 +195,14 @@ class Content extends Component {
         }
         return false;
     }
+    
+    checkChuNhiem = (role) => {
+        if(role.indexOf("CHUNHIEM") > -1) {
+            return true;
+        }
+        return false;
+      }
+
     componentDidMount = () => {
         this.props.onLoadEduPrograms();
     };
@@ -208,44 +216,23 @@ class Content extends Component {
         let parent = this.props.content_parent;
         switch (type) {
             case "de-cuong-mon-hoc": {
-                if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                    if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.IdSubjectBlock === +khoi && item.del_flat != 1
-                        );
-                    }
-                    else {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.del_flat != 1
-                        );
-                    }
+                if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                    subjectList = this.props.subjectList.filter(item => 
+                        item.IdSubjectBlock === +khoi 
+                        && item.del_flat != 1
+                    );
                 }
                 else {
-                    if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.IdSubjectBlock === +khoi 
-                            && item.del_flat != 1
-                            && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                            || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
-                        );
-                    }
-                    else {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.del_flat != 1
-                            && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                            || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
-                        );
-                    }
+                    subjectList = this.props.subjectList.filter(item => 
+                        item.del_flat != 1
+
+                    );
                 }
-                
-                
             } break;
             case 'itusurvey': {
                 
                 subjectList = this.props.subjectList.filter(item => 
-                    item.del_flat != 1
-                    && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                    || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                    item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
                 );;
                 
 
@@ -264,10 +251,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Thông Tin Chung</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -282,10 +265,7 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Mô Tả Môn Học</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
+
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -300,10 +280,7 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Mục Tiêu Môn Học</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
+
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -318,10 +295,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Chuẩn Đẩu Ra</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -336,10 +309,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Kế Hoạch Giảng Dạy Lý Thuyết</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -354,10 +323,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Kế Hoạch Giảng Dạy Thực Hành</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -372,10 +337,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Đánh Giá</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -390,10 +351,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Tài Nguyên Môn Học</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -408,10 +365,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Quy Định Chung</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -427,10 +380,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Xuất File PDF</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -446,10 +395,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Thông Tin Chung</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <ThongTinChung idMH={this.props.content_monhoc}/>
@@ -463,10 +408,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>ITU_SURVEY</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <Survey subjectName={this.props.subjectName} monhoc={monhoc}/>
@@ -481,10 +422,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Phân Công</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -501,10 +438,6 @@ class Content extends Component {
                         <Row className="col-right-title">
                             <div>
                                 <span>Review</span>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
-                                <Divider type="vertical" />
-                                <a href="#">Link</a>
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -523,10 +456,6 @@ class Content extends Component {
                                 <Row className="col-right-title">
                                     <div>
                                         <span>SYLLABUS</span>
-                                        <Divider type="vertical" />
-                                        <a href="#">Link</a>
-                                        <Divider type="vertical" />
-                                        <a href="#">Link</a>
                                     </div>
                                 </Row>
                             </Col>
@@ -534,6 +463,12 @@ class Content extends Component {
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={subjectList}
+                                    pagination={{
+                                        onChange: page => {
+                                          console.log(page);
+                                        },
+                                        pageSize: 10,
+                                      }}
                                     renderItem={(item, id) => (
                                         <Row>
                                             <div style={{ height: "10px" }}></div>
@@ -548,7 +483,7 @@ class Content extends Component {
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
 
-                                                            !this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role) ? 
+                                                            !this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) ? 
                                                             this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.Id) ? <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
@@ -566,7 +501,7 @@ class Content extends Component {
                             </div>
                         </React.Fragment>
                     ) 
-                    : type === "matrix" ? <Matrix />
+                    : type === "matrix" ? <Matrix khoi={khoi}/>
                     : type === "edit-matrix" ? <EditMatrix />
                     : type === "survey-matrix" ? <SurveyMatrix />
                     : type === "benchmark-matrix" ? <BenchMark />
@@ -576,6 +511,12 @@ class Content extends Component {
                                 <List
                                     itemLayout="horizontal"
                                     dataSource={subjectList}
+                                    pagination={{
+                                        onChange: page => {
+                                          console.log(page);
+                                        },
+                                        pageSize: 10,
+                                      }}
                                     renderItem={(item, id) => (
                                         <Row>
                                             <div style={{ height: "10px" }}></div>
@@ -605,22 +546,6 @@ class Content extends Component {
                             </div>
                         </React.Fragment>
 
-                    : type === "view-survey" ? (
-                        <React.Fragment>
-                            <Row className="col-right-title">
-                                <div>
-                                    <span>Xem Khảo Sát</span>
-                                    <Divider type="vertical" />
-                                    <a href="#">Link</a>
-                                    <Divider type="vertical" />
-                                    <a href="#">Link</a>
-                                </div>,
-                                </Row>
-                            <div className="wrapper-custom-layout">
-                                <ViewSurvey />
-                            </div>
-                        </React.Fragment>
-                    )
                     : type === "chuan-dau-ra" ? (
                       <EditOutcomeStandard ctdt={ctdt}/>
                     )
@@ -641,6 +566,22 @@ class Content extends Component {
                     : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
                     : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
                     : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
+                    : parent === "view-survey" ? (
+                        <React.Fragment>
+                            <Row className="col-right-title">
+                                <div>
+                                    <span>Xem Khảo Sát</span>
+                                    <Divider type="vertical" />
+                                    <a href="#">Link</a>
+                                    <Divider type="vertical" />
+                                    <a href="#">Link</a>
+                                </div>,
+                                </Row>
+                            <div className="wrapper-custom-layout">
+                                <ViewSurvey />
+                            </div>
+                        </React.Fragment>
+                    )
                     : parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
                     : null;
                 }; break;

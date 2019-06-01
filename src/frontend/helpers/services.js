@@ -29,20 +29,20 @@ const updateStandardMatrix = (data) => {
 }
 
 //Matrix
-const getBenchmarkMatrix = () => {
+const getBenchmarkMatrix = (data) => {
     let url = _.GET_BENCHMARK_MATRIX;
-    return $.get(url);
+    return $.post(url, data);
 
 }
 
-const getStandardMatrix = () => {
+const getStandardMatrix = (data) => {
     let url = _.GET_STANDARD_MATRIX;
-    return $.get(url);
+    return $.post(url, data);
 }
 
-const getRealityMatrix = () => {
+const getRealityMatrix = (data) => {
     let url = _.GET_REALITY_MATRIX;
-    return $.get(url);
+    return $.post(url, data);
 }
 
 
@@ -388,12 +388,12 @@ const collectData5 = (data) => {
 }
 
 const getCDRDanhgia = (data) => {
-    let url = _.getCDRDanhgia;
+    let url = _.GET_CDR_DANHGIA;
     return $.post(url,data);
 }
 
 const getCDR_7 = (data) => {
-    let url = _.getCDR_7;
+    let url = _.GET_CDR_7;
     return $.post(url,data);
 }
 

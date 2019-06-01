@@ -37,6 +37,7 @@ class DGFormItem extends Component {
   }
 
   handleTileChange = (e) => {
+  
     if (e.target.value < 0) e.target.value = 1;
     if (e.target.value > 100) e.target.value = 100;
     let a = e.target.value;
@@ -64,30 +65,38 @@ class DGFormItem extends Component {
 
   displayRender = label => {
     if (this.isSubmit) {
-      this.isSubmit = false;
+      this.isSubmit = false;  
       return null;
     }
     if (label.length > 0) return label[0] + label[1];
   };
 
   onChange = (value) => {
-    if (value.length === 0) return;
+
+    if (value.length < 2) return;
     let tempInfo = this.props.itemLayout7Reducer.tempInfo;
 
     let newArray = tempInfo.standardOutput.slice();
-    newArray.push(value[0] + value[1]);
-    temp = newArray;
-    let a = temp.slice();
+    let temp = value[0] + value[1];
+    let flag = true;
+
+    for (let i = 0; i < newArray.length; i++) {
+      if (newArray[i] === temp) {
+        newArray.splice(i, 1);
+        flag = false;
+      }
+    }
+    if (flag) newArray.push(temp);
 
     this.props.onChangeDGData({
-      standardOutput: a,
+      standardOutput: newArray,
       mathanhphan: this.props.itemLayout7Reducer.tempInfo.mathanhphan,
       tenthanhphan: this.props.itemLayout7Reducer.tempInfo.tenthanhphan,
       mota: this.props.itemLayout7Reducer.tempInfo.mota,
       tile: this.props.itemLayout7Reducer.tempInfo.tile
     })
 
-    tempInfo["standardOutput"] = a;
+    tempInfo["standardOutput"] = newArray;
     this.props.onSaveTempDGData(tempInfo);
   }
 
@@ -196,8 +205,8 @@ class DGFormItem extends Component {
                       } else {
                         dataReturn = previewInfo.concat(data);
                       }
-                      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc)
-                      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+                      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+                      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.subjectId)
                       
                       this.props.onAddDGData(dataReturn);
                       message.info("Thêm thành công!");
@@ -360,7 +369,7 @@ class DGFormItem extends Component {
               }],
               initialValue: this.props.itemLayout7Reducer.tempInfo.tile
             })(
-              <Input onChange={this.handleTileChange} />
+              <Input onChange={this.handleTileChange} type="number"/>
             )}
 
           </Form.Item>

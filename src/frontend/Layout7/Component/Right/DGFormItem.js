@@ -196,8 +196,8 @@ class DGFormItem extends Component {
                       } else {
                         dataReturn = previewInfo.concat(data);
                       }
-                      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc)
-                      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+                      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.subjectId)
+                      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.subjectId)
                       
                       this.props.onAddDGData(dataReturn);
                       message.info("Thêm thành công!");

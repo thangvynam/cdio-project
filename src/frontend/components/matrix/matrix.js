@@ -58,6 +58,7 @@ class Matrix extends Component {
         let data1 = {
             data: subjectListId
         }
+        if(data1.data.length > 0) {
             $.getStandardMatrix(data1).then((res) => {
                 let data = [];
                 for (let i = 0; i < res.data.length; i++) {
@@ -86,7 +87,21 @@ class Matrix extends Component {
                 }
                 this.props.updateEditMatrix(data);
             })
-
+        
+            var a = $.getRealityMatrix(data1);
+        var b = $.getCDR_CDIO();
+        Promise.all([a, b])
+            .then((res) => {
+                this.props.getDataMatrix(res)
+                this.createData(res);
+                this.setState({
+                    isLoading: false
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
         }
     }
 
@@ -101,6 +116,7 @@ class Matrix extends Component {
         let data1 = {
             data: subjectListId
         }
+        if(data1.data.length > 0) {
             $.getStandardMatrix(data1).then((res) => {
                 let data = [];
                 for (let i = 0; i < res.data.length; i++) {
@@ -144,6 +160,7 @@ class Matrix extends Component {
             .catch((err) => {
                 console.log(err)
             })
+        }
         }
     }
 

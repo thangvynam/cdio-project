@@ -108,7 +108,7 @@ export default{
 
     ADD_DATA_5 : baseUrl + '/add-data-5',
 
-
+    CHECK_STATUS: baseUrl + '/checkstatus',
     
 
 }

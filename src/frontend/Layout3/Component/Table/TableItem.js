@@ -26,6 +26,8 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
+let cellData = [] 
+
 class EditableCell extends React.Component {
   constructor(props) {
     super(props);
@@ -39,14 +41,8 @@ class EditableCell extends React.Component {
     this.setState({ standActs: value });
   }
 
-  async getCDR() {
-    return $.getCDR_3().then(res => {
-        return res.data
-    })
-}
-
 async componentDidMount() {
-  let arr = await this.getCDR()
+  let arr = cellData
             arr.forEach(element => {
                 element.KeyRow = element.KeyRow.slice(0, element.KeyRow.length -1)
                 element.KeyRow = element.KeyRow.replace(/-/g, ".")
@@ -223,6 +219,17 @@ getUnique(arr, comp) {
 
     .filter(e => arr[e]).map(e => arr[e]);
    return unique;
+}
+
+async componentDidMount() {
+  cellData = await this.getCDR();
+  await console.log(cellData);
+}
+
+async getCDR() {
+  return $.getCDR_3().then(res => {
+      return res.data
+  })
 }
 
 async componentWillReceiveProps(nextProps){

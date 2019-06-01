@@ -21,17 +21,30 @@ class CheckboxSurvey extends Component {
             defaultValue = Array.from(this.props.defaultValue.split(','))
             defaultValue = defaultValue.splice(0, defaultValue.length - 1)
         }
+        console.log(defaultValue)
         return (
-            _.isEmpty(defaultValue) ?
+            // _.isEmpty(defaultValue) ?
+            //     <Checkbox.Group
+            //         options={levelsOptions}
+            //         onChange={(e, id) => { this.onChange(e, this.props.id) }}
+            //         style={{ width: "100%" }}>
+            //     </Checkbox.Group> :
+            //     <Checkbox.Group
+            //         disabled
+            //         value={defaultValue}
+            //         options={levelsOptions}
+            //         style={{ width: "100%" }}>
+            //     </Checkbox.Group>
+            this.props.isDone ? 
                 <Checkbox.Group
+                    disabled
+                    value={defaultValue}
                     options={levelsOptions}
-                    onChange={(e, id) => { this.onChange(e, this.props.id) }}
                     style={{ width: "100%" }}>
                 </Checkbox.Group> :
                 <Checkbox.Group
-                    disabled
-                    defaultValue={defaultValue}
                     options={levelsOptions}
+                    onChange={(e, id) => { this.onChange(e, this.props.id) }}
                     style={{ width: "100%" }}>
                 </Checkbox.Group>
         );

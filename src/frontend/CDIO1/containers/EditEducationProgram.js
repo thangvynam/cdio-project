@@ -50,7 +50,7 @@ checkChuNhiem = (role) => {
   }
 
   checkBienSoan = (role) => {
-    if(role.indexOf("BIEN SOAN") > -1) {
+    if(role.indexOf("BIEN_SOAN") > -1) {
         return true;
     }
     return false;

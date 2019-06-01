@@ -33,7 +33,9 @@ import {
 class DetailEducationProgramTmp extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isLoad: false
+    };
   }
 
   checkAdmin = (role) => {
@@ -84,9 +86,10 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
   componentDidMount = () => {
     // const urlParams = new URLSearchParams(window.location.search);
     // const id = urlParams.get("id");
-
+    
     const id = this.props.ctdt;
     //if(this.props.isLoadedDataCtdt === false) {
+      this.setState({isLoad: true});
     $.getBlockSubject(id).then(res => {
       let resData = res.data.data;
       let dataSubject = [];
@@ -121,9 +124,11 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
               dataSubject = dataSubject.filter(item => 
                     item.del_flat != 1
                     &&
-                     (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject))
+                     (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                    ||this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
                 );
                 this.props.updateSubjectList(dataSubject);
+                this.setState({isLoad: false});
             }
           });
         });
@@ -164,7 +169,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
       : `Chưa tải được`;
 
     return (
-      <Container fluid className="main-content-container px-4">
+      !this.state.isLoad && <Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">

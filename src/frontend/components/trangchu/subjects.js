@@ -254,8 +254,10 @@ class Home extends Component {
                   else {
                     dataSubject = dataSubject.filter(item => 
                           item.del_flat != 1 
-                          && (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject))
+                          && (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                        || this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
                       );
+                      console.log(dataSubject)
                       this.props.updateSubjectList(dataSubject);
                   }
                 });

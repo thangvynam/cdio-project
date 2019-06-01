@@ -615,10 +615,13 @@ class Content extends Component {
                                                             title={
 
                                                             this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role) ? 
+                                                            this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.Id) ? 
                                                             <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
+                                                            : null
                                                             : this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role) ? 
                                                             <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
+                                                            
                                                         }
 
                                                         />

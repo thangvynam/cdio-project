@@ -6,14 +6,15 @@ import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 
+import * as commonLogic from "../../business/commonEducation";
+
 export default class TeachingManageCom extends Component {
   constructor(props) {
     super(props);
     this.state = {
       visible: false,
       globalFilter: "",
-      subject: {},
-      listsubjects: []
+      subject: {}
     };
   }
 
@@ -32,7 +33,17 @@ export default class TeachingManageCom extends Component {
   };
 
   onAddTeacher = data => {
-    console.log(data.id);
+    const iduser = data.id;
+    const idsubject = this.state.subject.IdSubject;
+    const idsubjectblock = this.state.subject.IdSubjectBlock;
+    const iddetail = this.props.detailEduProgram.Id;
+    const block = {
+      iduser,
+      idsubject,
+      idsubjectblock,
+      iddetail
+    };
+    this.props.onAddTeacher(block);
     this.setState({
       visible: false,
       subject: {}
@@ -97,7 +108,11 @@ export default class TeachingManageCom extends Component {
             sm="12"
             style={{ overflowY: "scroll", height: "320px" }}
           >
-            <DataTable value={this.props.users}>
+            <DataTable
+              value={this.props.users.filter(user =>
+                user.role.includes("TEACHER")
+              )}
+            >
               <Column
                 field="name"
                 header="Giảng viên"
@@ -139,7 +154,10 @@ export default class TeachingManageCom extends Component {
               ref={el => (this.dt = el)}
               globalFilter={this.state.globalFilter}
               emptyMessage="No records found"
-              value={this.props.subjects}
+              value={commonLogic.mapUserToSubject(
+                this.props.subjects,
+                this.props.users
+              )}
             >
               <Column
                 field="SubjectCode"
@@ -152,7 +170,7 @@ export default class TeachingManageCom extends Component {
                 style={{ width: "5em" }}
               />
               <Column
-                field="Name"
+                field="username"
                 header="Giảng viên phụ trách"
                 style={{ width: "5em" }}
               />

@@ -415,7 +415,7 @@ checkChuNhiem = (role) => {
         }
       }
       else if(this.props.parentitem[i].id === "view-survey") {
-        if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+        if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
           menuItemsCollapse.push(
             <Menu.Item
               key={this.props.parentitem[i].id}

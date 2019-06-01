@@ -172,8 +172,8 @@ class BenchMark extends Component {
     componentDidMount() {
         $.getBenchmarkMatrix()
         .then((res) => {
-            //this.props.getDataBenchMarkMatrix(res.data);
-            this.props.getDataBenchMarkMatrix(myData);
+            this.props.getDataBenchMarkMatrix(res.data);
+            //this.props.getDataBenchMarkMatrix(myData);
         })
     }
 
@@ -387,7 +387,7 @@ class BenchMark extends Component {
                     <div className="chart">
                         <div className="bar-chart">
                             <Bar
-                                data={this.dataChartBar(myData)}
+                                data={this.dataChartBar(this.props.dataBenchMarkMatrix)}
                                 options= {{
                                     title: {
                                         display: true,
@@ -402,7 +402,7 @@ class BenchMark extends Component {
                         </div>
                         <div className="bar-chart-mixed">
                             <Bar
-                                data={this.dataChartBarMixed(myData)}
+                                data={this.dataChartBarMixed(this.props.dataBenchMarkMatrix)}
                                 options= {{
                                     title: {
                                         display: true,

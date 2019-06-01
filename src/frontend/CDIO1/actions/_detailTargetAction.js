@@ -72,7 +72,6 @@ export const onSaveTargetProgram = targetProgram => {
       outdata,
       level
     );
-
     params.data = JSON.stringify(outdata);
     axios
       .post(req, params, {

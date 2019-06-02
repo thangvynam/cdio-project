@@ -46,9 +46,9 @@ export default class TableProgramArchiCom extends React.Component {
               sortOrder={1}
             >
               <Column field="name" expander />
-              <Column field="sum" />
-              <Column field="TCSum" />
               <Column field="BBSum" />
+              <Column field="TCSum" />
+              <Column field="sum" />
             </TreeTable>
           </Col>
         </Row>

@@ -151,7 +151,7 @@ export default class DetailEducationProgramCom extends React.Component {
     const detailEduProgram = event.onSaveDetail(this.props, this.state);
 
     const iddetail = this.props.detailEduProgram.Id;
-    
+
     const contentNodes = this.ContentProgramCom.current.state.nodes;
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
@@ -179,8 +179,12 @@ export default class DetailEducationProgramCom extends React.Component {
     }
 
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
-    if (JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes))
-      this.ScheduleEducationCom.current.getScheduleNodes(nextProps.scheduleNodes);
+    if (
+      JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes)
+    )
+      this.ScheduleEducationCom.current.getScheduleNodes(
+        nextProps.scheduleNodes
+      );
 
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     if (JSON.stringify(targetNodes) !== JSON.stringify(nextProps.targetNodes))
@@ -207,15 +211,19 @@ export default class DetailEducationProgramCom extends React.Component {
       <div className="p-grid content-section implementation">
         <Row noGutters className="page-header py-4">
           <Col lg="12" md="12" sm="12">
-            <p align="left">
-              <Button
-                disabled={this.state.isSaveBtnDisabled}
-                onClick={this.onSave}
-                theme="success"
-              >
-                <i className="material-icons">save</i> Lưu CTĐT
-              </Button>
-            </p>
+            {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+              "BIEN_SOAN"
+            ) && (
+              <p align="left">
+                <Button
+                  disabled={this.state.isSaveBtnDisabled}
+                  onClick={this.onSave}
+                  theme="success"
+                >
+                  <i className="material-icons">save</i> Lưu CTĐT
+                </Button>
+              </p>
+            )}
           </Col>
           <Col lg="12" md="12" sm="12">
             <Accordion multiple={true}>
@@ -259,6 +267,11 @@ export default class DetailEducationProgramCom extends React.Component {
                 <FormTextarea
                   value={this.state.EnrollmentTarget}
                   onChange={this.handleEnrollmentChange}
+                  readOnly={
+                    !JSON.parse(
+                      localStorage.getItem("user")
+                    ).data.Role.includes("BIEN_SOAN")
+                  }
                 />
               </AccordionTab>
 
@@ -270,6 +283,11 @@ export default class DetailEducationProgramCom extends React.Component {
                   <FormTextarea
                     value={this.state.EduProcess}
                     onChange={this.handleEduProcessChange}
+                    readOnly={
+                      !JSON.parse(
+                        localStorage.getItem("user")
+                      ).data.Role.includes("BIEN_SOAN")
+                    }
                   />
                 </Col>
 
@@ -282,6 +300,11 @@ export default class DetailEducationProgramCom extends React.Component {
                   <FormTextarea
                     value={this.state.GraduatedCon}
                     onChange={this.handleGraduatedConChange}
+                    readOnly={
+                      !JSON.parse(
+                        localStorage.getItem("user")
+                      ).data.Role.includes("BIEN_SOAN")
+                    }
                   />
                 </Col>
               </AccordionTab>

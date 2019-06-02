@@ -18,14 +18,18 @@ export default class TableSubjectsCom extends React.Component {
   actionTemplate = (rowData, column) => {
     return (
       <div>
-        <Button
-          onClick={() => this.props.deleteSubject(rowData)}
-          theme="secondary"
-          title="Xóa môn học"
-          style={{ marginRight: ".3em", padding: "0.5em" }}
-        >
-          <i className="material-icons">clear</i>
-        </Button>
+        {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+          "BIEN_SOAN"
+        ) && (
+          <Button
+            onClick={() => this.props.deleteSubject(rowData)}
+            theme="secondary"
+            title="Xóa môn học"
+            style={{ marginRight: ".3em", padding: "0.5em" }}
+          >
+            <i className="material-icons">clear</i>
+          </Button>
+        )}
       </div>
     );
   };
@@ -59,10 +63,26 @@ export default class TableSubjectsCom extends React.Component {
               <Column field="index" header="STT" />
               <Column field="SubjectCode" header="Mã Môn Học" />
               <Column field="SubjectName" header="Tên Môn Học" />
-              <Column field="Credit" header="Số Tín Chỉ" style={{ textAlign: "center" }} />
-              <Column field="TheoryPeriod" header="Lý Thuyết" style={{ textAlign: "center" }} />
-              <Column field="PracticePeriod" header="Thực Hành" style={{ textAlign: "center" }} />
-              <Column field="ExercisePeriod" header="Bài Tập" style={{ textAlign: "center" }} />
+              <Column
+                field="Credit"
+                header="Số Tín Chỉ"
+                style={{ textAlign: "center" }}
+              />
+              <Column
+                field="TheoryPeriod"
+                header="Lý Thuyết"
+                style={{ textAlign: "center" }}
+              />
+              <Column
+                field="PracticePeriod"
+                header="Thực Hành"
+                style={{ textAlign: "center" }}
+              />
+              <Column
+                field="ExercisePeriod"
+                header="Bài Tập"
+                style={{ textAlign: "center" }}
+              />
               <Column field="note" header="Ghi chú" />
               <Column
                 body={(rowData, column) => this.actionTemplate(rowData, column)}

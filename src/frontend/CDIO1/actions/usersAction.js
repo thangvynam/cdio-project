@@ -164,7 +164,7 @@ export const onRegisterUser = user => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-        } else {
+        } else if (res.data.code > 1) {
           dispatch(registerUserSuccess(res));
           let chirp = {
             message: `Đăng kí thành công`,

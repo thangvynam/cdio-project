@@ -66,6 +66,11 @@ export default class TitleCom extends React.Component {
               onChange={e => this.props.handleNameEduProgramChange(e)}
               placeholder="Tên..."
               className="mb-2"
+              readOnly={
+                !JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                  "BIEN_SOAN"
+                )
+              }
             />
           </Col>
         </Row>
@@ -76,7 +81,14 @@ export default class TitleCom extends React.Component {
             Trình độ đào tạo:
           </Col>
           <Col lg="6" md="6" sm="6">
-            <FormSelect onChange={e => this.props.handleLevelChange(e)}>
+            <FormSelect
+              disabled={
+                !JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                  "BIEN_SOAN"
+                )
+              }
+              onChange={e => this.props.handleLevelChange(e)}
+            >
               <option defaultValue key={0} value={0}>
                 Chọn...
               </option>
@@ -105,7 +117,14 @@ export default class TitleCom extends React.Component {
             Ngành đào tạo:
           </Col>
           <Col lg="6" md="6" sm="6">
-            <FormSelect onChange={e => this.props.handleMajorNameChange(e)}>
+            <FormSelect
+              disabled={
+                !JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                  "BIEN_SOAN"
+                )
+              }
+              onChange={e => this.props.handleMajorNameChange(e)}
+            >
               <option defaultValue key={0} value={0}>
                 Chọn...
               </option>
@@ -134,7 +153,14 @@ export default class TitleCom extends React.Component {
             Mã ngành:
           </Col>
           <Col lg="6" md="6" sm="6">
-            <FormSelect onChange={e => this.props.handleMajorCodeChange(e)}>
+            <FormSelect
+              disabled={
+                !JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                  "BIEN_SOAN"
+                )
+              }
+              onChange={e => this.props.handleMajorCodeChange(e)}
+            >
               <option defaultValue key={0} value={0}>
                 Chọn...
               </option>
@@ -163,7 +189,14 @@ export default class TitleCom extends React.Component {
             Loại hình đào tạo:
           </Col>
           <Col lg="6" md="6" sm="6">
-            <FormSelect onChange={e => this.props.handleProgramChange(e)}>
+            <FormSelect
+              disabled={
+                !JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                  "BIEN_SOAN"
+                )
+              }
+              onChange={e => this.props.handleProgramChange(e)}
+            >
               <option defaultValue key={0} value={0}>
                 Chọn...
               </option>
@@ -198,6 +231,11 @@ export default class TitleCom extends React.Component {
               onChange={e => this.props.handleSchoolYearChange(e)}
               placeholder="2015"
               className="mb-2"
+              readOnly={
+                !JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                  "BIEN_SOAN"
+                )
+              }
             />
           </Col>
         </Row>

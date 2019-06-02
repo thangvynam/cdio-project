@@ -214,14 +214,18 @@ export default class ScheduleEducationCom extends React.Component {
           <Column rowSpan={2} style={{ width: "0.5em" }} />
           <Column
             header={
-              <Button
-                title={`Thêm môn học`}
-                onClick={() => this.onOpenAddSubject(data.semester)}
-                theme="success"
-                style={{ padding: "0.6em", margin: "0" }}
-              >
-                <i className="material-icons">add</i>
-              </Button>
+              JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                "BIEN_SOAN"
+              ) && (
+                <Button
+                  title={`Thêm môn học`}
+                  onClick={() => this.onOpenAddSubject(data.semester)}
+                  theme="success"
+                  style={{ padding: "0.6em", margin: "0" }}
+                >
+                  <i className="material-icons">add</i>
+                </Button>
+              )
             }
             rowSpan={2}
             style={{ width: "2em" }}
@@ -256,11 +260,20 @@ export default class ScheduleEducationCom extends React.Component {
         <Column field="ExercisePeriod" style={{ textAlign: "center" }} />
         <Column
           field="Note"
-          editor={(props, value) =>
-            this.noteEditor(props, value, data.semester)
+          editor={
+            JSON.parse(localStorage.getItem("user")).data.Role.includes(
+              "BIEN_SOAN"
+            )
+              ? (props, value) => this.noteEditor(props, value, data.semester)
+              : null
           }
         />
-        <Column rowReorder={true} style={{ textAlign: "center" }} />
+        <Column
+          rowReorder={JSON.parse(
+            localStorage.getItem("user")
+          ).data.Role.includes("BIEN_SOAN")}
+          style={{ textAlign: "center" }}
+        />
         <Column
           body={(rowData, column) =>
             this.actionTemplateForSubjects(rowData, column, data.semester)
@@ -274,14 +287,18 @@ export default class ScheduleEducationCom extends React.Component {
   actionTemplateForSubjects(rowData, column, semester) {
     return (
       <div>
-        <Button
-          onClick={() => this.openDeleteSubject(rowData, semester)}
-          theme="secondary"
-          title={`Xóa môn học`}
-          style={{ padding: "0.5em", margin: "0" }}
-        >
-          <i className="material-icons">clear</i>
-        </Button>
+        {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+          "BIEN_SOAN"
+        ) && (
+          <Button
+            onClick={() => this.openDeleteSubject(rowData, semester)}
+            theme="secondary"
+            title={`Xóa môn học`}
+            style={{ padding: "0.5em", margin: "0" }}
+          >
+            <i className="material-icons">clear</i>
+          </Button>
+        )}
       </div>
     );
   }
@@ -289,14 +306,18 @@ export default class ScheduleEducationCom extends React.Component {
   actionTemplateForSemesters(rowData, column) {
     return (
       <div>
-        <Button
-          onClick={() => this.openDeleteSemester(rowData)}
-          theme="light"
-          title={`Xóa học kì`}
-          style={{ padding: "0.5em", margin: "0" }}
-        >
-          <i className="material-icons">clear</i>
-        </Button>
+        {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+          "BIEN_SOAN"
+        ) && (
+          <Button
+            onClick={() => this.openDeleteSemester(rowData)}
+            theme="light"
+            title={`Xóa học kì`}
+            style={{ padding: "0.5em", margin: "0" }}
+          >
+            <i className="material-icons">clear</i>
+          </Button>
+        )}
       </div>
     );
   }
@@ -347,13 +368,17 @@ export default class ScheduleEducationCom extends React.Component {
           <Column
             style={{ width: "5em" }}
             header={
-              <Button
-                title="Thêm học kì"
-                onClick={this.onOpenAddSubject}
-                theme="success"
-              >
-                <i className="material-icons">playlist_add</i>
-              </Button>
+              JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                "BIEN_SOAN"
+              ) && (
+                <Button
+                  title="Thêm học kì"
+                  onClick={this.onOpenAddSubject}
+                  theme="success"
+                >
+                  <i className="material-icons">playlist_add</i>
+                </Button>
+              )
             }
           />
           <Column style={{ width: "5em" }} />

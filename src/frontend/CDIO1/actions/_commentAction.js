@@ -49,53 +49,96 @@ export const onLoadComments = idoutcome => {
   };
 };
 
-// export const addCommentSuccess = successMessage => ({
-//   type: cst.ADD_COMMENT_SUCCESS,
-//   successMessage
-// });
+export const addCommentSuccess = successMessage => ({
+  type: cst.ADD_COMMENT_SUCCESS,
+  successMessage
+});
 
-// export const addCommentError = errorMessage => ({
-//   type: cst.ADD_COMMENT_ERROR,
-//   errorMessage
-// });
+export const addCommentError = errorMessage => ({
+  type: cst.ADD_COMMENT_ERROR,
+  errorMessage
+});
 
-// export const onAddTeacher = data => {
-//   return (dispatch, getState) => {
-//     let link = `${links.ADD_TEACHER}?iduser=${data.iduser}&idsubject=${
-//       data.idsubject
-//     }&idsubjectblock=${data.idsubjectblock}`;
-//     axios
-//       .post(link, {
-//         headers: {
-//           "Content-Type": "application/json"
-//         }
-//       })
-//       .then(res => {
-//         if (res.data.code === 1) {
-//           let chirp = {
-//             message: `Phân công giáo viên thành công`,
-//             isRight: 1
-//           };
-//           dispatch(message.message(chirp));
-//           dispatch(addTeacherSuccess(res));
-//         } else {
-//           let chirp = {
-//             message: `Phân công giáo viên thất bại`,
-//             isRight: 0
-//           };
-//           dispatch(message.message(chirp));
-//           dispatch(addTeacherError(res));
-//         }
-//         dispatch(onLoadBlocks(data.iddetail));
-//       })
-//       .catch(err => {
-//         let chirp = {
-//           message: `Phân công giáo viên thất bại`,
-//           isRight: 0
-//         };
-//         dispatch(message.message(chirp));
-//         dispatch(addTeacherError(err));
-//         dispatch(onLoadBlocks(data.iddetail));
-//       });
-//   };
-// };
+export const onAddComment = data => {
+  return (dispatch, getState) => {
+    let link = links.ADD_COMMENT;
+    // data.IdOutcome = Number(data.idoutcome);
+    // data.KeyRow = body.keyrow;
+    // data.IdUser = Number(body.iduser);
+    // data.Content = body.content;
+    // data.CommentDate = body.date;
+    let params = {};
+    params.data = JSON.stringify(data);
+    axios
+      .post(link, params, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
+      .then(res => {
+        if (res.data.code === 1) {
+          let chirp = {
+            message: `Thêm bình luận thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
+          dispatch(addCommentSuccess(res));
+        } else {
+          let chirp = {
+            message: `Thêm bình luận thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+          dispatch(addCommentError(res));
+        }
+      })
+      .catch(err => {
+        let chirp = {
+          message: `Thêm bình luận thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+        dispatch(addCommentError(err));
+      });
+  };
+};
+
+export const doneCommentSuccess = successMessage => ({
+  type: cst.DONE_COMMENT_SUCCESS,
+  successMessage
+});
+
+export const doneCommentError = errorMessage => ({
+  type: cst.DONE_COMMENT_ERROR,
+  errorMessage
+});
+
+export const onDoneComment = data => {
+  return (dispatch, getState) => {
+    let link = links.DONE_COMMENT;
+    let params = {};
+    params.data = JSON.stringify(data);
+    axios
+      .post(link, params, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
+      .then(res => {
+        if (res.data.code === 1) {
+          dispatch(doneCommentSuccess(res));
+        } else {
+          dispatch(doneCommentError(res));
+        }
+      })
+      .catch(err => {
+        dispatch(doneCommentError(err));
+      });
+  };
+};

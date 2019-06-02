@@ -419,8 +419,8 @@ export const convertToUsers = data => {
       return arr;
     }
     const user = {
-      username: row[0],
-      name: row[1],
+      name: row[0],
+      username: row[1],
       email:row[2],
       roleName: row[3],
       role: getIdRole(row[3])
@@ -434,7 +434,10 @@ const getIdRole = roles =>{
   return arr.reduce((results, role)=>{
     const roleName = role.trim();
     const id = IdRoleName(roleName);
-    return results.concat(id);
+    if(id){
+      return results.concat(id);
+    }
+    return results;
   },[]);
 }
 

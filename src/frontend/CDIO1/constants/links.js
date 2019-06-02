@@ -72,6 +72,8 @@ export const DELETE_DETAIL_OUTCOMESTANDARD = `${LINK}/detailoutcomestandard/dele
 export const ADD_DETAIL_OUTCOMESTANDARD = `${LINK}/detailoutcomestandard/add/`;
 
 export const LOAD_COMMENT = `${LINK}/comment/get/`;
+export const ADD_COMMENT = `${LINK}/comment/add/`;
+export const DONE_COMMENT = `${LINK}/comment/done/`;
 
 // revisions links
 export const LOAD_REVISIONS = `${LINK}/revision/get/`;

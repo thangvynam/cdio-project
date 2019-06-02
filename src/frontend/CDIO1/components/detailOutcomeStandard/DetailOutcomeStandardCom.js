@@ -423,6 +423,7 @@ export default class DetailOutcomeStandardCom extends Component {
   }
 
   render() {
+    console.log(this.props.comments)
     const footer = (
       <div>
         <Button onClick={this.handleSubmit} theme="success">

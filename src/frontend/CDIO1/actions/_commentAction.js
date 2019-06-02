@@ -49,13 +49,13 @@ export const onLoadComments = idoutcome => {
   };
 };
 
-// export const addTeacherSuccess = successMessage => ({
-//   type: cst.ADD_TEACHER_SUCCESS,
+// export const addCommentSuccess = successMessage => ({
+//   type: cst.ADD_COMMENT_SUCCESS,
 //   successMessage
 // });
 
-// export const addTeacherError = errorMessage => ({
-//   type: cst.ADD_TEACHER_ERROR,
+// export const addCommentError = errorMessage => ({
+//   type: cst.ADD_COMMENT_ERROR,
 //   errorMessage
 // });
 

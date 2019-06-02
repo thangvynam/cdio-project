@@ -72,7 +72,7 @@ class LogForm extends Component {
             case "muc-tieu-mon-hoc": {
                 return data.logData3
             }
-            case "chuan-dau-ra": {
+            case "chuan-dau-ra-mh": {
                 return data.logData4
             }
             case "giang-day-ly-thuyet": {

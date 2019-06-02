@@ -81,7 +81,9 @@ export default{
     GET_SURVEY: baseUrl + '/get-survey',
     GET_DATA_SURVEY: baseUrl + '/get-data-survey',
     ADD_TO_EDIT_MATRIX : baseUrl + '/add-to-edit-matrix',
-    ADD_DATA_SURVEY : baseUrl + 'add-data-survey',
+    ADD_DATA_SURVEY : baseUrl + '/add-data-survey',
+    GET_SUBJECT_TEACHER : baseUrl + '/get-teacher-with-subject',
+    ADD_SURVEY_DATA : baseUrl + '/add-survey-data',
 
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',

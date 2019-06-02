@@ -427,6 +427,16 @@ const addDataSurvey =(data) => {
     return $.post(url,data);
 }
 
+const getSubjectTeacher = (param) => {
+    let url =`${_.GET_SUBJECT_TEACHER}/${param}`;
+    return $.get(url);
+}
+
+const addSurveyData = (data) => {
+    let url = _.ADD_SURVEY_DATA;
+    return $.post(url,data);
+}
+
 export default{
     //subject
     collectSubjectList,
@@ -520,7 +530,9 @@ export default{
     addToEditMatrix,
     saveSurveyQA,
     addDataSurvey,
-    
+    getSubjectTeacher,
+    addSurveyData,
+
     //export file
     exportFile,
 

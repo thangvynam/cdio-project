@@ -744,63 +744,7 @@ export default class DetailOutcomeStandardCom extends Component {
               })
             }
           >
-            <Row>
-              <Col lg="12" md="12" sm="12">
-                <ul>
-                  {data.map(val => (
-                    <li onClick={() => console.log("hello")}>
-                      <label htmlFor={val.id} className="p-checkbox-label">
-                        {val.iddone > 0 ? (
-                          <React.Fragment>
-                            <strike>
-                              <span
-                                style={{ color: "#007BFF" }}
-                                className="font-weight-bold"
-                              >
-                                {" "}
-                                {val.username} (mục: {val.key}) yêu cầu
-                              </span>: {val.content}
-                              &nbsp;=> được thực hiện bởi&nbsp;
-                              <span
-                                style={{ color: "#007BFF" }}
-                                className="font-weight-bold"
-                              >
-                                {val.userdone}
-                              </span>
-                            </strike>
-                          </React.Fragment>
-                        ) : (
-                          <React.Fragment>
-                            <span
-                              style={{ color: "#007BFF" }}
-                              className="font-weight-bold"
-                            >
-                              {" "}
-                              {val.username} (mục: {val.key}) yêu cầu
-                            </span>: {val.content}
-                          </React.Fragment>
-                        )}
-                      </label>
-                    </li>
-                  ))}
-                </ul>
-              </Col>
-            </Row>
-            <hr />
-            <Row>
-              {JSON.parse(localStorage.getItem("user")).data.Role.includes(
-                "TEACHER"
-              ) && (
-                <React.Fragment>
-                  <Col lg="12" md="12" sm="12">
-                    <InputText
-                      value={this.state.comment}
-                      onChange={e => this.setState({ comment: e.target.value })}
-                    />
-                  </Col>
-                </React.Fragment>
-              )}
-            </Row>
+           HIHI
           </Dialog>
         </div>
       </div>
@@ -815,7 +759,8 @@ let data = [
     content: "hello world",
     key: "1.2.3",
     userdone: "thien",
-    iddone: 1
+    iddone: 1,
+    date: null
   },
   {
     id: 2,
@@ -823,7 +768,8 @@ let data = [
     content: "hello world",
     key: "1.2.3",
     userdone: null,
-    iddone: 0
+    iddone: 0,
+    date: null
   },
   {
     id: 3,
@@ -831,14 +777,7 @@ let data = [
     content: "hello world",
     key: "1.2.3",
     userdone: "cuong",
-    iddone: 2
-  },
-  {
-    id: 4,
-    username: "lam",
-    content: "hello world",
-    key: "1.2.3",
-    userdone: "phat",
-    iddone: 3
+    iddone: 2,
+    date: null
   }
 ];

@@ -61,12 +61,7 @@ export const addCommentError = errorMessage => ({
 
 export const onAddComment = data => {
   return (dispatch, getState) => {
-    let link = links.ADD_COMMENT;
-    // data.IdOutcome = Number(data.idoutcome);
-    // data.KeyRow = body.keyrow;
-    // data.IdUser = Number(body.iduser);
-    // data.Content = body.content;
-    // data.CommentDate = body.date;
+    let link = `${links.ADD_COMMENT}?idoutcome=${data.idoutcome}`;
     let params = {};
     params.data = JSON.stringify(data);
     axios
@@ -85,14 +80,15 @@ export const onAddComment = data => {
             isRight: 1
           };
           dispatch(message.message(chirp));
-          dispatch(addCommentSuccess(res));
+          // dispatch(addCommentSuccess(res));
+          dispatch(onLoadComments(data.idoutcome));
         } else {
           let chirp = {
             message: `Thêm bình luận thất bại`,
             isRight: 0
           };
           dispatch(message.message(chirp));
-          dispatch(addCommentError(res));
+          // dispatch(addCommentError(res));
         }
       })
       .catch(err => {
@@ -101,7 +97,7 @@ export const onAddComment = data => {
           isRight: 0
         };
         dispatch(message.message(chirp));
-        dispatch(addCommentError(err));
+        // dispatch(addCommentError(err));
       });
   };
 };
@@ -118,9 +114,13 @@ export const doneCommentError = errorMessage => ({
 
 export const onDoneComment = data => {
   return (dispatch, getState) => {
-    let link = links.DONE_COMMENT;
+    let link = `${links.DONE_COMMENT}?idoutcome=${data.idoutcome}&iduser=${
+      data.iduser
+    }`;
+    let arr = [];
+    arr.push(data.id);
     let params = {};
-    params.data = JSON.stringify(data);
+    params.data = JSON.stringify(arr);
     axios
       .post(link, params, {
         headers: {
@@ -133,6 +133,7 @@ export const onDoneComment = data => {
       .then(res => {
         if (res.data.code === 1) {
           dispatch(doneCommentSuccess(res));
+          dispatch(onLoadComments(data.idoutcome));
         } else {
           dispatch(doneCommentError(res));
         }

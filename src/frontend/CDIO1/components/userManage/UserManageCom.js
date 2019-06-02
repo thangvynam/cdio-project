@@ -55,6 +55,11 @@ export default class UserManageCom extends Component {
   };
 
   onCloseAndCreate = () => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(this.state.email)) {
+      alert("Email bạn nhập không đúng!");
+      return;
+    }
     const user = {
       username: this.state.username,
       name: this.state.name,
@@ -166,7 +171,7 @@ export default class UserManageCom extends Component {
           </Col>
           <Col lg="8" md="8" sm="8">
             <FormInput
-              type="text"
+              type="email"
               value={this.state.email}
               onChange={this.onChangeEmail}
               placeholder="thienthien@gmail.com"
@@ -262,8 +267,7 @@ export default class UserManageCom extends Component {
           }
           onHide={this.onHideDeleteVisible}
         >
-          {`Bạn thực sự muốn xóa người dùng ${
-            this.state.data.username}`}
+          {`Bạn thực sự muốn xóa người dùng ${this.state.data.username}`}
         </Dialog>
       </div>
     );

@@ -270,7 +270,7 @@ checkTeacher = (role) => {
                 );
               }
             }
-            else if(key === "khao-satchuan-dau-ra") {
+            else if(key === "khao-sat-chuan-dau-ra") {
               if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)
             || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
                 menuItemsCollapse.push(

@@ -295,7 +295,6 @@ class TNTableItem extends Component {
   };
 
   render() {
-    
     const components = {
       body: {
         row: EditableFormRow,

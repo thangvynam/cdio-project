@@ -250,6 +250,41 @@ checkTeacher = (role) => {
                 );
               }
             }
+            else if(key === "chuan-dau-ra") {
+              if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)
+            || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
+            else if(key === "phan-cong-giang-day") {
+              if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
             else {
               menuItemsCollapse.push(
                 <Menu.Item key={key} onClick={() => this.onClick(key)}>
@@ -497,7 +532,52 @@ checkTeacher = (role) => {
           );
         }
       }
-
+      else if(this.props.parentitem[i].id === "cdr") {
+        if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role) || 
+        this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+      else if(this.props.parentitem[i].id === "qlhp" || this.props.parentitem[i].id === "qlkh") {
+        if(this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+      else if(this.props.parentitem[i].id === "qlgd") {
+        if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
       else {
         menuItemsCollapse.push(
           <Menu.Item

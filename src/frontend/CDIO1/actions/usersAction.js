@@ -157,6 +157,13 @@ export const onRegisterUser = user => {
             isRight: 0
           };
           dispatch(message.message(chirp));
+        } else if (res.data.code === -2) {
+          dispatch(registerUserSuccess(res));
+          let chirp = {
+            message: `Không có quyền đăng kí`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
         } else if (res.data.code === -3) {
           dispatch(registerUserError(res));
           let chirp = {
@@ -164,7 +171,7 @@ export const onRegisterUser = user => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-        } else if (res.data.code > 1) {
+        } else if (res.data.code > 0) {
           dispatch(registerUserSuccess(res));
           let chirp = {
             message: `Đăng kí thành công`,

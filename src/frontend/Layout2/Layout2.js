@@ -5,6 +5,9 @@ import TableItem from './Component/Table/TableItem';
 import LogForm from '../Log/LogForm';
 
 class Layout2 extends Component {
+    componentWillMount(){
+        window.scrollTo(0, 0);
+    }
     render() {
         return (
             <React.Fragment>

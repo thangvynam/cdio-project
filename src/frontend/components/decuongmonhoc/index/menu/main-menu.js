@@ -183,7 +183,9 @@ checkTeacher = (role) => {
               }
             }
             else if(key === "de-cuong-mon-hoc") {
-              if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+              if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)
+            || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)
+          || this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
                 menuItemsCollapse.push(
                   <Menu.Item key={key} onClick={() => this.onClick(key)}>
                     <Link

@@ -17,229 +17,7 @@ const openNotificationWithIcon = (type) => {
   });
 };
 
-// const columns = [
-//   {
-//     title: 'Môn Học', width: 100, dataIndex: 'mon', key: 'mon', fixed: 'left',
-//   },
-//   {
-//     title: 'GV trưởng nhóm', width: 100, dataIndex: 'giaovien', key: 'giaovien', fixed: 'left',
-//   },
-//   {
-//     title: '1(Kiến Thức)',
-//     key: '1',
-//     children: [
-//       {
-//         title: '1.1',
-//         dataIndex: '1.1',
-//         key: '1.1',
-//         children: [
-//           {
-//             title: '1.1.1',
-//             dataIndex: '1.1.1',
-//             key: '1.1.1',
-//             render: (text) => <Tag color="fff9f9"
-//               style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{text}</Tag>
-//           },
-//           {
-//             title: '1.1.2',
-//             dataIndex: '1.1.2',
-//             key: '1.1.2',
-//             render: (text) => <Tag color="fff9f9"
-//               style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{text}</Tag>
-//           },
-//           {
-//             title: '1.1.3',
-//             dataIndex: '1.1.3',
-//             key: '1.1.3',
-//             render: (text) => <Tag color="fff9f9"
-//               style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{text}</Tag>
-//           }
-//         ]
-
-//       },
-//       {
-//         title: '1.2',
-//         dataIndex: '1.2',
-//         key: '1.2',
-//         children: [
-//           {
-//             title: '1.2.1',
-//             dataIndex: '1.2.1',
-//             key: '1.2.1',
-//           },
-//           {
-//             title: '1.2.2',
-//             dataIndex: '1.2.2',
-//             key: '1.2.2',
-//           },
-//           {
-//             title: '1.2.3',
-//             dataIndex: '1.2.3',
-//             key: '1.2.3',
-//           }
-//         ]
-//       }
-//     ]
-//   },
-//   {
-//     title: '2(Kỹ Năng Mềm)',
-//     key: '2',
-//     children: [
-//       {
-//         title: '2.1',
-//         dataIndex: '2.1',
-//         key: '2.1',
-//         children: [
-//           {
-//             title: '2.1.1',
-//             dataIndex: '2.1.1',
-//             key: '2.1.1',
-//           },
-//           {
-//             title: '2.1.2',
-//             dataIndex: '2.1.2',
-//             key: '2.1.2',
-//           },
-//           {
-//             title: '2.1.3',
-//             dataIndex: '2.1.3',
-//             key: '2.1.3',
-//           }
-//         ]
-
-//       }
-//     ]
-
-//   }
-// ];
-
-// const data = [
-//   {
-//     mon: 'OOP',
-//     giaovien: 'John',
-//     '1.1.1': "U I",
-//     '1.1.2': "U",
-//     '1.1.3': "T",
-//     '1.2.1': "U I T",
-//     '1.2.2': "U T",
-//     '1.2.3': "I T",
-//     '1.3.1': "T",
-//     '1.3.2': "U T",
-//     '1.3.3': "I",
-//     '2.1.1': "U I",
-//     '2.1.2': "U",
-//     '2.1.3': "T U",
-//     '2.2.1': "U I T",
-//     '2.2.2': "U T",
-//     '2.2.3': "I",
-//     '2.3.1': "T",
-//     '2.3.2': "U T",
-//     '2.3.3': "I U T",
-//   },
-//   {
-//     mon: 'Design Pattern',
-//     giaovien: 'Phu',
-//     '1.1.1': "U I",
-//     '1.1.2': "U",
-//     '1.1.3': "T",
-//     '1.2.1': "U I T",
-//     '1.2.2': "U T",
-//     '1.2.3': "I T",
-//     '1.3.1': "T",
-//     '1.3.2': "U T",
-//     '1.3.3': "I",
-//     '2.1.1': "U I",
-//     '2.1.2': "U",
-//     '2.1.3': "T U",
-//     '2.2.1': "U I T",
-//     '2.2.2': "U T",
-//     '2.2.3': "I",
-//     '2.3.1': "T",
-//     '2.3.2': "U T",
-//     '2.3.3': "I U T",
-//   }
-// ];
-
 const href = "/ctdt/ctdt-1/itusurvey/view/2/itusurvey";
-
-// const myData = [
-//   {
-//     "mon": "OOP",
-//     "giaovien": "phu",
-//     "itu": [
-//       {
-//         "id": "1.1.1",
-//         "data": {
-//           "cdr": "T*T*T*U*U*U",
-//           "id": "1*2*3*1*2*3"
-//         }
-//       },
-//       {
-//         "id": "1.1.2",
-//         "data": {
-//           "cdr": "T*T*T*U*U*U",
-//           "id": "1*2*3*1*2*3"
-//         }
-//       },
-//       {
-//         "id": "1.1.3",
-//         "data": {
-//           "cdr": "T*T*U*U*I",
-//           "id": "1*2*1*2*3"
-//         }
-//       },
-//       {
-//         "id": "1.2.1",
-//         "data": {
-//           "cdr": "-",
-//           "id": "-"
-//         }
-//       },
-//       {
-//         "id": "1.2.2",
-//         "data": {
-//           "cdr": "I*T",
-//           "id": "1*1"
-//         }
-//       },
-//       {
-//         "id": "1.2.3",
-//         "data": {
-//           "cdr": "-",
-//           "id": "-"
-//         }
-//       }
-//     ]
-//   },
-//   {
-//     "mon": "Design Patern",
-//     "giaovien": "John",
-//     "itu": [
-//       {
-//         "id": "2.1.1",
-//         "data": {
-//           "cdr": "T*U",
-//           "id": "1*3"
-//         }
-//       },
-//       {
-//         "id": "2.1.2",
-//         "data": {
-//           "cdr": "T*T*T*U",
-//           "id": "1*2*3*3"
-//         }
-//       },
-//       {
-//         "id": "2.1.3",
-//         "data": {
-//           "cdr": "T*T*U*U*I",
-//           "id": "1*2*1*2*3"
-//         }
-//       }
-//     ]
-//   }
-// ]
-
 
 class SurveyMatrix extends Component {
   constructor(props) {
@@ -253,12 +31,11 @@ class SurveyMatrix extends Component {
   componentDidMount() {
     $.getMatrixSurvey().then((res) => {
       //this.props.getDataBenchMarkMatrix(res.data);
-      console.log(res.data)
       this.props.getDataSurveyMatrix(res.data);
     })
   }
 
-  componentDidUpdate(){
+  componentDidUpdate() {
     this.addClassExport();
   }
 
@@ -388,7 +165,7 @@ class SurveyMatrix extends Component {
       header.push({
         title: _.toNumber(`${titleChild[0]}${titleChild[1]}${titleChild[2]}`),
         dataIndex: `${child}`,
-        key: `${child}`,  
+        key: `${child}`,
         align: "center",
         render: (text) => <div>
           {this.showitu(text)}
@@ -429,7 +206,7 @@ class SurveyMatrix extends Component {
   createHeaderMatrix = (myData) => {
     let header = [
       {
-        title: 'Môn Học', width: 100, dataIndex: 'mon', key: 'mon', fixed: 'left', 
+        title: 'Môn Học', width: 100, dataIndex: 'mon', key: 'mon', fixed: 'left',
       },
       {
         title: 'GV trưởng nhóm', width: 100, dataIndex: 'giaovien', key: 'giaovien', fixed: 'left',
@@ -454,24 +231,26 @@ class SurveyMatrix extends Component {
   //---Create Data---//
   createDataMatrix = (myData) => {
     const data = [];
+    let index = 1;
     for (const subject of myData) {
-      console.log(subject['mon']);
       let dataSubject = {
         'mon': subject['mon'],
         'giaovien': subject['giaovien'],
+        key: `${index++}-${Math.random().toString(36).substring(7)}`,
       };
-      subject['itu'].map((x, index) => {
+      let ituSubject = !_.isEmpty(subject['itu']) ? subject['itu'] : [];
+      ituSubject.map((x, index) => {
         dataSubject = { ...dataSubject, [x['id']]: `${x['data']['cdr'] + "/" + x['data']['id']}` }
       })
       data.push(dataSubject);
     }
+
     return data;
   }
 
   //---Create Data---//
 
   onSelectChange = (selectedRowKeys) => {
-    console.log('selectedRowKeys changed: ', selectedRowKeys);
     this.setState({ selectedRowKeys });
   }
 
@@ -510,10 +289,7 @@ class SurveyMatrix extends Component {
       hideDefaultSelections: true,
       onSelection: this.onSelection,
     };
-    if(!_.isEmpty(this.props.dataSurveyMatrix)){
-      console.log(this.createHeaderMatrix(this.props.dataSurveyMatrix));
-    }
-   
+
     // this.createHeaderMatrix(myData);
     return (
       !_.isEmpty(this.props.dataSurveyMatrix) && (<div>
@@ -529,12 +305,9 @@ class SurveyMatrix extends Component {
             });
             if (data.length > 0) {
               $.addSurveyMatrix(data).then(res => {
-                console.log(res);
-                
                 if (res.data === 1) {
                   openNotificationWithIcon('success')
                 }
-                console.log(res);
               })
             }
           }

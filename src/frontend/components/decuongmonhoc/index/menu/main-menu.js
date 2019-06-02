@@ -270,6 +270,24 @@ checkTeacher = (role) => {
                 );
               }
             }
+            else if(key === "khao-satchuan-dau-ra") {
+              if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)
+            || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="container" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
             else if(key === "phan-cong-giang-day") {
               if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
                 menuItemsCollapse.push(

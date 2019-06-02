@@ -749,6 +749,9 @@ class Content extends Component {
                                             : type === "phan-cong-giang-day" ? (
                                                 <TeachingManage ctdt={ctdt} />
                                             )
+                                            : type === "khao-sat-chuan-dau-ra" ? (
+                                                <div>khao sat cdr</div>
+                                            )
                                                 : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                                                     <EditEducationProgram ctdt={ctdt} />
                                                 )

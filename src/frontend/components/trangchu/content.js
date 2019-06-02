@@ -243,16 +243,31 @@ class Content extends Component {
         switch (type) {
             case "de-cuong-mon-hoc": {
                 if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                    subjectList = this.props.subjectList.filter(item => 
-                        item.IdSubjectBlock === +khoi 
-                        && item.del_flat != 1
-                    );
+                    if(!this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                        subjectList = this.props.subjectList.filter(item => 
+                            item.IdSubjectBlock === +khoi 
+                            && item.del_flat != 1
+                        );
+                    }
+                    else {
+                        subjectList = this.props.subjectList.filter(item => 
+                            item.IdSubjectBlock === +khoi 
+                            && item.del_flat != 1 && this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                        );
+                    }
+                    
                 }
                 else {
-                    subjectList = this.props.subjectList.filter(item => 
-                        item.del_flat != 1
-
-                    );
+                    if(!this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                        subjectList = this.props.subjectList.filter(item => 
+                            item.del_flat != 1
+                        );
+                    }
+                    else {
+                        subjectList = this.props.subjectList.filter(item => 
+                            item.del_flat != 1 && this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                        );
+                    }
                 }
             } break;
             case 'itusurvey': {
@@ -615,9 +630,8 @@ class Content extends Component {
                                                             title={
 
                                                             this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role) ? 
-                                                            this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.Id) ? 
                                                             <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
-                                                            : null
+                                                        
                                                             : this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role) ? 
                                                             <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 

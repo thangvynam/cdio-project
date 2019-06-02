@@ -34,7 +34,7 @@ class DetailEducationProgramTmp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoad: true
+      isLoad: false
     };
   }
 
@@ -84,7 +84,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
 }
 
   componentDidMount = () => {
-    //this.setState({isLoad: true});
+    
     const id = this.props.ctdt;
     this.props.onLoadEduProgram(+id);
     this.props.onLoadDetailEduProgram(+id);
@@ -94,7 +94,6 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
     this.props.onLoadSubjects();
     this.props.onLoadOutcomeStandards();
 
-        
     $.getBlockSubject(id).then(res => {
       let resData = res.data.data;
       let dataSubject = [];
@@ -124,7 +123,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
                   item.del_flat != 1
               );
               this.props.updateSubjectList(dataSubject);
-              //this.setState({isLoad: false});
+              //this.setState({isLoad: false})
             }
             else {
               dataSubject = dataSubject.filter(item => 
@@ -134,7 +133,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
                     ||this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
                 );
                 this.props.updateSubjectList(dataSubject);
-                //this.setState({isLoad: false});
+                //this.setState({isLoad: false})
             }
           });
         });
@@ -143,7 +142,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
         this.props.updateDataCtdt(dataCtdt);
         this.props.updateIsLoadedDataCtdt(true);
         
-      }})
+      }});
 
     window.addEventListener("beforeunload", this.onUnload);
     
@@ -167,7 +166,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
       : `Chưa tải được`;
 
     return (
-      //this.state.isLoad === false ? 
+
       <Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">

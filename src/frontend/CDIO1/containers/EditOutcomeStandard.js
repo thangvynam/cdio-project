@@ -12,6 +12,7 @@ import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAc
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
 import * as revisionsAction from "../actions/revisionsAction";
 import * as detailRevisionAction from "../actions/detailRevisionAction";
+import * as commentAction from "../actions/_commentAction";
 
 import { connect } from "react-redux";
 
@@ -29,6 +30,7 @@ class EditOutcomeStandardTmp extends Component {
     this.props.onLoadDetailOutcomeStandard(id);
     this.props.onLoadRevisions(id);
     this.props.onLoadOutcomeStandard(id);
+    this.props.onLoadComments(id);
     window.addEventListener("beforeunload", this.onUnload);
   };
 
@@ -88,6 +90,7 @@ class EditOutcomeStandardTmp extends Component {
               onLoadDetailRevision={this.props.onLoadDetailRevision}
               onAddDetailRevision={this.props.onAddDetailRevision}
               onDeleteRevision={this.props.onDeleteRevision}
+              comments={this.props.comments}
             />
           </Col>
         </Row>
@@ -102,7 +105,8 @@ const mapStateToProps = state => ({
   revisions: state.revisions,
   infoOutcomeStandard: state.infoOutcomeStandard,
   detailOutcomeStandard: state.detailOutcomeStandard,
-  detailEduProgram: state.detailEduProgram
+  detailEduProgram: state.detailEduProgram,
+  comments: state.comments
 });
 
 export default connect(mapStateToProps, {
@@ -114,5 +118,6 @@ export default connect(mapStateToProps, {
   onLoadRevisions: revisionsAction.onLoadRevisions,
   onLoadDetailRevision: detailRevisionAction.onLoadDetailRevision,
   onAddDetailRevision: detailRevisionAction.onAddDetailRevision,
-  onDeleteRevision: revisionsAction.onDeleteRevision
+  onDeleteRevision: revisionsAction.onDeleteRevision,
+  onLoadComments: commentAction.onLoadComments
 })(EditOutcomeStandardTmp);

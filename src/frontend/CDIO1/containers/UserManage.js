@@ -43,6 +43,7 @@ class UserManageTemp extends Component {
             <UserManageCom
               users={this.props.users}
               onDeleteUser={this.props.onDeleteUser}
+              onRegisterBlockUser={this.props.onRegisterBlockUser}
               onRegisterUser={this.props.onRegisterUser} />
           </Col>
         </Row>
@@ -59,5 +60,6 @@ const mapStateToProps = state => ({
 export default connect(mapStateToProps, {
   onLoadUsers: usersAction.onLoadUsers,
   onRegisterUser: usersAction.onRegisterUser,
-  onDeleteUser: usersAction.onDeleteUser
+  onDeleteUser: usersAction.onDeleteUser,
+  onRegisterBlockUser: usersAction.onRegisterBlockUser
 })(UserManageTemp);

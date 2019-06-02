@@ -2,7 +2,7 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
-import $ from './../../helpers/services';
+import $ from "./../../helpers/services";
 
 export const logInSuccess = (user, successMessage) => ({
   type: cst.LOG_IN_SUCCESS,
@@ -304,11 +304,9 @@ export const deleteUserError = errorMessage => ({
 
 export const onDeleteUser = username => {
   return (dispatch, getState) => {
-    let req = links.DELETE_USER;
-    let params = {};
-    params.data = JSON.stringify(username);
+    let req = `${links.DELETE_USER}?username=${username}`;
     axios
-      .post(req, params, {
+      .post(req, {
         headers: {
           "Content-Type": "application/json",
           authorization: localStorage.getItem("user")
@@ -371,36 +369,15 @@ export const onRegisterBlockUser = users => {
         }
       })
       .then(res => {
-        if (res.data.code === -1) {
-          dispatch(registerBlockUserError(res));
-          let chirp = {
-            message: `Đăng kí thất bại`,
-            isRight: 0
-          };
-          dispatch(message.message(chirp));
-        } else if (res.data.code === -2) {
-          dispatch(registerBlockUserError(res));
-          let chirp = {
-            message: `Không có quyền đăng kí`,
-            isRight: 0
-          };
-          dispatch(message.message(chirp));
-        } else if (res.data.code === -3) {
-          dispatch(registerBlockUserError(res));
-          let chirp = {
-            message: `Tên tài khoản đã tồn tại`,
-            isRight: 0
-          };
-          dispatch(message.message(chirp));
-        } else if (res.data.code > 0) {
-          dispatch(registerBlockUserSuccess(res));
-          let chirp = {
-            message: `Đăng kí thành công`,
-            isRight: 1
-          };
-          dispatch(message.message(chirp));
-        }
+        const err = res.data.register_error;
+        const suc = res.data.register_success;
         dispatch(onLoadUsers());
+        dispatch(registerBlockUserSuccess(res));
+        let chirp = {
+          message: `Số tài khoản đăng kí thành công: ${suc}, số tài khoản đăng kí không thành công: ${err}`,
+          isRight: 1
+        };
+        dispatch(message.message(chirp));
       })
       .catch(err => {
         dispatch(onLoadUsers());

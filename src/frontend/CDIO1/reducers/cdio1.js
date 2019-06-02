@@ -19,6 +19,8 @@ import { scheduleNodes } from "./_scheduleNodes";
 import { targetNodes } from "./_targetNodes";
 import { comments } from "./_comments";
 import { blocks } from "./_blocks";
+import { knowledgeTables } from "./_knowledgeTable";
+import { contentList } from "./_contentList";
 
 const cdio1 = {
   faculties,
@@ -41,6 +43,8 @@ const cdio1 = {
   targetNodes,
   blocks,
   comments,
+  knowledgeTables,
+  contentList,
   user,
   users,
 };

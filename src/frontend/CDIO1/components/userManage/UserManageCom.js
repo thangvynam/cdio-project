@@ -85,7 +85,8 @@ export default class UserManageCom extends Component {
   };
 
   onDelete = () => {
-    this.props.onDeleteUser(this.state.data.username);
+    const username=this.state.data.username;
+    this.props.onDeleteUser(username);
     this.setState({
       deleteVisible: false,
       id: 0
@@ -120,6 +121,14 @@ export default class UserManageCom extends Component {
   onCloseDialogReview = () => {
     this.setState({
       reviewVisible: false
+    });
+  }
+
+  onCloseAndAddSubject = () => {
+    this.props.onRegisterBlockUser(this.state.listTeachersImport);
+    this.setState({
+      reviewVisible: false,
+      listTeachersImport: []
     });
   }
 
@@ -316,7 +325,7 @@ export default class UserManageCom extends Component {
               type="button"
               className="btn btn-primary"
               key="save"
-              //onClick={this.onCloseAndAddSubjects}
+              onClick={this.onCloseAndAddSubject}
               theme="success"
             >
               Tạo
@@ -406,13 +415,13 @@ export default class UserManageCom extends Component {
                 return user;
               })}
             >
-              <Column sortable={true} field="name" header="Tên" />
-              <Column sortable={true} field="username" header="Tên tài khoản" />
-              <Column sortable={true} field="email" header="Mail" />
-              <Column sortable={true} field="roleText" header="Role" />
+              <Column style={{ width: "3em" }} sortable={true} field="name" header="Tên" />
+              <Column style={{ width: "3em" }} sortable={true} field="username" header="Tên tài khoản" />
+              <Column style={{ width: "3em" }} sortable={true} field="email" header="Mail" />
+              <Column style={{ width: "3em" }} sortable={true} field="roleText" header="Role" />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "4em" }}
+                style={{ textAlign: "center", width: "1em" }}
               />
             </DataTable>
           </Col>

@@ -17,6 +17,7 @@ import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAc
 
 import * as eduProgramsAction from "../actions/eduProgramsAction";
 import * as detailEduProgramAction from "../actions/detailEduProgramAction";
+import * as knowledgeTableAction from "../actions/_knowledgeTableAction";
 
 import { connect } from "react-redux";
 
@@ -201,6 +202,9 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
               contentNodes={this.props.contentNodes}
               scheduleNodes={this.props.scheduleNodes}
               targetNodes={this.props.targetNodes}
+              knowledgeTables={this.props.knowledgeTables}
+              onLoadKnowledgeTable={this.props.onLoadKnowledgeTable}
+              contentList={this.props.contentList}
             />{" "}
           </Col>{" "}
         </Row>{" "}
@@ -224,6 +228,8 @@ const mapStateToProps = state => ({
   targetNodes: state.targetNodes,
   teacherSubject: state.datactdt.teacherSubject,
   teacherReviewSubject: state.datactdt.teacherReviewSubject,
+  knowledgeTables: state.knowledgeTables,
+  contentList: state.contentList
 });
 
 export default connect(mapStateToProps, {
@@ -237,6 +243,7 @@ export default connect(mapStateToProps, {
   onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
   onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
+  onLoadKnowledgeTable: knowledgeTableAction.onLoadKnowledgeTable,
   //cdio-2
   updateSubjectList: subjectList,
   updateDataCtdt: dataCtdt,

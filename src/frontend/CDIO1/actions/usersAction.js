@@ -158,7 +158,7 @@ export const onRegisterUser = user => {
           };
           dispatch(message.message(chirp));
         } else if (res.data.code === -2) {
-          dispatch(registerUserSuccess(res));
+          dispatch(registerUserError(res));
           let chirp = {
             message: `Không có quyền đăng kí`,
             isRight: 0
@@ -339,6 +339,74 @@ export const onDeleteUser = username => {
         dispatch(deleteUserError(err));
         let chirp = {
           message: `Xóa tài khoản thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+      });
+  };
+};
+
+export const registerBlockUserSuccess = successMessage => ({
+  type: cst.REGISTER_BLOCK_USER_SUCCESS,
+  successMessage
+});
+
+export const registerBlockUserError = errorMessage => ({
+  type: cst.REGISTER_BLOCK_USER_ERROR,
+  errorMessage
+});
+
+export const onRegisterBlockUser = users => {
+  return (dispatch, getState) => {
+    let req = links.REGISTER_BLOCK_USER;
+    let params = {};
+    params.data = JSON.stringify(users);
+    axios
+      .post(req, params, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
+      .then(res => {
+        if (res.data.code === -1) {
+          dispatch(registerBlockUserError(res));
+          let chirp = {
+            message: `Đăng kí thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        } else if (res.data.code === -2) {
+          dispatch(registerBlockUserError(res));
+          let chirp = {
+            message: `Không có quyền đăng kí`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        } else if (res.data.code === -3) {
+          dispatch(registerBlockUserError(res));
+          let chirp = {
+            message: `Tên tài khoản đã tồn tại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        } else if (res.data.code > 0) {
+          dispatch(registerBlockUserSuccess(res));
+          let chirp = {
+            message: `Đăng kí thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
+        }
+        dispatch(onLoadUsers());
+      })
+      .catch(err => {
+        dispatch(onLoadUsers());
+        dispatch(registerBlockUserError(err));
+        let chirp = {
+          message: `Đăng kí thất bại`,
           isRight: 0
         };
         dispatch(message.message(chirp));

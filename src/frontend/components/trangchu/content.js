@@ -684,7 +684,7 @@ class Content extends Component {
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                             
                                                         }
-                                                            }
+                                                            
 
                                                         />
                                                     </List.Item>

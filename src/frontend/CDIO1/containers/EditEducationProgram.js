@@ -86,8 +86,11 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
   componentDidMount = () => {
     // const urlParams = new URLSearchParams(window.location.search);
     // const id = urlParams.get("id");
+    debugger;
     
     const id = this.props.ctdt;
+    this.props.onLoadEduProgram(id);
+    this.props.onLoadDetailEduProgram(id);
     //if(this.props.isLoadedDataCtdt === false) {
       this.setState({isLoad: true});
     $.getBlockSubject(id).then(res => {
@@ -119,6 +122,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
                   item.del_flat != 1
               );
               this.props.updateSubjectList(dataSubject);
+              this.setState({isLoad: false});
             }
             else {
               dataSubject = dataSubject.filter(item => 
@@ -139,9 +143,6 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
       }})
 
     //}
-
-    this.props.onLoadEduProgram(id);
-    this.props.onLoadDetailEduProgram(id);
 
     this.props.onLoadLevels();
     this.props.onLoadMajors();

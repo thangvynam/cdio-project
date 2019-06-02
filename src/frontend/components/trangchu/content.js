@@ -59,6 +59,32 @@ const openNotificationWithIcon = (type) => {
 };
 
 class Content extends Component {
+    constructor(props) {
+        super(props)
+
+        this.state = {
+            scrolling: false
+        }
+    }
+
+
+    componentWillUnmount() {
+        window.removeEventListener('scroll', this.handleScroll);
+    }
+
+    componentDidMount = () => {
+        window.addEventListener('scroll', this.handleScroll);
+        this.props.onLoadEduPrograms();
+    };
+
+    handleScroll = (event) => {
+        if (window.scrollY < 70 && this.state.scrolling === true) {
+            this.setState({ scrolling: false });
+        }
+        else if (window.scrollY >= 70 && this.state.scrolling !== true) {
+            this.setState({ scrolling: true });
+        }
+    }
 
 
     // state = { visible: false, isEditting: "" }
@@ -173,8 +199,8 @@ class Content extends Component {
     // }
 
     checkInTeacherSubject = (teacherSubject, idSubject) => {
-        for(let i = 0;i < teacherSubject.length;i++) {
-            if(teacherSubject[i].IdSubject === idSubject) {
+        for (let i = 0; i < teacherSubject.length; i++) {
+            if (teacherSubject[i].IdSubject === idSubject) {
                 return true;
             }
         }
@@ -182,8 +208,8 @@ class Content extends Component {
     }
 
     checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
-        for(let i = 0;i < teacherReviewSubject.length;i++) {
-            if(teacherReviewSubject[i].idTTC === idSubject) {
+        for (let i = 0; i < teacherReviewSubject.length; i++) {
+            if (teacherReviewSubject[i].idTTC === idSubject) {
                 return true;
             }
         }
@@ -191,48 +217,44 @@ class Content extends Component {
     }
 
     checkAdmin = (role) => {
-        if(role.indexOf("ADMIN") > -1) {
+        if (role.indexOf("ADMIN") > -1) {
             return true;
         }
         return false;
     }
-    
+
     checkChuNhiem = (role) => {
-        if(role.indexOf("CHUNHIEM") > -1) {
+        if (role.indexOf("CHUNHIEM") > -1) {
             return true;
         }
         return false;
-      }
+    }
 
-      checkBienSoan = (role) => {
-        if(role.indexOf("BIEN_SOAN") > -1) {
+    checkBienSoan = (role) => {
+        if (role.indexOf("BIEN_SOAN") > -1) {
             return true;
         }
         return false;
-      }
+    }
 
-      checkTeacher = (role) => {
-        if(role.indexOf("TEACHER") > -1) {
+    checkTeacher = (role) => {
+        if (role.indexOf("TEACHER") > -1) {
             return true;
         }
         return false;
-      }
-
-
-    componentDidMount = () => {
-        this.props.onLoadEduPrograms();
-    };
+    }
 
     getSubjectName = (subjectList, id) => {
-        for(let i = 0;i < subjectList.length;i++) {
-            if(subjectList[i].Id.toString() === id) {
+        for (let i = 0; i < subjectList.length; i++) {
+            if (subjectList[i].Id.toString() === id) {
                 return subjectList[i].SubjectName;
             }
         }
         return "";
-      }
+    }
 
     render() {
+        let fixedCss = this.state.scrolling ? "fixedCss" : "";
         var subjectList = [];
         let type = this.props.content_type;
         let ctdt = this.props.content_ctdt;
@@ -273,11 +295,11 @@ class Content extends Component {
                 }
             } break;
             case 'itusurvey': {
-                
-                subjectList = this.props.subjectList.filter(item => 
+
+                subjectList = this.props.subjectList.filter(item =>
                     item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
                 );;
-                
+
 
             } break;
 
@@ -291,16 +313,18 @@ class Content extends Component {
             case MENUITEM.THONG_TIN_CHUNG: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row 
+                        style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                            className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Thông Tin Chung</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -312,21 +336,25 @@ class Content extends Component {
             case MENUITEM.MO_TA_MON_HOC: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row 
+                        style={{
+                            position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8',                       
+                        }}
+                        className = "col-right-title header-fixed" >
+                            <div  className="header-child">
                                 <span>Mô Tả Môn Học</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
 
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout2 monhoc={monhoc}/>
+                            <Layout2 monhoc={monhoc} />
                         </div>
                     </React.Fragment>
                 ); break;
@@ -334,21 +362,23 @@ class Content extends Component {
             case MENUITEM.MUC_TIEU_MON_HOC: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row 
+                        style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Mục Tiêu Môn Học</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
 
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout3 monhoc={monhoc}/>
+                            <Layout3 monhoc={monhoc} />
                         </div>
                     </React.Fragment >
                 ); break;
@@ -356,20 +386,22 @@ class Content extends Component {
             case MENUITEM.CHUAN_DAU_RA: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row
+                        style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }} 
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Chuẩn Đẩu Ra</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout4 monhoc={monhoc}/>
+                            <Layout4 monhoc={monhoc} />
                         </div>
                     </React.Fragment>
                 ); break;
@@ -377,20 +409,21 @@ class Content extends Component {
             case MENUITEM.GIANG_DAY_LY_THUYET: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Kế Hoạch Giảng Dạy Lý Thuyết</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout5 monhoc={monhoc}/>
+                            <Layout5 monhoc={monhoc} />
                         </div>
                     </React.Fragment>
                 ); break;
@@ -398,20 +431,22 @@ class Content extends Component {
             case MENUITEM.GIANG_DAY_THUC_HANH: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row 
+                        style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Kế Hoạch Giảng Dạy Thực Hành</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout6 monhoc={monhoc}/>
+                            <Layout6 monhoc={monhoc} />
                         </div>
                     </React.Fragment>
                 ); break;
@@ -419,20 +454,21 @@ class Content extends Component {
             case MENUITEM.DANH_GIA: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Đánh Giá</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout7 monhoc={monhoc}/>
+                            <Layout7 monhoc={monhoc} />
                         </div>
                     </React.Fragment>
                 ); break;
@@ -440,20 +476,21 @@ class Content extends Component {
             case MENUITEM.TAI_NGUYEN_MON_HOC: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Tài Nguyên Môn Học</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout8 monhoc={monhoc}/>
+                            <Layout8 monhoc={monhoc} />
                         </div>
                     </React.Fragment>
                 ); break;
@@ -461,20 +498,21 @@ class Content extends Component {
             case MENUITEM.QUY_DINH_CHUNG: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Quy Định Chung</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout9 monhoc={monhoc}/>
+                            <Layout9 monhoc={monhoc} />
                         </div>
                     </React.Fragment>
                 ); break;
@@ -483,16 +521,17 @@ class Content extends Component {
             case MENUITEM.XUAT_FILE_PDF: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Xuất File PDF</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -505,19 +544,20 @@ class Content extends Component {
             case "": {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                         className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Thông Tin Chung</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
-                        <ThongTinChung idMH={this.props.content_monhoc}/>
+                        <ThongTinChung idMH={this.props.content_monhoc} />
                     </React.Fragment>
                 ); break
             }
@@ -525,19 +565,20 @@ class Content extends Component {
             case MENUITEM.ITU_SURVEY: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>ITU_SURVEY</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
-                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt}/>
+                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt} />
                     </React.Fragment>
                 )
                 break;
@@ -546,16 +587,17 @@ class Content extends Component {
             case MENUITEM.PHAN_CONG: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Phân Công</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -569,16 +611,17 @@ class Content extends Component {
             case MENUITEM.REVIEW: {
                 content_layout = (
                     <React.Fragment>
-                        <Row className="col-right-title">
-                            <div>
+                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                        className="col-right-title header-fixed">
+                            <div className="header-child">
                                 <span>Review</span>
                                 <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                />
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
@@ -594,16 +637,18 @@ class Content extends Component {
                     content_layout = type === "de-cuong-mon-hoc" ? (
                         <React.Fragment>
                             <Col span={22} className="col-right">
-                                <Row className="col-right-title">
-                                    <div>
+                                <Row 
+                                style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
+                                className="col-right-title header-fixed">
+                                    <div className="header-child">
                                         <span>SYLLABUS</span>
                                         <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
+                                            subjectName={subjectName}
+                                            content_khoi={khoi}
+                                            content_ctdt={ctdt}
+                                            content_parent={parent}
+                                            content_type={type}
+                                        />
                                     </div>
                                 </Row>
                             </Col>
@@ -613,10 +658,10 @@ class Content extends Component {
                                     dataSource={subjectList}
                                     pagination={{
                                         onChange: page => {
-                                          console.log(page);
+                                            console.log(page);
                                         },
                                         pageSize: 10,
-                                      }}
+                                    }}
                                     renderItem={(item, id) => (
                                         <Row>
                                             <div style={{ height: "10px" }}></div>
@@ -639,55 +684,11 @@ class Content extends Component {
                                                             : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                             
                                                         }
-
-                                                        />
-                                                    </List.Item>
-
-                                                </div>
-
-                                            </Col>
-                                        </Row>
-                                    )}
-                                />
-                            </div>
-                        </React.Fragment>
-                    ) 
-                    : type === "matrix" ? <Matrix khoi={khoi}/>
-                    : type === "edit-matrix" ? <EditMatrix />
-                    // : type === "survey-matrix" ? <SurveyMatrix />
-                    : type === "benchmark-matrix" ? <BenchMark />
-                    : type === "itusurvey" ?
-                        <React.Fragment>
-                            <div>
-                                <List
-                                    itemLayout="horizontal"
-                                    dataSource={subjectList}
-                                    pagination={{
-                                        onChange: page => {
-                                          console.log(page);
-                                        },
-                                        pageSize: 10,
-                                      }}
-                                    renderItem={(item, id) => (
-                                        <Row>
-                                            <div style={{ height: "10px" }}></div>
-                                            <Col span={1} className="col-left">
-                                            </Col>
-                                            <Col span={22} className="col-left">
-
-                                                <div className="list-border" style={{ borderRadius: "12px" }}>
-
-                                                    <List.Item>
-                                                        <List.Item.Meta
-                                                        
-                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                            title={
-                                                                <Link to={`/${parent}/${ctdt}/${type}/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                                
                                                             }
-                                                        />
 
+                                                        />
                                                     </List.Item>
+
                                                 </div>
 
                                             </Col>
@@ -696,49 +697,94 @@ class Content extends Component {
                                 />
                             </div>
                         </React.Fragment>
+                    )
+                        : type === "matrix" ? <Matrix khoi={khoi} />
+                            : type === "edit-matrix" ? <EditMatrix />
+                                // : type === "survey-matrix" ? <SurveyMatrix />
+                                : type === "benchmark-matrix" ? <BenchMark />
+                                    : type === "itusurvey" ?
+                                        <React.Fragment>
+                                            <div>
+                                                <List
+                                                    itemLayout="horizontal"
+                                                    dataSource={subjectList}
+                                                    pagination={{
+                                                        onChange: page => {
+                                                            console.log(page);
+                                                        },
+                                                        pageSize: 10,
+                                                    }}
+                                                    renderItem={(item, id) => (
+                                                        <Row>
+                                                            <div style={{ height: "10px" }}></div>
+                                                            <Col span={1} className="col-left">
+                                                            </Col>
+                                                            <Col span={22} className="col-left">
 
-                    : type === "chuan-dau-ra" ? (
-                      <EditOutcomeStandard ctdt={ctdt}/>
-                    )
-                    : type === "phan-cong-giang-day" ? (
-                        <TeachingManage ctdt={ctdt}/>
-                    )
-                    : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                        <EditEducationProgram ctdt={ctdt} />
-                    )
-                    : parent === "ctdt" ? (
-                        <EducationProgram />
-                    )
-                    : parent === "danh-muc" ? <Danhmuc />
-                    : parent === "cdr" ? ctdt === "edit" ? (
-                        <React.Fragment><EditOutcomeStandard /></React.Fragment>
-                    )
-                    : <React.Fragment><OutcomeStandard /></React.Fragment>
-                    : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
-                    : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
-                    : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
-                    : parent === "survey-matrix" ? <SurveyMatrix />
-                    : parent === "view-survey" ? (
-                        <React.Fragment>
-                            <Row className="col-right-title">
-                                <div>
-                                    <span>Xem Khảo Sát</span>
-                                    <Direction
-                                        subjectName={subjectName}
-                                        content_khoi={khoi}
-                                        content_ctdt={ctdt}
-                                        content_parent={parent}
-                                        content_type={type}
-                                    />
-                                </div>,
+                                                                <div className="list-border" style={{ borderRadius: "12px" }}>
+
+                                                                    <List.Item>
+                                                                        <List.Item.Meta
+
+                                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                                                            title={
+                                                                                <Link to={`/${parent}/${ctdt}/${type}/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+
+                                                                            }
+                                                                        />
+
+                                                                    </List.Item>
+                                                                </div>
+
+                                                            </Col>
+                                                        </Row>
+                                                    )}
+                                                />
+                                            </div>
+                                        </React.Fragment>
+
+                                        : type === "chuan-dau-ra" ? (
+                                            <EditOutcomeStandard ctdt={ctdt} />
+                                        )
+                                            : type === "phan-cong-giang-day" ? (
+                                                <TeachingManage ctdt={ctdt} />
+                                            )
+                                                : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
+                                                    <EditEducationProgram ctdt={ctdt} />
+                                                )
+                                                    : parent === "ctdt" ? (
+                                                        <EducationProgram />
+                                                    )
+                                                        : parent === "danh-muc" ? <Danhmuc />
+                                                            : parent === "cdr" ? ctdt === "edit" ? (
+                                                                <React.Fragment><EditOutcomeStandard /></React.Fragment>
+                                                            )
+                                                                : <React.Fragment><OutcomeStandard /></React.Fragment>
+                                                                : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
+                                                                    : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
+                                                                        : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
+                                                                            : parent === "survey-matrix" ? <SurveyMatrix />
+                                                                                : parent === "view-survey" ? (
+                                                                                    <React.Fragment>
+                                                                                        <Row className="col\-right\-title aa">
+                                                                                            <div>
+                                                                                                <span>Xem Khảo Sát</span>
+                                                                                                <Direction
+                                                                                                    subjectName={subjectName}
+                                                                                                    content_khoi={khoi}
+                                                                                                    content_ctdt={ctdt}
+                                                                                                    content_parent={parent}
+                                                                                                    content_type={type}
+                                                                                                />
+                                                                                            </div>,
                                 </Row>
-                            <div className="wrapper-custom-layout">
-                                <ViewSurvey />
-                            </div>
-                        </React.Fragment>
-                    )
-                    : parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
-                    : null;
+                                                                                        <div className="wrapper-custom-layout">
+                                                                                            <ViewSurvey />
+                                                                                        </div>
+                                                                                    </React.Fragment>
+                                                                                )
+                                                                                    : parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
+                                                                                        : null;
                 }; break;
             }
             default: {

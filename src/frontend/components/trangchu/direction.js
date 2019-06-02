@@ -59,7 +59,7 @@ class Direction extends Component {
         let type = this.props.content_type;
         let khoi = this.props.content_khoi;
         return(
-            <div>
+            <div className="direction-css">
                 <Divider type="vertical" />
                 {parent !== "" && parent !== undefined ?
                     <Link  to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt",paddingTop: "5px" }}>{this.getParentName(this.props.parentitem, parent)}</span></Link>

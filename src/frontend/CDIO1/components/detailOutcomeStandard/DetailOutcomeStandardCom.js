@@ -8,6 +8,7 @@ import { Dialog } from "primereact/dialog";
 import { InputText } from "primereact/inputtext";
 import { AutoComplete } from "primereact/autocomplete";
 import { DataTable } from "primereact/datatable";
+import { InputTextarea } from 'primereact/inputtextarea';
 
 import "../../assets/common.css";
 
@@ -39,7 +40,11 @@ export default class DetailOutcomeStandardCom extends Component {
       deleteReAlertVisible: false,
       idRevision: 0,
       commentVisible: false,
-      comment: ""
+      // comments
+      keys: [],
+      comment: "",
+      commentKey: "",
+      filterCommentKey: []
     };
   }
 
@@ -344,6 +349,22 @@ export default class DetailOutcomeStandardCom extends Component {
     });
     event.preventDefault();
   };
+  // onchage 
+  onChangeCommentKey = e => {
+    this.setState({ commentKey: e.value });
+  }
+
+  filterKeys = event => {
+    const keys = [...logic.convertDbToKey(this.state.nodes)];
+    this.setState({ keys: keys });
+    setTimeout(() => {
+      let results = this.state.keys.filter(key => {
+        return key.toLowerCase().startsWith(event.query.toLowerCase());
+      });
+
+      this.setState({ filterCommentKey: results });
+    }, 250);
+  }
 
   // on save outcomestandard
   onSave = () => {
@@ -379,44 +400,50 @@ export default class DetailOutcomeStandardCom extends Component {
         {JSON.parse(localStorage.getItem("user")).data.Role.includes(
           "BIEN_SOAN"
         ) && (
-          <React.Fragment>
-            <Button
-              onClick={() => this.onClickDialog(node)}
-              theme="success"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title="Thêm cấp con"
-            >
-              <i className="material-icons">add</i>
-            </Button>
-            <Button
-              onClick={() => this.upSameLevel(node)}
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title="Lên cùng cấp"
-            >
-              <i className="material-icons">arrow_upward</i>
-            </Button>
-            <Button
-              onClick={() => this.downSameLevel(node)}
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title="Xuống cùng cấp"
-            >
-              <i className="material-icons">arrow_downward</i>
-            </Button>
-            <Button
-              onClick={() => this.onShowDeleteAlert(node)}
-              theme="secondary"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title={`Xóa cấp ${node.key}`}
-            >
-              <i className="material-icons">delete_sweep</i>
-            </Button>
-          </React.Fragment>
-        )}
+            <React.Fragment>
+              <Button
+                onClick={() => this.onClickDialog(node)}
+                theme="success"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title="Thêm cấp con"
+              >
+                <i className="material-icons">add</i>
+              </Button>
+              <Button
+                onClick={() => this.upSameLevel(node)}
+                theme="info"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title="Lên cùng cấp"
+              >
+                <i className="material-icons">arrow_upward</i>
+              </Button>
+              <Button
+                onClick={() => this.downSameLevel(node)}
+                theme="info"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title="Xuống cùng cấp"
+              >
+                <i className="material-icons">arrow_downward</i>
+              </Button>
+              <Button
+                onClick={() => this.onShowDeleteAlert(node)}
+                theme="secondary"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title={`Xóa cấp ${node.key}`}
+              >
+                <i className="material-icons">delete_sweep</i>
+              </Button>
+            </React.Fragment>
+          )}
       </div>
     );
   };
+
+  actionTemplateTableComments = (rowData, column) =>{
+    return <div>
+            <Button type="button" icon="pi pi-pencil" className="p-button-warning"></Button>
+        </div>;
+  }
 
   componentWillReceiveProps(nextProps) {
     this.setState({ nodes: nextProps.detailOutcomeStandard });
@@ -469,6 +496,7 @@ export default class DetailOutcomeStandardCom extends Component {
       </div>
     );
 
+
     return (
       <div className="p-grid content-section implementation">
         <Row>
@@ -488,31 +516,31 @@ export default class DetailOutcomeStandardCom extends Component {
           {JSON.parse(localStorage.getItem("user")).data.Role.includes(
             "BIEN_SOAN"
           ) && (
-            <Col lg="6" md="6" sm="6">
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onSave}
-                disabled={this.state.isSaveBtnDisabled}
-              >
-                <i className="material-icons">save</i> Lưu CĐR (bản chính)
+              <Col lg="6" md="6" sm="6">
+                <Button
+                  style={{ margin: "0 10px" }}
+                  theme="success"
+                  onClick={this.onSave}
+                  disabled={this.state.isSaveBtnDisabled}
+                >
+                  <i className="material-icons">save</i> Lưu CĐR (bản chính)
               </Button>
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onSeeRevisions}
-              >
-                <i className="material-icons">history</i> Xem các phiên bản
+                <Button
+                  style={{ margin: "0 10px" }}
+                  theme="success"
+                  onClick={this.onSeeRevisions}
+                >
+                  <i className="material-icons">history</i> Xem các phiên bản
               </Button>
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onShowSaveRevision}
-              >
-                <i className="material-icons">change_history</i> Lưu phiên bản
+                <Button
+                  style={{ margin: "0 10px" }}
+                  theme="success"
+                  onClick={this.onShowSaveRevision}
+                >
+                  <i className="material-icons">change_history</i> Lưu phiên bản
               </Button>
-            </Col>
-          )}
+              </Col>
+            )}
           <Col lg="2" md="2" sm="2">
             {JSON.parse(localStorage.getItem("user")).data.Role.includes(
               "BIEN_SOAN"
@@ -671,7 +699,7 @@ export default class DetailOutcomeStandardCom extends Component {
           >
             {`Bạn thực sự muốn xóa node ${
               this.state.node ? this.state.node.key : "chưa có dữ liệu"
-            }`}
+              }`}
           </Dialog>
         </div>
 
@@ -698,10 +726,10 @@ export default class DetailOutcomeStandardCom extends Component {
             {`Bạn thực sự muốn xóa phiên bản ${
               this.state.idRevision !== 0
                 ? this.props.revisions.filter(
-                    row => row.Id === this.state.idRevision
-                  )[0].NameRevision
+                  row => row.Id === this.state.idRevision
+                )[0].NameRevision
                 : ""
-            }`}
+              }`}
           </Dialog>
         </div>
 
@@ -715,10 +743,10 @@ export default class DetailOutcomeStandardCom extends Component {
                 {JSON.parse(localStorage.getItem("user")).data.Role.includes(
                   "BIEN_SOAN"
                 ) && (
-                  <Button onClick={this.onCheck} theme="success">
-                    Xác nhận hoàn thành
+                    <Button onClick={this.onCheck} theme="success">
+                      Xác nhận hoàn thành
                   </Button>
-                )}
+                  )}
 
                 <Button
                   onClick={() =>
@@ -742,16 +770,34 @@ export default class DetailOutcomeStandardCom extends Component {
               {JSON.parse(localStorage.getItem("user")).data.Role.includes(
                 "TEACHER"
               ) && (
-                <Row>
-                  <Col lg="5" md="5" sm="5" />
-                  <Col lg="5" md="5" sm="5" />
-                  <Col lg="2" md="2" sm="2" >
-                    <Button onClick={this.onComment} theme="primary">
-                      Bình luận
+                  <Row>
+                    <Col lg="4" md="4" sm="4" >
+                      <AutoComplete
+                        value={this.state.commentKey}
+                        dropdown={true}
+                        onChange={e => this.onChangeCommentKey(e)}
+                        size={20}
+                        placeholder="KeyRow"
+                        minLength={1}
+                        suggestions={this.state.filterCommentKey}
+                        completeMethod={e => this.filterKeys(e)}
+                      />
+                    </Col>
+                    <Col lg="5" md="5" sm="5" >
+                      <InputTextarea 
+                        placeholder="Nhận xét"
+                        rows={1}
+                        cols={40} value={this.state.comment}
+                        onChange={(e) => this.setState({ comment: e.target.value })}
+                      />
+                    </Col>
+                    <Col lg="2" md="2" sm="2" >
+                      <Button onClick={this.onComment} theme="primary">
+                        Bình luận
                     </Button>
-                  </Col>
-                </Row>
-              )}
+                    </Col>
+                  </Row>
+                )}
               <br />
               <Row>
                 <Col
@@ -780,7 +826,7 @@ export default class DetailOutcomeStandardCom extends Component {
                       header="Mục"
                     />
                     <Column
-                      style={{ width: "5em" }}
+                      style={{ width: "5em", "word-wrap": "break-word" }}
                       field="Content"
                       header="Nội dung"
                     />
@@ -797,7 +843,7 @@ export default class DetailOutcomeStandardCom extends Component {
                     />
                     <Column
                       rowSpan={1}
-                      //body={this.actionTemplate}
+                      body={this.actionTemplateTableComments}
                       style={{ textAlign: "center", width: "1em" }}
                     />
                   </DataTable>

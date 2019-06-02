@@ -103,6 +103,15 @@ export const createSaveData = (nodes, data, id, level) => {
   }
 };
 
+export const convertDbToKey = nodes =>{
+  let data = [];
+  let level = getMaxLevel(nodes);
+  createSaveData(nodes, data,'',level);
+  return data.reduce((arr, row) =>{
+    return arr.concat(row.KeyRow);
+  },[]);
+}
+
 // add
 
 export const addRoot = (nodes, nameOut) => {

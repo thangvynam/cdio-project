@@ -1,7 +1,10 @@
 import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, CTDT, PARENT_ITEM , KTT} from '../Constant/ActionType';
 const initialState = {
     "chuan-dau-ra" :{
-        name: "CHUẨN ĐẦU RA",
+        name: "ĐÁNH GIÁ CHUẨN ĐẦU RA",
+    },
+    "khao-sat-chuan-dau-ra" :{
+        name: "KHẢO SÁT CHUẨN ĐẦU RA",
     },
     "phan-cong-giang-day" :{
         name: "PHÂN CÔNG GIẢNG DẠY",

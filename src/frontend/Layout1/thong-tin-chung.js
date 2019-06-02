@@ -19,6 +19,7 @@ class ThongTinChung extends Component {
     }
   }
 
+
   componentDidMount() {
     this.props.collectDataRequest(this.props.idMH);
   }
@@ -80,7 +81,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: dataTTC['SubjectName'],
                   })(
-                    <Input disabled={this.props.isReview === true ? true : false} name="tenMonHocTV" type="text" />
+                    <Input disabled name="tenMonHocTV" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -95,7 +96,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: dataTTC['SubjectEngName'],
                   })(
-                    <Input disabled={this.props.isReview === true ? true : false} name="tenMonHocTA" type="text" />
+                    <Input disabled name="tenMonHocTA" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -110,7 +111,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: dataTTC['SubjectCode'],
                   })(
-                    <Input disabled={this.props.isReview === true ? true : false} name="maMonHoc" type="text" />
+                    <Input disabled name="maMonHoc" type="text" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -123,7 +124,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: dataTTC['Credit'],
                   })(
-                    <Input disabled={this.props.isReview === true ? true : false} className="inputNumber" name="soTinChi" type="number" />
+                    <Input disabled className="inputNumber" name="soTinChi" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -136,7 +137,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: dataTTC['TheoryPeriod'],
                   })(
-                    <Input disabled={this.props.isReview === true ? true : false} className="inputNumber" name="tietLyThuyet" type="number" />
+                    <Input disabled className="inputNumber" name="tietLyThuyet" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -149,7 +150,7 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: dataTTC['PracticePeriod'],
                   })(
-                    <Input disabled={this.props.isReview === true ? true : false} className="inputNumber" name="tietThucHanh" type="number" />
+                    <Input disabled className="inputNumber" name="tietThucHanh" type="number" />
                   )}
                 </Form.Item>
                 <Form.Item
@@ -162,14 +163,14 @@ class ThongTinChung extends Component {
                       }],
                     initialValue: dataTTC['ExercisePeriod'],
                   })(
-                    <Input disabled={this.props.isReview === true ? true : false} className="inputNumber" name="tietTuHoc" type="number" />
+                    <Input disabled className="inputNumber" name="tietTuHoc" type="number" />
                   )}
                 </Form.Item>
-                <Form.Item>
+                {/* <Form.Item>
                   {this.props.isReview === true ? null : <Button type="primary" htmlType="submit" className="submit_TTC form-signin-button">
                     Update
                  </Button>}
-                </Form.Item>
+                </Form.Item> */}
               </Form>
             </div>
 

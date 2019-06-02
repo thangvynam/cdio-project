@@ -34,7 +34,7 @@ class DetailEducationProgramTmp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoad: false
+      isLoad: true
     };
   }
 
@@ -84,12 +84,17 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
 }
 
   componentDidMount = () => {
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const id = urlParams.get("id");
-    
+    //this.setState({isLoad: true});
     const id = this.props.ctdt;
-    //if(this.props.isLoadedDataCtdt === false) {
-      this.setState({isLoad: true});
+    this.props.onLoadEduProgram(+id);
+    this.props.onLoadDetailEduProgram(+id);
+    this.props.onLoadLevels();
+    this.props.onLoadMajors();
+    this.props.onLoadPrograms();
+    this.props.onLoadSubjects();
+    this.props.onLoadOutcomeStandards();
+
+        
     $.getBlockSubject(id).then(res => {
       let resData = res.data.data;
       let dataSubject = [];
@@ -119,6 +124,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
                   item.del_flat != 1
               );
               this.props.updateSubjectList(dataSubject);
+              //this.setState({isLoad: false});
             }
             else {
               dataSubject = dataSubject.filter(item => 
@@ -128,27 +134,19 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
                     ||this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
                 );
                 this.props.updateSubjectList(dataSubject);
-                this.setState({isLoad: false});
+                //this.setState({isLoad: false});
             }
           });
         });
+
         
         this.props.updateDataCtdt(dataCtdt);
         this.props.updateIsLoadedDataCtdt(true);
         
       }})
 
-    //}
-
-    this.props.onLoadEduProgram(id);
-    this.props.onLoadDetailEduProgram(id);
-
-    this.props.onLoadLevels();
-    this.props.onLoadMajors();
-    this.props.onLoadPrograms();
-    this.props.onLoadSubjects();
-    this.props.onLoadOutcomeStandards();
     window.addEventListener("beforeunload", this.onUnload);
+    
   };
 
   onUnload = event => {
@@ -169,7 +167,8 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
       : `Chưa tải được`;
 
     return (
-      !this.state.isLoad && <Container fluid className="main-content-container px-4">
+      //this.state.isLoad === false ? 
+      <Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">

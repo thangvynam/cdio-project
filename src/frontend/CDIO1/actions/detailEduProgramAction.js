@@ -20,7 +20,14 @@ export const onLoadDetailEduProgram = id => {
   return (dispatch, getState) => {
     let req = `${links.LOAD_DETAIL_EDUPROGRAM}?ideduprog=${id}`;
     axios
-      .get(req)
+      .get(req, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
       .then(res => {
         const detailEduProgram = res.data.data;
         if (detailEduProgram) {

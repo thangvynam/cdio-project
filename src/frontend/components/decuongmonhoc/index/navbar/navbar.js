@@ -13,7 +13,7 @@ class NavBar extends Component {
         let khoi = this.props.content_khoi;
         return (
             <div>
-                <Link className="col-right-title" to={`/`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>Trang chủ</span></Link>
+                <Link className="col-right-title" to={`/`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "30px" }}>Trang chủ</span></Link>
                 <div style={{float: "right", paddingTop: "5px"}}><UserAction/></div>
             </div>
         );

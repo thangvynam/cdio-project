@@ -243,7 +243,8 @@ class Content extends Component {
         switch (type) {
             case "de-cuong-mon-hoc": {
                 if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                    if(!this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                    if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)
+                    || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
                         subjectList = this.props.subjectList.filter(item => 
                             item.IdSubjectBlock === +khoi 
                             && item.del_flat != 1
@@ -258,7 +259,8 @@ class Content extends Component {
                     
                 }
                 else {
-                    if(!this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                    if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)
+                    || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
                         subjectList = this.props.subjectList.filter(item => 
                             item.del_flat != 1
                         );

@@ -34,7 +34,7 @@ class DetailEducationProgramTmp extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isLoad: false
+      isLoad: true
     };
   }
 
@@ -84,57 +84,8 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
 }
 
   componentDidMount = () => {
-    
+    //this.setState({isLoad: true});
     const id = this.props.ctdt;
-    // this.setState({isLoad: true});
-    // $.getBlockSubject(id).then(res => {
-    //   let resData = res.data.data;
-    //   let dataSubject = [];
-    //   let dataCtdt = [];
-    //   if (resData !== undefined && resData !== null) {
-    //     for (let i = 0; i < resData.length; i++) {
-    //       dataCtdt = dataCtdt.concat(resData[i].block);
-    //       for (let j = 0; j < resData[i].block.length; j++) {
-    //         dataSubject = dataSubject.concat(resData[i].block[j].subjects);
-    //       }
-    //     }
-    //     dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
-        
-    //     $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-    //     .then(res => { 
-    //       if(res.data !== undefined && res.data !== null){
-    //         this.props.updateTeacherSubject(res.data);
-    //       }
-    //       $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-    //       .then(res => {
-    //         if(res.data !== undefined && res.data !== null){
-    //           this.props.updateTeacherReviewSubject(res.data);
-    //         }
-    //         if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) || 
-    //         this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
-    //           dataSubject = dataSubject.filter(item => 
-    //               item.del_flat != 1
-    //           );
-    //           this.props.updateSubjectList(dataSubject);
-    //         }
-    //         else {
-    //           dataSubject = dataSubject.filter(item => 
-    //                 item.del_flat != 1
-    //                 &&
-    //                  (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
-    //                 ||this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
-    //             );
-    //             this.props.updateSubjectList(dataSubject);
-    //             this.setState({isLoad: false});
-    //         }
-    //       });
-    //     });
-        
-    //     this.props.updateDataCtdt(dataCtdt);
-    //     this.props.updateIsLoadedDataCtdt(true);
-        
-    //   }})
-
     this.props.onLoadEduProgram(+id);
     this.props.onLoadDetailEduProgram(+id);
     this.props.onLoadLevels();
@@ -142,7 +93,60 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
     this.props.onLoadPrograms();
     this.props.onLoadSubjects();
     this.props.onLoadOutcomeStandards();
+
+        
+    $.getBlockSubject(id).then(res => {
+      let resData = res.data.data;
+      let dataSubject = [];
+      let dataCtdt = [];
+      if (resData !== undefined && resData !== null) {
+        for (let i = 0; i < resData.length; i++) {
+          dataCtdt = dataCtdt.concat(resData[i].block);
+          for (let j = 0; j < resData[i].block.length; j++) {
+            dataSubject = dataSubject.concat(resData[i].block[j].subjects);
+          }
+        }
+        dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+        
+        $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+        .then(res => { 
+          if(res.data !== undefined && res.data !== null){
+            this.props.updateTeacherSubject(res.data);
+          }
+          $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
+          .then(res => {
+            if(res.data !== undefined && res.data !== null){
+              this.props.updateTeacherReviewSubject(res.data);
+            }
+            if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) || 
+            this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+              dataSubject = dataSubject.filter(item => 
+                  item.del_flat != 1
+              );
+              this.props.updateSubjectList(dataSubject);
+              //this.setState({isLoad: false});
+            }
+            else {
+              dataSubject = dataSubject.filter(item => 
+                    item.del_flat != 1
+                    &&
+                     (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                    ||this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
+                );
+                this.props.updateSubjectList(dataSubject);
+                //this.setState({isLoad: false});
+            }
+          });
+        });
+
+        
+        this.props.updateDataCtdt(dataCtdt);
+        this.props.updateIsLoadedDataCtdt(true);
+        
+      }})
+
     window.addEventListener("beforeunload", this.onUnload);
+    
   };
 
   onUnload = event => {
@@ -163,7 +167,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
       : `Chưa tải được`;
 
     return (
-      // !this.state.isLoad && 
+      //this.state.isLoad === false ? 
       <Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">

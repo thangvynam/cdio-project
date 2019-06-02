@@ -175,7 +175,7 @@ checkTeacher = (role) => {
                         this.props.content_ctdt
                         }/${key}`}
                     >
-                      <Icon type="dashboard" />
+                      <Icon type="container" />
                       <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
@@ -194,7 +194,7 @@ checkTeacher = (role) => {
                         this.props.content_ctdt
                         }/${key}`}
                     >
-                      <Icon type="dashboard" />
+                      <Icon type="container" />
                       <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
@@ -211,7 +211,7 @@ checkTeacher = (role) => {
                         this.props.content_ctdt
                         }/${key}`}
                     >
-                      <Icon type="dashboard" />
+                      <Icon type="container" />
                       <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
@@ -228,7 +228,7 @@ checkTeacher = (role) => {
                         this.props.content_ctdt
                         }/${key}`}
                     >
-                      <Icon type="dashboard" />
+                      <Icon type="container" />
                       <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
@@ -245,7 +245,7 @@ checkTeacher = (role) => {
                         this.props.content_ctdt
                         }/${key}`}
                     >
-                      <Icon type="dashboard" />
+                      <Icon type="container" />
                       <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
@@ -263,7 +263,7 @@ checkTeacher = (role) => {
                         this.props.content_ctdt
                         }/${key}`}
                     >
-                      <Icon type="dashboard" />
+                      <Icon type="container" />
                       <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
@@ -280,7 +280,7 @@ checkTeacher = (role) => {
                         this.props.content_ctdt
                         }/${key}`}
                     >
-                      <Icon type="dashboard" />
+                      <Icon type="container" />
                       <span>{this.props.menuItem[key].name}</span>
                     </Link>
                   </Menu.Item>
@@ -296,7 +296,7 @@ checkTeacher = (role) => {
                       this.props.content_ctdt
                       }/${key}`}
                   >
-                    <Icon type="dashboard" />
+                    <Icon type="container" />
                     <span>{this.props.menuItem[key].name}</span>
                   </Link>
                 </Menu.Item>
@@ -324,7 +324,7 @@ checkTeacher = (role) => {
                           this.props.ctdt[ctdtIndex].Id
                           }/${key}/${this.props.dataCtdt[j].Id}`}
                       >
-                        <Icon type="dashboard" />
+                        <Icon type="block" />
                         <span>{this.props.dataCtdt[j].NameBlock}</span>
                       </Link>
                     </Menu.Item>
@@ -343,7 +343,7 @@ checkTeacher = (role) => {
                             this.props.ctdt[ctdtIndex].Id
                             }/${key}/${this.props.dataCtdt[j].Id}`}
                         >
-                          <Icon type="dashboard" />
+                          <Icon type="block" />
                           <span>{this.props.dataCtdt[j].NameBlock}</span>
                         </Link>
                       </Menu.Item>

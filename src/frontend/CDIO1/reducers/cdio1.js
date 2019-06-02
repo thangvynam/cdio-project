@@ -17,6 +17,7 @@ import { detailEduProgram } from "./detailEduProgram";
 import { contentNodes } from "./_contentNodes";
 import { scheduleNodes } from "./_scheduleNodes";
 import { targetNodes } from "./_targetNodes";
+import { comments } from "./_comments";
 import { blocks } from "./_blocks";
 
 const cdio1 = {
@@ -39,7 +40,7 @@ const cdio1 = {
   scheduleNodes,
   targetNodes,
   blocks,
-
+  comments,
   user,
   users,
 };

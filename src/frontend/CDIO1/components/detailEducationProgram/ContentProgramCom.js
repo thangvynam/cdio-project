@@ -50,6 +50,7 @@ export default class ContentProgramCom extends React.Component {
 
   // get targetNodes from redux
   getContentNodes = (contentNodes, subjects) => {
+
     let contents = logic.convertDbToTreeNodes(contentNodes, subjects);
     contents = this.loadTreeNodes(contents);
     this.setState({ nodes: contents });
@@ -175,7 +176,7 @@ export default class ContentProgramCom extends React.Component {
   // Delete
   deleteNode = () => {
     const root = logic.deleteNode(this.state.nodes, this.state.node);
-    this.setState({ 
+    this.setState({
       nodes: root,
       isDialogDelete: false
     });
@@ -288,12 +289,12 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
-  isShowDialogDelete = node =>{
+  isShowDialogDelete = node => {
     this.setState({
-      isDialogDelete : true,
+      isDialogDelete: true,
       node: node
-    })
-  }
+    });
+  };
 
   onHideDialogRoot = () => {
     this.setState({ isDialogRoot: false });
@@ -310,9 +311,9 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
-  onHideDialogDelete = () =>{
-    this.setState({ isDialogDelete: false })
-  }
+  onHideDialogDelete = () => {
+    this.setState({ isDialogDelete: false });
+  };
 
   handleChangeValue = e => {
     this.setState({ nameValue: e.target.value });
@@ -357,7 +358,7 @@ export default class ContentProgramCom extends React.Component {
 
   filterBlocks = e => {
     this.setState({
-      filterBlocks: logic.blocksOfTable(this.state.node),
+      filterBlocks: logic.blocksOfTable(this.state.node)
     });
   };
 
@@ -382,7 +383,7 @@ export default class ContentProgramCom extends React.Component {
       this.setState({ descriptionBlockBB: e.value });
     } else {
       const credit = logic.findCreditByNameBlock(this.state.node, e.value);
-      this.setState({ 
+      this.setState({
         descriptionBlockTC: e.value,
         optionalCredit: credit
       });
@@ -403,44 +404,47 @@ export default class ContentProgramCom extends React.Component {
 
   // on check
 
-  onCheckAddTitle = () =>{
+  onCheckAddTitle = () => {
     this.setState({
       isTitle: true,
       isTable: false,
       isAnyTable: false
     });
-  }
+  };
 
-  onCheckAddTable = () =>{
+  onCheckAddTable = () => {
     this.setState({
       isTable: true,
       isTitle: false,
       isAnyTable: false
     });
-  }
+  };
 
-  onCheckAddAnyTable = () =>{
+  onCheckAddAnyTable = () => {
     this.setState({
       isAnyTable: true,
       isTable: false,
       isTitle: false
     });
-  }
+  };
 
   // Template
   actionTemplate(node, column) {
     return (
-      <div>
-        {node.data.isTable ? (
-          <Button
-            onClick={() => this.isShowDialogTable(node)}
-            theme="success"
-            style={{ marginRight: ".3em", padding: "8px" }}
-            title={`Thêm môn học`}
-          >
-            <i className="material-icons">playlist_add</i>
-          </Button>
-        ) : (
+      JSON.parse(localStorage.getItem("user")).data.Role.includes(
+        "BIEN_SOAN"
+      ) && (
+        <div>
+          {node.data.isTable ? (
+            <Button
+              onClick={() => this.isShowDialogTable(node)}
+              theme="success"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title={`Thêm môn học`}
+            >
+              <i className="material-icons">playlist_add</i>
+            </Button>
+          ) : (
             <span>
               {this.isCanAdd(node) && (
                 <Button
@@ -467,22 +471,23 @@ export default class ContentProgramCom extends React.Component {
                 // onMouseOver = {() => this.mouseOverDown(node)}
                 theme="info"
                 style={{ marginRight: ".3em", padding: "8px" }}
-              //title={`Xuống xấp ${this.state.nodeHover}`}
+                //title={`Xuống xấp ${this.state.nodeHover}`}
               >
                 <i className="material-icons">arrow_downward</i>
               </Button>
             </span>
           )}
-        <Button
-          onClick={() => this.isShowDialogDelete(node)}
-          onMouseOver={() => this.mouseOver(node)}
-          theme="secondary"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Xóa cấp ${this.state.nodeHover}`}
-        >
-          <i className="material-icons">delete_sweep</i>
-        </Button>
-      </div>
+          <Button
+            onClick={() => this.isShowDialogDelete(node)}
+            onMouseOver={() => this.mouseOver(node)}
+            theme="secondary"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title={`Xóa cấp ${this.state.nodeHover}`}
+          >
+            <i className="material-icons">delete_sweep</i>
+          </Button>
+        </div>
+      )
     );
   }
 
@@ -570,7 +575,7 @@ export default class ContentProgramCom extends React.Component {
         Hủy
       </Button>
     </div>
-  )
+  );
 
   render() {
     return (
@@ -579,17 +584,27 @@ export default class ContentProgramCom extends React.Component {
           <Column
             field="displayName"
             header="Tên dòng"
-            editor={this.nameEditor}
+            editor={
+              JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                "BIEN_SOAN"
+              )
+                ? this.nameEditor
+                : null
+            }
             expander
           />
           <Column
             header={
-              <Button
-                onClick={() => this.isShowDialogRoot(null)}
-                theme="success"
-              >
-                <i className="material-icons">add</i> Thêm cấp
-              </Button>
+              JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                "BIEN_SOAN"
+              ) && (
+                <Button
+                  onClick={() => this.isShowDialogRoot(null)}
+                  theme="success"
+                >
+                  <i className="material-icons">add</i> Thêm cấp
+                </Button>
+              )
             }
             body={(node, column) => this.actionTemplate(node, column)}
             style={{ textAlign: "center", width: "12em" }}
@@ -682,22 +697,22 @@ export default class ContentProgramCom extends React.Component {
               </DataTable>
             </div>
           </Row>
-           {/* is add any table */}
-           <Row>
+          {/* is add any table */}
+          <Row>
             <div hidden={!this.state.isAnyTable}>
-            <Col lg="4" md="4" sm="4">
-              <AutoComplete
-                field="SubjectName"
-                value={this.state.optionSubjects}
-                dropdown={true}
-                onChange={e => this.onChangeListSubjects(e)}
-                size={40}
-                placeholder="Toán rời rạc"
-                minLength={1}
-                suggestions={this.state.filterSubjects}
-                completeMethod={e => this.filterSubjects(e)}
-              />
-            </Col>
+              <Col lg="4" md="4" sm="4">
+                <AutoComplete
+                  field="SubjectName"
+                  value={this.state.optionSubjects}
+                  dropdown={true}
+                  onChange={e => this.onChangeListSubjects(e)}
+                  size={40}
+                  placeholder="Toán rời rạc"
+                  minLength={1}
+                  suggestions={this.state.filterSubjects}
+                  completeMethod={e => this.filterSubjects(e)}
+                />
+              </Col>
             </div>
           </Row>
         </Dialog>
@@ -882,13 +897,8 @@ export default class ContentProgramCom extends React.Component {
           style={{ width: "50vw" }}
           footer={this.footerDialogDelete}
         >
-          <p>
-          {`Bạn thực sự muốn xóa cấp ${this.state.node.key}`}
-          </p>
+          <p>{`Bạn thực sự muốn xóa cấp ${this.state.node.key}`}</p>
         </Dialog>
-
-
-
       </div>
     );
   }

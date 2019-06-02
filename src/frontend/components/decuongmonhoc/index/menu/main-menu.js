@@ -53,10 +53,26 @@ class MenuLeft extends Component {
   return false;
 }
 
+checkBienSoan = (role) => {
+  if(role.indexOf("BIEN_SOAN") > -1) {
+      return true;
+  }
+  return false;
+}
+
+checkTeacher = (role) => {
+  if(role.indexOf("TEACHER") > -1) {
+      return true;
+  }
+  return false;
+}
+
   checkTeacherBlock = (block) => {
     for(let i = 0;i < block.subjects.length;i++) {
-      if(this.checkInTeacherSubject(this.props.teacherSubject, block.subjects[i].IdSubject)
-        || this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, block.subjects[i].IdSubject)) {
+      if(
+        // this.checkInTeacherSubject(this.props.teacherSubject, block.subjects[i].IdSubject)
+        // || 
+        this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, block.subjects[i].IdSubject)) {
           return true;
         }
     }
@@ -150,7 +166,43 @@ class MenuLeft extends Component {
 
           Object.keys(this.props.menuItem).map((key, id) => {
             if(key === "matrix") {
-              if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+              if(this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
+            else if(key === "de-cuong-mon-hoc") {
+              if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)
+            || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)
+          || this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
+            else if(key === "benchmark-matrix") {
+              if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
                 menuItemsCollapse.push(
                   <Menu.Item key={key} onClick={() => this.onClick(key)}>
                     <Link
@@ -167,6 +219,58 @@ class MenuLeft extends Component {
               }
             }
             else if(key === "edit-matrix") {
+              if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
+            else if(key === "itusurvey") {
+              if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
+            else if(key === "chuan-dau-ra") {
+              if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)
+            || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                menuItemsCollapse.push(
+                  <Menu.Item key={key} onClick={() => this.onClick(key)}>
+                    <Link
+                      style={{ paddingLeft: "20px" }}
+                      to={`/${this.props.parentitem[i].id}/${
+                        this.props.content_ctdt
+                        }/${key}`}
+                    >
+                      <Icon type="dashboard" />
+                      <span>{this.props.menuItem[key].name}</span>
+                    </Link>
+                  </Menu.Item>
+                );
+              }
+            }
+            else if(key === "phan-cong-giang-day") {
               if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
                 menuItemsCollapse.push(
                   <Menu.Item key={key} onClick={() => this.onClick(key)}>
@@ -208,7 +312,7 @@ class MenuLeft extends Component {
               &&  this.props.dataCtdt !== null
             ) {
               for (let j = 0; j < this.props.dataCtdt.length; j++) {
-                if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
                   menuItemsCollapse.push(
                     <Menu.Item
                       key={this.props.dataCtdt[j].Id}
@@ -399,23 +503,70 @@ class MenuLeft extends Component {
           );
         }
       }
-      // else if(this.props.parentitem[i].id === "ctdt") {
-      //   if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
-      //     menuItemsCollapse.push(
-      //       <Menu.Item
-      //         key={this.props.parentitem[i].id}
-      //         onClick={() => this.onClick(this.props.parentitem[i].id)}
-      //       >
-      //         <Link to={`/${this.props.parentitem[i].id}`}>
-      //           <Icon type="dashboard" />
-      //           <span>{this.props.parentitem[i].name}</span>
-      //         </Link>
-      //       </Menu.Item>
-      //     );
-      //   }
-      // }
       else if(this.props.parentitem[i].id === "view-survey") {
         if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+
+      else if(this.props.parentitem[i].id === "survey-matrix") {
+        if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+      else if(this.props.parentitem[i].id === "cdr") {
+        if(this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role) || 
+        this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+      else if(this.props.parentitem[i].id === "qlhp" || this.props.parentitem[i].id === "qlkh") {
+        if(this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+          menuItemsCollapse.push(
+            <Menu.Item
+              key={this.props.parentitem[i].id}
+              onClick={() => this.onClick(this.props.parentitem[i].id)}
+            >
+              <Link to={`/${this.props.parentitem[i].id}`}>
+                <Icon type="dashboard" />
+                <span>{this.props.parentitem[i].name}</span>
+              </Link>
+            </Menu.Item>
+          );
+        }
+      }
+      else if(this.props.parentitem[i].id === "qlgd") {
+        if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
           menuItemsCollapse.push(
             <Menu.Item
               key={this.props.parentitem[i].id}

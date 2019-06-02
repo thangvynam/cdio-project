@@ -18,7 +18,8 @@ export default class UserManageCom extends Component {
       globalFilter: "",
       name: "",
       username: "",
-      email: ""
+      email: "",
+      data: {}
     };
   }
 
@@ -27,7 +28,7 @@ export default class UserManageCom extends Component {
       <div>
         <Button
           title="Xóa"
-          onClick={() => this.onDeleteShow(data.Id)}
+          onClick={() => this.onDeleteShow(data)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
@@ -64,15 +65,16 @@ export default class UserManageCom extends Component {
     this.setState({ visible: false });
   };
 
-  onDeleteShow = id => {
+  onDeleteShow = data => {
     this.setState({
       deleteVisible: true,
-      id: id
+      id: data.Id,
+      data: data
     });
   };
 
   onDelete = () => {
-    this.props.onDelete(this.state.id);
+    this.props.onDeleteUser(this.state.data.username);
     this.setState({
       deleteVisible: false,
       id: 0
@@ -261,11 +263,7 @@ export default class UserManageCom extends Component {
           onHide={this.onHideDeleteVisible}
         >
           {`Bạn thực sự muốn xóa người dùng ${
-            this.state.id !== 0
-              ? this.props.users.filter(row => row.Id === this.state.id)[0]
-                  .Username
-              : ""
-          }`}
+            this.state.data.username}`}
         </Dialog>
       </div>
     );
@@ -306,10 +304,18 @@ export default class UserManageCom extends Component {
               ref={el => (this.dt = el)}
               globalFilter={this.state.globalFilter}
               emptyMessage="No records found"
-              value={this.props.users}
+              value={this.props.users.map(user => {
+                const roleText = user.role.reduce((cur, rol) => {
+                  return (cur += rol + " . ");
+                }, "");
+                user.roleText = roleText;
+                return user;
+              })}
             >
               <Column sortable={true} field="name" header="Tên" />
+              <Column sortable={true} field="username" header="Tên tài khoản" />
               <Column sortable={true} field="email" header="Mail" />
+              <Column sortable={true} field="roleText" header="Role" />
               <Column
                 body={this.actionTemplate}
                 style={{ textAlign: "center", width: "4em" }}

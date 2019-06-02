@@ -21,13 +21,9 @@ export const onloadScheduleProgram = idDetail => {
     axios
       .get(req)
       .then(res => {
-        const data = res.data.data;
-        const scheduleNodes = scheduleLogic.mapSubjectsToScheduleNodes(
-          data,
-          getState().subjects
-        );
-
+        const scheduleNodes = res.data.data;
         if (scheduleNodes) {
+          scheduleNodes.sort(scheduleLogic.sortSemester);
           dispatch(loadScheduleProgramSuccess(scheduleNodes));
         } else {
           let chirp = {

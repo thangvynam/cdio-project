@@ -58,6 +58,7 @@ class Matrix extends Component {
         let data1 = {
             data: subjectListId
         }
+        if(data1.data.length > 0) {
             $.getStandardMatrix(data1).then((res) => {
                 let data = [];
                 for (let i = 0; i < res.data.length; i++) {
@@ -86,13 +87,28 @@ class Matrix extends Component {
                 }
                 this.props.updateEditMatrix(data);
             })
-
+        
+            var a = $.getRealityMatrix(data1);
+        var b = $.getCDR_CDIO();
+        Promise.all([a, b])
+            .then((res) => {
+                this.props.getDataMatrix(res)
+                this.createData(res);
+                this.setState({
+                    isLoading: false
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
         }
     }
 
     componentDidMount() {
-        this.setState({ isLoading: true })
+        
         if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+            this.setState({ isLoading: true })
             this.props.updateIsLoadEditMatrix("true");
             let subjectListId = [];
         this.props.subjectList.map(item => {
@@ -101,6 +117,7 @@ class Matrix extends Component {
         let data1 = {
             data: subjectListId
         }
+        if(data1.data.length > 0) {
             $.getStandardMatrix(data1).then((res) => {
                 let data = [];
                 for (let i = 0; i < res.data.length; i++) {
@@ -144,6 +161,7 @@ class Matrix extends Component {
             .catch((err) => {
                 console.log(err)
             })
+        }
         }
     }
 
@@ -377,7 +395,7 @@ class Matrix extends Component {
     render() {
         const { isLoading, isShow } = this.state;
         return (
-            this.props.editMatrix && <React.Fragment>
+            this.props.isLoadEditMatrix === "true" && <React.Fragment>
                 {
                     !isLoading
                     && !_.isEmpty(this.props.dataMatrix)
@@ -397,7 +415,7 @@ class Matrix extends Component {
                             sheet="tablexls"
                             buttonText="Export"
                         />
-                        {this.props.editMatrix.length > 0 ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
+                        {this.props.editMatrix.length <= 0 ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
                         <Table
                             bordered
                             columns={this.createColumn(this.props.dataMatrix)}

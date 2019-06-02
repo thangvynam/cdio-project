@@ -23,7 +23,7 @@ class LogForm extends Component {
 
     async componentWillReceiveProps(nextProps) { 
         let count = this.state.count;
-        if(count <= 2) {
+        if(count <= 0) {
             this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab))   
             let data = await this.getData(nextProps.logReducer.contentTab);
             this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.subjectid); 

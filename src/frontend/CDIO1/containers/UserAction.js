@@ -14,7 +14,7 @@ class UserActionTemp extends Component {
   render() {
     return (
       <Container fluid className="main-content-container px-4">
-        <UserActionCom user={this.props.user} onLogOut={this.props.onLogOut} />
+        <UserActionCom  user={this.props.user} onLogOut={this.props.onLogOut} />
       </Container>
     );
   }

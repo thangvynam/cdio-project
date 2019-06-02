@@ -174,14 +174,14 @@ export default class EduProgramCom extends Component {
             <i className="material-icons">edit</i>
           </Button>
         </Link>
-        <Button
+        {/* <Button
           title="Xóa"
           onClick={() => this.onDeleteShow(data.Id)}
           theme="secondary"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
           <i className="material-icons">delete</i>
-        </Button>
+        </Button>*/}
       </div>
     );
   };
@@ -387,11 +387,15 @@ export default class EduProgramCom extends Component {
     const header = (
       <Row style={{ margin: "0" }}>
         <Col lg="6" md="6" sm="6">
-          <p align="left">
-            <Button onClick={this.onOpenAdd} theme="success">
-              <i className="material-icons">playlist_add</i> Thêm CTĐT
-            </Button>
-          </p>
+          {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+            "BIEN_SOAN"
+          ) && (
+            <p align="left">
+              <Button onClick={this.onOpenAdd} theme="success">
+                <i className="material-icons">playlist_add</i> Thêm CTĐT
+              </Button>
+            </p>
+          )}
         </Col>
         <Col lg="6" md="6" sm="6">
           <p align="right">

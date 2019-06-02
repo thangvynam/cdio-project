@@ -20,7 +20,14 @@ export const onLoadDetailEduProgram = id => {
   return (dispatch, getState) => {
     let req = `${links.LOAD_DETAIL_EDUPROGRAM}?ideduprog=${id}`;
     axios
-      .get(req)
+      .get(req, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
       .then(res => {
         const detailEduProgram = res.data.data;
         if (detailEduProgram) {
@@ -51,7 +58,7 @@ export const onLoadDetailEduProgram = id => {
         dispatch(loadDetailEduProgramError(err));
         // where to put actions LOL
         dispatch(contentAction.loadContentProgramError(err));
-        dispatch(scheduleAction.loadScheduleProgramError(err));
+        // dispatch(scheduleAction.loadScheduleProgramError(err));
         dispatch(targetAction.loadTargetProgramError(err));
       });
   };
@@ -120,6 +127,7 @@ export const onSaveDetailEduProgram = data => {
             afterSaveDetailEduProgramE3(data.detailEduProgram.ideduprogram)
           );
           // where to put actions LOL
+          console.log(data)
           dispatch(contentAction.onSaveContentProgram(data.contentProgram));
           dispatch(scheduleAction.onSaveScheduleProgram(data.scheduleProgram));
           dispatch(targetAction.onSaveTargetProgram(data.targetProgram));

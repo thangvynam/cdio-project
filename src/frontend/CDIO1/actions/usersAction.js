@@ -2,6 +2,7 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
+import $ from './../../helpers/services';
 
 export const logInSuccess = (user, successMessage) => ({
   type: cst.LOG_IN_SUCCESS,
@@ -56,7 +57,8 @@ export const onLogIn = user => {
           });
         } else if (res.data.code === 1) {
           Promise.resolve(
-            localStorage.setItem("user", JSON.stringify(res.data))
+            //localStorage.setItem("user", JSON.stringify(res.data))
+            $.setStorage(res.data)
           ).then(() => {
             let chirp = {
               message: `Đăng nhập thành công`,
@@ -91,7 +93,14 @@ export const onLoadUsers = () => {
   return (dispatch, getState) => {
     let req = links.LOAD_USERS;
     axios
-      .get(req)
+      .get(req, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
       .then(res => {
         const users = res.data.data;
         if (users === undefined || users === null) {
@@ -131,12 +140,11 @@ export const onRegisterUser = user => {
     let req = links.REGISTER_USER;
     let params = {};
     params.data = JSON.stringify(user);
-    console.log(params.data);
     axios
       .post(req, params, {
         headers: {
           "Content-Type": "application/json",
-          "authorization": localStorage.getItem("user")
+          authorization: localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
             : ""
         }
@@ -156,7 +164,7 @@ export const onRegisterUser = user => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-        } else {
+        } else if (res.data.code > 1) {
           dispatch(registerUserSuccess(res));
           let chirp = {
             message: `Đăng kí thành công`,
@@ -245,7 +253,7 @@ export const onGetInfo = iduser => {
   return (dispatch, getState) => {
     let req = `${links.GET_INFO}?iduser=${iduser}`;
     axios
-      .post(req, {
+      .get(req, {
         headers: {
           "Content-Type": "application/json",
           authorization: localStorage.getItem("user")
@@ -273,6 +281,60 @@ export const onGetInfo = iduser => {
         };
         dispatch(message.message(chirp));
         dispatch(getInfoError(err));
+      });
+  };
+};
+
+export const deleteUserSuccess = successMessage => ({
+  type: cst.DELETE_USER_SUCCESS,
+  successMessage
+});
+
+export const deleteUserError = errorMessage => ({
+  type: cst.DELETE_USER_ERROR,
+  errorMessage
+});
+
+export const onDeleteUser = username => {
+  return (dispatch, getState) => {
+    let req = links.DELETE_USER;
+    let params = {};
+    params.data = JSON.stringify(username);
+    axios
+      .post(req, params, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
+      .then(res => {
+        if (res.data.code === 1) {
+          dispatch(deleteUserSuccess(res));
+          let chirp = {
+            message: `Xóa tài khoản thành công`,
+            isRight: 1
+          };
+          dispatch(message.message(chirp));
+        } else {
+          dispatch(deleteUserError(res));
+          let chirp = {
+            message: `Xóa tài khoản thất bại`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
+        }
+        dispatch(onLoadUsers());
+      })
+      .catch(err => {
+        dispatch(onLoadUsers());
+        dispatch(deleteUserError(err));
+        let chirp = {
+          message: `Xóa tài khoản thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
       });
   };
 };

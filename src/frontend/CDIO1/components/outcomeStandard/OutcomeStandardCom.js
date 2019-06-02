@@ -234,14 +234,18 @@ export default class OutcomeStandardCom extends Component {
         >
           <i className="material-icons">file_copy</i>
         </Button>
-        <Button
-          title="Xóa"
-          onClick={() => this.onDeleteShow(data.Id)}
-          theme="secondary"
-          style={{ marginRight: ".3em", padding: "8px" }}
-        >
-          <i className="material-icons">delete</i>
-        </Button>
+        {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+          "BIEN_SOAN"
+        ) && (
+          <Button
+            title="Xóa"
+            onClick={() => this.onDeleteShow(data.Id)}
+            theme="secondary"
+            style={{ marginRight: ".3em", padding: "8px" }}
+          >
+            <i className="material-icons">delete</i>
+          </Button>
+        )}
       </div>
     );
   };
@@ -471,9 +475,13 @@ export default class OutcomeStandardCom extends Component {
       <Row style={{ margin: "0" }}>
         <Col lg="6" md="6" sm="6">
           <p align="left">
-            <Button onClick={this.onOpenAdd} theme="success">
-              <i className="material-icons">playlist_add</i> Thêm CĐR
-            </Button>
+            {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+              "BIEN_SOAN"
+            ) && (
+              <Button onClick={this.onOpenAdd} theme="success">
+                <i className="material-icons">playlist_add</i> Thêm CĐR
+              </Button>
+            )}
           </p>
         </Col>
         <Col lg="6" md="6" sm="6">

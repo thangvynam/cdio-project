@@ -59,28 +59,25 @@ class Direction extends Component {
         let type = this.props.content_type;
         let khoi = this.props.content_khoi;
         return(
-            <div>
-                
-                <Link  to={`/`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>Trang chủ</span><Icon type="right" /></Link>
+            <div className="direction-css">
                 <Divider type="vertical" />
                 {parent !== "" && parent !== undefined ?
-                    <Link  to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt",paddingTop: "5px" }}>{this.getParentName(this.props.parentitem, parent)}</span><Icon type="right" /></Link>
+                    <Link  to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt",paddingTop: "5px" }}>{this.getParentName(this.props.parentitem, parent)}</span></Link>
                 : null}
                     <Divider type="vertical" />
                 {ctdt !== "" && ctdt !== undefined ?
-                    <Link  to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{ctdt === "edit" ? "Edit" : this.getCtdtName(this.props.ctdt, ctdt)}</span><Icon type="right" /></Link>
+                    <Link  to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{ctdt === "edit" ? "Edit" : this.getCtdtName(this.props.ctdt, ctdt)}</span></Link>
                 : null}
                     <Divider type="vertical" />
                 {type !== "" && type !== undefined ? 
-                    <Link  to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getTypeName(this.props.menuItem, type)}</span><Icon type="right" /></Link>
+                    <Link  to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getTypeName(this.props.menuItem, type)}</span></Link>
                 : null}
                     <Divider type="vertical" />
                 {khoi !== "" && khoi !== undefined && khoi !== "view" ? 
-                    <Link  to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getKhoiName(this.props.dataCtdt, khoi)}</span><Icon type="right" /></Link>
+                    <Link  to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getKhoiName(this.props.dataCtdt, khoi)}</span></Link>
                 : null}
                     <Divider type="vertical" />
                 <span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.props.subjectName}</span>
-                <div style={{float: "right", paddingTop: "5px",}}><UserAction/></div>
             </div>
         )
     }

@@ -7,4 +7,42 @@
     color: black !important;
     height: 70px;
     box-shadow: 0px 1px 15px 1px rgba(69,65,78,0.1);
+    display: flex;
+    justify-content: space-between;
+}
+
+.col-right-title {
+    /* margin: 3%; */
+    background-color: #f5f6f8;
+}
+
+.navbar-left-css {
+    text-align: center;
+    width: 100px;
+    line-height: 4rem;
+}
+
+.navbar-right-css .user-action{
+    height: 100%;
+    padding-top: 8%;
+    width: 98%;
+    
+    color: #005b9f !important;
+    font-size: 15px !important;    
+    font-weight: 500!important;
+}
+
+.navbar-left-css .navbar-left-child{
+    padding: 2%;
+}
+
+.navbar-left-css .navbar-left-child a{
+    text-decoration: none;
+    background-color: white;
+}
+
+.navbar-left-child:hover, .user-action:hover{
+    box-shadow: 0 0 10px 3px rgba(0,0,0,0.12);
+    -webkit-box-shadow: 0 0 10px 3px rgba(0,0,0,0.12);
+    -moz-box-shadow: 0 0 10px 3px rgba(0,0,0,0.12);
 }

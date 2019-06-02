@@ -15,13 +15,16 @@ export default class UserInfoCom extends React.Component {
   }
 
   onChangePass = () => {
-    if(this.state.password===this.state.confirmpassword&&this.state.password>5){
-      const username=localStorage.getItem("user").data.Username;
-      const password=this.state.password;
-      const user={username,password};
+    if (
+      this.state.password === this.state.confirmpassword &&
+      this.state.password.length > 5
+    ) {
+      const username = JSON.parse(localStorage.getItem("user")).data.Username;
+      const password = this.state.password;
+      const user = { username, password };
       this.props.onChangePass(user);
     }
-  }
+  };
 
   render() {
     const info = JSON.parse(localStorage.getItem("user"));
@@ -60,9 +63,7 @@ export default class UserInfoCom extends React.Component {
                 <Col lg="3" md="3" sm="3">
                   <Password
                     value={this.state.password}
-                    onChange={e =>
-                      this.setState({ password: e.target.value })
-                    }
+                    onChange={e => this.setState({ password: e.target.value })}
                   />
                 </Col>
                 <Col lg="2" md="2" sm="2">
@@ -79,7 +80,7 @@ export default class UserInfoCom extends React.Component {
                 <Col lg="2" md="2" sm="2">
                   <Button
                     theme="success"
-                    onChange={this.onChangePass}
+                    onClick={this.onChangePass}
                     style={{ marginRight: ".3em", padding: "8px" }}
                   >
                     <i className="material-icons">save</i>

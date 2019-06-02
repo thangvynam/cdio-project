@@ -6,6 +6,7 @@ export const LOAD_USERS = `${LINK}/user/getlist/`;
 export const REGISTER_USER = `${LINK}/user/register/`;
 export const CHANGE_PASS = `${LINK}/user/changepass/`;
 export const GET_INFO = `${LINK}/user/getinfo/`;
+export const DELETE_USER = `${LINK}/user/delete/`;
 
 // levels links
 export const LOAD_LEVELS = `${LINK}/level/getlist/`;
@@ -50,6 +51,8 @@ export const SAVE_TARGET_EDUPROGRAM = `${LINK}/edupurpose/update/`;
 
 export const LOAD_BLOCKS = `${LINK}/eduprogcontent/getBlockSubjects/`;
 
+export const ADD_TEACHER = `${LINK}/detailblock/addteacher/`;
+
 // subjects links
 export const LOAD_SUBJECTS = `${LINK}/subject/getlist/`;
 export const ADD_SUBJECT = `${LINK}/subject/add/`;
@@ -67,6 +70,10 @@ export const DELETE_OUTCOMESTANDARD = `${LINK}/outcomestandard/delete/`;
 export const LOAD_DETAIL_OUTCOMESTANDARD = `${LINK}/detailoutcomestandard/get/`;
 export const DELETE_DETAIL_OUTCOMESTANDARD = `${LINK}/detailoutcomestandard/delete/`;
 export const ADD_DETAIL_OUTCOMESTANDARD = `${LINK}/detailoutcomestandard/add/`;
+
+export const LOAD_COMMENT = `${LINK}/comment/get/`;
+export const ADD_COMMENT = `${LINK}/comment/add/`;
+export const DONE_COMMENT = `${LINK}/comment/done/`;
 
 // revisions links
 export const LOAD_REVISIONS = `${LINK}/revision/get/`;

@@ -1,14 +1,22 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { Form, Button, Icon } from 'antd';
+import { Form, Button, Icon, notification } from 'antd';
 
 import FormSurvey from "./FormSurvey";
 import { getLevel, getPos } from '../utils/Tree';
 import "./Survey.css";
 import TableSurvey from './TableSurvey';
 import $ from './../helpers/services'
+import { getCurrTime } from '../utils/Time';
 
 const  queryString = require('query-string');
+
+const openNotificationWithIcon = (type) => {
+    notification[type]({
+      message: 'Thông báo',
+      description: 'Lưu dữ liệu thành công',
+    });
+  };
 
 class Node {
     constructor(data) {
@@ -32,26 +40,58 @@ class Survey extends React.Component {
             tree: [],
             resultQA : null,
             resultITU : null,
+            isDone: false,
+            isOver: false,
         }
     }
 
-    componentDidMount() {
+    async componentDidMount() {
 
-        const parsed = queryString.parse(window.location.search);
+        let user = localStorage.getItem('user');
+        let jsonData = JSON.parse(user)
 
-        if(parsed.id){
-            const id = parsed.id;
+        let data = {
+            id_mon: this.props.subjectId,
+            id_giaovien: jsonData.data.Id
+        }
+
+        let response = await $.checkStatus(data)
+        if (response.data.status === 1) {
+            await this.setState({isDone: true})
+        }
+
+        let curTime = getCurrTime()
+        console.log(curTime)
+        let end_date = response.data.end_date;
+        if (curTime > end_date) {
+            notification["error"]({
+                message: "Đã hết hạn thực hiện khảo sát",
+                duration: 3
+              })
+              this.setState({isOver: true})
+              return;
+        }
+
+        if(response.data){
+            const id = response.data.id_qa;
             //axios.get(`/get-surveyqa/${id}`).then(res => {
             $.getSurveyQA(id).then(res => {
                 this.setState ({ 
                     resultQA : res.data[0],
                 })
             })
+
+            let body = {
+                id_ctdt: this.props.ctdt,
+                id_giaovien: jsonData.data.Id,
+                id_mon: this.props.subjectId,
+                id_qa: response.data.id_qa
+            }
             //axios.get(`/get-survey/${id}`).then(res => {
-                $.getSurvey(id).then(res => {
+                $.getSurvey(body).then(res => {
                 this.setState({
                     resultITU : res.data,
-                },()=>console.log(this.state.resultITU))
+                })
             })
         }          
         
@@ -220,7 +260,9 @@ class Survey extends React.Component {
 
         $.saveSurveyQA(survey)
             .then((res) => {
-                $.saveSurvey(dataConvert, res.data.id, this.props.subjectId)
+                let user = localStorage.getItem('user');
+                let jsonData = JSON.parse(user)
+                $.saveSurvey(dataConvert, res.data.id, this.props.subjectId, jsonData.data.Id, this.props.ctdt)
                     .then(response => {
                         //const data= response.data;
                         
@@ -242,36 +284,43 @@ class Survey extends React.Component {
             },
         };
 
-        return (
-            <div className="container1">
-                <div className="center-col">
-                    <div className="container">
-                        <div className="row">
-                            <div className="col-sm-12" >
-                                <br />
-                                <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
-                                <FormSurvey subjectName={this.props.subjectName} result={this.state.resultQA}/>
-                                <br />
-                                <div style={{ paddingLeft: "1em" }}>
-                                    {this.genForm()}
-                                </div>
-                                <Form.Item {...tailFormItemLayout}>
-                                    <div>
-                                        <Button 
-                                            disabled={queryString.parse(window.location.search).id ? true : false}
-                                            type="primary"
-                                            onClick={() => {this.saveAll()}}
-                                            style={{ marginLeft: "2em" }}>
-                                            Gửi<Icon type="right" />
-                                            
-                                        </Button>
-                                    </div>
-                                </Form.Item>
-                            </div>
+        let content = 
+        <div className="container1">
+        <div className="center-col">
+            <div className="container">
+                <div className="row">
+                    <div className="col-sm-12" >
+                        <br />
+                        <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
+                        <FormSurvey subjectName={this.props.subjectName} result={this.state.resultQA} isDone={this.state.isDone}/>
+                        <br />
+                        <div style={{ paddingLeft: "1em" }}>
+                            {this.genForm()}
                         </div>
+                        <Form.Item {...tailFormItemLayout}>
+                            <div>
+                                <Button 
+                                    disabled={this.state.isDone ? true : false}
+                                    type="primary"
+                                    onClick={() => {
+                                        this.saveAll()
+                                        openNotificationWithIcon('success')
+                                    }}
+                                    style={{ marginLeft: "2em" }}>
+                                    Gửi<Icon type="right" />
+                                    
+                                </Button>
+                            </div>
+                        </Form.Item>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
+
+        return (
+            this.state.isOver ? <div></div> : content
+            
         );
     }
 }

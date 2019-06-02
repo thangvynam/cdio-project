@@ -601,7 +601,7 @@ class Content extends Component {
                             </div>,
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <PhanCong content_monhoc={this.props.content_monhoc} />
+                            <PhanCong monhoc={this.props.content_monhoc} />
                         </div>
                     </React.Fragment>
                 )

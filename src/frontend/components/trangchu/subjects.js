@@ -257,7 +257,6 @@ class Home extends Component {
                           && (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
                         || this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
                       );
-                      console.log(dataSubject)
                       this.props.updateSubjectList(dataSubject);
                   }
                 });

@@ -680,7 +680,7 @@ export default class ContentProgramCom extends React.Component {
                 Thêm bảng
               </label>
             </Col>
-            <Col lg="4" md="4" sm="4">
+          {/*  <Col lg="4" md="4" sm="4">
               <Checkbox
                 checked={this.state.isAnyTable}
                 onChange={this.onCheckAddAnyTable}
@@ -688,7 +688,7 @@ export default class ContentProgramCom extends React.Component {
               <label htmlFor="cb2" className="p-checkbox-label">
                 Thêm học phần tự do
               </label>
-            </Col>
+            </Col>*/}
           </Row>
           <hr />
           {/* is title */}

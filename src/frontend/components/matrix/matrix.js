@@ -263,7 +263,12 @@ class Matrix extends Component {
                 }
             }
         }
-        return <div>-</div>;
+        else {
+            if(text !== "" && text !== undefined && text !== null) {
+                return <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>text</Tag>;
+            }    
+        }
+        return <div></div>;
     }
 
     isExistInArray = (arr, item) => {

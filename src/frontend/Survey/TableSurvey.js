@@ -20,10 +20,13 @@ class TableSurvey extends Component {
 
     tableBody() {
         const data = this.props.data;
-        const dataITU = this.props.resultITU;
+        let dataITU = [];
+        dataITU = this.props.resultITU;;
         let isDone = false;
-        if (this.props.resultITU) {
-            isDone = true
+        if (dataITU !== null) {
+            if(dataITU.length > 0) {
+                isDone = true
+            }
         }
        
         let template = [];

@@ -190,14 +190,11 @@ const saveSurveyQA = (data) => {
     return $.post(url, {data})
 }
 
-const saveSurvey = (dataConvert, id, subjectId, id_giaovien, id_ctdt) => {
+const saveSurvey = (dataConvert, id_survey) => {
     let url = _.SAVE_SURVEY;
     return $.post(url, {
         data: dataConvert,
-        id_qa: id,
-        idMon : subjectId,
-        id_giaovien,
-        id_ctdt})
+        id_survey,})
 }
 
 const checkStatus = (data) => {
@@ -255,11 +252,21 @@ const getSurvey = (data) => {
     return $.post(url, {data});
 }
 
+const getSurveyITU = (data) => {
+    let url = `${_.GET_SURVEY_ITU}`;
+    return $.post(url, {data});
+}
+
 const getDataSurvey = () => {
     let url = _.GET_DATA_SURVEY;
     return $.get(url);
 }
 
+const setStatus = (id) => {
+    console.log(id)
+    let url = `${_.SET_STATUS}/${id}`
+    return $.get(url);
+}
 
 //danhmuc
 const updateCdrmdhd = (data) => {
@@ -486,6 +493,11 @@ const getSurveyCTDTTime2 = (data) =>{
     return $.post(url,data);
 }
 
+const getIDQA = (id) => {
+    let url = `${_.GET_IDQA}/${id}`;
+    return $.get(url);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -543,7 +555,7 @@ export default{
     getSurveyQA,
     getSurvey,
     getDataSurvey,
-
+    setStatus,
 
     //danhmuc
     updateCdrmdhd,
@@ -605,4 +617,7 @@ export default{
 
     checkStatus,
     insertStandardMatrix
+    checkStatus,
+    getIDQA,
+    getSurveyITU
 }

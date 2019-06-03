@@ -955,6 +955,7 @@ getSubjectName = (subjectList, id) => {
   }
 
     render() {
+      console.log(this.props.cdrmdhd)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {

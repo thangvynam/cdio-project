@@ -396,7 +396,7 @@ class Matrix extends Component {
     }
 
     render() {
-        console.log(this.state.matrix)
+        console.log(this.props.editMatrix)
         const { isLoading, isShow } = this.state;
         return (
             this.props.isLoadEditMatrix === "true" && <React.Fragment>

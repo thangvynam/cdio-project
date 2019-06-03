@@ -198,13 +198,15 @@ class EditMatrix extends Component {
   }
 
   getMatrixId = (matrix, thong_tin_chung_id, cdr_cdrio_id) => {
-    if(matrix !== undefined && matrix !== null) {
+    //if(matrix !== undefined && matrix !== null) {
+      //console.log("a")
       for (let i = 0; i < matrix.length; i++) {
         if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
+          
           return matrix[i].id;
         }
       }
-    }
+    //}
     
     return -1;
   }
@@ -275,17 +277,13 @@ class EditMatrix extends Component {
         let data = {
             data: subjectListId
         }
-        if(data.length > 0) {
-          $.getStandardMatrix(data).then((res) => {
-            
-            this.setState({ tempMatrix: res.data });
-          })
-        }
+
     if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
       //$.getRealityMatrix();
       if(data.data.length > 0) {
         $.getStandardMatrix(data).then((res) => { 
+          this.setState({ tempMatrix: res.data });
           let data = [];
           for (let i = 0; i < res.data.length; i++) {
             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -320,6 +318,7 @@ class EditMatrix extends Component {
 
   componentWillReceiveProps(nextProps) {
     //console.log("receive")
+    
     if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
       //$.getRealityMatrix();
@@ -330,8 +329,10 @@ class EditMatrix extends Component {
         let data = {
             data: subjectListId
         }
+
         if(data.data.length > 0) {
           $.getStandardMatrix(data).then((res) => {
+            this.setState({ tempMatrix: res.data });
             let data = [];
             for (let i = 0; i < res.data.length; i++) {
               let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -386,6 +387,7 @@ class EditMatrix extends Component {
   }
 
   render() {
+    console.log(this.state.tempMatrix)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];

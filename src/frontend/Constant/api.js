@@ -92,6 +92,8 @@ export default{
     ADD_SURVEY_LIST : baseUrl + '/add-survey-list',
     GET_SURVEY_CTDT_TIME2 : baseUrl + '/get-survey-ctdt-time2',
     SET_STATUS: baseUrl + '/set-status',
+    GET_SURVEY_LIST : baseUrl + '/get-survey-list',
+    GET_SURVEY_ID_SURVEYLIST : baseUrl + '/get-survey-with-id-survey-list',
 
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',

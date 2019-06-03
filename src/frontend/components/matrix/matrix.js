@@ -263,7 +263,7 @@ class Matrix extends Component {
                 }
             }
         }
-        return <div></div>;
+        return <div>-</div>;
     }
 
     isExistInArray = (arr, item) => {

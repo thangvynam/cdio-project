@@ -163,7 +163,9 @@ class ItemMenu extends Component {
     }
     let previewData = {};
     previewData.id = -1;
-    previewData.key = this.props.itemKHGDTH.previewInfo.length + 1;
+    previewData.key = this.props.itemKHGDTH.previewInfo.filter(
+      (item, _) => item.del_flag === 0
+    ).length + 1;
     previewData.titleName = tempInfo.titleName;
     previewData.teachingActs = tempInfo.teachingActs;
     previewData.standardOutput = tempInfo.standardOutput;

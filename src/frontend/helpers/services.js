@@ -446,6 +446,11 @@ const addDataSurvey =(data) => {
     return $.post(url,data);
 }
 
+const insertStandardMatrix =(data) => {
+    let url = _.INSERT_STANDARD_MATRIX;
+    return $.post(url,data);
+}
+
 const getSubjectTeacher = (param) => {
     let url =`${_.GET_SUBJECT_TEACHER}/${param}`;
     return $.get(url);
@@ -586,5 +591,6 @@ export default{
     saveData3,
     addData5,
 
-    checkStatus
+    checkStatus,
+    insertStandardMatrix
 }

@@ -537,7 +537,8 @@ componentDidUpdate(){
                                             }
                                         }
                                         else if(type === "itusurvey") {
-                                            if(!this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                                            if(!this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)
+                                        && !this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
                                                 console.log("wrong param 3")
                                                 return <Page404/>;
                                             }

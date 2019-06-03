@@ -231,12 +231,12 @@ class SurveyMatrix extends Component {
   //---Create Data---//
   createDataMatrix = (myData) => {
     const data = [];
-    let index = 1;
+    let index = 0;
     for (const subject of myData) {
       let dataSubject = {
         'mon': subject['mon'],
         'giaovien': subject['giaovien'],
-        key: `${index++}-${Math.random().toString(36).substring(7)}`,
+        key: `${index++}`, //-${Math.random().toString(36).substring(7)}
       };
       let ituSubject = !_.isEmpty(subject['itu']) ? subject['itu'] : [];
       ituSubject.map((x, index) => {
@@ -244,14 +244,14 @@ class SurveyMatrix extends Component {
       })
       data.push(dataSubject);
     }
-
+    //console.log(data)
     return data;
   }
 
   //---Create Data---//
 
   onSelectChange = (selectedRowKeys) => {
-    this.setState({ selectedRowKeys });
+    this.setState({selectedRowKeys: selectedRowKeys });
   }
 
 
@@ -283,11 +283,13 @@ class SurveyMatrix extends Component {
 
   render() {
     const { selectedRowKeys } = this.state;
+    //console.log(selectedRowKeys)
+    //console.log(this.props.dataSurveyMatrix)
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
-      hideDefaultSelections: true,
-      onSelection: this.onSelection,
+      //hideDefaultSelections: true,
+      //onSelection: this.onSelection,
     };
 
     // this.createHeaderMatrix(myData);

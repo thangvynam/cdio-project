@@ -413,6 +413,51 @@ export const convertToSubjects = data => {
   return subjects;
 };
 
+export const convertToUsers = data => {
+  return data.reduce((arr, row, index)=>{
+    if(index === 0){
+      return arr;
+    }
+    const user = {
+      name: row[0],
+      username: row[1],
+      email:row[2],
+      roleName: row[3],
+      role: getIdRole(row[3])
+    }
+    return arr.concat(user);
+  },[]);
+};
+
+const getIdRole = roles =>{
+  const arr = roles.split('.');
+  return arr.reduce((results, role)=>{
+    const roleName = role.trim();
+    const id = IdRoleName(roleName);
+    if(id){
+      return results.concat(id);
+    }
+    return results;
+  },[]);
+}
+
+const IdRoleName = roleName =>{
+  switch(roleName){
+    case 'ADMIN':
+      return 1;
+    case 'BIEN_SOAN':
+      return 2;
+    case 'QUAN_LY_SURVEY':
+      return 3;
+    case 'VIEW_SYLLABUS':
+      return 4;
+    case 'TEACHER':
+      return 5;
+    default:
+      return null;
+  }
+}
+
 // private
 
 const indexRoot = key => {

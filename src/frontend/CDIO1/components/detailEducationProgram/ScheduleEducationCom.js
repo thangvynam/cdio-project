@@ -54,7 +54,6 @@ export default class ScheduleEducationCom extends React.Component {
       this.state.listSubjects,
       this.state.semesters
     );
-    console.log(data);
     let newSemester = this.state.semester;
     this.setState({
       semesters: data,

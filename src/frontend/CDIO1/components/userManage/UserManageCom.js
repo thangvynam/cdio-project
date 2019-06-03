@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import XLSX from "xlsx";
 
 import { Row, Col, Button, FormInput } from "shards-react";
 import { DataTable } from "primereact/datatable";
@@ -6,6 +7,9 @@ import { Column } from "primereact/column";
 import { Dialog } from "primereact/dialog";
 import { Checkbox } from "primereact/checkbox";
 import { InputText } from "primereact/inputtext";
+import DataInputCom from "./DataInputCom"
+
+import * as logic from "../../business/index";
 
 export default class UserManageCom extends Component {
   constructor(props) {
@@ -19,7 +23,9 @@ export default class UserManageCom extends Component {
       name: "",
       username: "",
       email: "",
-      data: {}
+      data: {},
+      reviewVisible: false,
+      listTeachersImport: []
     };
   }
 
@@ -55,6 +61,11 @@ export default class UserManageCom extends Component {
   };
 
   onCloseAndCreate = () => {
+    const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!re.test(this.state.email)) {
+      alert("Email bạn nhập không đúng!");
+      return;
+    }
     const user = {
       username: this.state.username,
       name: this.state.name,
@@ -74,7 +85,8 @@ export default class UserManageCom extends Component {
   };
 
   onDelete = () => {
-    this.props.onDeleteUser(this.state.data.username);
+    const username=this.state.data.username;
+    this.props.onDeleteUser(username);
     this.setState({
       deleteVisible: false,
       id: 0
@@ -105,6 +117,40 @@ export default class UserManageCom extends Component {
       email: e.target.value
     });
   };
+
+  onCloseDialogReview = () => {
+    this.setState({
+      reviewVisible: false
+    });
+  }
+
+  onCloseAndAddSubject = () => {
+    this.props.onRegisterBlockUser(this.state.listTeachersImport);
+    this.setState({
+      reviewVisible: false,
+      listTeachersImport: []
+    });
+  }
+
+  handleImportUser = file => {
+    const reader = new FileReader();
+    const rABS = !!reader.readAsBinaryString;
+    reader.onload = e => {
+      const bstr = e.target.result;
+      const wb = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
+      const wsname = wb.SheetNames[0];
+      const ws = wb.Sheets[wsname];
+      const data = XLSX.utils.sheet_to_json(ws, { header: 1 });
+      const users = logic.convertToUsers(data);
+      this.setState({
+        listTeachersImport: users,
+        reviewVisible: true
+      });
+
+    };
+    if (rABS) reader.readAsBinaryString(file);
+    else reader.readAsArrayBuffer(file);
+  }
 
   render() {
     const dialog = (
@@ -166,7 +212,7 @@ export default class UserManageCom extends Component {
           </Col>
           <Col lg="8" md="8" sm="8">
             <FormInput
-              type="text"
+              type="email"
               value={this.state.email}
               onChange={this.onChangeEmail}
               placeholder="thienthien@gmail.com"
@@ -262,19 +308,76 @@ export default class UserManageCom extends Component {
           }
           onHide={this.onHideDeleteVisible}
         >
-          {`Bạn thực sự muốn xóa người dùng ${
-            this.state.data.username}`}
+          {`Bạn thực sự muốn xóa người dùng ${this.state.data.username}`}
         </Dialog>
       </div>
     );
 
+    const reviewDialog = (
+      <Dialog
+        header="Danh sách giảng viên từ file:"
+        visible={this.state.reviewVisible}
+        style={{ width: "50vw" }}
+        onHide={this.onCloseDialogReview}
+        footer={
+          <div>
+            <Button
+              type="button"
+              className="btn btn-primary"
+              key="save"
+              onClick={this.onCloseAndAddSubject}
+              theme="success"
+            >
+              Tạo
+            </Button>
+            <Button
+              type="button"
+              className="btn btn-default"
+              key="close"
+              onClick={this.onCloseDialogReview}
+              theme="secondary"
+            >
+              Hủy
+            </Button>
+          </div>
+        }
+      >
+        <Col lg="12" md="12" sm="12">
+          <DataTable
+            value={this.state.listTeachersImport}
+            style={{ height: "30vw", overflowY: "scroll" }}
+          >
+            <Column field="name" header="Tên" style={{ width: "5em" }} />
+            <Column field="username" header="Tên tài khoản" style={{ width: "2em" }} />
+            <Column field="email" header="Mail"
+              style={{
+                width: "1em",
+                'word-wrap': 'break-word'
+              }} />
+            <Column field="roleName" header="Role"
+              style={{
+                width: "1em",
+                'word-wrap': 'break-word'
+              }} />
+          </DataTable>
+        </Col>
+      </Dialog>
+    );
+
     const header = (
       <Row style={{ margin: "0" }}>
-        <Col lg="6" md="6" sm="6">
+        <Col lg="3" md="3" sm="3">
           <p align="left">
             <Button onClick={this.onOpenAdd} theme="success">
               <i className="material-icons">add</i> Thêm Người dùng
             </Button>
+          </p>
+        </Col>
+        <Col lg="3" md="3" sm="3">
+          <p align="left">
+            <DataInputCom
+              handleFile={this.handleImportUser}
+            />
           </p>
         </Col>
         <Col lg="6" md="6" sm="6">
@@ -312,18 +415,19 @@ export default class UserManageCom extends Component {
                 return user;
               })}
             >
-              <Column sortable={true} field="name" header="Tên" />
-              <Column sortable={true} field="username" header="Tên tài khoản" />
-              <Column sortable={true} field="email" header="Mail" />
-              <Column sortable={true} field="roleText" header="Role" />
+              <Column style={{ width: "3em" }} sortable={true} field="name" header="Tên" />
+              <Column style={{ width: "3em" }} sortable={true} field="username" header="Tên tài khoản" />
+              <Column style={{ width: "3em" }} sortable={true} field="email" header="Mail" />
+              <Column style={{ width: "3em" }} sortable={true} field="roleText" header="Role" />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "4em" }}
+                style={{ textAlign: "center", width: "1em" }}
               />
             </DataTable>
           </Col>
           {dialog}
           {alertDialog}
+          {reviewDialog}
         </Row>
       </div>
     );

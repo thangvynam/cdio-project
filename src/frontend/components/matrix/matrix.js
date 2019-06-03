@@ -17,6 +17,7 @@ class Matrix extends Component {
             isError: false,
             isSuccess: false,
             isShow: false,
+            matrix: []
         };
         this.myRef = React.createRef();
     }
@@ -88,7 +89,8 @@ class Matrix extends Component {
                 this.props.updateEditMatrix(data);
             })
         
-            var a = $.getRealityMatrix(data1);
+            var a = $.getRealityMatrix(data1)
+            a.then(res => this.setState({matrix: res.data}));
         var b = $.getCDR_CDIO();
         Promise.all([a, b])
             .then((res) => {
@@ -148,7 +150,8 @@ class Matrix extends Component {
             })
 
         
-        var a = $.getRealityMatrix(data1);
+        var a = $.getRealityMatrix(data1)
+        a.then(res => this.setState({matrix: res.data}));;
         var b = $.getCDR_CDIO();
         Promise.all([a, b])
             .then((res) => {
@@ -393,6 +396,7 @@ class Matrix extends Component {
     }
 
     render() {
+        console.log(this.state.matrix)
         const { isLoading, isShow } = this.state;
         return (
             this.props.isLoadEditMatrix === "true" && <React.Fragment>

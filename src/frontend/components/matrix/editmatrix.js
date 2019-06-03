@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Form, Input, Checkbox, Icon, Tooltip, Button, Tag, Upload, message } from 'antd';
+import { Table, Form, Input, Checkbox, Icon, Tooltip, Button, Tag, Upload, notification } from 'antd';
 import "./matrix.css";
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -234,7 +234,12 @@ class EditMatrix extends Component {
 
       })
     }
-    $.updateStandardMatrix(data).then(alert("ok"));
+    $.updateStandardMatrix(data).then(
+      notification["success"]({
+        message: "Cập nhật thành công",
+        duration: 1
+      })
+    );
 
   }
 

@@ -193,11 +193,13 @@ class Content extends Component {
             id_mon : id,
             id_giaovien : idUser,
         }
-
-        $.getSurveyId(obj).then(res => {
-            if(res.data[0] && this.props.content_type ==="itusurvey")
-                this.props.onUpdateIdSurvey(res.data[0].id)
-        })
+        if (this.props.content_type ==="itusurvey") {
+            $.getSurveyId(obj).then(res => {
+                if(res.data[0])
+                    this.props.onUpdateIdSurvey(res.data[0].id)
+            })
+        }
+       
        
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
     }

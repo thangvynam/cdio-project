@@ -5,6 +5,7 @@ import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
 import { Checkbox, message, Input, Upload, Button, Icon } from 'antd';
 import $ from './../helpers/services';
+import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3 } from '../Constant/ActionType';
 
 const plainOptions = [
     'Thông tin chung',
@@ -19,15 +20,80 @@ const plainOptions = [
 ];
 
 class ExportFile extends Component {
+
     state = {
         selectedItem: [],
         loading: -1,
     }
+
+    // tab2
+    async getData2() {
+        const res = await $.getData2(this.props.subjectid);
+        const resp = res.data;
+        return resp.Description;
+    }
+
+    // tab3
+    async getData3() {
+        return $.getData3(this.props.subjectid).then(res => {
+          return res.data
+        }).then(resp => {
+          return resp;
+        });
+    }
+
+    getUnique(arr, comp) {
+        const unique = arr
+             .map(e => e[comp])
+          .map((e, i, final) => final.indexOf(e) === i && i)
+      
+          .filter(e => arr[e]).map(e => arr[e]);
+         return unique;
+    }
+
+    async componentDidMount() {
+        //tab 2
+        let data2 = await this.getData2();
+        console.log(data2);
+        this.props.saveAndContinue2(data2);
+        
+        //tab 3 
+        let temp = await this.getData3();
+        let saveData = [];
+        let standActs = [];
+        if (temp.length > 0) {
+            temp.forEach(element => {
+              temp.forEach(element2 => {
+                if(element2.muc_tieu === element.muc_tieu) {
+                  element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length -1)
+                  element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
+                  standActs.push(element2.KeyRow)
+                }
+              });
+              let newObj = {
+                    objectName: element.muc_tieu,
+                    description: element.mo_ta,
+                    standActs: standActs,
+                    del_flag: element.del_flag,
+                    id: element.id,
+                  }            
+                saveData.push(newObj);        
+            });
+          }
+          saveData = this.getUnique(saveData, "objectName")
+          saveData = saveData.filter((item) => item.del_flag === 0)
+         
+          this.props.saveAndContinue3(saveData);
+
+    }
+
     componentWillMount() {
+        //this.props.collectDataRequest(this.props.idMH);
         plainOptions.forEach((v, i) => {
             this.setState({ [v]: false });
         });
     }
+
     returnReducer = (pos) => {
         switch (pos) {
             case 1: {
@@ -90,11 +156,11 @@ class ExportFile extends Component {
 
     }
     export = () => {
-
         let self = this;
 
         this.addDataMap(function (obj) {
             self.setState({ loading: 0 });
+            console.log(obj);
             $.exportFile(JSON.stringify(obj)).then(res => {
                 if (res.data == 1) {
                     self.setState({ loading: 1 });
@@ -176,8 +242,20 @@ const mapStateToProps = (state, ownProps) => {
         itemLayout6Reducer: state.itemLayout6Reducer,
         itemLayout7Reducer: state.itemLayout7Reducer,
         itemLayout8Reducer: state.itemLayout8Reducer,
-        itemLayout9Reducer: state.itemLayout9Reducer
+        itemLayout9Reducer: state.itemLayout9Reducer,
+        subjectid: state.subjectid,
     }
 }
 
-export default connect(mapStateToProps, null)(ExportFile);
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        saveAndContinue2: (description) => {
+            dispatch({ type: ADD_DATA_LAYOUT_2, description });         
+        },
+        saveAndContinue3: (item) => {
+            dispatch({ type: ADD_ARRAY_LAYOUT_3, item });         
+        },
+    }
+  }
+
+export default connect(mapStateToProps, mapDispatchToProps)(ExportFile);

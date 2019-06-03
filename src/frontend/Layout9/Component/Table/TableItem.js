@@ -337,6 +337,7 @@ class TableItem extends Component {
   }
 
   render() {
+    console.log(this.props.monhoc)
     const components = {
       body: {
         row: EditableFormRow,

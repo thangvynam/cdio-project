@@ -73,7 +73,7 @@ const logReducer = (state = itemLayout2InitialState, action) => {
                         logData3: action.data
                     }
                 }
-                case "chuan-dau-ra": {
+                case "chuan-dau-ra-mh": {
                     return {
                         ...state,
                         logData4: action.data
@@ -157,7 +157,7 @@ const logReducer = (state = itemLayout2InitialState, action) => {
                         logData3: [...state.logData3, data]
                     }
                 }
-                case "chuan-dau-ra": {
+                case "chuan-dau-ra-mh": {
                     let data = {
                         nguoi_gui: action.ten,
                         thoi_gian: action.timestamp,

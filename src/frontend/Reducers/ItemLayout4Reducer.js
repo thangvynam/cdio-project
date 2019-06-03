@@ -12,7 +12,7 @@ const saveLogState = {
 export function logLayout4Reducer (state = saveLogState, action) {
     switch(action.type) {
         case SAVE_LOG: {
-            if(action.muc_de_cuong === 'chuan-dau-ra'){
+            if(action.muc_de_cuong === 'chuan-dau-ra-mh'){
                 let obj = {
                     ten: action.ten,
                     timestamp: action.timestamp,

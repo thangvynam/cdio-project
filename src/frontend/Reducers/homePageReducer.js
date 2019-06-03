@@ -1,4 +1,4 @@
-import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, CTDT, PARENT_ITEM , KTT} from '../Constant/ActionType';
+import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, CTDT, PARENT_ITEM , KTT,UPDATE_ID_SURVEY} from '../Constant/ActionType';
 const initialState = {
     "chuan-dau-ra" :{
         name: "ĐÁNH GIÁ CHUẨN ĐẦU RA",
@@ -126,6 +126,25 @@ export function parentItemReducer(state = parentState, action) {
     switch(action.type) {
         case PARENT_ITEM:
         return action.parentitem;
+        default: 
+        return state;
+    }
+}
+
+const initialIdSurvey =
+    {
+        idSurvey : "",
+    }
+
+export function idSurveyReducer(state = initialIdSurvey, action) {
+
+    switch(action.type) {
+        case UPDATE_ID_SURVEY:{
+            return{
+                ...state,
+                idSurvey : action.data,
+            }
+        }
         default: 
         return state;
     }

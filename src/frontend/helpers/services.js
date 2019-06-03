@@ -446,6 +446,31 @@ const addDataSurvey =(data) => {
     return $.post(url,data);
 }
 
+const getSubjectTeacher = (param) => {
+    let url =`${_.GET_SUBJECT_TEACHER}/${param}`;
+    return $.get(url);
+}
+
+const addSurveyData = (data) => {
+    let url = _.ADD_SURVEY_DATA;
+    return $.post(url,data);
+}
+
+const getSurveyData = () =>{
+    let url = _.GET_ALL_DATA_SURVEY;
+    return $.get(url);
+}
+
+const getSurveyId = (data) =>{
+    let url = _.GET_SURVEY_ID;
+    return $.post(url,data);
+}
+
+const getSurveyCTDTTime = (data) =>{
+    let url = _.GET_SURVEY_CTDT_TIME;
+    return $.post(url,data);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -543,7 +568,12 @@ export default{
     addToEditMatrix,
     saveSurveyQA,
     addDataSurvey,
-    
+    getSubjectTeacher,
+    addSurveyData,
+    getSurveyData,
+    getSurveyId,
+    getSurveyCTDTTime,
+
     //export file
     exportFile,
 

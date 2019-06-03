@@ -3,9 +3,9 @@ import { connect } from 'react-redux';
 
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
-import { Checkbox, message, Input, Upload, Button, Icon } from 'antd';
+import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
-import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3 } from '../Constant/ActionType';
+import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3,ADD_DATA } from '../Constant/ActionType';
 
 const plainOptions = [
     'Thông tin chung',
@@ -41,6 +41,131 @@ class ExportFile extends Component {
           return resp;
         });
     }
+    getData7() {
+        var self = this;
+    $.getChuDe()
+      .then(function (response) {
+        self.props.onGetChude(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    $.getStandardOutput7(this.props.monhoc)
+      .then(function (response) {
+
+        self.props.onGetCDR(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    var listDG = [];
+    var listCDRDG = [];
+    var listCDR = [];
+    var result = [];
+
+    $.getDanhGia(this.props.monhoc).then(response => {
+      if (response === null || response.data === null || response.data === undefined || response.data.length === 0) return;
+      let listStringId = '';
+      listDG = response.data;
+      response.data.forEach(item => {
+        if (listStringId === '') {
+          listStringId += item.id
+        } else {
+          listStringId = listStringId + ',' + item.id;
+        }
+      })
+
+      $.getCDRDanhgia({ data: listStringId }).then(response2 => {
+        if (response2 === null || response2.data === null || response2.data === undefined || response2.data.length === 0) return;
+        listCDRDG = response2.data
+        let listCDRDGString = '';
+        listCDRDG.forEach(item => {
+          if (listCDRDGString === '') {
+            listCDRDGString += item.chuan_dau_ra_mon_hoc_id;
+          } else {
+            listCDRDGString = listCDRDGString + ',' + item.chuan_dau_ra_mon_hoc_id;
+          }
+        })
+        $.getCDR_7({ data: listCDRDGString }).then(response3 => {
+          if (response3 === null || response3.data === null || response3.data === undefined || response3.data.length === 0) return;
+          listCDR = response3.data;
+          for (let i = 0; i < listDG.length; i++) {
+
+            let cdrResponse = [];
+            for (let j = 0; j < listCDRDG.length; j++) {
+
+              if (listDG[i].id === listCDRDG[j].danh_gia_id) {
+
+                for (let k = 0; k < listCDR.length; k++) {
+                  if (listCDRDG[j].chuan_dau_ra_mon_hoc_id === listCDR[k].id) {
+
+                    cdrResponse.push(listCDR[k].chuan_dau_ra);
+                  }
+                }
+              }
+            }
+            result.push({ danhgia: listDG[i], chuandaura: cdrResponse });
+          }
+          var chude = this.props.itemLayout7Reducer.chudeDanhGia;
+          var previewInfo = [];
+          for (let i = 0; i < chude.length; i++) {
+            let haveFather = false;
+            for (let j = 0; j < result.length; j++) {
+              let str = result[j].danhgia.ma.substring(0, chude[i].ma_chu_de.length);
+
+              if (str === chude[i].ma_chu_de) {
+                if (!haveFather) {
+                  haveFather = true;
+                  let dataFather = {
+                    key: chude[i].ma_chu_de,
+                    chude: chude[i].id,
+                    standardOutput: [],
+                    mathanhphan: chude[i].ma_chu_de,
+                    tenthanhphan: chude[i].ten_chu_de,
+                    mota: '',
+                    tile: '',
+                  };
+                  let data = {
+                    key: result[j].danhgia.ma,
+                    chude: chude[i].id,
+                    standardOutput: result[j].chuandaura,
+                    mathanhphan: "\xa0\xa0\xa0" + result[j].danhgia.ma,
+                    tenthanhphan: result[j].danhgia.ten,
+                    mota: result[j].danhgia.mo_ta,
+                    tile: result[j].danhgia.ti_le + "%",
+                  }
+                  previewInfo = previewInfo.concat(dataFather);
+                  previewInfo = previewInfo.concat(data);
+                } else {
+                  let data = {
+                    key: result[j].danhgia.ma,
+                    chude: chude[i].id,
+                    standardOutput: result[j].chuandaura,
+                    mathanhphan: "\xa0\xa0\xa0" + result[j].danhgia.ma,
+                    tenthanhphan: result[j].danhgia.ten,
+                    mota: result[j].danhgia.mo_ta,
+                    tile: result[j].danhgia.ti_le + "%",
+                  }
+                  previewInfo = previewInfo.concat(data);
+                }
+
+              }
+            }
+          }
+
+          if (previewInfo.filter(item => item.del_flag !== 1).length > 1) {
+            this.sortValues(previewInfo.filter(item => item.del_flag !== 1));
+
+          }
+
+          this.props.onAddDGData(previewInfo);
+        })
+      })
+
+    })
+    }
 
     getUnique(arr, comp) {
         const unique = arr
@@ -54,8 +179,7 @@ class ExportFile extends Component {
     async componentDidMount() {
         //tab 2
         let data2 = await this.getData2();
-        console.log(data2);
-        this.props.saveAndContinue2(data2);
+        //this.props.saveAndContinue2(data2);
         
         //tab 3 
         let temp = await this.getData3();
@@ -83,7 +207,17 @@ class ExportFile extends Component {
           saveData = this.getUnique(saveData, "objectName")
           saveData = saveData.filter((item) => item.del_flag === 0)
          
-          this.props.saveAndContinue3(saveData);
+          //this.props.saveAndContinue3(saveData);
+
+          //tab5
+          this.props.saveAndContinue5(this.props.subjectid);
+
+          //tab6
+          this.props.saveAndContinue6(this.props.subjectid);
+
+          //tab7
+          this.getData7();
+
 
     }
 
@@ -255,6 +389,38 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveAndContinue3: (item) => {
             dispatch({ type: ADD_ARRAY_LAYOUT_3, item });         
         },
+        saveAndContinue5: (id) => {
+            let newArr = [];
+            console.log(id)
+            $.collectData5({data: id})
+                .then(function (response) {
+                    console.log(response);
+                    for (let i = 0; i < response.data.length; i++) {
+                        let data = {
+                            key: response.data[i].key,
+                            titleName: response.data[i].titleName,
+                            teachingActs: response.data[i].teachingActs,
+                            standardOutput: response.data[i].standardOutput,
+                            evalActs: response.data[i].evalActs,
+                            subjectId: response.data[i].subjectId,
+                            del_flag: 0
+                        }
+                        newArr.push(data);
+                    }
+                    console.log(newArr);
+                    dispatch({ type: ADD_DATA, data: newArr })
+                })
+                .catch(function (error) {
+                    console.log(error);
+                })
+                .finally(function () {
+                    console.log("[Finish] get data by thong_tin_chung_id " + id);
+                })
+        },
+        saveAndContinue6: (id) => {
+
+        },
+        
     }
   }
 

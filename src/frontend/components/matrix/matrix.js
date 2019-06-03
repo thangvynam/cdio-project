@@ -421,8 +421,11 @@ class Matrix extends Component {
     }
 
     render() {
-        console.log(this.props.editMatrix)
         const { isLoading, isShow } = this.state;
+        const style = {
+            marginLeft:'20px'
+        }
+
         return (
             this.props.isLoadEditMatrix === "true" && <React.Fragment>
                 {
@@ -444,7 +447,7 @@ class Matrix extends Component {
                             sheet="tablexls"
                             buttonText="Export"
                         />
-                        {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
+                        {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button type="primary" style = {style} onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
                         <Table
                             bordered
                             columns={this.createColumn(this.props.dataMatrix)}

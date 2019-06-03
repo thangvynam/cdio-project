@@ -9,6 +9,10 @@ export const GET_INFO = `${LINK}/user/getinfo/`;
 export const DELETE_USER = `${LINK}/user/delete/`;
 export const REGISTER_BLOCK_USER = `${LINK}/user/registerlist/`;
 
+// survey links
+export const LOAD_SURVEYS = `${LINK}/outcome/getsurveylist/`;
+export const ADD_SURVEY = `${LINK}/outcome/add/`;
+
 // levels links
 export const LOAD_LEVELS = `${LINK}/level/getlist/`;
 export const ADD_LEVEL = `${LINK}/level/add/`;

@@ -16,6 +16,20 @@ function getUnique(arr, comp) {
      return unique;
   }
 
+function checkExist(arr, data) {
+    let res = {
+        id: null,
+        exist: false
+    }
+    arr.forEach((element, id) => {
+        if(element.objectName === data.objectName && element.del_flag === 1) {
+            res.id = id;
+            res.exist = true
+        }
+    });
+    return res;
+}
+
 const itemLayout3InitialState = {
     previewInfo: [
         // {objectName: "G1",
@@ -53,9 +67,20 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
             }
         }
         case ADD_DATA_LAYOUT_3: {
+            let data = JSON.parse(action.item)
+            let res = checkExist(state.previewInfo, data)
+            console.log(res)
+            if (res.exist) {
+                state.previewInfo[res.id] = data;
+                return {
+                    ...state,
+                    previewInfo: state.previewInfo
+                };
+            }
+
             return {
                 ...state,
-                previewInfo: [...state.previewInfo, JSON.parse(action.item)]
+                previewInfo: [...state.previewInfo, data]
             }
         } 
         case ADD_ARRAY_LAYOUT_3: {
@@ -86,8 +111,8 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
                 tempInfo: action.tempInfo
             }
         case SAVE_ALL_DATA_LAYOUT_3:
-        console.log(state.previewInfo)
         state.previewInfo = getUnique(state.previewInfo, "objectName")
+        console.log(state.previewInfo)
         $.saveData3({ data: state.previewInfo, id: action.id })
         $.saveLog({ data: state.logData })
             return {

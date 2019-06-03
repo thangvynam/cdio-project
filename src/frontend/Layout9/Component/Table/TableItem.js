@@ -155,14 +155,14 @@ class TableItem extends Component {
       ruleitems[selectedRow[i]].del_flag = 1;
           let message = `Xóa quy định chung: ${ruleitems[selectedRow[i]].content}`;
           this.props.onSaveLog(
-            "Nguyen Van A",
+            `${JSON.parse(localStorage.getItem('user')).data.Name}`,
             getCurrTime(),
             message,
             this.props.logReducer.contentTab,
             this.props.monhoc
           );
           this.props.onSaveReducer(
-            "Nguyen Van A",
+            `${JSON.parse(localStorage.getItem('user')).data.Name}`,
             getCurrTime(),
             message,
             this.props.logReducer.contentTab,
@@ -192,14 +192,14 @@ class TableItem extends Component {
     ruleitems[index].del_flag = 1;
     let message = `Xóa quy định chung: ${ruleitems[index].content}`;
     this.props.onSaveLog(
-      "Nguyen Van A",
+      `${JSON.parse(localStorage.getItem('user')).data.Name}`,
       getCurrTime(),
       message,
       this.props.logReducer.contentTab,
       this.props.monhoc
     );
     this.props.onSaveReducer(
-      "Nguyen Van A",
+      `${JSON.parse(localStorage.getItem('user')).data.Name}`,
       getCurrTime(),
       message,
       this.props.logReducer.contentTab,
@@ -229,14 +229,14 @@ class TableItem extends Component {
       });
       let message = `Chỉnh sửa quy định chung : [${item.content}] -> [${newRules[index].content}]`;
       this.props.onSaveLog(
-        "Nguyen Van A",
+        `${JSON.parse(localStorage.getItem('user')).data.Name}`,
         getCurrTime(),
         message,
         this.props.logReducer.contentTab,
         this.props.monhoc
       );
       this.props.onSaveReducer(
-        "Nguyen Van A",
+        `${JSON.parse(localStorage.getItem('user')).data.Name}`,
         getCurrTime(),
         message,
         this.props.logReducer.contentTab,

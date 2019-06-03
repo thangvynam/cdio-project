@@ -21,7 +21,6 @@ class CheckboxSurvey extends Component {
             defaultValue = Array.from(this.props.defaultValue.split(','))
             defaultValue = defaultValue.splice(0, defaultValue.length - 1)
         }
-        console.log(defaultValue)
         return (
             // _.isEmpty(defaultValue) ?
             //     <Checkbox.Group

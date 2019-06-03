@@ -21,8 +21,8 @@ class ItemMenu extends Component {
       content: content,
       del_flag:0,
     };
-    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.subjectId)
-    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.subjectId)
     
     this.props.onAddItemRule(JSON.stringify(rule));
     this.props.nextStep();

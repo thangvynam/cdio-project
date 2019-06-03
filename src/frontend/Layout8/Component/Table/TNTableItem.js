@@ -127,7 +127,7 @@ class TNTableItem extends Component {
                   <Divider type="vertical" />
                   <Popconfirm
                     title="Xác nhận xóa?"
-                    onConfirm={() => this.onMultiDelete(record.index)}
+                    onConfirm={() => this.handleDelete(record.index)}
                   >
                     <a href="#a">Xóa</a>
                   </Popconfirm>
@@ -173,6 +173,15 @@ class TNTableItem extends Component {
   onSelectChange = selectedRowKeys => {
     this.setState({ selectedRowKeys });
   };
+
+  handleDelete = (index) => {
+    let previewInfo  = this.props.itemLayout8Reducer.previewInfo;
+    previewInfo[index].del_flag = 1;
+    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${previewInfo[index].loai}, Mô tả : ${previewInfo[index].mota}, Link liên kết : ${previewInfo[index].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa tài nguyên môn học: Loại : ${previewInfo[index].loai}, Mô tả : ${previewInfo[index].mota}, Link liên kết : ${previewInfo[index].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+   this.props.onAddTNData(previewInfo);
+   this.setState({selectedRowKeys: [],editingKey : ""});
+  }
 
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
@@ -286,7 +295,6 @@ class TNTableItem extends Component {
   };
 
   render() {
-    
     const components = {
       body: {
         row: EditableFormRow,

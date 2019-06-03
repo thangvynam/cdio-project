@@ -80,9 +80,18 @@ export default{
     //Survey
     GET_SURVEYQA: baseUrl + '/get-surveyqa',
     GET_SURVEY: baseUrl + '/get-survey',
+    GET_SURVEY_ITU: baseUrl + '/get-survey-itu',
     GET_DATA_SURVEY: baseUrl + '/get-data-survey',
     ADD_TO_EDIT_MATRIX : baseUrl + '/add-to-edit-matrix',
-    ADD_DATA_SURVEY : baseUrl + 'add-data-survey',
+    ADD_DATA_SURVEY : baseUrl + '/add-data-survey',
+    GET_SUBJECT_TEACHER : baseUrl + '/get-teacher-with-subject',
+    ADD_SURVEY_DATA : baseUrl + '/add-survey-data',
+    GET_ALL_DATA_SURVEY : baseUrl + '/get-all-data-survey',
+    GET_SURVEY_ID : baseUrl + '/get-survey-id',
+    GET_SURVEY_CTDT_TIME : baseUrl + '/get-survey-ctdt-time',
+    ADD_SURVEY_LIST : baseUrl + '/add-survey-list',
+    GET_SURVEY_CTDT_TIME2 : baseUrl + '/get-survey-ctdt-time2',
+    SET_STATUS: baseUrl + '/set-status',
 
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',
@@ -110,7 +119,10 @@ export default{
     ADD_DATA_5 : baseUrl + '/add-data-5',
 
     CHECK_STATUS: baseUrl + '/checkstatus',
+
+    INSERT_STANDARD_MATRIX:baseUrl + '/insert-standard-matrix',
     
+    GET_IDQA: baseUrl + '/getidqa',
 
 }
 

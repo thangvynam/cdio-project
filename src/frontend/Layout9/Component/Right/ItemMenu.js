@@ -9,9 +9,7 @@ import TextArea from "antd/lib/input/TextArea";
 import { getCurrTime } from '../../../utils/Time';
 
 class ItemMenu extends Component {
- 
 
- 
   handleSubmit = () => {
     let content = this.props.itemRule.tempInfo.content;
     if (content.length === 0) {

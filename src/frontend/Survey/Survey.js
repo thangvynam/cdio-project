@@ -42,61 +42,14 @@ class Survey extends React.Component {
             resultITU : null,
             isDone: false,
             isOver: false,
+            id_survey: 0,
         }
     }
 
-    async componentDidMount() {
-
-        let user = localStorage.getItem('user');
-        let jsonData = JSON.parse(user)
-
-        let data = {
-            id_mon: this.props.subjectId,
-            id_giaovien: jsonData.data.Id
-        }
-
-        let response = await $.checkStatus(data)
-        if (response.data.status === 1) {
-            await this.setState({isDone: true})
-        }
-
-        let curTime = getCurrTime()
-        console.log(curTime)
-        let end_date = response.data.end_date;
-        if (curTime > end_date) {
-            notification["error"]({
-                message: "Đã hết hạn thực hiện khảo sát",
-                duration: 3
-              })
-              this.setState({isOver: true})
-              return;
-        }
-
-        if(response.data){
-            const id = response.data.id_qa;
-            //axios.get(`/get-surveyqa/${id}`).then(res => {
-            $.getSurveyQA(id).then(res => {
-                this.setState ({ 
-                    resultQA : res.data[0],
-                })
-            })
-
-            let body = {
-                id_ctdt: this.props.ctdt,
-                id_giaovien: jsonData.data.Id,
-                id_mon: this.props.subjectId,
-                id_qa: response.data.id_qa
-            }
-            //axios.get(`/get-survey/${id}`).then(res => {
-                $.getSurvey(body).then(res => {
-                this.setState({
-                    resultITU : res.data,
-                })
-            })
-        }          
-        
+    componentWillMount() {
         let tree = [];
         $.getDataSurvey().then((res) => {
+            console.log('in')
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
                 let pos0 = getPos(element.keyRow, 0);
@@ -169,10 +122,59 @@ class Survey extends React.Component {
             });
             this.setState({ tree: tree })
         })
-        
-        
+    }
 
-        
+    async componentDidMount() {
+
+        let user = localStorage.getItem('user');
+        let jsonData = JSON.parse(user)
+
+        let data = {
+            id_mon: this.props.subjectId,
+            id_giaovien: jsonData.data.Id,
+            id_ctdt: this.props.ctdt
+        }
+
+        let response = await $.checkStatus(data)
+        if (response.data.status === 1) {
+            await this.setState({isDone: true})
+        }
+
+        await this.setState({id_survey: response.data.id})
+
+        let curTime = getCurrTime()
+        let end_date = response.data.end_date;
+        if (curTime > end_date) {
+            notification["error"]({
+                message: "Đã hết hạn thực hiện khảo sát",
+                duration: 3
+              })
+              this.setState({isOver: true})
+              return;
+        }
+
+        console.log(this.props.idSurvey)
+        let responseQA = await $.getIDQA(this.props.idSurvey)
+
+        if(response.data){
+            const id = responseQA.data.id;
+            //axios.get(`/get-surveyqa/${id}`).then(res => {
+            $.getSurveyQA(id).then(res => {
+                this.setState ({ 
+                    resultQA : res.data[0],
+                })
+            })
+
+            let body = {
+                id_survey: this.props.idSurvey
+            }
+            //axios.get(`/get-survey/${id}`).then(res => {
+                $.getSurveyITU(body).then(res => {
+                this.setState({
+                    resultITU : res.data,
+                })
+            })
+        }          
     }
 
     genForm() {
@@ -256,18 +258,22 @@ class Survey extends React.Component {
             q9: surveyData.q9,
             q10: surveyData.q10,
             q11: surveyData.q11,
+            id_survey: this.props.idSurvey,
         }
 
-        $.saveSurveyQA(survey)
+        // $.setStatus(this.props.idSurvey).then(() => {
+            $.saveSurveyQA(survey)
             .then((res) => {
                 let user = localStorage.getItem('user');
                 let jsonData = JSON.parse(user)
-                $.saveSurvey(dataConvert, res.data.id, this.props.subjectId, jsonData.data.Id, this.props.ctdt)
+                $.saveSurvey(dataConvert, this.props.idSurvey)
                     .then(response => {
-                        //const data= response.data;
                         
                     });
             });
+        // })
+       
+
     }
 
     render() {

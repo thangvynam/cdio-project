@@ -187,6 +187,26 @@ class BenchMark extends Component {
         
     }
 
+    // componentWillReceiveProps(nextProps) {
+    //     if(nextProps.subjectList.length > 0) {
+    //         let subjectListId = [];
+    //         this.props.subjectList.map(item => {
+    //             subjectListId.push(item.IdSubject);
+    //         })
+    //         let data = {
+    //             data: subjectListId
+    //         }
+    //         if(data.data.length > 0) {
+    //             $.getBenchmarkMatrix(data)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    //         .then((res) => {
+    //             this.props.getDataBenchMarkMatrix(res.data);
+    //             //this.props.getDataBenchMarkMatrix(myData);
+    //         })
+    //         }
+    //     }
+        
+    // }
+
     createHeaderColumn = (myData) => {
         let data = myData['I'] || [];
         const columns = [

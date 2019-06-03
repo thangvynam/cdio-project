@@ -147,15 +147,13 @@ class TableItem extends Component {
 
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
+    console.log("aa: ",selectedRow,this.dataSource[selectedRow[0]]);
 
     let ruleitems = this.props.itemRule.previewInfo;
 
     for (let i = 0; i < selectedRow.length; i++) {
-      let id = this.dataSource[selectedRow[i]].id;
-      for (let j = 0; j < ruleitems.length; j++) {
-        if (ruleitems[j].id === id) {
-          ruleitems[j].del_flag = 1;
-          let message = `Xóa quy định chung: ${ruleitems[j].content}`;
+      ruleitems[selectedRow[i]].del_flag = 1;
+          let message = `Xóa quy định chung: ${ruleitems[selectedRow[i]].content}`;
           this.props.onSaveLog(
             "Nguyen Van A",
             getCurrTime(),
@@ -170,8 +168,6 @@ class TableItem extends Component {
             this.props.logReducer.contentTab,
             this.props.monhoc
           );
-        }
-      }
     }
 
     this.props.onUpdateRules(ruleitems);
@@ -337,6 +333,7 @@ class TableItem extends Component {
   }
 
   render() {
+    console.log(this.props.monhoc)
     const components = {
       body: {
         row: EditableFormRow,

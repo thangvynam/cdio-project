@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix, resetTab, changeCDRData, selectedVerb } from '../../Constant/ActionType';
+import { MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix, resetTab, changeCDRData, selectedVerb, updateListSurvey, updateIdSurvey } from '../../Constant/ActionType';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification, Divider } from 'antd';
@@ -187,6 +187,20 @@ class Content extends Component {
             description: "",
             levels: []
         });
+        let ctdt = this.props.content_ctdt;
+        let idUser = JSON.parse(localStorage.getItem('user')).data.Id;
+        let obj = {
+            id_ctdt : ctdt,
+            id_mon : id,
+            id_giaovien : idUser,
+        }
+
+        if(this.props.content_type ==="itusurvey") {
+            $.getSurveyId(obj).then(res => {
+                if(res.data[0])
+                    this.props.onUpdateIdSurvey(res.data[0].id)
+            })
+        }
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
     }
 
@@ -263,6 +277,7 @@ class Content extends Component {
         let monhoc = this.props.content_monhoc;
         let parent = this.props.content_parent;
         let subjectName = this.getSubjectName(this.props.subjectList, monhoc);
+        
         switch (type) {
             case "de-cuong-mon-hoc": {
                 if(khoi !== "" && khoi !== undefined && khoi !== null) {
@@ -300,7 +315,6 @@ class Content extends Component {
                 subjectList = this.props.subjectList.filter(item =>
                     item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
                 );;
-
 
             } break;
 
@@ -520,7 +534,7 @@ class Content extends Component {
                             </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <ExportFile />
+                            <ExportFile monhoc={monhoc}/>
                         </div>
                     </React.Fragment>
                 ); break;
@@ -561,7 +575,7 @@ class Content extends Component {
                                 />
                             </div>
                                 </Row>
-                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt} />
+                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt} idSurvey={this.props.idSurveyReducer.idSurvey}/>
                     </React.Fragment>
                 )
                 break;
@@ -802,6 +816,7 @@ const mapStateToProps = (state) => {
         majors: state.majors,
         teacherSubject: state.datactdt.teacherSubject,
         teacherReviewSubject: state.datactdt.teacherReviewSubject,
+        idSurveyReducer : state.idSurveyReducer,
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -819,7 +834,8 @@ const mapDispatchToProps = (dispatch) => {
         onLoadFaculties: facultiesAction.onLoadFaculties,
         onLoadPrograms: programsAction.onLoadPrograms,
         onLoadLevels: levelsAction.onLoadLevels,
-        onLoadMajors: majorsAction.onLoadMajors
+        onLoadMajors: majorsAction.onLoadMajors,
+        onUpdateIdSurvey : updateIdSurvey,
     }, dispatch);
 
 }

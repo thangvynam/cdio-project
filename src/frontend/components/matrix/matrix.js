@@ -263,7 +263,7 @@ class Matrix extends Component {
                 }
             }
         }
-        return <div></div>;
+        return <div>-</div>;
     }
 
     isExistInArray = (arr, item) => {
@@ -398,7 +398,7 @@ class Matrix extends Component {
 
     cloneEditMatrix = ()=>{
 
-        $.insertStandardMatrix(this.state.matrix)
+        $.insertStandardMatrix({data:this.state.matrix})
         .then(response => {
           if (response.data === 1) {
             notification["success"]({

@@ -629,7 +629,7 @@ export default{
     addData5,
 
     checkStatus,
-    insertStandardMatrix
+    insertStandardMatrix,
     checkStatus,
     getIDQA,
     getSurveyITU

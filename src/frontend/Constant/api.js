@@ -80,6 +80,7 @@ export default{
     //Survey
     GET_SURVEYQA: baseUrl + '/get-surveyqa',
     GET_SURVEY: baseUrl + '/get-survey',
+    GET_SURVEY_ITU: baseUrl + '/get-survey-itu',
     GET_DATA_SURVEY: baseUrl + '/get-data-survey',
     ADD_TO_EDIT_MATRIX : baseUrl + '/add-to-edit-matrix',
     ADD_DATA_SURVEY : baseUrl + '/add-data-survey',
@@ -90,6 +91,7 @@ export default{
     GET_SURVEY_CTDT_TIME : baseUrl + '/get-survey-ctdt-time',
     ADD_SURVEY_LIST : baseUrl + '/add-survey-list',
     GET_SURVEY_CTDT_TIME2 : baseUrl + '/get-survey-ctdt-time2',
+    SET_STATUS: baseUrl + '/set-status',
     GET_SURVEY_LIST : baseUrl + '/get-survey-list',
     GET_SURVEY_ID_SURVEYLIST : baseUrl + '/get-survey-with-id-survey-list',
 
@@ -122,6 +124,7 @@ export default{
 
     INSERT_STANDARD_MATRIX:baseUrl + '/insert-standard-matrix',
     
+    GET_IDQA: baseUrl + '/getidqa',
 
 }
 

@@ -16,6 +16,10 @@ export const DELETE_USER_ERROR = "DELETE_USER_ERROR";
 
 export const LOG_OUT = "LOG_OUT";
 
+// survey actions
+export const LOAD_SURVEYS_SUCCESS = "LOAD_SURVEYS_SUCCESS";
+export const LOAD_SURVEYS_ERROR = "LOAD_SURVEYS_ERROR";
+
 // users actions
 export const LOAD_USERS_SUCCESS = "LOAD_USERS_SUCCESS";
 export const LOAD_USERS_ERROR = "LOAD_USERS_ERROR";

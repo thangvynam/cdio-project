@@ -263,6 +263,11 @@ class Matrix extends Component {
                 }
             }
         }
+        else {
+            if(text !== "" && text !== undefined && text !== null) {
+                return <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>text</Tag>;
+            }    
+        }
         return <div></div>;
     }
 
@@ -398,7 +403,7 @@ class Matrix extends Component {
 
     cloneEditMatrix = ()=>{
 
-        $.insertStandardMatrix(this.state.matrix)
+        $.insertStandardMatrix({data:this.state.matrix})
         .then(response => {
           if (response.data === 1) {
             notification["success"]({

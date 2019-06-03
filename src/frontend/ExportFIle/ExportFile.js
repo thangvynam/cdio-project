@@ -5,7 +5,11 @@ import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
 import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
+<<<<<<< HEAD
 import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3,ADD_DATA } from '../Constant/ActionType';
+=======
+import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3, addCDRData } from '../Constant/ActionType';
+>>>>>>> e4d81fd12228f82aa0970af1a90af8f12eba0c14
 
 const plainOptions = [
     'Thông tin chung',
@@ -28,14 +32,14 @@ class ExportFile extends Component {
 
     // tab2
     async getData2() {
-        const res = await $.getData2(this.props.subjectid);
+        const res = await $.getData2(this.props.monhoc);
         const resp = res.data;
         return resp.Description;
     }
 
     // tab3
     async getData3() {
-        return $.getData3(this.props.subjectid).then(res => {
+        return $.getData3(this.props.monhoc).then(res => {
           return res.data
         }).then(resp => {
           return resp;
@@ -166,6 +170,44 @@ class ExportFile extends Component {
 
     })
     }
+
+    // tab 4
+
+    getCdrmdhd = (state, id) => {
+        for(let i = 0;i < state.length;i++) {
+          if(state[i].id === id) {
+            return state[i];
+          }
+        }
+        return {muc_do_1: "", muc_do_2: "", muc_do_3: ""};
+      }
+
+    async getData4() {
+        var self = this;
+        $.collectData4({ data: {thong_tin_chung_id: self.props.monhoc}})
+        .then(function (response) {
+        const tableData = {
+          previewInfo: []
+        };
+        for(let i = 0;i < response.data.length;i++) {
+          let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhddb, response.data[i].cdrmh_muc_do_hanh_dong_id);
+          let data = {
+          key: (i + 1).toString(),
+          cdr: response.data[i].chuan_dau_ra,
+          level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
+          description: response.data[i].mo_ta,
+          levels: response.data[i].muc_do.split(","),
+          id: response.data[i].id,
+          del_flag: response.data[i].del_flag
+          }
+          tableData.previewInfo.push(data);
+        }
+        self.props.onAddCDRData(tableData);
+            })
+          .catch(function (error) {
+              console.log(error);
+          });  
+      }
 
     getUnique(arr, comp) {
         const unique = arr
@@ -378,6 +420,7 @@ const mapStateToProps = (state, ownProps) => {
         itemLayout8Reducer: state.itemLayout8Reducer,
         itemLayout9Reducer: state.itemLayout9Reducer,
         subjectid: state.subjectid,
+        cdrmdhddb: state.cdrmdhddb,
     }
 }
 
@@ -389,6 +432,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveAndContinue3: (item) => {
             dispatch({ type: ADD_ARRAY_LAYOUT_3, item });         
         },
+<<<<<<< HEAD
         saveAndContinue5: (id) => {
             let newArr = [];
             console.log(id)
@@ -421,6 +465,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
         },
         
+=======
+        onAddCDRData: (newData) => dispatch(addCDRData(newData)),
+>>>>>>> e4d81fd12228f82aa0970af1a90af8f12eba0c14
     }
   }
 

@@ -110,7 +110,7 @@ class Matrix extends Component {
 
     componentDidMount() {
         
-        if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+        if (this.props.subjectList.length > 0) {
             this.setState({ isLoading: true })
             this.props.updateIsLoadEditMatrix("true");
             let subjectListId = [];
@@ -445,6 +445,12 @@ class Matrix extends Component {
                             columns={this.createColumn(this.props.dataMatrix)}
                             dataSource={this.createData(this.props.dataMatrix)}
                             scroll={{ x: 1500 }}
+                            pagination={{
+                                onChange: page => {
+                                    console.log(page);
+                                },
+                                pageSize: 5,
+                            }}
                         />
                     </div>
                 }

@@ -166,8 +166,8 @@ class TableItem extends Component {
           ...row,
         });
         this.props.handleSave(newData);
-        this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
-        this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
+        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
+        this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
         this.props.setFlag2(true);   
         this.setState({ editingKey: "" });
     });

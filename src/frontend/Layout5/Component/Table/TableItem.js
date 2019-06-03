@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import {
   Table, Divider, Tag,
   Popconfirm, Form, Button, Modal,
-  Select, Input
+  Select, Input, notification
 } from 'antd';
 import { connect } from 'react-redux';
 import { DragDropContext, DragSource, DropTarget } from "react-dnd";
@@ -161,7 +161,6 @@ class EditableCell extends React.Component {
       case "teachingActs":
         return (
           <Select
-
             mode="tags"
             style={{ width: "100%" }}
             placeholder="Chọn hoạt động"
@@ -174,7 +173,7 @@ class EditableCell extends React.Component {
       case "evalActs":
         return (
           <Select
-            mode="tags"
+            mode="multiple"
             style={{ width: "100%" }}
             placeholder="Chọn hoạt động"
             onChange={value => this.handleChangeEvalActs(value)}
@@ -489,7 +488,13 @@ class TableItem extends Component {
           {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
         </span>
         <Button style={{float: "right" , marginBottom: 16, marginTop: 10}}
-            onClick={() => this.props.saveAllData()}
+            onClick={() => {
+              notification["success"]({
+                message: "Cập nhật thành công",
+                duration: 1
+              });
+              this.props.saveAllData()}
+            }
           >
             Lưu tất cả
         </Button>

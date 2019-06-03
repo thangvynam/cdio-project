@@ -21,6 +21,7 @@ import { comments } from "./_comments";
 import { blocks } from "./_blocks";
 import { knowledgeTables } from "./_knowledgeTable";
 import { contentList } from "./_contentList";
+import { surveys } from "./surveys";
 
 const cdio1 = {
   faculties,
@@ -45,6 +46,7 @@ const cdio1 = {
   comments,
   knowledgeTables,
   contentList,
+  surveys,
   user,
   users,
 };

@@ -38,6 +38,7 @@ import TeachingManage from "../../CDIO1/containers/TeachingManage";
 import EditOutcomeStandard from "../../CDIO1/containers/EditOutcomeStandard";
 import EditEducationProgram from "../../CDIO1/containers/EditEducationProgram";
 import UserInfo from "../../CDIO1/containers/UserInfo";
+import OSSurvey from "../../CDIO1/containers/Survey";
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import * as facultiesAction from "../../CDIO1/actions/facultiesAction";
 import * as programsAction from "../../CDIO1/actions/programsAction";
@@ -728,7 +729,7 @@ class Content extends Component {
                                                 <TeachingManage ctdt={ctdt} />
                                             )
                                             : type === "khao-sat-chuan-dau-ra" ? (
-                                                <div>khao sat cdr</div>
+                                                <OSSurvey />
                                             )
                                                 : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                                                     <EditEducationProgram ctdt={ctdt} />

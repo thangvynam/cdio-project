@@ -508,6 +508,12 @@ class EditMatrix extends Component {
             columns={columns}
             scroll={{ x: 1500 }}
             size="small"
+            pagination={{
+              onChange: page => {
+                  console.log(page);
+              },
+              pageSize: 5,
+          }}
           />
           {!_.isEmpty(this.state.rows) && <OutTable data={this.state.rows} columns={this.state.cols} tableClassName="ExcelTable2007" tableHeaderRowClass="heading" />}
         </div>

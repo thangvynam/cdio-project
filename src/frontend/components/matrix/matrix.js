@@ -398,20 +398,20 @@ class Matrix extends Component {
 
     cloneEditMatrix = ()=>{
 
-        // $.insertStandardMatrix(data)
-        // .then(response => {
-        //   if (response.data === 1) {
-        //     notification["success"]({
-        //       message: "Cập nhật thành công",
-        //       duration: 1
-        //     });
-        //     this.setState({isSubmit:true});
-        //   } else {
-        //     notification["error"]({
-        //       message: "Cập nhật thất bại",
-        //       duration: 1
-        //     });
-        //   }})
+        $.insertStandardMatrix(this.state.matrix)
+        .then(response => {
+          if (response.data === 1) {
+            notification["success"]({
+              message: "Cập nhật thành công",
+              duration: 1
+            });
+            this.setState({isSubmit:true});
+          } else {
+            notification["error"]({
+              message: "Cập nhật thất bại",
+              duration: 1
+            });
+          }})
 
     }
 

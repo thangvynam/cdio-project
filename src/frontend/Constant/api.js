@@ -88,6 +88,8 @@ export default{
     GET_ALL_DATA_SURVEY : baseUrl + '/get-all-data-survey',
     GET_SURVEY_ID : baseUrl + '/get-survey-id',
     GET_SURVEY_CTDT_TIME : baseUrl + '/get-survey-ctdt-time',
+    ADD_SURVEY_LIST : baseUrl + '/add-survey-list',
+    GET_SURVEY_CTDT_TIME2 : baseUrl + '/get-survey-ctdt-time2',
 
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',

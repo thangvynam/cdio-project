@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import {
     Collapse,Button
 } from 'antd';
+import {Label} from 'reactstrap'
 
 const Panel = Collapse.Panel;
 
@@ -21,7 +22,9 @@ class ItemVIewSurvey extends Component {
                 >
                     {date}
                 </b>
-                <Button style ={{paddingRight : "20em"}}onClick={(e) => console.log("BAm BAM BAM")}>Đóng</Button>
+                <Label>Trạng thái : </Label>
+                <Button onClick={(e) => console.log("CLICK CLICK CLICK")}>View Matrix Survey</Button>
+                <Button onClick={(e) => console.log("BAM BAM BAM")}>Đóng cuộc Survey</Button>
             </div>
         );
     }
@@ -31,9 +34,9 @@ class ItemVIewSurvey extends Component {
                 <Collapse onChange={callback}>
                     <Panel header={this.genTitle()}>
                         {this.props.subjectList ? this.props.subjectList.map(item => {
-                            return item.SubjectName
+                            return <p>{item.SubjectName}<br/></p>
                         }) : <p></p>}
-                        {/* <p>Show ra cac phieu</p> */}
+                        
                     </Panel>
                     
                 </Collapse>

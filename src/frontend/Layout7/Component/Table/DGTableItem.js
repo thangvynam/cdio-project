@@ -421,13 +421,14 @@ class itemLayout7ReducerItem extends React.Component {
 
   saveAll = () => {
     let table = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
+    
     let totalTile = 0;
     for (let i = 0; i < table.length; i++) {
       if (this.isExist(table[i].mathanhphan)) {
         totalTile += parseFloat(table[i].tile.replace("%", ""));
       }
     }
-    if (totalTile != 100) {
+    if (totalTile != 100 && !table) {
       message.error("Tổng tỉ lệ phải bằng 100% , vui lòng kiểm tra lại!")
     } else {
       let obj = {

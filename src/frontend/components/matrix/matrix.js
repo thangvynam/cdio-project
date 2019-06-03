@@ -265,7 +265,7 @@ class Matrix extends Component {
         }
         else {
             if(text !== "" && text !== undefined && text !== null) {
-                return <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{text}</Tag>;
+                return <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{`${text}`}</Tag>;
             }    
         }
         return <div></div>;

@@ -456,6 +456,21 @@ const addSurveyData = (data) => {
     return $.post(url,data);
 }
 
+const getSurveyData = () =>{
+    let url = _.GET_ALL_DATA_SURVEY;
+    return $.get(url);
+}
+
+const getSurveyId = (data) =>{
+    let url = _.GET_SURVEY_ID;
+    return $.post(url,data);
+}
+
+const getSurveyCTDTTime = (data) =>{
+    let url = _.GET_SURVEY_CTDT_TIME;
+    return $.post(url,data);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -555,6 +570,9 @@ export default{
     addDataSurvey,
     getSubjectTeacher,
     addSurveyData,
+    getSurveyData,
+    getSurveyId,
+    getSurveyCTDTTime,
 
     //export file
     exportFile,

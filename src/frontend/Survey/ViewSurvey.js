@@ -7,6 +7,8 @@ import ItemVIewSurvey from './ItemVIewSurvey';
 import Title from 'antd/lib/skeleton/Title';
 import $ from './../helpers/services';
 import {getTimeFromString} from "./../utils/Time"
+import { updateListSurvey } from '../Constant/ActionType';
+import { bindActionCreators } from 'redux';
 
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
@@ -24,9 +26,10 @@ function onChange(date, dateString) {
 }
 
 class ItemSurvey {
-    constructor(data, rangeTime) {
-        this.id = data;
+    constructor(id, rangeTime,subjectList) {
+        this.id = id;
         this.rangeTime = rangeTime;
+        this.subjectList = subjectList;
     }
 }
 
@@ -41,14 +44,14 @@ class ViewSurvey extends Component {
     genForm() {
         let htmlDom = []
 
-        this.state.listSurvey.forEach(survey => {
+        this.state.listSurvey.forEach((survey,index) => {
             let title = this.props.ctdt.find(item => item.id = survey.id).EduName;
             htmlDom.push(
                 <ItemVIewSurvey
-                    key ={survey.id}
+                    key ={index}
                     id = {survey.id}
-                    // title={title}
-                    title = {survey.id}
+                    subjectList = {survey.subjectList}
+                    title = {title}
                     dateFrom={survey.rangeTime[0]}
                     dateTo={survey.rangeTime[1]}
                 />
@@ -62,104 +65,83 @@ class ViewSurvey extends Component {
         if(!idTitle){
             message.error("Chưa chọn chương trình đào tạo");
         }else {
-           
-                $.getBlockSubject(idTitle).then(res => {
-                    let resData = res.data.data;
-                    let dataSubject = [];
-                    let dataCtdt = [];
-                    if (resData !== undefined && resData !== null) {
-                      for (let i = 0; i < resData.length; i++) {
-                        dataCtdt = dataCtdt.concat(resData[i].block);
-                        for (let j = 0; j < resData[i].block.length; j++) {
-                          dataSubject = dataSubject.concat(resData[i].block[j].subjects);
-                        }
-                      }
-                      dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
-                    let subjectList = [];
-                    dataSubject.map(item => {
-                        $.getSubjectTeacher(item.IdSubject).then(res => {
-                            if(res && res.data && res.data.length > 0){
-                                // console.log(res.data)
-                                let listIdUser = [];
-                                res.data.forEach(item => {
-                                    listIdUser.push(item.IdUser);
-                                })
-                                    let startDate = new Date(rangeTime[0]);
-                                    startDate.setHours(0, 0, 0, 0);
-                                    let endDate = new Date(rangeTime[1]);
-                                    endDate.setHours(23, 59, 59, 999);
-
-                                    let obj = {
-                                        id_ctdt : idTitle,
-                                        id_mon : item.IdSubject,
-                                        id_giaovien : listIdUser,
-                                        start_date : parseInt(startDate.getTime()),
-                                        end_date : parseInt(endDate.getTime()),
-                                    }
-                                    $.addSurveyData(obj).then(res => {
-                                    
-                                    })
-                              
+           if(!rangeTime){
+               message.error("Chưa chọn thời gian")
+           }else{
+               let obj = {
+                   id_ctdt : idTitle,
+                   start_date : parseInt(new Date(rangeTime[0]).getTime()),
+                   end_date : parseInt(new Date(rangeTime[1]).getTime())
+               }
+            $.getSurveyCTDTTime(obj).then(res => {
+                if(res !== null && res.data !== null && res.data.length !== 0) {
+                    console.log(res.data)
+                    message.error("Trong khoảng thời gian này dã tồn tại cuộc survey")
+                }else {
+                    $.getBlockSubject(idTitle).then(res => {
+                        let resData = res.data.data;
+                        let dataSubject = [];
+                        let dataCtdt = [];
+                        if (resData !== undefined && resData !== null) {
+                          for (let i = 0; i < resData.length; i++) {
+                            dataCtdt = dataCtdt.concat(resData[i].block);
+                            for (let j = 0; j < resData[i].block.length; j++) {
+                              dataSubject = dataSubject.concat(resData[i].block[j].subjects);
                             }
-                          
+                          }
+                          dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+                        let subjectList = [];
+                        dataSubject.map(item => {
+                            $.getSubjectTeacher(item.IdSubject).then(res => {
+                                if(res && res.data && res.data.length > 0){
+                                    let listIdUser = [];
+                                    res.data.forEach(item => {
+                                        listIdUser.push(item.IdUser);
+                                    })
+                                        let startDate = new Date(rangeTime[0]);
+                                        startDate.setHours(0, 0, 0, 0);
+                                        let endDate = new Date(rangeTime[1]);
+                                        endDate.setHours(23, 59, 59, 999);
+    
+                                        let obj = {
+                                            id_ctdt : idTitle,
+                                            id_mon : item.IdSubject,
+                                            id_giaovien : listIdUser,
+                                            start_date : parseInt(startDate.getTime()),
+                                            end_date : parseInt(endDate.getTime()),
+                                        }
+    
+                                        // $.addSurveyData(obj).then(res => {
+                                            
+                                        // })
+                                       
+                                       
+    
+                                  
+                                }
+                              
+                            })
                         })
-                    })
-                
+                          
+                        
+                        let obj1 = new ItemSurvey(idTitle, rangeTime,dataSubject);
+
+                        this.setState({
+                            listSurvey: [...this.state.listSurvey, obj1],
+                        });
+                        }})
                     
-                    //   $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-                    //   .then(res => { 
-                    //     if(res.data !== undefined && res.data !== null){
-                    //       this.props.updateTeacherSubject(res.data);
-                    //     }
-                    //     $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-                    //     .then(res => {
-                    //       if(res.data !== undefined && res.data !== null){
-                    //         this.props.updateTeacherReviewSubject(res.data);
-                    //       }
-                    //       if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-              
-                    //         dataSubject = dataSubject.filter(item => 
-                    //             item.del_flat != 1
-                    //         );
-                            
-                    //       }
-                    //       else {
-                    //         dataSubject = dataSubject.filter(item => 
-                    //               item.del_flat != 1
-                    //               && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                    //               || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
-                    //           );
-                    //           this.props.updateSubjectList(dataSubject);
-                    //       }
-                    //     });
-                    //   });
-                      
-                    }})
-                console.log(rangeTime)
-                let obj = new ItemSurvey(idTitle, rangeTime);
+                }
+            })
                 
-                this.setState({
-                    listSurvey: [...this.state.listSurvey, obj],
-                });
             }
-           
+        }
         
         
     }
 
     render() {
-        
-        if(rangeTime){
-            console.log()
-            let startDate = new Date(rangeTime[0]);
-            startDate.setHours(0,0,0,0); 
-            let endDate = new Date(rangeTime[1]);
-            endDate.setHours(23,59,59,999)
-            console.log(startDate)
-            console.log(endDate)
-    
-        }
-        
+       
         const formItemLayout = {
             labelCol: {
                 xs: { span: 12 },
@@ -216,13 +198,14 @@ class ViewSurvey extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         ctdt: state.eduPrograms,
+        surveyReducer : state.surveyReducer,
     }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-    return {
-
-    }
+    return bindActionCreators({
+        onUpdateListSurvey : updateListSurvey,
+      }, dispatch);
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(ViewSurvey);

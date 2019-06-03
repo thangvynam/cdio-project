@@ -1,5 +1,5 @@
 import { SAVE_SURVEY, CHANGE_VALUE_ITU_SURVEY, 
-    CHANGE_VALUE_DESCRIPTION_SURVEY} from '../Constant/ActionType';
+    CHANGE_VALUE_DESCRIPTION_SURVEY,UPDATE_LIST_SURVEY} from '../Constant/ActionType';
 
 const surveyInitialState = {
     tenMH: '',
@@ -17,7 +17,8 @@ const surveyInitialState = {
     q10: '',
     q11: '',
     dataValueITU: new Map(),
-    dataValueDescription : new Map()
+    dataValueDescription : new Map(),
+    listSurvey : [],
 }
 const SurveyReducer = (state = surveyInitialState, action) => {
 
@@ -114,6 +115,13 @@ const SurveyReducer = (state = surveyInitialState, action) => {
             return {
                 ...state,
                 dataValueDescription : action.data
+            }
+        }
+
+        case UPDATE_LIST_SURVEY: {
+            return {
+                ...state,
+                listSurvey : action.data
             }
         }
 

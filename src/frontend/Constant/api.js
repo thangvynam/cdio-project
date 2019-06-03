@@ -85,6 +85,9 @@ export default{
     ADD_DATA_SURVEY : baseUrl + '/add-data-survey',
     GET_SUBJECT_TEACHER : baseUrl + '/get-teacher-with-subject',
     ADD_SURVEY_DATA : baseUrl + '/add-survey-data',
+    GET_ALL_DATA_SURVEY : baseUrl + '/get-all-data-survey',
+    GET_SURVEY_ID : baseUrl + '/get-survey-id',
+    GET_SURVEY_CTDT_TIME : baseUrl + '/get-survey-ctdt-time',
 
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',

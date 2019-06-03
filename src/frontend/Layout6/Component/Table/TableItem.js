@@ -534,34 +534,24 @@ class TableItem extends Component {
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
 
-    // // delete one
-    // if (selectedRow.length === 1) {
-    //   this.handleDelete(selectedRow[0]-1);
-    //   return;
-    // }
-
-    // let KHitems = this.props.itemKHGDTH.previewInfo;
-    // console.log("bb: ",KHitems);
-
-    // for(let i = 0;i<selectedRow.length;i++){
-    //   KHitems[selectedRow[i]-1].del_flag = 1;
-    // }
-    // let key = 1;
-    // for(let i = 0;i<KHitems.length;i++){
-    //   if(KHitems[i].del_flag===0){
-    //     KHitems[i].key = key;
-    //     key++;
-    //   }
-    // }
-
     let KHitems = this.props.itemKHGDTH.previewInfo;
+    let indexArray = [];
+
 
     for (let i = 0; i < selectedRow.length; i++) {
-      let id = this.dataSource[selectedRow[i] - 1].id;
+      let index = 0;
       for (let j = 0; j < KHitems.length; j++) {
-        if (KHitems[j].id === id) {
-          KHitems[j].del_flag = 1;
-          this.props.onSaveLog(
+        if(KHitems[j].del_flag === 0) index++;
+        if(index===selectedRow[i]){
+          indexArray.push(j);
+        }
+      }
+    }
+    
+    for (let i = 0; i < indexArray.length; i++) {
+      let j = indexArray[i];
+      KHitems[j].del_flag = 1;
+            this.props.onSaveLog(
             "Nguyen Van A",
             getCurrTime(),
             `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
@@ -587,9 +577,9 @@ class TableItem extends Component {
             this.props.logReducer.contentTab,
             this.props.monhoc
           );
-        }
-      }
     }
+
+
     let key = 1;
     for (let i = 0; i < KHitems.length; i++) {
       if (KHitems[i].del_flag === 0) {

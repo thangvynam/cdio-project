@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import { Table, Icon, Tag, Modal, Button } from 'antd';
+import { Table, Icon, Tag, Modal, Button,notification } from 'antd';
 import { connect } from 'react-redux';
 import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
@@ -17,6 +17,7 @@ class Matrix extends Component {
             isError: false,
             isSuccess: false,
             isShow: false,
+            isSubmit:false,
         };
         this.myRef = React.createRef();
     }
@@ -95,7 +96,7 @@ class Matrix extends Component {
                 this.props.getDataMatrix(res)
                 this.createData(res);
                 this.setState({
-                    isLoading: false
+                    isLoading: false,
                 })
             })
             .catch((err) => {
@@ -155,7 +156,7 @@ class Matrix extends Component {
                 this.props.getDataMatrix(res)
                 this.createData(res);
                 this.setState({
-                    isLoading: false
+                    isLoading: false,
                 })
             })
             .catch((err) => {
@@ -392,6 +393,25 @@ class Matrix extends Component {
         }
     }
 
+    cloneEditMatrix = ()=>{
+
+        // $.insertStandardMatrix(data)
+        // .then(response => {
+        //   if (response.data === 1) {
+        //     notification["success"]({
+        //       message: "Cập nhật thành công",
+        //       duration: 1
+        //     });
+        //     this.setState({isSubmit:true});
+        //   } else {
+        //     notification["error"]({
+        //       message: "Cập nhật thất bại",
+        //       duration: 1
+        //     });
+        //   }})
+
+    }
+
     render() {
         const { isLoading, isShow } = this.state;
         return (
@@ -415,7 +435,7 @@ class Matrix extends Component {
                             sheet="tablexls"
                             buttonText="Export"
                         />
-                        {this.props.editMatrix.length <= 0 ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
+                        {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
                         <Table
                             bordered
                             columns={this.createColumn(this.props.dataMatrix)}

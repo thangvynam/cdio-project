@@ -446,6 +446,12 @@ const addDataSurvey =(data) => {
     return $.post(url,data);
 }
 
+const insertStandardMatrix =(data) => {
+    let url = _.INSERT_STANDARD_MATRIX;
+    return $.post(url,data);
+}
+
+
 export default{
     //localStorage
     setStorage,
@@ -556,5 +562,6 @@ export default{
     saveData3,
     addData5,
 
-    checkStatus
+    checkStatus,
+    insertStandardMatrix
 }

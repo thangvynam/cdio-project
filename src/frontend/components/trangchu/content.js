@@ -195,7 +195,8 @@ class Content extends Component {
         }
 
         $.getSurveyId(obj).then(res => {
-            this.props.onUpdateIdSurvey(res.data[0].id)
+            if(res.data[0] && this.props.content_type ==="itusurvey")
+                this.props.onUpdateIdSurvey(res.data[0].id)
         })
        
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });

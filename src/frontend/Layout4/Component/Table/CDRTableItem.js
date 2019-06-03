@@ -725,8 +725,8 @@ getSubjectName = (subjectList, id) => {
   OnDelete = (cdrtable, key) => {
     let deleteData = cdrtable.previewInfo[key - 1]    
 
-    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
-    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
     
     if(key === cdrtable.previewInfo.length){
@@ -772,8 +772,8 @@ getSubjectName = (subjectList, id) => {
     for(let i = 0;i < cdrselecteditem.length;i++){
       let deleteData = cdrtable.previewInfo[cdrselecteditem[i] - 1];
 
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
       
       if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
@@ -866,8 +866,8 @@ getSubjectName = (subjectList, id) => {
 
       let message = `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}]`+ 
       `-> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`;
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
       
       for(let i = 0;i < newData.previewInfo[key - 1].levels.length - 1;i++){

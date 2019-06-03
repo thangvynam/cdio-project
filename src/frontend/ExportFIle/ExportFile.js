@@ -5,7 +5,10 @@ import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
 import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
-import { ADD_DATA_LAYOUT_2, ADD_ARRAY_LAYOUT_3, addCDRData,ADD_DATA } from '../Constant/ActionType';
+
+import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3,ADD_DATA, addCDRData } from '../Constant/ActionType';
+
+
 
 const plainOptions = [
     'Thông tin chung',
@@ -185,7 +188,7 @@ class ExportFile extends Component {
         }
         return { muc_do_1: "", muc_do_2: "", muc_do_3: "" };
     }
-    async getData4() {
+    getData4() {
         var self = this;
         $.collectData4({ data: { thong_tin_chung_id: self.props.monhoc } })
             .then(function (response) {
@@ -254,6 +257,8 @@ class ExportFile extends Component {
 
         //this.props.saveAndContinue3(saveData);
 
+        //tab4
+        this.getData4();
         //tab5
         this.props.saveAndContinue5(this.props.subjectid);
 
@@ -437,6 +442,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveAndContinue3: (item) => {
             dispatch({ type: ADD_ARRAY_LAYOUT_3, item });
         },
+
         saveAndContinue5: (id) => {
             let newArr = [];
             console.log(id)
@@ -468,6 +474,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveAndContinue6: (id) => {
 
         },
+
         onAddCDRData: (newData) => {
             dispatch(addCDRData(newData))
         },

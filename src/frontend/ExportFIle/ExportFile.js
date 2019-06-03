@@ -188,7 +188,7 @@ class ExportFile extends Component {
         }
         return { muc_do_1: "", muc_do_2: "", muc_do_3: "" };
     }
-    async getData4() {
+    getData4() {
         var self = this;
         $.collectData4({ data: { thong_tin_chung_id: self.props.monhoc } })
             .then(function (response) {
@@ -257,6 +257,8 @@ class ExportFile extends Component {
 
         //this.props.saveAndContinue3(saveData);
 
+        //tab4
+        this.getData4();
         //tab5
         this.props.saveAndContinue5(this.props.subjectid);
 

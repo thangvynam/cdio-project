@@ -471,6 +471,16 @@ const getSurveyCTDTTime = (data) =>{
     return $.post(url,data);
 }
 
+const addSurveyList = (data) => {
+    let url = _.ADD_SURVEY_LIST;
+    return $.post(url,data);
+}
+
+const getSurveyCTDTTime2 = (data) =>{
+    let url = _.GET_SURVEY_CTDT_TIME2;
+    return $.post(url,data);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -573,7 +583,9 @@ export default{
     getSurveyData,
     getSurveyId,
     getSurveyCTDTTime,
-
+    addSurveyList,
+    getSurveyCTDTTime2,
+    
     //export file
     exportFile,
 

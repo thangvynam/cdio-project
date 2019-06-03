@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Collapse,
+    Collapse,Button
 } from 'antd';
 
 const Panel = Collapse.Panel;
@@ -21,6 +21,7 @@ class ItemVIewSurvey extends Component {
                 >
                     {date}
                 </b>
+                <Button style ={{paddingRight : "20em"}}onClick={(e) => console.log("BAm BAM BAM")}>Đóng</Button>
             </div>
         );
     }
@@ -29,8 +30,12 @@ class ItemVIewSurvey extends Component {
             <div>
                 <Collapse onChange={callback}>
                     <Panel header={this.genTitle()}>
-                        <p>Show ra các phiếu </p>
+                        {this.props.subjectList ? this.props.subjectList.map(item => {
+                            return item.SubjectName
+                        }) : <p></p>}
+                        {/* <p>Show ra cac phieu</p> */}
                     </Panel>
+                    
                 </Collapse>
             </div>
         );

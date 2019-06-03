@@ -864,9 +864,10 @@ getSubjectName = (subjectList, id) => {
         newData.previewInfo.push(row);
       }
 
-
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      let message = `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}]`+ 
+      `-> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`;
+      this.props.onSaveLog("Nguyen Van A", getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
       
       for(let i = 0;i < newData.previewInfo[key - 1].levels.length - 1;i++){
@@ -950,11 +951,11 @@ getSubjectName = (subjectList, id) => {
     this.props.updateIsLoad("false");
     openNotificationWithIcon('success');
     $.saveLog({data: this.props.logData})
-    //axios.post('/save-log', { data: this.props.logData });
     
   }
 
     render() {
+      console.log(this.props.cdrmdhd)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {

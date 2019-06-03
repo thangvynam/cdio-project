@@ -2,7 +2,7 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
-import $ from './../../helpers/services';
+import $ from "./../../helpers/services";
 
 export const logInSuccess = (user, successMessage) => ({
   type: cst.LOG_IN_SUCCESS,
@@ -157,6 +157,13 @@ export const onRegisterUser = user => {
             isRight: 0
           };
           dispatch(message.message(chirp));
+        } else if (res.data.code === -2) {
+          dispatch(registerUserError(res));
+          let chirp = {
+            message: `Không có quyền đăng kí`,
+            isRight: 0
+          };
+          dispatch(message.message(chirp));
         } else if (res.data.code === -3) {
           dispatch(registerUserError(res));
           let chirp = {
@@ -164,7 +171,7 @@ export const onRegisterUser = user => {
             isRight: 0
           };
           dispatch(message.message(chirp));
-        } else if (res.data.code > 1) {
+        } else if (res.data.code > 0) {
           dispatch(registerUserSuccess(res));
           let chirp = {
             message: `Đăng kí thành công`,
@@ -297,11 +304,9 @@ export const deleteUserError = errorMessage => ({
 
 export const onDeleteUser = username => {
   return (dispatch, getState) => {
-    let req = links.DELETE_USER;
-    let params = {};
-    params.data = JSON.stringify(username);
+    let req = `${links.DELETE_USER}?username=${username}`;
     axios
-      .post(req, params, {
+      .post(req, {
         headers: {
           "Content-Type": "application/json",
           authorization: localStorage.getItem("user")
@@ -332,6 +337,53 @@ export const onDeleteUser = username => {
         dispatch(deleteUserError(err));
         let chirp = {
           message: `Xóa tài khoản thất bại`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
+      });
+  };
+};
+
+export const registerBlockUserSuccess = successMessage => ({
+  type: cst.REGISTER_BLOCK_USER_SUCCESS,
+  successMessage
+});
+
+export const registerBlockUserError = errorMessage => ({
+  type: cst.REGISTER_BLOCK_USER_ERROR,
+  errorMessage
+});
+
+export const onRegisterBlockUser = users => {
+  return (dispatch, getState) => {
+    let req = links.REGISTER_BLOCK_USER;
+    let params = {};
+    params.data = JSON.stringify(users);
+    axios
+      .post(req, params, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
+      .then(res => {
+        const err = res.data.register_error;
+        const suc = res.data.register_success;
+        dispatch(onLoadUsers());
+        dispatch(registerBlockUserSuccess(res));
+        let chirp = {
+          message: `Số tài khoản đăng kí thành công: ${suc}, số tài khoản đăng kí không thành công: ${err}`,
+          isRight: 1
+        };
+        dispatch(message.message(chirp));
+      })
+      .catch(err => {
+        dispatch(onLoadUsers());
+        dispatch(registerBlockUserError(err));
+        let chirp = {
+          message: `Đăng kí thất bại`,
           isRight: 0
         };
         dispatch(message.message(chirp));

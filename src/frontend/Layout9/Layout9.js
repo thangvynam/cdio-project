@@ -5,6 +5,9 @@ import TableItem from "./Component/Table/TableItem";
 import LogForm from '../Log/LogForm';
 
 class Layout9 extends Component {
+  componentWillMount(){
+    window.scrollTo(0, 0);
+  }
   render() {
     const items = [...Array(100)].map((val, i) => `Item ${i}`);
     return (

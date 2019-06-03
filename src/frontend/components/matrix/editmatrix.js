@@ -285,7 +285,7 @@ class EditMatrix extends Component {
       this.props.updateIsLoadEditMatrix("true");
       //$.getRealityMatrix();
       if(data.data.length > 0) {
-        $.getStandardMatrix(data).then((res) => {
+        $.getStandardMatrix(data).then((res) => { 
           let data = [];
           for (let i = 0; i < res.data.length; i++) {
             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);

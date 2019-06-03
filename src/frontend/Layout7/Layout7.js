@@ -6,6 +6,9 @@ import { Element } from 'react-scroll';
 import LogForm from '../Log/LogForm';
 
 class Layout7 extends Component {
+    componentWillMount(){
+        window.scrollTo(0, 0);
+    }
     render() {
         return (
             <React.Fragment>

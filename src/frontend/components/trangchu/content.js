@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix, resetTab, changeCDRData, selectedVerb } from '../../Constant/ActionType';
+import { MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix, resetTab, changeCDRData, selectedVerb, updateListSurvey, updateIdSurvey } from '../../Constant/ActionType';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification, Divider } from 'antd';
@@ -186,6 +186,19 @@ class Content extends Component {
             description: "",
             levels: []
         });
+        let ctdt = this.props.content_ctdt;
+        let idUser = JSON.parse(localStorage.getItem('user')).data.Id;
+        let obj = {
+            id_ctdt : ctdt,
+            id_mon : id,
+            id_giaovien : idUser,
+        }
+
+        $.getSurveyId(obj).then(res => {
+            if(res.data[0] && this.props.content_type ==="itusurvey")
+                this.props.onUpdateIdSurvey(res.data[0].id)
+        })
+       
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
     }
 
@@ -254,7 +267,7 @@ class Content extends Component {
     }
 
     render() {
-        let fixedCss = this.state.scrolling ? "fixedCss" : "";
+        let fixedCss = "col-right-title header-fixed";
         var subjectList = [];
         let type = this.props.content_type;
         let ctdt = this.props.content_ctdt;
@@ -262,6 +275,7 @@ class Content extends Component {
         let monhoc = this.props.content_monhoc;
         let parent = this.props.content_parent;
         let subjectName = this.getSubjectName(this.props.subjectList, monhoc);
+        
         switch (type) {
             case "de-cuong-mon-hoc": {
                 if(khoi !== "" && khoi !== undefined && khoi !== null) {
@@ -300,7 +314,6 @@ class Content extends Component {
                     item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
                 );;
 
-
             } break;
 
             default: {
@@ -313,9 +326,7 @@ class Content extends Component {
             case MENUITEM.THONG_TIN_CHUNG: {
                 content_layout = (
                     <React.Fragment>
-                        <Row 
-                        style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                            className="col-right-title header-fixed">
+                        <Row className="col-right-title header-fixed">
                             <div className="header-child">
                                 <span>Thông Tin Chung</span>
                                 <Direction
@@ -325,7 +336,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <ThongTinChung idMH={this.props.content_monhoc} />
@@ -336,11 +347,8 @@ class Content extends Component {
             case MENUITEM.MO_TA_MON_HOC: {
                 content_layout = (
                     <React.Fragment>
-                        <Row 
-                        style={{
-                            position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8',                       
-                        }}
-                        className = "col-right-title header-fixed" >
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}
+                        >
                             <div  className="header-child">
                                 <span>Mô Tả Môn Học</span>
                                 <Direction
@@ -351,7 +359,7 @@ class Content extends Component {
                                     content_type={type}
                                 />
 
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <Layout2 monhoc={monhoc} />
@@ -362,9 +370,7 @@ class Content extends Component {
             case MENUITEM.MUC_TIEU_MON_HOC: {
                 content_layout = (
                     <React.Fragment>
-                        <Row 
-                        style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Mục Tiêu Môn Học</span>
                                 <Direction
@@ -375,7 +381,7 @@ class Content extends Component {
                                     content_type={type}
                                 />
 
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <Layout3 monhoc={monhoc} />
@@ -386,9 +392,7 @@ class Content extends Component {
             case MENUITEM.CHUAN_DAU_RA: {
                 content_layout = (
                     <React.Fragment>
-                        <Row
-                        style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }} 
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Chuẩn Đẩu Ra</span>
                                 <Direction
@@ -398,7 +402,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <Layout4 monhoc={monhoc} />
@@ -409,8 +413,7 @@ class Content extends Component {
             case MENUITEM.GIANG_DAY_LY_THUYET: {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Kế Hoạch Giảng Dạy Lý Thuyết</span>
                                 <Direction
@@ -420,7 +423,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <Layout5 monhoc={monhoc} />
@@ -431,9 +434,7 @@ class Content extends Component {
             case MENUITEM.GIANG_DAY_THUC_HANH: {
                 content_layout = (
                     <React.Fragment>
-                        <Row 
-                        style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Kế Hoạch Giảng Dạy Thực Hành</span>
                                 <Direction
@@ -443,7 +444,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <Layout6 monhoc={monhoc} />
@@ -454,8 +455,7 @@ class Content extends Component {
             case MENUITEM.DANH_GIA: {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Đánh Giá</span>
                                 <Direction
@@ -465,7 +465,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <Layout7 monhoc={monhoc} />
@@ -476,8 +476,7 @@ class Content extends Component {
             case MENUITEM.TAI_NGUYEN_MON_HOC: {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Tài Nguyên Môn Học</span>
                                 <Direction
@@ -487,7 +486,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <Layout8 monhoc={monhoc} />
@@ -498,8 +497,7 @@ class Content extends Component {
             case MENUITEM.QUY_DINH_CHUNG: {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Quy Định Chung</span>
                                 <Direction
@@ -509,7 +507,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <Layout9 monhoc={monhoc} />
@@ -521,8 +519,7 @@ class Content extends Component {
             case MENUITEM.XUAT_FILE_PDF: {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Xuất File PDF</span>
                                 <Direction
@@ -532,7 +529,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <ExportFile />
@@ -544,8 +541,7 @@ class Content extends Component {
             case "": {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                         className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Thông Tin Chung</span>
                                 <Direction
@@ -555,7 +551,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <ThongTinChung idMH={this.props.content_monhoc} />
                     </React.Fragment>
@@ -565,8 +561,7 @@ class Content extends Component {
             case MENUITEM.ITU_SURVEY: {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>ITU_SURVEY</span>
                                 <Direction
@@ -576,9 +571,9 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
-                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt} />
+                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt} idSurvey={this.props.idSurveyReducer.idSurvey}/>
                     </React.Fragment>
                 )
                 break;
@@ -587,8 +582,7 @@ class Content extends Component {
             case MENUITEM.PHAN_CONG: {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Phân Công</span>
                                 <Direction
@@ -598,10 +592,10 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
-                            <PhanCong content_monhoc={this.props.content_monhoc} />
+                            <PhanCong monhoc={this.props.content_monhoc} />
                         </div>
                     </React.Fragment>
                 )
@@ -611,8 +605,7 @@ class Content extends Component {
             case MENUITEM.REVIEW: {
                 content_layout = (
                     <React.Fragment>
-                        <Row style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                        className="col-right-title header-fixed">
+                        <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                             <div className="header-child">
                                 <span>Review</span>
                                 <Direction
@@ -622,7 +615,7 @@ class Content extends Component {
                                     content_parent={parent}
                                     content_type={type}
                                 />
-                            </div>,
+                            </div>
                                 </Row>
                         <div className="wrapper-custom-layout">
                             <ReviewSyllabus idMH={this.props.content_monhoc} />
@@ -636,10 +629,8 @@ class Content extends Component {
                 {
                     content_layout = type === "de-cuong-mon-hoc" ? (
                         <React.Fragment>
-                            <Col span={22} className="col-right">
-                                <Row 
-                                style={{ position: this.state.scrolling ? 'fixed' : 'relative', backgroundColor: this.state.scrolling ? '#ffffff' : '#f5f6f8', }}
-                                className="col-right-title header-fixed">
+                            <Col span={24} className="col-right">
+                                <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
                                     <div className="header-child">
                                         <span>SYLLABUS</span>
                                         <Direction
@@ -749,6 +740,9 @@ class Content extends Component {
                                             : type === "phan-cong-giang-day" ? (
                                                 <TeachingManage ctdt={ctdt} />
                                             )
+                                            : type === "khao-sat-chuan-dau-ra" ? (
+                                                <div>khao sat cdr</div>
+                                            )
                                                 : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
                                                     <EditEducationProgram ctdt={ctdt} />
                                                 )
@@ -776,7 +770,7 @@ class Content extends Component {
                                                                                                     content_parent={parent}
                                                                                                     content_type={type}
                                                                                                 />
-                                                                                            </div>,
+                                                                                            </div>
                                 </Row>
                                                                                         <div className="wrapper-custom-layout">
                                                                                             <ViewSurvey />
@@ -820,6 +814,7 @@ const mapStateToProps = (state) => {
         majors: state.majors,
         teacherSubject: state.datactdt.teacherSubject,
         teacherReviewSubject: state.datactdt.teacherReviewSubject,
+        idSurveyReducer : state.idSurveyReducer,
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -837,7 +832,8 @@ const mapDispatchToProps = (dispatch) => {
         onLoadFaculties: facultiesAction.onLoadFaculties,
         onLoadPrograms: programsAction.onLoadPrograms,
         onLoadLevels: levelsAction.onLoadLevels,
-        onLoadMajors: majorsAction.onLoadMajors
+        onLoadMajors: majorsAction.onLoadMajors,
+        onUpdateIdSurvey : updateIdSurvey,
     }, dispatch);
 
 }

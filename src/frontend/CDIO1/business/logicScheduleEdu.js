@@ -88,7 +88,6 @@ export const onRowSubjectReorder = (subjects, semester, semesters) => {
 };
 
 export const mapSubjectsToScheduleNodes = (scheduleNodes, subjects) => {
-  console.error(scheduleNodes)
   const tmpNodes = scheduleNodes
     .filter(row => row.semester > 0)
     .map(row => {

@@ -37,7 +37,6 @@ class ItemMenu extends Component {
             previewInfo: [],
             redirectTab7: false
         }
-
     }
 
     componentDidMount() {
@@ -432,7 +431,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 titleName = '';
                 isSubmit = true;
                 let arr = [];
-                arr.push(myObj)
+                arr.push(myObj);
+                console.log(arr);
                 dispatch({ type: ADD_DATA, data: arr });
                 ownProps.form.resetFields();
                 ownProps.nextStep();

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import { Table, Icon, Tag, Modal, Button } from 'antd';
+import { Table, Icon, Tag, Modal, Button,notification } from 'antd';
 import { connect } from 'react-redux';
 import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
@@ -17,6 +17,7 @@ class Matrix extends Component {
             isError: false,
             isSuccess: false,
             isShow: false,
+            isSubmit:false,
             matrix: []
         };
         this.myRef = React.createRef();
@@ -97,7 +98,7 @@ class Matrix extends Component {
                 this.props.getDataMatrix(res)
                 this.createData(res);
                 this.setState({
-                    isLoading: false
+                    isLoading: false,
                 })
             })
             .catch((err) => {
@@ -109,7 +110,7 @@ class Matrix extends Component {
 
     componentDidMount() {
         
-        if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+        if (this.props.subjectList.length > 0) {
             this.setState({ isLoading: true })
             this.props.updateIsLoadEditMatrix("true");
             let subjectListId = [];
@@ -158,7 +159,7 @@ class Matrix extends Component {
                 this.props.getDataMatrix(res)
                 this.createData(res);
                 this.setState({
-                    isLoading: false
+                    isLoading: false,
                 })
             })
             .catch((err) => {
@@ -261,6 +262,11 @@ class Matrix extends Component {
                     return textRender;
                 }
             }
+        }
+        else {
+            if(text !== "" && text !== undefined && text !== null) {
+                return <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{`${text}`}</Tag>;
+            }    
         }
         return <div></div>;
     }
@@ -395,6 +401,25 @@ class Matrix extends Component {
         }
     }
 
+    cloneEditMatrix = ()=>{
+
+        $.insertStandardMatrix({data:this.state.matrix})
+        .then(response => {
+          if (response.data === 1) {
+            notification["success"]({
+              message: "Cập nhật thành công",
+              duration: 1
+            });
+            this.setState({isSubmit:true});
+          } else {
+            notification["error"]({
+              message: "Cập nhật thất bại",
+              duration: 1
+            });
+          }})
+
+    }
+
     render() {
         console.log(this.props.editMatrix)
         const { isLoading, isShow } = this.state;
@@ -419,12 +444,18 @@ class Matrix extends Component {
                             sheet="tablexls"
                             buttonText="Export"
                         />
-                        {this.props.editMatrix.length <= 0 ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
+                        {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
                         <Table
                             bordered
                             columns={this.createColumn(this.props.dataMatrix)}
                             dataSource={this.createData(this.props.dataMatrix)}
                             scroll={{ x: 1500 }}
+                            pagination={{
+                                onChange: page => {
+                                    console.log(page);
+                                },
+                                pageSize: 5,
+                            }}
                         />
                     </div>
                 }

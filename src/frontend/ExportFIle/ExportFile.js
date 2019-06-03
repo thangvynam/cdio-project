@@ -5,7 +5,7 @@ import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
 import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
-import { ADD_DATA_LAYOUT_2, ADD_ARRAY_LAYOUT_3, addCDRData } from '../Constant/ActionType';
+import { ADD_DATA_LAYOUT_2, ADD_ARRAY_LAYOUT_3, addCDRData,ADD_DATA } from '../Constant/ActionType';
 
 const plainOptions = [
     'Thông tin chung',
@@ -264,7 +264,7 @@ class ExportFile extends Component {
         this.getData7();
 
         //tab8
-        let temp = await this.getData8();
+        temp = await this.getData8();
         this.props.saveAndContinue8(temp);
     }
 

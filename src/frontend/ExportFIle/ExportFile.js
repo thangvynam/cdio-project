@@ -5,11 +5,9 @@ import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
 import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
-<<<<<<< HEAD
-import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3,ADD_DATA } from '../Constant/ActionType';
-=======
-import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3, addCDRData } from '../Constant/ActionType';
->>>>>>> e4d81fd12228f82aa0970af1a90af8f12eba0c14
+
+import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3,ADD_DATA, addCDRData } from '../Constant/ActionType';
+
 
 const plainOptions = [
     'Thông tin chung',
@@ -432,7 +430,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveAndContinue3: (item) => {
             dispatch({ type: ADD_ARRAY_LAYOUT_3, item });         
         },
-<<<<<<< HEAD
+
         saveAndContinue5: (id) => {
             let newArr = [];
             console.log(id)
@@ -465,9 +463,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
 
         },
         
-=======
         onAddCDRData: (newData) => dispatch(addCDRData(newData)),
->>>>>>> e4d81fd12228f82aa0970af1a90af8f12eba0c14
+
     }
   }
 

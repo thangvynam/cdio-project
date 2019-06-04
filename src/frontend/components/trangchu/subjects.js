@@ -483,7 +483,9 @@ componentDidUpdate(){
                                     else {
                                         //check param 4
                                         if(type === "de-cuong-mon-hoc") {
-                                            if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                                            if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)
+                                            && !this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)
+                                            && !this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
                                                 console.log("admin cannot access de cuong")
                                                 return <Page404/>;
                                             }

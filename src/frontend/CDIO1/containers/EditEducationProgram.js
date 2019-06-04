@@ -28,7 +28,8 @@ import {
   dataCtdt,
   isLoadedDataCtdt,
   teacherSubject,
-  teacherReviewSubject
+  teacherReviewSubject,
+  isLoadEditMatrix
 } from "../../Constant/ActionType";
 //END CDIO-2 api
 class DetailEducationProgramTmp extends Component {
@@ -94,6 +95,8 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
     this.props.onLoadPrograms();
     this.props.onLoadSubjects();
     this.props.onLoadOutcomeStandards();
+
+    this.props.updateIsLoadEditMatrix("false");
 
     $.getBlockSubject(id).then(res => {
       let resData = res.data.data;
@@ -249,5 +252,6 @@ export default connect(mapStateToProps, {
   updateDataCtdt: dataCtdt,
   updateIsLoadedDataCtdt: isLoadedDataCtdt,
   updateTeacherSubject: teacherSubject,
-  updateTeacherReviewSubject: teacherReviewSubject
+  updateTeacherReviewSubject: teacherReviewSubject,
+  updateIsLoadEditMatrix: isLoadEditMatrix,
 })(DetailEducationProgramTmp);

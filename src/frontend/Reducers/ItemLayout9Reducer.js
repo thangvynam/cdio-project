@@ -65,6 +65,7 @@ const itemLayout9Reducer = (state = initialState, action) => {
           
         }
         case SAVE_LOG: {
+          
           if(action.muc_de_cuong === 'quy-dinh-chung'){
               let obj = {
                   ten: action.ten,

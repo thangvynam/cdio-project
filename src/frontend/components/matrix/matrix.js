@@ -442,7 +442,9 @@ class Matrix extends Component {
         }
 
         return (
-            this.props.isLoadEditMatrix === "true" && <React.Fragment>
+            this.props.isLoadEditMatrix === "true"
+            && this.props.subjectList.length > 0
+            && <React.Fragment>
                 {
                     !isLoading
                     && !_.isEmpty(this.props.dataMatrix)

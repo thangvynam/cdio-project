@@ -275,69 +275,66 @@ class EditMatrix extends Component {
 
   componentDidMount() {
 
-    let subjectListId = [];
+    if(this.props.isLoadEditMatrix === "false") {
+      this.props.updateIsLoadEditMatrix("true");
+      if(this.props.subjectList.length > 0) {
+        let subjectListId = [];
         this.props.subjectList.map(item => {
             subjectListId.push(item.IdSubject);
         })
         let data = {
             data: subjectListId
         }
+          $.getStandardMatrix(data).then((res) => { 
+            this.setState({ tempMatrix: res.data });
+            let data = [];
+            for (let i = 0; i < res.data.length; i++) {
+              let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+              if (index !== -1) {
+                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                if (cdr_cdio !== "") {
+                  data[index][cdr_cdio] = res.data[i].muc_do;
+                }
+              }
+              else {
+                let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                if (subjectName !== "" && cdr_cdio !== "") {
+                  data.push({
+                    key: res.data[i].thong_tin_chung_id,
+                    hocky: 1,
+                    hocphan: subjectName,
+                    gvtruongnhom: 'NULL'
+                  })
 
-    if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
-      this.props.updateIsLoadEditMatrix("true");
-      //$.getRealityMatrix();
-      if(data.data.length > 0) {
-        $.getStandardMatrix(data).then((res) => { 
-          this.setState({ tempMatrix: res.data });
-          let data = [];
-          for (let i = 0; i < res.data.length; i++) {
-            let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-            //console.log(index)
-            if (index !== -1) {
-              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-              if (cdr_cdio !== "") {
-                data[index][cdr_cdio] = res.data[i].muc_do;
+                  data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                }
+
               }
             }
-            else {
-              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-              if (subjectName !== "" && cdr_cdio !== "") {
-                data.push({
-                  key: res.data[i].thong_tin_chung_id,
-                  hocky: 1,
-                  hocphan: subjectName,
-                  gvtruongnhom: 'NULL'
-                })
-
-                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-              }
-
-            }
-          }
-          this.props.updateEditMatrix(data);
-        })
-    }
+            this.props.updateEditMatrix(data);
+          })
+      }
+      else {
+        this.props.updateEditMatrix([]);
+      }
+      
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    //console.log("receive")
     
-    if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+    if(this.props.isLoadEditMatrix === "false") {
       this.props.updateIsLoadEditMatrix("true");
-      //$.getRealityMatrix();
-      let subjectListId = [];
+      if(nextProps.subjectList.length > 0) {
+        let subjectListId = [];
         this.props.subjectList.map(item => {
             subjectListId.push(item.IdSubject);
         })
         let data = {
             data: subjectListId
         }
-
-        if(data.data.length > 0) {
           $.getStandardMatrix(data).then((res) => {
-            console.log("receive")
             this.setState({ tempMatrix: res.data });
             let data = [];
             for (let i = 0; i < res.data.length; i++) {
@@ -367,7 +364,11 @@ class EditMatrix extends Component {
             }
             this.props.updateEditMatrix(data);
           })
-    }
+      }
+      else {
+        this.props.updateEditMatrix([]);
+      }
+      
     }
 
   }

@@ -56,17 +56,29 @@ class CDRFormItem extends Component {
         this.props.form.setFieldsValue({
           description: data.verb,
         });
+        this.props.onUpdateVerb(data);
+        this.props.onChangeCDRData(
+          {
+            cdr: this.props.cdrdata.cdr,
+            level_verb: [data.level, data.childLevel],
+            description: data.verb,
+            levels: this.props.cdrdata.levels
+          }
+        )
+      }
+      else {
+        this.props.onUpdateVerb(data);
+        this.props.onChangeCDRData(
+          {
+            cdr: this.props.cdrdata.cdr,
+            level_verb: [data.level, data.childLevel],
+            description: this.props.cdrdata.description,
+            levels: this.props.cdrdata.levels
+          }
+        )
       }
       
-      this.props.onUpdateVerb(data);
-      this.props.onChangeCDRData(
-        {
-          cdr: this.props.cdrdata.cdr,
-          level_verb: [data.level, data.childLevel],
-          description: this.props.cdrdata.description,
-          levels: this.props.cdrdata.levels
-        }
-      )
+      
   }
 
 
@@ -88,6 +100,7 @@ class CDRFormItem extends Component {
   }
 
   onDescriptionChange = (e) => {
+    console.log("a");
     let a = e.target.value;
 
     if(a === "" || a === undefined) {
@@ -148,7 +161,8 @@ class CDRFormItem extends Component {
         message.info("Chọn mức độ và động từ!")
       }
       else {
-        if (this.props.cdrdata.description === "" || this.props.cdrdata.description === undefined) {
+        console.log("mo ta" + this.props.cdrdata.description)
+        if(this.props.cdrdata.description === "" || this.props.cdrdata.description === undefined) {
           message.info("Chưa nhập mô tả!")
         }
         else {
@@ -301,6 +315,8 @@ class CDRFormItem extends Component {
   }
 
   render() {
+    console.log("set mo ta" + this.props.cdrdata.level_verb)
+    console.log("set mo ta" + this.props.cdrdata.description)
     const { getFieldDecorator } = this.props.form;
     let CDROption = [];
     if(this.props.mtmh.length > 0) {
@@ -359,7 +375,8 @@ class CDRFormItem extends Component {
                 initialValue: this.props.cdrdata.description !== "" && this.props.cdrdata.description !== undefined ?
                 this.props.cdrdata.description : this.props.cdrverb.verb
               })(
-                <TextArea disabled={this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined ? true : false} onChange={this.onDescriptionChange} rows={4} placeholder="Mô tả" />
+                <TextArea disabled={this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined ? true : false} 
+                  onChange={this.onDescriptionChange} rows={4} placeholder="Mô tả" />
               )}
           </Form.Item>
 

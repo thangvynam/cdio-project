@@ -189,8 +189,8 @@ class CDRTableItem extends Component {
     this.state = {
       id: this.props.monhoc,
       visible: false,
-      isLoaded: false,
-      notifications: []
+      notifications: [],
+      disableSaveAll: false,
     };
     this.columns = [{
       title: 'Chuẩn đầu ra',
@@ -560,6 +560,7 @@ class CDRTableItem extends Component {
       tableData.previewInfo.push(data);
     }
     self.props.onAddCDRData(tableData);
+    self.setState({disableSaveAll: false})
         })
       .catch(function (error) {
           console.log(error);
@@ -709,7 +710,6 @@ getSubjectName = (subjectList, id) => {
   }
   
   componentWillReceiveProps(nextProps) {
-    this.setState({id: nextProps.subjectId})
     if(this.props.isLoad === "false" && this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
       this.props.updateIsLoad("true");
       this.loadGap();
@@ -929,6 +929,7 @@ getSubjectName = (subjectList, id) => {
     return -1;
   }
   saveAll = () => {
+    this.setState({disableSaveAll: true})
     let data = [];
     if(this.props.cdrtable.previewInfo.length > 0) {
       data = this.props.cdrtable.previewInfo.map((item) => {
@@ -945,17 +946,17 @@ getSubjectName = (subjectList, id) => {
       });
     }
     
-    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.monhoc}});
-    this.loadTable();
-    this.loadGap();
-    this.props.updateIsLoad("false");
-    openNotificationWithIcon('success');
-    $.saveLog({data: this.props.logData})
-    
+    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.monhoc}})
+    .then(res => {
+      this.loadGap();
+      this.loadTable();
+      openNotificationWithIcon('success');
+      $.saveLog({data: this.props.logData})
+    }); //this.setState({disableSaveAll: false})
   }
 
     render() {
-      console.log(this.props.cdrmdhd)
+      console.log(this.props.cdrtable.previewInfo)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -1064,6 +1065,7 @@ getSubjectName = (subjectList, id) => {
             {hasSelected ? `Đã chọn ${this.props.cdrselecteditem.length} mục` : ''}
           </span>
           <Button style={{float: "right"}}
+            disabled={this.state.disableSaveAll}
             onClick={this.saveAll}
           >
             Lưu lại

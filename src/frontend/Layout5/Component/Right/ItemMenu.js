@@ -15,13 +15,6 @@ import {
 
 const { Option } = Select;
 
-let myObj = {
-    titleName: '',
-    teachingActs: '',
-    standardOutput: '',
-    evalActs: ''
-};
-
 let titleName = '';
 let isSubmit = false;
 let teachingActs_data = [];
@@ -37,12 +30,13 @@ class ItemMenu extends Component {
             previewInfo: [],
             redirectTab7: false
         }
-
     }
 
     componentDidMount() {
-        this.props.refreshData();
-        this.props.collectDataRequest(this.props.subjectId);
+        if (this.props.itemLayout5Reducer.previewInfo.length == 0) {
+            this.props.collectDataRequest(this.props.subjectId);
+        }
+        //this.props.refreshData();
     }
 
     componentWillMount() {
@@ -162,7 +156,7 @@ class ItemMenu extends Component {
 
     toString = () => {
         let temp = '';
-        let data = this.props.itemLayout5Reducer.standardOutput;
+        let data = this.props.itemLayout5Reducer.tempInfo.standardOutput;
 
         for (let i = 0; i < data.length; i++) {
             if (typeof data[i] !== 'undefined') {
@@ -180,6 +174,7 @@ class ItemMenu extends Component {
     }
 
     handleInputChange = (e) => {
+       
         titleName = e.target.value;
         this.props.onChangeData(titleName, teachingActs_data, standardOutput_data, evalActs_data);
     }
@@ -275,7 +270,7 @@ class ItemMenu extends Component {
                                 rules: [{
                                     required: true, message: 'Vui lòng nhập tên chủ đề',
                                 }],
-                                initialValue: this.props.itemLayout5Reducer.titleName
+                                initialValue: this.props.itemLayout5Reducer.tempInfo.titleName
                             })(
                                 <Input onChange={this.handleInputChange} />
                             )}
@@ -287,7 +282,7 @@ class ItemMenu extends Component {
                             label="Hoạt động dạy"
                         >
                             {getFieldDecorator('teachingActs', {
-
+                                initialValue: this.props.itemLayout5Reducer.tempInfo.teachingActs
                             })(
                                 <Select
                                     mode="tags"
@@ -336,20 +331,17 @@ class ItemMenu extends Component {
                             )}
                         >
                             {getFieldDecorator('evalActs', {
-
-
+                                initialValue: this.props.itemLayout5Reducer.tempInfo.evalActs
                             })(
 
                                 <Select
-                                    mode="tags"
+                                    mode="multiple"
                                     style={{ width: '100%', float: "left", width: '74%' }}
                                     placeholder="Please select"
                                     onChange={(value) => this.props.handleChangeEvalActs(value)}
                                 >
                                     {childrenEvalActs}
                                 </Select>
-
-
                             )}
 
                             <div style={{ float: "left"}}>
@@ -365,8 +357,8 @@ class ItemMenu extends Component {
 
                                 <Button type="primary" onClick={() => {
 
-                                    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
-                                    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+                                    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+                                    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
                                     this.props.saveAndContinue(this.props.subjectId)
                                 }} style={{ marginLeft: "15%" }}>
                                     Thêm
@@ -415,6 +407,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
 
         saveAndContinue: (subjectId) => {
+            const myObj = {};
 
             myObj.key = -1;
             myObj.titleName = titleName;
@@ -427,20 +420,26 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             if (titleName === '' || standardOutput_data.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
             } else {
-                //const myObjStr = JSON.stringify(myObj);
+               
                 //reset
                 titleName = '';
+                teachingActs_data = [];
+                standardOutput_data = [];
+                evalActs_data = [];
+
                 isSubmit = true;
                 let arr = [];
-                arr.push(myObj)
+
+                arr.push(myObj);
+                
                 dispatch({ type: ADD_DATA, data: arr });
                 ownProps.form.resetFields();
                 ownProps.nextStep();
             }
-            //standardOutput_data.splice(0, standardOutput_data.length);
+            
             dispatch({
                 type: CHANGE_DATA, titleName: '', teachingActs: [],
-                standardOutput: '', evalActs: []
+                standardOutput: [], evalActs: []
             });
         },
 
@@ -457,7 +456,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
 
         refreshData: () => {
-            dispatch({ type: REFRESH_DATA, data: [] })
+            //dispatch({ type: REFRESH_DATA, data: [] })
         },
 
         collectDataRequest: (id) => {

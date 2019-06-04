@@ -25,29 +25,16 @@ export const onSaveDetailOutcomeStandard = (data, nodes, id) => {
       };
       dispatch(message.message(chirp));
       dispatch(
-        saveDetailOutcomeStandardError(nodes,
-          "Chưa có thông tin chuẩn đầu ra")
+        saveDetailOutcomeStandardError(nodes, "Chưa có thông tin chuẩn đầu ra")
       );
     } else {
       let link = `${links.ADD_DETAIL_OUTCOMESTANDARD}?idoutcome=${id}`;
+      let params = {};
+      params.data = JSON.stringify(data);
       axios
-        .post(`${links.DELETE_DETAIL_OUTCOMESTANDARD}?idoutcome=${id}`)
-        .then(res => {
-          if (res.data.code === 1) {
-            let params = {};
-            params.data = JSON.stringify(data);
-            return axios.post(link, params, {
-              headers: {
-                "Content-Type": "application/json"
-              }
-            });
-          } else {
-            let chirp = {
-              message: `Lưu cây CĐR thất bại`,
-              isRight: 0
-            };
-            dispatch(message.message(chirp));
-            dispatch(saveDetailOutcomeStandardError(nodes, res));
+        .post(link, params, {
+          headers: {
+            "Content-Type": "application/json"
           }
         })
         .then(res => {
@@ -113,8 +100,7 @@ export const onLoadDetailOutcomeStandard = id => {
             dispatch(loadDetailOutcomeStandardError(res));
           } else {
             let detailOutcomeStandard = logic.convertDBToTreeNode(data);
-            dispatch(loadDetailOutcomeStandardSuccess(
-              detailOutcomeStandard));
+            dispatch(loadDetailOutcomeStandardSuccess(detailOutcomeStandard));
           }
         })
         .catch(err => {

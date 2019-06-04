@@ -32,7 +32,7 @@ import {
   subjectMasoReducer,
   cdrCdioReducer,
   parentItemReducer,
-
+  idSurveyReducer
 } from "../Reducers/homePageReducer";
 import logReducer from "../Reducers/logReducer";
 
@@ -94,6 +94,7 @@ const allReducers = redux.combineReducers({
     surveyReducer: surveyReducer,
     authentication: authenticationReducer,
     datactdt: dataCtdtReducer,
+    idSurveyReducer: idSurveyReducer,
     ...cdio1
 
 });

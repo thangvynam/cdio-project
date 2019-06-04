@@ -219,40 +219,44 @@ export default class TargetEducationCom extends Component {
 
   targetActionTemplate = (targetNode, column) => {
     return (
-      <div>
-        <Button
-          onClick={() => this.onClickTargetDialog(targetNode)}
-          theme="success"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title="Thêm cấp con"
-        >
-          <i className="material-icons">add</i>
-        </Button>
-        <Button
-          onClick={() => this.upSameLevelTarget(targetNode)}
-          theme="info"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title="Lên cùng cấp"
-        >
-          <i className="material-icons">arrow_upward</i>
-        </Button>
-        <Button
-          onClick={() => this.downSameLevelTarget(targetNode)}
-          theme="info"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title="Xuống cùng cấp"
-        >
-          <i className="material-icons">arrow_downward</i>
-        </Button>
-        <Button
-          onClick={() => this.onShowDeleteAlert(targetNode)}
-          theme="secondary"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title="Xóa cấp này"
-        >
-          <i className="material-icons">delete_sweep</i>
-        </Button>
-      </div>
+      JSON.parse(localStorage.getItem("user")).data.Role.includes(
+        "BIEN_SOAN"
+      ) && (
+        <div>
+          <Button
+            onClick={() => this.onClickTargetDialog(targetNode)}
+            theme="success"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title="Thêm cấp con"
+          >
+            <i className="material-icons">add</i>
+          </Button>
+          <Button
+            onClick={() => this.upSameLevelTarget(targetNode)}
+            theme="info"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title="Lên cùng cấp"
+          >
+            <i className="material-icons">arrow_upward</i>
+          </Button>
+          <Button
+            onClick={() => this.downSameLevelTarget(targetNode)}
+            theme="info"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title="Xuống cùng cấp"
+          >
+            <i className="material-icons">arrow_downward</i>
+          </Button>
+          <Button
+            onClick={() => this.onShowDeleteAlert(targetNode)}
+            theme="secondary"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title="Xóa cấp này"
+          >
+            <i className="material-icons">delete_sweep</i>
+          </Button>
+        </div>
+      )
     );
   };
 
@@ -303,7 +307,13 @@ export default class TargetEducationCom extends Component {
             <TreeTable value={this.state.targetNodes}>
               <Column
                 field="displayName"
-                editor={this.nameEditor}
+                editor={
+                  JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                    "BIEN_SOAN"
+                  )
+                    ? this.nameEditor
+                    : null
+                }
                 header={
                   <p>
                     Tên dòng (Đang sử dụng Chuẩn đầu ra:{" "}
@@ -325,12 +335,16 @@ export default class TargetEducationCom extends Component {
               />
               <Column
                 header={
-                  <Button
-                    onClick={() => this.onClickTargetDialogRoot()}
-                    theme="success"
-                  >
-                    <i className="material-icons">add</i> Thêm cấp
-                  </Button>
+                  JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                    "BIEN_SOAN"
+                  ) && (
+                    <Button
+                      onClick={() => this.onClickTargetDialogRoot()}
+                      theme="success"
+                    >
+                      <i className="material-icons">add</i> Thêm cấp
+                    </Button>
+                  )
                 }
                 body={this.targetActionTemplate}
                 style={{ textAlign: "center", width: "12em" }}

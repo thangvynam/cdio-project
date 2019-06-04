@@ -50,7 +50,8 @@ class PhanCong extends Component {
       handleDelete = (key) => {
         $.deleteTeacherReview([key])
         .then(res => {
-          $.getTeacherList({thong_tin_chung_id: this.props.subjectId, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
+          this.setState({selecteditem2: []});
+          $.getTeacherList({thong_tin_chung_id: this.props.monhoc, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -64,7 +65,7 @@ class PhanCong extends Component {
           this.setState({teacherList: data})
         })
 
-        $.getTeacherListReview({thong_tin_chung_id: this.props.subjectId})
+        $.getTeacherListReview({thong_tin_chung_id: this.props.monhoc})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -77,14 +78,15 @@ class PhanCong extends Component {
           }
           this.setState({teacherListReview: data})
         })
-        this.setState({selecteditem1: [], selecteditem2: []});
+        //this.setState({selecteditem1: [], selecteditem2: []});
         })
       }
 
       delete = () => {
         $.deleteTeacherReview(this.state.selecteditem2)
         .then(res => {
-          $.getTeacherList({thong_tin_chung_id: this.props.subjectId, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
+          this.setState({selecteditem2: []});
+          $.getTeacherList({thong_tin_chung_id: this.props.monhoc, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -98,7 +100,7 @@ class PhanCong extends Component {
           this.setState({teacherList: data})
         })
 
-        $.getTeacherListReview({thong_tin_chung_id: this.props.subjectId})
+        $.getTeacherListReview({thong_tin_chung_id: this.props.monhoc})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -111,7 +113,7 @@ class PhanCong extends Component {
           }
           this.setState({teacherListReview: data})
         })
-        this.setState({selecteditem1: [], selecteditem2: []});
+        //this.setState({selecteditem1: [], selecteditem2: []});
         })
       }
   onSelectChange1 = (selectedRowKeys) => {
@@ -153,9 +155,10 @@ class PhanCong extends Component {
 
   phanCong = () => {
     if(this.state.selecteditem1.length > 0) {
-      $.addTeacherReview({idTeacher: this.state.selecteditem1, idTTC: this.props.subjectId})
+      $.addTeacherReview({idTeacher: this.state.selecteditem1, idTTC: this.props.monhoc})
       .then(res => {
-        $.getTeacherList({thong_tin_chung_id: this.props.subjectId, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
+        this.setState({selecteditem1: []});
+        $.getTeacherList({thong_tin_chung_id: this.props.monhoc, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -169,7 +172,7 @@ class PhanCong extends Component {
           this.setState({teacherList: data})
         })
 
-        $.getTeacherListReview({thong_tin_chung_id: this.props.subjectId})
+        $.getTeacherListReview({thong_tin_chung_id: this.props.monhoc})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -187,11 +190,11 @@ class PhanCong extends Component {
     else {
       message.info("Chọn ít nhất một giáo viên!");
     }
-    this.setState({selecteditem1: [], selecteditem2: []});
+    //this.setState({selecteditem1: [], selecteditem2: []});
   }
       componentDidMount() {
        // axios.get('localhost:3001/get-teacher-list')
-       $.getTeacherList({thong_tin_chung_id: this.props.subjectId, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
+       $.getTeacherList({thong_tin_chung_id: this.props.monhoc, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -205,7 +208,7 @@ class PhanCong extends Component {
           this.setState({teacherList: data})
         })
 
-        $.getTeacherListReview({thong_tin_chung_id: this.props.subjectId})
+        $.getTeacherListReview({thong_tin_chung_id: this.props.monhoc})
         .then(res => {
           let resdata = res.data;
           let data = [];
@@ -221,14 +224,13 @@ class PhanCong extends Component {
       }
 
   render() {
-    
     const hasSelected = this.state.selecteditem2.length > 0;
     const selectedRowKeys1 = this.state.selecteditem1;
     const selectedRowKeys2 = this.state.selecteditem2;
-    console.log(selectedRowKeys1)
-    console.log(selectedRowKeys2)
-    console.log(this.state.teacherList)
-    console.log(this.state.teacherListReview)
+    console.log("bang 1------" + selectedRowKeys1)
+    console.log("bang 2------" + selectedRowKeys2)
+
+
     const rowSelection1 = {
       selectedRowKeys1,
       width: "20",

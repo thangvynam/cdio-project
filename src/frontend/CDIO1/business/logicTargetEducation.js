@@ -262,6 +262,7 @@ export const convertDBToTreeNodeForEduPro = arrDB => {
   if(!arrDB.length){
     return [];
   }
+  arrDB = cleanKeyRowOfDB(arrDB);
   // convert -> nodes
   const nodes = arrDB.reduce((nodes, row) => {
     const rank = common.getRank(row.KeyRow);
@@ -277,6 +278,27 @@ export const convertDBToTreeNodeForEduPro = arrDB => {
   return nodes;
 };
 
+const cleanKeyRowOfDB = arr =>{
+  return arr.map(row =>{
+    row.KeyRow = cleanKey(row.KeyRow);
+    return row;
+  })
+}
+
+const cleanKey = key =>{
+  const lastNum = lastNumber(key);
+  return key.slice(0,lastNum+1);
+}
+
+const lastNumber = key =>{
+  const len = key.length;
+  for(let i = len - 1;i >=0 ; i --){
+    if(Number.isInteger(+key[i])){
+      return i;
+    }
+  }
+  return null;
+}
 
 const findParentNode = (nodes, key) => {
   let parentKey = common.parentKey(key);

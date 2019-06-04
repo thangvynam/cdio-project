@@ -312,3 +312,20 @@ export const getSubjects = blocks => {
   }, []);
   return array;
 };
+
+export const mapUserToSubject = (subjects, users) => {
+  const newsubjects = subjects.map(subject => {
+    const user = users.filter(user => user.id === subject.IdUser);
+    if (user) {
+      const tmpSbject = { ...subject, ...user[0] };
+      return tmpSbject;
+    } else return subject;
+  });
+  return newsubjects;
+};
+
+export const isDoneAll = comments => {
+  const notdone = comments.filter(comment => !comment.UserDone);
+  if (notdone.length > 0) return false;
+  else return true;
+};

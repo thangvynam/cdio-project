@@ -168,7 +168,7 @@ class BenchMark extends Component {
             isLoading: false,
         }
     }
-   
+
     componentDidMount() {
         let subjectListId = [];
         this.props.subjectList.map(item => {
@@ -177,12 +177,35 @@ class BenchMark extends Component {
         let data = {
             data: subjectListId
         }
-        $.getBenchmarkMatrix(data)
+        if(data.data.length > 0) {
+            $.getBenchmarkMatrix(data)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
         .then((res) => {
             this.props.getDataBenchMarkMatrix(res.data);
             //this.props.getDataBenchMarkMatrix(myData);
         })
+        }
+        
     }
+
+    // componentWillReceiveProps(nextProps) {
+    //     if(nextProps.subjectList.length > 0) {
+    //         let subjectListId = [];
+    //         this.props.subjectList.map(item => {
+    //             subjectListId.push(item.IdSubject);
+    //         })
+    //         let data = {
+    //             data: subjectListId
+    //         }
+    //         if(data.data.length > 0) {
+    //             $.getBenchmarkMatrix(data)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
+    //         .then((res) => {
+    //             this.props.getDataBenchMarkMatrix(res.data);
+    //             //this.props.getDataBenchMarkMatrix(myData);
+    //         })
+    //         }
+    //     }
+        
+    // }
 
     createHeaderColumn = (myData) => {
         let data = myData['I'] || [];

@@ -17,6 +17,7 @@ import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAc
 
 import * as eduProgramsAction from "../actions/eduProgramsAction";
 import * as detailEduProgramAction from "../actions/detailEduProgramAction";
+import * as knowledgeTableAction from "../actions/_knowledgeTableAction";
 
 import { connect } from "react-redux";
 
@@ -27,13 +28,16 @@ import {
   dataCtdt,
   isLoadedDataCtdt,
   teacherSubject,
-  teacherReviewSubject
+  teacherReviewSubject,
+  isLoadEditMatrix
 } from "../../Constant/ActionType";
 //END CDIO-2 api
 class DetailEducationProgramTmp extends Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      isLoad: false
+    };
   }
 
   checkAdmin = (role) => {
@@ -42,13 +46,26 @@ class DetailEducationProgramTmp extends Component {
     }
     return false;
 }
-
 checkChuNhiem = (role) => {
-  if(role.indexOf("CHUNHIEM") > -1) {
-      return true;
+    if(role.indexOf("CHUNHIEM") > -1) {
+        return true;
+    }
+    return false;
   }
-  return false;
-}
+
+  checkBienSoan = (role) => {
+    if(role.indexOf("BIEN_SOAN") > -1) {
+        return true;
+    }
+    return false;
+  }
+
+  checkTeacher = (role) => {
+    if(role.indexOf("TEACHER") > -1) {
+        return true;
+    }
+    return false;
+  }
 
 checkInTeacherSubject = (teacherSubject, idSubject) => {
   for(let i = 0;i < teacherSubject.length;i++) {
@@ -69,11 +86,18 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
 }
 
   componentDidMount = () => {
-    // const urlParams = new URLSearchParams(window.location.search);
-    // const id = urlParams.get("id");
-
+    
     const id = this.props.ctdt;
-    //if(this.props.isLoadedDataCtdt === false) {
+    this.props.onLoadEduProgram(+id);
+    this.props.onLoadDetailEduProgram(+id);
+    this.props.onLoadLevels();
+    this.props.onLoadMajors();
+    this.props.onLoadPrograms();
+    this.props.onLoadSubjects();
+    this.props.onLoadOutcomeStandards();
+
+    this.props.updateIsLoadEditMatrix("false");
+
     $.getBlockSubject(id).then(res => {
       let resData = res.data.data;
       let dataSubject = [];
@@ -86,6 +110,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
           }
         }
         dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+        
         $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => { 
           if(res.data !== undefined && res.data !== null){
@@ -96,40 +121,35 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
             if(res.data !== undefined && res.data !== null){
               this.props.updateTeacherReviewSubject(res.data);
             }
-            if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-
+            if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) || 
+            this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
               dataSubject = dataSubject.filter(item => 
                   item.del_flat != 1
               );
-              
+              this.props.updateSubjectList(dataSubject);
+              //this.setState({isLoad: false})
             }
             else {
               dataSubject = dataSubject.filter(item => 
                     item.del_flat != 1
-                    && (this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                    || (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)))
+                    &&
+                     (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                    ||this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
                 );
                 this.props.updateSubjectList(dataSubject);
+                //this.setState({isLoad: false})
             }
           });
         });
+
         
         this.props.updateDataCtdt(dataCtdt);
         this.props.updateIsLoadedDataCtdt(true);
         
-      }})
+      }});
 
-    //}
-
-    this.props.onLoadEduProgram(id);
-    this.props.onLoadDetailEduProgram(id);
-
-    this.props.onLoadLevels();
-    this.props.onLoadMajors();
-    this.props.onLoadPrograms();
-    this.props.onLoadSubjects();
-    this.props.onLoadOutcomeStandards();
     window.addEventListener("beforeunload", this.onUnload);
+    
   };
 
   onUnload = event => {
@@ -150,6 +170,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
       : `Chưa tải được`;
 
     return (
+
       <Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
@@ -184,6 +205,9 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
               contentNodes={this.props.contentNodes}
               scheduleNodes={this.props.scheduleNodes}
               targetNodes={this.props.targetNodes}
+              knowledgeTables={this.props.knowledgeTables}
+              onLoadKnowledgeTable={this.props.onLoadKnowledgeTable}
+              contentList={this.props.contentList}
             />{" "}
           </Col>{" "}
         </Row>{" "}
@@ -207,6 +231,8 @@ const mapStateToProps = state => ({
   targetNodes: state.targetNodes,
   teacherSubject: state.datactdt.teacherSubject,
   teacherReviewSubject: state.datactdt.teacherReviewSubject,
+  knowledgeTables: state.knowledgeTables,
+  contentList: state.contentList
 });
 
 export default connect(mapStateToProps, {
@@ -220,10 +246,12 @@ export default connect(mapStateToProps, {
   onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
   onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
+  onLoadKnowledgeTable: knowledgeTableAction.onLoadKnowledgeTable,
   //cdio-2
   updateSubjectList: subjectList,
   updateDataCtdt: dataCtdt,
   updateIsLoadedDataCtdt: isLoadedDataCtdt,
   updateTeacherSubject: teacherSubject,
-  updateTeacherReviewSubject: teacherReviewSubject
+  updateTeacherReviewSubject: teacherReviewSubject,
+  updateIsLoadEditMatrix: isLoadEditMatrix,
 })(DetailEducationProgramTmp);

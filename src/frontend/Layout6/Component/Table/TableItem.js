@@ -241,7 +241,8 @@ class TableItem extends Component {
     this.state = {
       selectedRowKeys: [],
       editingKey: "",
-      subjectId: -1
+      subjectId: -1,
+      isSaveAll:false
     };
 
     this.dataSource = [];
@@ -420,7 +421,7 @@ class TableItem extends Component {
       });
 
       this.props.onSaveLog(
-        "Nguyen Van A",
+        `${JSON.parse(localStorage.getItem('user')).data.Name}`,
         getCurrTime(),
         `Chỉnh sửa kế hoạch giảng dạy thực hành:[Chủ đề : ${
           item.titleName
@@ -439,7 +440,7 @@ class TableItem extends Component {
         this.props.monhoc
       );
       this.props.onSaveReducer(
-        "Nguyen Van A",
+        `${JSON.parse(localStorage.getItem('user')).data.Name}`,
         getCurrTime(),
         `Chỉnh sửa kế hoạch giảng dạy thực hành:[Chủ đề : ${
           item.titleName
@@ -481,7 +482,7 @@ class TableItem extends Component {
     newData[index].del_flag = 1;
 
     this.props.onSaveLog(
-      "Nguyen Van A",
+      `${JSON.parse(localStorage.getItem('user')).data.Name}`,
       getCurrTime(),
       `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
         newData[index].titleName
@@ -494,7 +495,7 @@ class TableItem extends Component {
       this.props.monhoc
     );
     this.props.onSaveReducer(
-      "Nguyen Van A",
+      `${JSON.parse(localStorage.getItem('user')).data.Name}`,
       getCurrTime(),
       `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
         newData[index].titleName
@@ -534,35 +535,25 @@ class TableItem extends Component {
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
 
-    // // delete one
-    // if (selectedRow.length === 1) {
-    //   this.handleDelete(selectedRow[0]-1);
-    //   return;
-    // }
-
-    // let KHitems = this.props.itemKHGDTH.previewInfo;
-    // console.log("bb: ",KHitems);
-
-    // for(let i = 0;i<selectedRow.length;i++){
-    //   KHitems[selectedRow[i]-1].del_flag = 1;
-    // }
-    // let key = 1;
-    // for(let i = 0;i<KHitems.length;i++){
-    //   if(KHitems[i].del_flag===0){
-    //     KHitems[i].key = key;
-    //     key++;
-    //   }
-    // }
-
     let KHitems = this.props.itemKHGDTH.previewInfo;
+    let indexArray = [];
+
 
     for (let i = 0; i < selectedRow.length; i++) {
-      let id = this.dataSource[selectedRow[i] - 1].id;
+      let index = 0;
       for (let j = 0; j < KHitems.length; j++) {
-        if (KHitems[j].id === id) {
-          KHitems[j].del_flag = 1;
-          this.props.onSaveLog(
-            "Nguyen Van A",
+        if(KHitems[j].del_flag === 0) index++;
+        if(index===selectedRow[i]){
+          indexArray.push(j);
+        }
+      }
+    }
+    
+    for (let i = 0; i < indexArray.length; i++) {
+      let j = indexArray[i];
+      KHitems[j].del_flag = 1;
+            this.props.onSaveLog(
+            `${JSON.parse(localStorage.getItem('user')).data.Name}`,
             getCurrTime(),
             `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
               KHitems[j].titleName
@@ -575,7 +566,7 @@ class TableItem extends Component {
             this.props.monhoc
           );
           this.props.onSaveReducer(
-            "Nguyen Van A",
+            `${JSON.parse(localStorage.getItem('user')).data.Name}`,
             getCurrTime(),
             `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
               KHitems[j].titleName
@@ -587,9 +578,9 @@ class TableItem extends Component {
             this.props.logReducer.contentTab,
             this.props.monhoc
           );
-        }
-      }
     }
+
+
     let key = 1;
     for (let i = 0; i < KHitems.length; i++) {
       if (KHitems[i].del_flag === 0) {
@@ -612,6 +603,9 @@ class TableItem extends Component {
   };
 
   onSaveAll = () => {
+    this.setState({isSaveAll:true});
+
+
     const itemKHGDTH = this.props.itemKHGDTH;
     var body = {};
     body.thong_tin_chung_id = this.props.monhoc;
@@ -720,6 +714,7 @@ class TableItem extends Component {
       const data = response.data;
       console.log("data: ", data);
       this.props.onUpdateKHGDTH(data);
+      this.setState({isSaveAll:false});
     });
   };
 
@@ -793,6 +788,7 @@ class TableItem extends Component {
               style={{ float: "right" }}
               type="primary"
               onClick={this.onSaveAll}
+              disabled={this.state.isSaveAll}
             >
               Lưu thay đổi
             </Button>

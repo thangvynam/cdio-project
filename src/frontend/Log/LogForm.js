@@ -23,6 +23,16 @@ class LogForm extends Component {
 
     async componentWillReceiveProps(nextProps) { 
         let count = this.state.count;
+        if(count <= 2) {
+            this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab))   
+            let data = await this.getData(nextProps.logReducer.contentTab);
+            this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.subjectid); 
+        }               
+        
+    }
+
+     async componentDidMount(nextProps) { 
+        let count = this.state.count;
         if(count <= 0) {
             this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab))   
             let data = await this.getData(nextProps.logReducer.contentTab);
@@ -30,6 +40,8 @@ class LogForm extends Component {
         }               
         
     }
+
+    
 
     async getData(contentTab) {
         let data = {
@@ -72,7 +84,7 @@ class LogForm extends Component {
             case "muc-tieu-mon-hoc": {
                 return data.logData3
             }
-            case "chuan-dau-ra": {
+            case "chuan-dau-ra-mh": {
                 return data.logData4
             }
             case "giang-day-ly-thuyet": {

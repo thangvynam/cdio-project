@@ -43,13 +43,18 @@ export default class ContentProgramCom extends React.Component {
       nodeHover: "",
       descriptionBlockTC: "",
       descriptionBlockBB: "",
-      filterBlocks: []
+      filterBlocks: [],
+      // học phần tự do
+      descriptionFreePartStudy:"",
+      filterDSCFreeStudies: [],
+      creditFreeStudy: 0
     };
     this.deleteSubject.bind(this);
   }
 
   // get targetNodes from redux
   getContentNodes = (contentNodes, subjects) => {
+
     let contents = logic.convertDbToTreeNodes(contentNodes, subjects);
     contents = this.loadTreeNodes(contents);
     this.setState({ nodes: contents });
@@ -69,7 +74,7 @@ export default class ContentProgramCom extends React.Component {
 
   handleAddChild = () => {
     const data = [...this.state.nodes];
-    if (!this.state.isTable) {
+    if (this.state.isTitle) {
       const nodes = logic.addChildTitle(
         data,
         this.state.node,
@@ -79,8 +84,11 @@ export default class ContentProgramCom extends React.Component {
         nodes: nodes,
         nameValue: ""
       });
-    } else {
+    } else if(this.state.isTable) {
       this.setState({ nodes: this.addChildTable(data, this.state.node) });
+    }
+    else{ // HP tu do
+
     }
     this.onHideDialogChild();
   };
@@ -175,7 +183,7 @@ export default class ContentProgramCom extends React.Component {
   // Delete
   deleteNode = () => {
     const root = logic.deleteNode(this.state.nodes, this.state.node);
-    this.setState({ 
+    this.setState({
       nodes: root,
       isDialogDelete: false
     });
@@ -288,12 +296,12 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
-  isShowDialogDelete = node =>{
+  isShowDialogDelete = node => {
     this.setState({
-      isDialogDelete : true,
+      isDialogDelete: true,
       node: node
-    })
-  }
+    });
+  };
 
   onHideDialogRoot = () => {
     this.setState({ isDialogRoot: false });
@@ -310,9 +318,9 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
-  onHideDialogDelete = () =>{
-    this.setState({ isDialogDelete: false })
-  }
+  onHideDialogDelete = () => {
+    this.setState({ isDialogDelete: false });
+  };
 
   handleChangeValue = e => {
     this.setState({ nameValue: e.target.value });
@@ -357,11 +365,27 @@ export default class ContentProgramCom extends React.Component {
 
   filterBlocks = e => {
     this.setState({
-      filterBlocks: logic.blocksOfTable(this.state.node),
+      filterBlocks: logic.blocksOfTable(this.state.node)
     });
   };
 
+  filterFreeStudy = e =>{
+
+  }
+
   // onchange
+
+  onChangeCreditFreeStudy = e =>{
+    this.setState({
+      creditFreeStudy: e.value
+    });
+  }
+
+  onChangeDSCFreeStudy = e =>{
+    this.setState({
+      descriptionFreePartStudy: e.value
+    })
+  }
 
   onChangeListSubjects = e => {
     if (typeof e.value === "object") {
@@ -382,7 +406,7 @@ export default class ContentProgramCom extends React.Component {
       this.setState({ descriptionBlockBB: e.value });
     } else {
       const credit = logic.findCreditByNameBlock(this.state.node, e.value);
-      this.setState({ 
+      this.setState({
         descriptionBlockTC: e.value,
         optionalCredit: credit
       });
@@ -403,86 +427,90 @@ export default class ContentProgramCom extends React.Component {
 
   // on check
 
-  onCheckAddTitle = () =>{
+  onCheckAddTitle = () => {
     this.setState({
       isTitle: true,
       isTable: false,
       isAnyTable: false
     });
-  }
+  };
 
-  onCheckAddTable = () =>{
+  onCheckAddTable = () => {
     this.setState({
       isTable: true,
       isTitle: false,
       isAnyTable: false
     });
-  }
+  };
 
-  onCheckAddAnyTable = () =>{
+  onCheckAddAnyTable = () => {
     this.setState({
       isAnyTable: true,
       isTable: false,
       isTitle: false
     });
-  }
+  };
 
   // Template
   actionTemplate(node, column) {
     return (
-      <div>
-        {node.data.isTable ? (
-          <Button
-            onClick={() => this.isShowDialogTable(node)}
-            theme="success"
-            style={{ marginRight: ".3em", padding: "8px" }}
-            title={`Thêm môn học`}
-          >
-            <i className="material-icons">playlist_add</i>
-          </Button>
-        ) : (
-            <span>
-              {this.isCanAdd(node) && (
+      JSON.parse(localStorage.getItem("user")).data.Role.includes(
+        "BIEN_SOAN"
+      ) && (
+        <div>
+          {node.data.isTable ? (
+            <Button
+              onClick={() => this.isShowDialogTable(node)}
+              theme="success"
+              style={{ marginRight: ".3em", padding: "8px" }}
+              title={`Thêm môn học`}
+            >
+              <i className="material-icons">playlist_add</i>
+            </Button>
+          ) : (
+              <span>
+                {this.isCanAdd(node) && (
+                  <Button
+                    onClick={() => this.isShowDialogChild(node)}
+                    onMouseOver={() => this.mouseOver(node)}
+                    theme="success"
+                    style={{ marginRight: ".3em", padding: "8px" }}
+                    title={`Thêm cấp con của ${this.state.nodeHover}`}
+                  >
+                    <i className="material-icons">add</i>
+                  </Button>
+                )}
                 <Button
-                  onClick={() => this.isShowDialogChild(node)}
-                  onMouseOver={() => this.mouseOver(node)}
-                  theme="success"
+                  onClick={() => this.upSameLevel(node)}
+                  onMouseOver={() => this.mouseOverUp(node)}
+                  theme="info"
                   style={{ marginRight: ".3em", padding: "8px" }}
-                  title={`Thêm cấp con của ${this.state.nodeHover}`}
+                  title={`Lên cấp ${this.state.nodeHover}`}
                 >
-                  <i className="material-icons">add</i>
+                  <i className="material-icons">arrow_upward</i>
                 </Button>
-              )}
-              <Button
-                onClick={() => this.upSameLevel(node)}
-                onMouseOver={() => this.mouseOverUp(node)}
-                theme="info"
-                style={{ marginRight: ".3em", padding: "8px" }}
-                title={`Lên cấp ${this.state.nodeHover}`}
-              >
-                <i className="material-icons">arrow_upward</i>
-              </Button>
-              <Button
-                onClick={() => this.downSameLevel(node)}
-                // onMouseOver = {() => this.mouseOverDown(node)}
-                theme="info"
-                style={{ marginRight: ".3em", padding: "8px" }}
-              //title={`Xuống xấp ${this.state.nodeHover}`}
-              >
-                <i className="material-icons">arrow_downward</i>
-              </Button>
-            </span>
-          )}
-        <Button
-          onClick={() => this.isShowDialogDelete(node)}
-          onMouseOver={() => this.mouseOver(node)}
-          theme="secondary"
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Xóa cấp ${this.state.nodeHover}`}
-        >
-          <i className="material-icons">delete_sweep</i>
-        </Button>
-      </div>
+                <Button
+                  onClick={() => this.downSameLevel(node)}
+                  // onMouseOver = {() => this.mouseOverDown(node)}
+                  theme="info"
+                  style={{ marginRight: ".3em", padding: "8px" }}
+                //title={`Xuống xấp ${this.state.nodeHover}`}
+                >
+                  <i className="material-icons">arrow_downward</i>
+                </Button>
+              </span>
+            )}
+          <Button
+            onClick={() => this.isShowDialogDelete(node)}
+            onMouseOver={() => this.mouseOver(node)}
+            theme="secondary"
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title={`Xóa cấp ${this.state.nodeHover}`}
+          >
+            <i className="material-icons">delete_sweep</i>
+          </Button>
+        </div>
+      )
     );
   }
 
@@ -570,7 +598,7 @@ export default class ContentProgramCom extends React.Component {
         Hủy
       </Button>
     </div>
-  )
+  );
 
   render() {
     return (
@@ -579,17 +607,27 @@ export default class ContentProgramCom extends React.Component {
           <Column
             field="displayName"
             header="Tên dòng"
-            editor={this.nameEditor}
+            editor={
+              JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                "BIEN_SOAN"
+              )
+                ? this.nameEditor
+                : null
+            }
             expander
           />
           <Column
             header={
-              <Button
-                onClick={() => this.isShowDialogRoot(null)}
-                theme="success"
-              >
-                <i className="material-icons">add</i> Thêm cấp
-              </Button>
+              JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                "BIEN_SOAN"
+              ) && (
+                <Button
+                  onClick={() => this.isShowDialogRoot(null)}
+                  theme="success"
+                >
+                  <i className="material-icons">add</i> Thêm cấp
+                </Button>
+              )
             }
             body={(node, column) => this.actionTemplate(node, column)}
             style={{ textAlign: "center", width: "12em" }}
@@ -642,7 +680,7 @@ export default class ContentProgramCom extends React.Component {
                 Thêm bảng
               </label>
             </Col>
-            <Col lg="4" md="4" sm="4">
+          {/*  <Col lg="4" md="4" sm="4">
               <Checkbox
                 checked={this.state.isAnyTable}
                 onChange={this.onCheckAddAnyTable}
@@ -650,7 +688,7 @@ export default class ContentProgramCom extends React.Component {
               <label htmlFor="cb2" className="p-checkbox-label">
                 Thêm học phần tự do
               </label>
-            </Col>
+            </Col>*/}
           </Row>
           <hr />
           {/* is title */}
@@ -682,24 +720,34 @@ export default class ContentProgramCom extends React.Component {
               </DataTable>
             </div>
           </Row>
-           {/* is add any table */}
-           <Row>
-            <div hidden={!this.state.isAnyTable}>
-            <Col lg="4" md="4" sm="4">
-              <AutoComplete
-                field="SubjectName"
-                value={this.state.optionSubjects}
-                dropdown={true}
-                onChange={e => this.onChangeListSubjects(e)}
-                size={40}
-                placeholder="Toán rời rạc"
-                minLength={1}
-                suggestions={this.state.filterSubjects}
-                completeMethod={e => this.filterSubjects(e)}
-              />
-            </Col>
-            </div>
-          </Row>
+          {/* is add any table */}
+          <div hidden={!this.state.isAnyTable}>
+            <Row>
+              <Col lg="5" md="5" sm="5">
+                <AutoComplete
+                  field="SubjectName"
+                  value={this.state.descriptionFreePartStudy}
+                  dropdown={true}
+                  onChange={e => this.onChangeDSCFreeStudy(e)}
+                  size={30}
+                  placeholder="Mô tả"
+                  minLength={1}
+                  suggestions={this.state.filterDSCFreeStudies}
+                  completeMethod={e => this.filterFreeStudy(e)}
+                />
+              </Col>
+              <Col lg="2" md="2" sm="2">
+                <label>Số chỉ tích lũy:</label>
+              </Col>
+              <Col lg="1" md="1" sm="1">
+                <Spinner
+                  value={+this.state.creditFreeStudy}
+                  onChange={e => this.onChangeCreditFreeStudy(e)}
+                />
+              </Col>
+            </Row>
+          </div>
+
         </Dialog>
         {/* Dialog of dataTable */}
         <Dialog
@@ -882,12 +930,8 @@ export default class ContentProgramCom extends React.Component {
           style={{ width: "50vw" }}
           footer={this.footerDialogDelete}
         >
-          <p>
-          {`Bạn thực sự muốn xóa cấp ${this.state.node.key}`}
-          </p>
+          <p>{`Bạn thực sự muốn xóa cấp ${this.state.node.key}`}</p>
         </Dialog>
-
-
 
       </div>
     );

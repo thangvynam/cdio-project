@@ -105,6 +105,8 @@ export const SAVE_COMMENT = "SAVE_COMMENT";
 // Survey
 export const CHANGE_VALUE_ITU_SURVEY = "CHANGE_VALUE_ITU_SURVEY";
 export const CHANGE_VALUE_DESCRIPTION_SURVEY = "CHANGE_VALUE_DESCRIPTION_SURVEY";
+export const UPDATE_LIST_SURVEY = "UPDATE_LIST_SURVEY";
+export const UPDATE_ID_SURVEY = "UPDATE_ID_SURVEY"
 
 export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
     return {
@@ -463,6 +465,21 @@ export function updateContentTab(contentTab){
 export function resetTab(){
     return {
         type: RESET_TAB,
+    }
+}
+
+export function updateListSurvey(listSurvey){
+    
+    return{
+        type: UPDATE_LIST_SURVEY,
+        data: listSurvey
+    }
+}
+
+export function updateIdSurvey(id){
+    return{
+        type: UPDATE_ID_SURVEY,
+        data: id
     }
 }
 

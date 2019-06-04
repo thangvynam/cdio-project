@@ -22,8 +22,8 @@ class TeachingManageTemp extends Component {
   }
 
   componentDidMount = () => {
-     this.props.onLoadBlocks(this.props.detailEduProgram.Id);
-     this.props.onLoadUsers();
+    this.props.onLoadUsers();
+    this.props.onLoadBlocks(this.props.detailEduProgram.Id);
   };
 
   render() {
@@ -46,7 +46,12 @@ class TeachingManageTemp extends Component {
 
         <Row>
           <Col lg="12" md="12">
-            <TeachingManageCom users={this.props.users} subjects={subjects} />
+            <TeachingManageCom
+              detailEduProgram={this.props.detailEduProgram}
+              users={this.props.users}
+              subjects={subjects}
+              onAddTeacher={this.props.onAddTeacher}
+            />
           </Col>
         </Row>
       </Container>
@@ -63,6 +68,7 @@ const mapStateToProps = state => ({
 
 export default connect(mapStateToProps, {
   onLoadBlocks: blocksAction.onLoadBlocks,
+  onAddTeacher: blocksAction.onAddTeacher,
   onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
   onLoadUsers: usersAction.onLoadUsers
 })(TeachingManageTemp);

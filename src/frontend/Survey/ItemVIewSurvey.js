@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
-    Collapse,
+    Collapse,Button
 } from 'antd';
+import {Label} from 'reactstrap'
 
 const Panel = Collapse.Panel;
 
@@ -21,6 +22,9 @@ class ItemVIewSurvey extends Component {
                 >
                     {date}
                 </b>
+                <Label>Trạng thái : </Label>
+                <Button onClick={(e) => console.log("CLICK CLICK CLICK")}>View Matrix Survey</Button>
+                <Button onClick={(e) => console.log("BAM BAM BAM")}>Đóng cuộc Survey</Button>
             </div>
         );
     }
@@ -29,8 +33,12 @@ class ItemVIewSurvey extends Component {
             <div>
                 <Collapse onChange={callback}>
                     <Panel header={this.genTitle()}>
-                        <p>Show ra các phiếu </p>
+                        {this.props.subjectList ? this.props.subjectList.map(item => {
+                            return <p>{item.SubjectName}<br/></p>
+                        }) : <p></p>}
+                        
                     </Panel>
+                    
                 </Collapse>
             </div>
         );

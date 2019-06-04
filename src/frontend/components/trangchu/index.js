@@ -4,6 +4,8 @@ import './../decuongmonhoc/index/index.css';
 import { Link, Redirect } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
+import $ from "./../../helpers/services";
+import _ from 'lodash';
 
 class Home extends Component {
     constructor(props) {
@@ -15,6 +17,25 @@ class Home extends Component {
             colorTheme: false
         }
     }
+
+
+    componentWillMount(){
+        if (!_.isNull(localStorage.getItem("user")) ){
+          let user = JSON.parse(localStorage.getItem("user"));
+          $.authenMe({ "access": user.token }).then(res => {
+            if (res.data.status === 200) {
+              localStorage.clear();
+              $.setStorage(res.data)
+            }
+            else{
+                  localStorage.clear();
+                  this.props.history.push('/')
+            }
+          })
+        }
+      }
+    
+
 
     updateCollapse = () => {
         this.setState({
@@ -64,6 +85,7 @@ class Home extends Component {
                         className="menu_left"
                         collapse={this.state.collapse}
                         theme={this.state.theme}
+                        history = {this.props.history}
                     />
                 </Col>
                 <Col span={19} className="col-right">

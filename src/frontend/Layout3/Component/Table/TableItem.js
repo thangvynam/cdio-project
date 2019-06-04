@@ -205,7 +205,7 @@ class TableItem extends Component {
   }
 
 async getData() {
-  return $.getData3(this.props.subjectid).then(res => {
+  return $.getData3(this.props.monhoc).then(res => {
     return res.data
   }).then(resp => {
     return resp;
@@ -325,7 +325,7 @@ async componentWillReceiveProps(nextProps){
 
   delete(key) {
     let deleteData = this.props.itemLayout3Reducer.previewInfo[key]
-    this.props.saveLog("Nguyen Van A", getCurrTime(), `Xóa mục tiêu môn học: ${deleteData.objectName}, ${deleteData.description}, ${deleteData.standActs}`, this.props.logReducer.contentTab, this.props.subjectid);
+    this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: ${deleteData.objectName}, ${deleteData.description}, ${deleteData.standActs}`, this.props.logReducer.contentTab, this.props.monhoc);
     this.props.handleDelete(key);
     this.setState({ selectedRowKeys: [] });
   }
@@ -362,8 +362,8 @@ async componentWillReceiveProps(nextProps){
       console.log(newItems[index])
 
       this.props.handleSave(newItems, key);
-      this.props.saveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.subjectid)
-      this.props.saveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.subjectid)
+      this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.setState({ editingKey: "" });
     });
@@ -434,7 +434,7 @@ async componentWillReceiveProps(nextProps){
           </span>
            <Button style={{float: "right"}}
             onClick={() => {
-              this.props.saveAll(this.props.subjectid)
+              this.props.saveAll(this.props.monhoc)
               openNotificationWithIcon('success')
             }
           }

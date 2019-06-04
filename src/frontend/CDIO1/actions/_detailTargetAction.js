@@ -61,7 +61,6 @@ export const saveTargetProgramError = (targetNodes, errorMessage) => ({
 
 export const onSaveTargetProgram = targetProgram => {
   return (dispatch, getState) => {
-    debugger;
     let req = `${links.ADD_TARGET_EDUPROGRAM}?iddetail=${
       targetProgram.iddetail
     }`;
@@ -73,8 +72,6 @@ export const onSaveTargetProgram = targetProgram => {
       outdata,
       level
     );
-  
-
     params.data = JSON.stringify(outdata);
     axios
       .post(req, params, {
@@ -83,7 +80,8 @@ export const onSaveTargetProgram = targetProgram => {
         }
       })
       .then(res => {
-        if (res.data.code === 1) {
+        console.log(res)
+        if (res.data.code > 0) {
           let chirp = {
             message: `Lưu mục tiêu đào tạo thành công`,
             isRight: 1

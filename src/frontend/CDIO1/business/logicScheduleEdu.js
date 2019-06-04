@@ -35,7 +35,7 @@ const getUnique = (arr, comp) => {
   return unique;
 };
 
-const sortSemester = (a, b) => {
+export const sortSemester = (a, b) => {
   if (a.semester > b.semester) return 1;
   if (a.semester < b.semester) return -1;
   return 0;
@@ -88,7 +88,6 @@ export const onRowSubjectReorder = (subjects, semester, semesters) => {
 };
 
 export const mapSubjectsToScheduleNodes = (scheduleNodes, subjects) => {
-  console.error(scheduleNodes)
   const tmpNodes = scheduleNodes
     .filter(row => row.semester > 0)
     .map(row => {

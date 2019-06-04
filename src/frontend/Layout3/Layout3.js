@@ -5,6 +5,9 @@ import { Tooltip, Button } from 'antd';
 import LogForm from '../Log/LogForm';
 
 class Layout3 extends Component {
+    componentWillMount(){
+        window.scrollTo(0, 0);
+    }
     render() {
         return (
             <React.Fragment>

@@ -5,6 +5,7 @@ import * as message from "./message";
 import * as contentAction from "./_detailContentAction";
 import * as scheduleAction from "./_detailScheduleAction";
 import * as targetAction from "./_detailTargetAction";
+import * as contentListAction from "./_contentListAction";
 
 export const loadDetailEduProgramSuccess = detailEduProgram => ({
   type: cst.LOAD_DETAIL_EDUPROGRAM_SUCCESS,
@@ -20,7 +21,14 @@ export const onLoadDetailEduProgram = id => {
   return (dispatch, getState) => {
     let req = `${links.LOAD_DETAIL_EDUPROGRAM}?ideduprog=${id}`;
     axios
-      .get(req)
+      .get(req, {
+        headers: {
+          "Content-Type": "application/json",
+          authorization: localStorage.getItem("user")
+            ? "JWT " + JSON.parse(localStorage.getItem("user")).token
+            : ""
+        }
+      })
       .then(res => {
         const detailEduProgram = res.data.data;
         if (detailEduProgram) {
@@ -29,6 +37,7 @@ export const onLoadDetailEduProgram = id => {
           dispatch(contentAction.onLoadContentProgram(detailEduProgram.Id));
           dispatch(scheduleAction.onloadScheduleProgram(detailEduProgram.Id));
           dispatch(targetAction.onLoadTargetProgram(detailEduProgram.Id));
+          dispatch(contentListAction.onLoadContentList(id));
         } else {
           let chirp = {
             message: `Chưa có dữ liệu`,
@@ -40,6 +49,7 @@ export const onLoadDetailEduProgram = id => {
           dispatch(contentAction.loadContentProgramError(res));
           dispatch(scheduleAction.loadScheduleProgramError(res));
           dispatch(targetAction.loadTargetProgramError(res));
+          dispatch(contentListAction.loadContentListError(res));
         }
       })
       .catch(err => {
@@ -53,6 +63,7 @@ export const onLoadDetailEduProgram = id => {
         dispatch(contentAction.loadContentProgramError(err));
         dispatch(scheduleAction.loadScheduleProgramError(err));
         dispatch(targetAction.loadTargetProgramError(err));
+        dispatch(contentListAction.loadContentListError(err));
       });
   };
 };

@@ -1,15 +1,22 @@
 import _ from '../Constant/api';
 import $ from 'axios';
+import ld from 'lodash';
 
-
-// const setStorage = (userObj) => {
-//     console.log(userObj)
-//     return new Promise((resolve, reject) => {
-//         localStorage.setItem('user', JSON.stringify(userObj))
-//         $.defaults.headers.common['Authorization'] = " ";
-//         resolve()
-//     })
-// }
+const setStorage = (userObj) => {
+    return new Promise((resolve, reject) => {
+        let convertObj = JSON.stringify(userObj) || {};
+        localStorage.setItem('user', convertObj)
+        //$.defaults.headers.common['Content-Type'] = "application/x-www-form-urlencoded";
+        $.defaults.headers.common['authorization'] = !ld.isEmpty(convertObj) 
+        ? "JWT " + JSON.parse(convertObj).token
+        : "" ;
+        const aa = !ld.isEmpty(convertObj) 
+        ? "JWT " + JSON.parse(convertObj).token
+        : "" ;
+        console.log("Â", aa);
+        resolve()
+    })
+}
 
 //subject
 const collectSubjectList = () => {
@@ -69,6 +76,11 @@ const collectMucdoMtmhHasCdrCdio = (data) => {
 
 const collectData4 = (data) => {
     let url = _.COLLECT_DATA4;
+    return $.post(url, data);
+}
+
+const authenMe = (data) => {
+    let url = _.AUTHEN_ME;
     return $.post(url, data);
 }
 
@@ -178,14 +190,11 @@ const saveSurveyQA = (data) => {
     return $.post(url, {data})
 }
 
-const saveSurvey = (dataConvert, id, subjectId, id_giaovien, id_ctdt) => {
+const saveSurvey = (dataConvert, id_survey) => {
     let url = _.SAVE_SURVEY;
     return $.post(url, {
         data: dataConvert,
-        id_qa: id,
-        idMon : subjectId,
-        id_giaovien,
-        id_ctdt})
+        id_survey,})
 }
 
 const checkStatus = (data) => {
@@ -243,11 +252,21 @@ const getSurvey = (data) => {
     return $.post(url, {data});
 }
 
+const getSurveyITU = (data) => {
+    let url = `${_.GET_SURVEY_ITU}`;
+    return $.post(url, {data});
+}
+
 const getDataSurvey = () => {
     let url = _.GET_DATA_SURVEY;
     return $.get(url);
 }
 
+const setStatus = (id) => {
+    console.log(id)
+    let url = `${_.SET_STATUS}/${id}`
+    return $.get(url);
+}
 
 //danhmuc
 const updateCdrmdhd = (data) => {
@@ -434,7 +453,65 @@ const addDataSurvey =(data) => {
     return $.post(url,data);
 }
 
+const insertStandardMatrix =(data) => {
+    let url = _.INSERT_STANDARD_MATRIX;
+    return $.post(url,data);
+}
+
+const getSubjectTeacher = (param) => {
+    let url =`${_.GET_SUBJECT_TEACHER}/${param}`;
+    return $.get(url);
+}
+
+const addSurveyData = (data) => {
+    let url = _.ADD_SURVEY_DATA;
+    return $.post(url,data);
+}
+
+const getSurveyData = () =>{
+    let url = _.GET_ALL_DATA_SURVEY;
+    return $.get(url);
+}
+
+const getSurveyId = (data) =>{
+    let url = _.GET_SURVEY_ID;
+    return $.post(url,data);
+}
+
+const getSurveyCTDTTime = (data) =>{
+    let url = _.GET_SURVEY_CTDT_TIME;
+    return $.post(url,data);
+}
+
+const addSurveyList = (data) => {
+    let url = _.ADD_SURVEY_LIST;
+    return $.post(url,data);
+}
+
+const getSurveyCTDTTime2 = (data) =>{
+    let url = _.GET_SURVEY_CTDT_TIME2;
+    return $.post(url,data);
+}
+
+const getIDQA = (id) => {
+    let url = `${_.GET_IDQA}/${id}`;
+    return $.get(url);
+}
+
+const getSurveyList = () =>{
+    let url = _.GET_SURVEY_LIST;
+    return $.get(url);
+}
+
+const getSurveyWithIdSurveyList = (params) => {
+    let url = `${_.GET_SURVEY_ID_SURVEYLIST}/${params}`;
+    // let url = `${_.GET_DATA_2}/${param}`;
+    return $.get(url);
+}
+
 export default{
+    //localStorage
+    setStorage,
     //subject
     collectSubjectList,
     getBlockSubject,
@@ -489,7 +566,7 @@ export default{
     getSurveyQA,
     getSurvey,
     getDataSurvey,
-
+    setStatus,
 
     //danhmuc
     updateCdrmdhd,
@@ -521,13 +598,24 @@ export default{
 
     saveLog,
     getLog,
+
+    authenMe,
     
 
     //survey
     addToEditMatrix,
     saveSurveyQA,
     addDataSurvey,
-    
+    getSubjectTeacher,
+    addSurveyData,
+    getSurveyData,
+    getSurveyId,
+    getSurveyCTDTTime,
+    addSurveyList,
+    getSurveyCTDTTime2,
+    getSurveyList,
+    getSurveyWithIdSurveyList,
+
     //export file
     exportFile,
 
@@ -540,5 +628,9 @@ export default{
     saveData3,
     addData5,
 
-    checkStatus
+    checkStatus,
+    insertStandardMatrix,
+    checkStatus,
+    getIDQA,
+    getSurveyITU
 }

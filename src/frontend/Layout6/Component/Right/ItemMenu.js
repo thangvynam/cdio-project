@@ -163,15 +163,17 @@ class ItemMenu extends Component {
     }
     let previewData = {};
     previewData.id = -1;
-    previewData.key = this.props.itemKHGDTH.previewInfo.length + 1;
+    previewData.key = this.props.itemKHGDTH.previewInfo.filter(
+      (item, _) => item.del_flag === 0
+    ).length + 1;
     previewData.titleName = tempInfo.titleName;
     previewData.teachingActs = tempInfo.teachingActs;
     previewData.standardOutput = tempInfo.standardOutput;
     previewData.evalActs = tempInfo.evalActs;
     previewData.del_flag = 0;
 
-    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
-    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
 
 
     this.props.onAddItemKHGDTH(JSON.stringify(previewData));

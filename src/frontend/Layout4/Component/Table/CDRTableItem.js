@@ -189,8 +189,8 @@ class CDRTableItem extends Component {
     this.state = {
       id: this.props.monhoc,
       visible: false,
-      isLoaded: false,
-      notifications: []
+      notifications: [],
+      disableSaveAll: false,
     };
     this.columns = [{
       title: 'Chuẩn đầu ra',
@@ -408,81 +408,134 @@ class CDRTableItem extends Component {
   loadGap = () => {
 
     $.collectMtmhHasCdrCdio({data: {thong_tin_chung_id: this.props.monhoc}}).then((res) => {
-      $.collectMucdoMtmhHasCdrCdio({data: res.data}).then((response) => {
-          let arr = [];
-          for(let i = 0;i < response.data.length;i++) {
-            let keyrow = response.data[i].cdr.split(".");
-            keyrow.splice(keyrow.length - 1, 1);
-            let index = this.isExistInArr(keyrow.join("."), arr);
-            if(index !== -1) {
-              arr[index].muc_do = arr[index].muc_do + "," + response.data[i].muc_do;
-              arr[index].muc_do = this.sortLevels(Array.from(new Set(arr[index].muc_do.split(",")))).toString();
-              if(arr[index].muc_do.split(",").length > 1 && arr[index].muc_do.split(",")[0] === "-") {
-                let muc_do = arr[index].muc_do.split(",");
-                muc_do.splice(0, 1);
-                arr[index].muc_do = muc_do.toString();
+      if(res.data && res.data.length > 0) {
+        //
+        $.collectMucdoMtmhHasCdrCdio({data: res.data}).then((response) => {
+            let arr = [];
+            for(let i = 0;i < response.data.length;i++) {
+              let keyrow = response.data[i].cdr.split(".");
+              keyrow.splice(keyrow.length - 1, 1);
+              let index = this.isExistInArr(keyrow.join("."), arr);
+              if(index !== -1) {
+                arr[index].muc_do = arr[index].muc_do + "," + response.data[i].muc_do;
+                arr[index].muc_do = this.sortLevels(Array.from(new Set(arr[index].muc_do.split(",")))).toString();
+                if(arr[index].muc_do.split(",").length > 1 && arr[index].muc_do.split(",")[0] === "-") {
+                  let muc_do = arr[index].muc_do.split(",");
+                  muc_do.splice(0, 1);
+                  arr[index].muc_do = muc_do.toString();
+                }
+                arr[index].muc_tieu = arr[index].muc_tieu + "," + response.data[i].muc_tieu;
+                arr[index].muc_tieu = this.sortLevels(arr[index].muc_tieu.split(",")).toString();
               }
-              arr[index].muc_tieu = arr[index].muc_tieu + "," + response.data[i].muc_tieu;
-              arr[index].muc_tieu = this.sortLevels(arr[index].muc_tieu.split(",")).toString();
-            }
-            else {
-              let muc_do = this.sortLevels(Array.from(new Set(response.data[i].muc_do.split(",")))).toString();
-              let muc_tieu = this.sortLevels(response.data[i].muc_tieu.split(",")).toString();
+              else {
+                let muc_do = this.sortLevels(Array.from(new Set(response.data[i].muc_do.split(",")))).toString();
+                let muc_tieu = this.sortLevels(response.data[i].muc_tieu.split(",")).toString();
 
-              arr.push({
-                cdr: keyrow.join("."),
-                muc_do: muc_do,
-                muc_tieu: muc_tieu
-              })
-            }
-          }
-          let editMatrixArr = [];
-          for(let i = 0;i < this.props.editMatrix.length;i++) {
-            if(this.props.editMatrix[i].key.toString() === this.props.monhoc.toString()) {
-              for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
-                let key = Object.keys(this.props.editMatrix[i])[j];
-                if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
-                editMatrixArr.push({
-                  cdr: key,
-                  muc_do: this.props.editMatrix[i][key]
+                arr.push({
+                  cdr: keyrow.join("."),
+                  muc_do: muc_do,
+                  muc_tieu: muc_tieu
                 })
               }
+            }
+            let editMatrixArr = [];
+            for(let i = 0;i < this.props.editMatrix.length;i++) {
+              if(this.props.editMatrix[i].key.toString() === this.props.monhoc.toString()) {
+                for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
+                  let key = Object.keys(this.props.editMatrix[i])[j];
+                  if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
+                  editMatrixArr.push({
+                    cdr: key,
+                    muc_do: this.props.editMatrix[i][key]
+                  })
+                }
+                }
+                break;
               }
-              break;
             }
-          }
-          let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
-          let notifications = [];
-          for(let i = 0;i < notiArr.length;i++) {
-            if(notiArr[i].state === "add") {
-            notifications.push(<div key={i}>
-              <span style={{color: "green"}}>{notiArr[i].cdr}. </span>
-              <span style={{color: "green"}}>{`Chọn ${notiArr[i].muc_do}`}</span>
-              <span>{` tại ít nhất một trong các mục tiêu: `}</span>
-              <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
-              </div>);
-            }
-            else if(notiArr[i].state === "delete") {
+            let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
+            let notifications = [];
+            for(let i = 0;i < notiArr.length;i++) {
+              if(notiArr[i].state === "add") {
               notifications.push(<div key={i}>
-              <span style={{color: "red"}}>{notiArr[i].cdr}. </span>
-              <span style={{color: "red"}}>{`Không chọn ${notiArr[i].muc_do}`}</span>
-              <span>{` tại tất cả các mục tiêu: `}</span>
-              <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
-              </div>
-              );
-            }
-            else {
-              notifications.push(<div key={i}>
-                <span style={{color: "orange"}}>Thêm</span>
-                <span> chuẩn đầu ra </span>
-                <span style={{color: "orange"}}>{notiArr[i].cdr}</span>
-                <span> vào môn học và chọn </span>
-                <span style={{color: "green"}}>{notiArr[i].muc_do}.</span>
+                <span style={{color: "green"}}>{notiArr[i].cdr}. </span>
+                <span style={{color: "green"}}>{`Chọn ${notiArr[i].muc_do}`}</span>
+                <span>{` tại ít nhất một trong các mục tiêu: `}</span>
+                <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
                 </div>);
+              }
+              else if(notiArr[i].state === "delete") {
+                notifications.push(<div key={i}>
+                <span style={{color: "red"}}>{notiArr[i].cdr}. </span>
+                <span style={{color: "red"}}>{`Không chọn ${notiArr[i].muc_do}`}</span>
+                <span>{` tại tất cả các mục tiêu: `}</span>
+                <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
+                </div>
+                );
+              }
+              else {
+                notifications.push(<div key={i}>
+                  <span style={{color: "orange"}}>Thêm</span>
+                  <span> chuẩn đầu ra </span>
+                  <span style={{color: "orange"}}>{notiArr[i].cdr}</span>
+                  <span> vào môn học và chọn </span>
+                  <span style={{color: "green"}}>{notiArr[i].muc_do}.</span>
+                  </div>);
+              }
             }
-          }
-          this.setState({notifications: notifications});
-      })
+            this.setState({notifications: notifications});
+        })
+        //
+    }
+    else {
+      let arr = [];
+      let editMatrixArr = [];
+            for(let i = 0;i < this.props.editMatrix.length;i++) {
+              if(this.props.editMatrix[i].key.toString() === this.props.monhoc.toString()) {
+                for(let j = 0;j < Object.keys(this.props.editMatrix[i]).length;j++) {
+                  let key = Object.keys(this.props.editMatrix[i])[j];
+                  if(key !== "key" && key !== "hocky" && key !== "hocphan" && key !== "gvtruongnhom") {
+                  editMatrixArr.push({
+                    cdr: key,
+                    muc_do: this.props.editMatrix[i][key]
+                  })
+                }
+                }
+                break;
+              }
+            }
+            let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
+            let notifications = [];
+            for(let i = 0;i < notiArr.length;i++) {
+              if(notiArr[i].state === "add") {
+              notifications.push(<div key={i}>
+                <span style={{color: "green"}}>{notiArr[i].cdr}. </span>
+                <span style={{color: "green"}}>{`Chọn ${notiArr[i].muc_do}`}</span>
+                <span>{` tại ít nhất một trong các mục tiêu: `}</span>
+                <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
+                </div>);
+              }
+              else if(notiArr[i].state === "delete") {
+                notifications.push(<div key={i}>
+                <span style={{color: "red"}}>{notiArr[i].cdr}. </span>
+                <span style={{color: "red"}}>{`Không chọn ${notiArr[i].muc_do}`}</span>
+                <span>{` tại tất cả các mục tiêu: `}</span>
+                <span style={{fontWeight: "bold"}}>{notiArr[i].muc_tieu}.</span>
+                </div>
+                );
+              }
+              else {
+                notifications.push(<div key={i}>
+                  <span style={{color: "orange"}}>Thêm</span>
+                  <span> chuẩn đầu ra </span>
+                  <span style={{color: "orange"}}>{notiArr[i].cdr}</span>
+                  <span> vào môn học và chọn </span>
+                  <span style={{color: "green"}}>{notiArr[i].muc_do}.</span>
+                  </div>);
+              }
+            }
+            this.setState({notifications: notifications});
+    }
    })
   }
 
@@ -507,6 +560,7 @@ class CDRTableItem extends Component {
       tableData.previewInfo.push(data);
     }
     self.props.onAddCDRData(tableData);
+    self.setState({disableSaveAll: false})
         })
       .catch(function (error) {
           console.log(error);
@@ -656,7 +710,6 @@ getSubjectName = (subjectList, id) => {
   }
   
   componentWillReceiveProps(nextProps) {
-    this.setState({id: nextProps.subjectId})
     if(this.props.isLoad === "false" && this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
       this.props.updateIsLoad("true");
       this.loadGap();
@@ -672,8 +725,8 @@ getSubjectName = (subjectList, id) => {
   OnDelete = (cdrtable, key) => {
     let deleteData = cdrtable.previewInfo[key - 1]    
 
-    this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
-    this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
     
     if(key === cdrtable.previewInfo.length){
@@ -719,8 +772,8 @@ getSubjectName = (subjectList, id) => {
     for(let i = 0;i < cdrselecteditem.length;i++){
       let deleteData = cdrtable.previewInfo[cdrselecteditem[i] - 1];
 
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
       
       if(cdrselecteditem[i] - 1 === cdrtable.previewInfo.length - 1){
@@ -811,9 +864,10 @@ getSubjectName = (subjectList, id) => {
         newData.previewInfo.push(row);
       }
 
-
-      this.props.onSaveLog("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
-      this.props.onSaveReducer("Nguyen Van A", getCurrTime(), `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}] -> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      let message = `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}]`+ 
+      `-> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`;
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
       
       for(let i = 0;i < newData.previewInfo[key - 1].levels.length - 1;i++){
@@ -875,6 +929,7 @@ getSubjectName = (subjectList, id) => {
     return -1;
   }
   saveAll = () => {
+    this.setState({disableSaveAll: true})
     let data = [];
     if(this.props.cdrtable.previewInfo.length > 0) {
       data = this.props.cdrtable.previewInfo.map((item) => {
@@ -891,17 +946,17 @@ getSubjectName = (subjectList, id) => {
       });
     }
     
-    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.monhoc}});
-    this.loadTable();
-    this.loadGap();
-    this.props.updateIsLoad("false");
-    openNotificationWithIcon('success');
-    $.saveLog({data: this.props.logData})
-    //axios.post('/save-log', { data: this.props.logData });
-    
+    $.saveData4({ data: {data: data, thong_tin_chung_id: this.props.monhoc}})
+    .then(res => {
+      this.loadGap();
+      this.loadTable();
+      openNotificationWithIcon('success');
+      $.saveLog({data: this.props.logData})
+    }); //this.setState({disableSaveAll: false})
   }
 
     render() {
+      console.log(this.props.cdrtable.previewInfo)
       var components = {};
       this.props.cdreditstate !== '' ?
       components = {
@@ -916,7 +971,7 @@ getSubjectName = (subjectList, id) => {
         },
       }
       let cdrmdhd_level = [];
-      if(this.props.cdrmdhd.length > 0) {
+      if(this.props.cdrmdhd.length > 0 && this.props.cdrmdhd) {
         cdrmdhd_level = this.props.cdrmdhd.map((item, key) => {
           let child_level_1 = [];
           for(let i = 0;i < item.children.length;i++) {
@@ -1010,6 +1065,7 @@ getSubjectName = (subjectList, id) => {
             {hasSelected ? `Đã chọn ${this.props.cdrselecteditem.length} mục` : ''}
           </span>
           <Button style={{float: "right"}}
+            disabled={this.state.disableSaveAll}
             onClick={this.saveAll}
           >
             Lưu lại

@@ -17,7 +17,11 @@ import { detailEduProgram } from "./detailEduProgram";
 import { contentNodes } from "./_contentNodes";
 import { scheduleNodes } from "./_scheduleNodes";
 import { targetNodes } from "./_targetNodes";
+import { comments } from "./_comments";
 import { blocks } from "./_blocks";
+import { knowledgeTables } from "./_knowledgeTable";
+import { contentList } from "./_contentList";
+import { surveys } from "./surveys";
 
 const cdio1 = {
   faculties,
@@ -39,7 +43,10 @@ const cdio1 = {
   scheduleNodes,
   targetNodes,
   blocks,
-
+  comments,
+  knowledgeTables,
+  contentList,
+  surveys,
   user,
   users,
 };

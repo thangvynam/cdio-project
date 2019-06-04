@@ -1,4 +1,5 @@
 import React from "react";
+import XLSX from "xlsx";
 
 import { Row, Col, Button, FormTextarea } from "shards-react";
 import { Accordion, AccordionTab } from "primereact/accordion";
@@ -11,6 +12,8 @@ import ScheduleEducationCom from "../detailEducationProgram/ScheduleEducationCom
 
 import * as event from "../../business/events";
 import * as commonLogic from "../../business/commonEducation";
+import * as exportLogic from "../../business/exportCTDT";
+import * as targetLogic from "../../business/logicTargetEducation";
 
 export default class DetailEducationProgramCom extends React.Component {
   constructor(props) {
@@ -42,6 +45,57 @@ export default class DetailEducationProgramCom extends React.Component {
       archiNodes: []
     };
   }
+
+  onExportFile = () => {
+    const wb = XLSX.utils.book_new();
+    // thông tin chung
+    const info = exportLogic.onExportInfo(this.state);
+    const infoSheet = XLSX.utils.aoa_to_sheet(info);
+    XLSX.utils.book_append_sheet(wb, infoSheet, "Thông tin chung");
+    //mục tiêu đào tạo
+    const targetNodes = this.TargetEducationCom.current.state.targetNodes;
+    const purposeName = targetLogic.getNameOS(
+      this.props.outcomeStandards,
+      this.state.IdOutcome
+    );
+    let dataPurpose = [["Đang sử dụng chuẩn đầu ra", purposeName]];
+    const purpose = exportLogic.onExportPurpose(targetNodes, dataPurpose);
+    const purposeSheet = XLSX.utils.aoa_to_sheet(purpose);
+    XLSX.utils.book_append_sheet(wb, purposeSheet, "Mục tiêu đào tạo");
+    //cấu trúc chương trình
+    let dataArchi = [
+      ["Tổng số chỉ tích lũy khi tốt nghiệp", this.state.sumCredit, null, null],
+      [
+        "Khóa",
+        "Khối kiến thức",
+        "Số chỉ bắt buộc",
+        "Số chỉ tự chọn",
+        "Tổng chỉ"
+      ]
+    ];
+    const eduArchi = exportLogic.onExportEduArchi(
+      this.state.archiNodes,
+      dataArchi
+    );
+    const eduArchiSheet = XLSX.utils.aoa_to_sheet(eduArchi);
+    XLSX.utils.book_append_sheet(wb, eduArchiSheet, "Cấu trúc chương trình");
+    // nội dung chương trình
+    const contentNodes = this.ContentProgramCom.current.state.nodes;
+    const content = exportLogic.onExportContent(contentNodes);
+    const contentSheet = XLSX.utils.aoa_to_sheet(content);
+    XLSX.utils.book_append_sheet(wb, contentSheet, "Nội dung chương trình");
+    // kế hoạch giảng dạy dự kiến
+    const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
+    const schedule = exportLogic.onExportSchedule(scheduleNodes);
+    const scheduleSheet = XLSX.utils.aoa_to_sheet(schedule);
+    XLSX.utils.book_append_sheet(
+      wb,
+      scheduleSheet,
+      "Kế hoạch giảng dạy dự kiến"
+    );
+    //TẠO FILE EXCEL
+    XLSX.writeFile(wb, `${this.state.nameEduProgram.trim()}.xlsx`);
+  };
 
   // get subjects for ScheduleEducation
   getDataForScheduleEducation = () => {
@@ -151,7 +205,7 @@ export default class DetailEducationProgramCom extends React.Component {
     const detailEduProgram = event.onSaveDetail(this.props, this.state);
 
     const iddetail = this.props.detailEduProgram.Id;
-    
+
     const contentNodes = this.ContentProgramCom.current.state.nodes;
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
@@ -179,8 +233,12 @@ export default class DetailEducationProgramCom extends React.Component {
     }
 
     const scheduleNodes = this.ScheduleEducationCom.current.state.semesters;
-    if (JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes))
-      this.ScheduleEducationCom.current.getScheduleNodes(nextProps.scheduleNodes);
+    if (
+      JSON.stringify(scheduleNodes) !== JSON.stringify(nextProps.scheduleNodes)
+    )
+      this.ScheduleEducationCom.current.getScheduleNodes(
+        nextProps.scheduleNodes
+      );
 
     const targetNodes = this.TargetEducationCom.current.state.targetNodes;
     if (JSON.stringify(targetNodes) !== JSON.stringify(nextProps.targetNodes))
@@ -206,16 +264,26 @@ export default class DetailEducationProgramCom extends React.Component {
     return (
       <div className="p-grid content-section implementation">
         <Row noGutters className="page-header py-4">
-          <Col lg="12" md="12" sm="12">
-            <p align="left">
-              <Button
-                disabled={this.state.isSaveBtnDisabled}
-                onClick={this.onSave}
-                theme="success"
-              >
-                <i className="material-icons">save</i> Lưu CTĐT
-              </Button>
-            </p>
+          <Col lg="2" md="2" sm="2">
+            {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+              "BIEN_SOAN"
+            ) && (
+              <p align="left">
+                <Button
+                  disabled={this.state.isSaveBtnDisabled}
+                  onClick={this.onSave}
+                  theme="success"
+                >
+                  <i className="material-icons">save</i> Lưu CTĐT
+                </Button>
+              </p>
+            )}
+          </Col>
+          <Col lg="8" md="8" sm="8" />
+          <Col lg="2" md="2" sm="2">
+            <label onClick={this.onExportFile} className="export">
+              <i className="material-icons">save_alt</i> Tạo file Excel
+            </label>
           </Col>
           <Col lg="12" md="12" sm="12">
             <Accordion multiple={true}>
@@ -259,6 +327,11 @@ export default class DetailEducationProgramCom extends React.Component {
                 <FormTextarea
                   value={this.state.EnrollmentTarget}
                   onChange={this.handleEnrollmentChange}
+                  readOnly={
+                    !JSON.parse(
+                      localStorage.getItem("user")
+                    ).data.Role.includes("BIEN_SOAN")
+                  }
                 />
               </AccordionTab>
 
@@ -270,6 +343,11 @@ export default class DetailEducationProgramCom extends React.Component {
                   <FormTextarea
                     value={this.state.EduProcess}
                     onChange={this.handleEduProcessChange}
+                    readOnly={
+                      !JSON.parse(
+                        localStorage.getItem("user")
+                      ).data.Role.includes("BIEN_SOAN")
+                    }
                   />
                 </Col>
 
@@ -282,6 +360,11 @@ export default class DetailEducationProgramCom extends React.Component {
                   <FormTextarea
                     value={this.state.GraduatedCon}
                     onChange={this.handleGraduatedConChange}
+                    readOnly={
+                      !JSON.parse(
+                        localStorage.getItem("user")
+                      ).data.Role.includes("BIEN_SOAN")
+                    }
                   />
                 </Col>
               </AccordionTab>

@@ -337,6 +337,7 @@ class EditMatrix extends Component {
 
         if(data.data.length > 0) {
           $.getStandardMatrix(data).then((res) => {
+            console.log("receive")
             this.setState({ tempMatrix: res.data });
             let data = [];
             for (let i = 0; i < res.data.length; i++) {

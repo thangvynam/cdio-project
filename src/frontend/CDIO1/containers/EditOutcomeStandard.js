@@ -24,9 +24,10 @@ class EditOutcomeStandardTmp extends Component {
 
   componentDidMount = () => {
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id")
+    let id = urlParams.get("id")
       ? urlParams.get("id")
       : +this.props.detailEduProgram.IdOutcome;
+    id = id ? id : 0;
     this.props.onLoadDetailOutcomeStandard(id);
     this.props.onLoadRevisions(id);
     this.props.onLoadOutcomeStandard(id);
@@ -52,9 +53,10 @@ class EditOutcomeStandardTmp extends Component {
       : `Chưa tải được`;
 
     const urlParams = new URLSearchParams(window.location.search);
-    const id = urlParams.get("id")
+    let id = urlParams.get("id")
       ? urlParams.get("id")
       : +this.props.detailEduProgram.IdOutcome;
+    id = id ? id : 0;
 
     return (
       id

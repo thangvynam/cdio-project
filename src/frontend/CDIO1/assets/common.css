@@ -17,3 +17,14 @@
   padding: 6px;
   cursor: pointer;
 }
+
+.exportPDF {
+  float: left;
+  text-align: left;
+  border-radius: 8px;
+  border: 1px solid #C43E1C;
+  display: inline-block;
+  color: #C43E1C;
+  padding: 6px;
+  cursor: pointer;
+}

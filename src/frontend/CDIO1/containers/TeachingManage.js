@@ -23,7 +23,7 @@ class TeachingManageTemp extends Component {
 
   componentDidMount = () => {
     this.props.onLoadUsers();
-    this.props.onLoadBlocks(this.props.detailEduProgram.Id);
+    this.props.onLoadBlocks(this.props.detailEduProgram?this.props.detailEduProgram.Id:0);
   };
 
   render() {

@@ -467,13 +467,10 @@ export default class DetailOutcomeStandardCom extends Component {
 
   actionTemplateTableComments = (rowData, column) => {
     return (
-      JSON.parse(localStorage.getItem("user")).data.Role.includes(
-        "BIEN_SOAN"
-      ) && (
         <div>
           {rowData.UserDone ? (
             <Button
-              // onClick={() => this.onCheck(rowData.Id)}
+              disabled={true}
               title="Done"
               theme="info"
               style={{ marginRight: ".3em", padding: "8px" }}
@@ -484,6 +481,7 @@ export default class DetailOutcomeStandardCom extends Component {
             <Button
               title="Check"
               onClick={() => this.onCheck(rowData.Id)}
+              disabled={!JSON.parse(localStorage.getItem("user")).data.Role.includes("BIEN_SOAN")}
               theme="danger"
               style={{ marginRight: ".3em", padding: "8px" }}
             >
@@ -491,7 +489,6 @@ export default class DetailOutcomeStandardCom extends Component {
             </Button>
           )}
         </div>
-      )
     );
   };
 

@@ -420,7 +420,7 @@ class TableItem extends Component {
       });
 
       this.props.onSaveLog(
-        "Nguyen Van A",
+        `${JSON.parse(localStorage.getItem('user')).data.Name}`,
         getCurrTime(),
         `Chỉnh sửa kế hoạch giảng dạy thực hành:[Chủ đề : ${
           item.titleName
@@ -439,7 +439,7 @@ class TableItem extends Component {
         this.props.monhoc
       );
       this.props.onSaveReducer(
-        "Nguyen Van A",
+        `${JSON.parse(localStorage.getItem('user')).data.Name}`,
         getCurrTime(),
         `Chỉnh sửa kế hoạch giảng dạy thực hành:[Chủ đề : ${
           item.titleName
@@ -481,7 +481,7 @@ class TableItem extends Component {
     newData[index].del_flag = 1;
 
     this.props.onSaveLog(
-      "Nguyen Van A",
+      `${JSON.parse(localStorage.getItem('user')).data.Name}`,
       getCurrTime(),
       `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
         newData[index].titleName
@@ -494,7 +494,7 @@ class TableItem extends Component {
       this.props.monhoc
     );
     this.props.onSaveReducer(
-      "Nguyen Van A",
+      `${JSON.parse(localStorage.getItem('user')).data.Name}`,
       getCurrTime(),
       `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
         newData[index].titleName
@@ -552,7 +552,7 @@ class TableItem extends Component {
       let j = indexArray[i];
       KHitems[j].del_flag = 1;
             this.props.onSaveLog(
-            "Nguyen Van A",
+            `${JSON.parse(localStorage.getItem('user')).data.Name}`,
             getCurrTime(),
             `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
               KHitems[j].titleName
@@ -565,7 +565,7 @@ class TableItem extends Component {
             this.props.monhoc
           );
           this.props.onSaveReducer(
-            "Nguyen Van A",
+            `${JSON.parse(localStorage.getItem('user')).data.Name}`,
             getCurrTime(),
             `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
               KHitems[j].titleName

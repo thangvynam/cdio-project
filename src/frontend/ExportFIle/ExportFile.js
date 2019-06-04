@@ -8,8 +8,6 @@ import $ from './../helpers/services';
 
 import { ADD_DATA_LAYOUT_2,ADD_ARRAY_LAYOUT_3,ADD_DATA, addCDRData } from '../Constant/ActionType';
 
-
-
 const plainOptions = [
     'Thông tin chung',
     'Mô tả môn học',
@@ -29,7 +27,7 @@ class ExportFile extends Component {
         loading: -1,
     }
 
-    // // tab2
+    // tab2
     // async getData2() {
     //     const res = await $.getData2(this.props.monhoc);
     //     const resp = res.data;
@@ -53,6 +51,23 @@ class ExportFile extends Component {
     //         console.log(error);
     //     }
     // }
+    // // tab9
+    // getData9() {
+    //     $.getData9(this.props.monhoc).then(response => {
+    //         const data = response.data;
+    //         let array = [];
+    //         data.forEach((item, index) => {
+    //         let temp = {
+    //             id: item.id,
+    //             content: item.noi_dung,
+    //             del_flag: item.del_flag
+    //         };
+    //         array.push(temp);
+    //         });
+    //         this.props.onUpdateRules(array);
+    //     });
+    // }
+
     // // tab7
     // getData7() {
     //     var self = this;
@@ -173,7 +188,7 @@ class ExportFile extends Component {
 
     //                 }
 
-    //                 // this.props.onAddDGData(previewInfo);
+    //                 this.props.onAddDGData(previewInfo);
     //             })
     //         })
 
@@ -225,9 +240,12 @@ class ExportFile extends Component {
     // }
 
     // async componentDidMount() {
+    //     //tab1
+    //     this.props.collectDataRequest(this.props.subjcetid);
+
     //     //tab 2
     //     let data2 = await this.getData2();
-    //     //this.props.saveAndContinue2(data2);
+    //     this.props.saveAndContinue2(data2);
 
     //     //tab 3 
     //     let temp = await this.getData3();
@@ -255,12 +273,12 @@ class ExportFile extends Component {
     //     saveData = this.getUnique(saveData, "objectName")
     //     saveData = saveData.filter((item) => item.del_flag === 0)
 
-    //     //this.props.saveAndContinue3(saveData);
+    //     this.props.saveAndContinue3(saveData);
 
     //     //tab4
     //     this.getData4();
     //     //tab5
-    //     this.props.saveAndContinue5(this.props.subjectid);
+    //     this.props.saveAndContinue5(this.props.subjcetid);
 
     //     //tab6
     //     this.props.saveAndContinue6(this.props.subjectid);
@@ -436,6 +454,9 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
+        collectDataRequest: (idMonHoc) => {
+
+        },
         saveAndContinue2: (description) => {
             dispatch({ type: ADD_DATA_LAYOUT_2, description });
         },
@@ -479,24 +500,30 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch(addCDRData(newData))
         },
         saveAndContinue8: (temp) => {
-            let tempPreview = [];
-            if (temp !== null && temp !== undefined && this.props.itemLayout8Reducer.isLoaded === false) {
-                temp.map((item, index) => {
-                    let data = {
-                        id: item.id,
-                        key: index,
-                        index: index,
-                        stt: index + 1,
-                        loai: this.loaiDisplayName(item.tnmh_loai_tai_nguyen_id),
-                        mota: item.mo_ta,
-                        link: item.lien_ket,
-                        del_flag: item.del_flag,
-                    }
-                    tempPreview.push(data);
-                })
-                this.props.isLoaded(true);
-                //this.props.onAddTNData(tempPreview);
-            }
+            // let tempPreview = [];
+            // if (temp !== null && temp !== undefined) {
+            //     temp.map((item, index) => {
+            //         let data = {
+            //             id: item.id,
+            //             key: index,
+            //             index: index,
+            //             stt: index + 1,
+            //             loai: this.loaiDisplayName(item.tnmh_loai_tai_nguyen_id),
+            //             mota: item.mo_ta,
+            //             link: item.lien_ket,
+            //             del_flag: item.del_flag,
+            //         }
+            //         tempPreview.push(data);
+            //     })
+            //     this.props.isLoaded(true);
+            //     //this.props.onAddTNData(tempPreview);
+            // }
+        },
+        onUpdateRules: (array) => {
+
+        },
+        onAddDGData: (previewInfo) => {
+
         }
     }
 }

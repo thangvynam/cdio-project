@@ -65,8 +65,8 @@ class MenuMota extends Component {
                     <Form.Item {...tailFormItemLayout}>
                             <Button type="primary" onClick={() => {
                                 this.props.itemLayout2Reducer.tempInfo = ''
-                                this.props.saveLog("Nguyen Van A", getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.subjectid)
-                                this.props.saveReducer("Nguyen Van A", getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.subjectid)
+                                this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.subjectid)
+                                this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.subjectid)
                                 this.props.saveAndContinue();
                             }} style={{ marginLeft: "15%" }}>
                                 Thêm

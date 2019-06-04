@@ -1,7 +1,7 @@
 import {
     ADD_DATA, DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
     SAVE_DATA_LAYOUT_5, CHANGE_DATA, ADD_DATA_LAYOUT_5,
-    COLLECT_DATA_REQUEST_5, COLLECT_DATA_HDD, COLLECT_DATA_DG,
+    COLLECT_DATA_HDD, COLLECT_DATA_DG,
     REFRESH_DATA, COLLECT_DATA_CDR, SAVE_LOG
 } from '../Constant/ActionType';
 import $ from './../helpers/services'
@@ -20,6 +20,12 @@ const itemMenuInitialState = {
     standardOutputData: [],
     logData: [],
 
+    tempInfo :{
+        titleName : '',
+        teachingActs : [],
+        standardOutput : [],
+        evalActs : [],
+    },
 }
 
 const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
@@ -80,12 +86,16 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
         }
 
         case CHANGE_DATA: {
+            let tempInfo = {};
+
+            tempInfo.titleName =  action.titleName;
+            tempInfo.teachingActs =  action.teachingActs;
+            tempInfo.standardOutput =  action.standardOutput;
+            tempInfo.evalActs =  action.evalActs;
+            
             return {
                 ...state,
-                titleName: action.titleName,
-                teachingActs: action.teachingActs,
-                standardOutput: action.standardOutput,
-                evalActs: action.evalActs
+                tempInfo:tempInfo
             }
         }
 

@@ -19,6 +19,7 @@ import { contentNodes } from "./_contentNodes";
 import { scheduleNodes } from "./_scheduleNodes";
 import { targetNodes } from "./_targetNodes";
 import { knowledgeTables } from "./_knowledgeTable";
+import { surveys } from "./surveys";
 
 const rootReducer = combineReducers({
   faculties,
@@ -40,6 +41,7 @@ const rootReducer = combineReducers({
   scheduleNodes,
   targetNodes,
   knowledgeTables,
+  surveys,
   
   users,
   user,

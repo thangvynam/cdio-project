@@ -498,6 +498,17 @@ const getIDQA = (id) => {
     return $.get(url);
 }
 
+const getSurveyList = () =>{
+    let url = _.GET_SURVEY_LIST;
+    return $.get(url);
+}
+
+const getSurveyWithIdSurveyList = (params) => {
+    let url = `${_.GET_SURVEY_ID_SURVEYLIST}/${params}`;
+    // let url = `${_.GET_DATA_2}/${param}`;
+    return $.get(url);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -602,7 +613,9 @@ export default{
     getSurveyCTDTTime,
     addSurveyList,
     getSurveyCTDTTime2,
-    
+    getSurveyList,
+    getSurveyWithIdSurveyList,
+
     //export file
     exportFile,
 
@@ -616,7 +629,7 @@ export default{
     addData5,
 
     checkStatus,
-    insertStandardMatrix
+    insertStandardMatrix,
     checkStatus,
     getIDQA,
     getSurveyITU

@@ -198,8 +198,13 @@ const saveSurvey = (dataConvert, id_survey) => {
 }
 
 const checkStatus = (data) => {
-    let url = _.CHECK_STATUS;
-    return $.post(url, {data})
+    let url = `${_.CHECK_STATUS}/${data}`;
+    return $.get(url)
+}
+
+const checkDate = (data) => {
+    let url = `${_.CHECK_DATE}/${data}`;
+    return $.get(url)
 }
 
 const getData3 = (param) => {
@@ -628,6 +633,7 @@ export default{
     saveData3,
     addData5,
 
+    checkDate,
     checkStatus,
     insertStandardMatrix,
     checkStatus,

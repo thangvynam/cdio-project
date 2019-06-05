@@ -236,36 +236,38 @@ async componentWillReceiveProps(nextProps){
   let saveData = []
   let standActs = [];
   let count = this.state.count
-  if (count <= 2) {
-    this.setState({count: count + 1})
-    let temp = await this.getData()
-    console.log(temp)
-    if (temp.length > 0) {
-      temp.forEach(element => {
-        temp.forEach(element2 => {
-          if(element2.muc_tieu === element.muc_tieu) {
-            element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length -1)
-            element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
-            standActs.push(element2.KeyRow)
-          }
+  if(!this.props.itemLayout3Reducer.isLoaded) {
+    if (count <= 2) {
+      this.setState({count: count + 1})
+      let temp = await this.getData()
+      console.log(temp)
+      if (temp.length > 0) {
+        temp.forEach(element => {
+          temp.forEach(element2 => {
+            if(element2.muc_tieu === element.muc_tieu) {
+              element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length -1)
+              element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
+              standActs.push(element2.KeyRow)
+            }
+          });
+          let newObj = {
+                objectName: element.muc_tieu,
+                description: element.mo_ta,
+                standActs: standActs,
+                del_flag: element.del_flag,
+                id: element.id,
+              }            
+            saveData.push(newObj);        
+            standActs = []
         });
-        let newObj = {
-              objectName: element.muc_tieu,
-              description: element.mo_ta,
-              standActs: standActs,
-              del_flag: element.del_flag,
-              id: element.id,
-            }            
-          saveData.push(newObj);        
-          standActs = []
-      });
+      }
+      saveData = this.getUnique(saveData, "objectName")
+      saveData = saveData.filter((item) => item.del_flag === 0)
+      console.log(saveData)
+  
+      this.props.saveAndContinue(saveData);
+      this.props.setFlag(true);
     }
-    saveData = this.getUnique(saveData, "objectName")
-    saveData = saveData.filter((item) => item.del_flag === 0)
-    console.log(saveData)
-
-    this.props.saveAndContinue(saveData);
-    this.props.setFlag(true);
   }
 }
 

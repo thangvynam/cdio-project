@@ -133,11 +133,14 @@ class TableItem extends Component {
 
   async componentWillReceiveProps(nextProps){
     let count = this.state.count
-    if (count <= 2) {
-      this.setState({count: count + 1})
-      let temp = await this.getData();
-      this.props.saveAndContinue(temp);
-      this.props.setFlag(true);
+    console.log("loaded",this.props.isLoaded)
+    if(!this.props.itemLayout2Reducer.isLoaded) {
+      if (count <= 2) {
+        this.setState({count: count + 1})
+        let temp = await this.getData();
+        this.props.saveAndContinue(temp);
+        this.props.setFlag(true);
+      }
     }
   }
 

@@ -96,8 +96,6 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
     this.props.onLoadSubjects();
     this.props.onLoadOutcomeStandards();
 
-    this.props.updateIsLoadEditMatrix("false");
-
     $.getBlockSubject(id).then(res => {
       let resData = res.data.data;
       let dataSubject = [];
@@ -121,8 +119,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
             if(res.data !== undefined && res.data !== null){
               this.props.updateTeacherReviewSubject(res.data);
             }
-            if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) || 
-            this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+            if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
               dataSubject = dataSubject.filter(item => 
                   item.del_flat != 1
               );

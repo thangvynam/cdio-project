@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Icon, Modal, message, List, Avatar, Row, Col, Popconfirm, Input, Form, notification, Divider } from 'antd';
+import { Tag, List, Avatar, Row, Col, Icon } from 'antd';
 import { Link } from "react-router-dom";
 
 export default class ListSurvey extends Component {
@@ -10,42 +10,41 @@ export default class ListSurvey extends Component {
         let khoi = this.props.khoi;
         let parent = this.props.parent;
         let action = this.props.action;
-        return(
-            <List
-                itemLayout="horizontal"
-                dataSource={this.props.subjectList}
-                pagination={{
-                    onChange: page => {
-                    
-                    },
-                    pageSize: 10,
-                }}
-                renderItem={(item, id) => (
-                    <Row>
-                        <div style={{ height: "10px" }}></div>
-                        <Col span={1} className="col-left">
-                        </Col>
-                        <Col span={22} className="col-left">
+        return (
+            <div className="section-layout">
+                <div className="time-itu">
+                    <Tag color="#f50">22/22/2222 - 22/22/2222</Tag>
+                </div>
+                <List
+                    itemLayout="horizontal"
+                    dataSource={this.props.subjectList}
+                    pagination={{
+                        onChange: page => {
 
-                            <div className="list-border" style={{ borderRadius: "12px" }}>
-
-                                <List.Item>
-                                    <List.Item.Meta
-
-                                        avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                        title={
-                                            <Link to={`/${parent}/${ctdt}/${type}/dosurvey/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.props.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-
-                                        }
-                                    />
-
-                                </List.Item>
-                            </div>
-
-                        </Col>
-                    </Row>
-                )}
-            />
+                        },
+                        pageSize: 10,
+                    }}
+                    renderItem={(item, id) => (
+                        <Row>
+                            <div style={{ height: "10px" }}></div>
+                            <Col span={22} offset={1} className="col-left">
+                                <div className="list-border" className="wrapper-subject" style={{ borderRadius: "12px" }}>
+                                    <List.Item>
+                                        <List.Item.Meta
+                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
+                                            title={
+                                                <Link className="title-subbject" to={`/${parent}/${ctdt}/${type}/dosurvey/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.props.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                            }
+    
+                                        />
+                                        <div><Icon type="edit" style={{ fontSize: '20px', color: 'white' }} /></div>
+                                    </List.Item>
+                                </div>
+                            </Col>
+                        </Row>
+                    )}
+                />
+            </div>
         )
     }
 }

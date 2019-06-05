@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 import { MENUITEM, subjectList, subjectId, isLoad, isLoadEditMatrix, resetTab, changeCDRData, selectedVerb, updateListSurvey, updateIdSurvey } from '../../Constant/ActionType';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -48,7 +48,7 @@ import * as majorsAction from "../../CDIO1/actions/majorsAction";
 
 import Direction from './direction';
 import $ from './../../helpers/services';
-
+import ListSurvey from './listSurvey';
 
 const EditableContext = React.createContext();
 
@@ -642,41 +642,14 @@ class Content extends Component {
                                                 content_type={type}
                                                 content_action={action}
                                             />
-                                                <List
-                                                    itemLayout="horizontal"
-                                                    dataSource={subjectList}
-                                                    pagination={{
-                                                        onChange: page => {
-                                                        
-                                                        },
-                                                        pageSize: 10,
-                                                    }}
-                                                    renderItem={(item, id) => (
-                                                        <Row>
-                                                            <div style={{ height: "10px" }}></div>
-                                                            <Col span={1} className="col-left">
-                                                            </Col>
-                                                            <Col span={22} className="col-left">
-
-                                                                <div className="list-border" style={{ borderRadius: "12px" }}>
-
-                                                                    <List.Item>
-                                                                        <List.Item.Meta
-
-                                                                            avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
-                                                                            title={
-                                                                                <Link to={`/${parent}/${ctdt}/${type}/dosurvey/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-
-                                                                            }
-                                                                        />
-
-                                                                    </List.Item>
-                                                                </div>
-
-                                                            </Col>
-                                                        </Row>
-                                                    )}
-                                                />
+                                                <ListSurvey 
+                                                khoi={khoi}
+                                                ctdt={ctdt}
+                                                parent={parent}
+                                                type={type}
+                                                action={action}
+                                                subjectList={subjectList}
+                                                onClick={this.onClick}/>
                                             </div>
                                         </React.Fragment>
 

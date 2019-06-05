@@ -57,7 +57,7 @@ async componentDidMount() {
 
     for (let i = 0; i < standActs.length; i++) {
       childrenStandard.push(
-        <Option key={standActs[i].KeyRow}>{standActs[i].KeyRow}</Option>
+        <Option key={standActs[i].Id}>{standActs[i].KeyRow}</Option>
       );
     }    
 
@@ -124,7 +124,8 @@ class TableItem extends Component {
       data: this.props.itemLayout3Reducer.previewInfo, 
       editingKey: '' ,
       selectedRowKeys: [],
-      count: 0
+      count: 0,
+      disableSaveAll: false,
     };
     this.columns = [{
       title: 'Mục tiêu',
@@ -221,10 +222,10 @@ getUnique(arr, comp) {
    return unique;
 }
 
-async componentDidMount() {
-  cellData = await this.getCDR();
-  await console.log(cellData);
-}
+// async componentDidMount() {
+//   cellData = await this.getCDR();
+//   await console.log(cellData);
+// }
 
 async getCDR() {
   return $.getCDR_3().then(res => {
@@ -232,43 +233,54 @@ async getCDR() {
   })
 }
 
-async componentWillReceiveProps(nextProps){
+loadData = () => {
+  console.log("call load")
+  let self = this
+
   let saveData = []
   let standActs = [];
-  let count = this.state.count
-  if(!this.props.itemLayout3Reducer.isLoaded) {
+  let count = self.state.count
+  if(!self.props.itemLayout3Reducer.isLoaded) {
     if (count <= 2) {
-      this.setState({count: count + 1})
-      let temp = await this.getData()
-      console.log(temp)
-      if (temp.length > 0) {
-        temp.forEach(element => {
-          temp.forEach(element2 => {
-            if(element2.muc_tieu === element.muc_tieu) {
-              element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length -1)
-              element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
-              standActs.push(element2.KeyRow)
-            }
+      self.setState({count: count + 1})
+      self.getData().then((res) => {
+        if (res.length > 0) {
+          res.forEach(element => {
+            res.forEach(element2 => {
+              if(element2.muc_tieu === element.muc_tieu) {
+                element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length -1)
+                element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
+                standActs.push(element2.KeyRow)
+              }
+            });
+            let newObj = {
+                  objectName: element.muc_tieu,
+                  description: element.mo_ta,
+                  standActs: standActs,
+                  del_flag: element.del_flag,
+                  id: element.id,
+                }            
+              saveData.push(newObj);        
+              standActs = []
           });
-          let newObj = {
-                objectName: element.muc_tieu,
-                description: element.mo_ta,
-                standActs: standActs,
-                del_flag: element.del_flag,
-                id: element.id,
-              }            
-            saveData.push(newObj);        
-            standActs = []
-        });
-      }
-      saveData = this.getUnique(saveData, "objectName")
-      saveData = saveData.filter((item) => item.del_flag === 0)
-      console.log(saveData)
-  
-      this.props.saveAndContinue(saveData);
-      this.props.setFlag(true);
+        }
+        saveData = self.getUnique(saveData, "objectName")
+        saveData = saveData.filter((item) => item.del_flag === 0)
+        console.log(saveData)
+        self.setState({disableSaveAll: false})
+        console.log(self.state.disableSaveAll)
+        self.props.saveAndContinue(saveData);
+        self.props.setFlag(true);
+        
+        
+      }) 
+      
     }
   }
+}
+
+componentWillReceiveProps(nextProps){
+  this.loadData();
 }
 
   onMultiDelete = () => { 
@@ -373,7 +385,7 @@ async componentWillReceiveProps(nextProps){
 
   setIndexForItem = () => {
     let data = [];
-    let items = this.props.itemLayout3Reducer.previewInfo;
+    let items = this.props.itemLayout3Reducer.previewInfo;    
     for (let i = 0; i < items.length; i++) {
       let temp = {
         key: i,
@@ -389,6 +401,14 @@ async componentWillReceiveProps(nextProps){
     data = this.getUnique(data, "objectName")
     return data;
   };
+
+  saveAll = () => {
+    this.setState({disableSaveAll: true})
+    this.props.saveAll(this.props.monhoc)
+    openNotificationWithIcon('success')
+    this.loadData();
+    
+  }
 
     render() {
       const components = {
@@ -419,7 +439,7 @@ async componentWillReceiveProps(nextProps){
       onChange: this.onSelectChange
     };
     const hasSelected = selectedRowKeys.length > 0;
-
+    console.log(this.state.disableSaveAll)
       return (
         <div>
           {this.props.isReview === true ? null : <div style={{ marginBottom: 16, marginTop: 10 }}>
@@ -435,11 +455,8 @@ async componentWillReceiveProps(nextProps){
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
            <Button style={{float: "right"}}
-            onClick={() => {
-              this.props.saveAll(this.props.monhoc)
-              openNotificationWithIcon('success')
-            }
-          }
+          //  disabled={this.state.disableSaveAll}
+            onClick={this.saveAll}
           >
             Lưu tất cả
           </Button>

@@ -124,7 +124,7 @@ class TableItem extends Component {
   }
 
   async getData() {
-    return $.getData2(this.props.subjectid).then(res => {
+    return $.getData2(this.props.monhoc).then(res => {
         return res.data
     }).then(resp => {
         return resp.Description;

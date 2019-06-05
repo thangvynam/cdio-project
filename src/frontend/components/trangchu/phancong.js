@@ -157,19 +157,20 @@ class PhanCong extends Component {
     if(this.state.selecteditem1.length > 0) {
       $.addTeacherReview({idTeacher: this.state.selecteditem1, idTTC: this.props.monhoc})
       .then(res => {
-        this.setState({selecteditem1: []});
+        
         $.getTeacherList({thong_tin_chung_id: this.props.monhoc, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
           if(resdata.length > 0) {
             data = resdata.map(item => {
-              return {key: item.id,
+              return {
+                key: item.id,
               ...item}
             })
-            
           }
           this.setState({teacherList: data})
+          this.setState({selecteditem1: []});
         })
 
         $.getTeacherListReview({thong_tin_chung_id: this.props.monhoc})
@@ -235,11 +236,13 @@ class PhanCong extends Component {
       selectedRowKeys1,
       width: "20",
       onChange: this.onSelectChange1,
+      hideDefaultSelections: true
     };
     const rowSelection2 = {
       selectedRowKeys2,
       width: "20",
       onChange: this.onSelectChange2,
+      hideDefaultSelections: true
     };
     return (
       <div className="section-layout">

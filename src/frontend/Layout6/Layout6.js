@@ -14,7 +14,7 @@ class Layout6 extends Component {
     return (
       <React.Fragment>
         <div className="section-layout">
-          {this.props.isReview === true ? null : <MainForm />}
+          {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc}/>}
         </div>
         <div className="section-layout">
           <Tooltip placement="topLeft">
@@ -37,7 +37,7 @@ class Layout6 extends Component {
           </Element>
         </div>
         <div className="section-layout">
-          <LogForm />
+          <LogForm monhoc={this.props.monhoc}/>
         </div>
 
       </React.Fragment>

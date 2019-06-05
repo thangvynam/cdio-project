@@ -322,9 +322,9 @@ class TableItem extends Component {
   componentWillReceiveProps(nextProps) {
     if (
       !this.props.itemRule.isLoaded &&
-      nextProps.subjectId !== null &&
-      nextProps.subjectId !== undefined &&
-      nextProps.subjectId !== ""
+      this.props.monhoc !== null &&
+      this.props.monhoc !== undefined &&
+      this.props.monhoc !== ""
     ) {
       this.props.onChangeIsLoaded(true);
       this.setState({ subjectId: this.props.monhoc });

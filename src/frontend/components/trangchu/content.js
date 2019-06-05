@@ -100,14 +100,14 @@ class Content extends Component {
         let ctdt = this.props.content_ctdt;
         let idUser = JSON.parse(localStorage.getItem('user')).data.Id;
         let obj = {
-            id_ctdt : ctdt,
-            id_mon : id,
-            id_giaovien : idUser,
+            id_ctdt: ctdt,
+            id_mon: id,
+            id_giaovien: idUser,
         }
 
-        if(this.props.content_type ==="itusurvey") {
+        if (this.props.content_type === "itusurvey") {
             $.getSurveyId(obj).then(res => {
-                if(res.data[0])
+                if (res.data[0])
                     this.props.onUpdateIdSurvey(res.data[0].id)
             })
         }
@@ -180,58 +180,58 @@ class Content extends Component {
         let parent = this.props.content_parent;
         let action = this.props.content_action;
         let subjectName = this.getSubjectName(this.props.subjectList, monhoc);
-        
+
         switch (type) {
             case "de-cuong-mon-hoc": {
                 switch (action) {
                     case "phancong": {
-                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                            subjectList = this.props.subjectList.filter(item => 
+                        if (khoi !== "" && khoi !== undefined && khoi !== null) {
+                            subjectList = this.props.subjectList.filter(item =>
                                 item.IdSubjectBlock === +khoi && item.del_flat != 1
                             );
                         }
                         else {
-                            subjectList = this.props.subjectList.filter(item => 
+                            subjectList = this.props.subjectList.filter(item =>
                                 item.del_flat != 1
                             );
                         }
-                    }break;
+                    } break;
 
                     case "biensoan": {
-                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                            subjectList = this.props.subjectList.filter(item => 
+                        if (khoi !== "" && khoi !== undefined && khoi !== null) {
+                            subjectList = this.props.subjectList.filter(item =>
                                 item.IdSubjectBlock === +khoi &&
                                 item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
                             );
                         }
                         else {
-                            subjectList = this.props.subjectList.filter(item => 
+                            subjectList = this.props.subjectList.filter(item =>
                                 item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
                             );
                         }
-                        
-                    }break;
+
+                    } break;
 
                     case "review-subject": {
-                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                            subjectList = this.props.subjectList.filter(item => 
+                        if (khoi !== "" && khoi !== undefined && khoi !== null) {
+                            subjectList = this.props.subjectList.filter(item =>
                                 item.IdSubjectBlock === +khoi &&
                                 item.del_flat != 1 && this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
                             );
                         }
                         else {
-                            subjectList = this.props.subjectList.filter(item => 
+                            subjectList = this.props.subjectList.filter(item =>
                                 item.del_flat != 1 && this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
                             );
                         }
-                        
-                    }break;
+
+                    } break;
 
                     default: {
                         subjectList = [];
                     }
                 }
-                
+
             } break;
             case 'itusurvey': {
 
@@ -263,7 +263,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <ThongTinChung idMH={this.props.content_monhoc} />
                         </div>
@@ -275,7 +275,7 @@ class Content extends Component {
                     <React.Fragment>
                         <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}
                         >
-                            <div  className="header-child">
+                            <div className="header-child">
                                 <span>Mô Tả Môn Học</span>
                                 <Direction
                                     subjectName={subjectName}
@@ -287,7 +287,7 @@ class Content extends Component {
                                 />
 
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <Layout2 monhoc={monhoc} />
                         </div>
@@ -310,7 +310,7 @@ class Content extends Component {
                                 />
 
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <Layout3 monhoc={monhoc} />
                         </div>
@@ -332,7 +332,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <Layout4 monhoc={monhoc} />
                         </div>
@@ -354,7 +354,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <Layout5 monhoc={monhoc} />
                         </div>
@@ -376,7 +376,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <Layout6 monhoc={monhoc} />
                         </div>
@@ -398,7 +398,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <Layout7 monhoc={monhoc} />
                         </div>
@@ -420,7 +420,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <Layout8 monhoc={monhoc} />
                         </div>
@@ -442,7 +442,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <Layout9 monhoc={monhoc} />
                         </div>
@@ -465,9 +465,9 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
-                            <ExportFile monhoc={monhoc}/>
+                            <ExportFile monhoc={monhoc} />
                         </div>
                     </React.Fragment>
                 ); break;
@@ -488,7 +488,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <ThongTinChung idMH={this.props.content_monhoc} />
                     </React.Fragment>
                 ); break
@@ -509,8 +509,8 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
-                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt} idSurvey={this.props.idSurveyReducer.idSurvey}/>
+                        </Row>
+                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt} idSurvey={this.props.idSurveyReducer.idSurvey} />
                     </React.Fragment>
                 )
                 break;
@@ -531,7 +531,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <PhanCong monhoc={this.props.content_monhoc} />
                         </div>
@@ -555,7 +555,7 @@ class Content extends Component {
                                     content_action={action}
                                 />
                             </div>
-                                </Row>
+                        </Row>
                         <div className="wrapper-custom-layout">
                             <ReviewSyllabus idMH={this.props.content_monhoc} />
                         </div>
@@ -589,7 +589,7 @@ class Content extends Component {
                                     dataSource={subjectList}
                                     pagination={{
                                         onChange: page => {
-                                            
+
                                         },
                                         pageSize: 10,
                                     }}
@@ -606,14 +606,14 @@ class Content extends Component {
                                                         <List.Item.Meta
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
-                                                            
-                                                            action === "phancong" ?
-                                                            <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            : action === "biensoan" ? 
-                                                            <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            : <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>                       
-                                                        }
-                                                        
+
+                                                                action === "phancong" ?
+                                                                    <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                                    : action === "biensoan" ?
+                                                                        <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                                        : <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{ color: "white" }} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
+                                                            }
+
 
                                                         />
                                                     </List.Item>
@@ -633,96 +633,101 @@ class Content extends Component {
                                 : type === "benchmark-matrix" ? <BenchMark />
                                     : type === "itusurvey" ?
                                         <React.Fragment>
-                                            <div>
-                                            <Direction
-                                                subjectName={subjectName}
-                                                content_khoi={khoi}
-                                                content_ctdt={ctdt}
-                                                content_parent={parent}
-                                                content_type={type}
-                                                content_action={action}
-                                            />
-                                                <ListSurvey 
-                                                khoi={khoi}
-                                                ctdt={ctdt}
-                                                parent={parent}
-                                                type={type}
-                                                action={action}
-                                                subjectList={subjectList}
-                                                onClick={this.onClick}/>
+                                            <Row className={`col-right-title header-fixed ${this.state.scrolling ? 'fixedCss' : ''}`}>
+                                                <div className="header-child">
+                                                    <span>ITU Survey</span>
+                                                    <Direction
+                                                        subjectName={subjectName}
+                                                        content_khoi={khoi}
+                                                        content_ctdt={ctdt}
+                                                        content_parent={parent}
+                                                        content_type={type}
+                                                        content_action={action}
+                                                    />
+                                                </div>
+                                            </Row>
+                                            <div className="wrapper-custom-layout">
+                                                <ListSurvey
+                                                    khoi={khoi}
+                                                    ctdt={ctdt}
+                                                    parent={parent}
+                                                    type={type}
+                                                    action={action}
+                                                    subjectList={subjectList}
+                                                    onClick={this.onClick} />
                                             </div>
                                         </React.Fragment>
 
-                                    : action === "chinhsua-cdr" ? (
-                                        <div>Chỉnh sửa cdr</div>
-                                    )
-                                    : action === "danhgia-cdr" ? (
-                                        <div>Đánh giá cdr</div>
-                                    )
-                                    : action === "khaosat-cdr" ? (
-                                        <div>Khảo sát cdr</div>
-                                    )
-                                        : type === "chuan-dau-ra" ? (
-                                            <EditOutcomeStandard ctdt={ctdt} />
+                                        : action === "chinhsua-cdr" ? (
+                                            <div>Chỉnh sửa cdr</div>
                                         )
-                                            : type === "phan-cong-giang-day" ? (
-                                                <TeachingManage ctdt={ctdt} />
+                                            : action === "danhgia-cdr" ? (
+                                                <div>Đánh giá cdr</div>
                                             )
-                                            : type === "khao-sat-chuan-dau-ra" ? (
-                                                <OSSurvey />
-                                            )
-                                            :type === "edit-ctdt" ? (
-                                                <div>
-                                                <Direction
-                                                            subjectName={subjectName}
-                                                            content_khoi={khoi}
-                                                            content_ctdt={ctdt}
-                                                            content_parent={parent}
-                                                            content_type={type}
-                                                            content_action={action}
-                                                        />
-                                                        <EditEducationProgram ctdt={ctdt} />
-                                                        </div>
-                                            )
-                                                : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                                    <div>
-                                                        Trang chủ chương trình đào tạo
-                                                    </div>
+                                                : action === "khaosat-cdr" ? (
+                                                    <div>Khảo sát cdr</div>
                                                 )
-                                                    : parent === "ctdt" ? (
-                                                        <EducationProgram />
+                                                    : type === "chuan-dau-ra" ? (
+                                                        <EditOutcomeStandard ctdt={ctdt} />
                                                     )
-                                                        : parent === "danh-muc" ? <Danhmuc />
-                                                            : parent === "cdr" ? ctdt === "edit" ? (
-                                                                <React.Fragment><EditOutcomeStandard /></React.Fragment>
+                                                        : type === "phan-cong-giang-day" ? (
+                                                            <TeachingManage ctdt={ctdt} />
+                                                        )
+                                                            : type === "khao-sat-chuan-dau-ra" ? (
+                                                                <OSSurvey />
                                                             )
-                                                                : <React.Fragment><OutcomeStandard /></React.Fragment>
-                                                                : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
-                                                                    : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
-                                                                        : parent === "qlnd" ? <React.Fragment><UserManage /></React.Fragment>
-                                                                            : parent === "survey-matrix" ? <SurveyMatrix />
-                                                                                : parent === "view-survey" ? (
-                                                                                    <React.Fragment>
-                                                                                        <Row className="col\-right\-title aa">
-                                                                                            <div>
-                                                                                                <span>Xem Khảo Sát</span>
-                                                                                                <Direction
-                                                                                                    subjectName={subjectName}
-                                                                                                    content_khoi={khoi}
-                                                                                                    content_ctdt={ctdt}
-                                                                                                    content_parent={parent}
-                                                                                                    content_type={type}
-                                                                                                    content_action={action}
-                                                                                                />
-                                                                                            </div>
-                                </Row>
-                                                                                        <div className="wrapper-custom-layout">
-                                                                                            <ViewSurvey />
-                                                                                        </div>
-                                                                                    </React.Fragment>
+                                                                : type === "edit-ctdt" ? (
+                                                                    <div>
+                                                                        <Direction
+                                                                            subjectName={subjectName}
+                                                                            content_khoi={khoi}
+                                                                            content_ctdt={ctdt}
+                                                                            content_parent={parent}
+                                                                            content_type={type}
+                                                                            content_action={action}
+                                                                        />
+                                                                        <EditEducationProgram ctdt={ctdt} />
+                                                                    </div>
+                                                                )
+                                                                    : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
+                                                                        <div>
+                                                                            Trang chủ chương trình đào tạo
+                                                    </div>
+                                                                    )
+                                                                        : parent === "ctdt" ? (
+                                                                            <EducationProgram />
+                                                                        )
+                                                                            : parent === "danh-muc" ? <Danhmuc />
+                                                                                : parent === "cdr" ? ctdt === "edit" ? (
+                                                                                    <React.Fragment><EditOutcomeStandard /></React.Fragment>
                                                                                 )
-                                                                                    : parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
-                                                                                        : null;
+                                                                                    : <React.Fragment><OutcomeStandard /></React.Fragment>
+                                                                                    : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
+                                                                                        : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
+                                                                                            : parent === "qlnd" ? <React.Fragment><UserManage /></React.Fragment>
+                                                                                                : parent === "survey-matrix" ? <SurveyMatrix />
+                                                                                                    : parent === "view-survey" ? (
+                                                                                                        <React.Fragment>
+                                                                                                            <Row className="col\-right\-title aa">
+                                                                                                                <div>
+                                                                                                                    <span>Xem Khảo Sát</span>
+                                                                                                                    <Direction
+                                                                                                                        subjectName={subjectName}
+                                                                                                                        content_khoi={khoi}
+                                                                                                                        content_ctdt={ctdt}
+                                                                                                                        content_parent={parent}
+                                                                                                                        content_type={type}
+                                                                                                                        content_action={action}
+                                                                                                                    />
+                                                                                                                </div>
+                                                                                                            </Row>
+                                                                                                            <div className="wrapper-custom-layout">
+                                                                                                                <ViewSurvey />
+                                                                                                            </div>
+                                                                                                        </React.Fragment>
+                                                                                                    )
+                                                                                                        : parent === "info" ? <React.Fragment><UserInfo /></React.Fragment>
+                                                                                                            : null;
                 }; break;
             }
             default: {
@@ -758,7 +763,7 @@ const mapStateToProps = (state) => {
         majors: state.majors,
         teacherSubject: state.datactdt.teacherSubject,
         teacherReviewSubject: state.datactdt.teacherReviewSubject,
-        idSurveyReducer : state.idSurveyReducer,
+        idSurveyReducer: state.idSurveyReducer,
     }
 }
 const mapDispatchToProps = (dispatch) => {
@@ -777,7 +782,7 @@ const mapDispatchToProps = (dispatch) => {
         onLoadPrograms: programsAction.onLoadPrograms,
         onLoadLevels: levelsAction.onLoadLevels,
         onLoadMajors: majorsAction.onLoadMajors,
-        onUpdateIdSurvey : updateIdSurvey,
+        onUpdateIdSurvey: updateIdSurvey,
     }, dispatch);
 
 }

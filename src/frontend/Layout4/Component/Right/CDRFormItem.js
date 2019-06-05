@@ -33,7 +33,6 @@ class CDRFormItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      id: this.props.subjectId,
       isLoaded: false,
       loadcdrmdhd: false
     }
@@ -193,8 +192,8 @@ class CDRFormItem extends Component {
             var previewInfo = this.props.cdrtable.previewInfo;
             newData.previewInfo = previewInfo.concat(data);
             
-        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.subjectId)
-        this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc)
         
             this.props.onAddCDRData(newData);
             message.info("Thêm thành công!");
@@ -214,12 +213,12 @@ class CDRFormItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    this.setState({id: nextProps.subjectId})
-    if(this.state.isLoaded === false && this.state.id !== null && this.state.id !== undefined && this.state.id !== ""){
+
+    if(this.state.isLoaded === false && this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== ""){
       this.setState({isLoaded: true});
       var self = this;
-      if(this.state.id !== "" && this.state.id !== undefined) {
-        $.collectMtmh({ data: {thong_tin_chung_id: this.state.id}})
+      if(this.props.monhoc !== "" && this.props.monhoc !== undefined) {
+        $.collectMtmh({ data: {thong_tin_chung_id: this.props.monhoc}})
         .then(function (response) {
           console.log(response.data)
             self.props.updateMtmh(response.data);
@@ -298,10 +297,10 @@ class CDRFormItem extends Component {
     // .catch(function (error) {
     //   console.log(error);
     // });
-    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== ""){
+    if(this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== ""){
       var self = this;
-      if(this.state.id !== "" && this.state.id !== undefined) {
-        $.collectMtmh({ data: {thong_tin_chung_id: this.props.subjectId}})
+      if(this.props.monhoc !== "" && this.props.monhoc !== undefined) {
+        $.collectMtmh({ data: {thong_tin_chung_id: this.props.monhoc}})
         .then(function (response) {
           console.log(response.data)
             self.props.updateMtmh(response.data);

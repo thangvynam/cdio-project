@@ -12,7 +12,7 @@ class Layout4 extends Component {
     return (
       <React.Fragment>
         <div className="section-layout">
-          {this.props.isReview === true ? null : <CDRForm />}
+          {this.props.isReview === true ? null : <CDRForm monhoc={this.props.monhoc}/>}
         </div>
         <div className="section-layout">
 
@@ -26,7 +26,7 @@ từ mô tả được sử dụng từ các động từ <br />chi tiết của
           <CDRTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
         </div>
         <div className="section-layout">
-          <LogForm />
+          <LogForm monhoc={this.props.monhoc}/>
         </div>
       </React.Fragment>
 

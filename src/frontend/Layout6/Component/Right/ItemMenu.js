@@ -42,9 +42,9 @@ class ItemMenu extends Component {
   // }
 
   componentDidMount() {
-    if (this.props.subjectId !== null
-      && this.props.subjectId !== undefined && this.props.subjectId !== "") {
-      this.onGetItemMenu(this.props.subjectId);
+    if (this.props.monhoc !== null
+      && this.props.monhoc !== undefined && this.props.monhoc !== "") {
+      this.onGetItemMenu(this.props.monhoc);
     }
   }
 
@@ -172,8 +172,8 @@ class ItemMenu extends Component {
     previewData.evalActs = tempInfo.evalActs;
     previewData.del_flag = 0;
 
-    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
-    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
 
 
     this.props.onAddItemKHGDTH(JSON.stringify(previewData));

@@ -19,11 +19,11 @@ import {
   saveLogObject
 } from "../../../Constant/ActionType";
 import { bindActionCreators } from "redux";
-import { DragDropContext, DragSource, DropTarget } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
+import { DragSource, DropTarget } from "react-dnd";
 import TextArea from "antd/lib/input/TextArea";
 import $ from './../../../helpers/services';
 import { getCurrTime } from "../../../utils/Time";
+import DragDropHTML5 from '../../../html5Backend/html5Backend';
 
 const { Option } = Select;
 
@@ -840,4 +840,4 @@ const mapDispatchToProps = dispatch => {
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(DragDropContext(HTML5Backend)(TableItem));
+)(DragDropHTML5(TableItem));

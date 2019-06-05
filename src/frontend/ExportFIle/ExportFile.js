@@ -447,7 +447,6 @@ const mapStateToProps = (state, ownProps) => {
         itemLayout7Reducer: state.itemLayout7Reducer,
         itemLayout8Reducer: state.itemLayout8Reducer,
         itemLayout9Reducer: state.itemLayout9Reducer,
-        subjectid: state.subjectid,
         cdrmdhddb: state.cdrmdhddb,
     }
 }

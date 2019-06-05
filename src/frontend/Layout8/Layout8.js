@@ -13,7 +13,7 @@ class Layout8 extends Component {
         return (
             <React.Fragment>
                 <div className="section-layout">
-                    {this.props.isReview === true ? null : <TNForm />}
+                    {this.props.isReview === true ? null : <TNForm monhoc={this.props.monhoc}/>}
                 </div>
                 <div className="section-layout">
                     <Element name="test1" className="element" >
@@ -21,7 +21,7 @@ class Layout8 extends Component {
                     </Element>
                 </div>
                 <div className="section-layout">
-                    <LogForm />
+                    <LogForm monhoc={this.props.monhoc}/>
                 </div>
             </React.Fragment>
 

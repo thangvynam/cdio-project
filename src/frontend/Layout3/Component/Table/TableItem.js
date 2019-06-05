@@ -271,7 +271,7 @@ async componentWillReceiveProps(nextProps){
 
   onMultiDelete = () => { 
     const selectedRow = this.state.selectedRowKeys;
-
+    console.log(selectedRow[0])
     // delete one
     if (selectedRow.length === 1) {
       this.delete(selectedRow[0]);
@@ -282,6 +282,9 @@ async componentWillReceiveProps(nextProps){
     if (selectedRow.length === this.props.itemLayout3Reducer.previewInfo.length) {
       let data = [];
       this.props.itemLayout3Reducer.previewInfo.forEach(element => {
+        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element.objectName}, Mô tả : ${element.description}, CDR CDIO : ${element.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc);
+          this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element.objectName}, Mô tả : ${element.description}, CDR CDIO : ${element.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      
         element.del_flag = 1;
         data.push(element)
       });
@@ -299,6 +302,9 @@ async componentWillReceiveProps(nextProps){
     selectedRow.forEach(element => {
       this.props.itemLayout3Reducer.previewInfo.forEach((element2, index) => {
         if(element === index) {
+          this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element2.objectName}, Mô tả : ${element2.description}, CDR CDIO : ${element2.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc);
+          this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element2.objectName}, Mô tả : ${element2.description}, CDR CDIO : ${element2.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      
           element2.del_flag = 1;
         }
         data.push(element2)
@@ -325,7 +331,9 @@ async componentWillReceiveProps(nextProps){
 
   delete(key) {
     let deleteData = this.props.itemLayout3Reducer.previewInfo[key]
-    this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: ${deleteData.objectName}, ${deleteData.description}, ${deleteData.standActs}`, this.props.logReducer.contentTab, this.props.monhoc);
+    this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu : ${deleteData.objectName},Mô tả: ${deleteData.description},CDR CDIO : ${deleteData.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc);
+    this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu : ${deleteData.objectName},Mô tả: ${deleteData.description},CDR CDIO : ${deleteData.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
+
     this.props.handleDelete(key);
     this.setState({ selectedRowKeys: [] });
   }

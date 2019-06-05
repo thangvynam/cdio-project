@@ -623,7 +623,7 @@ componentDidUpdate(){
                                                             else {
                                                                 //check param 5
                                                                 if(monhoc !== "" && monhoc !== undefined && monhoc !==null) {
-                                                                    if(!this.checkSubjectExist2(this.props.subjectList, monhoc)) {
+                                                                    if(!this.checkInTeacherSubject(this.props.teacherSubject, +monhoc)) {
                                                                         console.log("wrong param 5")
                                                                         return <Page404/>;
                                                                     }

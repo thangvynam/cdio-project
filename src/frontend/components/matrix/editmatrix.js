@@ -272,12 +272,27 @@ class EditMatrix extends Component {
     return "";
   }
 
+  checkInTeacherSubject = (teacherSubject, idSubject) => {
+    for(let i = 0;i < teacherSubject.length;i++) {
+        if(teacherSubject[i].IdSubject === idSubject) {
+            return true;
+        }
+    }
+    return false;
+  }
+  
+  checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+    for(let i = 0;i < teacherReviewSubject.length;i++) {
+        if(teacherReviewSubject[i].idTTC === idSubject) {
+            return true;
+        }
+    }
+    return false;
+  }
 
   componentDidMount() {
 
-    if(this.props.isLoadEditMatrix === "false") {
-      this.props.updateIsLoadEditMatrix("true");
-      if(this.props.subjectList.length > 0) {
+    if(this.props.subjectList.length > 0) {
         let subjectListId = [];
         this.props.subjectList.map(item => {
             subjectListId.push(item.IdSubject);
@@ -285,6 +300,7 @@ class EditMatrix extends Component {
         let data = {
             data: subjectListId
         }
+        if(data.data.length > 0) {
           $.getStandardMatrix(data).then((res) => { 
             this.setState({ tempMatrix: res.data });
             let data = [];
@@ -313,20 +329,17 @@ class EditMatrix extends Component {
               }
             }
             this.props.updateEditMatrix(data);
-          })
-      }
-      else {
-        this.props.updateEditMatrix([]);
-      }
-      
+          }) 
+        }
+           
     }
   }
 
   componentWillReceiveProps(nextProps) {
     
-    if(this.props.isLoadEditMatrix === "false") {
+    if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+      console.log('receive')
       this.props.updateIsLoadEditMatrix("true");
-      if(nextProps.subjectList.length > 0) {
         let subjectListId = [];
         this.props.subjectList.map(item => {
             subjectListId.push(item.IdSubject);
@@ -334,6 +347,7 @@ class EditMatrix extends Component {
         let data = {
             data: subjectListId
         }
+        if(data.data.length > 0) {
           $.getStandardMatrix(data).then((res) => {
             this.setState({ tempMatrix: res.data });
             let data = [];
@@ -364,10 +378,9 @@ class EditMatrix extends Component {
             }
             this.props.updateEditMatrix(data);
           })
-      }
-      else {
-        this.props.updateEditMatrix([]);
-      }
+        }
+          
+
       
     }
 
@@ -506,7 +519,9 @@ class EditMatrix extends Component {
     };
 
     return (
-      columns.length > this.columns.length && <React.Fragment>
+      columns.length > this.columns.length && 
+      this.props.subjectList.length > 0 &&
+      <React.Fragment>
         <div style={{ margin: "10px" }}>
           <Button onClick={this.saveAll}>Lưu lại</Button>
           <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} />
@@ -537,7 +552,9 @@ const mapStateToProps = (state) => {
     editMatrixEditState: state.editmatrixeditstate,
     subjectList: state.subjectlist,
     isLoadEditMatrix: state.isloadeditmatrix,
-    cdrCdio: state.cdrcdio
+    cdrCdio: state.cdrcdio,
+    teacherSubject: state.datactdt.teacherSubject,
+    teacherReviewSubject: state.datactdt.teacherReviewSubject,
   }
 }
 const mapDispatchToProps = (dispatch) => {

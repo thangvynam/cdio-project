@@ -13,6 +13,7 @@ import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
 import NewNav from '../decuongmonhoc/index/navbar/newnav';
 import Direction from './direction';
+import  queryString from 'query-string';
 import _ from 'lodash';
 class Home extends Component {
     constructor(props) {
@@ -233,7 +234,7 @@ class Home extends Component {
                 }
               }
               dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
-              
+
               $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
               .then(res => { 
                 if(res.data !== undefined && res.data !== null){
@@ -244,8 +245,7 @@ class Home extends Component {
                   if(res.data !== undefined && res.data !== null){
                     this.props.updateTeacherReviewSubject(res.data);
                   }
-                  if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role) || 
-                  this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                  if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
                     dataSubject = dataSubject.filter(item => 
                         item.del_flat != 1
                     );
@@ -386,6 +386,7 @@ componentDidUpdate(){
 
     render() {
             if (!localStorage.getItem("user")) return <Redirect to="/" />;
+            console.log(this.props.subjectList)
             let type = this.props.match.params.type;
             let ctdt = this.props.match.params.ctdt;
             let khoi = this.props.match.params.khoi;
@@ -629,6 +630,7 @@ componentDidUpdate(){
                             content_khoi={this.props.match.params.khoi}
                             content_ctdt={this.props.match.params.ctdt}
                             content_parent={this.props.match.params.parent}
+                            content_action={this.props.match.params.action}
                         />
                     </Col>
                     <Col span={22} className="col-right">
@@ -642,6 +644,7 @@ componentDidUpdate(){
                                 content_khoi={this.props.match.params.khoi}
                                 content_ctdt={this.props.match.params.ctdt}
                                 content_parent={this.props.match.params.parent}
+                                content_action={this.props.match.params.action}
                                 subjectName={subjectName}/>
                         </Row>
                     </Col>
@@ -651,7 +654,6 @@ componentDidUpdate(){
                 GirdLayout = (<Row>
                     <Col span={5} className="col-left">
                         <MenuLeft
-                            
                             collapse={this.state.collapse}
                             theme={this.state.theme}
                             defaultSelectedKeys={[this.props.match.params.parent]}
@@ -661,6 +663,7 @@ componentDidUpdate(){
                             content_khoi={this.props.match.params.khoi}
                             content_ctdt={this.props.match.params.ctdt}
                             content_parent={this.props.match.params.parent}
+                            content_action={this.props.match.params.action}
                         />
                     </Col>
                     <Col span={19} className="col-right">
@@ -674,6 +677,7 @@ componentDidUpdate(){
                                 content_khoi={this.props.match.params.khoi}
                                 content_ctdt={this.props.match.params.ctdt}
                                 content_parent={this.props.match.params.parent}
+                                content_action={this.props.match.params.action}
                                 subjectName={subjectName}/>
                         </Row>
                     </Col>

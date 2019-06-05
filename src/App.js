@@ -44,9 +44,10 @@ class App extends Component {
         <Route exact path="/:parent/" component={Subject} />
         <Route exact path="/:parent/:ctdt/" component={Subject} />
         <Route exact path="/:parent/:ctdt/:type/" component={Subject} />
-        <Route exact path="/:parent/:ctdt/:type/:khoi/" component={Subject} />
-        <Route exact path="/:parent/:ctdt/:type/:khoi/:monhoc/" component={Subject} />
-        <Route exact path="/:parent/:ctdt/:type/:khoi/:monhoc/:tab" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:action/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:action/:khoi/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:action/:khoi/:monhoc/" component={Subject} />
+        <Route exact path="/:parent/:ctdt/:type/:action/:khoi/:monhoc/:tab" component={Subject} />
         <Route component={Page404} />
       </Switch>
       </BrowserRouter>

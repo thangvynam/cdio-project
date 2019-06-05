@@ -5,8 +5,8 @@ import {
   Select, Input, notification
 } from 'antd';
 import { connect } from 'react-redux';
-import { DragDropContext, DragSource, DropTarget } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
+import { DragSource, DropTarget } from "react-dnd";
+import DragDropHTML5 from '../../../html5Backend/html5Backend';
 import TextArea from "antd/lib/input/TextArea";
 
 import {
@@ -546,4 +546,4 @@ const mapDispatchToProps = (dispatch) => {
     }
   }
 }
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(TableItem));
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropHTML5(TableItem));

@@ -5,10 +5,10 @@ import { Table, Divider, Tag, Button,
 import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb,saveLogObject } from '../../../Constant/ActionType';
-import HTML5Backend from 'react-dnd-html5-backend';
-import { DragDropContext, DragSource, DropTarget } from 'react-dnd';
+import { DragSource, DropTarget } from 'react-dnd';
 import { getCurrTime } from '../../../utils/Time';
 import $ from "../../../helpers/services";
+import DragDropHTML5 from '../../../html5Backend/html5Backend';
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -1125,4 +1125,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropHTML5(CDRTableItem));

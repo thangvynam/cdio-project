@@ -5,8 +5,8 @@ import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
 import { changeDGData, addDGData, deleteDGData, isLoaded7, updateChudeDanhGia, updateCDRDanhGia, saveLog, saveLogObject } from '../../../Constant/ActionType';
 import React, { Component } from 'react';
-import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
+
+import DragDropHTML5 from '../../../html5Backend/html5Backend';
 import { connect } from 'react-redux';
 import axios from "axios"
 import { getCurrTime } from '../../../utils/Time';
@@ -783,4 +783,4 @@ const mapDispatchToProps = (dispatch) => {
   }, dispatch);
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(itemLayout7ReducerItem));
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropHTML5(itemLayout7ReducerItem));

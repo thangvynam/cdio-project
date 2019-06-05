@@ -129,52 +129,53 @@ class Survey extends React.Component {
         let user = localStorage.getItem('user');
         let jsonData = JSON.parse(user)
 
-        let data = {
-            id_mon: this.props.subjectId,
-            id_giaovien: jsonData.data.Id,
-            id_ctdt: this.props.ctdt
-        }
+        const parsed = queryString.parse(window.location.search);
 
-        let response = await $.checkStatus(data)
-        if (response.data.status === 1) {
-            await this.setState({isDone: true})
-        }
-
-        await this.setState({id_survey: response.data.id})
-
-        let curTime = getCurrTime()
-        let end_date = response.data.end_date;
-        if (curTime > end_date) {
-            notification["error"]({
-                message: "Đã hết hạn thực hiện khảo sát",
-                duration: 3
-              })
-              this.setState({isOver: true})
-              return;
-        }
-
-        console.log(this.props.idSurvey)
-        let responseQA = await $.getIDQA(this.props.idSurvey)
-
-        if(response.data){
-            const id = responseQA.data.id;
-            //axios.get(`/get-surveyqa/${id}`).then(res => {
-            $.getSurveyQA(id).then(res => {
-                this.setState ({ 
-                    resultQA : res.data[0],
-                })
-            })
-
-            let body = {
-                id_survey: this.props.idSurvey
+        if (parsed.id) {
+            const id = parsed.id;
+            let response = await $.checkStatus(id)
+            if (response.data.status === 1) {
+                await this.setState({ isDone: true })
             }
-            //axios.get(`/get-survey/${id}`).then(res => {
-                $.getSurveyITU(body).then(res => {
-                this.setState({
-                    resultITU : res.data,
+
+            await this.setState({ id_survey: id })
+
+            let curTime = getCurrTime()
+            let end_date = response.data.end_date;
+            if (curTime > end_date) {
+                notification["error"]({
+                    message: "Đã hết hạn thực hiện khảo sát",
+                    duration: 3
                 })
-            })
-        }          
+                this.setState({ isOver: true })
+                return;
+            }
+
+            console.log(this.props.idSurvey)
+            let responseQA = await $.getIDQA(id)
+
+            if (response.data) {
+                const id = responseQA.data.id;
+                //axios.get(`/get-surveyqa/${id}`).then(res => {
+                $.getSurveyQA(id).then(res => {
+                    this.setState({
+                        resultQA: res.data[0],
+                    })
+                })
+
+                let body = {
+                    id_survey: id
+                }
+                //axios.get(`/get-survey/${id}`).then(res => {
+                $.getSurveyITU(body).then(res => {
+                    this.setState({
+                        resultITU: res.data,
+                    })
+                })
+            }
+        }
+
+                
     }
 
     genForm() {
@@ -258,7 +259,7 @@ class Survey extends React.Component {
             q9: surveyData.q9,
             q10: surveyData.q10,
             q11: surveyData.q11,
-            id_survey: this.props.idSurvey,
+            id_survey: this.state.id_survey,
         }
 
         // $.setStatus(this.props.idSurvey).then(() => {
@@ -266,7 +267,7 @@ class Survey extends React.Component {
             .then((res) => {
                 let user = localStorage.getItem('user');
                 let jsonData = JSON.parse(user)
-                $.saveSurvey(dataConvert, this.props.idSurvey)
+                $.saveSurvey(dataConvert, this.state.id_survey)
                     .then(response => {
                         
                     });

@@ -34,7 +34,7 @@ class ItemMenu extends Component {
 
     componentDidMount() {
         if (this.props.itemLayout5Reducer.previewInfo.length == 0) {
-            this.props.collectDataRequest(this.props.subjectId);
+            this.props.collectDataRequest(this.props.monhoc);
         }
         //this.props.refreshData();
     }
@@ -64,7 +64,7 @@ class ItemMenu extends Component {
             }
             
         });
-        $.getEvalActs5({data: this.props.subjectId})
+        $.getEvalActs5({data: this.props.monhoc})
             .then(response => {
                 const data = response.data;
                 let map = new Map();
@@ -79,7 +79,7 @@ class ItemMenu extends Component {
                 }
             })
 
-            $.getStandardOutput5({data: this.props.subjectId})
+            $.getStandardOutput5({data: this.props.monhoc})
             .then(response => {
                 const data = response.data;
                 let array = [];
@@ -357,9 +357,9 @@ class ItemMenu extends Component {
 
                                 <Button type="primary" onClick={() => {
 
-                                    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
-                                    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.subjectId)
-                                    this.props.saveAndContinue(this.props.subjectId)
+                                    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
+                                    this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
+                                    this.props.saveAndContinue(this.props.monhoc)
                                 }} style={{ marginLeft: "15%" }}>
                                     Thêm
                                 </Button>

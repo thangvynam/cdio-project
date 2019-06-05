@@ -41,6 +41,15 @@ class Direction extends Component {
         return "";
     }
 
+    getActionName = (menuitem, id) => {
+        for(let i = 0;i < menuitem["de-cuong-mon-hoc"].children.length;i++) {
+            if(menuitem["de-cuong-mon-hoc"].children[i].id === id) {
+                return menuitem["de-cuong-mon-hoc"].children[i].name;
+            }
+        }
+        return "";
+    }
+
     getKhoiName = (dataCtdt, id) => {
         if(dataCtdt !== undefined && dataCtdt !== null) {
             for(let i = 0;i < dataCtdt.length;i++) {
@@ -57,6 +66,7 @@ class Direction extends Component {
         let parent = this.props.content_parent;
         let ctdt = this.props.content_ctdt;
         let type = this.props.content_type;
+        let action = this.props.content_action;
         let khoi = this.props.content_khoi;
         return(
             <div className="direction-css">
@@ -73,8 +83,12 @@ class Direction extends Component {
                     <Link  to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getTypeName(this.props.menuItem, type)}</span></Link>
                 : null}
                     <Divider type="vertical" />
+                {action !== "" && action !== undefined ? 
+                    <Link  to={`/${parent}/${ctdt}/${type}/${action}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getActionName(this.props.menuItem, action)}</span></Link>
+                : null}
+                    <Divider type="vertical" />
                 {khoi !== "" && khoi !== undefined && khoi !== "view" ? 
-                    <Link  to={`/${parent}/${ctdt}/${type}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getKhoiName(this.props.dataCtdt, khoi)}</span></Link>
+                    <Link  to={`/${parent}/${ctdt}/${type}/${action}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getKhoiName(this.props.dataCtdt, khoi)}</span></Link>
                 : null}
                     <Divider type="vertical" />
                 <span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.props.subjectName}</span>

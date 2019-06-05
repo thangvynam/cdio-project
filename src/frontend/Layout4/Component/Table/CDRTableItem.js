@@ -1124,4 +1124,5 @@ const mapDispatchToProps = (dispatch) => {
     onSaveReducer : saveLogObject
   }, dispatch);
 }
+
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(CDRTableItem));

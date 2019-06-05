@@ -87,96 +87,6 @@ class Content extends Component {
         }
     }
 
-
-    // state = { visible: false, isEditting: "" }
-    // addSubject = () => {
-    //     this.setState({
-    //         visible: true,
-    //     });
-    // }
-
-    // handleOk = (e) => {
-    //     let id = document.getElementById("subject-id").value;
-    //     let name = document.getElementById("subject-name").value;
-    //     if (id === "" || id === undefined) {
-    //         message.warning("Chưa nhập mã môn học!")
-    //     }
-    //     else {
-    //         if (name === "" || name === undefined) {
-    //             message.warning("Chưa nhập tên môn học!")
-    //         }
-    //         else {
-    //             axios.post('/add-subject', { data: { SubjectCode: id, SubjectName: name } }).then((res) => {
-    //                 var self = this;
-    //                 axios.get('/collect-subjectlist')
-    //                     .then(function (response) {
-    //                         self.props.updateSubjectList(response.data);
-    //                     })
-    //                     .catch(function (error) {
-    //                         console.log(error);
-    //                     });
-    //             });
-
-    //             this.props.updateIsLoadEditMatrix("false");
-    //             this.setState({
-    //                 visible: false,
-    //             });
-    //             openNotificationWithIcon('success');
-    //         }
-    //     }
-
-
-    // }
-
-    // handleCancel = (e) => {
-    //     this.setState({
-    //         visible: false,
-    //     });
-    // }
-    // handleDelete = (id) => {
-    //     let type = this.props.content_type;
-
-    //     if (id !== -1) {
-    //         const data = this.props.subjectList;
-    //         axios.post('/delete-subject', { data: { Id: data[id].Id } });
-    //         data.splice(id, 1);
-    //         this.props.updateSubjectList(data);
-    //         this.props.updateIsLoadEditMatrix("false");
-    //         this.setState({
-    //             visible: false,
-    //         });
-    //     }
-    // }
-
-    // edit = (id) => {
-    //     this.setState({
-    //         isEditting: id,
-    //     });
-    // }
-
-    // save = (index) => {
-    //     let id = document.getElementById("subject-id-edit").value;
-    //     let name = document.getElementById("subject-name-edit").value;
-    //     let type = this.props.content_type;
-    //     const data = this.props.subjectList;
-    //     axios.post('/edit-subject', { data: { Id: data[index].Id, SubjectCode_editted: id, SubjectName: name } });
-    //     data[index].SubjectCode = id;
-    //     data[index].SubjectName = name;
-
-    //     this.props.updateSubjectList(data);
-    //     this.props.updateIsLoadEditMatrix("false");
-    //     this.setState({
-    //         isEditting: "",
-    //     });
-    // }
-
-    // cancel = () => {
-    //     this.setState({
-    //         isEditting: "",
-    //     });
-    // }
-
-
     onClick = (id) => {
         this.props.updateIsLoad("false");
         this.props.updateSubjectId(id);
@@ -203,15 +113,6 @@ class Content extends Component {
         }
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
     }
-
-    // checkSubjectExist = (subjectlist, monhoc) => {
-    //     for (let i = 0; i < subjectlist.length; i++) {
-    //         if (subjectlist[i].Id.toString() === monhoc.toString()) {
-    //             return true;
-    //         }
-    //     }
-    //     return false;
-    // }
 
     checkInTeacherSubject = (teacherSubject, idSubject) => {
         for (let i = 0; i < teacherSubject.length; i++) {
@@ -270,45 +171,67 @@ class Content extends Component {
 
     render() {
         let fixedCss = "col-right-title header-fixed";
+        let userRole = JSON.parse(localStorage.getItem('user')).data.Role;
         var subjectList = [];
         let type = this.props.content_type;
         let ctdt = this.props.content_ctdt;
         let khoi = this.props.content_khoi;
         let monhoc = this.props.content_monhoc;
         let parent = this.props.content_parent;
+        let action = this.props.content_action;
         let subjectName = this.getSubjectName(this.props.subjectList, monhoc);
         
         switch (type) {
             case "de-cuong-mon-hoc": {
-                if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                    if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)
-                    || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.IdSubjectBlock === +khoi 
-                            && item.del_flat != 1
-                        );
+                switch (action) {
+                    case "phancong": {
+                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                            subjectList = this.props.subjectList.filter(item => 
+                                item.IdSubjectBlock === +khoi && item.del_flat != 1
+                            );
+                        }
+                        else {
+                            subjectList = this.props.subjectList.filter(item => 
+                                item.del_flat != 1
+                            );
+                        }
+                    }break;
+
+                    case "biensoan": {
+                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                            subjectList = this.props.subjectList.filter(item => 
+                                item.IdSubjectBlock === +khoi &&
+                                item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
+                            );
+                        }
+                        else {
+                            subjectList = this.props.subjectList.filter(item => 
+                                item.del_flat != 1 && this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
+                            );
+                        }
+                        
+                    }break;
+
+                    case "review-subject": {
+                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
+                            subjectList = this.props.subjectList.filter(item => 
+                                item.IdSubjectBlock === +khoi &&
+                                item.del_flat != 1 && this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                            );
+                        }
+                        else {
+                            subjectList = this.props.subjectList.filter(item => 
+                                item.del_flat != 1 && this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                            );
+                        }
+                        
+                    }break;
+
+                    default: {
+                        subjectList = [];
                     }
-                    else {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.IdSubjectBlock === +khoi 
-                            && item.del_flat != 1 && this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
-                        );
-                    }
-                    
                 }
-                else {
-                    if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)
-                    || this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.del_flat != 1
-                        );
-                    }
-                    else {
-                        subjectList = this.props.subjectList.filter(item => 
-                            item.del_flat != 1 && this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
-                        );
-                    }
-                }
+                
             } break;
             case 'itusurvey': {
 
@@ -337,6 +260,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -359,6 +283,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
 
                             </div>
@@ -381,6 +306,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
 
                             </div>
@@ -403,6 +329,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -424,6 +351,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -445,6 +373,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -466,6 +395,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -487,6 +417,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -508,6 +439,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -530,6 +462,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -552,6 +485,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -572,6 +506,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -593,6 +528,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -616,6 +552,7 @@ class Content extends Component {
                                     content_ctdt={ctdt}
                                     content_parent={parent}
                                     content_type={type}
+                                    content_action={action}
                                 />
                             </div>
                                 </Row>
@@ -641,6 +578,7 @@ class Content extends Component {
                                             content_ctdt={ctdt}
                                             content_parent={parent}
                                             content_type={type}
+                                            content_action={action}
                                         />
                                     </div>
                                 </Row>
@@ -651,7 +589,7 @@ class Content extends Component {
                                     dataSource={subjectList}
                                     pagination={{
                                         onChange: page => {
-                                            console.log(page);
+                                            
                                         },
                                         pageSize: 10,
                                     }}
@@ -668,14 +606,12 @@ class Content extends Component {
                                                         <List.Item.Meta
                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                             title={
-
-                                                            this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role) ? 
-                                                            <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>
-                                                        
-                                                            : this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role) ? 
-                                                            <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
-                                                            : <Link to={`/${parent}/${ctdt}/${type}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link> 
                                                             
+                                                            action === "phancong" ?
+                                                            <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/phan-cong`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            : action === "biensoan" ? 
+                                                            <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/thong-tin-chung`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                            : <Link to={`/${parent}/${ctdt}/${type}/${action}/${item.IdSubjectBlock}/${item.Id}/review`}><span style={{color: "white"}} className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName} - Review`}</span></Link>                       
                                                         }
                                                         
 
@@ -698,12 +634,20 @@ class Content extends Component {
                                     : type === "itusurvey" ?
                                         <React.Fragment>
                                             <div>
+                                            <Direction
+                                                subjectName={subjectName}
+                                                content_khoi={khoi}
+                                                content_ctdt={ctdt}
+                                                content_parent={parent}
+                                                content_type={type}
+                                                content_action={action}
+                                            />
                                                 <List
                                                     itemLayout="horizontal"
                                                     dataSource={subjectList}
                                                     pagination={{
                                                         onChange: page => {
-                                                            console.log(page);
+                                                        
                                                         },
                                                         pageSize: 10,
                                                     }}
@@ -721,7 +665,7 @@ class Content extends Component {
 
                                                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
                                                                             title={
-                                                                                <Link to={`/${parent}/${ctdt}/${type}/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
+                                                                                <Link to={`/${parent}/${ctdt}/${type}/dosurvey/view/${item.Id}/itusurvey`}><span className="list-item" onClick={() => this.onClick(item.Id)}>{`${item.SubjectCode} - ${item.SubjectName}`}</span></Link>
 
                                                                             }
                                                                         />
@@ -736,6 +680,15 @@ class Content extends Component {
                                             </div>
                                         </React.Fragment>
 
+                                    : action === "chinhsua-cdr" ? (
+                                        <div>Chỉnh sửa cdr</div>
+                                    )
+                                    : action === "danhgia-cdr" ? (
+                                        <div>Đánh giá cdr</div>
+                                    )
+                                    : action === "khaosat-cdr" ? (
+                                        <div>Khảo sát cdr</div>
+                                    )
                                         : type === "chuan-dau-ra" ? (
                                             <EditOutcomeStandard ctdt={ctdt} />
                                         )
@@ -745,8 +698,23 @@ class Content extends Component {
                                             : type === "khao-sat-chuan-dau-ra" ? (
                                                 <OSSurvey />
                                             )
+                                            :type === "edit-ctdt" ? (
+                                                <div>
+                                                <Direction
+                                                            subjectName={subjectName}
+                                                            content_khoi={khoi}
+                                                            content_ctdt={ctdt}
+                                                            content_parent={parent}
+                                                            content_type={type}
+                                                            content_action={action}
+                                                        />
+                                                        <EditEducationProgram ctdt={ctdt} />
+                                                        </div>
+                                            )
                                                 : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                                    <EditEducationProgram ctdt={ctdt} />
+                                                    <div>
+                                                        Trang chủ chương trình đào tạo
+                                                    </div>
                                                 )
                                                     : parent === "ctdt" ? (
                                                         <EducationProgram />
@@ -758,7 +726,7 @@ class Content extends Component {
                                                                 : <React.Fragment><OutcomeStandard /></React.Fragment>
                                                                 : parent === "qlhp" ? <React.Fragment><SubjectManage /></React.Fragment>
                                                                     : parent === "qlkh" ? <React.Fragment><FaProManage /></React.Fragment>
-                                                                        : parent === "qlgd" ? <React.Fragment><UserManage /></React.Fragment>
+                                                                        : parent === "qlnd" ? <React.Fragment><UserManage /></React.Fragment>
                                                                             : parent === "survey-matrix" ? <SurveyMatrix />
                                                                                 : parent === "view-survey" ? (
                                                                                     <React.Fragment>
@@ -771,6 +739,7 @@ class Content extends Component {
                                                                                                     content_ctdt={ctdt}
                                                                                                     content_parent={parent}
                                                                                                     content_type={type}
+                                                                                                    content_action={action}
                                                                                                 />
                                                                                             </div>
                                 </Row>

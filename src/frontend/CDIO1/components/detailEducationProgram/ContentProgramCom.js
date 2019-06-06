@@ -13,6 +13,8 @@ import { OrderList } from "primereact/orderlist";
 
 import TableSubjectsCom from "./TableSubjectsCom";
 
+import ListContentContainer from "./ListContentContainer";
+
 import * as logic from "../../business/logicEducationProgram";
 import * as common from "../../business/commonEducation";
 
@@ -769,6 +771,14 @@ export default class ContentProgramCom extends React.Component {
           </Row>
           {/* is add any table */}
           <div hidden={!this.state.isAnyTable}>
+            {/* đây là component  với tham số truyền vào là function onAddKnowledgeTable được định nghĩa ở 
+                ContentProgramCom và có dữ liệu truyền vào từ ListContentContainer
+                cách viết hàm: onAddKnowledgeTable = knowledgeTable =>{
+                  sự dụng knowledgeTable ở đây
+                }
+            */}
+            {/*<ListContentContainer onAddKnowledgeTable={this.onAddKnowledgeTable} />*/}
+            <ListContentContainer />
             <Row>
               <Col lg="5" md="5" sm="5">
                 <AutoComplete

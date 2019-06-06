@@ -4,43 +4,26 @@ import { Prompt } from "react-router";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
-import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
-import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAction";
 import * as outcomeStandardsAction from "../actions/outcomeStandardsAction";
-import * as revisionsAction from "../actions/revisionsAction";
-import * as detailRevisionAction from "../actions/detailRevisionAction";
-import * as commentAction from "../actions/_commentAction";
+import * as eduProgramsAction from "../actions/eduProgramsAction";
+import * as detailEduProgramAction from "../actions/detailEduProgramAction";
 
 import { connect } from "react-redux";
 
-class EditOutcomeStandardTmp extends Component {
+class InfoOutcomeStandard extends Component {
   constructor(props) {
     super(props);
     this.state = {};
   }
 
   componentDidMount = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    let id = urlParams.get("id")
-      ? urlParams.get("id")
-      : +this.props.detailEduProgram.IdOutcome;
-    id = id ? id : 0;
-    this.props.onLoadDetailOutcomeStandard(id);
-    this.props.onLoadRevisions(id);
+    const idEdu = this.props.ctdt;
+    this.props.onLoadEduProgram(+idEdu);
+    let id = +this.props.detailEduProgram.IdOutcome;
     this.props.onLoadOutcomeStandard(id);
-    this.props.onLoadComments(id);
-    window.addEventListener("beforeunload", this.onUnload);
-  };
-
-  onUnload = event => {
-    event.returnValue = "Hello World!!";
-  };
-
-  componentWillUnmount = () => {
-    window.removeEventListener("beforeunload", this.onUnload);
   };
 
   render() {
@@ -58,16 +41,15 @@ class EditOutcomeStandardTmp extends Component {
       : +this.props.detailEduProgram.IdOutcome;
     id = id ? id : 0;
 
-    return (
-      id
-      ?<Container fluid className="main-content-container px-4">
+    return id ? (
+      <Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
             <PageTitle
               sm="12"
               title={title}
-              subtitle="Chỉnh sửa CĐR"
+              subtitle="Thông tin CĐR"
               className="text-sm-left"
             />
           </Col>
@@ -79,51 +61,33 @@ class EditOutcomeStandardTmp extends Component {
         <hr />
         <Row>
           <Col lg="12" md="12">
-            <DetailOutcomeStandardCom
-              revisions={this.props.revisions}
-              infoOutcomeStandard={infoOutcomeStandard}
-              detailOutcomeStandard={this.props.detailOutcomeStandard}
-              onLoadDetailOutcomeStandard={
-                this.props.onLoadDetailOutcomeStandard
-              }
-              onSaveDetailOutcomeStandard={
-                this.props.onSaveDetailOutcomeStandard
-              }
-              onLoadDetailRevision={this.props.onLoadDetailRevision}
-              onAddDetailRevision={this.props.onAddDetailRevision}
-              onDeleteRevision={this.props.onDeleteRevision}
-              comments={this.props.comments}
-              onAddComment={this.props.onAddComment}
-              onDoneComment={this.props.onDoneComment}
-            />
+            {`Chuẩn đầu ra ${infoOutcomeStandard &&
+              infoOutcomeStandard.NameOutcomeStandard} đang được sử dụng ở Chương trình đào tạo ${
+              this.props.infoEduProgram[0].EduName
+            } ở mục ${
+              this.props.detailEduProgram.OSUsedNode
+            }, thuộc khoa ${infoOutcomeStandard &&
+              infoOutcomeStandard.NameFaculty}, hệ ${infoOutcomeStandard &&
+              infoOutcomeStandard.NameProgram}, năm học ${infoOutcomeStandard &&
+              infoOutcomeStandard.SchoolYear}`}
           </Col>
         </Row>
       </Container>
-      :<h1>Chưa có chuẩn đầu ra</h1>
+    ) : (
+      <h1>Chưa có chuẩn đầu ra</h1>
     );
   }
 }
 
 const mapStateToProps = state => ({
   message: state.message,
-  revisions: state.revisions,
   infoOutcomeStandard: state.infoOutcomeStandard,
-  detailOutcomeStandard: state.detailOutcomeStandard,
   detailEduProgram: state.detailEduProgram,
-  comments: state.comments
+  infoEduProgram: state.infoEduProgram
 });
 
 export default connect(mapStateToProps, {
   onLoadOutcomeStandard: outcomeStandardsAction.onLoadOutcomeStandard,
-  onLoadDetailOutcomeStandard:
-    detailOutcomeStandardAction.onLoadDetailOutcomeStandard,
-  onSaveDetailOutcomeStandard:
-    detailOutcomeStandardAction.onSaveDetailOutcomeStandard,
-  onLoadRevisions: revisionsAction.onLoadRevisions,
-  onLoadDetailRevision: detailRevisionAction.onLoadDetailRevision,
-  onAddDetailRevision: detailRevisionAction.onAddDetailRevision,
-  onDeleteRevision: revisionsAction.onDeleteRevision,
-  onLoadComments: commentAction.onLoadComments,
-  onAddComment: commentAction.onAddComment,
-  onDoneComment: commentAction.onDoneComment
-})(EditOutcomeStandardTmp);
+  onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
+  onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram
+})(InfoOutcomeStandard);

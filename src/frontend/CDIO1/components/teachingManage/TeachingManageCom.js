@@ -51,6 +51,24 @@ export default class TeachingManageCom extends Component {
     });
   };
 
+  onAddMainTeacher = data => {
+    const idmainteacher = data.id;
+    const idsubject = this.state.subject.IdSubject;
+    const idsubjectblock = this.state.subject.IdSubjectBlock;
+    const iddetail = this.props.detailEduProgram.Id;
+    const block = {
+      idmainteacher,
+      idsubject,
+      idsubjectblock,
+      iddetail
+    };
+    this.props.onAddTeacher(block);
+    this.setState({
+      visible: false,
+      subject: {}
+    });
+  };
+
   actionTemplate = (data, column) => {
     return (
       <div>
@@ -70,18 +88,36 @@ export default class TeachingManageCom extends Component {
     return (
       <div>
         <Button
-          title="Phân công"
+          title="Thêm trợ giảng"
           onClick={() => this.onAddTeacher(data)}
           theme="success"
           style={{ marginRight: ".3em", padding: "8px" }}
         >
+          <i className="material-icons">playlist_add</i>
+        </Button>
+        <Button
+          title="Thêm giảng viên"
+          onClick={() => this.onAddMainTeacher(data)}
+          theme="success"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
           <i className="material-icons">add</i>
+        </Button>
+        <Button
+          title="Hủy phân công"
+          onClick={() => this.onDeleteTeacher(data)}
+          theme="secondary"
+          style={{ marginRight: ".3em", padding: "8px" }}
+        >
+          <i className="material-icons">delete_sweep</i>
         </Button>
       </div>
     );
   };
 
   render() {
+    // console.log(this.props.users)
+    // console.log(this.props.subjects)
     const nationHeader = (
       <Row style={{ margin: "0" }}>
         <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
@@ -136,7 +172,7 @@ export default class TeachingManageCom extends Component {
               <Column field="email" header="Email" style={{ width: "5em" }} />
               <Column
                 body={this.actionTemplateDial}
-                style={{ textAlign: "center", width: "1em" }}
+                style={{ textAlign: "center", width: "3em" }}
               />
             </DataTable>
           </Col>

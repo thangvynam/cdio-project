@@ -15,6 +15,7 @@ export const loadContentListError = errorMessage => ({
 
 export const onLoadContentList = id => {
   return (dispatch, getState) => {
+    console.log(id)
     let req = `${links.LOAD_CONTENT_LIST}?id=${id}`;
     axios
       .get(req)

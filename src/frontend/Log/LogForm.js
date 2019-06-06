@@ -26,7 +26,7 @@ class LogForm extends Component {
         if(count <= 2) {
             this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab))   
             let data = await this.getData(nextProps.logReducer.contentTab);
-            this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.subjectid); 
+            this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.monhoc); 
         }               
         
     }
@@ -36,7 +36,7 @@ class LogForm extends Component {
         if(count <= 0) {
             this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab))   
             let data = await this.getData(nextProps.logReducer.contentTab);
-            this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.subjectid); 
+            this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.monhoc); 
         }               
         
     }
@@ -45,7 +45,7 @@ class LogForm extends Component {
 
     async getData(contentTab) {
         let data = {
-            subjectid: this.props.subjectid,
+            subjectid: this.props.monhoc,
             contentTab: contentTab
         }
         

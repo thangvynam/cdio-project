@@ -165,7 +165,7 @@ export default class EduProgramCom extends Component {
   actionTemplate = (data, column) => {
     return (
       <div>
-        <Link to={`/ctdt/${data.Id}`}>
+        <Link to={`/ctdt/${data.Id}/edit-ctdt`}>
           <Button
             title="Chỉnh sửa"
             theme="success"

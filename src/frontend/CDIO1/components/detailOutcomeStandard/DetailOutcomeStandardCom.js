@@ -36,7 +36,7 @@ export default class DetailOutcomeStandardCom extends Component {
       DragNodeVisible: false,
       keyDrag: "",
       keySuggestions: null,
-      keys: null,
+      // keys: null,
       isSaveBtnDisabled: false,
       deleteReAlertVisible: false,
       idRevision: 0,
@@ -45,7 +45,8 @@ export default class DetailOutcomeStandardCom extends Component {
       keys: [],
       comment: "",
       commentKey: "",
-      filterCommentKey: []
+      filterCommentKey: [],
+      nationalFilter: ""
     };
   }
 
@@ -461,34 +462,59 @@ export default class DetailOutcomeStandardCom extends Component {
             </Button>
           </React.Fragment>
         )}
+        <Button
+          onClick={() =>
+            this.setState({
+              commentVisible: true,
+              commentKey: node.key
+            })
+          }
+          theme={
+            commonLogic.isDoneAll(
+              this.props.comments.filter(comment => {
+                return comment.KeyRow.indexOf(node.key) === 0;
+              })
+            )
+              ? "primary"
+              : "danger"
+          }
+          style={{ marginRight: ".3em", padding: "8px" }}
+          title={`Bình luận ${node.key}`}
+        >
+          <i className="material-icons">question_answer</i>
+        </Button>
       </div>
     );
   };
 
   actionTemplateTableComments = (rowData, column) => {
     return (
-        <div>
-          {rowData.UserDone ? (
-            <Button
-              disabled={true}
-              title="Done"
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
-            >
-              <i className="material-icons">done_all</i>
-            </Button>
-          ) : (
-            <Button
-              title="Check"
-              onClick={() => this.onCheck(rowData.Id)}
-              disabled={!JSON.parse(localStorage.getItem("user")).data.Role.includes("BIEN_SOAN")}
-              theme="danger"
-              style={{ marginRight: ".3em", padding: "8px" }}
-            >
-              <i className="material-icons">highlight_off</i>
-            </Button>
-          )}
-        </div>
+      <div>
+        {rowData.UserDone ? (
+          <Button
+            disabled={true}
+            title="Done"
+            theme="info"
+            style={{ marginRight: ".3em", padding: "8px" }}
+          >
+            <i className="material-icons">done_all</i>
+          </Button>
+        ) : (
+          <Button
+            title="Check"
+            onClick={() => this.onCheck(rowData.Id)}
+            disabled={
+              !JSON.parse(localStorage.getItem("user")).data.Role.includes(
+                "BIEN_SOAN"
+              )
+            }
+            theme="danger"
+            style={{ marginRight: ".3em", padding: "8px" }}
+          >
+            <i className="material-icons">highlight_off</i>
+          </Button>
+        )}
+      </div>
     );
   };
 
@@ -541,6 +567,20 @@ export default class DetailOutcomeStandardCom extends Component {
       </div>
     );
 
+    const nationHeader = (
+      <Row style={{ margin: "0" }}>
+        <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
+          search
+        </i>
+        <InputText
+          type="search"
+          onInput={e => this.setState({ nationalFilter: e.target.value })}
+          placeholder="Tìm kiếm"
+          size="50"
+        />
+      </Row>
+    );
+
     return (
       <div className="p-grid content-section implementation">
         <Row>
@@ -548,7 +588,8 @@ export default class DetailOutcomeStandardCom extends Component {
             <Button
               onClick={() =>
                 this.setState({
-                  commentVisible: true
+                  commentVisible: true,
+                  commentKey: ""
                 })
               }
               theme={
@@ -791,7 +832,8 @@ export default class DetailOutcomeStandardCom extends Component {
                 <Button
                   onClick={() =>
                     this.setState({
-                      commentVisible: false
+                      commentVisible: false,
+                      commentKey: ""
                     })
                   }
                   theme="secondary"
@@ -802,7 +844,8 @@ export default class DetailOutcomeStandardCom extends Component {
             }
             onHide={() =>
               this.setState({
-                commentVisible: false
+                commentVisible: false,
+                commentKey: ""
               })
             }
           >
@@ -841,19 +884,22 @@ export default class DetailOutcomeStandardCom extends Component {
               )}
               <br />
               <Row>
-                <Col
-                  lg="12"
-                  md="12"
-                  sm="12"
-                  style={{ overflowY: "scroll", height: "240px" }}
-                >
+                <Col lg="12" md="12" sm="12" style={{ height: "380px" }}>
                   <DataTable
+                    paginator={true}
                     rows={6}
-                    value={this.props.comments.map(comment => {
-                      const date = logic.formatDate(comment.CommentDate);
-                      comment.date = date;
-                      return comment;
-                    })}
+                    header={nationHeader}
+                    ref={el => (this.dt = el)}
+                    globalFilter={this.state.nationalFilter}
+                    value={this.props.comments
+                      .map(comment => {
+                        const date = logic.formatDate(comment.CommentDate);
+                        comment.date = date;
+                        return comment;
+                      })
+                      .filter(row => {
+                        return row.KeyRow.indexOf(this.state.commentKey) === 0;
+                      })}
                   >
                     <Column
                       style={{ width: "3em" }}

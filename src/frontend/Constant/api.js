@@ -122,7 +122,9 @@ export default{
     ADD_DATA_5 : baseUrl + '/add-data-5',
 
     CHECK_STATUS: baseUrl + '/checkstatus',
+    CHECK_DATE: baseUrl + '/checkdate',
 
+    
     INSERT_STANDARD_MATRIX:baseUrl + '/insert-standard-matrix',
     
     GET_IDQA: baseUrl + '/getidqa',

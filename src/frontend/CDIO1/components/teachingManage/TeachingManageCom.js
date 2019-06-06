@@ -14,6 +14,7 @@ export default class TeachingManageCom extends Component {
     this.state = {
       visible: false,
       globalFilter: "",
+      nationalFilter: "",
       subject: {}
     };
   }
@@ -81,6 +82,20 @@ export default class TeachingManageCom extends Component {
   };
 
   render() {
+    const nationHeader = (
+      <Row style={{ margin: "0" }}>
+        <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
+          search
+        </i>
+        <InputText
+          type="search"
+          onInput={e => this.setState({ nationalFilter: e.target.value })}
+          placeholder="Tìm kiếm"
+          size="50"
+        />
+      </Row>
+    );
+
     const dialog = (
       <Dialog
         header="Phân công giảng viên"
@@ -96,19 +111,19 @@ export default class TeachingManageCom extends Component {
               onClick={this.onCloseAdd}
               theme="secondary"
             >
-              Hủy
+              Đóng
             </Button>
           </div>
         }
       >
         <Row>
-          <Col
-            lg="12"
-            md="12"
-            sm="12"
-            style={{ overflowY: "scroll", height: "320px" }}
-          >
+          <Col lg="12" md="12" sm="12" style={{ height: "380px" }}>
             <DataTable
+              paginator={true}
+              rows={6}
+              header={nationHeader}
+              ref={el => (this.dt = el)}
+              globalFilter={this.state.nationalFilter}
               value={this.props.users.filter(user =>
                 user.role.includes("TEACHER")
               )}

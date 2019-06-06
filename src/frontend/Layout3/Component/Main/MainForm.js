@@ -29,6 +29,7 @@ class MainForm extends Component {
                             nextStep={this.nextStep} 
                             prevStep={this.prevStep}
                             step={step}
+                            monhoc={this.props.monhoc}
                             // handleChange = {this.handleChange}
                             //values={values}
                             />

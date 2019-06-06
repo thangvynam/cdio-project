@@ -4,12 +4,11 @@ import {
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
-import { DragDropContext } from "react-dnd";
-import HTML5Backend from "react-dnd-html5-backend";
 import { connect } from 'react-redux';
 import { updateTNData, addTNData, isLoaded8, saveLog, saveLogObject } from '../../../Constant/ActionType';
 import { getCurrTime } from '../../../utils/Time';
 import $ from './../../../helpers/services';
+import DragDropHTML5 from '../../../html5Backend/html5Backend';
 
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
@@ -377,4 +376,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(DragDropContext(HTML5Backend)(TNTableItem));
+export default connect(mapStateToProps, mapDispatchToProps)(DragDropHTML5(TNTableItem));

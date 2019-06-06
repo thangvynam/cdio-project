@@ -279,7 +279,12 @@ export default class DetailEducationProgramCom extends React.Component {
               </p>
             )}
           </Col>
-          <Col lg="8" md="8" sm="8" />
+          <Col lg="6" md="6" sm="6" />
+          <Col lg="2" md="2" sm="2">
+            <label className="exportPDF">
+              <i className="material-icons">save_alt</i> Tạo file PDF
+            </label>
+          </Col>
           <Col lg="2" md="2" sm="2">
             <label onClick={this.onExportFile} className="export">
               <i className="material-icons">save_alt</i> Tạo file Excel

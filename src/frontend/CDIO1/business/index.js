@@ -103,14 +103,32 @@ export const createSaveData = (nodes, data, id, level) => {
   }
 };
 
-export const convertDbToKey = nodes =>{
+export const createFilterData = (nodes, data, id, level) => {
+  if (nodes === undefined || nodes.length === 0) return;
+  else {
+    let tmpObj = {};
+    for (let i in nodes) {
+      let KeyRow = nodes[i].key;
+      let NameRow = nodes[i].data.name;
+      tmpObj = { KeyRow, NameRow };
+
+      data.push(tmpObj);
+      tmpObj = {};
+
+      let children = nodes[i].children;
+      createFilterData(children, data, id, level);
+    }
+  }
+};
+
+export const convertDbToKey = nodes => {
   let data = [];
   let level = getMaxLevel(nodes);
-  createSaveData(nodes, data,'',level);
-  return data.reduce((arr, row) =>{
+  createFilterData(nodes, data, "", level);
+  return data.reduce((arr, row) => {
     return arr.concat(row.KeyRow);
-  },[]);
-}
+  }, []);
+};
 
 // add
 
@@ -414,49 +432,49 @@ export const convertToSubjects = data => {
 };
 
 export const convertToUsers = data => {
-  return data.reduce((arr, row, index)=>{
-    if(index === 0){
+  return data.reduce((arr, row, index) => {
+    if (index === 0) {
       return arr;
     }
     const user = {
       name: row[0],
       username: row[1],
-      email:row[2],
+      email: row[2],
       roleName: row[3],
       role: getIdRole(row[3])
-    }
+    };
     return arr.concat(user);
-  },[]);
+  }, []);
 };
 
-const getIdRole = roles =>{
-  const arr = roles.split('.');
-  return arr.reduce((results, role)=>{
+const getIdRole = roles => {
+  const arr = roles.split(".");
+  return arr.reduce((results, role) => {
     const roleName = role.trim();
     const id = IdRoleName(roleName);
-    if(id){
+    if (id) {
       return results.concat(id);
     }
     return results;
-  },[]);
-}
+  }, []);
+};
 
-const IdRoleName = roleName =>{
-  switch(roleName){
-    case 'ADMIN':
+const IdRoleName = roleName => {
+  switch (roleName) {
+    case "ADMIN":
       return 1;
-    case 'BIEN_SOAN':
+    case "BIEN_SOAN":
       return 2;
-    case 'QUAN_LY_SURVEY':
+    case "QUAN_LY_SURVEY":
       return 3;
-    case 'VIEW_SYLLABUS':
+    case "VIEW_SYLLABUS":
       return 4;
-    case 'TEACHER':
+    case "TEACHER":
       return 5;
     default:
       return null;
   }
-}
+};
 
 // private
 

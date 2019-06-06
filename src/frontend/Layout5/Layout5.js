@@ -13,7 +13,7 @@ class Layout5 extends Component {
         return (
             <React.Fragment>
                 <div className="section-layout">
-                    {this.props.isReview === true ? null : <MainForm />}
+                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc}/>}
                 </div>
                 <div className="section-layout">
                     <Tooltip placement="topLeft">
@@ -25,7 +25,7 @@ ra chi tiết tương ứng với mỗi chủ đề, <br /> các hoạt động 
                     <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
                 </div>
                 <div className="section-layout">
-                    <LogForm />
+                    <LogForm monhoc={this.props.monhoc}/>
                 </div>
             </React.Fragment>
         );

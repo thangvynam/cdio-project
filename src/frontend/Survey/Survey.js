@@ -125,54 +125,39 @@ class Survey extends React.Component {
     }
 
     async componentDidMount() {
-
-        let user = localStorage.getItem('user');
-        let jsonData = JSON.parse(user)
-
         const parsed = queryString.parse(window.location.search);
-
         if (parsed.id) {
             const id = parsed.id;
             let response = await $.checkStatus(id)
-            if (response.data.status === 1) {
-                await this.setState({ isDone: true })
-            }
-
-            await this.setState({ id_survey: id })
-
+            let resDate = await $.checkDate(response.data.idSurveyList)            
             let curTime = getCurrTime()
-            let end_date = response.data.end_date;
-            if (curTime > end_date) {
+            let start_date = resDate.data.start_date;
+            let end_date = resDate.data.end_date;
+            if ((curTime > end_date || curTime < start_date) && response.data.status !== 1) {
                 notification["error"]({
-                    message: "Đã hết hạn thực hiện khảo sát",
+                    message: "Không thể thực hiện khảo sát",
                     duration: 3
                 })
-                this.setState({ isOver: true })
+                this.setState({ isDone: true })
                 return;
             }
 
-            console.log(this.props.idSurvey)
-            let responseQA = await $.getIDQA(id)
+            console.log(id)
 
-            if (response.data) {
-                const id = responseQA.data.id;
-                //axios.get(`/get-surveyqa/${id}`).then(res => {
-                $.getSurveyQA(id).then(res => {
-                    this.setState({
-                        resultQA: res.data[0],
-                    })
+            $.getSurveyQA(id).then(res => {
+                this.setState({
+                    resultQA: res.data[0],
                 })
+            })
 
-                let body = {
-                    id_survey: id
-                }
-                //axios.get(`/get-survey/${id}`).then(res => {
-                $.getSurveyITU(body).then(res => {
-                    this.setState({
-                        resultITU: res.data,
-                    })
-                })
+            let body = {
+                id_survey: id
             }
+            $.getSurveyITU(body).then(res => {
+                this.setState({
+                    resultITU: res.data,
+                })
+            })
         }
 
                 

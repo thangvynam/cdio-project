@@ -40,7 +40,7 @@ class TNFormItem extends Component {
   }
 
   async componentDidMount(){
-    if(this.props.subjectId !== null && this.props.subjectId !== undefined && this.props.subjectId !== "" && this.props.itemLayout8Reducer.isLoaded === false){
+    if(this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "" && this.props.itemLayout8Reducer.isLoaded === false){
       var self = this;
         await $.getLoaiTaiNguyen()
         .then(function (response) {
@@ -74,8 +74,8 @@ class TNFormItem extends Component {
         let newData = {};
         newData = this.props.itemLayout8Reducer.previewInfo.concat(data);
 
-        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.subjectId)
-        this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.subjectId)
+        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.monhoc)
         
         this.props.onAddTNData(newData);
 

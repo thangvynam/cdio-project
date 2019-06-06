@@ -4,17 +4,19 @@ import { connect } from'react-redux';
 import { bindActionCreators } from 'redux';
 import $ from "./../../helpers/services";
 
+
 class PhanCong extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
+
+
+    state = {
       visible: false,
       selecteditem1: [],
       selecteditem2: [],
       teacherList: [],
       teacherListReview: []
     };
-    this.columns1 = [{
+
+    columns1 = [{
       title: 'Tên',
       dataIndex: 'name',
       key: 'name',
@@ -24,7 +26,7 @@ class PhanCong extends Component {
     }];
 
 
-        this.columns2 = [{
+        columns2 = [{
             title: 'Tên',
             dataIndex: 'name',
             key: 'name',
@@ -44,13 +46,13 @@ class PhanCong extends Component {
               </div>
             )},
           }];
-      }
+      
       
 
       handleDelete = (key) => {
+        this.setState({selecteditem2: []});
         $.deleteTeacherReview([key])
         .then(res => {
-          this.setState({selecteditem2: []});
           $.getTeacherList({thong_tin_chung_id: this.props.monhoc, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
@@ -83,9 +85,11 @@ class PhanCong extends Component {
       }
 
       delete = () => {
-        $.deleteTeacherReview(this.state.selecteditem2)
+        let selectedItem = this.state.selecteditem2;
+        this.setState({selecteditem2: []});
+        $.deleteTeacherReview(selectedItem)
         .then(res => {
-          this.setState({selecteditem2: []});
+          
           $.getTeacherList({thong_tin_chung_id: this.props.monhoc, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
@@ -117,11 +121,12 @@ class PhanCong extends Component {
         })
       }
   onSelectChange1 = (selectedRowKeys) => {
-    this.setState({ selecteditem1: selectedRowKeys })
+    //this.setState({ selecteditem1 })
+    this.setState({ selecteditem1: selectedRowKeys });
   }
 
   onSelectChange2 = (selectedRowKeys) => {
-    this.setState({ selecteditem2: selectedRowKeys })
+    this.setState({ selecteditem2: selectedRowKeys });
   }
 
   isExist(subjectId, subjects) {
@@ -154,22 +159,29 @@ class PhanCong extends Component {
   }
 
   phanCong = () => {
-    if(this.state.selecteditem1.length > 0) {
-      $.addTeacherReview({idTeacher: this.state.selecteditem1, idTTC: this.props.monhoc})
+    let selectedItem = this.state.selecteditem1;
+   
+    this.setState({ selecteditem1: [] })
+
+
+    if(selectedItem.length > 0) {
+      this.setState({selecteditem1: []});
+      $.addTeacherReview({idTeacher: selectedItem, idTTC: this.props.monhoc})
       .then(res => {
-        this.setState({selecteditem1: []});
+        
         $.getTeacherList({thong_tin_chung_id: this.props.monhoc, idCurrentUser: JSON.parse(localStorage.getItem('user')).data.Id})
         .then(res => {
           let resdata = res.data;
           let data = [];
           if(resdata.length > 0) {
             data = resdata.map(item => {
-              return {key: item.id,
+              return {
+                key: item.id,
               ...item}
             })
-            
           }
           this.setState({teacherList: data})
+          
         })
 
         $.getTeacherListReview({thong_tin_chung_id: this.props.monhoc})
@@ -224,23 +236,23 @@ class PhanCong extends Component {
       }
 
   render() {
-    const hasSelected = this.state.selecteditem2.length > 0;
-    const selectedRowKeys1 = this.state.selecteditem1;
-    const selectedRowKeys2 = this.state.selecteditem2;
-    console.log("bang 1------" + selectedRowKeys1)
-    console.log("bang 2------" + selectedRowKeys2)
+    
 
+    const selectedRowKeys1  = this.state.selecteditem1;
+    const selectedRowKeys2  = this.state.selecteditem2;
 
     const rowSelection1 = {
-      selectedRowKeys1,
+      selectedRowKeys: selectedRowKeys1,
       width: "20",
       onChange: this.onSelectChange1,
     };
     const rowSelection2 = {
-      selectedRowKeys2,
+      selectedRowKeys: selectedRowKeys2,
       width: "20",
       onChange: this.onSelectChange2,
     };
+
+    const hasSelected = selectedRowKeys2.length > 0;
     return (
       <div className="section-layout">
         <div className="wrapper-flex">
@@ -256,7 +268,7 @@ class PhanCong extends Component {
             />
           </div>
           <div className="col-flex-center">
-            <Button onClick={this.phanCong} className="button-phancong" style={{ backgroundColor:"#03a9f4d4", color: "white" }}>
+            <Button  onClick={this.phanCong} className="button-phancong" style={{ backgroundColor:"#03a9f4d4", color: "white" }}>
               Phân công <span className="phancong-icon"><Icon type="double-right" /></span>
             </Button>
           </div>
@@ -308,4 +320,5 @@ const mapDispatchToProps = (dispatch) => {
   }
 
 export default connect(mapStateToProps, mapDispatchToProps)(PhanCong);
+
 

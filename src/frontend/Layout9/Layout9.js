@@ -13,7 +13,7 @@ class Layout9 extends Component {
     return (
       <React.Fragment>
         <div className="section-layout">
-          {this.props.isReview === true ? null : <MainForm />}
+          {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc}/>}
         </div>
         <div className="section-layout">
           <Element name="test1" className="element">
@@ -21,7 +21,7 @@ class Layout9 extends Component {
           </Element>
         </div>
         <div className="section-layout">
-          <LogForm />
+          <LogForm monhoc={this.props.monhoc}/>
         </div>
       </React.Fragment>
     );

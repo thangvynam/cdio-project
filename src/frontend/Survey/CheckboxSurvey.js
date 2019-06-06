@@ -16,7 +16,7 @@ class CheckboxSurvey extends Component {
 
     render() {
         let defaultValue = '';
-
+        
         if (this.props.defaultValue) {
             defaultValue = Array.from(this.props.defaultValue.split(','))
             defaultValue = defaultValue.splice(0, defaultValue.length - 1)
@@ -42,6 +42,7 @@ class CheckboxSurvey extends Component {
                     style={{ width: "100%" }}>
                 </Checkbox.Group> :
                 <Checkbox.Group
+                    value={defaultValue}
                     options={levelsOptions}
                     onChange={(e, id) => { this.onChange(e, this.props.id) }}
                     style={{ width: "100%" }}>

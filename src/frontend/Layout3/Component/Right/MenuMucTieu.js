@@ -42,7 +42,6 @@ class MenuMucTieu extends Component {
     }
 
     async componentDidMount() {
-        console.log(await this.getCDR())
         this.props.setCDR(await this.getCDR())
     }
 

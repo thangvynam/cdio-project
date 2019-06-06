@@ -42,12 +42,13 @@ class EditableCell extends React.Component {
   }
 
 async componentDidMount() {
-  let arr = cellData
-            arr.forEach(element => {
-                element.KeyRow = element.KeyRow.slice(0, element.KeyRow.length -1)
-                element.KeyRow = element.KeyRow.replace(/-/g, ".")
-            });
-    this.setState({cdr: arr})
+  // let arr = cellData
+  // console.log(arr);
+  
+            // cellData[0].forEach(element => {
+            //     element.KeyRow = element.KeyRow.slice(0, element.KeyRow.length -1)
+            // });
+    this.setState({cdr: cellData[0]})
 }
 
   getInput = () => {
@@ -57,7 +58,7 @@ async componentDidMount() {
 
     for (let i = 0; i < standActs.length; i++) {
       childrenStandard.push(
-        <Option key={standActs[i].Id}>{standActs[i].KeyRow}</Option>
+        <Option key={standActs[i].KeyRow}>{standActs[i].KeyRow}</Option>
       );
     }    
 
@@ -208,8 +209,6 @@ class TableItem extends Component {
 async getData() {
   return $.getData3(this.props.monhoc).then(res => {
     return res.data
-  }).then(resp => {
-    return resp;
   })
 }
 
@@ -222,10 +221,10 @@ getUnique(arr, comp) {
    return unique;
 }
 
-// async componentDidMount() {
-//   cellData = await this.getCDR();
-//   await console.log(cellData);
-// }
+async componentDidMount() {
+  await cellData.push(await this.getCDR());
+  await console.log(cellData);
+}
 
 async getCDR() {
   return $.getCDR_3().then(res => {
@@ -234,14 +233,13 @@ async getCDR() {
 }
 
 loadData = () => {
-  console.log("call load")
   let self = this
 
   let saveData = []
   let standActs = [];
   let count = self.state.count
-  if(!self.props.itemLayout3Reducer.isLoaded) {
-    if (count <= 2) {
+  //if(!self.props.itemLayout3Reducer.isLoaded) {
+   //if (count <= 2) {
       self.setState({count: count + 1})
       self.getData().then((res) => {
         if (res.length > 0) {
@@ -266,21 +264,23 @@ loadData = () => {
         }
         saveData = self.getUnique(saveData, "objectName")
         saveData = saveData.filter((item) => item.del_flag === 0)
-        console.log(saveData)
-        self.setState({disableSaveAll: false})
-        console.log(self.state.disableSaveAll)
         self.props.saveAndContinue(saveData);
-        self.props.setFlag(true);
+        self.setState({disableSaveAll: false})
+        //self.props.setFlag(true);
         
         
       }) 
       
-    }
-  }
+   // }
+  //}
 }
 
 componentWillReceiveProps(nextProps){
-  this.loadData();
+  if(!this.props.itemLayout3Reducer.isLoaded) {
+    this.props.setFlag(true);
+    this.loadData();
+  }
+  
 }
 
   onMultiDelete = () => { 
@@ -325,7 +325,6 @@ componentWillReceiveProps(nextProps){
       });
     });
     data = this.getUnique(data, "objectName")
-    console.log(data)
     this.props.handleSave(data);
     this.setState({ selectedRowKeys: [] });
   };
@@ -380,9 +379,6 @@ componentWillReceiveProps(nextProps){
         ...row
       });
 
-      console.log(item);
-      console.log(newItems[index])
-
       this.props.handleSave(newItems, key);
       this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
       this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
@@ -411,10 +407,17 @@ componentWillReceiveProps(nextProps){
   };
 
   saveAll = () => {
-    this.setState({disableSaveAll: true})
-    this.props.saveAll(this.props.monhoc)
-    openNotificationWithIcon('success')
-    this.loadData();
+    var self = this;
+    self.setState({disableSaveAll: true})
+    //this.props.saveAll(this.props.monhoc)
+    $.saveData3({ data: self.props.itemLayout3Reducer.previewInfo, id: self.props.monhoc })
+    .then((res) => {
+      if(res.data === 1) {
+        self.loadData()
+      }
+    });
+    openNotificationWithIcon('success');
+    //this.loadData();
     
   }
 
@@ -447,7 +450,6 @@ componentWillReceiveProps(nextProps){
       onChange: this.onSelectChange
     };
     const hasSelected = selectedRowKeys.length > 0;
-    console.log(this.state.disableSaveAll)
       return (
         <div>
           {this.props.isReview === true ? null : <div style={{ marginBottom: 16, marginTop: 10 }}>
@@ -463,8 +465,12 @@ componentWillReceiveProps(nextProps){
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
            <Button style={{float: "right"}}
-          //  disabled={this.state.disableSaveAll}
-            onClick={this.saveAll}
+            disabled={this.state.disableSaveAll}
+            onClick={() => {
+              // this.loadData()
+              this.saveAll()
+            }
+            }
           >
             Lưu tất cả
           </Button>

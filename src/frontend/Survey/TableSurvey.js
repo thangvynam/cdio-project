@@ -22,21 +22,15 @@ class TableSurvey extends Component {
         const data = this.props.data;
         let dataITU = [];
         dataITU = this.props.resultITU;;
-        let isDone = false;
-        if (dataITU !== null) {
-            if(dataITU.length > 0) {
-                isDone = true
-            }
-        }
-       
-        let template = [];
+        let isDone = this.props.isDone;     
+        let template = [];        
 
         data.map(function (column) {
             let key = column.split('_')[0];
             let value = column.split('_')[1];
             let valueOfKey ;
             if(dataITU){
-               valueOfKey= Object.keys(dataITU).find(item => dataITU[item].id===key)
+               valueOfKey= Object.keys(dataITU).find(item => dataITU[item].bullet===key)
             }
             
             template.push(
@@ -51,6 +45,7 @@ class TableSurvey extends Component {
                     </td>
                     <td>
                         <InputTextArea 
+                            isDone = {isDone}
                             id = {key}
                         />
                     </td>

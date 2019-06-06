@@ -46,7 +46,22 @@ class Survey extends React.Component {
         }
     }
 
-    componentWillMount() {
+    async componentWillMount() {
+
+        const parsed = queryString.parse(window.location.search);
+        if (parsed.id) {
+            const id = parsed.id;
+            let response = await $.checkStatus(id)
+            let resDate = await $.checkDate(response.data.idSurveyList)            
+            let curTime = getCurrTime()
+            let end_date = resDate.data.end_date;
+            console.log(id);
+            
+            if (curTime > end_date) {
+                $.setStatus(id)
+            }
+        }
+
         let tree = [];
         $.getDataSurvey().then((res) => {
             console.log('in')
@@ -128,28 +143,27 @@ class Survey extends React.Component {
         const parsed = queryString.parse(window.location.search);
         if (parsed.id) {
             const id = parsed.id;
+            this.setState({id_survey: id})
             let response = await $.checkStatus(id)
-            let resDate = await $.checkDate(response.data.idSurveyList)            
-            let curTime = getCurrTime()
-            let start_date = resDate.data.start_date;
-            let end_date = resDate.data.end_date;
-            if ((curTime > end_date || curTime < start_date) && response.data.status !== 1) {
+            let status = response.data.status            
+            if (status === 0) {
                 notification["error"]({
-                    message: "Không thể thực hiện khảo sát",
+                    message: "Đã quá hạn để thực hiện khảo sát",
                     duration: 3
                 })
                 this.setState({ isDone: true })
-                return;
+            } else if (status === -1) {
+                notification["error"]({
+                    message: "Chưa đến ngày thực hiện khảo sát",
+                    duration: 3
+                })
+                this.setState({isOver: true});
             }
-
-            console.log(id)
-
             $.getSurveyQA(id).then(res => {
                 this.setState({
                     resultQA: res.data[0],
                 })
             })
-
             let body = {
                 id_survey: id
             }
@@ -159,8 +173,6 @@ class Survey extends React.Component {
                 })
             })
         }
-
-                
     }
 
     genForm() {
@@ -197,6 +209,7 @@ class Survey extends React.Component {
 
                     htmlDOM.push(
                         <TableSurvey
+                            isDone={this.state.isDone}
                             data={dataChildren}
                             resultITU={this.state.resultITU}
                         />
@@ -245,9 +258,7 @@ class Survey extends React.Component {
             q10: surveyData.q10,
             q11: surveyData.q11,
             id_survey: this.state.id_survey,
-        }
-
-        // $.setStatus(this.props.idSurvey).then(() => {
+        }        
             $.saveSurveyQA(survey)
             .then((res) => {
                 let user = localStorage.getItem('user');
@@ -256,10 +267,7 @@ class Survey extends React.Component {
                     .then(response => {
                         
                     });
-            });
-        // })
-       
-
+            });       
     }
 
     render() {

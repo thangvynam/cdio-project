@@ -208,8 +208,6 @@ class TableItem extends Component {
 async getData() {
   return $.getData3(this.props.monhoc).then(res => {
     return res.data
-  }).then(resp => {
-    return resp;
   })
 }
 
@@ -240,8 +238,8 @@ loadData = () => {
   let saveData = []
   let standActs = [];
   let count = self.state.count
-  if(!self.props.itemLayout3Reducer.isLoaded) {
-    if (count <= 2) {
+  //if(!self.props.itemLayout3Reducer.isLoaded) {
+   //if (count <= 2) {
       self.setState({count: count + 1})
       self.getData().then((res) => {
         if (res.length > 0) {
@@ -267,20 +265,24 @@ loadData = () => {
         saveData = self.getUnique(saveData, "objectName")
         saveData = saveData.filter((item) => item.del_flag === 0)
         console.log(saveData)
-        self.setState({disableSaveAll: false})
         console.log(self.state.disableSaveAll)
         self.props.saveAndContinue(saveData);
-        self.props.setFlag(true);
+        self.setState({disableSaveAll: false})
+        //self.props.setFlag(true);
         
         
       }) 
       
-    }
-  }
+   // }
+  //}
 }
 
 componentWillReceiveProps(nextProps){
-  this.loadData();
+  if(!this.props.itemLayout3Reducer.isLoaded) {
+    this.props.setFlag(true);
+    this.loadData();
+  }
+  
 }
 
   onMultiDelete = () => { 
@@ -403,14 +405,18 @@ componentWillReceiveProps(nextProps){
   };
 
   saveAll = () => {
-    this.setState({disableSaveAll: true})
-    this.props.saveAll(this.props.monhoc)
-    openNotificationWithIcon('success')
-    this.loadData();
+    var self = this;
+    self.setState({disableSaveAll: true})
+    //this.props.saveAll(this.props.monhoc)
+    $.saveData3({ data: self.props.itemLayout3Reducer.previewInfo, id: self.props.monhoc }).then(self.loadData());
+    openNotificationWithIcon('success');
+    //this.loadData();
     
   }
 
     render() {
+      console.log(this.props.itemLayout3Reducer.previewInfo)
+
       const components = {
         body: {
           row: EditableFormRow,
@@ -455,7 +461,7 @@ componentWillReceiveProps(nextProps){
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
            <Button style={{float: "right"}}
-          //  disabled={this.state.disableSaveAll}
+            disabled={this.state.disableSaveAll}
             onClick={this.saveAll}
           >
             Lưu tất cả

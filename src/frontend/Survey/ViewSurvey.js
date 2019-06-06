@@ -201,7 +201,14 @@ class ViewSurvey extends Component {
     }
 
     render() {
-        console.log(this.state.listSurvey)
+        // let id_ctdt = 8;
+        // let data = {
+        //     id_ctdt : id_ctdt,
+        //     id_user : JSON.parse(localStorage.getItem("user")).data.Id,
+        // }
+        // $.getListSurvey(data).then(res => {
+        //     console.log(res.data)
+        // })
         const formItemLayout = {
             labelCol: {
                 xs: { span: 12 },

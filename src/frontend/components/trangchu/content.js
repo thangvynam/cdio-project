@@ -137,6 +137,7 @@ class Content extends Component {
     this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
   };
 
+    //             });
   checkInTeacherSubject = (teacherSubject, idSubject) => {
     for (let i = 0; i < teacherSubject.length; i++) {
       if (teacherSubject[i].IdSubject === idSubject) {

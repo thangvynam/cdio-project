@@ -514,6 +514,11 @@ const getSurveyWithIdSurveyList = (params) => {
     return $.get(url);
 }
 
+const getSubjectWithId = (data) => {
+    let url =_.GET_SUBJECT_WITH_ID;
+    return $.post(url,data);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -638,5 +643,6 @@ export default{
     insertStandardMatrix,
     checkStatus,
     getIDQA,
-    getSurveyITU
+    getSurveyITU,
+    getSubjectWithId,
 }

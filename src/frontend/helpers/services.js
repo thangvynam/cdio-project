@@ -268,8 +268,7 @@ const getDataSurvey = () => {
 }
 
 const setStatus = (id) => {
-    console.log(id)
-    let url = `${_.SET_STATUS}/${id}`
+    let url = `${_.SET_STATUS}/${id}`    
     return $.get(url);
 }
 

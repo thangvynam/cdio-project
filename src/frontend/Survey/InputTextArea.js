@@ -18,6 +18,7 @@ class InputTextArea extends Component {
         return (
             <div>
                  <TextArea 
+                    disabled={this.props.isDone}
                     onChange={(e,id) => { this.onChange(e, this.props.id )}}/>
             </div>
         );

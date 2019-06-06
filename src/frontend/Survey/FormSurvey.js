@@ -11,6 +11,7 @@ class FormSurvey extends Component {
   constructor(props) {
     super(props)
     this.state = {
+        tenMH: this.props.subjectName,
         nguoiDuocKS: "",
         nguoiKS: "",
         q1: "",
@@ -32,12 +33,14 @@ class FormSurvey extends Component {
       this.props.saveChange(key, e.target.value)
   }
 
-  componentDidMount() {
-    this.props.saveChange("tenMH", this.props.subjectName)
+  componentDidMount() {      
+    this.props.saveChange("tenMH", this.state.tenMH)
   }
+
 
   render() {
 
+    let isDone = this.props.isDone;
 
     const formItemLayout = {
         labelCol: {
@@ -71,20 +74,20 @@ class FormSurvey extends Component {
                         {...formItemLayout}
                         label="Tên môn học"
                     >
-                    <Input value={this.props.subjectName}/>
+                    <Input value={this.props.subjectName} disabled={isDone} />
                     </Form.Item>
                     <Form.Item
                         {...formItemLayout}
                         label="Người được khảo sát"
                     >
-                    <Input onChange={(e) => this.handleInput(e, "nguoiDuocKS")} />
+                    <Input onChange={(e) => this.handleInput(e, "nguoiDuocKS")} disabled={isDone} />
                     </Form.Item>                  
                     <label class="col-sm-12"><strong>Thầy cô đã dạy môn này bao nhiêu lần</strong></label>
                     <Form.Item
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q1")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q1")} rows={10} disabled={isDone} />
                     </Form.Item>                   
                     <label class="col-sm-12"><strong>Thầy/Cô đã từng viết chuẩn đầu ra cho môn học này chưa ? Nếu có, xin cung cấp cho cán bộ
                         khảo sát (viết lại hoặc email)</strong></label>
@@ -92,14 +95,14 @@ class FormSurvey extends Component {
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q2")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q2")} rows={10} disabled={isDone}/>
                     </Form.Item>
                     <label class="col-sm-12"><strong>Điều gì Thầy/Cô muốn cải tiến nhất khi muốn nâng cao chất lượng học tập của môn học này</strong></label>
                     <Form.Item
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q3")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q3")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <label class="col-sm-12"><strong>Trình bày những kiến thức, kỹ năng, thái độ mà sinh viên có được sau khi học xong môn học
                         này</strong></label>
@@ -107,7 +110,7 @@ class FormSurvey extends Component {
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q4")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q4")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <label class="col-sm-12"><strong>Theo kinh nghiệm giảng dạy của các Thầy/Cô, những kiến thức, kỹ năng, thai độ nào sinh
                         viên cần được cải thiện trước khi bắt đầu môn học này (cải thiện so với trước đây, không phải
@@ -116,7 +119,7 @@ class FormSurvey extends Component {
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q5")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q5")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <label class="col-sm-12"><strong>Sinh viên có được nhận thông tin phản hồi (của các bài tập, bài kiểm tra) trong suốt khoa học
                         không ? Khi nào sinh viên nhận lại phản hồi (1 tuần sau khi nộp bài, sau khi thi, cuối kỳ…)
@@ -125,28 +128,28 @@ class FormSurvey extends Component {
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q6")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q6")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <label class="col-sm-12"><strong>Điều gì giúp sinh viên hứng thú nhất, có động lực nhất khi học môn học này</strong></label>
                     <Form.Item
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q7")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q7")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <label class="col-sm-12"><strong>Điều gì làm sinh viên ít hứng thú nhất, mất động lực nhất khi học môn học này</strong></label>
                     <Form.Item
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q8")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q8")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <label class="col-sm-12"><strong>Nêu vai trò và trách nhiệm chính của giảng viên/trợ giảng trong môn học này</strong></label>
                     <Form.Item
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q9")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q9")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <label class="col-sm-12"><strong>Các tài nguyên cần thiết cho môn học này là gì (tài liệu, sách, cơ sở vật chất….) ? Tài nguyên
                         nào có sẵn cần cải thiện ? Tài nguyên nào cần trang bị mới</strong></label>
@@ -154,14 +157,14 @@ class FormSurvey extends Component {
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q10")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q10")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <label class="col-sm-12"><strong>Những đóng góp ý kiến của các Thầy/Cô để môn học được tốt hơn</strong></label>
                     <Form.Item
                         {...formItemLayout}
                         label="Câu trả lời"
                     >
-                    <TextArea onChange={(e) => this.handleInput(e, "q11")} rows={10}/>
+                    <TextArea onChange={(e) => this.handleInput(e, "q11")} rows={10} disabled={isDone} />
                     </Form.Item>
                     <Form.Item
                         {...formItemLayout}
@@ -179,20 +182,20 @@ class FormSurvey extends Component {
                     {...formItemLayout}
                     label="Tên môn học"
                 >
-                    <Input value={this.props.subjectName} />
+                    <Input value={this.props.subjectName}  disabled={isDone} />
                 </Form.Item>
                 <Form.Item
                     {...formItemLayout}
                     label="Người được khảo sát"
                 >
-                    <Input value={this.props.result.nguoiDuocKS} onChange={(e) => this.handleInput(e, "nguoiDuocKS")}/>
+                    <Input value={this.props.result.nguoiDuocKS} onChange={(e) => this.handleInput(e, "nguoiDuocKS")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Thầy cô đã dạy môn này bao nhiêu lần</strong></label>
                 <Form.Item
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q1} rows={10} onChange={(e) => this.handleInput(e, "q1")}/>
+                    <TextArea value={this.props.result.q1} rows={10} onChange={(e) => this.handleInput(e, "q1")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Thầy/Cô đã từng viết chuẩn đầu ra cho môn học này chưa ? Nếu có, xin cung cấp cho cán bộ
                 khảo sát (viết lại hoặc email)</strong></label>
@@ -200,14 +203,14 @@ class FormSurvey extends Component {
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q2} rows={10} onChange={(e) => this.handleInput(e, "q2")}/>
+                    <TextArea value={this.props.result.q2} rows={10} onChange={(e) => this.handleInput(e, "q2")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Điều gì Thầy/Cô muốn cải tiến nhất khi muốn nâng cao chất lượng học tập của môn học này</strong></label>
                 <Form.Item
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q3} rows={10} onChange={(e) => this.handleInput(e, "q3")}/>
+                    <TextArea value={this.props.result.q3} rows={10} onChange={(e) => this.handleInput(e, "q3")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Trình bày những kiến thức, kỹ năng, thái độ mà sinh viên có được sau khi học xong môn học
                 này</strong></label>
@@ -215,7 +218,7 @@ class FormSurvey extends Component {
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q4} rows={10} onChange={(e) => this.handleInput(e, "q4")}/>
+                    <TextArea value={this.props.result.q4} rows={10} onChange={(e) => this.handleInput(e, "q4")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Theo kinh nghiệm giảng dạy của các Thầy/Cô, những kiến thức, kỹ năng, thai độ nào sinh
                     viên cần được cải thiện trước khi bắt đầu môn học này (cải thiện so với trước đây, không phải
@@ -224,7 +227,7 @@ class FormSurvey extends Component {
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q5} rows={10} onChange={(e) => this.handleInput(e, "q5")}/>
+                    <TextArea value={this.props.result.q5} rows={10} onChange={(e) => this.handleInput(e, "q5")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Sinh viên có được nhận thông tin phản hồi (của các bài tập, bài kiểm tra) trong suốt khoa học
                     không ? Khi nào sinh viên nhận lại phản hồi (1 tuần sau khi nộp bài, sau khi thi, cuối kỳ…)
@@ -233,28 +236,28 @@ class FormSurvey extends Component {
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q6} rows={10} onChange={(e) => this.handleInput(e, "q6")}/>
+                    <TextArea value={this.props.result.q6} rows={10} onChange={(e) => this.handleInput(e, "q6")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Điều gì giúp sinh viên hứng thú nhất, có động lực nhất khi học môn học này</strong></label>
                 <Form.Item
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q7} rows={10} onChange={(e) => this.handleInput(e, "q7")}/>
+                    <TextArea value={this.props.result.q7} rows={10} onChange={(e) => this.handleInput(e, "q7")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Điều gì làm sinh viên ít hứng thú nhất, mất động lực nhất khi học môn học này</strong></label>
                 <Form.Item
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q8} rows={10} onChange={(e) => this.handleInput(e, "q8")}/>
+                    <TextArea value={this.props.result.q8} rows={10} onChange={(e) => this.handleInput(e, "q8")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Nêu vai trò và trách nhiệm chính của giảng viên/trợ giảng trong môn học này</strong></label>
                 <Form.Item
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q9} rows={10} onChange={(e) => this.handleInput(e, "q9")}/>
+                    <TextArea value={this.props.result.q9} rows={10} onChange={(e) => this.handleInput(e, "q9")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Các tài nguyên cần thiết cho môn học này là gì (tài liệu, sách, cơ sở vật chất….) ? Tài nguyên
                 nào có sẵn cần cải thiện ? Tài nguyên nào cần trang bị mới</strong></label>
@@ -262,14 +265,14 @@ class FormSurvey extends Component {
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q10} rows={10} onChange={(e) => this.handleInput(e, "q10")}/>
+                    <TextArea value={this.props.result.q10} rows={10} onChange={(e) => this.handleInput(e, "q10")} disabled={isDone} />
                 </Form.Item>
                 <label class="col-sm-12"><strong>Những đóng góp ý kiến của các Thầy/Cô để môn học được tốt hơn</strong></label>
                 <Form.Item
                     {...formItemLayout}
                     label="Câu trả lời"
                 >
-                    <TextArea value={this.props.result.q11} rows={10} onChange={(e) => this.handleInput(e, "q11")}/>
+                    <TextArea value={this.props.result.q11} rows={10} onChange={(e) => this.handleInput(e, "q11")} disabled={isDone} />
                 </Form.Item>
                 <Form.Item
                     {...formItemLayout}

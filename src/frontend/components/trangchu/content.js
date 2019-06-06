@@ -106,10 +106,10 @@ class Content extends Component {
         }
 
         if(this.props.content_type ==="itusurvey") {
-            $.getSurveyId(obj).then(res => {
-                if(res.data[0])
-                    this.props.onUpdateIdSurvey(res.data[0].id)
-            })
+            // $.getSurveyId(obj).then(res => {
+            //     if(res.data[0])
+            //         this.props.onUpdateIdSurvey(res.data[0].id)
+            // })
         }
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
     }
@@ -510,7 +510,7 @@ class Content extends Component {
                                 />
                             </div>
                                 </Row>
-                        <Survey subjectName={this.props.subjectName} monhoc={monhoc} ctdt={ctdt} idSurvey={this.props.idSurveyReducer.idSurvey}/>
+                        <Survey subjectName={subjectName} monhoc={monhoc} ctdt={ctdt} idSurvey={this.props.idSurveyReducer.idSurvey}/>
                     </React.Fragment>
                 )
                 break;

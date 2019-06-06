@@ -187,20 +187,7 @@ class Content extends Component {
             description: "",
             levels: []
         });
-        let ctdt = this.props.content_ctdt;
-        let idUser = JSON.parse(localStorage.getItem('user')).data.Id;
-        let obj = {
-            id_ctdt : ctdt,
-            id_mon : id,
-            id_giaovien : idUser,
-        }
-
-        if(this.props.content_type ==="itusurvey") {
-            $.getSurveyId(obj).then(res => {
-                if(res.data[0])
-                    this.props.onUpdateIdSurvey(res.data[0].id)
-            })
-        }
+    
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
     }
 

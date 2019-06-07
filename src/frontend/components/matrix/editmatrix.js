@@ -122,14 +122,14 @@ class EditMatrix extends Component {
   }
 
   getIndex = (matrix, key) => {
-    if(matrix !== undefined && matrix !== null) {
+    if (matrix !== undefined && matrix !== null) {
       for (let i = 0; i < matrix.length; i++) {
         if (matrix[i].key === key) {
           return i;
         }
       }
     }
-    
+
     return -1;
   }
   handleSave = (record, dataIndex) => {
@@ -199,27 +199,27 @@ class EditMatrix extends Component {
 
   getMatrixId = (matrix, thong_tin_chung_id, cdr_cdrio_id) => {
     //if(matrix !== undefined && matrix !== null) {
-      //console.log("a")
-      for (let i = 0; i < matrix.length; i++) {
-        if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
-          
-          return matrix[i].id;
-        }
+    //console.log("a")
+    for (let i = 0; i < matrix.length; i++) {
+      if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
+
+        return matrix[i].id;
       }
+    }
     //}
-    
+
     return -1;
   }
 
   getCdrCdioId = (cdr_cdio, cdr) => {
-    if(cdr_cdio !== undefined && cdr_cdio !== null) {
+    if (cdr_cdio !== undefined && cdr_cdio !== null) {
       for (let i = 0; i < cdr_cdio.length; i++) {
         if (cdr_cdio[i].cdr === cdr) {
           return cdr_cdio[i].id;
         }
       }
     }
-    
+
     return -1;
   }
   saveAll = () => {
@@ -273,115 +273,116 @@ class EditMatrix extends Component {
   }
 
   checkInTeacherSubject = (teacherSubject, idSubject) => {
-    for(let i = 0;i < teacherSubject.length;i++) {
-        if(teacherSubject[i].IdSubject === idSubject) {
-            return true;
-        }
+    for (let i = 0; i < teacherSubject.length; i++) {
+      if (teacherSubject[i].IdSubject === idSubject) {
+        return true;
+      }
     }
     return false;
   }
-  
+
   checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
-    for(let i = 0;i < teacherReviewSubject.length;i++) {
-        if(teacherReviewSubject[i].idTTC === idSubject) {
-            return true;
-        }
+    for (let i = 0; i < teacherReviewSubject.length; i++) {
+      if (teacherReviewSubject[i].idTTC === idSubject) {
+        return true;
+      }
     }
     return false;
   }
 
   componentDidMount() {
 
-    if(this.props.subjectList.length > 0) {
-        let subjectListId = [];
-        this.props.subjectList.map(item => {
-            subjectListId.push(item.IdSubject);
-        })
-        let data = {
-            data: subjectListId
-        }
-        if(data.data.length > 0) {
-          $.getStandardMatrix(data).then((res) => { 
-            this.setState({ tempMatrix: res.data });
-            let data = [];
-            for (let i = 0; i < res.data.length; i++) {
-              let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-              if (index !== -1) {
-                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                if (cdr_cdio !== "") {
-                  data[index][cdr_cdio] = res.data[i].muc_do;
-                }
-              }
-              else {
-                let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                if (subjectName !== "" && cdr_cdio !== "") {
-                  data.push({
-                    key: res.data[i].thong_tin_chung_id,
-                    hocky: 1,
-                    hocphan: subjectName,
-                    gvtruongnhom: 'NULL'
-                  })
-
-                  data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                }
-
+    if (this.props.subjectList.length > 0 && this.props.isLoadEditMatrix === "false") {
+      this.props.updateIsLoadEditMatrix("true");
+      let subjectListId = [];
+      this.props.subjectList.map(item => {
+        subjectListId.push(item.IdSubject);
+      })
+      let data = {
+        data: subjectListId
+      }
+      if (data.data.length > 0) {
+        $.getStandardMatrix(data).then((res) => {
+          this.setState({ tempMatrix: res.data });
+          let data = [];
+          for (let i = 0; i < res.data.length; i++) {
+            let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+            if (index !== -1) {
+              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+              if (cdr_cdio !== "") {
+                data[index][cdr_cdio] = res.data[i].muc_do;
               }
             }
-            this.props.updateEditMatrix(data);
-          }) 
-        }
-           
+            else {
+              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+              if (subjectName !== "" && cdr_cdio !== "") {
+                data.push({
+                  key: res.data[i].thong_tin_chung_id,
+                  hocky: 1,
+                  hocphan: subjectName,
+                  gvtruongnhom: 'NULL'
+                })
+
+                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+              }
+
+            }
+          }
+          this.props.updateEditMatrix(data);
+        })
+      }
+
     }
   }
 
   componentWillReceiveProps(nextProps) {
-    
-    if(this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+
+    if (this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
       console.log('receive')
       this.props.updateIsLoadEditMatrix("true");
-        let subjectListId = [];
-        this.props.subjectList.map(item => {
-            subjectListId.push(item.IdSubject);
-        })
-        let data = {
-            data: subjectListId
-        }
-        if(data.data.length > 0) {
-          $.getStandardMatrix(data).then((res) => {
-            this.setState({ tempMatrix: res.data });
-            let data = [];
-            for (let i = 0; i < res.data.length; i++) {
-              let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-              //console.log(index)
-              if (index !== -1) {
-                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                if (cdr_cdio !== "") {
-                  data[index][cdr_cdio] = res.data[i].muc_do;
-                }
-              }
-              else {
-                let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                if (subjectName !== "" && cdr_cdio !== "") {
-                  data.push({
-                    key: res.data[i].thong_tin_chung_id,
-                    hocky: 1,
-                    hocphan: subjectName,
-                    gvtruongnhom: 'NULL'
-                  })
-
-                  data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                }
-
+      let subjectListId = [];
+      this.props.subjectList.map(item => {
+        subjectListId.push(item.IdSubject);
+      })
+      let data = {
+        data: subjectListId
+      }
+      if (data.data.length > 0) {
+        $.getStandardMatrix(data).then((res) => {
+          this.setState({ tempMatrix: res.data });
+          let data = [];
+          for (let i = 0; i < res.data.length; i++) {
+            let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+            //console.log(index)
+            if (index !== -1) {
+              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+              if (cdr_cdio !== "") {
+                data[index][cdr_cdio] = res.data[i].muc_do;
               }
             }
-            this.props.updateEditMatrix(data);
-          })
-        }
-          
+            else {
+              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+              if (subjectName !== "" && cdr_cdio !== "") {
+                data.push({
+                  key: res.data[i].thong_tin_chung_id,
+                  hocky: 1,
+                  hocphan: subjectName,
+                  gvtruongnhom: 'NULL'
+                })
 
-      
+                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+              }
+
+            }
+          }
+          this.props.updateEditMatrix(data);
+        })
+      }
+
+
+
     }
 
   }
@@ -433,7 +434,7 @@ class EditMatrix extends Component {
       this.sortLevels(thirdColumn);
 
       let thirdColumnMapped = [];
-      if(thirdColumn.length > 0) {
+      if (thirdColumn.length > 0) {
         thirdColumnMapped = thirdColumn.map((key) => {
           return {
             title: key,
@@ -450,7 +451,7 @@ class EditMatrix extends Component {
         });
       }
       let secondColumnMapped = [];
-      if(secondColumn.length > 0) {
+      if (secondColumn.length > 0) {
         secondColumnMapped = secondColumn.map((key) => {
           let children = [];
           for (let i = 0; i < thirdColumnMapped.length; i++) {
@@ -466,8 +467,8 @@ class EditMatrix extends Component {
           }
         });
       }
-      
-      if(firstColumn.length > 0) {
+
+      if (firstColumn.length > 0) {
         firstColumnMapped = firstColumn.map((key) => {
           let children = [];
           for (let i = 0; i < secondColumnMapped.length; i++) {
@@ -481,7 +482,7 @@ class EditMatrix extends Component {
           }
         });
       }
-      
+
     }
 
     const columns = this.columns.concat(firstColumnMapped).map((col) => {
@@ -519,7 +520,7 @@ class EditMatrix extends Component {
     };
 
     return (
-      columns.length > this.columns.length && 
+      columns.length > this.columns.length &&
       this.props.subjectList.length > 0 &&
       <React.Fragment>
         <div style={{ margin: "10px" }}>
@@ -534,10 +535,10 @@ class EditMatrix extends Component {
             size="small"
             pagination={{
               onChange: page => {
-                  console.log(page);
+                console.log(page);
               },
               pageSize: 5,
-          }}
+            }}
           />
           {!_.isEmpty(this.state.rows) && <OutTable data={this.state.rows} columns={this.state.cols} tableClassName="ExcelTable2007" tableHeaderRowClass="heading" />}
         </div>

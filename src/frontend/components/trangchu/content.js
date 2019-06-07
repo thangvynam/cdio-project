@@ -137,7 +137,7 @@ class Content extends Component {
     this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
   };
 
-    //             });
+  //             });
   checkInTeacherSubject = (teacherSubject, idSubject) => {
     for (let i = 0; i < teacherSubject.length; i++) {
       if (teacherSubject[i].IdSubject === idSubject) {
@@ -328,7 +328,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Mô Tả Môn Học</span>
@@ -355,7 +355,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Mục Tiêu Môn Học</span>
@@ -382,7 +382,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Chuẩn Đẩu Ra</span>
@@ -409,7 +409,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Kế Hoạch Giảng Dạy Lý Thuyết</span>
@@ -436,7 +436,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Kế Hoạch Giảng Dạy Thực Hành</span>
@@ -463,7 +463,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Đánh Giá</span>
@@ -490,7 +490,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Tài Nguyên Môn Học</span>
@@ -517,7 +517,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Quy Định Chung</span>
@@ -545,7 +545,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Xuất File PDF</span>
@@ -573,7 +573,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Thông Tin Chung</span>
@@ -599,7 +599,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>ITU_SURVEY</span>
@@ -630,7 +630,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Phân Công</span>
@@ -658,7 +658,7 @@ class Content extends Component {
             <Row
               className={`col-right-title header-fixed ${
                 this.state.scrolling ? "fixedCss" : ""
-              }`}
+                }`}
             >
               <div className="header-child">
                 <span>Review</span>
@@ -689,7 +689,7 @@ class Content extends Component {
                   <Row
                     className={`col-right-title header-fixed ${
                       this.state.scrolling ? "fixedCss" : ""
-                    }`}
+                      }`}
                   >
                     <div className="header-child">
                       <span>SYLLABUS</span>
@@ -705,11 +705,12 @@ class Content extends Component {
                   </Row>
                 </Col>
                 <div className="wrapper-custom">
+                  {action !== "" && action !== undefined && action!== null ? 
                   <List
                     itemLayout="horizontal"
                     dataSource={subjectList}
                     pagination={{
-                      onChange: page => {},
+                      onChange: page => { },
                       pageSize: 10
                     }}
                     renderItem={(item, id) => (
@@ -731,43 +732,43 @@ class Content extends Component {
                                     <Link
                                       to={`/${parent}/${ctdt}/${type}/${action}/${
                                         item.IdSubjectBlock
-                                      }/${item.Id}/phan-cong`}
+                                        }/${item.Id}/phan-cong`}
                                     >
                                       <span
                                         className="list-item"
                                         onClick={() => this.onClick(item.Id)}
                                       >{`${item.SubjectCode} - ${
                                         item.SubjectName
-                                      }`}</span>
+                                        }`}</span>
                                     </Link>
                                   ) : action === "biensoan" ? (
                                     <Link
                                       to={`/${parent}/${ctdt}/${type}/${action}/${
                                         item.IdSubjectBlock
-                                      }/${item.Id}/thong-tin-chung`}
+                                        }/${item.Id}/thong-tin-chung`}
                                     >
                                       <span
                                         className="list-item"
                                         onClick={() => this.onClick(item.Id)}
                                       >{`${item.SubjectCode} - ${
                                         item.SubjectName
-                                      }`}</span>
+                                        }`}</span>
                                     </Link>
                                   ) : (
-                                    <Link
-                                      to={`/${parent}/${ctdt}/${type}/${action}/${
-                                        item.IdSubjectBlock
-                                      }/${item.Id}/review`}
-                                    >
-                                      <span
-                                        style={{ color: "white" }}
-                                        className="list-item"
-                                        onClick={() => this.onClick(item.Id)}
-                                      >{`${item.SubjectCode} - ${
-                                        item.SubjectName
-                                      } - Review`}</span>
-                                    </Link>
-                                  )
+                                        <Link
+                                          to={`/${parent}/${ctdt}/${type}/${action}/${
+                                            item.IdSubjectBlock
+                                            }/${item.Id}/review`}
+                                        >
+                                          <span
+                                            style={{ color: "white" }}
+                                            className="list-item"
+                                            onClick={() => this.onClick(item.Id)}
+                                          >{`${item.SubjectCode} - ${
+                                            item.SubjectName
+                                            } - Review`}</span>
+                                        </Link>
+                                      )
                                 }
                               />
                             </List.Item>
@@ -775,7 +776,7 @@ class Content extends Component {
                         </Col>
                       </Row>
                     )}
-                  />
+                  /> : <h1 align="center">Chọn menu trái cho chức năng mong muốn</h1>}
                 </div>
               </React.Fragment>
             ) : type === "matrix" ? (
@@ -783,117 +784,117 @@ class Content extends Component {
             ) : type === "edit-matrix" ? (
               <EditMatrix />
             ) : // : type === "survey-matrix" ? <SurveyMatrix />
-            type === "benchmark-matrix" ? (
-              <BenchMark />
-            ) : type === "itusurvey" ? (
-              <React.Fragment>
-                <Row
-                  className={`col-right-title header-fixed ${
-                    this.state.scrolling ? "fixedCss" : ""
-                  }`}
-                >
-                  <div className="header-child">
-                    <span>ITU Survey</span>
-                    <Direction
-                      subjectName={subjectName}
-                      content_khoi={khoi}
-                      content_ctdt={ctdt}
-                      content_parent={parent}
-                      content_type={type}
-                      content_action={action}
-                    />
-                  </div>
-                </Row>
-                <div className="wrapper-custom-layout">
-                  <ListSurvey
-                    khoi={khoi}
-                    ctdt={ctdt}
-                    parent={parent}
-                    type={type}
-                    action={action}
-                    subjectList={subjectList}
-                    onClick={this.onClick}
-                  />
-                </div>
-              </React.Fragment>
-            ) : action === "chinhsua-cdr" ? (
-              <EditOutcomeStandard ctdt={ctdt} />
-            ) : action === "danhgia-cdr" ? (
-              <EditOutcomeStandard ctdt={ctdt} />
-            ) : action === "khaosat-cdr" ? (
-              <div>Khảo sát cdr</div>
-            ) : type === "chuan-dau-ra" ? (
-              <InfoOutcomeStandard ctdt={ctdt} />
-            ) : type === "phan-cong-giang-day" ? (
-              <TeachingManage ctdt={ctdt} />
-            ) : type === "khao-sat-chuan-dau-ra" ? (
-              <OSSurvey />
-            ) : type === "edit-ctdt" ? (
-              <div>
-                <Direction
-                  subjectName={subjectName}
-                  content_khoi={khoi}
-                  content_ctdt={ctdt}
-                  content_parent={parent}
-                  content_type={type}
-                  content_action={action}
-                />
-                <EditEducationProgram ctdt={ctdt} />
-              </div>
-            ) : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-              <div>Trang chủ chương trình đào tạo</div>
-            ) : parent === "ctdt" ? (
-              <EducationProgram />
-            ) : parent === "danh-muc" ? (
-              <Danhmuc />
-            ) : parent === "cdr" ? (
-              ctdt === "edit" ? (
-                <React.Fragment>
-                  <EditOutcomeStandard />
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <OutcomeStandard />
-                </React.Fragment>
-              )
-            ) : parent === "qlhp" ? (
-              <React.Fragment>
-                <SubjectManage />
-              </React.Fragment>
-            ) : parent === "qlkh" ? (
-              <React.Fragment>
-                <FaProManage />
-              </React.Fragment>
-            ) : parent === "qlnd" ? (
-              <React.Fragment>
-                <UserManage />
-              </React.Fragment>
-            ) : parent === "survey-matrix" ? (
-              <SurveyMatrix />
-            ) : parent === "view-survey" ? (
-              <React.Fragment>
-                <Row className="col\-right\-title aa">
-                  <div>
-                    <span>Xem Khảo Sát</span>
-                    <Direction
-                      subjectName={subjectName}
-                      content_khoi={khoi}
-                      content_ctdt={ctdt}
-                      content_parent={parent}
-                      content_type={type}
-                      content_action={action}
-                    />
-                  </div>
-                </Row>
-                <div className="wrapper-custom-layout">
-                  <ViewSurvey />
-                </div>
-              </React.Fragment>
-            ) : parent === "info" ? (
-              <React.Fragment>
-                <UserInfo />
-              </React.Fragment>
-            ) : null;
+                  type === "benchmark-matrix" ? (
+                    <BenchMark />
+                  ) : type === "itusurvey" ? (
+                    <React.Fragment>
+                      <Row
+                        className={`col-right-title header-fixed ${
+                          this.state.scrolling ? "fixedCss" : ""
+                          }`}
+                      >
+                        <div className="header-child">
+                          <span>ITU Survey</span>
+                          <Direction
+                            subjectName={subjectName}
+                            content_khoi={khoi}
+                            content_ctdt={ctdt}
+                            content_parent={parent}
+                            content_type={type}
+                            content_action={action}
+                          />
+                        </div>
+                      </Row>
+                      <div className="wrapper-custom-layout">
+                        <ListSurvey
+                          khoi={khoi}
+                          ctdt={ctdt}
+                          parent={parent}
+                          type={type}
+                          action={action}
+                          subjectList={subjectList}
+                          onClick={this.onClick}
+                        />
+                      </div>
+                    </React.Fragment>
+                  ) : action === "chinhsua-cdr" ? (
+                    <EditOutcomeStandard ctdt={ctdt} />
+                  ) : action === "danhgia-cdr" ? (
+                    <EditOutcomeStandard ctdt={ctdt} />
+                  ) : action === "khaosat-cdr" ? (
+                    <div>Khảo sát cdr</div>
+                  ) : type === "chuan-dau-ra" ? (
+                    <InfoOutcomeStandard ctdt={ctdt} />
+                  ) : type === "phan-cong-giang-day" ? (
+                    <TeachingManage ctdt={ctdt} />
+                  ) : type === "khao-sat-chuan-dau-ra" ? (
+                    <OSSurvey />
+                  ) : type === "edit-ctdt" ? (
+                    <div>
+                      <Direction
+                        subjectName={subjectName}
+                        content_khoi={khoi}
+                        content_ctdt={ctdt}
+                        content_parent={parent}
+                        content_type={type}
+                        content_action={action}
+                      />
+                      <EditEducationProgram ctdt={ctdt} />
+                    </div>
+                  ) : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
+                    <div>Trang chủ chương trình đào tạo</div>
+                  ) : parent === "ctdt" ? (
+                    <EducationProgram />
+                  ) : parent === "danh-muc" ? (
+                    <Danhmuc />
+                  ) : parent === "cdr" ? (
+                    ctdt === "edit" ? (
+                      <React.Fragment>
+                        <EditOutcomeStandard />
+                      </React.Fragment>
+                    ) : (
+                        <React.Fragment>
+                          <OutcomeStandard />
+                        </React.Fragment>
+                      )
+                  ) : parent === "qlhp" ? (
+                    <React.Fragment>
+                      <SubjectManage />
+                    </React.Fragment>
+                  ) : parent === "qlkh" ? (
+                    <React.Fragment>
+                      <FaProManage />
+                    </React.Fragment>
+                  ) : parent === "qlnd" ? (
+                    <React.Fragment>
+                      <UserManage />
+                    </React.Fragment>
+                  ) : parent === "survey-matrix" ? (
+                    <SurveyMatrix />
+                  ) : parent === "view-survey" ? (
+                    <React.Fragment>
+                      <Row className="col\-right\-title aa">
+                        <div>
+                          <span>Xem Khảo Sát</span>
+                          <Direction
+                            subjectName={subjectName}
+                            content_khoi={khoi}
+                            content_ctdt={ctdt}
+                            content_parent={parent}
+                            content_type={type}
+                            content_action={action}
+                          />
+                        </div>
+                      </Row>
+                      <div className="wrapper-custom-layout">
+                        <ViewSurvey />
+                      </div>
+                    </React.Fragment>
+                  ) : parent === "info" ? (
+                    <React.Fragment>
+                      <UserInfo />
+                    </React.Fragment>
+                  ) : null;
         }
         break;
       }

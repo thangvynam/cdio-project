@@ -236,20 +236,15 @@ class ViewSurvey extends Component {
                     {...formItemLayout}
                     label="Khoảng thời gian"
                 >
-                    <RangePicker onChange={onChange} />
+                    <RangePicker style={{ width: 370 }} onChange={onChange} />
                 </Form.Item>
-                <Form.Item
-                    {...formItemLayout} >
-                    <center>
-                        <Button
+                <Form.Item>
+                        <Button className="create-survey-btn"
                             type="primary"
-                            style={{ marginLeft: "2em" }}
                             onClick={this.create}
                         >
-                            Tạo <Icon type="plus" />
+                            Tạo <Icon className="icon-create-survey" type="plus" />
                         </Button>
-                        <br />
-                    </center>
                 </Form.Item>
                 <br />
 

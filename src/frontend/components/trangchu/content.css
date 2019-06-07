@@ -135,3 +135,37 @@ a.title-subbject span {
     font-size: 20px;
     color: white;
 }
+
+/* Create-survey */
+button.ant-btn.create-survey-btn {
+    position: relative;
+    left: 50%;
+    width: 80px;
+    margin-left: -40px;
+}
+
+i.icon-create-survey svg {
+    margin-bottom: 5px;
+}
+
+.custom-survey-item{
+    font-size: 20px !important;
+    margin-bottom: 1%;
+}
+
+.custom-survey-item-button{
+    display: flex;
+    justify-content: flex-end;
+}
+
+.custom-survey-item-button button.atn-btn{
+    margin-right: 5px;
+}
+
+.status-column-survey{
+    padding: 1%;
+}
+
+.view-survey-matrix{
+    margin-left: 5px;
+}

@@ -99,12 +99,16 @@ span.subject-name{
     display: flex;
 }
 
-.col-flex-left, .col-flex-right{
-    width: 40% ;
+.col-flex-left {
+    width: 30% ;
+}
+
+.col-flex-right {
+    width: 50% ;
 }
 
 .col-flex-center{
-    width: 16%;
+    width: 20%;
     align-self: center;
     margin: 0px 2%;
 }

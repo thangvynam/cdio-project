@@ -161,10 +161,14 @@ class MenuLeft extends Component {
         let ctdtIndex = this.getCtdt(this.props.ctdt, this.props.content_ctdt);
         if (ctdtIndex !== -1) { //ctdt exists
           if (this.props.parentitem[i].id === this.props.content_parent) {
+            menuItemsCollapse.push(this.menuItem(this.props.parentitem[i].id,
+              `/${this.props.parentitem[i].id}`,
+              this.props.parentitem[i].name,
+              "dashboard", "0px"));
             menuItemsCollapse.push(this.menuItem(this.props.ctdt[ctdtIndex].Id,
               `/${this.props.content_parent}/${this.props.ctdt[ctdtIndex].Id}`,
               this.props.ctdt[ctdtIndex].EduName,
-              "dashboard", "0px"));
+              "dashboard", "10px"));
           }
           else {
             menuItemsCollapse.push(this.menuItem(this.props.parentitem[i].id,

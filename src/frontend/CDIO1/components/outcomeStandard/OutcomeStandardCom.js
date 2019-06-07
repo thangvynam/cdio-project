@@ -529,11 +529,6 @@ export default class OutcomeStandardCom extends Component {
                 style={{ width: "2em" }}
               />
               <Column
-                field="NameUser"
-                header="Người tạo"
-                style={{ width: "2em" }}
-              />
-              <Column
                 field="SchoolYear"
                 header="Năm học"
                 style={{ width: "1em" }}

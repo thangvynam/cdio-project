@@ -13,6 +13,8 @@ import { OrderList } from "primereact/orderlist";
 
 import TableSubjectsCom from "./TableSubjectsCom";
 
+import ListContentContainer from "./ListContentContainer";
+
 import * as logic from "../../business/logicEducationProgram";
 import * as common from "../../business/commonEducation";
 
@@ -27,6 +29,7 @@ export default class ContentProgramCom extends React.Component {
       isDialogChild: false,
       isDialogTable: false,
       isDialogDelete: false,
+      isDialogPartStudy: false,
       nameValue: "", // title of row
       isTable: false, // check is table,
       isTitle: false, // check is Title,
@@ -45,12 +48,18 @@ export default class ContentProgramCom extends React.Component {
       descriptionBlockBB: "",
       filterBlocks: [],
       // học phần tự do
-      descriptionFreePartStudy:"",
+      descriptionFreePartStudy: "",
       filterDSCFreeStudies: [],
       creditFreeStudy: 0
     };
     this.deleteSubject.bind(this);
   }
+
+  // **************************************************************
+  onAddKnowledgeTable = knowledgeTables =>{
+    console.log(knowledgeTables)
+  }
+  // **************************************************************
 
   // get targetNodes from redux
   getContentNodes = (contentNodes, subjects) => {
@@ -84,11 +93,17 @@ export default class ContentProgramCom extends React.Component {
         nodes: nodes,
         nameValue: ""
       });
-    } else if(this.state.isTable) {
+    } else if (this.state.isTable) {
       this.setState({ nodes: this.addChildTable(data, this.state.node) });
     }
-    else{ // HP tu do
-
+    else { // HP tu do
+      debugger;
+      const data = logic.addChildFreePartStudy(this.state.nodes,
+        this.state.node, "Kiến thức tự chọn tự do",
+        this.state.descriptionFreePartStudy,
+        this.state.creditFreeStudy
+      )
+      this.setState({ nodes: data });
     }
     this.onHideDialogChild();
   };
@@ -282,6 +297,14 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
+  isShowDialogPartStudy = node => {
+    this.setState({
+      isDialogPartStudy: true,
+      descriptionFreePartStudy: node.data.description,
+      creditFreeStudy: node.data.credit
+    })
+  }
+
   isShowDialogTable = node => {
     this.setState({
       isDialogTable: true,
@@ -315,6 +338,14 @@ export default class ContentProgramCom extends React.Component {
     this.setState({
       listSubjects: [],
       isDialogTable: false
+    });
+  };
+
+  onHideDialogFreePartStudy = () => {
+    this.setState({
+      isDialogPartStudy: false,
+      descriptionFreePartStudy: "",
+      creditFreeStudy: 0
     });
   };
 
@@ -369,19 +400,19 @@ export default class ContentProgramCom extends React.Component {
     });
   };
 
-  filterFreeStudy = e =>{
+  filterFreeStudy = e => {
 
   }
 
   // onchange
 
-  onChangeCreditFreeStudy = e =>{
+  onChangeCreditFreeStudy = e => {
     this.setState({
       creditFreeStudy: e.value
     });
   }
 
-  onChangeDSCFreeStudy = e =>{
+  onChangeDSCFreeStudy = e => {
     this.setState({
       descriptionFreePartStudy: e.value
     })
@@ -470,15 +501,28 @@ export default class ContentProgramCom extends React.Component {
           ) : (
               <span>
                 {this.isCanAdd(node) && (
-                  <Button
-                    onClick={() => this.isShowDialogChild(node)}
-                    onMouseOver={() => this.mouseOver(node)}
-                    theme="success"
-                    style={{ marginRight: ".3em", padding: "8px" }}
-                    title={`Thêm cấp con của ${this.state.nodeHover}`}
-                  >
-                    <i className="material-icons">add</i>
-                  </Button>
+                  node.data.credit ? (
+                    <Button
+                      onClick={() => this.isShowDialogPartStudy(node)}
+                      onMouseOver={() => this.mouseOver(node)}
+                      theme="success"
+                      style={{ marginRight: ".3em", padding: "8px" }}
+                      title={`Thêm học phần tự do của ${this.state.nodeHover}`}
+                    >
+                      <i className="material-icons">add to queue</i>
+                    </Button>
+                  ) : (
+                      <Button
+                        onClick={() => this.isShowDialogChild(node)}
+                        onMouseOver={() => this.mouseOver(node)}
+                        theme="success"
+                        style={{ marginRight: ".3em", padding: "8px" }}
+                        title={`Thêm cấp con của ${this.state.nodeHover}`}
+                      >
+                        <i className="material-icons">add</i>
+                      </Button>
+                    )
+
                 )}
                 <Button
                   onClick={() => this.upSameLevel(node)}
@@ -600,6 +644,17 @@ export default class ContentProgramCom extends React.Component {
     </div>
   );
 
+  footerDialogFreePartStudy = (
+    <div>
+    <Button  theme="success">
+      Thêm
+    </Button>
+    <Button onClick={this.onHideDialogFreePartStudy} theme="secondary">
+      Hủy
+    </Button>
+  </div>
+  )
+
   render() {
     return (
       <div>
@@ -680,7 +735,7 @@ export default class ContentProgramCom extends React.Component {
                 Thêm bảng
               </label>
             </Col>
-          {/*  <Col lg="4" md="4" sm="4">
+            <Col lg="4" md="4" sm="4">
               <Checkbox
                 checked={this.state.isAnyTable}
                 onChange={this.onCheckAddAnyTable}
@@ -688,7 +743,7 @@ export default class ContentProgramCom extends React.Component {
               <label htmlFor="cb2" className="p-checkbox-label">
                 Thêm học phần tự do
               </label>
-            </Col>*/}
+            </Col>
           </Row>
           <hr />
           {/* is title */}
@@ -722,6 +777,14 @@ export default class ContentProgramCom extends React.Component {
           </Row>
           {/* is add any table */}
           <div hidden={!this.state.isAnyTable}>
+            {/* đây là component  với tham số truyền vào là function onAddKnowledgeTable được định nghĩa ở 
+                ContentProgramCom và có dữ liệu truyền vào từ ListContentContainer
+                cách viết hàm: onAddKnowledgeTable = knowledgeTable =>{
+                  sự dụng knowledgeTable ở đây
+                }
+            */}
+            {/*<ListContentContainer onAddKnowledgeTable={this.onAddKnowledgeTable} />*/}
+            <ListContentContainer onAddKnowledgeTable={this.onAddKnowledgeTable} />
             <Row>
               <Col lg="5" md="5" sm="5">
                 <AutoComplete
@@ -933,6 +996,16 @@ export default class ContentProgramCom extends React.Component {
           <p>{`Bạn thực sự muốn xóa cấp ${this.state.node.key}`}</p>
         </Dialog>
 
+        {/* Dialog add free study part */}
+        <Dialog
+          header="Thêm các khối kiến thức cho học phần tự do"
+          visible={this.state.isDialogPartStudy}
+          onHide={() => this.onHideDialogFreePartStudy()}
+          style={{ width: "50vw" }}
+          footer={this.footerDialogFreePartStudy}
+        >
+
+        </Dialog>
       </div>
     );
   }

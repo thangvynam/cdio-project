@@ -2,27 +2,27 @@ import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, CTDT, PARE
 const initialState = {
     "edit-ctdt" :{
         name: "THÔNG TIN",
-        role: ["ADMIN", "CHUNHIEM", "BIENSOAN", "TEACHER"],
+        role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"],
         children: []
     },
     "chuan-dau-ra" :{
         name: "CHUẨN ĐẦU RA",
-        role: ["TEACHER", "BIEN_SOAN"],
+        role: ["ADMIN", "TEACHER", "BIEN_SOAN"],
         children: [
             {
                 id: "chinhsua-cdr",
                 name: "Chỉnh sửa chuẩn đầu ra",
-                role: ["ADMIN", "CHUNHIEM", "BIENSOAN", "TEACHER"]
+                role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
             },
             {
                 id: "danhgia-cdr",
                 name: "Đánh giá chuẩn đầu ra",
-                role: ["ADMIN", "CHUNHIEM", "BIENSOAN", "TEACHER"]
+                role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
             },
             {
                 id: "khaosat-cdr",
                 name: "Khảo sát chuẩn đầu ra",
-                role: ["ADMIN", "CHUNHIEM", "BIENSOAN", "TEACHER"]
+                role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
             },
         ]
     },
@@ -133,7 +133,7 @@ const parentState = [
     {
         id: "ctdt",
         name: "CHƯƠNG TRÌNH ĐÀO TẠO",
-        role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"],
+        role: ["ADIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"],
     },
     {
         id: "danh-muc",

@@ -39,6 +39,25 @@ export const addChildTitle = (data, nodeParent, name) => {
   return data;
 };
 
+export const addChildFreePartStudy = (data, nodeParent, name, description, credit) => {
+  const length = nodeParent.children.length;
+  const key = `${nodeParent.key}.${length + 1}`;
+
+  const node = {
+    key: key,
+    data: {
+      name: `${name}`,
+      description: description,
+      credit: credit,
+      displayName: `${key}. ${name} ( ${description} Học ít nhất ${credit})`
+    },
+    children: []
+  };
+  nodeParent.children.push(node);
+  data = common.updateNode(data, nodeParent);
+  return data;
+};
+
 // Delete Node
 export const deleteNode = (nodes, node) => {
   let root = [...nodes];

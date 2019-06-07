@@ -462,27 +462,29 @@ export default class DetailOutcomeStandardCom extends Component {
             </Button>
           </React.Fragment>
         )}
-        <Button
-          onClick={() =>
-            this.setState({
-              commentVisible: true,
-              commentKey: node.key
-            })
-          }
-          theme={
-            commonLogic.isDoneAll(
-              this.props.comments.filter(comment => {
-                return comment.KeyRow.indexOf(node.key) === 0;
+        {!this.props.isFromOSList && (
+          <Button
+            onClick={() =>
+              this.setState({
+                commentVisible: true,
+                commentKey: node.key
               })
-            )
-              ? "primary"
-              : "danger"
-          }
-          style={{ marginRight: ".3em", padding: "8px" }}
-          title={`Bình luận ${node.key}`}
-        >
-          <i className="material-icons">question_answer</i>
-        </Button>
+            }
+            theme={
+              commonLogic.isDoneAll(
+                this.props.comments.filter(comment => {
+                  return comment.KeyRow.indexOf(node.key) === 0;
+                })
+              )
+                ? "primary"
+                : "danger"
+            }
+            style={{ marginRight: ".3em", padding: "8px" }}
+            title={`Bình luận ${node.key}`}
+          >
+            <i className="material-icons">question_answer</i>
+          </Button>
+        )}
       </div>
     );
   };
@@ -585,22 +587,24 @@ export default class DetailOutcomeStandardCom extends Component {
       <div className="p-grid content-section implementation">
         <Row>
           <Col lg="1" md="1" sm="1">
-            <Button
-              onClick={() =>
-                this.setState({
-                  commentVisible: true,
-                  commentKey: ""
-                })
-              }
-              theme={
-                commonLogic.isDoneAll(this.props.comments)
-                  ? "primary"
-                  : "danger"
-              }
-              title="Bình luận"
-            >
-              <i className="material-icons">question_answer</i>
-            </Button>
+            {!this.props.isFromOSList && (
+              <Button
+                onClick={() =>
+                  this.setState({
+                    commentVisible: true,
+                    commentKey: ""
+                  })
+                }
+                theme={
+                  commonLogic.isDoneAll(this.props.comments)
+                    ? "primary"
+                    : "danger"
+                }
+                title="Bình luận"
+              >
+                <i className="material-icons">question_answer</i>
+              </Button>
+            )}
           </Col>
           {JSON.parse(localStorage.getItem("user")).data.Role.includes(
             "BIEN_SOAN"
@@ -887,7 +891,7 @@ export default class DetailOutcomeStandardCom extends Component {
                 <Col lg="12" md="12" sm="12" style={{ height: "380px" }}>
                   <DataTable
                     paginator={true}
-                    rows={6}
+                    rows={4}
                     header={nationHeader}
                     ref={el => (this.dt = el)}
                     globalFilter={this.state.nationalFilter}

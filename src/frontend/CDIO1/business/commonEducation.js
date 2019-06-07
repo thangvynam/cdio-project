@@ -313,19 +313,49 @@ export const getSubjects = blocks => {
   return array;
 };
 
-export const mapUserToSubject = (subjects, users) => {
-  const newsubjects = subjects.map(subject => {
-    const user = users.filter(user => user.id === subject.IdUser);
-    if (user) {
-      const tmpSbject = { ...subject, ...user[0] };
-      return tmpSbject;
-    } else return subject;
-  });
-  return newsubjects;
-};
-
 export const isDoneAll = comments => {
   const notdone = comments.filter(comment => !comment.UserDone);
   if (notdone.length > 0) return false;
   else return true;
+};
+
+export const mapUserToSubject = (subjects, users) => {
+  const newsubjects = subjects.map(subject => {
+    const arrayIDUser = subject.IdUser?subject.IdUser.split(" ").map(tmpuser => {
+      return +tmpuser;
+    }):[];
+
+    const arrUser = arrayIDUser.map(id => {
+      const data = users.filter(user => {
+        return id === user.id;
+      });
+      return data ? data[0] : null;
+    });
+
+    const usernames = arrUser.reduce((str, user) => {
+      return str + user.name + " . ";
+    }, "");
+
+    subject.usernames = usernames ? usernames : "Chưa có";
+
+    const mainTeacher = users.filter(
+      user => user.id === subject.IdMainTeacher
+    )[0];
+    subject.mainTeacher = mainTeacher ? mainTeacher.name : "Chưa có";
+
+    subject.idMainTeacher = mainTeacher ? mainTeacher.name : null;
+    subject.arrayIDUser = arrayIDUser ? arrayIDUser : [];
+
+    return subject;
+  });
+
+  return newsubjects;
+};
+
+export const isMainTeacher = (data, subject) => {
+  return subject.idMainTeacher&&subject.idMainTeacher===data.id;
+};
+
+export const isTeacher = (data, subject) => {
+  return subject.arrayIDUser&&subject.arrayIDUser.includes(data.id);
 };

@@ -95,7 +95,7 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
     this.props.onLoadPrograms();
     this.props.onLoadSubjects();
     this.props.onLoadOutcomeStandards();
-
+    this.props.updateIsLoadEditMatrix("false");
     $.getBlockSubject(id).then(res => {
       let resData = res.data.data;
       let dataSubject = [];

@@ -44,6 +44,14 @@ class EditOutcomeStandardTmp extends Component {
   };
 
   render() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isFromOSList = urlParams.get("id") ? true : false;
+
+    let id = urlParams.get("id")
+      ? urlParams.get("id")
+      : +this.props.detailEduProgram.IdOutcome;
+    id = id ? id : 0;
+
     const infoOutcomeStandard = Array.isArray(this.props.infoOutcomeStandard)
       ? this.props.infoOutcomeStandard[0]
       : null;
@@ -51,13 +59,7 @@ class EditOutcomeStandardTmp extends Component {
     const title = infoOutcomeStandard
       ? `${infoOutcomeStandard.NameOutcomeStandard}`
       : `Chưa tải được`;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    let id = urlParams.get("id")
-      ? urlParams.get("id")
-      : +this.props.detailEduProgram.IdOutcome;
-    id = id ? id : 0;
-
+    
     return (
       id
       ?<Container fluid className="main-content-container px-4">
@@ -80,6 +82,7 @@ class EditOutcomeStandardTmp extends Component {
         <Row>
           <Col lg="12" md="12">
             <DetailOutcomeStandardCom
+              isFromOSList={isFromOSList}
               revisions={this.props.revisions}
               infoOutcomeStandard={infoOutcomeStandard}
               detailOutcomeStandard={this.props.detailOutcomeStandard}

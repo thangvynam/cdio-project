@@ -34,12 +34,17 @@ export default class TeachingManageCom extends Component {
   };
 
   onAddTeacher = data => {
-    const iduser = data.id;
+    const iduser = [...this.state.subject.arrayIDUser, data.id];
+    const idmainteacher =
+      data.id === this.state.subject.idMainTeacher
+        ? null
+        : this.state.subject.idMainTeacher;
     const idsubject = this.state.subject.IdSubject;
     const idsubjectblock = this.state.subject.IdSubjectBlock;
     const iddetail = this.props.detailEduProgram.Id;
     const block = {
       iduser,
+      idmainteacher,
       idsubject,
       idsubjectblock,
       iddetail
@@ -53,10 +58,39 @@ export default class TeachingManageCom extends Component {
 
   onAddMainTeacher = data => {
     const idmainteacher = data.id;
+    const iduser = [...this.state.subject.arrayIDUser].filter(
+      id => id !== data.id
+    );
     const idsubject = this.state.subject.IdSubject;
     const idsubjectblock = this.state.subject.IdSubjectBlock;
     const iddetail = this.props.detailEduProgram.Id;
     const block = {
+      iduser,
+      idmainteacher,
+      idsubject,
+      idsubjectblock,
+      iddetail
+    };
+    this.props.onAddTeacher(block);
+    this.setState({
+      visible: false,
+      subject: {}
+    });
+  };
+
+  onDeleteTeacher = data => {
+    const idmainteacher =
+      data.id === this.state.subject.idMainTeacher
+        ? null
+        : this.state.subject.idMainTeacher;
+    const iduser = [...this.state.subject.arrayIDUser].filter(
+      id => id !== data.id
+    );
+    const idsubject = this.state.subject.IdSubject;
+    const idsubjectblock = this.state.subject.IdSubjectBlock;
+    const iddetail = this.props.detailEduProgram.Id;
+    const block = {
+      iduser,
       idmainteacher,
       idsubject,
       idsubjectblock,
@@ -87,30 +121,37 @@ export default class TeachingManageCom extends Component {
   actionTemplateDial = (data, column) => {
     return (
       <div>
-        <Button
-          title="Thêm trợ giảng"
-          onClick={() => this.onAddTeacher(data)}
-          theme="success"
-          style={{ marginRight: ".3em", padding: "8px" }}
-        >
-          <i className="material-icons">playlist_add</i>
-        </Button>
-        <Button
-          title="Thêm giảng viên"
-          onClick={() => this.onAddMainTeacher(data)}
-          theme="success"
-          style={{ marginRight: ".3em", padding: "8px" }}
-        >
-          <i className="material-icons">add</i>
-        </Button>
-        <Button
-          title="Hủy phân công"
-          onClick={() => this.onDeleteTeacher(data)}
-          theme="secondary"
-          style={{ marginRight: ".3em", padding: "8px" }}
-        >
-          <i className="material-icons">delete_sweep</i>
-        </Button>
+        {!commonLogic.isTeacher(data, this.state.subject) && (
+          <Button
+            title="Thêm trợ giảng"
+            onClick={() => this.onAddTeacher(data)}
+            theme="success"
+            style={{ marginRight: ".3em", padding: "8px" }}
+          >
+            <i className="material-icons">group_add</i>
+          </Button>
+        )}
+        {!commonLogic.isMainTeacher(data, this.state.subject) && (
+          <Button
+            title="Thêm giảng viên"
+            onClick={() => this.onAddMainTeacher(data)}
+            theme="info"
+            style={{ marginRight: ".3em", padding: "8px" }}
+          >
+            <i className="material-icons">person_add</i>
+          </Button>
+        )}
+        {(commonLogic.isTeacher(data, this.state.subject) ||
+          commonLogic.isMainTeacher(data, this.state.subject)) && (
+          <Button
+            title="Hủy phân công"
+            onClick={() => this.onDeleteTeacher(data)}
+            theme="secondary"
+            style={{ marginRight: ".3em", padding: "8px" }}
+          >
+            <i className="material-icons">person_add_disabled</i>
+          </Button>
+        )}
       </div>
     );
   };
@@ -221,8 +262,13 @@ export default class TeachingManageCom extends Component {
                 style={{ width: "5em" }}
               />
               <Column
-                field="username"
-                header="Giảng viên phụ trách"
+                field="mainTeacher"
+                header="Giảng viên"
+                style={{ width: "5em" }}
+              />
+              <Column
+                field="usernames"
+                header="Trợ giảng"
                 style={{ width: "5em" }}
               />
               <Column

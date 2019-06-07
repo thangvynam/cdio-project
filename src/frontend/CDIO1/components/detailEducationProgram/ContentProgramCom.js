@@ -55,6 +55,12 @@ export default class ContentProgramCom extends React.Component {
     this.deleteSubject.bind(this);
   }
 
+  // **************************************************************
+  onAddKnowledgeTable = knowledgeTables =>{
+    console.log(knowledgeTables)
+  }
+  // **************************************************************
+
   // get targetNodes from redux
   getContentNodes = (contentNodes, subjects) => {
 
@@ -778,7 +784,7 @@ export default class ContentProgramCom extends React.Component {
                 }
             */}
             {/*<ListContentContainer onAddKnowledgeTable={this.onAddKnowledgeTable} />*/}
-            <ListContentContainer />
+            <ListContentContainer onAddKnowledgeTable={this.onAddKnowledgeTable} />
             <Row>
               <Col lg="5" md="5" sm="5">
                 <AutoComplete

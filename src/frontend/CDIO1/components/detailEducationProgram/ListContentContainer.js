@@ -17,12 +17,6 @@ class ListContentContainer extends React.Component {
     });
 }
 
-  onAddKnowledgeTable = () => {
-    // gọi hàm onAddKnowledgeTable của ContentPrgramCom với
-    // data truyền vào là state.knowledgeTable của ListContentContainer
-    this.props.onAddKnowledgeTable(this.state.knowledgeTable);
-  };
-
   render() {
     // contentList (đã có trước đó từ việc gọi redux ở nơi khác)
     console.log(this.props.contentList);
@@ -30,9 +24,15 @@ class ListContentContainer extends React.Component {
     console.log(this.props.knowledgeTables);
     // bắt sự kiện chọn content thuộc contentList => gọi redux onLoadKnowledgeTable
     return (
-      <Button onClick={() => this.props.onLoadKnowledgeTable(67)}>
-        <i className="material-icons">playlist_add</i>
-      </Button>
+      <div>
+        <Button onClick={() => this.props.onLoadKnowledgeTable(67)}>
+        load KnowledgeTable
+        </Button>
+        
+        <Button onClick={() => this.props.onAddKnowledgeTable(this.props.knowledgeTables)}>
+        add KnowledgeTable
+        </Button>
+      </div>
     );
   }
 }

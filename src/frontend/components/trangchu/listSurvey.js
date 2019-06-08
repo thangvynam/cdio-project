@@ -16,16 +16,24 @@ export default class ListSurvey extends Component {
 
     }
     componentDidMount(){
-        let data = {
-            id_ctdt:this.props.ctdt,
-            id_user: JSON.parse(localStorage.getItem("user")).data.Id,
-            current_date:parseInt(new Date().getTime())
-        }
-        $.getListSurvey(data).then(res=>{
-            this.setState({survey:res.data.survey,
-                surveyList:res.data.surveyList});
+
+        let currentDate = new Date();
+        currentDate.setHours(0,0,0,0);
+        $.updateStatusSurvey({data : parseInt(currentDate.getTime())}).then(res=>{
+            let data = {
+                id_ctdt:this.props.ctdt,
+                id_user: JSON.parse(localStorage.getItem("user")).data.Id,
+            }
+            $.getListSurvey(data).then(res=>{
+                this.setState({survey:res.data.survey,
+                    surveyList:res.data.surveyList});
+            })
         })
 
+
+      
+
+        
 
 
     }

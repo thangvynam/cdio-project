@@ -3,6 +3,7 @@ import { Column } from "primereact/column";
 import { ColumnGroup } from "primereact/columngroup";
 import { Row } from "primereact/row";
 import * as common from "./commonEducation";
+import { list } from "postcss";
 
 // Add root
 export const addRoot = (data, name) => {
@@ -39,6 +40,24 @@ export const addChildTitle = (data, nodeParent, name) => {
   return data;
 };
 
+export const addChildTitleForFreePartStudy = (data, nodeParent, name, nameKnowledge) => {
+  const length = nodeParent.children.length;
+  const key = `${nodeParent.key}.${length + 1}`;
+  name = `${name} (${nameKnowledge})`;
+  const node = {
+    key: key,
+    data: {
+      name: `${name}`,
+      displayName: `${key}. ${name}`
+    },
+    children: []
+  };
+  const nodeUpdate =  {...nodeParent}
+  nodeUpdate.children.push(node);
+  data = common.updateNode(data, nodeUpdate);
+  return [data, node];
+};
+
 export const addChildFreePartStudy = (data, nodeParent, name, description, credit) => {
   const length = nodeParent.children.length;
   const key = `${nodeParent.key}.${length + 1}`;
@@ -49,7 +68,7 @@ export const addChildFreePartStudy = (data, nodeParent, name, description, credi
       name: `${name}`,
       description: description,
       credit: credit,
-      displayName: `${key}. ${name} ( ${description} Học ít nhất ${credit})`
+      displayName: `${key}. ${name} ( ${description} Học ít nhất ${credit} chỉ)`
     },
     children: []
   };
@@ -90,8 +109,8 @@ export const filterSubjects = (e, subjects) => {
     const re = new RegExp(e.query.toLowerCase());
     const results = subjects
       ? subjects.filter(item => {
-          return re.test(item.SubjectName.toLowerCase());
-        })
+        return re.test(item.SubjectName.toLowerCase());
+      })
       : [];
     return results;
   } catch (err) {
@@ -418,6 +437,48 @@ export const totalCreditsOfTable = subjects => {
   return x;
 };
 
+export const addFreePartStudies = (nodes, listKnowledges, nodeFreePartStudy) => {
+  let data = [...nodes];
+  const length = listKnowledges.length;
+  for (let i = 0; i < length; i++) {
+    const nameRow = listKnowledges[i].NameRow;
+    const children = listKnowledges[i].children;
+    const nameKnowledge = listKnowledges[i].EduName;
+    // add title
+    const title = addChildTitleForFreePartStudy(data, nodeFreePartStudy, nameRow, nameKnowledge);
+    data = title[0];
+    const nodeCur = title[1];
+    const x = children.length;
+    // add table
+    if (x) {
+      const nodeParent = nodeCur;
+      const table = addChildTableForFreePartStudy(data, nodeParent);
+      data = table[0];
+      const nodeTable = table[1];
+      const blocks = children[0].block;
+      const length2 = blocks.length;
+      // add subjects
+      for(let j=0 ;j< length2; j++){
+        const block = blocks[j];
+        const length3 = block.subjects.length;
+        for(let k=0 ;k < length3; k++){
+          const subject = {...block.subjects[k]};
+          subject.nameBlock = block.NameBlock;
+          subject.isAccumulation = block.isAccumulated;
+          if (block.NameBlock.startsWith("TC")) {
+            subject.optionCredit = block.Credit;
+          }
+          subject.parentKey = nodeTable.key;
+          nodeTable.data.subjects.push(subject);
+        }
+      }
+      nodeTable.data.totalCredits = totalCreditsOfTable(nodeTable.data.subjects);
+      data = common.updateNode(data, nodeTable)
+    }
+  }
+  return data;
+}
+
 export const convertDbToTreeNodes = (data, subjects) => {
   if (!data.eduContents) {
     return [];
@@ -432,7 +493,16 @@ export const convertDbToTreeNodes = (data, subjects) => {
       return (nodes = addRoot(nodes, row.NameRow));
     }
     const parentNode = findParentNode(nodes, row.KeyRow);
-    if (!row.Type) {
+    // is add free study
+    if(row.Credit){
+      return (nodes = addChildFreePartStudy(nodes, 
+        parentNode, 
+        "Kiến thức tự chọn tự do",
+        row.Description,
+        row.Credit
+      ));
+    }
+    else if (!row.Type) {
       return (nodes = addChildTitle(nodes, parentNode, row.NameRow));
     }
     return (nodes = addChildTable(nodes, parentNode));
@@ -512,6 +582,25 @@ const addChildTable = (nodes, nodeParent) => {
   return nodes;
 };
 
+const addChildTableForFreePartStudy = (nodes, nodeParent) => {
+  const length = nodeParent.children.length;
+  const key = `${nodeParent.key}.${length + 1}`;
+  let node = {
+    key: key,
+    data: {
+      isTable: true,
+      optionalCredit: 0,
+      totalCredits: 0,
+      subjects: [],
+      displayName: ""
+    },
+    children: []
+  };
+  nodeParent.children.push(node);
+  nodes = common.updateNode(nodes, nodeParent);
+  return [nodes, node];
+};
+
 const idDetailSubjectsOfBlock = (block, detailSubjects) => {
   return detailSubjects.reduce((results, row) => {
     return row.IdSubjectBlock === block.Id
@@ -528,16 +617,16 @@ const subjectsOfDetailBlock = (idDetailBlock, subjects) => {
   }, []);
 };
 
-export const findCreditByNameBlock =(node, nameBlock) =>{
+export const findCreditByNameBlock = (node, nameBlock) => {
   const subjects = node.data.subjects;
   const groups = groupBy(subjects, item => {
     return item.nameBlock;
   });
 
-  for(let i=0; i< groups.length; i++){
+  for (let i = 0; i < groups.length; i++) {
     const blocks = groups[i];
     const name = blocks[0].nameBlock;
-    if(name.startsWith("TC") && name.includes(nameBlock)){
+    if (name.startsWith("TC") && name.includes(nameBlock)) {
       return blocks[0].optionCredit;
     }
   }

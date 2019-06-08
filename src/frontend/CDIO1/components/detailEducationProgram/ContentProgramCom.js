@@ -50,20 +50,31 @@ export default class ContentProgramCom extends React.Component {
       // học phần tự do
       descriptionFreePartStudy: "",
       filterDSCFreeStudies: [],
-      creditFreeStudy: 0
+      creditFreeStudy: 0,
     };
     this.deleteSubject.bind(this);
   }
 
   // **************************************************************
-  onAddKnowledgeTable = knowledgeTables =>{
-    console.log(knowledgeTables)
+  onAddKnowledgeTable = (knowledgeTables, isDialog) => {
+    if (isDialog) {
+      // here
+      let data = logic.addFreePartStudies(
+        this.state.nodes,
+        knowledgeTables,
+        this.state.node
+      );
+      data = this.loadTreeNodes(data);
+      this.setState({ nodes: data });
+    }
+    this.setState({
+      isDialogPartStudy: false
+    })
   }
   // **************************************************************
 
   // get targetNodes from redux
   getContentNodes = (contentNodes, subjects) => {
-
     let contents = logic.convertDbToTreeNodes(contentNodes, subjects);
     contents = this.loadTreeNodes(contents);
     this.setState({ nodes: contents });
@@ -97,12 +108,14 @@ export default class ContentProgramCom extends React.Component {
       this.setState({ nodes: this.addChildTable(data, this.state.node) });
     }
     else { // HP tu do
-      debugger;
-      const data = logic.addChildFreePartStudy(this.state.nodes,
-        this.state.node, "Kiến thức tự chọn tự do",
+      const data = logic.addChildFreePartStudy(
+        this.state.nodes,
+        this.state.node, 
+        "Kiến thức tự chọn tự do",
         this.state.descriptionFreePartStudy,
         this.state.creditFreeStudy
       )
+      
       this.setState({ nodes: data });
     }
     this.onHideDialogChild();
@@ -115,7 +128,7 @@ export default class ContentProgramCom extends React.Component {
       key: key,
       data: {
         isTable: true,
-        optionalCredit: 0,
+        //optionalCredit: 0,
         totalCredits: 0,
         subjects: [],
         displayName: ""
@@ -299,6 +312,7 @@ export default class ContentProgramCom extends React.Component {
 
   isShowDialogPartStudy = node => {
     this.setState({
+      node: node,
       isDialogPartStudy: true,
       descriptionFreePartStudy: node.data.description,
       creditFreeStudy: node.data.credit
@@ -390,7 +404,9 @@ export default class ContentProgramCom extends React.Component {
 
   filterSubjects = e => {
     this.setState({
-      filterSubjects: logic.filterSubjects(e, this.props.subjects)
+      filterSubjects: logic.filterSubjects(e, this.props.subjects).map(subject =>{
+        return {...subject, display: subject.SubjectCode +" - " + subject.SubjectName};
+      })
     });
   };
 
@@ -575,7 +591,7 @@ export default class ContentProgramCom extends React.Component {
             borderBottom: "ridge"
           }}
         >
-          {subject.SubjectName}
+          {subject.SubjectCode +" - "+ subject.SubjectName}
         </div>
         <p
           style={{
@@ -646,13 +662,15 @@ export default class ContentProgramCom extends React.Component {
 
   footerDialogFreePartStudy = (
     <div>
-    <Button  theme="success">
-      Thêm
+      <Button
+        onClick={this.onAddKnowledgeTable}
+        theme="success">
+        Thêm
     </Button>
-    <Button onClick={this.onHideDialogFreePartStudy} theme="secondary">
-      Hủy
+      <Button onClick={this.onHideDialogFreePartStudy} theme="secondary">
+        Hủy
     </Button>
-  </div>
+    </div>
   )
 
   render() {
@@ -784,7 +802,6 @@ export default class ContentProgramCom extends React.Component {
                 }
             */}
             {/*<ListContentContainer onAddKnowledgeTable={this.onAddKnowledgeTable} />*/}
-            <ListContentContainer onAddKnowledgeTable={this.onAddKnowledgeTable} />
             <Row>
               <Col lg="5" md="5" sm="5">
                 <AutoComplete
@@ -826,7 +843,7 @@ export default class ContentProgramCom extends React.Component {
             </Col>
             <Col lg="9" md="9" sm="9">
               <AutoComplete
-                field="SubjectName"
+                field="display"
                 value={this.state.optionSubjects}
                 dropdown={true}
                 onChange={e => this.onChangeListSubjects(e)}
@@ -1002,9 +1019,9 @@ export default class ContentProgramCom extends React.Component {
           visible={this.state.isDialogPartStudy}
           onHide={() => this.onHideDialogFreePartStudy()}
           style={{ width: "50vw" }}
-          footer={this.footerDialogFreePartStudy}
+        // footer={this.footerDialogFreePartStudy}
         >
-
+          <ListContentContainer onAddKnowledgeTable={this.onAddKnowledgeTable} />
         </Dialog>
       </div>
     );

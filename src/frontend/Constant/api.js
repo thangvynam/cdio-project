@@ -96,6 +96,7 @@ export default{
     GET_SURVEY_ID_SURVEYLIST : baseUrl + '/get-survey-with-id-survey-list',
     GET_SUBJECT_WITH_ID : baseUrl + '/get-subject-with-id',
     GET_LIST_SURVEY : baseUrl + '/get-list-survey',
+    UPDATE_STATUS_SURVEY : baseUrl + '/update-status-survey',
 
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',

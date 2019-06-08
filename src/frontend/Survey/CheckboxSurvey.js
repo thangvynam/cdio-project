@@ -42,7 +42,7 @@ class CheckboxSurvey extends Component {
                     style={{ width: "100%" }}>
                 </Checkbox.Group> :
                 <Checkbox.Group
-                    defaultValue={defaultValue}
+                    value={defaultValue}
                     options={levelsOptions}
                     onChange={(e, id) => { this.onChange(e, this.props.id) }}
                     style={{ width: "100%" }}>

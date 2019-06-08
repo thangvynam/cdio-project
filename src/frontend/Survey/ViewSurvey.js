@@ -113,6 +113,8 @@ class ViewSurvey extends Component {
                 let dateFrom = new Date(rangeTime[0]);
                 let dateTo = new Date(rangeTime[1]);
                 let today = new Date();
+                today.setHours(0,0,0,0);
+                dateFrom.setHours(0,0,0,0);
                 if (dateFrom < today) {
                     message.error("Không chọn ngày bắt đầu nhỏ hơn ngày hiện tại")
                 } else {

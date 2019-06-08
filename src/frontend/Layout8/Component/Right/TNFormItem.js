@@ -60,7 +60,7 @@ class TNFormItem extends Component {
       if (this.props.itemLayout8Reducer.tempInfo.mota === "" || this.props.itemLayout8Reducer.tempInfo.mota === undefined) {
         message.error("Chưa nhập mô tả");
       } else {
-        let index = this.props.itemLayout8Reducer.previewInfo.filter(item => item.del_flag===0).length ;
+        let index = this.props.itemLayout8Reducer.previewInfo.length ;
 
         let data = {
           key: index,

@@ -952,7 +952,7 @@ getSubjectName = (subjectList, id) => {
       this.loadTable();
       openNotificationWithIcon('success');
       $.saveLog({data: this.props.logData})
-    }); //this.setState({disableSaveAll: false})
+    });
   }
 
     render() {

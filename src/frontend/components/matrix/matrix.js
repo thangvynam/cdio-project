@@ -75,9 +75,6 @@ class Matrix extends Component {
                 this.props.updateIsLoadEditMatrix("true");
                 let subjectListId = [];
                 this.props.subjectList
-                .filter(item => 
-                    this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                )
                 .map(item => {
                     subjectListId.push(item.IdSubject);
                 })
@@ -114,6 +111,12 @@ class Matrix extends Component {
                         this.props.updateEditMatrix(data);
                     })
                     
+                    data1 = {
+                        data: subjectListId.filter(item => 
+                            this.checkInTeacherSubject(this.props.teacherSubject, item)
+                        )
+                    }
+
                     var a = $.getRealityMatrix(data1)
                     a.then(res => this.setState({matrix: res.data}));
                     var b = $.getCDR_CDIO();
@@ -142,9 +145,6 @@ class Matrix extends Component {
 
                 let subjectListId = [];
                 this.props.subjectList
-                .filter(item => 
-                    this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject)
-                )
                 .map(item => {
                     subjectListId.push(item.IdSubject);
                 })
@@ -180,7 +180,13 @@ class Matrix extends Component {
                         }
                         this.props.updateEditMatrix(data);
                     })
-    
+
+                    data1 = {
+                        data: subjectListId.filter(item => 
+                            this.checkInTeacherSubject(this.props.teacherSubject, item)
+                        )
+                    }
+
                     var a = $.getRealityMatrix(data1)
                     a.then(res => this.setState({matrix: res.data}));;
                     var b = $.getCDR_CDIO();

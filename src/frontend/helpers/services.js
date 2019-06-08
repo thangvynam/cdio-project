@@ -523,6 +523,11 @@ const getListSurvey = (data) => {
     return $.post(url,data);
 }
 
+const updateStatusSurvey = (data) => {
+    let url = _.UPDATE_STATUS_SURVEY;
+    return $.post(url,data);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -629,6 +634,7 @@ export default{
     getSurveyCTDTTime2,
     getSurveyList,
     getSurveyWithIdSurveyList,
+    updateStatusSurvey,
 
     //export file
     exportFile,

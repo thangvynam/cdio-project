@@ -5,7 +5,7 @@ import { Link, Redirect } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
 import Content from './content';
-import { connect } from'react-redux';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
 import { MENUITEM, subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject } from '../../Constant/ActionType';
@@ -13,7 +13,7 @@ import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
 import NewNav from '../decuongmonhoc/index/navbar/newnav';
 import Direction from './direction';
-import  queryString from 'query-string';
+import queryString from 'query-string';
 import _ from 'lodash';
 class Home extends Component {
     constructor(props) {
@@ -45,7 +45,7 @@ class Home extends Component {
     //     }
     //     else this.props.history.push('/');
     //   }
-    
+
 
 
 
@@ -68,8 +68,8 @@ class Home extends Component {
     }
 
     checkSubjectExist = (subjectlist, monhoc, khoi) => {
-        for(let i = 0;i < subjectlist.length;i++) {
-            if(subjectlist[i].Id === +monhoc && subjectlist[i].IdSubjectBlock === +khoi) {
+        for (let i = 0; i < subjectlist.length; i++) {
+            if (subjectlist[i].Id === +monhoc && subjectlist[i].IdSubjectBlock === +khoi) {
                 return true;
             }
         }
@@ -77,8 +77,8 @@ class Home extends Component {
     }
 
     checkSubjectExist2 = (subjectlist, monhoc) => {
-        for(let i = 0;i < subjectlist.length;i++) {
-            if(subjectlist[i].Id === +monhoc) {
+        for (let i = 0; i < subjectlist.length; i++) {
+            if (subjectlist[i].Id === +monhoc) {
                 return true;
             }
         }
@@ -86,17 +86,17 @@ class Home extends Component {
     }
 
     checkTypeExist = (menuItem, type) => {
-        for(let i = 0;i < Object.keys(menuItem).length;i++) {
-            if(Object.keys(menuItem)[i] === type) {
+        for (let i = 0; i < Object.keys(menuItem).length; i++) {
+            if (Object.keys(menuItem)[i] === type) {
                 return true;
             }
         }
         return false;
     }
-    
+
     checkParentExist = (parent, item) => {
-        for(let i = 0;i < parent.length;i++) {
-            if(parent[i].id === item) {
+        for (let i = 0; i < parent.length; i++) {
+            if (parent[i].id === item) {
                 return true;
             }
         }
@@ -105,8 +105,8 @@ class Home extends Component {
 
 
     checkCtdtExist = (Ctdt, ctdt) => {
-        for(let i = 0;i < Ctdt.length;i++) {
-            if(Ctdt[i].Id === +ctdt) {
+        for (let i = 0; i < Ctdt.length; i++) {
+            if (Ctdt[i].Id === +ctdt) {
                 return true;
             }
         }
@@ -114,8 +114,8 @@ class Home extends Component {
     }
 
     checkKhoiExist = (dataCtdt, khoi) => {
-        for(let i = 0;i < dataCtdt.length;i++) {
-            if(dataCtdt[i].Id === +khoi) {
+        for (let i = 0; i < dataCtdt.length; i++) {
+            if (dataCtdt[i].Id === +khoi) {
                 return true;
             }
         }
@@ -123,8 +123,8 @@ class Home extends Component {
     }
 
     checkIdExist = (matrix, id) => {
-        for(let i = 0;i < matrix.length;i++) {
-            if(matrix[i].key === id) {
+        for (let i = 0; i < matrix.length; i++) {
+            if (matrix[i].key === id) {
                 return i;
             }
         }
@@ -132,16 +132,16 @@ class Home extends Component {
     }
 
     checkActionExist = (menuitem, action) => {
-        for(let i in menuitem["de-cuong-mon-hoc"].children) {
-            if(menuitem["de-cuong-mon-hoc"].children[i].id === action)
-            return true;
+        for (let i in menuitem["de-cuong-mon-hoc"].children) {
+            if (menuitem["de-cuong-mon-hoc"].children[i].id === action)
+                return true;
         }
         return false;
     }
 
     checkTabExist = (MENUITEM, tab) => {
-        for(let i = 0;i < Object.keys(MENUITEM).length;i++) {
-            if(MENUITEM[Object.keys(MENUITEM)[i]] === tab) {
+        for (let i = 0; i < Object.keys(MENUITEM).length; i++) {
+            if (MENUITEM[Object.keys(MENUITEM)[i]] === tab) {
                 return true;
             }
         }
@@ -149,635 +149,572 @@ class Home extends Component {
     }
 
     getCdrCdio = (cdr_cdio, id) => {
-      for(let i = 0;i < cdr_cdio.length;i++) {
-          if(cdr_cdio[i].id === id)  {
-              return cdr_cdio[i].cdr;
-          }
-      }
-      return "";
+        for (let i = 0; i < cdr_cdio.length; i++) {
+            if (cdr_cdio[i].id === id) {
+                return cdr_cdio[i].cdr;
+            }
+        }
+        return "";
     }
 
     getSubjectName = (subjectList, id) => {
-        for(let i = 0;i < subjectList.length;i++) {
-            if(subjectList[i].Id.toString() === id) {
+        for (let i = 0; i < subjectList.length; i++) {
+            if (subjectList[i].Id.toString() === id) {
                 return subjectList[i].SubjectName;
             }
         }
         return "";
-      }
+    }
 
 
 
-      checkLevel_1_Exist = (level_1, cdrmdhd) => {
-        for(let i = 0;i < cdrmdhd.length;i++) {
-            if(cdrmdhd[i].value === level_1) {
+    checkLevel_1_Exist = (level_1, cdrmdhd) => {
+        for (let i = 0; i < cdrmdhd.length; i++) {
+            if (cdrmdhd[i].value === level_1) {
                 return i;
             }
         }
         return -1;
-      }
+    }
 
-      checkLevel_2_Exist = (level_2, level_1_children) => {
-        for(let i = 0;i < level_1_children.length;i++) {
-            if(level_1_children[i].value === level_2) {
+    checkLevel_2_Exist = (level_2, level_1_children) => {
+        for (let i = 0; i < level_1_children.length; i++) {
+            if (level_1_children[i].value === level_2) {
                 return i;
             }
         }
         return -1;
-      }
-      checkInTeacherSubject = (teacherSubject, idSubject) => {
-        for(let i = 0;i < teacherSubject.length;i++) {
-            if(teacherSubject[i].IdSubject === idSubject) {
+    }
+    checkInTeacherSubject = (teacherSubject, idSubject) => {
+        for (let i = 0; i < teacherSubject.length; i++) {
+            if (teacherSubject[i].IdSubject === idSubject) {
                 return true;
             }
         }
         return false;
-      }
-      
-      checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
-        for(let i = 0;i < teacherReviewSubject.length;i++) {
-            if(teacherReviewSubject[i].idTTC === idSubject) {
-                return true;
-            }
-        }
-        return false;
-      }
+    }
 
-      checkRoleExist = (userRole, menuRole) => {
-        for(let role in userRole) {
-          if(menuRole.includes(userRole[role])) return true;
+    checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+        for (let i = 0; i < teacherReviewSubject.length; i++) {
+            if (teacherReviewSubject[i].idTTC === idSubject) {
+                return true;
+            }
         }
         return false;
-      }
+    }
 
     componentDidMount() {
 
-        if (!_.isNull(localStorage.getItem("user")) ){
+        if (!_.isNull(localStorage.getItem("user"))) {
             let user = JSON.parse(localStorage.getItem("user"));
             $.authenMe({ "access": user.token }).then(res => {
-              if (res.data.status === 200) {
-                localStorage.clear();
-                $.setStorage(res.data)
+                if (res.data.status === 200) {
+                    localStorage.clear();
+                    $.setStorage(res.data)
 
 
 
-                ///
-            this.props.onLoadEduPrograms();
-            var self = this;
-            let monhoc = self.props.match.params.monhoc;
-            //axios.get('http://172.29.64.132:3001/collect-subjectlist')
-            //axios.get('/collect-subjectlist')
-        //      $.collectSubjectList()
-        //  .then( (response) => {
-        //    //self.props.updateSubjectList(response.data);
-        //    this.setState({isLoadSubjectList: "true"});
-        //  })
-        // .catch(function (error) {
-        //    console.log(error);
-        // });     
-        let ctdt = self.props.match.params.ctdt;
-        if(ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
-            $.getBlockSubject(ctdt).then(res => {
-                let resData = res.data.data;
-                let dataSubject = [];
-            let dataCtdt = [];
-            if (resData !== undefined && resData !== null) {
-              for (let i = 0; i < resData.length; i++) {
-                dataCtdt = dataCtdt.concat(resData[i].block);
-                for (let j = 0; j < resData[i].block.length; j++) {
-                  dataSubject = dataSubject.concat(resData[i].block[j].subjects);
-                }
-              }
-              dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+                    ///
+                    this.props.onLoadEduPrograms();
+                    var self = this;
+                    let monhoc = self.props.match.params.monhoc;
+                    //axios.get('http://172.29.64.132:3001/collect-subjectlist')
+                    //axios.get('/collect-subjectlist')
+                    //      $.collectSubjectList()
+                    //  .then( (response) => {
+                    //    //self.props.updateSubjectList(response.data);
+                    //    this.setState({isLoadSubjectList: "true"});
+                    //  })
+                    // .catch(function (error) {
+                    //    console.log(error);
+                    // });     
+                    let ctdt = self.props.match.params.ctdt;
+                    if (ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
+                        $.getBlockSubject(ctdt).then(res => {
+                            let resData = res.data.data;
+                            let dataSubject = [];
+                            let dataCtdt = [];
+                            if (resData !== undefined && resData !== null) {
+                                for (let i = 0; i < resData.length; i++) {
+                                    dataCtdt = dataCtdt.concat(resData[i].block);
+                                    for (let j = 0; j < resData[i].block.length; j++) {
+                                        dataSubject = dataSubject.concat(resData[i].block[j].subjects);
+                                    }
+                                }
+                                dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
 
-              $.getTeacherSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-              .then(res => { 
-                if(res.data !== undefined && res.data !== null){
-                  this.props.updateTeacherSubject(res.data);
-                }
-                $.getTeacherReviewSubject({idUser: JSON.parse(localStorage.getItem('user')).data.Id})
-                .then(res => {
-                  if(res.data !== undefined && res.data !== null){
-                    this.props.updateTeacherReviewSubject(res.data);
-                  }
-                  if(this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                    dataSubject = dataSubject.filter(item => 
-                        item.del_flat != 1
-                    );
-                    this.props.updateSubjectList(dataSubject);
-                  }
-                  else {
-                    dataSubject = dataSubject.filter(item => 
-                          item.del_flat != 1 
-                          && (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
-                        || this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
-                      );
-                      this.props.updateSubjectList(dataSubject);
-                  }
-                });
-              });
-              
-              this.props.updateDataCtdt(dataCtdt);
-              this.props.updateIsLoadedDataCtdt(true);
-              
-            }})
-    }
-    
-    
+                                $.getTeacherSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id })
+                                    .then(res => {
+                                        if (res.data !== undefined && res.data !== null) {
+                                            this.props.updateTeacherSubject(res.data);
+                                        }
+                                        $.getTeacherReviewSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id })
+                                            .then(res => {
+                                                if (res.data !== undefined && res.data !== null) {
+                                                    this.props.updateTeacherReviewSubject(res.data);
+                                                }
+                                                if (this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
+                                                    dataSubject = dataSubject.filter(item =>
+                                                        item.del_flat != 1
+                                                    );
+                                                    this.props.updateSubjectList(dataSubject);
+                                                }
+                                                else {
+                                                    dataSubject = dataSubject.filter(item =>
+                                                        item.del_flat != 1
+                                                        && (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
+                                                            || this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
+                                                    );
+                                                    this.props.updateSubjectList(dataSubject);
+                                                }
+                                            });
+                                    });
 
-    $.collectCdrmdhd4()
-    .then(function (response) {
-        let cdrmdhd = self.props.cdrmdhd;
-        for(let i = 0;i < response.data.length;i++) {
-            let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
-            if(index_1 != -1) {
-                let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
-                if(index_2 != -1) {
-                    cdrmdhd[index_1].children[index_2].children.push({
-                        value: response.data[i].muc_do_3,
-                        label: response.data[i].muc_do_3
-                      })
+                                this.props.updateDataCtdt(dataCtdt);
+                                this.props.updateIsLoadedDataCtdt(true);
+
+                            }
+                        })
+                    }
+
+
+
+                    $.collectCdrmdhd4()
+                        .then(function (response) {
+                            let cdrmdhd = self.props.cdrmdhd;
+                            for (let i = 0; i < response.data.length; i++) {
+                                let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
+                                if (index_1 != -1) {
+                                    let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
+                                    if (index_2 != -1) {
+                                        cdrmdhd[index_1].children[index_2].children.push({
+                                            value: response.data[i].muc_do_3,
+                                            label: response.data[i].muc_do_3
+                                        })
+                                    }
+                                    else {
+                                        cdrmdhd[index_1].children.push({
+                                            value: response.data[i].muc_do_2,
+                                            label: response.data[i].muc_do_2,
+                                            children: [{
+                                                value: response.data[i].muc_do_3,
+                                                label: response.data[i].muc_do_3
+                                            }]
+                                        })
+                                    }
+                                }
+                                else {
+                                    cdrmdhd.push({
+                                        value: response.data[i].muc_do_1,
+                                        label: response.data[i].muc_do_1,
+                                        children: [{
+                                            value: response.data[i].muc_do_2,
+                                            label: response.data[i].muc_do_2,
+                                            children: [{
+                                                value: response.data[i].muc_do_3,
+                                                label: response.data[i].muc_do_3
+                                            }]
+                                        }]
+                                    })
+                                }
+                            }
+                            self.props.updateCdrmdhdDB(response.data);
+                            self.props.updateCdrmdhd(cdrmdhd);
+
+                        })
+                        .catch(function (error) {
+                            console.log(error);
+                        });
+
+                    if ((this.props.subjectId === "" || this.props.subjectId === undefined || this.props.subjectMaso === "" ||
+                        this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
+                        self.props.updateSubjectId(monhoc)
+                    }
+
+                    $.getCDR_CDIO().then((res) => {
+
+                        self.props.updateCdrCdio(res.data)
+                    })
+                    ///
                 }
                 else {
-                    cdrmdhd[index_1].children.push({
-                        value: response.data[i].muc_do_2,
-                        label: response.data[i].muc_do_2,
-                        children: [{
-                            value: response.data[i].muc_do_3,
-                            label: response.data[i].muc_do_3
-                        }]
-                      })
+                    localStorage.clear();
+                    this.props.history.push('/')
                 }
-            }
-            else {
-                cdrmdhd.push({
-                    value: response.data[i].muc_do_1,
-                    label: response.data[i].muc_do_1,
-                    children: [{
-                        value: response.data[i].muc_do_2,
-                        label: response.data[i].muc_do_2,
-                        children: [{
-                            value: response.data[i].muc_do_3,
-                            label: response.data[i].muc_do_3
-                        }]
-                    }]
-                  })
-            }
+            })
         }
-        self.props.updateCdrmdhdDB(response.data);
-        self.props.updateCdrmdhd(cdrmdhd);
-        
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
+        else this.props.history.push('/');
 
-    if((this.props.subjectId === "" || this.props.subjectId === undefined || this.props.subjectMaso === "" || 
-    this.props.subjectMaso === undefined) && monhoc !== "" && monhoc !== undefined) {
-        self.props.updateSubjectId(monhoc) 
     }
 
-    $.getCDR_CDIO().then((res) => {
-
-        self.props.updateCdrCdio(res.data)
-      })
-///
-
-
-
-
-
-
-
-
-                    
-                }
-                else{
-                        localStorage.clear();
-                        this.props.history.push('/')
-                }
-                })
-            }
-            else this.props.history.push('/');
-
-}
-
     checkAdmin = (role) => {
-        if(role.indexOf("ADMIN") > -1) {
+        if (role.indexOf("ADMIN") > -1) {
             return true;
         }
         return false;
     }
     checkChuNhiem = (role) => {
-        if(role.indexOf("CHUNHIEM") > -1) {
+        if (role.indexOf("CHUNHIEM") > -1) {
             return true;
         }
         return false;
-      }
+    }
 
-      checkBienSoan = (role) => {
-        if(role.indexOf("BIEN_SOAN") > -1) {
+    checkBienSoan = (role) => {
+        if (role.indexOf("BIEN_SOAN") > -1) {
             return true;
         }
         return false;
-      }
+    }
 
-      checkTeacher = (role) => {
-        if(role.indexOf("TEACHER") > -1) {
+    checkTeacher = (role) => {
+        if (role.indexOf("TEACHER") > -1) {
             return true;
         }
         return false;
-      }
+    }
 
-      checkTeachBlock = (block) => {
-        for(let i = 0;i < block.subjects.length;i++) {
-          if(this.checkInTeacherSubject(this.props.teacherSubject, block.subjects[i].IdSubject)) {
-              return true;
+    checkTeachBlock = (block) => {
+        for (let i = 0; i < block.subjects.length; i++) {
+            if (this.checkInTeacherSubject(this.props.teacherSubject, block.subjects[i].IdSubject)) {
+                return true;
             }
         }
         return false;
-      }
-    
-      checkReviewBlock = (block) => {
-        for(let i = 0;i < block.subjects.length;i++) {
-          if(this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, block.subjects[i].IdSubject)) {
-              return true;
+    }
+
+    checkReviewBlock = (block) => {
+        for (let i = 0; i < block.subjects.length; i++) {
+            if (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, block.subjects[i].IdSubject)) {
+                return true;
             }
         }
         return false;
-      }
+    }
 
-componentDidUpdate(){
-
-    window.onpopstate  = (e) => {
-        if(this.props.subjectId !== "") { 
-            this.props.updateSubjectId("");
+    checkRoleExist = (userRole, menuRole) => {
+        for (let role in userRole) {
+            if (menuRole.includes(userRole[role])) return true;
         }
-   }
-  
-      }
+        return false;
+    }
+
+    checkExist = (item) => {
+        return item !== "" && item !== undefined && item !== null;
+    }
+
+    componentDidUpdate() {
+
+        window.onpopstate = (e) => {
+            if (this.props.subjectId !== "") {
+                this.props.updateSubjectId("");
+            }
+        }
+
+    }
 
     render() {
-            if (!localStorage.getItem("user")) return <Redirect to="/" />;
-            let type = this.props.match.params.type;
-            let ctdt = this.props.match.params.ctdt;
-            let khoi = this.props.match.params.khoi;
-            let monhoc = this.props.match.params.monhoc;
-            let parent = this.props.match.params.parent;
-            let tab = this.props.match.params.tab;
-            let action = this.props.match.params.action;
-        
+        if (!localStorage.getItem("user")) return <Redirect to="/" />;
 
-            if(parent !== "" && parent !== undefined && parent !== null) {
-                if(!this.checkParentExist(this.props.parentitem, parent)) {
-                    console.log("wrong param 1")
-                    return <Page404/>;
-                }
-                else {
-                    if(parent === "qlhp" || parent === "qlkh" || parent === "qlnd" || parent === "info") {
-                        //check param 2
-                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                            console.log("param 2 must null")
-                            return <Page404/>;
-                        }
-                    }
-                    else if(parent === "cdr"){
-                        //check param 2
-                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                            if(ctdt === "edit") {
-                                //check param 3
-                                if(type !== "" && type !== undefined && type !== null) {
-                                    console.log("param 3 must be null")
-                                    return <Page404/>;
-                                }
-                            }
-                            else {
-                                console.log("wrong param 2")
-                                return <Page404/>;
-                            }
-                        }
-                    }
-                    else if(parent === "danh-muc") {
-                        //check role
-                        if(!this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                            console.log("danhmuc admin only")
-                            return <Page404/>;
-                        }
-                        //check param 2
-                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                            console.log("param 2 must null")
-                            return <Page404/>;
-                        }     
-                    }
-                    // else if(parent === "ctdt") {
-                    //     //check role
-                    //     if(this.checkAdmin(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                    //         console.log("ctdt not for admin")
-                    //         return <Page404/>;
-                    //     }  
-                    // }
-                    else if(parent === "view-survey") {
-                        //check role
-                        if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                            console.log("quan li survey chunhiem only")
-                            return <Page404/>;
-                        }  
-                        //check param 2
-                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                            console.log("param 2 must null")
-                            return <Page404/>;
-                        } 
-                    }
-                    else if(parent === "survey-matrix") {
-                        //check role
-                        if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                            console.log("survey-matrix chunhiem only")
-                            return <Page404/>;
-                        }  
-                        //check param 2
-                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                            console.log("param 2 must null")
-                            return <Page404/>;
-                        } 
-                    }
-                    else {
-                        //check param 2
-                        if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
-                            if(!this.checkCtdtExist(this.props.ctdt, ctdt)) {
-                                console.log("wrong param 2")
-                                return <Page404/>;
-                            }
-                            else {
-                                //check param 3
-                                if(type !== "" && type !== undefined && type !== null) {
-                                    if(!this.checkTypeExist(this.props.menuItem, type)) {
-                                        console.log("wrong param 3")
-                                        return <Page404/>;
-                                    }
-                                    else {
-                                        //check param 4
-                                        if(type === "de-cuong-mon-hoc") {
-                                            if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)
-                                            && !this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)
-                                            && !this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                                                console.log("cannot access de cuong")
-                                                return <Page404/>;
-                                            }
-                                            else {
-                                                if(action !== "" && action !== undefined && action !== null) {
-                                                    if(!this.checkActionExist(this.props.menuItem, action)) {
-                                                        console.log("wrong param 4")
-                                                        return <Page404/>;
-                                                    }
-                                                    else {
-                                                        if(!this.checkRoleExist(JSON.parse(localStorage.getItem('user')).data.Role,
-                                                        this.props.menuItem["de-cuong-mon-hoc"].children.filter(item => item.id === action)[0].role)) {
-                                                            console.log("wrong param 4")
-                                                            return <Page404/>;
-                                                        }
-                                                        else {
-                                                            if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                                                                if(!this.checkKhoiExist(this.props.dataCtdt, khoi)) {
-                                                                    console.log("wrong param 5")
-                                                                    return <Page404/>;
-                                                                }
-                                                                else {
-                                                                    if(action === "biensoan") {
-                                                                        if(!this.checkTeachBlock(this.props.dataCtdt.filter(i => i.Id === +khoi)[0])) {
-                                                                            console.log("wrong param 5")
-                                                                            return <Page404/>;
-                                                                        }
-                                                                        
-                                                                    }
-                                                                    else if(action === "review-subject") {
-                                                                        if(!this.checkReviewBlock(this.props.dataCtdt.filter(i => i.Id === +khoi)[0])) {
-                                                                            console.log("wrong param 5")
-                                                                            return <Page404/>;
-                                                                        }  
-                                                                    }
-                                                                    //check param 5
-                                                                    if(monhoc !== "" && monhoc !== undefined && monhoc !== null) {
-                                                                        if(!this.checkSubjectExist(this.props.subjectList, monhoc, khoi)) {
-                                                                            console.log("wrong param 6")
-                                                                            return <Page404/>;
-                                                                        }
-                                                                        else {
-                                                                            //check param 6
-                                                                            if(!this.checkTabExist(MENUITEM, tab)) {
-                                                                                console.log("wrong param 7")
-                                                                                return <Page404/>;
-                                                                            }
-                                                                            else {
-                                                                                if(tab === "itusurvey") {
-                                                                                    console.log("wrong param 7")
-                                                                                    return <Page404/>;
-                                                                                }
-                                                                                else if(tab === "phan-cong") {
-                                                                                    if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                                                                                        console.log("wrong param 7")
-                                                                                        return <Page404/>;
-                                                                                    }
-                                                                                }
-                                                                                else if(tab === "review") {
-                                                                                    if(!this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                                                                                        console.log("wrong param 7")
-                                                                                        return <Page404/>;
-                                                                                    }
-                                                                                }
-                                                                                else {
-                                                                                    if(!this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                                                                                        console.log("wrong param 7")
-                                                                                        return <Page404/>;
-                                                                                    }
-                                                                                }
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                
-                                               
-                                            }
-                                        }
-                                        else if(type === "itusurvey") {
-                                            if(!this.checkTeacher(JSON.parse(localStorage.getItem('user')).data.Role)
-                                        && !this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                                                console.log("wrong param 3")
-                                                return <Page404/>;
-                                            }
-                                            else {
-                                                if(action !== "" && action !== undefined && action !== null) {
-                                                    if(action !== "dosurvey") {
-                                                        console.log("wrong param 4")
-                                                        return <Page404/>;
-                                                    }
-                                                    else {
-                                                        if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                                                            if(khoi !== "view") {
-                                                                console.log("wrong param 4")
-                                                                return <Page404/>;
-                                                            }
-                                                            else {
-                                                                //check param 5
-                                                                if(monhoc !== "" && monhoc !== undefined && monhoc !==null) {
-                                                                    if(!this.checkInTeacherSubject(this.props.teacherSubject, +monhoc)) {
-                                                                        console.log("wrong param 5")
-                                                                        return <Page404/>;
-                                                                    }
-                                                                    else {
-                                                                        //check param 6
-                                                                        if(!this.checkTabExist(MENUITEM, tab)) {
-                                                                            console.log("wrong param 6")
-                                                                            return <Page404/>;
-                                                                        }
-                                                                        else {
-                                                                            if(tab !== "itusurvey") {
-                                                                                console.log("wrong param 6")
-                                                                                return <Page404/>;
-                                                                            }
-                                                                        }
-                                                                    }
-                                                                }
-                                                                else {
-                                                                    console.log("param 5 cannot be null")
-                                                                    return <Page404/>;
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                                
-                                            }
-                                            
-                                        }
-                                        else if(type === "chuan-dau-ra") {
-                                            if(!this.checkRoleExist(JSON.parse(localStorage.getItem('user')).data.Role,
-                                            this.props.menuItem["chuan-dau-ra"].role)) {
-                                                console.log("not role")
-                                                return <Page404/>;
-                                            }
-                                        }
-                                        else if(type === "phan-cong-giang-day") {
-                                            if(!this.checkRoleExist(JSON.parse(localStorage.getItem('user')).data.Role,
-                                            this.props.menuItem["phan-cong-giang-day"].role)) {
-                                                console.log("not role")
-                                                return <Page404/>;
-                                            }
-                                        }
-                                        else {
-                                            if(type === "matrix") {
-                                                if(!this.checkBienSoan(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                                                    console.log("matrix bien soan only")
-                                                    return <Page404/>;
-                                                }
-                                            }
-                                            if(type === "edit-matrix") {
-                                                if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                                                    console.log("editmatrix chu nhiem only")
-                                                    return <Page404/>;
-                                                }
-                                            }
-                                            if(type === "benchmark-matrix") {
-                                                if(!this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
-                                                    console.log("benchmarkmatrix chu nhiem only")
-                                                    return <Page404/>;
-                                                }
-                                            }
-                                            if(khoi !== "" && khoi !== undefined && khoi !== null) {
-                                                console.log("param 4 must be null")
+        let parent = this.props.match.params.parent;    //param 1
+        let ctdt = this.props.match.params.ctdt;    //param 2
+        let type = this.props.match.params.type;    //param 3
+        let action = this.props.match.params.action;    //param 4
+        let khoi = this.props.match.params.khoi;    //param 5
+        let monhoc = this.props.match.params.monhoc;    //param 6
+        let tab = this.props.match.params.tab;  //param 7
+        let parenItem = this.props.parentitem;
+        let ctdtList = this.props.ctdt;
+        let menuItem = this.props.menuItem;
+        let dataCtdt = this.props.dataCtdt;
+        let subjectList = this.props.subjectList;
+        let teacherSubject = this.props.teacherSubject;
+        let userRole = JSON.parse(localStorage.getItem('user')).data.Role;
 
-                                                return <Page404/>;
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    } 
-                }
-            }
-
-            let subjectName = this.getSubjectName(this.props.subjectList, this.props.match.params.monhoc);
-            let GirdLayout;
-            if (this.state.collapse) {
-                GirdLayout = (<Row>
-                    <Col span={2} className="col-left col-left-inline">
-                        <MenuLeft 
-                            collapse={this.state.collapse}
-                            theme={this.state.theme}
-                            defaultSelectedKeys={[this.props.match.params.parent]}
-                            content_type={this.props.match.params.type}
-                            content_monhoc={this.props.match.params.monhoc}
-                            content_tab={this.props.match.params.tab}
-                            content_khoi={this.props.match.params.khoi}
-                            content_ctdt={this.props.match.params.ctdt}
-                            content_parent={this.props.match.params.parent}
-                            content_action={this.props.match.params.action}
-                        />
-                    </Col>
-                    <Col span={22} className="col-right">
-                        <Row>
-                            <NavBar/>
-                        </Row>
-                        <Row >
-                        <Content content_type={this.props.match.params.type}
-                                content_monhoc={this.props.match.params.monhoc}
-                                content_tab={this.props.match.params.tab}
-                                content_khoi={this.props.match.params.khoi}
-                                content_ctdt={this.props.match.params.ctdt}
-                                content_parent={this.props.match.params.parent}
-                                content_action={this.props.match.params.action}
-                                subjectName={subjectName}/>
-                        </Row>
-                    </Col>
-                </Row>);
+        //check 404----------------------------------------------
+        if (this.checkExist(parent)) {  //param 1 exists
+            if (!this.checkParentExist(parenItem, parent)) {    //param 1 invalid
+                console.log("wrong param 1");
+                return <Page404 />;
             }
             else {
-                GirdLayout = (<Row>
-                    <Col span={5} className="col-left">
-                        <MenuLeft
-                            collapse={this.state.collapse}
-                            theme={this.state.theme}
-                            defaultSelectedKeys={[this.props.match.params.parent]}
-                            content_type={this.props.match.params.type}
+                if (!this.checkRoleExist(userRole, parenItem.find(item => item.id === parent).role)) {  //check role param 1
+                    console.log("wrong role");
+                    return <Page404 />;
+                }
+                switch (parent) {
+                    case "qlhp":
+                    case "qlkh":
+                    case "qlnd":
+                    case "info":
+                        if (this.checkExist(ctdt)) {    //param 2 exists
+                            console.log("param 2 must be null");
+                            return <Page404 />;
+                        } break;
+                    case "cdr":
+                        if (this.checkExist(ctdt)) {    //param 2 exists
+                            if (ctdt === "edit") {
+                                if (this.checkExist(type)) {    //param 3 exists
+                                    console.log("param 3 must be null");
+                                    return <Page404 />;
+                                }
+                            }
+                            else {
+                                console.log("wrong param 2");
+                                return <Page404 />;
+                            }
+                        } break;
+                    case "danh-muc":
+                        if (!this.checkAdmin(userRole)) {   //user is not admin
+                            console.log("danhmuc admin only");
+                            return <Page404 />;
+                        }
+                        if (this.checkExist(ctdt)) {    //param 2 exists
+                            console.log("param 2 must be null");
+                            return <Page404 />;
+                        } break;
+                    // case "ctdt":
+                    //     if (this.checkAdmin(userRole)) {
+                    //         this.errorCase("ctdt not for admin");
+                    //     }break;
+                    case "view-survey":
+                    case "survey-matrix":
+                        if (!this.checkChuNhiem(userRole)) {    //user is not chunhiem
+                            console.log("survey chunhiem only");
+                            return <Page404 />;
+                        }
+                        if (this.checkExist(ctdt)) {    //param 2 exists
+                            console.log("param 2 must be null");
+                            return <Page404 />;
+                        } break;
+                    default: { //ctdt,
+                        if (this.checkExist(ctdt)) {    //param 2 exists
+                            if (!this.checkCtdtExist(ctdtList, ctdt)) { //param 2 invalid
+                                console.log("wrong param 2");
+                                return <Page404 />;
+                            }
+                            else {
+                                if (this.checkExist(type)) {    //param 3 exists
+                                    if (!this.checkTypeExist(menuItem, type)) { //param 3 invalid
+                                        console.log("wrong param 3");
+                                        return <Page404 />;
+                                    }
+                                    else {
+                                        if (!this.checkRoleExist(userRole, menuItem[type].role)) { //check role param 3
+                                            console.log("wrong role");
+                                            return <Page404 />;
+                                        }
+                                        switch (type) {
+                                            case "de-cuong-mon-hoc":
+                                                if (this.checkExist(action)) {  //param 4 exists
+                                                    if (!this.checkActionExist(menuItem, action)) { //param 4 invalid
+                                                        console.log("wrong param 4");
+                                                        return <Page404 />;
+                                                    }
+                                                    else {
+                                                        if (!this.checkRoleExist(userRole, menuItem[type].children.find(item => item.id === action).role)) {    //checkrole param 4
+                                                            console.log("wrong role");
+                                                            return <Page404 />;
+                                                        }
+                                                        else {
+                                                            if (this.checkExist(khoi)) {    //param 5 exists
+                                                                if (!this.checkKhoiExist(dataCtdt, khoi)) { //param 5 not found
+                                                                    console.log("wrong param 5");
+                                                                    return <Page404 />;
+                                                                }
+                                                                else {
+                                                                    switch (action) {   //param 4
+                                                                        case "biensoan":
+                                                                            if (!this.checkTeachBlock(dataCtdt.find(i => i.Id === +khoi))) {    //param 5 not follow param 4
+                                                                                console.log("wrong param 5");
+                                                                                return <Page404 />;
+                                                                            } break;
+                                                                        case "review-subject":
+                                                                            if (!this.checkReviewBlock(dataCtdt.find(i => i.Id === +khoi))) {   //param 5 not follow param 4
+                                                                                console.log("wrong param 5");
+                                                                                return <Page404 />;
+                                                                            } break;
+                                                                        default:    //phancong,
+                                                                    }
+                                                                    if (this.checkExist(monhoc)) {  //param 6 exists
+                                                                        if (!this.checkSubjectExist(subjectList, monhoc, khoi)) {   //param 6 not follow param 5
+                                                                            console.log("wrong param 6");
+                                                                            return <Page404 />;
+                                                                        }
+                                                                        else {
+                                                                            if (!this.checkTabExist(MENUITEM, tab)) {   //param 7 not found
+                                                                                console.log("wrong param 7");
+                                                                                return <Page404 />;
+                                                                            }
+                                                                            else {
+                                                                                switch (tab) {  //param 7
+                                                                                    case "itusurvey":
+                                                                                        console.log("wrong param 7");
+                                                                                        return <Page404 />;
+                                                                                        break;
+                                                                                    case "phan-cong":
+                                                                                        if (!this.checkChuNhiem(userRole)) {    //user is not chunhiem
+                                                                                            console.log("wrong param 7");
+                                                                                            return <Page404 />;
+                                                                                        } break;
+                                                                                    case "review":
+                                                                                        if (!this.checkTeacher(userRole)) {     //user is not teacher
+                                                                                            console.log("wrong param 7");
+                                                                                            return <Page404 />;
+                                                                                        } break;
+                                                                                    default:    //9 tabs syllabus
+                                                                                        if (!this.checkBienSoan(userRole)) {     //user is not biensoan
+                                                                                            console.log("wrong param 7");
+                                                                                            return <Page404 />;
+                                                                                        }
+                                                                                }
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                } break;
+                                            case "itusurvey":
+                                                if (this.checkExist(action)) {  //param 4 exists
+                                                    if (action !== "dosurvey") {
+                                                        console.log("wrong param 4");
+                                                        return <Page404 />;
+                                                    }
+                                                    else {
+                                                        if (this.checkExist(khoi)) {    //param 5 exists
+                                                            if (khoi !== "view") {
+                                                                console.log("wrong param 5");
+                                                                return <Page404 />;
+                                                            }
+                                                            else {
+                                                                if (this.checkExist(monhoc)) {  //param 6 exists
+                                                                    if (!this.checkInTeacherSubject(teacherSubject, +monhoc)) { //param 6 not found
+                                                                        console.log("wrong param 6");
+                                                                        return <Page404 />;
+                                                                    }
+                                                                    else {
+                                                                        if (!this.checkTabExist(MENUITEM, tab)) {   //param 7 not found
+                                                                            console.log("wrong param 7");
+                                                                            return <Page404 />;
+                                                                        }
+                                                                        else {
+                                                                            if (tab !== "itusurvey") {  //param 7 invalid
+                                                                                console.log("wrong param 7");
+                                                                                return <Page404 />;
+                                                                            }
+                                                                        }
+                                                                    }
+                                                                }
+                                                                else {  //param 6 must be exist
+                                                                    console.log("param 6 cannot be null");
+                                                                    return <Page404 />;
+                                                                }
+                                                            }
+                                                        }
+                                                    }
+                                                } break;
+                                            case "chuan-dau-ra":
+                                                break;
+                                            case "phan-cong-giang-day":
+                                                break;
+
+                                            default: 
+                                                if (this.checkExist(khoi)) {    //param 5 exists
+                                                    console.log("param 5 must be null");
+                                                    return <Page404 />;
+                                                }
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+        }
+        //end check 404-----------------------------------------
+
+        let subjectName = this.getSubjectName(subjectList, monhoc);
+        let GirdLayout;
+        if (this.state.collapse) {
+            GirdLayout = (<Row>
+                <Col span={2} className="col-left col-left-inline">
+                    <MenuLeft
+                        collapse={this.state.collapse}
+                        theme={this.state.theme}
+                        defaultSelectedKeys={[parent]}
+                        content_type={this.props.match.params.type}
+                        content_monhoc={this.props.match.params.monhoc}
+                        content_tab={this.props.match.params.tab}
+                        content_khoi={this.props.match.params.khoi}
+                        content_ctdt={this.props.match.params.ctdt}
+                        content_parent={this.props.match.params.parent}
+                        content_action={this.props.match.params.action}
+                    />
+                </Col>
+                <Col span={22} className="col-right">
+                    <Row>
+                        <NavBar />
+                    </Row>
+                    <Row >
+                        <Content content_type={this.props.match.params.type}
                             content_monhoc={this.props.match.params.monhoc}
                             content_tab={this.props.match.params.tab}
                             content_khoi={this.props.match.params.khoi}
                             content_ctdt={this.props.match.params.ctdt}
                             content_parent={this.props.match.params.parent}
                             content_action={this.props.match.params.action}
-                        />
-                    </Col>
-                    <Col span={19} className="col-right">
-                        <Row>
-                        <NavBar/>
-                        </Row>
-                        <Row>
-                        <Content content_type = {this.props.match.params.type}
-                                content_tab={this.props.match.params.tab}
-                                content_monhoc={this.props.match.params.monhoc}
-                                content_khoi={this.props.match.params.khoi}
-                                content_ctdt={this.props.match.params.ctdt}
-                                content_parent={this.props.match.params.parent}
-                                content_action={this.props.match.params.action}
-                                subjectName={subjectName}/>
-                        </Row>
-                    </Col>
-                </Row>);
-            }
+                            subjectName={subjectName} />
+                    </Row>
+                </Col>
+            </Row>);
+        }
+        else {
+            GirdLayout = (<Row>
+                <Col span={5} className="col-left">
+                    <MenuLeft
+                        collapse={this.state.collapse}
+                        theme={this.state.theme}
+                        defaultSelectedKeys={[this.props.match.params.parent]}
+                        content_type={this.props.match.params.type}
+                        content_monhoc={this.props.match.params.monhoc}
+                        content_tab={this.props.match.params.tab}
+                        content_khoi={this.props.match.params.khoi}
+                        content_ctdt={this.props.match.params.ctdt}
+                        content_parent={this.props.match.params.parent}
+                        content_action={this.props.match.params.action}
+                    />
+                </Col>
+                <Col span={19} className="col-right">
+                    <Row>
+                        <NavBar />
+                    </Row>
+                    <Row>
+                        <Content content_type={this.props.match.params.type}
+                            content_tab={this.props.match.params.tab}
+                            content_monhoc={this.props.match.params.monhoc}
+                            content_khoi={this.props.match.params.khoi}
+                            content_ctdt={this.props.match.params.ctdt}
+                            content_parent={this.props.match.params.parent}
+                            content_action={this.props.match.params.action}
+                            subjectName={subjectName} />
+                    </Row>
+                </Col>
+            </Row>);
+        }
 
-            return (
-                <React.Fragment>
-                    {GirdLayout}
-                </React.Fragment>
-            )
-    //}
-    // else {
-    //     return <div>Loading...</div>
-    // }
+        return (
+            <React.Fragment>
+                {GirdLayout}
+            </React.Fragment>
+        )
+        //}
+        // else {
+        //     return <div>Loading...</div>
+        // }
     }
 }
 
@@ -801,18 +738,18 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
-      updateSubjectList: subjectList,
-      updateSubjectId: subjectId,
-      updateEditMatrix: editMatrix,
-      updateIsLoadEditMatrix: isLoadEditMatrix,
-      updateCdrmdhd: cdrmdhd,
-      updateCdrmdhdDB: cdrmdhddb,
-      updateCdrCdio: cdrCdio,
-      onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
-      updateDataCtdt: dataCtdt,
-      updateIsLoadedDataCtdt: isLoadedDataCtdt,
-      updateTeacherSubject: teacherSubject,
-    updateTeacherReviewSubject: teacherReviewSubject
+        updateSubjectList: subjectList,
+        updateSubjectId: subjectId,
+        updateEditMatrix: editMatrix,
+        updateIsLoadEditMatrix: isLoadEditMatrix,
+        updateCdrmdhd: cdrmdhd,
+        updateCdrmdhdDB: cdrmdhddb,
+        updateCdrCdio: cdrCdio,
+        onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
+        updateDataCtdt: dataCtdt,
+        updateIsLoadedDataCtdt: isLoadedDataCtdt,
+        updateTeacherSubject: teacherSubject,
+        updateTeacherReviewSubject: teacherReviewSubject
     }, dispatch);
-  }
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

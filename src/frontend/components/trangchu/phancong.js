@@ -225,6 +225,7 @@ class PhanCong extends Component {
               format={dateFormat}
 
             />
+            <div style={{ height: "10px" }} />
             <Button onClick={this.phanCong} className="button-phancong" style={{ backgroundColor: "#03a9f4d4", color: "white" }}>
               Phân công <span className="phancong-icon"><Icon type="double-right" /></span>
             </Button>

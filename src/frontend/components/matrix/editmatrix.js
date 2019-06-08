@@ -299,7 +299,8 @@ class EditMatrix extends Component {
         subjectListId.push(item.IdSubject);
       })
       let data = {
-        data: subjectListId
+        data: subjectListId,
+        idCtdt: this.props.ctdt
       }
       if (data.data.length > 0) {
         $.getStandardMatrix(data).then((res) => {
@@ -346,7 +347,8 @@ class EditMatrix extends Component {
         subjectListId.push(item.IdSubject);
       })
       let data = {
-        data: subjectListId
+        data: subjectListId,
+        idCtdt: this.props.ctdt
       }
       if (data.data.length > 0) {
         $.getStandardMatrix(data).then((res) => {
@@ -408,7 +410,6 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.state.tempMatrix)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];

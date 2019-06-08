@@ -780,12 +780,12 @@ class Content extends Component {
                                 </div>
                             </React.Fragment>
                         ) : type === "matrix" ? (
-                            <Matrix khoi={khoi} />
+                            <Matrix khoi={khoi} ctdt={ctdt}/>
                         ) : type === "edit-matrix" ? (
-                            <EditMatrix />
+                            <EditMatrix ctdt={ctdt}/>
                         ) : // : type === "survey-matrix" ? <SurveyMatrix />
                                     type === "benchmark-matrix" ? (
-                                        <BenchMark />
+                                        <BenchMark ctdt={ctdt}/>
                                     ) : type === "itusurvey" ? (
                                         <React.Fragment>
                                             <Row
@@ -842,7 +842,9 @@ class Content extends Component {
                                             <EditEducationProgram ctdt={ctdt} />
                                         </div>
                                     ) : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                        <div>Trang chủ chương trình đào tạo</div>
+                                        ctdt === "survey-matrix" ? (
+                                            <SurveyMatrix />
+                                        ) : <div>Trang chủ chương trình đào tạo</div>
                                     ) : parent === "ctdt" ? (
                                         <EducationProgram />
                                     ) : parent === "danh-muc" ? (
@@ -869,8 +871,6 @@ class Content extends Component {
                                         <React.Fragment>
                                             <UserManage />
                                         </React.Fragment>
-                                    ) : parent === "survey-matrix" ? (
-                                        <SurveyMatrix />
                                     ) : parent === "view-survey" ? (
                                         <React.Fragment>
                                             {/* <Row className="col\-right\-title aa"> */}

@@ -26,7 +26,15 @@ const collectSubjectList = () => {
 
 const getBlockSubject = (id) => {
     let url = _.GET_BLOCK_SUBJECT;
-    return $.get(url + id);
+    //$.headers["username"] = JSON.parse(localStorage.getItem('user')).data.Username;
+    //$.headers["role"]= JSON.parse(localStorage.getItem('user')).data.Role;
+
+    let header = {
+        username: JSON.parse(localStorage.getItem('user')).data.Username,
+        role: JSON.parse(localStorage.getItem('user')).data.Role
+    }
+
+    return $.get(url + id,header);
 }
 
 //edit matrix
@@ -119,9 +127,9 @@ const getTeacherReviewSubject = (data) => {
     return $.post(url, data);
 }
 //
-const getCDR_CDIO = () => {
+const getCDR_CDIO = (data) => {
     let url = _.GET_CDR_CDIO;
-    return $.get(url);
+    return $.get(url + data);
 }
 
 const getMatrixSurvey = () => {

@@ -331,7 +331,7 @@ class Home extends Component {
                         self.props.updateSubjectId(monhoc)
                     }
 
-                    $.getCDR_CDIO().then((res) => {
+                    $.getCDR_CDIO(ctdt).then((res) => {
 
                         self.props.updateCdrCdio(res.data)
                     })
@@ -478,15 +478,23 @@ class Home extends Component {
                     //         this.errorCase("ctdt not for admin");
                     //     }break;
                     case "view-survey":
-                    case "survey-matrix":
                         if (!this.checkChuNhiem(userRole)) {    //user is not chunhiem
                             console.log("survey chunhiem only");
                             return <Page404 />;
                         }
-                        if (this.checkExist(ctdt)) {    //param 2 exists
-                            console.log("param 2 must be null");
-                            return <Page404 />;
-                        } break;
+
+                        if (this.checkExist(ctdt)) {
+                            if(ctdt !== "survey-matrix") {
+                                console.log("wrong param 2");
+                                return <Page404 />;
+                            }
+                        }                  
+                        break;
+                        
+                        // if (this.checkExist(ctdt)) {    //param 2 exists
+                        //     console.log("param 2 must be null");
+                        //     return <Page404 />;
+                        // } break;
                     default: { //ctdt,
                         if (this.checkExist(ctdt)) {    //param 2 exists
                             if (!this.checkCtdtExist(ctdtList, ctdt)) { //param 2 invalid
@@ -619,7 +627,10 @@ class Home extends Component {
                                                 break;
                                             case "phan-cong-giang-day":
                                                 break;
-
+                                            case "survey-matrix":
+                                                console.log("wrong param 3");
+                                                return <Page404 />;
+                                                break;
                                             default: 
                                                 if (this.checkExist(khoi)) {    //param 5 exists
                                                     console.log("param 5 must be null");

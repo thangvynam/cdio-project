@@ -842,7 +842,9 @@ class Content extends Component {
                                             <EditEducationProgram ctdt={ctdt} />
                                         </div>
                                     ) : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                        <div>Trang chủ chương trình đào tạo</div>
+                                        ctdt === "survey-matrix" ? (
+                                            <SurveyMatrix />
+                                        ) : <div>Trang chủ chương trình đào tạo</div>
                                     ) : parent === "ctdt" ? (
                                         <EducationProgram />
                                     ) : parent === "danh-muc" ? (
@@ -869,8 +871,6 @@ class Content extends Component {
                                         <React.Fragment>
                                             <UserManage />
                                         </React.Fragment>
-                                    ) : parent === "survey-matrix" ? (
-                                        <SurveyMatrix />
                                     ) : parent === "view-survey" ? (
                                         <React.Fragment>
                                             {/* <Row className="col\-right\-title aa"> */}

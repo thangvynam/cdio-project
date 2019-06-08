@@ -110,12 +110,6 @@ class Matrix extends Component {
                         }
                         this.props.updateEditMatrix(data);
                     })
-                    
-                    data1 = {
-                        data: subjectListId.filter(item => 
-                            this.checkInTeacherSubject(this.props.teacherSubject, item)
-                        )
-                    }
 
                     var a = $.getRealityMatrix(data1)
                     a.then(res => this.setState({matrix: res.data}));
@@ -180,12 +174,6 @@ class Matrix extends Component {
                         }
                         this.props.updateEditMatrix(data);
                     })
-
-                    data1 = {
-                        data: subjectListId.filter(item => 
-                            this.checkInTeacherSubject(this.props.teacherSubject, item)
-                        )
-                    }
 
                     var a = $.getRealityMatrix(data1)
                     a.then(res => this.setState({matrix: res.data}));;
@@ -459,7 +447,7 @@ class Matrix extends Component {
     }
 
     render() {
-
+        console.log(this.props.cdrCdio)
         const { isLoading, isShow } = this.state;
         const style = {
             marginLeft:'20px'

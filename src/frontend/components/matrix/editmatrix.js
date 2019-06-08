@@ -408,7 +408,8 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.state.tempMatrix)
+    console.log(this.props.teacherSubject)
+    console.log(this.props.teacherReviewSubject)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];

@@ -97,7 +97,7 @@ class ViewSurvey extends Component {
                     key={index}
                     id={survey.id}
                     subjectList={survey.subjectList}
-                    title={title.EduName}
+                    title={survey.EduName}
                     dateFrom={survey.rangeTime[0]}
                     dateTo={survey.rangeTime[1]}
                     status={survey.status}

@@ -97,7 +97,7 @@ class ViewSurvey extends Component {
                     key={index}
                     id={survey.id}
                     subjectList={survey.subjectList}
-                    title={survey.EduName}
+                    title={title ? title.EduName : "ERROR SUBJECT NAME"}
                     dateFrom={survey.rangeTime[0]}
                     dateTo={survey.rangeTime[1]}
                     status={survey.status}
@@ -208,8 +208,6 @@ class ViewSurvey extends Component {
     }
 
     render() {
-        console.log(this.state.listSurvey)
-       
         const formItemLayout = {
             labelCol: {
                 xs: { span: 12 },

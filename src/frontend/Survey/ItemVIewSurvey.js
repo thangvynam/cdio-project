@@ -3,8 +3,12 @@ import {
     Collapse, Button, Tag, Row, Col
 } from 'antd';
 import { Label } from 'reactstrap'
+import { Link } from "react-router-dom";
+
 
 const Panel = Collapse.Panel;
+const hrefSurveyMatrix = "/view-survey/survey-matrix?id="
+
 
 function callback(key) {
     console.log(key);
@@ -13,15 +17,15 @@ function callback(key) {
 const statusValues = [
     {
         id: -1,
-        value: "Not active"
+        value: "NOT ACTIVE"
     },
     {
         id: 0,
-        value: "Done"
+        value: "DONE"
     },
     {
         id: 1,
-        value: "In process "
+        value: "IN PROCESS"
     }
 ]
 
@@ -41,7 +45,7 @@ class ItemVIewSurvey extends Component {
                         <Tag color="green">Trạng thái: {status[0].value}</Tag>
                     </Col>
                     <Col className="custom-survey-item-button" span={10}>
-                        <Button  className="view-survey-matrix btn btn-outline-secondary" onClick={(e) => console.log("CLICK CLICK CLICK")}>View Matrix Survey</Button>
+                        <Link to ={hrefSurveyMatrix+`${this.props.id}`}  className="view-survey-matrix btn btn-outline-secondary" >View Matrix Survey</Link>
                         <Button  className="view-survey-matrix btn btn-outline-warning" onClick={(e) => console.log("BAM BAM BAM")}>Đóng cuộc Survey</Button>
                     </Col>
                 </Row>

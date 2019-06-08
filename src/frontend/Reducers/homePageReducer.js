@@ -138,7 +138,7 @@ const parentState = [
     {
         id: "ctdt",
         name: "CHƯƠNG TRÌNH ĐÀO TẠO",
-        role: ["ADIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"],
+        role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"],
     },
     {
         id: "danh-muc",

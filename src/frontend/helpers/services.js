@@ -127,9 +127,9 @@ const getTeacherReviewSubject = (data) => {
     return $.post(url, data);
 }
 //
-const getCDR_CDIO = () => {
+const getCDR_CDIO = (data) => {
     let url = _.GET_CDR_CDIO;
-    return $.get(url);
+    return $.get(url + data);
 }
 
 const getMatrixSurvey = () => {

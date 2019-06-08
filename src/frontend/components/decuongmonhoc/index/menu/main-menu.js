@@ -131,7 +131,7 @@ class MenuLeft extends Component {
       if (this.props.content_type === "de-cuong-mon-hoc") {
         return (
           <Redirect
-            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_action}/${this.props.content_khoi}/${this.props.content_monhoc}/thong-tin-chung`}
+            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_action}/${this.props.content_khoi}`}
           />
         );
       }

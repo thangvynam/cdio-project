@@ -780,12 +780,12 @@ class Content extends Component {
                                 </div>
                             </React.Fragment>
                         ) : type === "matrix" ? (
-                            <Matrix khoi={khoi} />
+                            <Matrix khoi={khoi} ctdt={ctdt}/>
                         ) : type === "edit-matrix" ? (
-                            <EditMatrix />
+                            <EditMatrix ctdt={ctdt}/>
                         ) : // : type === "survey-matrix" ? <SurveyMatrix />
                                     type === "benchmark-matrix" ? (
-                                        <BenchMark />
+                                        <BenchMark ctdt={ctdt}/>
                                     ) : type === "itusurvey" ? (
                                         <React.Fragment>
                                             <Row

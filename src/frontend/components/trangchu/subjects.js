@@ -331,7 +331,7 @@ class Home extends Component {
                         self.props.updateSubjectId(monhoc)
                     }
 
-                    $.getCDR_CDIO().then((res) => {
+                    $.getCDR_CDIO(ctdt).then((res) => {
 
                         self.props.updateCdrCdio(res.data)
                     })

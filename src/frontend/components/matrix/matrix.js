@@ -79,7 +79,8 @@ class Matrix extends Component {
                     subjectListId.push(item.IdSubject);
                 })
                 let data1 = {
-                    data: subjectListId
+                    data: subjectListId,
+                    idCtdt: this.props.ctdt
                 }
                 if(data1.data.length > 0) {
                     $.getStandardMatrix(data1).then((res) => {
@@ -113,7 +114,7 @@ class Matrix extends Component {
 
                     var a = $.getRealityMatrix(data1)
                     a.then(res => this.setState({matrix: res.data}));
-                    var b = $.getCDR_CDIO();
+                    var b = $.getCDR_CDIO(data1.idCtdt);
                     Promise.all([a, b])
                     .then((res) => {
                         this.props.getDataMatrix(res)
@@ -143,7 +144,8 @@ class Matrix extends Component {
                     subjectListId.push(item.IdSubject);
                 })
                 let data1 = {
-                    data: subjectListId
+                    data: subjectListId,
+                    idCtdt: this.props.ctdt
                 }
                 if(data1.data.length > 0) {
                     $.getStandardMatrix(data1).then((res) => {
@@ -177,7 +179,7 @@ class Matrix extends Component {
 
                     var a = $.getRealityMatrix(data1)
                     a.then(res => this.setState({matrix: res.data}));;
-                    var b = $.getCDR_CDIO();
+                    var b = $.getCDR_CDIO(data1.idCtdt);
                     Promise.all([a, b])
                         .then((res) => {
                             this.props.getDataMatrix(res)
@@ -447,7 +449,6 @@ class Matrix extends Component {
     }
 
     render() {
-        console.log(this.props.cdrCdio)
         const { isLoading, isShow } = this.state;
         const style = {
             marginLeft:'20px'

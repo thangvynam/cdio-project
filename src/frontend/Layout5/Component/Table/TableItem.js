@@ -10,7 +10,7 @@ import DragDropHTML5 from '../../../html5Backend/html5Backend';
 import TextArea from "antd/lib/input/TextArea";
 
 import {
-  DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5, ADD_DATA,
+  DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5, REFRESH_DATA,
   SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD, 
   COLLECT_DATA_DG, COLLECT_DATA_CDR
 } from '../../../Constant/ActionType';
@@ -661,7 +661,7 @@ const mapDispatchToProps = (dispatch) => {
             newArr.push(data);
           }
 
-          dispatch({ type: ADD_DATA, data: newArr })
+          dispatch({ type: REFRESH_DATA, data: newArr })
         })
         .catch(function (error) {
           console.log(error);

@@ -295,8 +295,9 @@ class SurveyMatrix extends Component {
               let obj = this.props.dataSurveyMatrix[element];
               data.push(obj)
             });
+            let idCtdt =  this.getUrlParameter('idCtdt');
             if (data.length > 0) {
-              $.addSurveyMatrix(data).then(res => {
+              $.addSurveyMatrix(data, idCtdt).then(res => {
                 if (res.data === 1) {
                   openNotificationWithIcon('success')
                 }

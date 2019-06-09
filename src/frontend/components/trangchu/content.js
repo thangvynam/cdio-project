@@ -781,11 +781,11 @@ class Content extends Component {
                             </React.Fragment>
                         ) : type === "matrix" ? (
                             <React.Fragment>
-                                <Row
+                                {/* <Row
                                     className={`col-right-title header-fixed ${
                                         this.state.scrolling ? "fixedCss" : ""
                                         }`}
-                                >
+                                > */}
                                     <div className="header-child">
                                         <span>Matrix</span>
                                         <Direction
@@ -797,7 +797,7 @@ class Content extends Component {
                                             content_action={action}
                                         />
                                     </div>
-                                </Row>
+                                {/* </Row> */}
                                 <Matrix khoi={khoi} ctdt={ctdt} />
                             </React.Fragment>
                         ) : type === "edit-matrix" ? (

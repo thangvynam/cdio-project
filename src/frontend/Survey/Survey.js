@@ -51,23 +51,22 @@ class Survey extends React.Component {
         let tree = [];
         const parsed = queryString.parse(window.location.search);
         const id_ctdt = this.props.ctdt;
-        console.log(id_ctdt)
-        if (parsed.id) {
-            const id = parsed.id;
-            let response = await $.checkStatus(id)
-            let resDate = await $.checkDate(response.data.idSurveyList)     
-            let subjectId = response.data.id_mon;
-            let resSubjectName = await $.getSubjectName(subjectId)     
-            let curTime = getCurrTime()
-            let end_date = resDate.data.end_date;
+        
+        // if (parsed.id) {
+        //     const id = parsed.id;
+        //     let response = await $.checkStatus(id)
+        //     let resDate = await $.checkDate(response.data.idSurveyList)     
+        //     let subjectId = response.data.id_mon;
+        //     let resSubjectName = await $.getSubjectName(subjectId)     
+        //     let curTime = getCurrTime()
+        //     let end_date = resDate.data.end_date;
             
-            await this.props.saveChange("tenMH", resSubjectName.data.SubjectName)
+        //     await this.props.saveChange("tenMH", resSubjectName.data.SubjectName)
             
-            if (curTime > end_date) {
-                $.setStatus(id)
-            }
-        }
-
+        //     if (curTime > end_date) {
+        //         $.setStatus(id)
+        //     }
+        // }
         
 
         $.getDataSurvey(id_ctdt).then((res) => {
@@ -82,13 +81,14 @@ class Survey extends React.Component {
                     key: '',
                     value: ''
                 }
-
+                
                 switch (level) {
                     case 1: {
                         NodeData.key = pos0;
                         NodeData.value = element.nameRow;
-
+                        
                         tree.push(new Node(NodeData));
+                        console.log(tree);
                         break;
                     }
                     case 2: {
@@ -141,6 +141,7 @@ class Survey extends React.Component {
                         break;
                 }
             });
+            console.log(tree);
             this.setState({ tree: tree })
         })
     }

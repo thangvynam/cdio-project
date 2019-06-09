@@ -141,7 +141,9 @@ class TableItem extends Component {
     this.state = {
       selectedRowKeys: [],
       editingKey: "",
-      idSubject: -1
+      idSubject: -1,
+      isSaveAll:false
+
     };
   }
 
@@ -265,6 +267,8 @@ class TableItem extends Component {
   };
 
   onSaveAll = () => {
+    this.setState({isSaveAll:true});
+
     let body = {};
     body.thong_tin_chung_id = this.props.monhoc;
     body.data = this.props.itemRule.previewInfo;
@@ -316,6 +320,7 @@ class TableItem extends Component {
         array.push(temp);
       });
       this.props.onUpdateRules(array);
+      this.setState({isSaveAll:false});
     });
   }
 
@@ -382,6 +387,8 @@ class TableItem extends Component {
               style={{ float: "right" }}
               type="primary"
               onClick={this.onSaveAll}
+              disabled={this.state.isSaveAll}
+
             >
               Lưu thay đổi
             </Button>

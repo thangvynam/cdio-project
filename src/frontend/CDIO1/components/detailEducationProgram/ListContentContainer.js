@@ -29,37 +29,37 @@ class ListContentContainer extends React.Component {
   }
 
   onChangeListKnowledge = e => {
-    if(typeof e.value !== "object"){
+    if (typeof e.value !== "object") {
       return;
     }
-    let knowledge = this.checkExistsfilterKnowledges(this.state.filterKnowledges,e.value);
-    const checkListknows = this.checkExistsListknows(this.state.listKnowledges,e.value);
+    let knowledge = this.checkExistsfilterKnowledges(this.state.filterKnowledges, e.value);
+    const checkListknows = this.checkExistsListknows(this.state.listKnowledges, e.value);
     let arr = this.state.listKnowledges;
-    if(knowledge && !checkListknows){
-      knowledge = {...knowledge, EduName: this.state.optionEdupro.EduName}
+    if (knowledge && !checkListknows) {
+      knowledge = { ...knowledge, EduName: this.state.optionEdupro.EduName }
       arr.push(knowledge);
     }
     this.setState({
       optionKnowledge: e.value,
-      listKnowledges : arr
+      listKnowledges: arr
     });
   }
 
-  checkExistsfilterKnowledges = (filterKnows, value ) =>{
+  checkExistsfilterKnowledges = (filterKnows, value) => {
     const length = filterKnows.length;
-    for(let i = 0; i < length ; i++){
-      if(filterKnows[i].KeyRow === value.KeyRow){
+    for (let i = 0; i < length; i++) {
+      if (filterKnows[i].KeyRow === value.KeyRow) {
         return filterKnows[i];
       }
     }
   }
 
-  checkExistsListknows = (listKnows, value) =>{
+  checkExistsListknows = (listKnows, value) => {
     const length = listKnows.length;
-    for(let i = 0; i < length ; i++){
-       if(listKnows[i].KeyRow === value.KeyRow){
-         return true;
-       }
+    for (let i = 0; i < length; i++) {
+      if (listKnows[i].KeyRow === value.KeyRow) {
+        return true;
+      }
     }
     return false;
   }
@@ -68,7 +68,7 @@ class ListContentContainer extends React.Component {
     const idDetail = this.props.contentList[0].IdDetailPro;
     this.props.onLoadKnowledgeTable(idDetail)
     const listEdus = [...this.props.contentList];
-    
+
     this.setState({
       filterEdupros: listEdus
     });
@@ -83,7 +83,7 @@ class ListContentContainer extends React.Component {
     this.setState({ filterKnowledges: knowledgeTables })
   }
 
-  knowledgeTemplate = knowledge =>{
+  knowledgeTemplate = knowledge => {
     return (
       <div className="p-clearfix">
         <div
@@ -94,7 +94,7 @@ class ListContentContainer extends React.Component {
             borderBottom: "ridge"
           }}
         >
-          {knowledge.KeyRow+" - "+ knowledge.NameRow}
+          {knowledge.KeyRow + " - " + knowledge.NameRow}
         </div>
         <p
           style={{
@@ -111,7 +111,7 @@ class ListContentContainer extends React.Component {
     );
   }
 
-  deleteKnowledge = knowledge =>{
+  deleteKnowledge = knowledge => {
 
   }
 
@@ -179,12 +179,20 @@ class ListContentContainer extends React.Component {
           </Col>
         </Row>
         <hr></hr>
-        <Button onClick={() => this.props.onAddKnowledgeTable(this.state.listKnowledges,true)}>
-        Thêm
-        </Button>
-        <Button onClick={() => this.props.onAddKnowledgeTable(false,false)}>
-        Hủy
-        </Button>
+        <Row>
+          <Col lg="8" md="8" sm="8">
+          </Col>
+          <Col lg="3" md="3" sm="3" style={{paddingLeft:'15%'}}>
+            <Button onClick={() => this.props.onAddKnowledgeTable(this.state.listKnowledges, true)} theme="success">
+              Thêm
+          </Button>
+          </Col>
+          <Col lg="1" md="1" sm="1" style={{paddingLeft:'0%'}}>
+            <Button onClick={() => this.props.onAddKnowledgeTable(false, false)} theme="secondary">
+              Hủy
+          </Button>
+          </Col>
+        </Row>
       </div>
     );
   }

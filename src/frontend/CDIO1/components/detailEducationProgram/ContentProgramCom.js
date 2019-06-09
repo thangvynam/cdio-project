@@ -422,6 +422,46 @@ export default class ContentProgramCom extends React.Component {
 
   // onchange
 
+  onChangeListSubjectsRequired = e =>{
+    let list = this.state.listSubjects;
+    let listBB = this.state.listSubjects.filter(subject => {
+      if (subject.nameBlock.startsWith("BB")) {
+        return subject;
+      }
+    })
+    let i = 0;
+    listBB = e.value;
+    list = list.map(subject=>{
+      if(subject.nameBlock.startsWith("BB")){
+        ++i;
+        let flag = i;
+        return listBB[--flag];
+      }
+      return subject;
+    })
+    this.setState({listSubjects: list})
+  }
+
+  onChangeListSubjectsOption = e =>{
+    let list = this.state.listSubjects;
+    let listTC = this.state.listSubjects.filter(subject => {
+      if (subject.nameBlock.startsWith("TC")) {
+        return subject;
+      }
+    })
+    let i = 0;
+    listTC = e.value;
+    list = list.map(subject=>{
+      if(subject.nameBlock.startsWith("TC")){
+        ++i;
+        let flag = i;
+        return listTC[--flag];
+      }
+      return subject;
+    })
+    this.setState({listSubjects: list})
+  }
+
   onChangeCreditFreeStudy = e => {
     this.setState({
       creditFreeStudy: e.value
@@ -868,6 +908,7 @@ export default class ContentProgramCom extends React.Component {
                   })}
                   responsive={true}
                   itemTemplate={this.subjectTemplate}
+                  onChange={(e) => this.onChangeListSubjectsRequired(e)}
                 />
               </Col>
             </Row>
@@ -884,6 +925,7 @@ export default class ContentProgramCom extends React.Component {
                   })}
                   responsive={true}
                   itemTemplate={this.subjectTemplate}
+                  onChange={(e) => this.onChangeListSubjectsOption(e)}
                 />
               </Col>
             </Row>

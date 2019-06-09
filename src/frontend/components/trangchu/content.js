@@ -780,18 +780,26 @@ class Content extends Component {
                                 </div>
                             </React.Fragment>
                         ) : type === "matrix" ? (
-                            <div className="header-child">
-                                <span>Matrix</span>
-                                <Direction
-                                    subjectName={subjectName}
-                                    content_khoi={khoi}
-                                    content_ctdt={ctdt}
-                                    content_parent={parent}
-                                    content_type={type}
-                                    content_action={action}
-                                />
+                            <React.Fragment>
+                                <Row
+                                    className={`col-right-title header-fixed ${
+                                        this.state.scrolling ? "fixedCss" : ""
+                                        }`}
+                                >
+                                    <div className="header-child">
+                                        <span>Matrix</span>
+                                        <Direction
+                                            subjectName={subjectName}
+                                            content_khoi={khoi}
+                                            content_ctdt={ctdt}
+                                            content_parent={parent}
+                                            content_type={type}
+                                            content_action={action}
+                                        />
+                                    </div>
+                                </Row>
                                 <Matrix khoi={khoi} ctdt={ctdt} />
-                            </div>
+                            </React.Fragment>
                         ) : type === "edit-matrix" ? (
                             <div className="header-child">
                                 <span>Edit Matrix</span>

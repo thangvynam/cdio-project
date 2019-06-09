@@ -45,6 +45,14 @@
 }
 
 /* Preview Matrix */
+.survey-matrix-wrap{
+    display: inline-flex;
+}
+
+button.ant-btn.send-teacher-btn.ant-btn-primary {
+    margin-left: 5px !important;
+}
+
 .custom-modal-confirm .row-button-confirm {
     display: flex;
     justify-content: flex-end;
@@ -66,5 +74,3 @@
 span.aaaa {
     font-size: 16px;
 }
-
-svg {}

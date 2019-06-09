@@ -68,7 +68,7 @@ class EditableCell extends React.Component {
 class TNTableItem extends Component {
   constructor(props) {
     super(props);
-    this.state = { selectedRowKeys: [], editingKey: '' };
+    this.state = { selectedRowKeys: [], editingKey: '' ,isSaveAll : false};
     this.columns = [{
       title: 'STT',
       dataIndex: 'stt',
@@ -242,6 +242,7 @@ class TNTableItem extends Component {
       })
       this.props.onAddTNData(tempPreview);
     }
+    this.setState({isSaveAll:false})
   }
 
   setIndexForItem = () => {
@@ -261,7 +262,7 @@ class TNTableItem extends Component {
   };
 
   async saveAll(){
-
+    this.setState({isSaveAll : true})
     let loaitainguyen = this.props.itemLayout8Reducer.loaitainguyen;
     let id = this.props.monhoc;
     let description = this.props.itemLayout8Reducer.previewInfo;
@@ -344,6 +345,7 @@ class TNTableItem extends Component {
           </span>
           <Button style={{ float: "right" }}
             onClick={() => this.saveAll()}
+            disabled={this.state.isSaveAll}
           >
             Lưu tât cả
           </Button>

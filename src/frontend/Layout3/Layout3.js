@@ -3,6 +3,7 @@ import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';
 import { Tooltip, Button } from 'antd';
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from '../Constant/ActionType';
 
 class Layout3 extends Component {
     componentWillMount(){
@@ -27,7 +28,7 @@ Bloom ở mức độ nhóm. <br />Mỗi mục tiêu môn học được mapping
 
                     <br />
                     <br />
-                    <LogForm monhoc={this.props.monhoc}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.MUC_TIEU_MON_HOC} tabIndex={3}/>
                     <br />
                 </div>
             </React.Fragment>

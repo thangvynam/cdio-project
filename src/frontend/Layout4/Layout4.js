@@ -3,6 +3,7 @@ import CDRForm from './Component/Main/CDRForm';
 import CDRTableItem from './Component/Table/CDRTableItem';
 import { Tooltip, Button } from 'antd';
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from '../Constant/ActionType';
 
 class Layout4 extends Component {
   componentWillMount(){
@@ -26,7 +27,7 @@ từ mô tả được sử dụng từ các động từ <br />chi tiết của
           <CDRTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>
         </div>
         <div className="section-layout">
-          <LogForm monhoc={this.props.monhoc}/>
+          <LogForm monhoc={this.props.monhoc} tab={MENUITEM.CHUAN_DAU_RA} tabIndex={4}/>
         </div>
       </React.Fragment>
 

@@ -498,6 +498,36 @@ class TableItem extends Component {
 
   }
 
+  collectDataRequest = (id) => {
+    var self = this;
+    console.log("collectDataRequest")
+    let newArr = [];
+    
+    $.collectData5({ data: id })
+      .then(function (response) {
+        for (let i = 0; i < response.data.length; i++) {
+          let data = {
+            key: response.data[i].key,
+            titleName: response.data[i].titleName,
+            teachingActs: response.data[i].teachingActs,
+            standardOutput: response.data[i].standardOutput,
+            evalActs: response.data[i].evalActs,
+            subjectId: response.data[i].subjectId,
+            del_flag: 0
+          }
+          newArr.push(data);
+        }
+
+        self.props.dispatchRefreshData(newArr);
+        self.setState({ disableSaveall: false })
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("[Finish] get data by thong_tin_chung_id " + id);
+      })
+  }
 
   render() {
     console.log(this.props.itemLayout5Reducer.previewInfo)
@@ -570,9 +600,8 @@ class TableItem extends Component {
               Promise.all([this.props.saveAllData()])
                     .then(res => {
                       if (res) {
-                        this.props.collectDataRequest(this.props.monhoc);
+                        this.collectDataRequest(this.props.monhoc);
                       }
-                      this.setState({ disableSaveall: false })
                     })
 
               notification["success"]({
@@ -616,6 +645,7 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
+  var self = this;
   return {
     handleEdit: (key) => {
       dispatch({ type: CHANGE_EDITSTATE_5, key: key });
@@ -643,34 +673,9 @@ const mapDispatchToProps = (dispatch) => {
     saveDataValueCDR: (listCDR) => {
       dispatch({ type: COLLECT_DATA_CDR, data: listCDR })
     },
-    collectDataRequest: (id) => {
-      console.log("collectDataRequest")
-      let newArr = [];
-      $.collectData5({ data: id })
-        .then(function (response) {
-          for (let i = 0; i < response.data.length; i++) {
-            let data = {
-              key: response.data[i].key,
-              titleName: response.data[i].titleName,
-              teachingActs: response.data[i].teachingActs,
-              standardOutput: response.data[i].standardOutput,
-              evalActs: response.data[i].evalActs,
-              subjectId: response.data[i].subjectId,
-              del_flag: 0
-            }
-            newArr.push(data);
-          }
-
-          dispatch({ type: REFRESH_DATA, data: newArr })
-        })
-        .catch(function (error) {
-          console.log(error);
-        })
-        .finally(function () {
-          console.log("[Finish] get data by thong_tin_chung_id " + id);
-        })
+    dispatchRefreshData: (data) => {
+      dispatch({ type: REFRESH_DATA, data: data });
     }
-
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropHTML5(TableItem));

@@ -175,16 +175,17 @@ class BenchMark extends Component {
             subjectListId.push(item.IdSubject);
         })
         let data = {
-            data: subjectListId
+            data: subjectListId,
+            idCtdt: this.props.ctdt
         }
-        if(data.data.length > 0) {
-            $.getBenchmarkMatrix(data)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    
-        .then((res) => {
-            this.props.getDataBenchMarkMatrix(res.data);
-            //this.props.getDataBenchMarkMatrix(myData);
-        })
+        if (data.data.length > 0) {
+            $.getBenchmarkMatrix(data)
+                .then((res) => {
+                    this.props.getDataBenchMarkMatrix(res.data);
+                    //this.props.getDataBenchMarkMatrix(myData);
+                })
         }
-        
+
     }
 
     // componentWillReceiveProps(nextProps) {
@@ -204,7 +205,7 @@ class BenchMark extends Component {
     //         })
     //         }
     //     }
-        
+
     // }
 
     createHeaderColumn = (myData) => {
@@ -304,38 +305,40 @@ class BenchMark extends Component {
     }
 
     createData = (myData) => {
-        const newObject_I = Object.assign({}, ...myData['I'].map(item => ({ [item.cdr]: item.amount })));
-        const newObject_T = Object.assign({}, ...myData['T'].map(item => ({ [item.cdr]: item.amount })));
-        const newObject_U = Object.assign({}, ...myData['U'].map(item => ({ [item.cdr]: item.amount })));
-        const newObject_ITU = Object.assign(
-            {}, ...myData['I'].map(item => ({
-                [item.cdr]: ((
-                    0.1 * item.amount
-                    + newObject_T[item.cdr]
-                    + 0.3 * newObject_U[item.cdr]) / (7 / 10)).toFixed(2)
-            }))
-        );
-        const data = [];
-        data.push({
-            ...newObject_I,
-            itu: 'I',
-            key: 1
-        });
-        data.push({
-            ...newObject_T,
-            itu: 'T',
-            key: 2
-        });
-        data.push({
-            ...newObject_U,
-            itu: 'U',
-            key: 3
-        });
-        data.push({
-            ...newObject_ITU,
-            itu: 'ITU-Index',
-            key: 4
-        });
+        let data = [];
+        if (!_.isEmpty(myData['I']) && !_.isEmpty(myData['T']) && !_.isEmpty(myData['U'])) {
+            const newObject_I = Object.assign({}, ...myData['I'].map(item => ({ [item.cdr]: item.amount })));
+            const newObject_T = Object.assign({}, ...myData['T'].map(item => ({ [item.cdr]: item.amount })));
+            const newObject_U = Object.assign({}, ...myData['U'].map(item => ({ [item.cdr]: item.amount })));
+            const newObject_ITU = Object.assign(
+                {}, ...myData['I'].map(item => ({
+                    [item.cdr]: ((
+                        0.1 * item.amount
+                        + newObject_T[item.cdr]
+                        + 0.3 * newObject_U[item.cdr]) / (7 / 10)).toFixed(2)
+                }))
+            );
+            data.push({
+                ...newObject_I,
+                itu: 'I',
+                key: 1
+            });
+            data.push({
+                ...newObject_T,
+                itu: 'T',
+                key: 2
+            });
+            data.push({
+                ...newObject_U,
+                itu: 'U',
+                key: 3
+            });
+            data.push({
+                ...newObject_ITU,
+                itu: 'ITU-Index',
+                key: 4
+            });
+        }
         return data;
     }
 
@@ -418,7 +421,7 @@ class BenchMark extends Component {
                         <div className="bar-chart">
                             <Bar
                                 data={this.dataChartBar(this.props.dataBenchMarkMatrix)}
-                                options= {{
+                                options={{
                                     title: {
                                         display: true,
                                         text: 'Biểu đồ đánh giá chỉ số ITU-Index cho từng chuẩn đầu ra',
@@ -433,7 +436,7 @@ class BenchMark extends Component {
                         <div className="bar-chart-mixed">
                             <Bar
                                 data={this.dataChartBarMixed(this.props.dataBenchMarkMatrix)}
-                                options= {{
+                                options={{
                                     title: {
                                         display: true,
                                         text: 'Phân bố ITU ở mức 3',

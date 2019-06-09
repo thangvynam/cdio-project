@@ -64,9 +64,9 @@ class PreviewMatrix extends Component {
 
     render() {
         return (
-            <div>
+            <div className="survey-matrix-wrap">
                 <Button type="primary" onClick={this.showModal}>
-                    Open Modal
+                    Preview Matrix
                 </Button>
                 <Modal
                     className="wrapper-preview-dialog"
@@ -97,7 +97,7 @@ class PreviewMatrix extends Component {
                                 </Row>
                                 <Row className="row-button-confirm">
                                     <Button className="mr-1" key="back" onClick={this.handleCancel2}>
-                                        Cancel
+                                        No
                                     </Button>
                                     <ReactHTMLTableToExcel
                                         id="test-table-xls-button"
@@ -105,7 +105,7 @@ class PreviewMatrix extends Component {
                                         table="table-to-xls"
                                         filename="matrix"
                                         sheet="tablexls"
-                                        buttonText="Export"
+                                        buttonText="Yes"
                                     />
                                 </Row>
                             </div>

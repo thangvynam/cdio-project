@@ -319,6 +319,8 @@ class Home extends Component {
                     }
 
 
+                    $.getCDR_CDIO(ctdt)
+                    .then(res => this.props.updateCdrCdio(res.data));
                     ///
                 }
                 else {

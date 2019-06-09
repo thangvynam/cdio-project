@@ -175,7 +175,8 @@ class BenchMark extends Component {
             subjectListId.push(item.IdSubject);
         })
         let data = {
-            data: subjectListId
+            data: subjectListId,
+            idCtdt: this.props.ctdt
         }
         if (data.data.length > 0) {
             $.getBenchmarkMatrix(data)

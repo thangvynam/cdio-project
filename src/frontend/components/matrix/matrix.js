@@ -72,6 +72,41 @@ class Matrix extends Component {
         return false;
     }
 
+    getEditMatrix = (data1) => {
+        var self = this;
+        $.getStandardMatrix(data1).then((res) => {
+            let data = [];
+            for (let i = 0; i < res.data.length; i++) {
+                let index = self.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                if (index !== -1) {
+                    let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                    if (cdr_cdio !== "") {
+                        data[index][cdr_cdio] = res.data[i].muc_do;
+                    }
+                    console.log(data)
+                }
+                else {
+                    let subjectName = self.getSubjectName(self.props.subjectList, res.data[i].thong_tin_chung_id);
+                    let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                    console.log(cdr_cdio)
+                    if (subjectName !== "" && cdr_cdio !== "") {
+                        data.push({
+                            key: res.data[i].thong_tin_chung_id,
+                            hocky: 1,
+                            hocphan: subjectName,
+                            gvtruongnhom: 'NULL'
+                        })
+
+                        data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                    }
+                    
+                }
+            }
+            
+            self.props.updateEditMatrix(data);
+        })
+    }
+
     componentWillReceiveProps(nextProps) {
         if (nextProps.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
             console.log('receive')
@@ -93,37 +128,9 @@ class Matrix extends Component {
             var a = $.getRealityMatrix(data1)
             a.then(res => this.setState({ matrix: res.data }));
             var b = $.getCDR_CDIO(data1.idCtdt);
-            b.then(res => this.props.updateCdrCdio(res.data));
-
+            
             if (data1.data.length > 0) {
-                $.getStandardMatrix(data1).then((res) => {
-                    let data = [];
-                    for (let i = 0; i < res.data.length; i++) {
-                        let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                        if (index !== -1) {
-                            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                            if (cdr_cdio !== "") {
-                                data[index][cdr_cdio] = res.data[i].muc_do;
-                            }
-                        }
-                        else {
-                            let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
-                            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                            if (subjectName !== "" && cdr_cdio !== "") {
-                                data.push({
-                                    key: res.data[i].thong_tin_chung_id,
-                                    hocky: 1,
-                                    hocphan: subjectName,
-                                    gvtruongnhom: 'NULL'
-                                })
-
-                                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                            }
-
-                        }
-                    }
-                    this.props.updateEditMatrix(data);
-                })
+                this.getEditMatrix(data1);
                 
                 Promise.all([a, b])
                     .then((res) => {
@@ -142,6 +149,7 @@ class Matrix extends Component {
 
     }
 
+    
     componentDidMount() {
 
         if (this.props.subjectList.length > 0) {
@@ -161,38 +169,10 @@ class Matrix extends Component {
             var a = $.getRealityMatrix(data1)
             a.then(res => this.setState({ matrix: res.data }));;
             var b = $.getCDR_CDIO(data1.idCtdt);
-            b.then(res => this.props.updateCdrCdio(res.data));
 
             if (data1.data.length > 0) {
-                $.getStandardMatrix(data1).then((res) => {
-                    let data = [];
-                    for (let i = 0; i < res.data.length; i++) {
-                        let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                        if (index !== -1) {
-                            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                            if (cdr_cdio !== "") {
-                                data[index][cdr_cdio] = res.data[i].muc_do;
-                            }
-                        }
-                        else {
-                            let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-                            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                            if (subjectName !== "" && cdr_cdio !== "") {
-                                data.push({
-                                    key: res.data[i].thong_tin_chung_id,
-                                    hocky: 1,
-                                    hocphan: subjectName,
-                                    gvtruongnhom: 'NULL'
-                                })
-
-                                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                            }
-
-                        }
-                    }
-                    this.props.updateEditMatrix(data);
-                })
-
+                
+                this.getEditMatrix(data1);
                 
                 Promise.all([a, b])
                     .then((res) => {
@@ -425,7 +405,6 @@ class Matrix extends Component {
     }
 
     cloneEditMatrix = () => {
-        console.log(this.state.matrix);
         $.insertStandardMatrix({ data: this.state.matrix, idCtdt: this.props.ctdt })
             .then(response => {
                 if (response.data === 1) {
@@ -434,6 +413,18 @@ class Matrix extends Component {
                         duration: 1
                     });
                     this.setState({ isSubmit: true });
+                    let subjectListId = [];
+                    this.props.subjectList
+                        .map(item => {
+                            subjectListId.push(item.IdSubject);
+                        })
+                    let data1 = {
+                        data: subjectListId,
+                        idCtdt: this.props.ctdt
+                    }
+                    if (data1.data.length > 0) {
+                        this.getEditMatrix(data1);
+                    }
                 } else {
                     notification["error"]({
                         message: "Cập nhật thất bại",
@@ -445,6 +436,7 @@ class Matrix extends Component {
     }
 
     render() {
+        console.log(this.props.editMatrix)
         const { isLoading, isShow } = this.state;
         const style = {
             marginLeft: '20px'

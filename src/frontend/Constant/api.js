@@ -130,6 +130,7 @@ export default{
     INSERT_STANDARD_MATRIX:baseUrl + '/insert-standard-matrix',
     
     GET_IDQA: baseUrl + '/getidqa',
+    GET_SUBJECT_NAME: baseUrl + '/get-subjectname'
 
 }
 

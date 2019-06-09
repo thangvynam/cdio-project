@@ -204,6 +204,11 @@ const saveSurvey = (dataConvert, id_survey) => {
         id_survey,})
 }
 
+const getSubjectName = (id) => {
+    let url = _.GET_SUBJECT_NAME;
+    return $.post(url, {id})
+}
+
 const checkStatus = (data) => {
     let url = `${_.CHECK_STATUS}/${data}`;
     return $.get(url)
@@ -274,9 +279,9 @@ const getDataSurvey = () => {
     return $.get(url);
 }
 
-const setStatus = (id) => {
-    let url = `${_.SET_STATUS}/${id}`    
-    return $.get(url);
+const setStatus = (data) => {
+    let url = `${_.SET_STATUS}`    
+    return $.post(url, {data});
 }
 
 //danhmuc
@@ -663,4 +668,5 @@ export default{
     getSurveyITU,
     getSubjectWithId,
     getListSurvey,
+    getSubjectName,
 }

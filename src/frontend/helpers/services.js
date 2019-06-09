@@ -152,8 +152,8 @@ const getLoaiTaiNguyen = () => {
     return $.get(url);
 }
 
-const getCDR_3 = () => {
-    let url = _.GET_CDR_3;
+const getCDR_3 = (idCtdt) => {
+    let url = `${_.GET_CDR_3}/${idCtdt}`;
     return $.get(url);
 }
 
@@ -219,9 +219,9 @@ const checkDate = (data) => {
     return $.get(url)
 }
 
-const getData3 = (param) => {
-    let url = `${_.GET_DATA_3}/${param}`;
-    return $.get(url);
+const getData3 = (data) => {
+    let url = `${_.GET_DATA_3}`;
+    return $.post(url, {data});
 }
 
 const getData6 = (param) => {
@@ -274,9 +274,9 @@ const getSurveyITU = (data) => {
     return $.post(url, {data});
 }
 
-const getDataSurvey = (data) => {
-    let url = `${_.GET_DATA_SURVEY}`;
-    return $.post(url, {data});
+const getDataSurvey = (id_ctdt) => {
+    let url = `${_.GET_DATA_SURVEY}/${id_ctdt}`;
+    return $.get(url);
 }
 
 const setStatus = (data) => {

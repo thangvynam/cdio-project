@@ -12,7 +12,7 @@ class Layout3 extends Component {
         return (
             <React.Fragment>
                 <div className="section-layout">
-                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc}/>}
+                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>}
                 </div>
                 <div className="section-layout">
                     <Tooltip placement="topLeft">
@@ -23,7 +23,7 @@ Bloom ở mức độ nhóm. <br />Mỗi mục tiêu môn học được mapping
                         </Button>
                     </Tooltip>
 
-                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
+                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>
 
                     <br />
                     <br />

@@ -225,6 +225,11 @@ getUnique(arr, comp) {
    return unique;
 }
 
+componentWillUnmount() {
+  this.props.setFlag(false);
+  this.props.saveAndContinue([])
+}
+
 async componentDidMount() {
   await cellData.push(await this.getCDR());
   await console.log(cellData);

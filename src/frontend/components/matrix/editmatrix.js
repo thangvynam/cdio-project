@@ -294,6 +294,12 @@ class EditMatrix extends Component {
 
     if (this.props.subjectList.length > 0 && this.props.isLoadEditMatrix === "false") {
       this.props.updateIsLoadEditMatrix("true");
+
+      $.getCDR_CDIO(this.props.ctdt).then((res) => {
+
+        this.props.updateCdrCdio(res.data)
+      })
+
       let subjectListId = [];
       this.props.subjectList.map(item => {
         subjectListId.push(item.IdSubject);
@@ -339,9 +345,14 @@ class EditMatrix extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if (this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
-      console.log('receive')
+    if (nextProps.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
+
+      $.getCDR_CDIO(this.props.ctdt).then((res) => {
+
+        this.props.updateCdrCdio(res.data)
+      })
+
       let subjectListId = [];
       this.props.subjectList.map(item => {
         subjectListId.push(item.IdSubject);

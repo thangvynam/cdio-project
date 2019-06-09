@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import { Table, Icon, Tag, Modal, Button,notification } from 'antd';
+import { Table, Icon, Tag, Modal, Button, notification } from 'antd';
 import { connect } from 'react-redux';
 import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
@@ -17,7 +17,7 @@ class Matrix extends Component {
             isError: false,
             isSuccess: false,
             isShow: false,
-            isSubmit:false,
+            isSubmit: false,
             matrix: []
         };
         this.myRef = React.createRef();
@@ -51,71 +51,71 @@ class Matrix extends Component {
     }
 
     checkInTeacherSubject = (teacherSubject, idSubject) => {
-        for(let i = 0;i < teacherSubject.length;i++) {
-            if(teacherSubject[i].IdSubject === idSubject) {
+        for (let i = 0; i < teacherSubject.length; i++) {
+            if (teacherSubject[i].IdSubject === idSubject) {
                 return true;
             }
         }
         return false;
-      }
-      
-      checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
-        for(let i = 0;i < teacherReviewSubject.length;i++) {
-            if(teacherReviewSubject[i].idTTC === idSubject) {
+    }
+
+    checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
+        for (let i = 0; i < teacherReviewSubject.length; i++) {
+            if (teacherReviewSubject[i].idTTC === idSubject) {
                 return true;
             }
         }
         return false;
-      }
+    }
 
     componentWillReceiveProps(nextProps) {
-        if (this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+        if (nextProps.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
             console.log('receive')
-                this.setState({ isLoading: true })
-                this.props.updateIsLoadEditMatrix("true");
-                let subjectListId = [];
-                this.props.subjectList
+            this.setState({ isLoading: true })
+            this.props.updateIsLoadEditMatrix("true");
+            let subjectListId = [];
+            this.props.subjectList
                 .map(item => {
                     subjectListId.push(item.IdSubject);
                 })
-                let data1 = {
-                    data: subjectListId,
-                    idCtdt: this.props.ctdt
-                }
-                if(data1.data.length > 0) {
-                    $.getStandardMatrix(data1).then((res) => {
-                        let data = [];
-                        for (let i = 0; i < res.data.length; i++) {
-                            let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                            if (index !== -1) {
-                                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                                if (cdr_cdio !== "") {
-                                    data[index][cdr_cdio] = res.data[i].muc_do;
-                                }
-                            }
-                            else {
-                                let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-                                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                                if (subjectName !== "" && cdr_cdio !== "") {
-                                    data.push({
-                                        key: res.data[i].thong_tin_chung_id,
-                                        hocky: 1,
-                                        hocphan: subjectName,
-                                        gvtruongnhom: 'NULL'
-                                    })
-    
-                                    data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                                }
-    
+            let data1 = {
+                data: subjectListId,
+                idCtdt: this.props.ctdt
+            }
+            if (data1.data.length > 0) {
+                $.getStandardMatrix(data1).then((res) => {
+                    let data = [];
+                    for (let i = 0; i < res.data.length; i++) {
+                        let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                        if (index !== -1) {
+                            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                            if (cdr_cdio !== "") {
+                                data[index][cdr_cdio] = res.data[i].muc_do;
                             }
                         }
-                        this.props.updateEditMatrix(data);
-                    })
+                        else {
+                            let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                            if (subjectName !== "" && cdr_cdio !== "") {
+                                data.push({
+                                    key: res.data[i].thong_tin_chung_id,
+                                    hocky: 1,
+                                    hocphan: subjectName,
+                                    gvtruongnhom: 'NULL'
+                                })
 
-                    var a = $.getRealityMatrix(data1)
-                    a.then(res => this.setState({matrix: res.data}));
-                    var b = $.getCDR_CDIO(data1.idCtdt);
-                    Promise.all([a, b])
+                                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                            }
+
+                        }
+                    }
+                    this.props.updateEditMatrix(data);
+                })
+
+                var a = $.getRealityMatrix(data1)
+                a.then(res => this.setState({ matrix: res.data }));
+                var b = $.getCDR_CDIO(data1.idCtdt);
+                Promise.all([a, b])
                     .then((res) => {
                         this.props.getDataMatrix(res)
                         this.createData(res);
@@ -125,74 +125,74 @@ class Matrix extends Component {
                     })
                     .catch((err) => {
                         console.log(err)
-                    }) 
-                }
-                
+                    })
+            }
+
         }
 
     }
 
     componentDidMount() {
-        
+
         if (this.props.subjectList.length > 0) {
 
-                this.setState({ isLoading: true })
+            this.setState({ isLoading: true })
 
-                let subjectListId = [];
-                this.props.subjectList
+            let subjectListId = [];
+            this.props.subjectList
                 .map(item => {
                     subjectListId.push(item.IdSubject);
                 })
-                let data1 = {
-                    data: subjectListId,
-                    idCtdt: this.props.ctdt
-                }
-                if(data1.data.length > 0) {
-                    $.getStandardMatrix(data1).then((res) => {
-                        let data = [];
-                        for (let i = 0; i < res.data.length; i++) {
-                            let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-                            if (index !== -1) {
-                                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                                if (cdr_cdio !== "") {
-                                    data[index][cdr_cdio] = res.data[i].muc_do;
-                                }
-                            }
-                            else {
-                                let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-                                let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-                                if (subjectName !== "" && cdr_cdio !== "") {
-                                    data.push({
-                                        key: res.data[i].thong_tin_chung_id,
-                                        hocky: 1,
-                                        hocphan: subjectName,
-                                        gvtruongnhom: 'NULL'
-                                    })
-    
-                                    data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-                                }
-    
+            let data1 = {
+                data: subjectListId,
+                idCtdt: this.props.ctdt
+            }
+            if (data1.data.length > 0) {
+                $.getStandardMatrix(data1).then((res) => {
+                    let data = [];
+                    for (let i = 0; i < res.data.length; i++) {
+                        let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+                        if (index !== -1) {
+                            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                            if (cdr_cdio !== "") {
+                                data[index][cdr_cdio] = res.data[i].muc_do;
                             }
                         }
-                        this.props.updateEditMatrix(data);
-                    })
+                        else {
+                            let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                            let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+                            if (subjectName !== "" && cdr_cdio !== "") {
+                                data.push({
+                                    key: res.data[i].thong_tin_chung_id,
+                                    hocky: 1,
+                                    hocphan: subjectName,
+                                    gvtruongnhom: 'NULL'
+                                })
 
-                    var a = $.getRealityMatrix(data1)
-                    a.then(res => this.setState({matrix: res.data}));;
-                    var b = $.getCDR_CDIO(data1.idCtdt);
-                    Promise.all([a, b])
-                        .then((res) => {
-                            this.props.getDataMatrix(res)
-                            this.createData(res);
-                            this.setState({
-                                isLoading: false,
-                            })
+                                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+                            }
+
+                        }
+                    }
+                    this.props.updateEditMatrix(data);
+                })
+
+                var a = $.getRealityMatrix(data1)
+                a.then(res => this.setState({ matrix: res.data }));;
+                var b = $.getCDR_CDIO(data1.idCtdt);
+                Promise.all([a, b])
+                    .then((res) => {
+                        this.props.getDataMatrix(res)
+                        this.createData(res);
+                        this.setState({
+                            isLoading: false,
                         })
-                        .catch((err) => {
-                            console.log(err)
-                        })
-                }
-                
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+            }
+
         }
 
     }
@@ -292,9 +292,9 @@ class Matrix extends Component {
             }
         }
         else {
-            if(text !== "" && text !== undefined && text !== null) {
+            if (text !== "" && text !== undefined && text !== null) {
                 return <Tag color="fff9f9" style={{ fontSize: "8pt", fontWeight: "bold", color: "black" }}>{`${text}`}</Tag>;
-            }    
+            }
         }
         return <div></div>;
     }
@@ -429,29 +429,30 @@ class Matrix extends Component {
         }
     }
 
-    cloneEditMatrix = ()=>{
+    cloneEditMatrix = () => {
 
-        $.insertStandardMatrix({data:this.state.matrix})
-        .then(response => {
-          if (response.data === 1) {
-            notification["success"]({
-              message: "Cập nhật thành công",
-              duration: 1
-            });
-            this.setState({isSubmit:true});
-          } else {
-            notification["error"]({
-              message: "Cập nhật thất bại",
-              duration: 1
-            });
-          }})
+        $.insertStandardMatrix({ data: this.state.matrix })
+            .then(response => {
+                if (response.data === 1) {
+                    notification["success"]({
+                        message: "Cập nhật thành công",
+                        duration: 1
+                    });
+                    this.setState({ isSubmit: true });
+                } else {
+                    notification["error"]({
+                        message: "Cập nhật thất bại",
+                        duration: 1
+                    });
+                }
+            })
 
     }
 
     render() {
         const { isLoading, isShow } = this.state;
         const style = {
-            marginLeft:'20px'
+            marginLeft: '20px'
         }
         return (
             this.props.isLoadEditMatrix === "true"
@@ -476,7 +477,7 @@ class Matrix extends Component {
                             sheet="tablexls"
                             buttonText="Export"
                         />
-                        {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button type="primary" style = {style} onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null }
+                        {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button type="primary" style={style} onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null}
                         <Table
                             bordered
                             columns={this.createColumn(this.props.dataMatrix)}

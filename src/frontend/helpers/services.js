@@ -274,9 +274,9 @@ const getSurveyITU = (data) => {
     return $.post(url, {data});
 }
 
-const getDataSurvey = () => {
-    let url = _.GET_DATA_SURVEY;
-    return $.get(url);
+const getDataSurvey = (data) => {
+    let url = `${_.GET_DATA_SURVEY}`;
+    return $.post(url, {data});
 }
 
 const setStatus = (data) => {

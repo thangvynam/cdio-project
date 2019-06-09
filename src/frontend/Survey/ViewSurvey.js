@@ -43,55 +43,61 @@ class ViewSurvey extends Component {
 
     }
 
-    componentDidMount() {
-        $.getSurveyList().then(res => {
-            if (res && res.data) {
-                res.data.forEach(item => {
-                    let rangeTimeTemp = [];
-                    rangeTimeTemp.push(formatDate(item.start_date));
-                    rangeTimeTemp.push(formatDate(item.end_date));
-                    let id_ctdt = item.ctdt;
-                    let status = item.status;
-                    console.log(item)
-                    $.getSurveyId({ data: item.id }).then(res => {
-                        if (res.data) {
-                            let subjectListId = [];
-                            let subjectList = [];
-                            res.data.forEach(element => {
-                                if (!subjectListId.includes(element.id_mon)) {
-                                    subjectListId.push(element.id_mon);
-                                }
-                            })
-                            $.getSubjectWithId(subjectListId).then(res => {
-                                if (res.data) {
-                                    subjectList = res.data;
-                                    let obj = new ItemSurvey(item.id, rangeTimeTemp, subjectList, status);
-                                    this.setState({
-                                        listSurvey: [...this.state.listSurvey, obj],
-                                    });
-                                }
-                            })
-                        }
+    componentWillMount() {
 
+        let currentDate = new Date();
+        currentDate.setHours(0,0,0,0);
+        $.updateStatusSurvey({data : parseInt(currentDate.getTime())}).then( res => {
+            $.getSurveyList().then(res => {
+                if (res && res.data) {
+                    res.data.forEach(item => {
+                        let rangeTimeTemp = [];
+                        rangeTimeTemp.push(formatDate(item.start_date));
+                        rangeTimeTemp.push(formatDate(item.end_date));
+                        let id_ctdt = item.id_ctdt;
+                        let status = item.status;
+                        $.getSurveyId({ data: item.id }).then(res => {
+                            if (res.data) {
+                                let subjectListId = [];
+                                let subjectList = [];
+                                res.data.forEach(element => {
+                                    if (!subjectListId.includes(element.id_mon)) {
+                                        subjectListId.push(element.id_mon);
+                                    }
+                                })
+                                $.getSubjectWithId(subjectListId).then(res => {
+                                    if (res.data) {
+                                        subjectList = res.data;
+                                        let obj = new ItemSurvey(id_ctdt, rangeTimeTemp, subjectList, status);
+                                        this.setState({
+                                            listSurvey: [...this.state.listSurvey, obj],
+                                        });
+                                    }
+                                })
+                            }
+    
+                        })
                     })
-                })
-            }
-
-
+                }
+    
+    
+            })
         })
+
+       
     }
 
     genForm() {
         let htmlDom = []
-
+        
         this.state.listSurvey.forEach((survey, index) => {
-            let title = this.props.ctdt.find(item => item.id = survey.id).EduName;
+            let title = this.props.ctdt.find(item => item.Id === survey.id);
             htmlDom.push(
                 <ItemVIewSurvey
                     key={index}
                     id={survey.id}
                     subjectList={survey.subjectList}
-                    title={title}
+                    title={title ? title.EduName : "ERROR SUBJECT NAME"}
                     dateFrom={survey.rangeTime[0]}
                     dateTo={survey.rangeTime[1]}
                     status={survey.status}
@@ -110,13 +116,14 @@ class ViewSurvey extends Component {
                 message.error("Chưa chọn thời gian")
             } else {
                 let status;
-                let dateFrom = new Date(rangeTime[0]);
-                let dateTo = new Date(rangeTime[1]);
-                let today = new Date();
+
+                let dateFrom = new Date(rangeTime[0]).setHours(0,0,0,0);
+                let dateTo = new Date(rangeTime[1]).setHours(23,59,59,59);
+                let today = new Date().setHours(0,0,0,0);
                 if (dateFrom < today) {
                     message.error("Không chọn ngày bắt đầu nhỏ hơn ngày hiện tại")
                 } else {
-                    if (dateFrom.getDate() === today.getDate()) {
+                    if (dateFrom === today) {
                         status = 1;
                     } else {
                         status = -1;
@@ -124,8 +131,8 @@ class ViewSurvey extends Component {
 
                     let obj = {
                         id_ctdt: idTitle,
-                        start_date: parseInt(dateFrom.getTime()),
-                        end_date: parseInt(dateTo.getTime()),
+                        start_date: dateFrom,
+                        end_date: dateTo,
                         status: status,
                     }
                     $.getSurveyCTDTTime(obj).then(res => {
@@ -153,8 +160,8 @@ class ViewSurvey extends Component {
                                                     }
                                                 }
                                                 dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
-                                                let subjectList = [];
-                                                console.log(dataSubject)
+                                                // let subjectList = [];
+                                                // console.log(dataSubject)
                                                 dataSubject.map(item => {
                                                     $.getSubjectTeacher(item.IdSubject).then(res => {
                                                         if (res && res.data && res.data.length > 0) {
@@ -201,14 +208,6 @@ class ViewSurvey extends Component {
     }
 
     render() {
-        // let id_ctdt = 8;
-        // let data = {
-        //     id_ctdt : id_ctdt,
-        //     id_user : JSON.parse(localStorage.getItem("user")).data.Id,
-        // }
-        // $.getListSurvey(data).then(res => {
-        //     console.log(res.data)
-        // })
         const formItemLayout = {
             labelCol: {
                 xs: { span: 12 },

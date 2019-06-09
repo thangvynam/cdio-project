@@ -294,12 +294,19 @@ class EditMatrix extends Component {
 
     if (this.props.subjectList.length > 0 && this.props.isLoadEditMatrix === "false") {
       this.props.updateIsLoadEditMatrix("true");
+
+      $.getCDR_CDIO(this.props.ctdt).then((res) => {
+
+        this.props.updateCdrCdio(res.data)
+      })
+
       let subjectListId = [];
       this.props.subjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
-        data: subjectListId
+        data: subjectListId,
+        idCtdt: this.props.ctdt
       }
       if (data.data.length > 0) {
         $.getStandardMatrix(data).then((res) => {
@@ -338,15 +345,21 @@ class EditMatrix extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if (this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
-      console.log('receive')
+    if (nextProps.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
+
+      $.getCDR_CDIO(this.props.ctdt).then((res) => {
+
+        this.props.updateCdrCdio(res.data)
+      })
+
       let subjectListId = [];
       this.props.subjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
-        data: subjectListId
+        data: subjectListId,
+        idCtdt: this.props.ctdt
       }
       if (data.data.length > 0) {
         $.getStandardMatrix(data).then((res) => {
@@ -408,7 +421,6 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.state.tempMatrix)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];

@@ -761,7 +761,7 @@ class Content extends Component {
                                                                                             }/${item.Id}/review`}
                                                                                     >
                                                                                         <span
-                                                                                        
+
                                                                                             className="list-item subject-name"
                                                                                             onClick={() => this.onClick(item.Id)}
                                                                                         >{`${item.SubjectCode} - ${
@@ -780,12 +780,45 @@ class Content extends Component {
                                 </div>
                             </React.Fragment>
                         ) : type === "matrix" ? (
-                            <Matrix khoi={khoi} />
+                            <div className="header-child">
+                                <span>Matrix</span>
+                                <Direction
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                    content_action={action}
+                                />
+                                <Matrix khoi={khoi} ctdt={ctdt} />
+                            </div>
                         ) : type === "edit-matrix" ? (
-                            <EditMatrix />
+                            <div className="header-child">
+                                <span>Edit Matrix</span>
+                                <Direction
+                                    subjectName={subjectName}
+                                    content_khoi={khoi}
+                                    content_ctdt={ctdt}
+                                    content_parent={parent}
+                                    content_type={type}
+                                    content_action={action}
+                                />
+                                <EditMatrix ctdt={ctdt} />
+                            </div>
                         ) : // : type === "survey-matrix" ? <SurveyMatrix />
                                     type === "benchmark-matrix" ? (
-                                        <BenchMark />
+                                        <div className="header-child">
+                                            <span>Benchmark Matrix</span>
+                                            <Direction
+                                                subjectName={subjectName}
+                                                content_khoi={khoi}
+                                                content_ctdt={ctdt}
+                                                content_parent={parent}
+                                                content_type={type}
+                                                content_action={action}
+                                            />
+                                            <BenchMark ctdt={ctdt} />
+                                        </div>
                                     ) : type === "itusurvey" ? (
                                         <React.Fragment>
                                             <Row
@@ -842,7 +875,9 @@ class Content extends Component {
                                             <EditEducationProgram ctdt={ctdt} />
                                         </div>
                                     ) : ctdt !== "" && ctdt !== undefined && ctdt !== "edit" ? (
-                                        <div>Trang chủ chương trình đào tạo</div>
+                                        ctdt === "survey-matrix" ? (
+                                            <SurveyMatrix />
+                                        ) : <div>Trang chủ chương trình đào tạo</div>
                                     ) : parent === "ctdt" ? (
                                         <EducationProgram />
                                     ) : parent === "danh-muc" ? (
@@ -869,8 +904,6 @@ class Content extends Component {
                                         <React.Fragment>
                                             <UserManage />
                                         </React.Fragment>
-                                    ) : parent === "survey-matrix" ? (
-                                        <SurveyMatrix />
                                     ) : parent === "view-survey" ? (
                                         <React.Fragment>
                                             {/* <Row className="col\-right\-title aa"> */}

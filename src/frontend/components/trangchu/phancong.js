@@ -103,7 +103,7 @@ class PhanCong extends Component {
 
   handleDelete = (key) => {
     this.setState({ selecteditem2: [] });
-    $.deleteTeacherReview({keys: [key], monhoc: this.props.monhoc})
+    $.deleteTeacherReview({ keys: [key], monhoc: this.props.monhoc })
       .then(res => {
         this.get2Table();
       })
@@ -112,7 +112,7 @@ class PhanCong extends Component {
   delete = () => {
     let selectedItem = this.state.selecteditem2;
     this.setState({ selecteditem2: [] });
-    $.deleteTeacherReview({keys: selectedItem, monhoc: this.props.monhoc})
+    $.deleteTeacherReview({ keys: selectedItem, monhoc: this.props.monhoc })
       .then(res => {
         this.get2Table();
       })

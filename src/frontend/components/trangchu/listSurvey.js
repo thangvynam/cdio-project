@@ -29,13 +29,6 @@ export default class ListSurvey extends Component {
                     surveyList:res.data.surveyList});
             })
         })
-
-
-      
-
-        
-
-
     }
 
 
@@ -47,8 +40,6 @@ export default class ListSurvey extends Component {
         let action = this.props.action;     
         let startDate = convertTime(this.state.surveyList.start_date).split(',');
         let endDate = convertTime(this.state.surveyList.end_date).split(',');
-       
-
 
         return (
             <div className="section-layout">

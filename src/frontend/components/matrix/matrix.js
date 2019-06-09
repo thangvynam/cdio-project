@@ -456,7 +456,7 @@ class Matrix extends Component {
                 {
                     !isLoading
                     && !_.isEmpty(this.props.dataMatrix)
-                    && <div className="exportMatrix" style={{ margin: "10px" }}>
+                    && <div className="exportMatrix" style={{ margin: "20px" }}>
                         <div style={{ marginBottom: "10px" }}>
                             <span className="adding-text"><Icon type="plus-square" />: Thêm</span>
 
@@ -468,7 +468,7 @@ class Matrix extends Component {
                             column={this.createColumn(this.props.dataMatrix)}
                             data={this.createData(this.props.dataMatrix)}
                         />
-                        {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button type="primary" style={style} onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null}
+                        {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button type="primary" className="send-teacher-btn" style={style} onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null}
                         <Table
                             bordered
                             columns={this.createColumn(this.props.dataMatrix)}

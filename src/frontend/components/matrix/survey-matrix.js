@@ -28,16 +28,26 @@ class SurveyMatrix extends Component {
     }
   }
 
-  componentDidMount() {
-    $.getMatrixSurvey({"data": "14"}).then((res) => {
-      //this.props.getDataBenchMarkMatrix(res.data);
+  getUrlParameter = (sParam) => {
+    var sPageURL = window.location.search.substring(1),
+      sURLVariables = sPageURL.split('&'),
+      sParameterName,
+      i;
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+      }
+    }
+  };
+
+  async componentDidMount() {
+    let id = await this.getUrlParameter('id');
+    console.log(id)
+    $.getMatrixSurvey({ "data": `${id}` }).then((res) => {
       this.props.getDataSurveyMatrix(res.data);
     })
   }
-
-  // componentDidUpdate() {
-  //   this.addClassExport();
-  // }
 
   //---Create Header---//
   getCDRHeader = (myData) => {
@@ -232,7 +242,7 @@ class SurveyMatrix extends Component {
   //---Create Data---//
 
   onSelectChange = (selectedRowKeys) => {
-    this.setState({selectedRowKeys: selectedRowKeys });
+    this.setState({ selectedRowKeys: selectedRowKeys });
   }
 
 
@@ -313,10 +323,10 @@ class SurveyMatrix extends Component {
           style={{ marginTop: '25px' }}
           scroll={{ x: 1500 }}
           pagination={{
-              onChange: page => {
-                  console.log(page);
-              },
-              pageSize: 5,
+            onChange: page => {
+              console.log(page);
+            },
+            pageSize: 5,
           }}
         //   pagination={{
         //     onChange: page => {

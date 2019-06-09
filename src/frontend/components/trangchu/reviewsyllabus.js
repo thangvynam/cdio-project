@@ -26,8 +26,8 @@ class ReviewSyllabus extends Component {
             <div>
                 <ThongTinChung isReview={true} idMH={this.props.idMH} />
                 <Layout2 isReview={true} monhoc={this.props.idMH} />
-                <Layout3 isReview={true} monhoc={this.props.idMH} />
-                <Layout4 isReview={true} monhoc={this.props.idMH} />
+                <Layout3 isReview={true} monhoc={this.props.idMH} id_ctdt={this.props.ctdt}/>
+                <Layout4 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
                 <Layout5 isReview={true} monhoc={this.props.idMH} />
                 <Layout6 isReview={true} monhoc={this.props.idMH} />
                 <Layout7 isReview={true} monhoc={this.props.idMH} />

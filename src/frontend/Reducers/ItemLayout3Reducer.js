@@ -113,7 +113,7 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
         case SAVE_ALL_DATA_LAYOUT_3:
         state.previewInfo = getUnique(state.previewInfo, "objectName")
         console.log(state.previewInfo)
-        $.saveData3({ data: state.previewInfo, id: action.id })
+        $.saveData3({ data: state.previewInfo, id: action.id, id_ctdt: action.id_ctdt })
         $.saveLog({ data: state.logData })
             return {
                 ...state
@@ -137,14 +137,9 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
                 }
             }
         case SET_CDR: {
-            let arr = action.data;
-            arr.forEach(element => {
-                element.KeyRow = element.KeyRow.slice(0, element.KeyRow.length -1)
-                element.KeyRow = element.KeyRow.replace(/-/g, ".")
-            });
             return {
                 ...state,
-                standActs: arr
+                standActs: action.data
             }
         }
         default:

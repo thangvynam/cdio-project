@@ -36,12 +36,13 @@ class MenuMucTieu extends Component {
     }
 
     async getCDR() {
-        return $.getCDR_3().then(res => {
+        return $.getCDR_3(this.props.id_ctdt).then(res => {
             return res.data
         })
     }
 
     async componentDidMount() {
+        console.log(await this.getCDR())
         this.props.setCDR(await this.getCDR())
     }
 

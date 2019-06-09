@@ -70,7 +70,7 @@ class Survey extends React.Component {
 
         
 
-        $.getDataSurvey().then((res) => {
+        $.getDataSurvey(id_ctdt).then((res) => {
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
                 let pos0 = getPos(element.keyRow, 0);

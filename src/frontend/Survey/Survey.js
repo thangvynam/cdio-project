@@ -47,8 +47,10 @@ class Survey extends React.Component {
     }
 
     async componentWillMount() {
-
+        let tree = [];
         const parsed = queryString.parse(window.location.search);
+        const id_ctdt = this.props.ctdt;
+        console.log(id_ctdt)
         if (parsed.id) {
             const id = parsed.id;
             let response = await $.checkStatus(id)
@@ -62,9 +64,10 @@ class Survey extends React.Component {
             }
         }
 
-        let tree = [];
+        
+
         $.getDataSurvey().then((res) => {
-            console.log('in')
+            
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
                 let pos0 = getPos(element.keyRow, 0);

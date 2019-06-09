@@ -33,3 +33,38 @@
     padding: 5px;
     width : 90px;
 }
+
+/* Matrix */
+.ant-row.preview-matrix {
+    height: 500px !important;
+    overflow: scroll;
+}
+
+.ant-modal.wrapper-preview-dialog {
+    top: 3%;
+}
+
+/* Preview Matrix */
+.custom-modal-confirm .row-button-confirm {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.row-message-confirm i.anticon-question-circle{
+    font-size: 20px;
+}
+
+.row-message-confirm .message{
+    font-size: 16px;
+}
+
+.row-message-confirm i.anticon-question-circle svg {   
+    margin-bottom: 6px;
+}
+
+span.aaaa {
+    font-size: 16px;
+}
+
+svg {}

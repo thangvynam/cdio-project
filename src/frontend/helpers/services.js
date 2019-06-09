@@ -132,11 +132,10 @@ const getCDR_CDIO = (data) => {
     return $.get(url + data);
 }
 
-const getMatrixSurvey = () => {
-    let url = _.GET_MATRIX_SURVEY;
-    return $.get(url);
+const getMatrixSurvey = (data) => {
+    let url = `${_.GET_MATRIX_SURVEY}`;
+    return $.post(url, data);
 }
-
 
 const getChuDe = () => {
     let url = _.GET_CHUDE;

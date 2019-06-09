@@ -609,6 +609,10 @@ class Home extends Component {
                                                                 }
                                                             }
                                                         }
+                                                        else {
+                                                            console.log("param 5 cannot be null");
+                                                            return <Page404 />;
+                                                        }
                                                     }
                                                 } break;
                                             case "chuan-dau-ra":

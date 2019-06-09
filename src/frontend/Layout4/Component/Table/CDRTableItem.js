@@ -617,7 +617,7 @@ class CDRTableItem extends Component {
 
   componentDidMount() {
     if (this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
-      if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0) {
+      if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0 && !this.props.isReview) {
         this.props.updateIsLoadEditMatrix("true");
         let subjectListId = [];
         this.props.subjectList.map(item => {
@@ -657,7 +657,7 @@ class CDRTableItem extends Component {
         })
 
       }
-      this.loadGap();
+      if(!this.props.isReview)  this.loadGap();
     }
 
     if (this.props.isLoad === "false") {
@@ -669,7 +669,7 @@ class CDRTableItem extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.isLoad === "false") {
       this.props.updateIsLoad("true");
-      this.loadGap();
+      if(!this.props.isReview)  this.loadGap();
       this.loadTable();
     }
   }
@@ -905,7 +905,7 @@ class CDRTableItem extends Component {
 
     $.saveData4({ data: { data: data, thong_tin_chung_id: this.props.monhoc } })
       .then(res => {
-        this.loadGap();
+        if(!this.props.isReview)  this.loadGap();
         this.loadTable();
         openNotificationWithIcon('success');
         $.saveLog({ data: this.props.logData })

@@ -673,7 +673,7 @@ class Content extends Component {
                             </div>
                         </Row>
                         <div className="wrapper-custom-layout">
-                            <ReviewSyllabus idMH={this.props.content_monhoc} />
+                            <ReviewSyllabus idMH={this.props.content_monhoc} ctdt={ctdt}/>
                         </div>
                     </React.Fragment>
                 );

@@ -354,7 +354,7 @@ class EditMatrix extends Component {
       })
 
       let subjectListId = [];
-      this.props.subjectList.map(item => {
+      nextProps.subjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
@@ -375,7 +375,7 @@ class EditMatrix extends Component {
               }
             }
             else {
-              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+              let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
               let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (subjectName !== "" && cdr_cdio !== "") {
                 data.push({

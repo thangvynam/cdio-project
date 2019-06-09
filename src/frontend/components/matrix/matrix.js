@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import "./matrix.css";
-import { editMatrix, isLoadEditMatrix } from '../../Constant/ActionType';
+import { editMatrix, isLoadEditMatrix, cdrCdio } from '../../Constant/ActionType';
 import $ from './../../helpers/services';
 import PreviewMatrix from './preview-matrix';
 
@@ -77,8 +77,11 @@ class Matrix extends Component {
             console.log('receive')
             this.setState({ isLoading: true })
             this.props.updateIsLoadEditMatrix("true");
+
+            
+
             let subjectListId = [];
-            this.props.subjectList
+            nextProps.subjectList
                 .map(item => {
                     subjectListId.push(item.IdSubject);
                 })
@@ -86,6 +89,12 @@ class Matrix extends Component {
                 data: subjectListId,
                 idCtdt: this.props.ctdt
             }
+
+            var a = $.getRealityMatrix(data1)
+            a.then(res => this.setState({ matrix: res.data }));
+            var b = $.getCDR_CDIO(data1.idCtdt);
+            b.then(res => this.props.updateCdrCdio(res.data));
+
             if (data1.data.length > 0) {
                 $.getStandardMatrix(data1).then((res) => {
                     let data = [];
@@ -98,7 +107,7 @@ class Matrix extends Component {
                             }
                         }
                         else {
-                            let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+                            let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
                             let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
                             if (subjectName !== "" && cdr_cdio !== "") {
                                 data.push({
@@ -115,10 +124,7 @@ class Matrix extends Component {
                     }
                     this.props.updateEditMatrix(data);
                 })
-
-                var a = $.getRealityMatrix(data1)
-                a.then(res => this.setState({ matrix: res.data }));
-                var b = $.getCDR_CDIO(data1.idCtdt);
+                
                 Promise.all([a, b])
                     .then((res) => {
                         this.props.getDataMatrix(res)
@@ -151,6 +157,12 @@ class Matrix extends Component {
                 data: subjectListId,
                 idCtdt: this.props.ctdt
             }
+
+            var a = $.getRealityMatrix(data1)
+            a.then(res => this.setState({ matrix: res.data }));;
+            var b = $.getCDR_CDIO(data1.idCtdt);
+            b.then(res => this.props.updateCdrCdio(res.data));
+
             if (data1.data.length > 0) {
                 $.getStandardMatrix(data1).then((res) => {
                     let data = [];
@@ -181,9 +193,7 @@ class Matrix extends Component {
                     this.props.updateEditMatrix(data);
                 })
 
-                var a = $.getRealityMatrix(data1)
-                a.then(res => this.setState({ matrix: res.data }));;
-                var b = $.getCDR_CDIO(data1.idCtdt);
+                
                 Promise.all([a, b])
                     .then((res) => {
                         this.props.getDataMatrix(res)
@@ -415,8 +425,8 @@ class Matrix extends Component {
     }
 
     cloneEditMatrix = () => {
-
-        $.insertStandardMatrix({ data: this.state.matrix })
+        console.log(this.state.matrix);
+        $.insertStandardMatrix({ data: this.state.matrix, idCtdt: this.props.ctdt })
             .then(response => {
                 if (response.data === 1) {
                     notification["success"]({
@@ -497,6 +507,7 @@ const mapDispatchToProps = (dispatch) => {
         getDataMatrix: (newData) => dispatch(getDataMatrix(newData)),
         updateEditMatrix: (newData) => dispatch(editMatrix(newData)),
         updateIsLoadEditMatrix: (newData) => dispatch(isLoadEditMatrix(newData)),
+        updateCdrCdio: (newData) => dispatch(cdrCdio(newData)),
     }
 }
 

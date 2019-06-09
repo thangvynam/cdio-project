@@ -43,7 +43,6 @@ class SurveyMatrix extends Component {
 
   async componentDidMount() {
     let id = await this.getUrlParameter('id');
-    console.log(id)
     $.getMatrixSurvey({ "data": `${id}` }).then((res) => {
       this.props.getDataSurveyMatrix(res.data);
     })
@@ -156,7 +155,8 @@ class SurveyMatrix extends Component {
     for (const child of group) {
       let titleChild = child.split('.') || [];
       header.push({
-        title: _.toNumber(`${titleChild[0]}${titleChild[1]}${titleChild[2]}`),
+        //title: _.toNumber(`${titleChild[0]}${titleChild[1]}${titleChild[2]}`),
+        title: child,
         dataIndex: `${child}`,
         key: `${child}`,
         align: "center",

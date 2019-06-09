@@ -62,7 +62,7 @@ class ItemVIewSurvey extends Component {
                         <Tag color="green">Trạng thái: {status[0].value}</Tag>
                     </Col>
                     <Col className="custom-survey-item-button" span={10}>
-                        <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}`} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
+                        <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}&idCtdt=${this.props.id}`} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
                         <Button className="view-survey-matrix btn btn-outline-warning" onClick={(e) => console.log("BAM BAM BAM")}>Đóng cuộc Survey</Button>
                     </Col>
                 </Row>

@@ -182,9 +182,9 @@ const postData3 = (data, id) => {
     return $.post(url, { data: data, id: id })
 }
 
-const addSurveyMatrix = (data) => {
+const addSurveyMatrix = (data, idCtdt) => {
     let url = _.ADD_SURVEY_MATRIX;
-    return $.post(url, {data})
+    return $.post(url, {data, idCtdt})
 }
 
 const exportFile = (data) => {

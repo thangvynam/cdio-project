@@ -334,7 +334,7 @@ class TableItem extends Component {
     data[hoverIndex] = dragRow;
     data[dragIndex].key = dragIndex + 1;
     data[hoverIndex].key = hoverIndex + 1;
-
+    console.log(data);
     this.props.handleSave(data);
   }
 
@@ -349,7 +349,7 @@ class TableItem extends Component {
 
   edit(key) {
     //this.setState({ editingKey: key });
-    this.props.handleEdit('');
+    this.props.handleEdit(key);
   }
 
   onlyUnique(value, index, self) {
@@ -419,6 +419,7 @@ class TableItem extends Component {
       })
 
       this.props.handleSave(newData);
+      this.props.handleEdit('');
       //this.setState({ editingKey: "" });
     });
   }

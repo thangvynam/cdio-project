@@ -52,21 +52,21 @@ class Survey extends React.Component {
         const parsed = queryString.parse(window.location.search);
         const id_ctdt = this.props.ctdt;
         
-        // if (parsed.id) {
-        //     const id = parsed.id;
-        //     let response = await $.checkStatus(id)
-        //     let resDate = await $.checkDate(response.data.idSurveyList)     
-        //     let subjectId = response.data.id_mon;
-        //     let resSubjectName = await $.getSubjectName(subjectId)     
-        //     let curTime = getCurrTime()
-        //     let end_date = resDate.data.end_date;
+        if (parsed.id) {
+            const id = parsed.id;
+            let response = await $.checkStatus(id)
+            let resDate = await $.checkDate(response.data.idSurveyList)     
+            let subjectId = response.data.id_mon;
+            let resSubjectName = await $.getSubjectName(subjectId)     
+            let curTime = getCurrTime()
+            let end_date = resDate.data.end_date;
             
-        //     await this.props.saveChange("tenMH", resSubjectName.data.SubjectName)
+            await this.props.saveChange("tenMH", resSubjectName.data.SubjectName)
             
-        //     if (curTime > end_date) {
-        //         $.setStatus(id)
-        //     }
-        // }
+            if (curTime > end_date) {
+                $.setStatus(id)
+            }
+        }
         
 
         $.getDataSurvey(id_ctdt).then((res) => {
@@ -141,7 +141,6 @@ class Survey extends React.Component {
                         break;
                 }
             });
-            console.log(tree);
             this.setState({ tree: tree })
         })
     }
@@ -170,6 +169,19 @@ class Survey extends React.Component {
                 this.setState({
                     resultQA: res.data[0],
                 })
+                if (res.data[0]) {
+                    this.props.saveChange("q1", res.data[0].q1)
+                    this.props.saveChange("q2", res.data[0].q2)
+                    this.props.saveChange("q3", res.data[0].q3)
+                    this.props.saveChange("q4", res.data[0].q4)
+                    this.props.saveChange("q5", res.data[0].q5)
+                    this.props.saveChange("q6", res.data[0].q6)
+                    this.props.saveChange("q7", res.data[0].q7)
+                    this.props.saveChange("q8", res.data[0].q8)
+                    this.props.saveChange("q9", res.data[0].q9)
+                    this.props.saveChange("q10", res.data[0].q10)
+                    this.props.saveChange("q11", res.data[0].q11)
+                }
             })
             let body = {
                 id_survey: id
@@ -318,10 +330,14 @@ class Survey extends React.Component {
                 let jsonData = JSON.parse(user)
                 $.saveSurvey(dataConvert, this.state.id_survey)
                     .then(response => {
-                        
+
                     });
             });  
-        })         
+        }).then(() => {
+            setTimeout(() => {
+                window.history.back();
+            }, 1000)
+        })    
     }
 
     render() {
@@ -346,7 +362,8 @@ class Survey extends React.Component {
                     <div className="col-sm-12" >
                         <br />
                         <h1 style={{ textAlign: "center" }}>Câu hỏi khảo sát</h1>
-                        <FormSurvey subjectName={this.props.subjectName} result={this.state.resultQA} isDone={this.state.isDone}/>
+                        <FormSurvey subjectName={this.props.subjectName} result={this.state.resultQA} isDone={this.state.isDone}
+                        username={JSON.parse(localStorage.getItem('user')).data.Name}/>
                         <br />
                         <div style={{ paddingLeft: "1em" }}>
                             {this.genForm()}

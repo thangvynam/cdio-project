@@ -27,7 +27,8 @@ function onChange(date, dateString) {
 }
 
 class ItemSurvey {
-    constructor(id, rangeTime, subjectList, status) {
+    constructor(id, rangeTime, subjectList, status,idSurveyList) {
+        this.idSurveyList = idSurveyList;
         this.id = id;
         this.rangeTime = rangeTime;
         this.subjectList = subjectList;
@@ -51,6 +52,7 @@ class ViewSurvey extends Component {
             $.getSurveyList().then(res => {
                 if (res && res.data) {
                     res.data.forEach(item => {
+                        let idSurveyList = item.id;
                         let rangeTimeTemp = [];
                         rangeTimeTemp.push(formatDate(item.start_date));
                         rangeTimeTemp.push(formatDate(item.end_date));
@@ -68,7 +70,7 @@ class ViewSurvey extends Component {
                                 $.getSubjectWithId(subjectListId).then(res => {
                                     if (res.data) {
                                         subjectList = res.data;
-                                        let obj = new ItemSurvey(id_ctdt, rangeTimeTemp, subjectList, status);
+                                        let obj = new ItemSurvey(id_ctdt, rangeTimeTemp, subjectList, status,idSurveyList);
                                         this.setState({
                                             listSurvey: [...this.state.listSurvey, obj],
                                         });
@@ -101,6 +103,7 @@ class ViewSurvey extends Component {
                     dateFrom={survey.rangeTime[0]}
                     dateTo={survey.rangeTime[1]}
                     status={survey.status}
+                    idSurveyList ={survey.idSurveyList}
                 />
             );
         });
@@ -184,7 +187,7 @@ class ViewSurvey extends Component {
                                                     })
                                                 })
 
-                                                let obj1 = new ItemSurvey(idTitle, rangeTime, dataSubject, status);
+                                                let obj1 = new ItemSurvey(idTitle, rangeTime, dataSubject, status,idSurveyList);
                                                 this.setState({
                                                     listSurvey: [...this.state.listSurvey, obj1],
                                                 });

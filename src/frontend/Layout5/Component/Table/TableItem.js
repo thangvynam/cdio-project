@@ -10,8 +10,9 @@ import DragDropHTML5 from '../../../html5Backend/html5Backend';
 import TextArea from "antd/lib/input/TextArea";
 
 import {
-  DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
-  SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD, COLLECT_DATA_DG, COLLECT_DATA_CDR
+  DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5, ADD_DATA,
+  SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD, 
+  COLLECT_DATA_DG, COLLECT_DATA_CDR
 } from '../../../Constant/ActionType';
 import $ from './../../../helpers/services';
 
@@ -494,7 +495,7 @@ class TableItem extends Component {
           this.props.saveDataValueCDR(array)
         }
       });
-      
+
   }
 
 
@@ -564,17 +565,21 @@ class TableItem extends Component {
           </span>
           <Button disabled={this.state.disableSaveall} style={{ float: "right", marginBottom: 16, marginTop: 10 }}
             onClick={() => {
-              this.setState({disableSaveall: true})
-              Promise.all([this.props.saveAllData()]).then(res => {
-                if(res) this.getDataHDD();
-                this.setState({disableSaveall: false})
-              })
-              
+              this.setState({ disableSaveall: true })
+
+              Promise.all([this.props.saveAllData()])
+                    .then(res => {
+                      if (res) {
+                        this.props.collectDataRequest(this.props.monhoc);
+                      }
+                      this.setState({ disableSaveall: false })
+                    })
+
               notification["success"]({
                 message: "Cập nhật thành công",
                 duration: 1
               });
-              
+
             }
             }
           >
@@ -605,7 +610,8 @@ class TableItem extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    itemLayout5Reducer: state.itemLayout5Reducer
+    itemLayout5Reducer: state.itemLayout5Reducer,
+    subjectId: state.subjectid,
   }
 }
 
@@ -624,6 +630,7 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     saveAllData: () => {
+      console.log("saveAllData")
       dispatch({ type: ADD_DATA_LAYOUT_5 });
     },
     saveDataValue: (teachingActs) => {
@@ -633,10 +640,37 @@ const mapDispatchToProps = (dispatch) => {
     saveDataValueDG: (evalActs) => {
       dispatch({ type: COLLECT_DATA_DG, data: evalActs })
     },
-
     saveDataValueCDR: (listCDR) => {
       dispatch({ type: COLLECT_DATA_CDR, data: listCDR })
     },
+    collectDataRequest: (id) => {
+      console.log("collectDataRequest")
+      let newArr = [];
+      $.collectData5({ data: id })
+        .then(function (response) {
+          for (let i = 0; i < response.data.length; i++) {
+            let data = {
+              key: response.data[i].key,
+              titleName: response.data[i].titleName,
+              teachingActs: response.data[i].teachingActs,
+              standardOutput: response.data[i].standardOutput,
+              evalActs: response.data[i].evalActs,
+              subjectId: response.data[i].subjectId,
+              del_flag: 0
+            }
+            newArr.push(data);
+          }
+
+          dispatch({ type: ADD_DATA, data: newArr })
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+        .finally(function () {
+          console.log("[Finish] get data by thong_tin_chung_id " + id);
+        })
+    }
+
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropHTML5(TableItem));

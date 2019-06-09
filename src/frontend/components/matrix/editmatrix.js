@@ -537,7 +537,7 @@ class EditMatrix extends Component {
       <React.Fragment>
         <div style={{ margin: "10px" }}>
           <Button onClick={this.saveAll}>Lưu lại</Button>
-          <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} />
+          {/* <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} /> */}
           <Table bordered
             components={components}
             rowClassName={() => 'editable-row'}

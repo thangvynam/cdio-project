@@ -425,6 +425,7 @@ componentWillReceiveProps(nextProps){
         self.loadData()
       }
     });
+    $.saveLog({ data: this.props.itemLayout3Reducer.logData })
     openNotificationWithIcon('success');
     //this.loadData();
     

@@ -131,7 +131,7 @@ class MenuLeft extends Component {
       if (this.props.content_type === "de-cuong-mon-hoc") {
         return (
           <Redirect
-            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_action}/${this.props.content_khoi}/${this.props.content_monhoc}/thong-tin-chung`}
+            to={`/${this.props.content_parent}/${this.props.content_ctdt}/${this.props.content_type}/${this.props.content_action}/${this.props.content_khoi}`}
           />
         );
       }
@@ -179,13 +179,13 @@ class MenuLeft extends Component {
 
           Object.keys(this.props.menuItem).map((key, id) => {
             if (this.checkRoleExist(userRole, this.props.menuItem[key].role)) {
-              if(key !== "survey-matrix") {
+              if (key !== "survey-matrix") {
                 menuItemsCollapse.push(this.menuItem(key,
                   `/${this.props.parentitem[i].id}/${this.props.content_ctdt}/${key}`,
                   this.props.menuItem[key].name,
                   "container", "20px"));
               }
-              
+
 
               if (this.props.content_type === "de-cuong-mon-hoc" && key === "de-cuong-mon-hoc") {
                 for (let item in this.props.menuItem[key].children) {
@@ -291,21 +291,21 @@ class MenuLeft extends Component {
           });
         }
       }
-      else if(this.props.content_ctdt !== "" &&
+      else if (this.props.content_ctdt !== "" &&
         this.props.content_ctdt !== undefined &&
         this.props.content_ctdt !== null &&
         this.props.parentitem[i].id === "view-survey" &&
         this.props.content_parent === "view-survey") {
-          menuItemsCollapse.push(this.menuItem(this.props.parentitem[i].id, `/${this.props.parentitem[i].id}`,
+        menuItemsCollapse.push(this.menuItem(this.props.parentitem[i].id, `/${this.props.parentitem[i].id}`,
           this.props.parentitem[i].name,
           "dashboard", "0px"));
-          if(this.props.content_ctdt === "survey-matrix") {
-            menuItemsCollapse.push(this.menuItem("survey-matrix",
-              `/${this.props.parentitem[i].id}/${this.props.content_ctdt}/${this.props.menuItem["survey-matrix"]}`,
-              this.props.menuItem["survey-matrix"].name,
-              "container", "20px"));
-          }
+        if (this.props.content_ctdt === "survey-matrix") {
+          menuItemsCollapse.push(this.menuItem("survey-matrix",
+            `/${this.props.parentitem[i].id}/${this.props.content_ctdt}/${this.props.menuItem["survey-matrix"]}`,
+            this.props.menuItem["survey-matrix"].name,
+            "container", "20px"));
         }
+      }
       else if (this.checkRoleExist(userRole, this.props.parentitem[i].role)) {
         menuItemsCollapse.push(this.menuItem(this.props.parentitem[i].id, `/${this.props.parentitem[i].id}`,
           this.props.parentitem[i].name,

@@ -127,16 +127,15 @@ const getTeacherReviewSubject = (data) => {
     return $.post(url, data);
 }
 //
-const getCDR_CDIO = () => {
+const getCDR_CDIO = (data) => {
     let url = _.GET_CDR_CDIO;
-    return $.get(url);
+    return $.get(url + data);
 }
 
-const getMatrixSurvey = () => {
-    let url = _.GET_MATRIX_SURVEY;
-    return $.get(url);
+const getMatrixSurvey = (data) => {
+    let url = `${_.GET_MATRIX_SURVEY}`;
+    return $.post(url, data);
 }
-
 
 const getChuDe = () => {
     let url = _.GET_CHUDE;
@@ -203,6 +202,11 @@ const saveSurvey = (dataConvert, id_survey) => {
     return $.post(url, {
         data: dataConvert,
         id_survey,})
+}
+
+const getSubjectName = (id) => {
+    let url = _.GET_SUBJECT_NAME;
+    return $.post(url, {id})
 }
 
 const checkStatus = (data) => {
@@ -275,9 +279,9 @@ const getDataSurvey = () => {
     return $.get(url);
 }
 
-const setStatus = (id) => {
-    let url = `${_.SET_STATUS}/${id}`    
-    return $.get(url);
+const setStatus = (data) => {
+    let url = `${_.SET_STATUS}`    
+    return $.post(url, {data});
 }
 
 //danhmuc
@@ -664,4 +668,5 @@ export default{
     getSurveyITU,
     getSubjectWithId,
     getListSurvey,
+    getSubjectName,
 }

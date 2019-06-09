@@ -8,6 +8,7 @@ import "./Survey.css";
 import TableSurvey from './TableSurvey';
 import $ from './../helpers/services'
 import { getCurrTime } from '../utils/Time';
+import { SAVE_SURVEY } from '../Constant/ActionType';
 
 const  queryString = require('query-string');
 
@@ -54,10 +55,13 @@ class Survey extends React.Component {
         if (parsed.id) {
             const id = parsed.id;
             let response = await $.checkStatus(id)
-            let resDate = await $.checkDate(response.data.idSurveyList)            
+            let resDate = await $.checkDate(response.data.idSurveyList)     
+            let subjectId = response.data.id_mon;
+            let resSubjectName = await $.getSubjectName(subjectId)     
             let curTime = getCurrTime()
             let end_date = resDate.data.end_date;
-            console.log(id);
+            
+            await this.props.saveChange("tenMH", resSubjectName.data.SubjectName)
             
             if (curTime > end_date) {
                 $.setStatus(id)
@@ -67,7 +71,6 @@ class Survey extends React.Component {
         
 
         $.getDataSurvey().then((res) => {
-            
             res.data.forEach(element => {
                 let level = getLevel(element.keyRow);
                 let pos0 = getPos(element.keyRow, 0);
@@ -151,7 +154,7 @@ class Survey extends React.Component {
             let status = response.data.status            
             if (status === 0) {
                 notification["error"]({
-                    message: "Đã quá hạn để thực hiện khảo sát",
+                    message: "Không thể thực hiện khảo sát",
                     duration: 3
                 })
                 this.setState({ isDone: true })
@@ -262,6 +265,11 @@ class Survey extends React.Component {
             q11: surveyData.q11,
             id_survey: this.state.id_survey,
         }        
+        let body = {
+            id: this.state.id_survey,
+            status: 1
+        }
+        $.setStatus(body).then(res =>{
             $.saveSurveyQA(survey)
             .then((res) => {
                 let user = localStorage.getItem('user');
@@ -270,7 +278,49 @@ class Survey extends React.Component {
                     .then(response => {
                         
                     });
-            });       
+            });  
+        })     
+    }
+
+    send = () => {
+        const dataDescription = this.props.surveyReducer.dataValueDescription;
+        const data = this.props.surveyReducer.dataValueITU;
+        const surveyData = this.props.surveyReducer;
+        
+        const dataConvert = this.convertToObject(data,dataDescription);
+        
+        const survey = {
+            tenMH: surveyData.tenMH,
+            nguoiDuocKS: surveyData.nguoiDuocKS,
+            nguoiKS: surveyData.nguoiKS,
+            q1: surveyData.q1,
+            q2: surveyData.q2,
+            q3: surveyData.q3,
+            q4: surveyData.q4,
+            q5: surveyData.q5,
+            q6: surveyData.q6,
+            q7: surveyData.q7,
+            q8: surveyData.q8,
+            q9: surveyData.q9,
+            q10: surveyData.q10,
+            q11: surveyData.q11,
+            id_survey: this.state.id_survey,
+        }        
+        let body = {
+            id: this.state.id_survey,
+            status: 0
+        }
+        $.setStatus(body).then(res =>{
+            $.saveSurveyQA(survey)
+            .then((res) => {
+                let user = localStorage.getItem('user');
+                let jsonData = JSON.parse(user)
+                $.saveSurvey(dataConvert, this.state.id_survey)
+                    .then(response => {
+                        
+                    });
+            });  
+        })         
     }
 
     render() {
@@ -306,11 +356,22 @@ class Survey extends React.Component {
                                     disabled={this.state.isDone ? true : false}
                                     type="primary"
                                     onClick={() => {
-                                        this.saveAll()
+                                        this.send()
                                         openNotificationWithIcon('success')
                                     }}
                                     style={{ marginLeft: "2em" }}>
                                     Gửi<Icon type="right" />
+                                    
+                                </Button>
+                                <Button 
+                                    disabled={this.state.isDone ? true : false}
+                                    type="primary"
+                                    onClick={() => {
+                                        this.saveAll()
+                                        openNotificationWithIcon('success')
+                                    }}
+                                    style={{ marginLeft: "2em" }}>
+                                    Lưu lại<Icon type="right" />
                                     
                                 </Button>
                             </div>
@@ -335,10 +396,12 @@ const mapStateToProps = (state, ownProps) => {
     }
 }
 
-const mapDispatchToProps = (dispatch, ownProps) => {
+const mapDispatchToProps = (dispatch) => {
     return {
-       
+      saveChange: (key, data) => {
+          dispatch({type: SAVE_SURVEY, key, data})
+      }
     }
-}
+  }
 
 export default connect(mapStateToProps, mapDispatchToProps)(Survey);

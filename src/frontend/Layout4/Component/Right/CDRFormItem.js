@@ -8,7 +8,7 @@ import {
 import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog, cdrmdhd, cdrmdhddb ,saveLogObject} from '../../../Constant/ActionType';
+import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog, cdrmdhd, cdrmdhddb, saveLogObject } from '../../../Constant/ActionType';
 import './1.css';
 import { getCurrTime } from '../../../utils/Time';
 import $ from "../../../helpers/services";
@@ -39,45 +39,45 @@ class CDRFormItem extends Component {
   }
 
   displayRender = (label) => {
-  if(this.props.cdrdata.level_verb[1] !== "" && this.props.cdrdata.level_verb[1] !== undefined){
-    return this.props.cdrdata.level_verb[0] + " - Level " + this.props.cdrdata.level_verb[1];
-  }
+    if (this.props.cdrdata.level_verb[1] !== "" && this.props.cdrdata.level_verb[1] !== undefined) {
+      return this.props.cdrdata.level_verb[0] + " - Level " + this.props.cdrdata.level_verb[1];
+    }
     return this.props.cdrdata.level_verb[0];
   }
 
   onChange = (value) => {
-      const data = {
-        level: value[0],
-        childLevel: value[1],
-        verb: value[value.length - 1]
-      }    
-      if(this.props.cdrdata.description === "" || this.props.cdrdata.description === undefined) {
-        this.props.form.setFieldsValue({
+    const data = {
+      level: value[0],
+      childLevel: value[1],
+      verb: value[value.length - 1]
+    }
+    if (this.props.cdrdata.description === "" || this.props.cdrdata.description === undefined) {
+      this.props.form.setFieldsValue({
+        description: data.verb,
+      });
+      this.props.onUpdateVerb(data);
+      this.props.onChangeCDRData(
+        {
+          cdr: this.props.cdrdata.cdr,
+          level_verb: [data.level, data.childLevel],
           description: data.verb,
-        });
-        this.props.onUpdateVerb(data);
-        this.props.onChangeCDRData(
-          {
-            cdr: this.props.cdrdata.cdr,
-            level_verb: [data.level, data.childLevel],
-            description: data.verb,
-            levels: this.props.cdrdata.levels
-          }
-        )
-      }
-      else {
-        this.props.onUpdateVerb(data);
-        this.props.onChangeCDRData(
-          {
-            cdr: this.props.cdrdata.cdr,
-            level_verb: [data.level, data.childLevel],
-            description: this.props.cdrdata.description,
-            levels: this.props.cdrdata.levels
-          }
-        )
-      }
-      
-      
+          levels: this.props.cdrdata.levels
+        }
+      )
+    }
+    else {
+      this.props.onUpdateVerb(data);
+      this.props.onChangeCDRData(
+        {
+          cdr: this.props.cdrdata.cdr,
+          level_verb: [data.level, data.childLevel],
+          description: this.props.cdrdata.description,
+          levels: this.props.cdrdata.levels
+        }
+      )
+    }
+
+
   }
 
 
@@ -102,12 +102,12 @@ class CDRFormItem extends Component {
     console.log("a");
     let a = e.target.value;
 
-    if(a === "" || a === undefined) {
+    if (a === "" || a === undefined) {
       const data = {
         level: "",
         childLevel: "",
         verb: ""
-      }  
+      }
       this.props.onUpdateVerb(data);
       this.props.onChangeCDRData(
         {
@@ -155,13 +155,13 @@ class CDRFormItem extends Component {
       message.info("Chọn một chuẩn đầu ra!")
     }
     else {
-      if(this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined || 
-      this.props.cdrverb.verb === "" || this.props.cdrverb.verb === undefined){
+      if (this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined ||
+        this.props.cdrverb.verb === "" || this.props.cdrverb.verb === undefined) {
         message.info("Chọn mức độ và động từ!")
       }
       else {
         console.log("mo ta" + this.props.cdrdata.description)
-        if(this.props.cdrdata.description === "" || this.props.cdrdata.description === undefined) {
+        if (this.props.cdrdata.description === "" || this.props.cdrdata.description === undefined) {
           message.info("Chưa nhập mô tả!")
         }
         else {
@@ -188,13 +188,13 @@ class CDRFormItem extends Component {
               id: -1,
               del_flag: 0
             }
-            var newData = this.props.cdrtable;            
+            var newData = this.props.cdrtable;
             var previewInfo = this.props.cdrtable.previewInfo;
             newData.previewInfo = previewInfo.concat(data);
-            
-        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc)
-        this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc)
-        
+
+            this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc)
+            this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc)
+
             this.props.onAddCDRData(newData);
             message.info("Thêm thành công!");
             this.props.onChangeCDRData({
@@ -203,7 +203,7 @@ class CDRFormItem extends Component {
               description: "",
               levels: []
             });
-            this.props.onUpdateVerb({level: "",childLevel: "", verb: ""});
+            this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
             this.props.onSelectCDRItem([]);
             this.props.form.resetFields();
           }
@@ -214,115 +214,61 @@ class CDRFormItem extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if(this.state.isLoaded === false && this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== ""){
-      this.setState({isLoaded: true});
+    if (this.state.isLoaded === false) {
+      this.setState({ isLoaded: true });
       var self = this;
-      if(this.props.monhoc !== "" && this.props.monhoc !== undefined) {
-        $.collectMtmh({ data: {thong_tin_chung_id: this.props.monhoc}})
+      $.collectMtmh({ data: { thong_tin_chung_id: this.props.monhoc } })
         .then(function (response) {
           console.log(response.data)
-            self.props.updateMtmh(response.data);
-            
-          })
-         .catch(function (error) {
-            console.log(error);
-         });  
-      }
+          self.props.updateMtmh(response.data);
+
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     }
   }
 
   checkLevel_1_Exist = (level_1, cdrmdhd) => {
-    for(let i = 0;i < cdrmdhd.length;i++) {
-        if(cdrmdhd[i].value === level_1) {
-            return i;
-        }
+    for (let i = 0; i < cdrmdhd.length; i++) {
+      if (cdrmdhd[i].value === level_1) {
+        return i;
+      }
     }
     return -1;
   }
 
   checkLevel_2_Exist = (level_2, level_1_children) => {
-    for(let i = 0;i < level_1_children.length;i++) {
-        if(level_1_children[i].value === level_2) {
-            return i;
-        }
+    for (let i = 0; i < level_1_children.length; i++) {
+      if (level_1_children[i].value === level_2) {
+        return i;
+      }
     }
     return -1;
   }
 
   componentDidMount() {
     var self = this;
-    // axios.get('/collect-cdrmdhd-4')
-    // .then(function (response) {
-    //     let cdrmdhd = self.props.cdrmdhd;
-    //     for(let i = 0;i < response.data.length;i++) {
-    //         let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
-    //         if(index_1 != -1) {
-    //             let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
-    //             if(index_2 != -1) {
-    //                 cdrmdhd[index_1].children[index_2].children.push({
-    //                     value: response.data[i].muc_do_3,
-    //                     label: response.data[i].muc_do_3
-    //                   })
-    //             }
-    //             else {
-    //                 cdrmdhd[index_1].children.push({
-    //                     value: response.data[i].muc_do_2,
-    //                     label: response.data[i].muc_do_2,
-    //                     children: [{
-    //                         value: response.data[i].muc_do_3,
-    //                         label: response.data[i].muc_do_3
-    //                     }]
-    //                   })
-    //             }
-    //         }
-    //         else {
-    //             cdrmdhd.push({
-    //                 value: response.data[i].muc_do_1,
-    //                 label: response.data[i].muc_do_1,
-    //                 children: [{
-    //                     value: response.data[i].muc_do_2,
-    //                     label: response.data[i].muc_do_2,
-    //                     children: [{
-    //                         value: response.data[i].muc_do_3,
-    //                         label: response.data[i].muc_do_3
-    //                     }]
-    //                 }]
-    //               })
-    //         }
-    //     }
-    //     self.props.updateCdrmdhdDB(response.data);
-    //     self.props.updateCdrmdhd(cdrmdhd);
-    //     self.setState({loadcdrmdhd: true});
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
-    if(this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== ""){
-      var self = this;
-      if(this.props.monhoc !== "" && this.props.monhoc !== undefined) {
-        $.collectMtmh({ data: {thong_tin_chung_id: this.props.monhoc}})
-        .then(function (response) {
-          console.log(response.data)
-            self.props.updateMtmh(response.data);
-            
-          })
-         .catch(function (error) {
-            console.log(error);
-         });  
-      }
-    }
+    $.collectMtmh({ data: { thong_tin_chung_id: this.props.monhoc } })
+      .then(function (response) {
+        console.log(response.data)
+        self.props.updateMtmh(response.data);
+
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+      
   }
 
   render() {
-    console.log("set mo ta" + this.props.cdrdata.level_verb)
-    console.log("set mo ta" + this.props.cdrdata.description)
     const { getFieldDecorator } = this.props.form;
     let CDROption = [];
-    if(this.props.mtmh.length > 0) {
+    if (this.props.mtmh.length > 0) {
       CDROption = this.props.mtmh.map((key) => {
         return <Option key={key.id} value={key.muc_tieu}>{key.muc_tieu}</Option>
       });
-    } 
+    }
     return (
       <div >
         <div style={{ marginTop: "10px" }}></div>
@@ -343,28 +289,28 @@ class CDRFormItem extends Component {
             )}
           </Form.Item>
 
-              <Form.Item {...formItemLayout} label="Chọn mức độ: ">
-              {getFieldDecorator('cascader', {
+          <Form.Item {...formItemLayout} label="Chọn mức độ: ">
+            {getFieldDecorator('cascader', {
               rules: [
                 { required: true, message: 'Chọn mức độ' },
               ],
               initialValue: this.props.cdrdata.level_verb
             })(
               <Cascader
-                  options={this.props.cdrmdhd}
-                  expandTrigger="hover"
-                  displayRender={this.displayRender}
-                  onChange={this.onChange}
-                  style={{width: "30%"}}
-                />
+                options={this.props.cdrmdhd}
+                expandTrigger="hover"
+                displayRender={this.displayRender}
+                onChange={this.onChange}
+                style={{ width: "30%" }}
+              />
             )}
-                
-              </Form.Item>
-           
+
+          </Form.Item>
+
 
           <Form.Item {...formItemLayout} label="Mô tả (Mức chi tiết - hành động)">
             {getFieldDecorator('description',
-            
+
               {
                 rules: [{
                   required: true,
@@ -372,9 +318,9 @@ class CDRFormItem extends Component {
 
                 }],
                 initialValue: this.props.cdrdata.description !== "" && this.props.cdrdata.description !== undefined ?
-                this.props.cdrdata.description : this.props.cdrverb.verb
+                  this.props.cdrdata.description : this.props.cdrverb.verb
               })(
-                <TextArea disabled={this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined ? true : false} 
+                <TextArea disabled={this.props.cdrverb.level === "" || this.props.cdrverb.level === undefined ? true : false}
                   onChange={this.onDescriptionChange} rows={4} placeholder="Mô tả" />
               )}
           </Form.Item>
@@ -429,8 +375,8 @@ const mapDispatchToProps = (dispatch) => {
     updateMtmh: mtmh,
     updateCdrmdhd: cdrmdhd,
     updateCdrmdhdDB: cdrmdhddb,
-    onSaveLog : saveLog,
-    onSaveReducer : saveLogObject
+    onSaveLog: saveLog,
+    onSaveReducer: saveLogObject
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(CDRFormItem);

@@ -33,11 +33,6 @@ class FormSurvey extends Component {
       this.props.saveChange(key, e.target.value)
   }
 
-  componentDidMount() {      
-    this.props.saveChange("tenMH", this.state.tenMH)
-  }
-
-
   render() {
 
     let isDone = this.props.isDone;

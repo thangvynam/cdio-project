@@ -212,22 +212,9 @@ class Home extends Component {
                     localStorage.clear();
                     $.setStorage(res.data)
 
-
-
-                    ///
                     this.props.onLoadEduPrograms();
                     var self = this;
                     let monhoc = self.props.match.params.monhoc;
-                    //axios.get('http://172.29.64.132:3001/collect-subjectlist')
-                    //axios.get('/collect-subjectlist')
-                    //      $.collectSubjectList()
-                    //  .then( (response) => {
-                    //    //self.props.updateSubjectList(response.data);
-                    //    this.setState({isLoadSubjectList: "true"});
-                    //  })
-                    // .catch(function (error) {
-                    //    console.log(error);
-                    // });     
                     let ctdt = self.props.match.params.ctdt;
                     if (ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
                         $.getBlockSubject(ctdt).then(res => {
@@ -331,10 +318,7 @@ class Home extends Component {
                         self.props.updateSubjectId(monhoc)
                     }
 
-                    $.getCDR_CDIO().then((res) => {
 
-                        self.props.updateCdrCdio(res.data)
-                    })
                     ///
                 }
                 else {
@@ -484,17 +468,17 @@ class Home extends Component {
                         }
 
                         if (this.checkExist(ctdt)) {
-                            if(ctdt !== "survey-matrix") {
+                            if (ctdt !== "survey-matrix") {
                                 console.log("wrong param 2");
                                 return <Page404 />;
                             }
-                        }                  
+                        }
                         break;
-                        
-                        // if (this.checkExist(ctdt)) {    //param 2 exists
-                        //     console.log("param 2 must be null");
-                        //     return <Page404 />;
-                        // } break;
+
+                    // if (this.checkExist(ctdt)) {    //param 2 exists
+                    //     console.log("param 2 must be null");
+                    //     return <Page404 />;
+                    // } break;
                     default: { //ctdt,
                         if (this.checkExist(ctdt)) {    //param 2 exists
                             if (!this.checkCtdtExist(ctdtList, ctdt)) { //param 2 invalid
@@ -631,7 +615,7 @@ class Home extends Component {
                                                 console.log("wrong param 3");
                                                 return <Page404 />;
                                                 break;
-                                            default: 
+                                            default:
                                                 if (this.checkExist(khoi)) {    //param 5 exists
                                                     console.log("param 5 must be null");
                                                     return <Page404 />;

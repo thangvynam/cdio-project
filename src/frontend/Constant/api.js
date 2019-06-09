@@ -32,7 +32,7 @@ export default{
     GET_REALITY_MATRIX: baseUrl + '/get-reality-matrix',
     GET_MATRIX_SURVEY: baseUrl + '/get-matrix-survey',
     //CDR
-    GET_CDR_CDIO: baseUrl + '/get-cdr-cdio',
+    GET_CDR_CDIO: baseUrl + '/get-cdr-cdio/',
     GET_CDR_3: baseUrl + '/get-cdr-3',
     GET_DATA_2: baseUrl + '/get-data-2',
     POST_DATA_2: baseUrl + '/save-data-2',
@@ -130,6 +130,7 @@ export default{
     INSERT_STANDARD_MATRIX:baseUrl + '/insert-standard-matrix',
     
     GET_IDQA: baseUrl + '/getidqa',
+    GET_SUBJECT_NAME: baseUrl + '/get-subjectname'
 
 }
 

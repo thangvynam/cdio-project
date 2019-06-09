@@ -3,6 +3,7 @@ import FormMoTa from './Component/Main/FormMoTa';
 import { Tooltip, Button, Row } from 'antd';
 import TableItem from './Component/Table/TableItem';
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from '../Constant/ActionType';
 
 class Layout2 extends Component {
     componentWillMount(){
@@ -24,7 +25,7 @@ class Layout2 extends Component {
                 </div>
 
                 <div className="section-layout">
-                    <LogForm monhoc={this.props.monhoc}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.MO_TA_MON_HOC} tabIndex={2}/>
                 </div>
             </React.Fragment>
         );

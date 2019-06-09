@@ -5,6 +5,7 @@ import MainForm from "./Component/Main/MainForm";
 import TableItem from "./Component/Table/TableItem";
 import { Tooltip, Button } from "antd";
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from "../Constant/ActionType";
 
 class Layout6 extends Component {
   componentWillMount(){
@@ -37,7 +38,7 @@ class Layout6 extends Component {
           </Element>
         </div>
         <div className="section-layout">
-          <LogForm monhoc={this.props.monhoc}/>
+          <LogForm monhoc={this.props.monhoc} tab={MENUITEM.GIANG_DAY_THUC_HANH} tabIndex={6}/>
         </div>
 
       </React.Fragment>

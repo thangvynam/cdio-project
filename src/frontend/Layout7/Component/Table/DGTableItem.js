@@ -316,9 +316,9 @@ class itemLayout7ReducerItem extends React.Component {
   }
 
   onDelete = (key) => {
-    //nếu key là chủ đề . xóa hết tất cả thằng con trong chủ đề đó .
     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
 
+    //nếu key là chủ đề . xóa hết tất cả thằng con trong chủ đề đó .
     if (this.isExist(key)) {
       let index = 0;
       let indexChildren = 0;
@@ -343,17 +343,17 @@ class itemLayout7ReducerItem extends React.Component {
         }
       }
       // nếu nó là thằng chủ đề đầu tiên trong list hoặc là thằng cuối cùng
-      else if (index === 0 || indexChildren === previewInfo.length) {
+      // else if (index === 0 || indexChildren === previewInfo.length) {
 
-        for (let i = index; i < indexChildren; i++) {
-          previewInfo[i].del_flag = 1;
-        }
-      }
+      //   for (let i = index; i < indexChildren; i++) {
+      //     previewInfo[i].del_flag = 1;
+      //   }
+      // }
       //ngược lại 
       else {
 
         //delete từ vị trí index tới index + indexChildren
-        for (let i = index; i < index + indexChildren; i++) {
+        for (let i = index; i < indexChildren; i++) {
           previewInfo[i].del_flag = 1;
         }
       }
@@ -402,10 +402,10 @@ class itemLayout7ReducerItem extends React.Component {
     } else {
       for (let i = 0; i < this.state.selectedRowKeys.length; i++) {
         let key = this.state.selectedRowKeys[i];
-        this.onDelete(key);
         let index = previewInfo.findIndex(item => item.key === key);
         this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${previewInfo[index].standardOutput}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
         this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa đánh giá: Mã : ${previewInfo[index].key}, Tên : ${previewInfo[index].tenthanhphan}, Mô tả (gợi ý) : ${previewInfo[index].mota} , Các chuẩn đầu ra được đánh giá : ${previewInfo[index].standardOutput}, Tỉ lệ : ${previewInfo[index].tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.onDelete(key);
         if (this.isEmptyChildrenChude(key)) {
           for (let i = 0; i < chude.length; i++) {
             if (chude[i].ma_chu_de === key.substring(0, chude[i].ma_chu_de.length)) {
@@ -421,14 +421,15 @@ class itemLayout7ReducerItem extends React.Component {
 
   saveAll = () => {
     let table = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
-    
+    console.log(table)
     let totalTile = 0;
     for (let i = 0; i < table.length; i++) {
       if (this.isExist(table[i].mathanhphan)) {
         totalTile += parseFloat(table[i].tile.replace("%", ""));
       }
     }
-    if (totalTile != 100 && !table) {
+
+    if (totalTile != 100 && table.length > 0) {
       message.error("Tổng tỉ lệ phải bằng 100% , vui lòng kiểm tra lại!")
     } else {
       let obj = {
@@ -452,27 +453,12 @@ class itemLayout7ReducerItem extends React.Component {
           }
         });
       $.saveLog({ data: this.props.itemLayout7Reducer.logData })
+      this.getData();
+      console.log(this.props.itemLayout7Reducer.previewInfo)
     }
 
   }
   getData() {
-    var self = this;
-    $.getChuDe()
-      .then(function (response) {
-        self.props.onGetChude(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-
-    $.getStandardOutput7(this.props.monhoc)
-      .then(function (response) {
-
-        self.props.onGetCDR(response.data);
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
 
     var listDG = [];
     var listCDRDG = [];
@@ -533,6 +519,7 @@ class itemLayout7ReducerItem extends React.Component {
                 if (!haveFather) {
                   haveFather = true;
                   let dataFather = {
+
                     key: chude[i].ma_chu_de,
                     chude: chude[i].id,
                     standardOutput: [],
@@ -542,6 +529,7 @@ class itemLayout7ReducerItem extends React.Component {
                     tile: '',
                   };
                   let data = {
+                    id: result[j].danhgia.id,
                     key: result[j].danhgia.ma,
                     chude: chude[i].id,
                     standardOutput: result[j].chuandaura,
@@ -554,6 +542,7 @@ class itemLayout7ReducerItem extends React.Component {
                   previewInfo = previewInfo.concat(data);
                 } else {
                   let data = {
+                    id: result[j].danhgia.id,
                     key: result[j].danhgia.ma,
                     chude: chude[i].id,
                     standardOutput: result[j].chuandaura,
@@ -570,10 +559,8 @@ class itemLayout7ReducerItem extends React.Component {
           }
 
           if (previewInfo.filter(item => item.del_flag !== 1).length > 1) {
-            this.sortValues(previewInfo.filter(item => item.del_flag !== 1));
-
+            previewInfo = this.sortValues(previewInfo.filter(item => item.del_flag !== 1));
           }
-
           this.props.onAddDGData(previewInfo);
         })
       })
@@ -584,8 +571,26 @@ class itemLayout7ReducerItem extends React.Component {
 
 
   componentWillMount() {
+    var self = this;
+    $.getChuDe()
+      .then(function (response) {
+        self.props.onGetChude(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+
+    $.getStandardOutput7(this.props.monhoc)
+      .then(function (response) {
+        console.log(response.data)
+        self.props.onGetCDR(response.data);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
 
     if (this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "" && this.props.itemLayout7Reducer.isLoaded === false) {
+      this.props.isLoaded(true);
       this.getData();
     }
   }
@@ -612,6 +617,8 @@ class itemLayout7ReducerItem extends React.Component {
 
 
   sortValues(previewInfo) {
+    if (previewInfo === undefined || previewInfo.length === 0) return [];
+
     // cắt khoảng trắng trước các mã thành phần 
     for (let i = 0; i < previewInfo.length; i++) {
       if (!this.isExist(previewInfo[i].mathanhphan) && previewInfo[i].mathanhphan[0] === '\xa0') {
@@ -675,6 +682,8 @@ class itemLayout7ReducerItem extends React.Component {
       }
     }
 
+    return previewInfo;
+
   }
 
   setIndexForItem = () => {
@@ -691,6 +700,7 @@ class itemLayout7ReducerItem extends React.Component {
 
 
   render() {
+
     const components = {
       body: {
         row: EditableFormRow,
@@ -718,11 +728,6 @@ class itemLayout7ReducerItem extends React.Component {
       };
     });
 
-    if (this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1).length > 1) {
-      this.sortValues(this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1));
-
-    }
-
     return (
       <div>
         {this.props.isReview === true ? null : <div style={{ marginBottom: 16, marginTop: 16 }}>
@@ -746,7 +751,7 @@ class itemLayout7ReducerItem extends React.Component {
         <Table
           components={components}
           bordered
-          dataSource={this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1)}
+          dataSource={this.sortValues(this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1))}
           columns={columns}
           rowSelection={this.props.isReview === true ? null : rowSelection}
           rowClassName="editable-row"

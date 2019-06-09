@@ -318,9 +318,11 @@ class Home extends Component {
                         self.props.updateSubjectId(monhoc)
                     }
 
-
-                    $.getCDR_CDIO(ctdt)
+                    if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                        $.getCDR_CDIO(ctdt)
                     .then(res => this.props.updateCdrCdio(res.data));
+                    }
+                    
                     ///
                 }
                 else {

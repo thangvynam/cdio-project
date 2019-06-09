@@ -1,4 +1,3 @@
-export const ADD_DATA = 'ADD_DATA';
 export const ADD_DATA_LAYOUT_2 = 'ADD_DATA_LAYOUT_2';
 export const SAVE_DATA_LAYOUT_2 = 'SAVE_DATA_LAYOUT_2';
 export const SAVE_TEMP_DATA_LAYOUT_2 = 'SAVE_TEMP_DATA_LAYOUT_2';
@@ -87,6 +86,7 @@ export const SAVE_LOAI_TAI_NGUYEN = 'SAVE_LOAI_TAI_NGUYEN';
 export const IS_LOADED_8 = 'IS_LOADED_8';
 
 // layout 5
+export const ADD_DATA = 'ADD_DATA';
 export const DELETE_DATA_LAYOUT_5 = 'DELETE_DATA_LAYOUT_5';
 export const CHANGE_EDITSTATE_5 = 'CHANGE_EDITSTATE_5';
 export const SAVE_DATA_LAYOUT_5 = 'SAVE_DATA_LAYOUT_5';

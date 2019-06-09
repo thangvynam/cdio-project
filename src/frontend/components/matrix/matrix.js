@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import _ from 'lodash';
-import { Table, Icon, Tag, Modal, Button, notification } from 'antd';
+import { Table, Icon, Tag, Modal, Button, notification, Row } from 'antd';
 import { connect } from 'react-redux';
 import { getDataMatrix } from './../../Constant/matrix/matrixAction';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import "./matrix.css";
 import { editMatrix, isLoadEditMatrix } from '../../Constant/ActionType';
 import $ from './../../helpers/services';
+import PreviewMatrix from './preview-matrix';
 
 class Matrix extends Component {
     constructor(props) {
@@ -23,6 +24,9 @@ class Matrix extends Component {
         this.myRef = React.createRef();
     }
 
+    componentDidUpdate() {
+        //setTimeout(this.addClassExport(), 3000);
+    }
     checkIdExist = (matrix, id) => {
         for (let i = 0; i < matrix.length; i++) {
             if (matrix[i].key.toString() === id.toString()) {
@@ -382,7 +386,6 @@ class Matrix extends Component {
             }
             data1.push(a);
         }
-        console.log(data1);
         return data1;
     }
 
@@ -394,24 +397,6 @@ class Matrix extends Component {
                 [kkk]: 'ss'
             }
         }
-    }
-
-    handleOk = (e) => {
-        this.setState({
-            visible: false,
-        });
-    }
-
-    handleCancel = (e) => {
-        this.setState({
-            visible: false,
-        });
-    }
-
-    showModal = () => {
-        this.setState({
-            isShow: true,
-        });
     }
 
     addClassExport = () => {
@@ -469,13 +454,9 @@ class Matrix extends Component {
 
                             <span style={{ marginLeft: "30px" }} className="no-action-text"><Icon type="minus-square" />: Không đổi</span>
                         </div>
-                        <ReactHTMLTableToExcel
-                            id="test-table-xls-button"
-                            className="download-table-xls-button btn btn-outline-warning"
-                            table="table-to-xls"
-                            filename="matrix"
-                            sheet="tablexls"
-                            buttonText="Export"
+                        <PreviewMatrix
+                            column={this.createColumn(this.props.dataMatrix)}
+                            data={this.createData(this.props.dataMatrix)}
                         />
                         {(this.props.editMatrix.length <= 0 && !this.state.isSubmit) ? <Button type="primary" style={style} onClick={this.cloneEditMatrix}>Gửi chủ nhiệm</Button> : null}
                         <Table

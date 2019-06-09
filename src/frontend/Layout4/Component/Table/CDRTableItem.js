@@ -624,7 +624,8 @@ class CDRTableItem extends Component {
           subjectListId.push(item.IdSubject);
         })
         let data = {
-          data: subjectListId
+          data: subjectListId,
+          idCtdt: this.props.ctdt
         }
         $.getStandardMatrix(data).then((res) => {
           let data = [];

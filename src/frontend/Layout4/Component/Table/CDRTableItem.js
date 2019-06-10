@@ -1055,7 +1055,6 @@ const mapStateToProps = (state) => {
     cdrmdhd: state.cdrmdhd,
     cdrmdhddb: state.cdrmdhddb,
     mtmh: state.mtmh,
-    subjectId: state.subjectid,
     logReducer: state.logReducer,
     isLoad: state.isloadtab4,
     editMatrix: state.editmatrix,

@@ -81,7 +81,6 @@ class MenuMota extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         itemLayout2Reducer: state.itemLayout2Reducer,
-        subjectid: state.subjectid,
         logReducer: state.logReducer
     }
 }

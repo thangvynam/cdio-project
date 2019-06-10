@@ -187,7 +187,6 @@ const mapStateToProps = (state) => {
   return {
     tndata: state.tndata,
     itemLayout8Reducer: state.itemLayout8Reducer,
-    subjectId : state.subjectid,
     logReducer: state.logReducer
 
   };

@@ -144,9 +144,10 @@ export const onRegisterUser = user => {
       .post(req, params, {
         headers: {
           "Content-Type": "application/json",
-          authorization: localStorage.getItem("user")
+          "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
-            : ""
+            : "",
+            "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : []
         }
       })
       .then(res => {
@@ -212,7 +213,7 @@ export const onChangePass = user => {
       .post(req, params, {
         headers: {
           "Content-Type": "application/json",
-          authorization: localStorage.getItem("user")
+          "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
             : ""
         }
@@ -263,7 +264,7 @@ export const onGetInfo = iduser => {
       .get(req, {
         headers: {
           "Content-Type": "application/json",
-          authorization: localStorage.getItem("user")
+          "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
             : ""
         }
@@ -309,9 +310,10 @@ export const onDeleteUser = username => {
       .post(req, {
         headers: {
           "Content-Type": "application/json",
-          authorization: localStorage.getItem("user")
+          "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
-            : ""
+            : "",
+          "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : []
         }
       })
       .then(res => {
@@ -363,9 +365,10 @@ export const onRegisterBlockUser = users => {
       .post(req, params, {
         headers: {
           "Content-Type": "application/json",
-          authorization: localStorage.getItem("user")
+          "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
-            : ""
+            : "",
+          "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : []
         }
       })
       .then(res => {

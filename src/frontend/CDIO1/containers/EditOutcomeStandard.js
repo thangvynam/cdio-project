@@ -4,6 +4,8 @@ import { Prompt } from "react-router";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { Empty } from "antd";
+    
 import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
@@ -102,7 +104,7 @@ class EditOutcomeStandardTmp extends Component {
           </Col>
         </Row>
       </Container>
-      :<h1>Chưa có chuẩn đầu ra</h1>
+      :<Empty />
     );
   }
 }

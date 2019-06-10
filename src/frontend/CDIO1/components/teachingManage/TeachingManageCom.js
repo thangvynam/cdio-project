@@ -20,6 +20,7 @@ export default class TeachingManageCom extends Component {
   }
 
   onOpenAssignment = data => {
+    console.log(data)
     this.setState({
       visible: true,
       subject: data
@@ -49,9 +50,9 @@ export default class TeachingManageCom extends Component {
       idsubjectblock,
       iddetail
     };
-    this.props.onAddTeacher(block);
+    const thisData=[block];
+    this.props.onAddTeacher(thisData);
     this.setState({
-      visible: false,
       subject: {}
     });
   };
@@ -71,9 +72,9 @@ export default class TeachingManageCom extends Component {
       idsubjectblock,
       iddetail
     };
-    this.props.onAddTeacher(block);
+    const thisData=[block];
+    this.props.onAddTeacher(thisData);
     this.setState({
-      visible: false,
       subject: {}
     });
   };
@@ -96,9 +97,9 @@ export default class TeachingManageCom extends Component {
       idsubjectblock,
       iddetail
     };
-    this.props.onAddTeacher(block);
+    const thisData=[block];
+    this.props.onAddTeacher(thisData);
     this.setState({
-      visible: false,
       subject: {}
     });
   };
@@ -121,16 +122,6 @@ export default class TeachingManageCom extends Component {
   actionTemplateDial = (data, column) => {
     return (
       <div>
-        {!commonLogic.isTeacher(data, this.state.subject) && (
-          <Button
-            title="Thêm trợ giảng"
-            onClick={() => this.onAddTeacher(data)}
-            theme="success"
-            style={{ marginRight: ".3em", padding: "8px" }}
-          >
-            <i className="material-icons">group_add</i>
-          </Button>
-        )}
         {!commonLogic.isMainTeacher(data, this.state.subject) && (
           <Button
             title="Thêm giảng viên"
@@ -139,6 +130,16 @@ export default class TeachingManageCom extends Component {
             style={{ marginRight: ".3em", padding: "8px" }}
           >
             <i className="material-icons">person_add</i>
+          </Button>
+        )}
+        {!commonLogic.isTeacher(data, this.state.subject) && (
+          <Button
+            title="Thêm trợ giảng"
+            onClick={() => this.onAddTeacher(data)}
+            theme="success"
+            style={{ marginRight: ".3em", padding: "8px" }}
+          >
+            <i className="material-icons">group_add</i>
           </Button>
         )}
         {(commonLogic.isTeacher(data, this.state.subject) ||

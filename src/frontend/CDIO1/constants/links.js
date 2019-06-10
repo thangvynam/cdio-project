@@ -58,7 +58,8 @@ export const LOAD_BLOCKS = `${LINK}/eduprogcontent/getBlockSubjects/`;
 
 export const LOAD_TABLES = `${LINK}/eduprogcontent/getKnowledgeTable/`;
 
-export const ADD_TEACHER = `${LINK}/detailblock/addteacher/`;
+// export const ADD_TEACHER = `${LINK}/detailblock/addteacher/`;
+export const ADD_TEACHER = `${LINK}/detailblock/addlistteacher/`;
 
 export const LOAD_CONTENT_LIST = `${LINK}/eduprogram/getlistofcontent/`;
 

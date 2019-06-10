@@ -4,6 +4,8 @@ import { Prompt } from "react-router";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
+import { Empty } from "antd";
+
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
 
@@ -74,7 +76,7 @@ class InfoOutcomeStandard extends Component {
         </Row>
       </Container>
     ) : (
-      <h1>Chưa có chuẩn đầu ra</h1>
+      <Empty />
     );
   }
 }

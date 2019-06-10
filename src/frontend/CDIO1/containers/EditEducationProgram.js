@@ -204,6 +204,8 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
               knowledgeTables={this.props.knowledgeTables}
               onLoadKnowledgeTable={this.props.onLoadKnowledgeTable}
               contentList={this.props.contentList}
+              ctdt={this.props.ctdt}
+              onExportFilePDF={this.props.onExportFilePDF}
             />{" "}
           </Col>{" "}
         </Row>{" "}
@@ -243,6 +245,7 @@ export default connect(mapStateToProps, {
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
   onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
   onLoadKnowledgeTable: knowledgeTableAction.onLoadKnowledgeTable,
+  onExportFilePDF: eduProgramsAction.onExportFilePDF,
   //cdio-2
   updateSubjectList: subjectList,
   updateDataCtdt: dataCtdt,

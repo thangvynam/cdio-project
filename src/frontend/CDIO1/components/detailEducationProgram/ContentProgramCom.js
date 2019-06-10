@@ -115,8 +115,8 @@ export default class ContentProgramCom extends React.Component {
         this.state.descriptionFreePartStudy,
         this.state.creditFreeStudy
       )
-      
       this.setState({ nodes: data });
+      this.props.onSaveEduProgram();
     }
     this.onHideDialogChild();
   };
@@ -316,7 +316,8 @@ export default class ContentProgramCom extends React.Component {
       isDialogPartStudy: true,
       descriptionFreePartStudy: node.data.description,
       creditFreeStudy: node.data.credit
-    })
+    });
+
   }
 
   isShowDialogTable = node => {
@@ -565,7 +566,7 @@ export default class ContentProgramCom extends React.Component {
                       style={{ marginRight: ".3em", padding: "8px" }}
                       title={`Thêm học phần tự do của ${this.state.nodeHover}`}
                     >
-                      <i className="material-icons">add to queue</i>
+                      <i className="material-icons">add_to_queue</i>
                     </Button>
                   ) : (
                       <Button

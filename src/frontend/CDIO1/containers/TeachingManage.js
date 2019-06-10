@@ -23,11 +23,17 @@ class TeachingManageTemp extends Component {
 
   componentDidMount = () => {
     this.props.onLoadUsers();
-    this.props.onLoadBlocks(this.props.detailEduProgram?this.props.detailEduProgram.Id:0);
+    const id = this.props.ctdt;
+    this.props.onLoadBlocks(+id);
+    // this.props.onLoadBlocks(this.props.detailEduProgram?this.props.detailEduProgram.Id:0);
   };
 
   render() {
     const subjects = commonLogic.getSubjects(this.props.blocks);
+    const tmpsubjects = commonLogic.mapUserToSubject(
+      subjects,
+      this.props.users
+    );
     return (
       <Container fluid className="main-content-container px-4">
         <Row noGutters className="page-header py-4">
@@ -50,7 +56,9 @@ class TeachingManageTemp extends Component {
               detailEduProgram={this.props.detailEduProgram}
               users={this.props.users}
               subjects={subjects}
+              tmpsubjects={tmpsubjects}
               onAddTeacher={this.props.onAddTeacher}
+              ctdt={this.props.ctdt}
             />
           </Col>
         </Row>

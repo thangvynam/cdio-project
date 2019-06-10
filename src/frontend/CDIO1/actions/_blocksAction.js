@@ -54,11 +54,11 @@ export const addTeacherError = errorMessage => ({
 
 export const onAddTeacher = data => {
   return (dispatch, getState) => {
-    let link = `${links.ADD_TEACHER}?iduser=${data.iduser}&idsubject=${
-      data.idsubject
-    }&idsubjectblock=${data.idsubjectblock}`;
+    let link = links.ADD_TEACHER;
+    let params = {};
+    params.data = JSON.stringify(data);
     axios
-      .post(link, {
+      .post(link, params, {
         headers: {
           "Content-Type": "application/json"
         }
@@ -79,7 +79,7 @@ export const onAddTeacher = data => {
           dispatch(message.message(chirp));
           dispatch(addTeacherError(res));
         }
-        dispatch(onLoadBlocks(data.iddetail));
+        dispatch(onLoadBlocks(data[0].iddetail));
       })
       .catch(err => {
         let chirp = {
@@ -88,7 +88,7 @@ export const onAddTeacher = data => {
         };
         dispatch(message.message(chirp));
         dispatch(addTeacherError(err));
-        dispatch(onLoadBlocks(data.iddetail));
+        dispatch(onLoadBlocks(data[0].iddetail));
       });
   };
 };

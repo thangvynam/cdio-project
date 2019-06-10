@@ -319,7 +319,7 @@ export const isDoneAll = comments => {
   else return true;
 };
 
-export const mapUserToSubject = (subjects, users) => {
+export const mapUserToSubject = (subjects = [], users = []) => {
   const newsubjects = subjects.map(subject => {
     const arrayIDUser = subject.IdUser?subject.IdUser.split(" ").map(tmpuser => {
       return +tmpuser;

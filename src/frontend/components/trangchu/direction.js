@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Switch, Divider } from 'antd';
 import { Link, Redirect } from "react-router-dom";
-import { connect } from'react-redux';
+import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import UserAction from './../../CDIO1/containers/UserAction';
 
@@ -10,8 +10,8 @@ import UserAction from './../../CDIO1/containers/UserAction';
 class Direction extends Component {
 
     getParentName = (parent, id) => {
-        for(let i = 0;i < parent.length;i++) {
-            if(parent[i].id === id) {
+        for (let i = 0; i < parent.length; i++) {
+            if (parent[i].id === id) {
                 return parent[i].name;
             }
         }
@@ -20,21 +20,21 @@ class Direction extends Component {
 
     getCtdtName = (ctdt, id) => {
 
-        if(ctdt !== undefined && ctdt !== null) {
-            for(let i = 0;i < ctdt.length;i++) {
-                if(ctdt[i].Id === +id) {
+        if (ctdt !== undefined && ctdt !== null) {
+            for (let i = 0; i < ctdt.length; i++) {
+                if (ctdt[i].Id === +id) {
                     return ctdt[i].EduName;
                 }
 
             }
         }
-        
+
         return "";
     }
 
     getTypeName = (menuitem, id) => {
-        for(let i = 0;i < Object.keys(menuitem).length;i++) {
-            if(Object.keys(menuitem)[i] === id) {
+        for (let i = 0; i < Object.keys(menuitem).length; i++) {
+            if (Object.keys(menuitem)[i] === id) {
                 return menuitem[Object.keys(menuitem)[i]].name;
             }
         }
@@ -42,8 +42,8 @@ class Direction extends Component {
     }
 
     getActionName = (menuitem, id) => {
-        for(let i = 0;i < menuitem["de-cuong-mon-hoc"].children.length;i++) {
-            if(menuitem["de-cuong-mon-hoc"].children[i].id === id) {
+        for (let i = 0; i < menuitem["de-cuong-mon-hoc"].children.length; i++) {
+            if (menuitem["de-cuong-mon-hoc"].children[i].id === id) {
                 return menuitem["de-cuong-mon-hoc"].children[i].name;
             }
         }
@@ -51,14 +51,14 @@ class Direction extends Component {
     }
 
     getKhoiName = (dataCtdt, id) => {
-        if(dataCtdt !== undefined && dataCtdt !== null) {
-            for(let i = 0;i < dataCtdt.length;i++) {
-                if(dataCtdt[i].Id === +id) {
-                    return  dataCtdt[i].NameBlock;  
-                } 
+        if (dataCtdt !== undefined && dataCtdt !== null) {
+            for (let i = 0; i < dataCtdt.length; i++) {
+                if (dataCtdt[i].Id === +id) {
+                    return dataCtdt[i].NameBlock;
+                }
             }
         }
-        
+
         return "";
     }
 
@@ -68,29 +68,29 @@ class Direction extends Component {
         let type = this.props.content_type;
         let action = this.props.content_action;
         let khoi = this.props.content_khoi;
-        return(
+        return (
             <div className="direction-css">
                 <Divider type="vertical" />
                 {parent !== "" && parent !== undefined ?
-                    <Link  to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt",paddingTop: "5px" }}>{this.getParentName(this.props.parentitem, parent)}</span></Link>
-                : null}
-                    <Divider type="vertical" />
+                    <Link to={`/${parent}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getParentName(this.props.parentitem, parent)}</span></Link>
+                    : null}
+                <Divider type="vertical" />
                 {ctdt !== "" && ctdt !== undefined ?
-                    <Link  to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{ctdt === "edit" ? "Edit" : this.getCtdtName(this.props.ctdt, ctdt)}</span></Link>
-                : null}
-                    <Divider type="vertical" />
-                {type !== "" && type !== undefined ? 
-                    <Link  to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getTypeName(this.props.menuItem, type)}</span></Link>
-                : null}
-                    <Divider type="vertical" />
-                {action !== "" && action !== undefined ? 
-                    <Link  to={`/${parent}/${ctdt}/${type}/${action}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getActionName(this.props.menuItem, action)}</span></Link>
-                : null}
-                    <Divider type="vertical" />
-                {khoi !== "" && khoi !== undefined && khoi !== "view" ? 
-                    <Link  to={`/${parent}/${ctdt}/${type}/${action}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getKhoiName(this.props.dataCtdt, khoi)}</span></Link>
-                : null}
-                    <Divider type="vertical" />
+                    <Link to={`/${parent}/${ctdt}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{ctdt === "edit" ? "Edit" : this.getCtdtName(this.props.ctdt, ctdt)}</span></Link>
+                    : null}
+                <Divider type="vertical" />
+                {type !== "" && type !== undefined ?
+                    <Link to={`/${parent}/${ctdt}/${type}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getTypeName(this.props.menuItem, type)}</span></Link>
+                    : null}
+                <Divider type="vertical" />
+                {action !== "" && action !== undefined ?
+                    <Link to={`/${parent}/${ctdt}/${type}/${action}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getActionName(this.props.menuItem, action)}</span></Link>
+                    : null}
+                <Divider type="vertical" />
+                {khoi !== "" && khoi !== undefined && khoi !== "view" ?
+                    <Link to={`/${parent}/${ctdt}/${type}/${action}/${khoi}`}><span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.getKhoiName(this.props.dataCtdt, khoi)}</span></Link>
+                    : null}
+                <Divider type="vertical" />
                 <span style={{ textAlign: "center", fontSize: "10pt", paddingTop: "5px" }}>{this.props.subjectName}</span>
             </div>
         )
@@ -111,5 +111,5 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
     return bindActionCreators({
     }, dispatch);
-  }
+}
 export default connect(mapStateToProps, mapDispatchToProps)(Direction);

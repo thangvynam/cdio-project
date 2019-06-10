@@ -26,7 +26,15 @@ const collectSubjectList = () => {
 
 const getBlockSubject = (id) => {
     let url = _.GET_BLOCK_SUBJECT;
-    return $.get(url + id);
+    //$.headers["username"] = JSON.parse(localStorage.getItem('user')).data.Username;
+    //$.headers["role"]= JSON.parse(localStorage.getItem('user')).data.Role;
+
+    let header = {
+        username: JSON.parse(localStorage.getItem('user')).data.Username,
+        role: JSON.parse(localStorage.getItem('user')).data.Role
+    }
+
+    return $.get(url + id,header);
 }
 
 //edit matrix
@@ -119,16 +127,15 @@ const getTeacherReviewSubject = (data) => {
     return $.post(url, data);
 }
 //
-const getCDR_CDIO = () => {
+const getCDR_CDIO = (data) => {
     let url = _.GET_CDR_CDIO;
-    return $.get(url);
+    return $.get(url + data);
 }
 
-const getMatrixSurvey = () => {
-    let url = _.GET_MATRIX_SURVEY;
-    return $.get(url);
+const getMatrixSurvey = (data) => {
+    let url = `${_.GET_MATRIX_SURVEY}`;
+    return $.post(url, data);
 }
-
 
 const getChuDe = () => {
     let url = _.GET_CHUDE;
@@ -145,8 +152,8 @@ const getLoaiTaiNguyen = () => {
     return $.get(url);
 }
 
-const getCDR_3 = () => {
-    let url = _.GET_CDR_3;
+const getCDR_3 = (idCtdt) => {
+    let url = `${_.GET_CDR_3}/${idCtdt}`;
     return $.get(url);
 }
 
@@ -175,9 +182,9 @@ const postData3 = (data, id) => {
     return $.post(url, { data: data, id: id })
 }
 
-const addSurveyMatrix = (data) => {
+const addSurveyMatrix = (data, idCtdt) => {
     let url = _.ADD_SURVEY_MATRIX;
-    return $.post(url, {data})
+    return $.post(url, {data, idCtdt})
 }
 
 const exportFile = (data) => {
@@ -197,6 +204,11 @@ const saveSurvey = (dataConvert, id_survey) => {
         id_survey,})
 }
 
+const getSubjectName = (id) => {
+    let url = _.GET_SUBJECT_NAME;
+    return $.post(url, {id})
+}
+
 const checkStatus = (data) => {
     let url = `${_.CHECK_STATUS}/${data}`;
     return $.get(url)
@@ -207,9 +219,9 @@ const checkDate = (data) => {
     return $.get(url)
 }
 
-const getData3 = (param) => {
-    let url = `${_.GET_DATA_3}/${param}`;
-    return $.get(url);
+const getData3 = (data) => {
+    let url = `${_.GET_DATA_3}`;
+    return $.post(url, {data});
 }
 
 const getData6 = (param) => {
@@ -262,14 +274,14 @@ const getSurveyITU = (data) => {
     return $.post(url, {data});
 }
 
-const getDataSurvey = () => {
-    let url = _.GET_DATA_SURVEY;
+const getDataSurvey = (id_ctdt) => {
+    let url = `${_.GET_DATA_SURVEY}/${id_ctdt}`;
     return $.get(url);
 }
 
-const setStatus = (id) => {
-    let url = `${_.SET_STATUS}/${id}`    
-    return $.get(url);
+const setStatus = (data) => {
+    let url = `${_.SET_STATUS}`    
+    return $.post(url, {data});
 }
 
 //danhmuc
@@ -523,6 +535,11 @@ const getListSurvey = (data) => {
     return $.post(url,data);
 }
 
+const updateStatusSurvey = (data) => {
+    let url = _.UPDATE_STATUS_SURVEY;
+    return $.post(url,data);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -629,6 +646,7 @@ export default{
     getSurveyCTDTTime2,
     getSurveyList,
     getSurveyWithIdSurveyList,
+    updateStatusSurvey,
 
     //export file
     exportFile,
@@ -650,4 +668,5 @@ export default{
     getSurveyITU,
     getSubjectWithId,
     getListSurvey,
+    getSubjectName,
 }

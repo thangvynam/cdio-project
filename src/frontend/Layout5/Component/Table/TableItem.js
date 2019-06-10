@@ -10,9 +10,11 @@ import DragDropHTML5 from '../../../html5Backend/html5Backend';
 import TextArea from "antd/lib/input/TextArea";
 
 import {
-  DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5,
-  SAVE_DATA_LAYOUT_5 , ADD_DATA_LAYOUT_5
+  DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5, REFRESH_DATA,
+  SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD, 
+  COLLECT_DATA_DG, COLLECT_DATA_CDR
 } from '../../../Constant/ActionType';
+import $ from './../../../helpers/services';
 
 const confirm = Modal.confirm;
 const EditableContext = React.createContext();
@@ -112,11 +114,11 @@ class EditableCell extends React.Component {
     this.setState({ standardOutput: value });
   }
 
-  getInput = (data ) => {
+  getInput = (data) => {
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
     const childrenStandard = [];
-    
+
     const standard_item = [...this.props.mapitem.standardOutputData];
     const teachingActs = [...this.props.mapitem.teachingActsData];
     const evalActs = [...this.props.mapitem.evalActsData];
@@ -135,7 +137,7 @@ class EditableCell extends React.Component {
 
     for (let i = 0; i < standard_item.length; i++) {
       const children = standard_item[i].children;
-      for (let j = 0; j< children.length; j++) {
+      for (let j = 0; j < children.length; j++) {
         childrenStandard.push(
           <Option key={children[j].value}>{children[j].value}</Option>
         );
@@ -230,7 +232,8 @@ class TableItem extends Component {
     super(props);
 
     this.state = {
-      selectedRowKeys: []
+      selectedRowKeys: [],
+      disableSaveall: false
     }
 
     this.columns = [{
@@ -334,7 +337,7 @@ class TableItem extends Component {
     data[hoverIndex] = dragRow;
     data[dragIndex].key = dragIndex + 1;
     data[hoverIndex].key = hoverIndex + 1;
-
+    console.log(data);
     this.props.handleSave(data);
   }
 
@@ -349,7 +352,7 @@ class TableItem extends Component {
 
   edit(key) {
     //this.setState({ editingKey: key });
-    this.props.handleEdit('');
+    this.props.handleEdit(key);
   }
 
   onlyUnique(value, index, self) {
@@ -377,7 +380,7 @@ class TableItem extends Component {
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
     let items = this.props.itemLayout5Reducer.previewInfo;
-   
+
     selectedRow.forEach(id => {
       for (let index = 0; index < items.length; index++) {
         const element = items[index];
@@ -405,7 +408,7 @@ class TableItem extends Component {
       if (error) {
         return;
       }
-      
+
       newData.map(index => {
         let arr = [];
         let str = index.standActs + ""
@@ -419,12 +422,115 @@ class TableItem extends Component {
       })
 
       this.props.handleSave(newData);
+      this.props.handleEdit('');
       //this.setState({ editingKey: "" });
     });
   }
 
+  getDataHDD = () => {
+    console.log("adbc")
+    let mapId = {
+      teachingActs: new Map(),
+      standardOutput: new Map(),
+      evalActs: new Map(),
+    }
+
+    $.getTeachingActs_5().then(response => {
+      const data = response.data;
+      let map = new Map();
+
+      if (data != null) {
+        data.forEach((item, index) => {
+          map.set(item.hoat_dong, index);
+        });
+        mapId.teachingActs = map;
+
+        this.props.saveDataValue(mapId.teachingActs)
+      }
+
+    });
+    $.getEvalActs5({ data: this.props.monhoc })
+      .then(response => {
+        const data = response.data;
+        let map = new Map();
+
+        if (data != null) {
+          data.forEach((item, index) => {
+            map.set(index, item.ma);
+          })
+          mapId.evalActs = map;
+
+          this.props.saveDataValueDG(mapId.evalActs)
+        }
+      })
+
+    $.getStandardOutput5({ data: this.props.monhoc })
+      .then(response => {
+        const data = response.data;
+        let array = [];
+        let map = new Map();
+
+        if (data != null) {
+          data.forEach((item) => {
+            let temp = {
+              value: item.muc_tieu,
+              label: item.muc_tieu,
+              children: [],
+            }
+
+            item.cdr.forEach((itemCdr, _) => {
+              let tempCdr = {
+                value: itemCdr.chuan_dau_ra,
+                label: itemCdr.chuan_dau_ra
+              }
+              temp.children.push(tempCdr);
+              map.set(itemCdr.chuan_dau_ra, itemCdr.id);
+            })
+
+            array.push(temp);
+          });
+          // this.setState({standard_item:array,standardOutput:map});
+          mapId.standardOutput = map;
+
+          this.props.saveDataValueCDR(array)
+        }
+      });
+
+  }
+
+  collectDataRequest = (id) => {
+    var self = this;
+    console.log("collectDataRequest")
+    let newArr = [];
+    
+    $.collectData5({ data: id })
+      .then(function (response) {
+        for (let i = 0; i < response.data.length; i++) {
+          let data = {
+            key: response.data[i].key,
+            titleName: response.data[i].titleName,
+            teachingActs: response.data[i].teachingActs,
+            standardOutput: response.data[i].standardOutput,
+            evalActs: response.data[i].evalActs,
+            subjectId: response.data[i].subjectId,
+            del_flag: 0
+          }
+          newArr.push(data);
+        }
+
+        self.props.dispatchRefreshData(newArr);
+        self.setState({ disableSaveall: false })
+      })
+      .catch(function (error) {
+        console.log(error);
+      })
+      .finally(function () {
+        console.log("[Finish] get data by thong_tin_chung_id " + id);
+      })
+  }
 
   render() {
+    console.log(this.props.itemLayout5Reducer.previewInfo)
     var components = {};
     this.props.itemLayout5Reducer.changeEditStateState == ""
       ? (components = {
@@ -450,7 +556,7 @@ class TableItem extends Component {
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
-          mapitem:this.props.itemLayout5Reducer,
+          mapitem: this.props.itemLayout5Reducer,
         })
       };
     });
@@ -468,32 +574,42 @@ class TableItem extends Component {
 
     if (data.teachingActsData.length !== 0) {
       for (let i = 0; i < data.teachingActsData.length; i++) {
-          childrenTeachingActs.push(
-            <Option key={data.teachingActs[i]}>{data.teachingActs[i]}</Option>);
+        childrenTeachingActs.push(
+          <Option key={data.teachingActs[i]}>{data.teachingActs[i]}</Option>);
       }
-  }
+    }
     return (
       <div>
         {this.props.isReview === true ? null : <div>
-        <Button
-          style={{ marginBottom: 16, marginTop: 10 }}
-          type="danger"
-          onClick={this.showModal}
-          disabled={!hasSelected}
-        >
-          Xóa
+          <Button
+            style={{ marginBottom: 16, marginTop: 10 }}
+            type="danger"
+            onClick={this.showModal}
+            disabled={!hasSelected}
+          >
+            Xóa
           </Button>
 
-        <span style={{ marginLeft: 8 }}>
-          {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
-        </span>
-        <Button style={{float: "right" , marginBottom: 16, marginTop: 10}}
+          <span style={{ marginLeft: 8 }}>
+            {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
+          </span>
+          <Button disabled={this.state.disableSaveall} style={{ float: "right", marginBottom: 16, marginTop: 10 }}
             onClick={() => {
+              this.setState({ disableSaveall: true })
+
+              Promise.all([this.props.saveAllData()])
+                    .then(res => {
+                      if (res) {
+                        this.collectDataRequest(this.props.monhoc);
+                      }
+                    })
+
               notification["success"]({
                 message: "Cập nhật thành công",
                 duration: 1
               });
-              this.props.saveAllData()}
+
+            }
             }
           >
             Lưu tất cả
@@ -507,7 +623,7 @@ class TableItem extends Component {
           columns={this.props.itemLayout5Reducer.changeEditStateState === "" ? this.columns : columns}
           dataSource={this.props.itemLayout5Reducer.previewInfo.filter(element => element.del_flag == 0)}
           style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
-          onRow={this.props.isReview === true ? null : 
+          onRow={this.props.isReview === true ? null :
             this.props.itemLayout5Reducer.changeEditStateState === ""
               ? (record, index) => ({
                 index,
@@ -523,11 +639,13 @@ class TableItem extends Component {
 
 const mapStateToProps = (state) => {
   return {
-    itemLayout5Reducer: state.itemLayout5Reducer
+    itemLayout5Reducer: state.itemLayout5Reducer,
+    subjectId: state.subjectid,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
+  var self = this;
   return {
     handleEdit: (key) => {
       dispatch({ type: CHANGE_EDITSTATE_5, key: key });
@@ -541,8 +659,22 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: SAVE_DATA_LAYOUT_5, data: data });
     },
 
-    saveAllData : () => {
-      dispatch({ type: ADD_DATA_LAYOUT_5});
+    saveAllData: () => {
+      console.log("saveAllData")
+      dispatch({ type: ADD_DATA_LAYOUT_5 });
+    },
+    saveDataValue: (teachingActs) => {
+      dispatch({ type: COLLECT_DATA_HDD, data: teachingActs })
+    },
+
+    saveDataValueDG: (evalActs) => {
+      dispatch({ type: COLLECT_DATA_DG, data: evalActs })
+    },
+    saveDataValueCDR: (listCDR) => {
+      dispatch({ type: COLLECT_DATA_CDR, data: listCDR })
+    },
+    dispatchRefreshData: (data) => {
+      dispatch({ type: REFRESH_DATA, data: data });
     }
   }
 }

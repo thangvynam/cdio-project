@@ -3,6 +3,7 @@ import MainForm from './Component/Main/MainForm';
 import { Element } from "react-scroll";
 import TableItem from "./Component/Table/TableItem";
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from '../Constant/ActionType';
 
 class Layout9 extends Component {
   componentWillMount(){
@@ -21,7 +22,7 @@ class Layout9 extends Component {
           </Element>
         </div>
         <div className="section-layout">
-          <LogForm monhoc={this.props.monhoc}/>
+          <LogForm monhoc={this.props.monhoc} tab={MENUITEM.QUY_DINH_CHUNG} tabIndex={9}/>
         </div>
       </React.Fragment>
     );

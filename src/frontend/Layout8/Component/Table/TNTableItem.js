@@ -68,7 +68,7 @@ class EditableCell extends React.Component {
 class TNTableItem extends Component {
   constructor(props) {
     super(props);
-    this.state = { selectedRowKeys: [], editingKey: '' };
+    this.state = { selectedRowKeys: [], editingKey: '' ,isSaveAll : false};
     this.columns = [{
       title: 'STT',
       dataIndex: 'stt',
@@ -198,7 +198,7 @@ class TNTableItem extends Component {
     this.setState({ selectedRowKeys: [], editingKey: "" });
   };
 
-  getData() {
+  async getData() {
     return $.getTaiNguyenMonHoc(this.props.monhoc).then(response => {
       return response.data
     }).catch(function (error) {
@@ -215,13 +215,18 @@ class TNTableItem extends Component {
   }
 
   async componentDidMount() {
-    let temp = await this.getData();
-    this.setData(temp);
+    if(this.props.itemLayout8Reducer.isLoaded === false){
+      let temp = await this.getData();
+      this.setData(temp);
+      this.props.isLoaded(true);
+
+    }
+    
   }
 
   setData = temp => {
     let tempPreview = [];
-    if (temp !== null && temp !== undefined && this.props.itemLayout8Reducer.isLoaded === false) {
+    if (temp !== null && temp !== undefined) {
       temp.map((item, index) => {
         let data = {
           id: item.id,
@@ -235,26 +240,29 @@ class TNTableItem extends Component {
         }
         tempPreview.push(data);
       })
-      this.props.isLoaded(true);
       this.props.onAddTNData(tempPreview);
     }
+    this.setState({isSaveAll:false})
   }
 
   setIndexForItem = () => {
     let tainguyenmonhoc = [];
-    let tnmh = this.props.itemLayout8Reducer.previewInfo.filter(item => item.del_flag === 0);
+    let tnmh = this.props.itemLayout8Reducer.previewInfo;
+    let stt = 1;
     for (let i = 0; i < tnmh.length; i++) {
       let temp = tnmh[i];
       temp.index = i;
-      temp.stt = i + 1;
+      if(temp.del_flag === 0) temp.stt = stt++;
       tainguyenmonhoc.push(temp);
     }
 
-    return tainguyenmonhoc;
+    return (this.dataSource = tainguyenmonhoc.filter(
+      (item, _) => item.del_flag === 0
+    ));
   };
 
-  saveAll = () => {
-
+  async saveAll(){
+    this.setState({isSaveAll : true})
     let loaitainguyen = this.props.itemLayout8Reducer.loaitainguyen;
     let id = this.props.monhoc;
     let description = this.props.itemLayout8Reducer.previewInfo;
@@ -280,7 +288,8 @@ class TNTableItem extends Component {
         }
       });
     $.saveLog({ data: this.props.itemLayout8Reducer.logData })
-    let temp = this.getData();
+  
+    let temp = await this.getData();
     this.setData(temp);
   }
 
@@ -335,7 +344,8 @@ class TNTableItem extends Component {
             {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
           </span>
           <Button style={{ float: "right" }}
-            onClick={this.saveAll}
+            onClick={() => this.saveAll()}
+            disabled={this.state.isSaveAll}
           >
             Lưu tât cả
           </Button>

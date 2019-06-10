@@ -46,11 +46,9 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
         }
 
         case REFRESH_DATA: {
-            state.previewInfo = []
-
             return {
                 ...state,
-                previewInfo: state.previewInfo
+                previewInfo: action.data
             }
         }
 

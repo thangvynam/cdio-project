@@ -86,7 +86,6 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
 }
 
   componentDidMount = () => {
-    
     const id = this.props.ctdt;
     this.props.onLoadEduProgram(+id);
     this.props.onLoadDetailEduProgram(+id);

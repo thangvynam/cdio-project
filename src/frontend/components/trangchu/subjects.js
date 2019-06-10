@@ -212,22 +212,9 @@ class Home extends Component {
                     localStorage.clear();
                     $.setStorage(res.data)
 
-
-
-                    ///
                     this.props.onLoadEduPrograms();
                     var self = this;
                     let monhoc = self.props.match.params.monhoc;
-                    //axios.get('http://172.29.64.132:3001/collect-subjectlist')
-                    //axios.get('/collect-subjectlist')
-                    //      $.collectSubjectList()
-                    //  .then( (response) => {
-                    //    //self.props.updateSubjectList(response.data);
-                    //    this.setState({isLoadSubjectList: "true"});
-                    //  })
-                    // .catch(function (error) {
-                    //    console.log(error);
-                    // });     
                     let ctdt = self.props.match.params.ctdt;
                     if (ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
                         $.getBlockSubject(ctdt).then(res => {
@@ -331,10 +318,11 @@ class Home extends Component {
                         self.props.updateSubjectId(monhoc)
                     }
 
-                    $.getCDR_CDIO().then((res) => {
-
-                        self.props.updateCdrCdio(res.data)
-                    })
+                    if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                        $.getCDR_CDIO(ctdt)
+                    .then(res => this.props.updateCdrCdio(res.data));
+                    }
+                    
                     ///
                 }
                 else {
@@ -478,15 +466,23 @@ class Home extends Component {
                     //         this.errorCase("ctdt not for admin");
                     //     }break;
                     case "view-survey":
-                    case "survey-matrix":
                         if (!this.checkChuNhiem(userRole)) {    //user is not chunhiem
                             console.log("survey chunhiem only");
                             return <Page404 />;
                         }
-                        if (this.checkExist(ctdt)) {    //param 2 exists
-                            console.log("param 2 must be null");
-                            return <Page404 />;
-                        } break;
+
+                        if (this.checkExist(ctdt)) {
+                            if (ctdt !== "survey-matrix") {
+                                console.log("wrong param 2");
+                                return <Page404 />;
+                            }
+                        }
+                        break;
+
+                    // if (this.checkExist(ctdt)) {    //param 2 exists
+                    //     console.log("param 2 must be null");
+                    //     return <Page404 />;
+                    // } break;
                     default: { //ctdt,
                         if (this.checkExist(ctdt)) {    //param 2 exists
                             if (!this.checkCtdtExist(ctdtList, ctdt)) { //param 2 invalid
@@ -613,14 +609,21 @@ class Home extends Component {
                                                                 }
                                                             }
                                                         }
+                                                        else {
+                                                            console.log("param 5 cannot be null");
+                                                            return <Page404 />;
+                                                        }
                                                     }
                                                 } break;
                                             case "chuan-dau-ra":
                                                 break;
                                             case "phan-cong-giang-day":
                                                 break;
-
-                                            default: 
+                                            case "survey-matrix":
+                                                console.log("wrong param 3");
+                                                return <Page404 />;
+                                                break;
+                                            default:
                                                 if (this.checkExist(khoi)) {    //param 5 exists
                                                     console.log("param 5 must be null");
                                                     return <Page404 />;

@@ -39,12 +39,18 @@ export const updateSubNode = (iParent, node) => {
     const length = node.children.length;
     for (let i = 0; i < length; i++) {
       node.children[i].key = `${iParent}.${i + 1}`;
-      if (!node.children[i].data.isTable) {
+      if(node.children[i].data.credit){
+        node.children[i].data.displayName = 
+        `${node.children[i].key}. ${node.children[i].data.name} 
+          ( ${node.children[i].data.description} Học ít nhất 
+            ${node.children[i].data.credit} chỉ)`
+      }
+      else if (!node.children[i].data.isTable) {
         node.children[i].data.displayName = `${node.children[i].key}. ${
           node.children[i].data.name
         }`;
       }
-      if (node.children[i].data.isTable) {
+      else if (node.children[i].data.isTable) {
         node.children[i].data.subjects = updateKeyParentOfSubjects(
           node.children[i].data.subjects,
           node.children[i].key

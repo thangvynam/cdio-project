@@ -3,6 +3,7 @@ import CDRForm from './Component/Main/CDRForm';
 import CDRTableItem from './Component/Table/CDRTableItem';
 import { Tooltip, Button } from 'antd';
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from '../Constant/ActionType';
 
 class Layout4 extends Component {
   componentWillMount(){
@@ -12,7 +13,7 @@ class Layout4 extends Component {
     return (
       <React.Fragment>
         <div className="section-layout">
-          {this.props.isReview === true ? null : <CDRForm monhoc={this.props.monhoc}/>}
+          {this.props.isReview === true ? null : <CDRForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>}
         </div>
         <div className="section-layout">
 
@@ -23,10 +24,10 @@ mục tiêu môn học. Mức độ được thể hiện bằng các ký hiệu
 từ mô tả được sử dụng từ các động từ <br />chi tiết của Bloom cho mức độ tương ứng – xem thêm bảng các
 động từ Bloom chi tiết cho ngành kỹ thuật.)</Button>
           </Tooltip>
-          <CDRTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
+          <CDRTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>
         </div>
         <div className="section-layout">
-          <LogForm monhoc={this.props.monhoc}/>
+          <LogForm monhoc={this.props.monhoc} tab={MENUITEM.CHUAN_DAU_RA} tabIndex={4}/>
         </div>
       </React.Fragment>
 

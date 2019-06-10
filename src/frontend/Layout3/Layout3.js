@@ -3,6 +3,7 @@ import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';
 import { Tooltip, Button } from 'antd';
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from '../Constant/ActionType';
 
 class Layout3 extends Component {
     componentWillMount(){
@@ -12,7 +13,7 @@ class Layout3 extends Component {
         return (
             <React.Fragment>
                 <div className="section-layout">
-                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc}/>}
+                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>}
                 </div>
                 <div className="section-layout">
                     <Tooltip placement="topLeft">
@@ -23,11 +24,11 @@ Bloom ở mức độ nhóm. <br />Mỗi mục tiêu môn học được mapping
                         </Button>
                     </Tooltip>
 
-                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
+                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>
 
                     <br />
                     <br />
-                    <LogForm monhoc={this.props.monhoc}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.MUC_TIEU_MON_HOC} tabIndex={3}/>
                     <br />
                 </div>
             </React.Fragment>

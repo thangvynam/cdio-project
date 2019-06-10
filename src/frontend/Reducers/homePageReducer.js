@@ -72,6 +72,11 @@ const initialState = {
         role: ["CHUNHIEM", "BIEN_SOAN", "TEACHER"],
         children: []
     },
+    "survey-matrix": {
+        name: "SURVEY MATRIX",
+        role: ["CHUNHIEM",],
+        children: []
+    },
 }
 
 export function menuItemReducer(state = initialState, action) {
@@ -133,7 +138,7 @@ const parentState = [
     {
         id: "ctdt",
         name: "CHƯƠNG TRÌNH ĐÀO TẠO",
-        role: ["ADIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"],
+        role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"],
     },
     {
         id: "danh-muc",
@@ -169,13 +174,7 @@ const parentState = [
         id: "view-survey",
         name: "QUẢN LÝ SURVEY",
         role: ["CHUNHIEM",],
-    },
-    {
-        id: "survey-matrix",
-        name: "SURVEY MATRIX",
-        role: ["CHUNHIEM",],
-    },
-    
+    }, 
 ]
 
 export function parentItemReducer(state = parentState, action) {

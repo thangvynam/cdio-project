@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Tooltip, Tag, Popover, Button, notification } from 'antd';
+import { Table, Tag, Popover, Button, notification } from 'antd';
 import { connect } from 'react-redux';
 import { pathToFileURL } from 'url';
 import { isUndefined } from 'util';
@@ -28,15 +28,24 @@ class SurveyMatrix extends Component {
     }
   }
 
-  componentDidMount() {
-    $.getMatrixSurvey().then((res) => {
-      //this.props.getDataBenchMarkMatrix(res.data);
+  getUrlParameter = (sParam) => {
+    var sPageURL = window.location.search.substring(1),
+      sURLVariables = sPageURL.split('&'),
+      sParameterName,
+      i;
+    for (i = 0; i < sURLVariables.length; i++) {
+      sParameterName = sURLVariables[i].split('=');
+      if (sParameterName[0] === sParam) {
+        return sParameterName[1] === undefined ? true : decodeURIComponent(sParameterName[1]);
+      }
+    }
+  };
+
+  async componentDidMount() {
+    let id = await this.getUrlParameter('id');
+    $.getMatrixSurvey({ "data": `${id}` }).then((res) => {
       this.props.getDataSurveyMatrix(res.data);
     })
-  }
-
-  componentDidUpdate() {
-    this.addClassExport();
   }
 
   //---Create Header---//
@@ -68,23 +77,6 @@ class SurveyMatrix extends Component {
 
     listITU.splice(listITU.length - 1, 1);
     listIds.splice(listIds.length - 1, 1);
-
-    // let listIndexDelete = [];
-
-    // for(let i=0;i<listITU.length-1;i++){
-    //   for(let j=i+1;j<listITU.length;j++){
-    //       if(listITU[i]===listITU[j]){
-    //         if(listIds[i]===listIds[j]){
-    //           listIndexDelete.push(i);
-    //         }
-    //       }
-    //   }
-    // }
-
-    // for(let i=0;i<listIndexDelete.length;i++){
-    //   delete listITU[listIndexDelete[i]];
-    //   delete listIds[listIndexDelete[i]];
-    // }
 
     for (let i = 0; i < listITU.length; i++) {
       if (listITU[i] === itu) {
@@ -163,7 +155,8 @@ class SurveyMatrix extends Component {
     for (const child of group) {
       let titleChild = child.split('.') || [];
       header.push({
-        title: _.toNumber(`${titleChild[0]}${titleChild[1]}${titleChild[2]}`),
+        //title: _.toNumber(`${titleChild[0]}${titleChild[1]}${titleChild[2]}`),
+        title: child,
         dataIndex: `${child}`,
         key: `${child}`,
         align: "center",
@@ -206,10 +199,7 @@ class SurveyMatrix extends Component {
   createHeaderMatrix = (myData) => {
     let header = [
       {
-        title: 'Môn Học', width: 100, dataIndex: 'mon', key: 'mon', fixed: 'left',
-      },
-      {
-        title: 'GV trưởng nhóm', width: 100, dataIndex: 'giaovien', key: 'giaovien', fixed: 'left',
+        title: 'Môn Học', width: 100, dataIndex: 'mon', key: 'mon',
       },
     ];
     let groups = this.createGroupCDR(this.getCDRHeader(myData), 0);
@@ -224,6 +214,7 @@ class SurveyMatrix extends Component {
         })
       });
     }
+    console.log(header);
     return header;
   }
   //---Create Header---//
@@ -235,7 +226,7 @@ class SurveyMatrix extends Component {
     for (const subject of myData) {
       let dataSubject = {
         'mon': subject['mon'],
-        'giaovien': subject['giaovien'],
+        // 'giaovien': subject['giaovien'],
         key: `${index++}`, //-${Math.random().toString(36).substring(7)}
       };
       let ituSubject = !_.isEmpty(subject['itu']) ? subject['itu'] : [];
@@ -251,7 +242,7 @@ class SurveyMatrix extends Component {
   //---Create Data---//
 
   onSelectChange = (selectedRowKeys) => {
-    this.setState({selectedRowKeys: selectedRowKeys });
+    this.setState({ selectedRowKeys: selectedRowKeys });
   }
 
 
@@ -296,7 +287,6 @@ class SurveyMatrix extends Component {
     return (
       !_.isEmpty(this.props.dataSurveyMatrix) && (<div>
         <p></p>
-
         <Button
           onClick={() => {
             let data = []
@@ -305,8 +295,9 @@ class SurveyMatrix extends Component {
               let obj = this.props.dataSurveyMatrix[element];
               data.push(obj)
             });
+            let idCtdt =  this.getUrlParameter('idCtdt');
             if (data.length > 0) {
-              $.addSurveyMatrix(data).then(res => {
+              $.addSurveyMatrix(data, idCtdt).then(res => {
                 if (res.data === 1) {
                   openNotificationWithIcon('success')
                 }
@@ -329,8 +320,21 @@ class SurveyMatrix extends Component {
           rowSelection={rowSelection}
           columns={this.createHeaderMatrix(this.props.dataSurveyMatrix)}
           dataSource={this.createDataMatrix(this.props.dataSurveyMatrix)}
-          scroll={{ x: 2000 }}
+          //scroll={{ x: 2000, y: 2000 }}
           style={{ marginTop: '25px' }}
+          scroll={{ x: 1500 }}
+          pagination={{
+            onChange: page => {
+              console.log(page);
+            },
+            pageSize: 5,
+          }}
+        //   pagination={{
+        //     onChange: page => {
+        //         console.log(page);
+        //     },
+        //     pageSize: 7,
+        // }}
         />
       </div>)
     )

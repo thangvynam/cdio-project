@@ -294,12 +294,19 @@ class EditMatrix extends Component {
 
     if (this.props.subjectList.length > 0 && this.props.isLoadEditMatrix === "false") {
       this.props.updateIsLoadEditMatrix("true");
+
+      $.getCDR_CDIO(this.props.ctdt).then((res) => {
+
+        this.props.updateCdrCdio(res.data)
+      })
+
       let subjectListId = [];
       this.props.subjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
-        data: subjectListId
+        data: subjectListId,
+        idCtdt: this.props.ctdt
       }
       if (data.data.length > 0) {
         $.getStandardMatrix(data).then((res) => {
@@ -338,15 +345,21 @@ class EditMatrix extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if (this.props.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
-      console.log('receive')
+    if (nextProps.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
+
+      $.getCDR_CDIO(this.props.ctdt).then((res) => {
+
+        this.props.updateCdrCdio(res.data)
+      })
+
       let subjectListId = [];
-      this.props.subjectList.map(item => {
+      nextProps.subjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
-        data: subjectListId
+        data: subjectListId,
+        idCtdt: this.props.ctdt
       }
       if (data.data.length > 0) {
         $.getStandardMatrix(data).then((res) => {
@@ -362,7 +375,7 @@ class EditMatrix extends Component {
               }
             }
             else {
-              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+              let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
               let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (subjectName !== "" && cdr_cdio !== "") {
                 data.push({
@@ -408,7 +421,6 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.state.tempMatrix)
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];
@@ -525,7 +537,7 @@ class EditMatrix extends Component {
       <React.Fragment>
         <div style={{ margin: "10px" }}>
           <Button onClick={this.saveAll}>Lưu lại</Button>
-          <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} />
+          {/* <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} /> */}
           <Table bordered
             components={components}
             rowClassName={() => 'editable-row'}

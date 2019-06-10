@@ -4,6 +4,7 @@ import DGTableItem from './Component/Table/DGTableItem';
 import { Tooltip, Button } from 'antd';
 import { Element } from 'react-scroll';
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from '../Constant/ActionType';
 
 class Layout7 extends Component {
     componentWillMount(){
@@ -24,7 +25,7 @@ class Layout7 extends Component {
                     </Element>
                 </div>
                 <div className="section-layout">
-                    <LogForm monhoc={this.props.monhoc}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.DANH_GIA} tabIndex={7}/>
                 </div>
             </React.Fragment>
         );

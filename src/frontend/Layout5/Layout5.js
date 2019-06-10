@@ -4,6 +4,7 @@ import MainForm from './Component/Main/MainForm';
 import TableItem from './Component/Table/TableItem';
 import { Tooltip, Button } from 'antd';
 import LogForm from '../Log/LogForm';
+import { MENUITEM } from '../Constant/ActionType';
 
 class Layout5 extends Component {
     componentWillMount(){
@@ -25,7 +26,7 @@ ra chi tiết tương ứng với mỗi chủ đề, <br /> các hoạt động 
                     <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
                 </div>
                 <div className="section-layout">
-                    <LogForm monhoc={this.props.monhoc}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.GIANG_DAY_LY_THUYET} tabIndex={5}/>
                 </div>
             </React.Fragment>
         );

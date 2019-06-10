@@ -207,7 +207,11 @@ class TableItem extends Component {
   }
 
 async getData() {
-  return $.getData3(this.props.monhoc).then(res => {
+  let data = {
+    id: this.props.monhoc,
+    id_ctdt: this.props.id_ctdt
+  }
+  return $.getData3(data).then(res => {
     return res.data
   })
 }
@@ -221,13 +225,18 @@ getUnique(arr, comp) {
    return unique;
 }
 
+componentWillUnmount() {
+  this.props.setFlag(false);
+  this.props.saveAndContinue([])
+}
+
 async componentDidMount() {
   await cellData.push(await this.getCDR());
   await console.log(cellData);
 }
 
 async getCDR() {
-  return $.getCDR_3().then(res => {
+  return $.getCDR_3(this.props.id_ctdt).then(res => {
       return res.data
   })
 }
@@ -410,12 +419,13 @@ componentWillReceiveProps(nextProps){
     var self = this;
     self.setState({disableSaveAll: true})
     //this.props.saveAll(this.props.monhoc)
-    $.saveData3({ data: self.props.itemLayout3Reducer.previewInfo, id: self.props.monhoc })
+    $.saveData3({ data: self.props.itemLayout3Reducer.previewInfo, id: self.props.monhoc, id_ctdt: self.props.id_ctdt })
     .then((res) => {
       if(res.data === 1) {
         self.loadData()
       }
     });
+    $.saveLog({ data: this.props.itemLayout3Reducer.logData })
     openNotificationWithIcon('success');
     //this.loadData();
     

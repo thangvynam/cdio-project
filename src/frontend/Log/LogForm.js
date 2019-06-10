@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import axios from 'axios';
 import $ from './../helpers/services'
 import { Form, Button, Input } from 'antd';
-import { SAVE_LOG_DATA,SAVE_COMMENT } from "../Constant/ActionType"
+import { SAVE_LOG_DATA, SAVE_COMMENT } from "../Constant/ActionType"
 import CommentLog from "../Comment/Comment"
 import { getCurrTime } from "../utils/Time";
 const TextArea = Input.TextArea;
@@ -21,35 +21,41 @@ class LogForm extends Component {
         }
     }
 
-    async componentWillReceiveProps(nextProps) { 
+    async componentWillReceiveProps(nextProps) {
         let count = this.state.count;
-        if(count <= 2) {
-            this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab))   
-            let data = await this.getData(nextProps.logReducer.contentTab);
-            this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.monhoc); 
-        }               
-        
+        if (count <= 2) {
+            //this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab)) 
+            //let data = await this.getData(nextProps.logReducer.contentTab);
+            //this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.monhoc);
+            this.setState({ contentTab: this.props.tab, count: count + 1 }, () => console.log(this.state.contentTab))
+            let data = await this.getData(this.props.tab);
+            this.props.saveLoad(data, this.props.tab, this.props.monhoc);
+        }
+
     }
 
-     async componentDidMount(nextProps) { 
+    async componentDidMount(nextProps) {
         let count = this.state.count;
-        if(count <= 0) {
-            this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab))   
-            let data = await this.getData(nextProps.logReducer.contentTab);
-            this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.monhoc); 
-        }               
-        
+        if (count <= 0) {
+            this.setState({ contentTab: this.props.tab, count: count + 1 }, () => console.log(this.state.contentTab))
+            let data = await this.getData(this.props.tab);
+            this.props.saveLoad(data, this.props.tab, this.props.monhoc);
+            // this.setState({ contentTab: this.props.tab, count: count + 1 }, () => console.log(this.state.contentTab))
+            // let data = await this.getData(nextProps.logReducer.contentTab);
+            // this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.monhoc);
+        }
+
     }
 
-    
+
 
     async getData(contentTab) {
         let data = {
             subjectid: this.props.monhoc,
             contentTab: contentTab
         }
-        
-        return $.getLog({data}).then(res => {
+
+        return $.getLog({ data }).then(res => {
             return res.data
         })
     }
@@ -60,20 +66,20 @@ class LogForm extends Component {
         });
     }
 
-    submit = () =>{
-       this.props.saveComment(this.props.logReducer.idLog,this.state.value);
+    submit = () => {
+        this.props.saveComment(this.props.logReducer.idLog, this.state.value);
     }
 
-    componentDidMount(){
-        if(!firstCollect){
-            firstCollect= true;
+    componentDidMount() {
+        if (!firstCollect) {
+            firstCollect = true;
             this.props.getComment();
         }
-       
+
     }
 
     getDataReducer() {
-        let data = this.props.logReducer     
+        let data = this.props.logReducer
         switch (this.state.contentTab) {
             case "thong-tin-chung": {
                 return data.logData1
@@ -102,7 +108,11 @@ class LogForm extends Component {
             case "quy-dinh-chung": {
                 return data.logData9
             }
-            default: 
+            case "review": {
+                let tabLogString = `logData${this.props.tabIndex}`;
+                return data[tabLogString];
+            }
+            default:
                 return null
         }
     }
@@ -110,21 +120,21 @@ class LogForm extends Component {
     render() {
         let data = this.getDataReducer()
         let LogComment = <div></div>
-        if(this.props.logReducer.renderComment || !this.props.logReducer.renderComment){
-            
-            if(data) {
+        if (this.props.logReducer.renderComment || !this.props.logReducer.renderComment) {
+
+            if (data) {
                 try {
                     data.sort((a, b) => {
                         return b.thoi_gian - a.thoi_gian
                     })
                 } catch (error) {
                     return error
-                } 
+                }
                 LogComment = data.map((itemparent, ich) => {
                     let con = this.props.logReducer.logComment2.map((itemchilren, ic) => {
                         if (itemchilren.log_id === itemparent.id) {
-                            return <CommentLog content={itemchilren.content} hasReply={false} 
-                                               nguoi_gui={itemchilren.nguoi_gui} timestamp={itemchilren.thoi_gian}/>  ;
+                            return <CommentLog content={itemchilren.content} hasReply={false}
+                                nguoi_gui={itemchilren.nguoi_gui} timestamp={itemchilren.thoi_gian} />;
                         } else return;
                     })
                     if (itemparent.id == this.props.logReducer.idLog) {
@@ -169,47 +179,47 @@ const mapStateToProps = (state, ownProps) => {
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
-  return {
-    saveLoad: (data, contentTab, subjectid) => {
-        dispatch({ type: SAVE_LOG_DATA, data, contentTab, subjectid });         
-    },
-    saveComment :(logID,content) =>{
-        console.log(logID )
-        const obj = {
-            log_id : logID ,
-            id : 0,
-            nguoi_gui : "robot",
-            content : content,
-            thoi_gian : getCurrTime(),
-        }
-        $.addComment2({data:obj})
-        // axios.post('/add-comment-2', { data:obj })
-            .then(res => {
-                console.log(res)
-            })
-                
-        dispatch({ type: SAVE_COMMENT, obj:obj });
-    },
-    getComment:()=>{
-        $.getComment()
-            .then(res => {
-                let data = res.data;
+    return {
+        saveLoad: (data, contentTab, subjectid) => {
+            dispatch({ type: SAVE_LOG_DATA, data, contentTab, subjectid });
+        },
+        saveComment: (logID, content) => {
+            console.log(logID)
+            const obj = {
+                log_id: logID,
+                id: 0,
+                nguoi_gui: "robot",
+                content: content,
+                thoi_gian: getCurrTime(),
+            }
+            $.addComment2({ data: obj })
+                // axios.post('/add-comment-2', { data:obj })
+                .then(res => {
+                    console.log(res)
+                })
 
-                if (data != null) {
-                    for(let obj of data){
-                        const sample = {
-                            log_id : obj.log_id,
-                            id : obj.id,
-                            nguoi_gui : obj.nguoi_gui,
-                            content : obj.noi_dung,
-                            thoi_gian : obj.thoi_gian,
+            dispatch({ type: SAVE_COMMENT, obj: obj });
+        },
+        getComment: () => {
+            $.getComment()
+                .then(res => {
+                    let data = res.data;
+
+                    if (data != null) {
+                        for (let obj of data) {
+                            const sample = {
+                                log_id: obj.log_id,
+                                id: obj.id,
+                                nguoi_gui: obj.nguoi_gui,
+                                content: obj.noi_dung,
+                                thoi_gian: obj.thoi_gian,
+                            }
+                            console.log(sample)
+                            dispatch({ type: SAVE_COMMENT, obj: sample });
                         }
-                        console.log(sample)
-                        dispatch({ type: SAVE_COMMENT, obj:sample });
                     }
-                }
-            });
+                });
+        }
     }
-  }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LogForm);

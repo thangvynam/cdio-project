@@ -117,7 +117,7 @@ export default{
     COLLECT_DATA5 : baseUrl + '/collect-data-5',
 
     
-    ADD_COMMENT2 : baseUrl + '/add-comment-2',
+    ADD_COMMENT : baseUrl + '/add-comment',
     SAVE_DATA_2 : baseUrl + '/save-data-2',
     SAVE_DATA_3 : baseUrl + '/save-data-3',
 

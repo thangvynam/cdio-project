@@ -769,7 +769,6 @@ class itemLayout7ReducerItem extends React.Component {
 const mapStateToProps = (state) => {
   return {
     itemLayout7Reducer: state.itemLayout7Reducer,
-    subjectId: state.subjectid,
     logReducer: state.logReducer
 
   }

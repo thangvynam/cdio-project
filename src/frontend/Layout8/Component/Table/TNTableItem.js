@@ -381,7 +381,6 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = (state) => {
   return {
     itemLayout8Reducer: state.itemLayout8Reducer,
-    subjectId: state.subjectid,
     logReducer: state.logReducer,
   }
 }

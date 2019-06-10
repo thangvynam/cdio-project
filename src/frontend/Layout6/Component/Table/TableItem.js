@@ -692,10 +692,7 @@ class TableItem extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      !this.props.itemKHGDTH.isLoaded &&
-      nextProps.subjectId !== null &&
-      nextProps.subjectId !== undefined &&
-      nextProps.subjectId !== ""
+      !this.props.itemKHGDTH.isLoaded 
     ) {
       this.props.onChangeIsLoaded(true);
       this.setState({ subjectId: this.props.monhoc });
@@ -821,7 +818,6 @@ class TableItem extends Component {
 const mapStateToProps = state => {
   return {
     itemKHGDTH: state.itemLayout6Reducer,
-    subjectId: state.subjectid,
     logReducer: state.logReducer
   };
 };

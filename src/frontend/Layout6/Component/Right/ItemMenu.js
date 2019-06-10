@@ -427,7 +427,6 @@ class ItemMenu extends Component {
 const mapStateToProps = state => {
   return {
     itemKHGDTH: state.itemLayout6Reducer,
-    subjectId: state.subjectid,
     logReducer: state.logReducer,
 
   };

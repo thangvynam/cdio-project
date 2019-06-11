@@ -4,6 +4,18 @@ import * as links from "../constants/links";
 import * as message from "./message";
 import * as detailEduProgramAction from "./detailEduProgramAction";
 
+export const onExportFilePDF = id => {
+  return (dispatch, getState) => {
+    let req = `${links.EXPORT_EDUPROGRAM}?ideduprog=${id}`;
+    axios
+      .get(req, {"responseType": "blob"})
+      .then(res => {
+      })
+      .catch(err => {
+      });
+  };
+};
+
 export const loadEduProgramsSuccess = eduPrograms => ({
   type: cst.LOAD_EDUPROGRAMS_SUCCESS,
   eduPrograms: eduPrograms

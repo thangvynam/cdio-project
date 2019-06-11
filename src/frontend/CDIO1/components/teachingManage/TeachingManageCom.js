@@ -20,7 +20,6 @@ export default class TeachingManageCom extends Component {
   }
 
   onOpenAssignment = data => {
-    console.log(data)
     this.setState({
       visible: true,
       subject: data
@@ -37,22 +36,31 @@ export default class TeachingManageCom extends Component {
   onAddTeacher = data => {
     const iduser = [...this.state.subject.arrayIDUser, data.id];
     const idmainteacher =
-      data.id === this.state.subject.idMainTeacher
+      data.id === this.state.subject.IdMainTeacher
         ? null
-        : this.state.subject.idMainTeacher;
+        : this.state.subject.IdMainTeacher;
     const idsubject = this.state.subject.IdSubject;
     const idsubjectblock = this.state.subject.IdSubjectBlock;
-    const iddetail = this.props.detailEduProgram.Id;
     const block = {
       iduser,
       idmainteacher,
       idsubject,
-      idsubjectblock,
-      iddetail
+      idsubjectblock
     };
-    const thisData=[block];
-    this.props.onAddTeacher(thisData);
+    const thisData = [block];
+    this.props.onAddTeacher(thisData, this.props.ctdt);
+    // const subject = this.props.tmpsubjects.filter(
+    //   subject =>
+    //     subject.IdSubject === idsubject &&
+    //     subject.IdSubjectBlock === idsubjectblock
+    // );
+    // if (subject) {
+    //   this.setState({
+    //     subject: subject[0]
+    //   });
+    // }
     this.setState({
+      visible: false,
       subject: {}
     });
   };
@@ -64,42 +72,60 @@ export default class TeachingManageCom extends Component {
     );
     const idsubject = this.state.subject.IdSubject;
     const idsubjectblock = this.state.subject.IdSubjectBlock;
-    const iddetail = this.props.detailEduProgram.Id;
     const block = {
       iduser,
       idmainteacher,
       idsubject,
-      idsubjectblock,
-      iddetail
+      idsubjectblock
     };
-    const thisData=[block];
-    this.props.onAddTeacher(thisData);
+    const thisData = [block];
+    this.props.onAddTeacher(thisData, this.props.ctdt);
+    // const subject = this.props.tmpsubjects.filter(
+    //   subject =>
+    //     subject.IdSubject === idsubject &&
+    //     subject.IdSubjectBlock === idsubjectblock
+    // );
+    // if (subject) {
+    //   this.setState({
+    //     subject: subject[0]
+    //   });
+    // }
     this.setState({
+      visible: false,
       subject: {}
     });
   };
 
   onDeleteTeacher = data => {
     const idmainteacher =
-      data.id === this.state.subject.idMainTeacher
+      data.id === this.state.subject.IdMainTeacher
         ? null
-        : this.state.subject.idMainTeacher;
+        : this.state.subject.IdMainTeacher;
     const iduser = [...this.state.subject.arrayIDUser].filter(
       id => id !== data.id
     );
     const idsubject = this.state.subject.IdSubject;
     const idsubjectblock = this.state.subject.IdSubjectBlock;
-    const iddetail = this.props.detailEduProgram.Id;
     const block = {
       iduser,
       idmainteacher,
       idsubject,
-      idsubjectblock,
-      iddetail
+      idsubjectblock
     };
-    const thisData=[block];
-    this.props.onAddTeacher(thisData);
+    const thisData = [block];
+    this.props.onAddTeacher(thisData, this.props.ctdt);
+    // const subject = this.props.tmpsubjects.filter(
+    //   subject =>
+    //     subject.IdSubject === idsubject &&
+    //     subject.IdSubjectBlock === idsubjectblock
+    // );
+    // if (subject) {
+    //   this.setState({
+    //     subject: subject[0]
+    //   });
+    // }
     this.setState({
+      visible: false,
       subject: {}
     });
   };
@@ -143,7 +169,7 @@ export default class TeachingManageCom extends Component {
           </Button>
         )}
         {(commonLogic.isTeacher(data, this.state.subject) ||
-          commonLogic.isMainTeacher(data, this.state.subject)) && (
+          commonLogic.isMainTeacher(data, this.state.subject))?(
           <Button
             title="Hủy phân công"
             onClick={() => this.onDeleteTeacher(data)}
@@ -152,14 +178,12 @@ export default class TeachingManageCom extends Component {
           >
             <i className="material-icons">person_add_disabled</i>
           </Button>
-        )}
+        ):null}
       </div>
     );
   };
 
   render() {
-    // console.log(this.props.users)
-    // console.log(this.props.subjects)
     const nationHeader = (
       <Row style={{ margin: "0" }}>
         <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
@@ -247,10 +271,7 @@ export default class TeachingManageCom extends Component {
               ref={el => (this.dt = el)}
               globalFilter={this.state.globalFilter}
               emptyMessage="No records found"
-              value={commonLogic.mapUserToSubject(
-                this.props.subjects,
-                this.props.users
-              )}
+              value={this.props.tmpsubjects}
             >
               <Column
                 field="SubjectCode"

@@ -188,7 +188,6 @@ class MenuMucTieu extends Component {
 const mapStateToProps = (state, ownProps) => {
     return {
         itemLayout3Reducer: state.itemLayout3Reducer,
-        subjectid: state.subjectid,
         logReducer: state.logReducer
     }
 }

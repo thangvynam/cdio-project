@@ -13,9 +13,9 @@ export const loadBlocksError = errorMessage => ({
   errorMessage
 });
 
-export const onLoadBlocks = idDetail => {
+export const onLoadBlocks = id => {
   return (dispatch, getState) => {
-    let req = `${links.LOAD_BLOCKS}?id=${idDetail}`;
+    let req = `${links.LOAD_BLOCKS}?id=${id}`;
     axios
       .get(req)
       .then(res => {
@@ -52,11 +52,12 @@ export const addTeacherError = errorMessage => ({
   errorMessage
 });
 
-export const onAddTeacher = data => {
+export const onAddTeacher = (data, id) => {
   return (dispatch, getState) => {
     let link = links.ADD_TEACHER;
     let params = {};
     params.data = JSON.stringify(data);
+    console.log(data)
     axios
       .post(link, params, {
         headers: {
@@ -79,7 +80,7 @@ export const onAddTeacher = data => {
           dispatch(message.message(chirp));
           dispatch(addTeacherError(res));
         }
-        dispatch(onLoadBlocks(data[0].iddetail));
+        dispatch(onLoadBlocks(+id));
       })
       .catch(err => {
         let chirp = {
@@ -88,7 +89,7 @@ export const onAddTeacher = data => {
         };
         dispatch(message.message(chirp));
         dispatch(addTeacherError(err));
-        dispatch(onLoadBlocks(data[0].iddetail));
+        dispatch(onLoadBlocks(+id));
       });
   };
 };

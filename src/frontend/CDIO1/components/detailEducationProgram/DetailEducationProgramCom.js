@@ -281,7 +281,7 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="6" md="6" sm="6" />
           <Col lg="2" md="2" sm="2">
-            <label className="exportPDF">
+            <label onClick={()=>this.props.onExportFilePDF(this.props.ctdt)} className="exportPDF">
               <i className="material-icons">save_alt</i> Tạo file PDF
             </label>
           </Col>
@@ -385,6 +385,7 @@ export default class DetailEducationProgramCom extends React.Component {
                 <ContentProgramCom
                   ref={this.ContentProgramCom}
                   subjects={this.props.subjects}
+                  onSaveEduProgram={this.onSave}
                 />
               </AccordionTab>
 

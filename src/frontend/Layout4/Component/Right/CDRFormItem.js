@@ -360,7 +360,6 @@ const mapStateToProps = (state) => {
     cdrdata: state.cdrdata,
     cdrtable: state.itemLayout4Reducer,
     cdrverb: state.cdrverb,
-    subjectId: state.subjectid,
     mtmh: state.mtmh,
     cdrmdhd: state.cdrmdhd,
     logReducer: state.logReducer

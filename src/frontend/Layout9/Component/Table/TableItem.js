@@ -411,7 +411,6 @@ class TableItem extends Component {
 const mapStateToProps = state => {
   return {
     itemRule: state.itemLayout9Reducer,
-    subjectId: state.subjectid,
     logReducer: state.logReducer
   };
 };

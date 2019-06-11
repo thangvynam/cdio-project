@@ -392,7 +392,6 @@ const mapStateToProps = (state) => {
   return {
     dgdata: state.dgdata,
     itemLayout7Reducer: state.itemLayout7Reducer,
-    subjectId: state.subjectid,
     logReducer: state.logReducer
   };
 }

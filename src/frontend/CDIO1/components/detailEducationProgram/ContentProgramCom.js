@@ -30,6 +30,8 @@ export default class ContentProgramCom extends React.Component {
       isDialogTable: false,
       isDialogDelete: false,
       isDialogPartStudy: false,
+      subject: {},
+      isDialogDeleteSubject: false,
       nameValue: "", // title of row
       isTable: false, // check is table,
       isTitle: false, // check is Title,
@@ -115,8 +117,8 @@ export default class ContentProgramCom extends React.Component {
         this.state.descriptionFreePartStudy,
         this.state.creditFreeStudy
       )
-      
       this.setState({ nodes: data });
+      this.props.onSaveEduProgram();
     }
     this.onHideDialogChild();
   };
@@ -153,7 +155,7 @@ export default class ContentProgramCom extends React.Component {
     node.data.displayName = (
       <TableSubjectsCom
         subjects={subjects}
-        deleteSubject={this.deleteSubjectOnTable}
+        deleteSubject={this.isShowDialogDeleteSubject}
         sum={node.data.totalCredits}
       />
     );
@@ -227,7 +229,7 @@ export default class ContentProgramCom extends React.Component {
       return (
         <TableSubjectsCom
           subjects={props.node.data.subjects}
-          deleteSubject={this.deleteSubjectOnTable}
+          deleteSubject={this.isShowDialogDeleteSubject}
           sum={props.node.data.totalCredits}
         />
       );
@@ -316,7 +318,8 @@ export default class ContentProgramCom extends React.Component {
       isDialogPartStudy: true,
       descriptionFreePartStudy: node.data.description,
       creditFreeStudy: node.data.credit
-    })
+    });
+
   }
 
   isShowDialogTable = node => {
@@ -339,6 +342,15 @@ export default class ContentProgramCom extends React.Component {
       node: node
     });
   };
+
+  isShowDialogDeleteSubject = subject => {
+    debugger;
+    this.setState({
+      isDialogDeleteSubject: true,
+      subject: subject
+    });
+  };
+
 
   onHideDialogRoot = () => {
     this.setState({ isDialogRoot: false });
@@ -365,6 +377,10 @@ export default class ContentProgramCom extends React.Component {
 
   onHideDialogDelete = () => {
     this.setState({ isDialogDelete: false });
+  };
+
+  onHideDialogDeleteSubject = () => {
+    this.setState({ isDialogDeleteSubject: false });
   };
 
   handleChangeValue = e => {
@@ -396,10 +412,13 @@ export default class ContentProgramCom extends React.Component {
     return root;
   };
 
-  deleteSubjectOnTable = rowData => {
-    let root = logic.deleteSubjectTable(this.state.nodes, rowData);
+  deleteSubjectOnTable = () => {
+    let root = logic.deleteSubjectTable(this.state.nodes, this.state.subject);
     root = this.loadTreeNodes(root);
-    this.setState({ nodes: root });
+    this.setState({ 
+      nodes: root,
+      isDialogDeleteSubject: false
+    });
   };
 
   filterSubjects = e => {
@@ -565,7 +584,7 @@ export default class ContentProgramCom extends React.Component {
                       style={{ marginRight: ".3em", padding: "8px" }}
                       title={`Thêm học phần tự do của ${this.state.nodeHover}`}
                     >
-                      <i className="material-icons">add to queue</i>
+                      <i className="material-icons">add_to_queue</i>
                     </Button>
                   ) : (
                       <Button
@@ -614,7 +633,7 @@ export default class ContentProgramCom extends React.Component {
     );
   }
 
-  deleteSubject = subject => {
+  deleteSubject = (subject) => {
     this.setState({
       listSubjects: logic.deteleSubject(this.state.listSubjects, subject)
     });
@@ -695,6 +714,17 @@ export default class ContentProgramCom extends React.Component {
         Xóa
       </Button>
       <Button onClick={this.onHideDialogDelete} theme="secondary">
+        Hủy
+      </Button>
+    </div>
+  );
+
+  footerDialogDeleteSubject = (
+    <div>
+      <Button onClick={this.deleteSubjectOnTable} theme="success">
+        Xóa
+      </Button>
+      <Button onClick={this.onHideDialogDeleteSubject} theme="secondary">
         Hủy
       </Button>
     </div>
@@ -1044,7 +1074,7 @@ export default class ContentProgramCom extends React.Component {
           </Row>
         </Dialog>
 
-        {/* Dialoag delete */}
+        {/* Dialoag delete node*/}
         <Dialog
           header="Xóa"
           visible={this.state.isDialogDelete}
@@ -1053,6 +1083,17 @@ export default class ContentProgramCom extends React.Component {
           footer={this.footerDialogDelete}
         >
           <p>{`Bạn thực sự muốn xóa cấp ${this.state.node.key}`}</p>
+        </Dialog>
+
+         {/* Dialoag delete subject */}
+         <Dialog
+          header="Xóa"
+          visible={this.state.isDialogDeleteSubject}
+          onHide={() => this.onHideDialogDeleteSubject()}
+          style={{ width: "50vw" }}
+          footer={this.footerDialogDeleteSubject}
+        >
+          <p>{`Bạn thực sự muốn xóa môn học`}</p>
         </Dialog>
 
         {/* Dialog add free study part */}

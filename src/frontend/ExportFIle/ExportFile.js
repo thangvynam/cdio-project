@@ -53,11 +53,38 @@ class ExportFile extends Component {
     }
 
     getData3 = (monhoc) => {
-        return $.getData3(monhoc).then(res => {
-            console.log(res);
-            return res.data
-          }).then(resp => {
-            console.log(resp);
+        let self = this;
+        let saveData = []
+        let standActs = [];
+        
+        let data = {
+            id: monhoc,
+            id_ctdt: self.props.id_ctdt
+        }
+
+        $.getData3(data).then(res => {
+            if (res.data.length > 0) {
+                res.data.forEach(element => {
+                    res.data.forEach(element2 => {
+                        if(element2.muc_tieu === element.muc_tieu) {
+                            element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length -1)
+                            element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
+                            standActs.push(element2.KeyRow)
+                        }
+                    });
+
+                    let newObj = {
+                        objectName: element.muc_tieu,
+                        description: element.mo_ta,
+                        standActs: standActs,
+                        del_flag: element.del_flag,
+                        id: element.id,
+                    }        
+                    saveData.push(newObj);        
+                });
+            }
+            saveData = saveData.filter((item) => item.del_flag === 0);
+            data3 = saveData;
         })
     }
 

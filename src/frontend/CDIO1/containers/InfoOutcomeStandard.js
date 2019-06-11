@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
-import { Prompt } from "react-router";
+import { Link } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -24,6 +24,7 @@ class InfoOutcomeStandard extends Component {
   componentDidMount = () => {
     const idEdu = this.props.ctdt;
     this.props.onLoadEduProgram(+idEdu);
+    this.props.onLoadDetailEduProgram(+idEdu);
     let id = +this.props.detailEduProgram.IdOutcome;
     this.props.onLoadOutcomeStandard(id);
   };
@@ -43,9 +44,8 @@ class InfoOutcomeStandard extends Component {
       : +this.props.detailEduProgram.IdOutcome;
     id = id ? id : 0;
 
-    return id ? (
+    return id && infoOutcomeStandard ? (
       <Container fluid className="main-content-container px-4">
-        <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
             <PageTitle
@@ -63,6 +63,7 @@ class InfoOutcomeStandard extends Component {
         <hr />
         <Row>
           <Col lg="12" md="12">
+            <h3>
             {`Chuẩn đầu ra ${infoOutcomeStandard &&
               infoOutcomeStandard.NameOutcomeStandard} đang được sử dụng ở Chương trình đào tạo ${
               this.props.infoEduProgram[0].EduName
@@ -72,11 +73,15 @@ class InfoOutcomeStandard extends Component {
               infoOutcomeStandard.NameFaculty}, hệ ${infoOutcomeStandard &&
               infoOutcomeStandard.NameProgram}, năm học ${infoOutcomeStandard &&
               infoOutcomeStandard.SchoolYear}`}
+            </h3>
           </Col>
         </Row>
       </Container>
     ) : (
+    <div>
       <Empty />
+      <h2 align="center">Quay lại tab <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để tải dữ liệu</h2>
+    </div>
     );
   }
 }

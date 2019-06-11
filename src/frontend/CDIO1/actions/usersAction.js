@@ -96,9 +96,11 @@ export const onLoadUsers = () => {
       .get(req, {
         headers: {
           "Content-Type": "application/json",
-          authorization: localStorage.getItem("user")
+          "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
-            : ""
+            : "",
+            "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : [],
+            "username": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Username : "null"
         }
       })
       .then(res => {
@@ -147,7 +149,8 @@ export const onRegisterUser = user => {
           "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
             : "",
-            "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : []
+            "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : [],
+            "username": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Username : "null"
         }
       })
       .then(res => {
@@ -215,7 +218,9 @@ export const onChangePass = user => {
           "Content-Type": "application/json",
           "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
-            : ""
+            : "",
+            "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : [],
+            "username": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Username : "null"
         }
       })
       .then(res => {
@@ -266,7 +271,9 @@ export const onGetInfo = iduser => {
           "Content-Type": "application/json",
           "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
-            : ""
+            : "",
+            "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : [],
+            "username": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Username : "null"
         }
       })
       .then(res => {
@@ -313,7 +320,8 @@ export const onDeleteUser = username => {
           "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
             : "",
-          "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : []
+            "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : [],
+            "username": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Username : "null"
         }
       })
       .then(res => {
@@ -368,7 +376,8 @@ export const onRegisterBlockUser = users => {
           "authorization": localStorage.getItem("user")
             ? "JWT " + JSON.parse(localStorage.getItem("user")).token
             : "",
-          "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : []
+            "role": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Role : [],
+            "username": localStorage.getItem("user") ? JSON.parse(localStorage.getItem("user")).data.Username : "null"
         }
       })
       .then(res => {

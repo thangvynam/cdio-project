@@ -444,8 +444,8 @@ const getLog = (data) => {
     return $.post(url,data);
 }
 
-const addComment2 = (data) => {
-    let url = _.ADD_COMMENT2;
+const addComment = (data) => {
+    let url = _.ADD_COMMENT;
     return $.post(url,data);
 }
 
@@ -655,7 +655,7 @@ export default{
     getStandardOutput5,
     collectData5,
 
-    addComment2,
+    addComment,
     saveData2,
     saveData3,
     addData5,

@@ -19,9 +19,6 @@ class ListContentContainer extends React.Component {
     };
   }
 
-  componentWillReceiveProps(nextProps) {
-
-  }
   onChangeListEdupros = e => {
     this.setState({
       optionEdupro: e.value
@@ -116,20 +113,8 @@ class ListContentContainer extends React.Component {
   }
 
   render() {
-    // contentList (đã có trước đó từ việc gọi redux ở nơi khác)
-    // knowledgeTables có được từ việc gọi onLoadKnowledgeTable của redux
-    // console.log(this.props.contentList);
-    // console.log(this.props.knowledgeTables);
-    // bắt sự kiện chọn content thuộc contentList => gọi redux onLoadKnowledgeTable
     return (
       <div>
-        {/* <Button onClick={() => this.props.onLoadKnowledgeTable(67)}>
-        load KnowledgeTable
-        </Button>
-        
-        <Button onClick={() => this.props.onAddKnowledgeTable(this.props.knowledgeTables)}>
-        add KnowledgeTable
-        </Button> */}
         <Row>
           <Col lg="3" md="3" sm="3">
             <label>Chương trình đào tạo:</label>

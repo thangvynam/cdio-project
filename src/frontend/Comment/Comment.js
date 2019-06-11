@@ -19,8 +19,8 @@ class CommentLog extends Component {
                         datetime={this.props.timestamp ? <b style={{ color: "red" }}>{convertTime(this.props.timestamp)}</b> : ""}
                         avatar={(
                             <Avatar
-                                src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                                alt="Han Solo"
+                                src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"
+                                alt="teacher avatar"
                             />
                         )}
                         content={<p>{this.props.content}</p>}
@@ -36,8 +36,8 @@ class CommentLog extends Component {
                 datetime={this.props.timestamp ? <b style={{ color: "red" }}>{convertTime(this.props.timestamp)}</b> : ""}
                 avatar={(
                     <Avatar
-                        src="https://zos.alipayobjects.com/rmsportal/ODTLcjxAfvqbxHnVXCYX.png"
-                        alt="Han Solo"
+                        src="http://s3.amazonaws.com/37assets/svn/765-default-avatar.png"
+                        alt="teacher avatar"
                     />
                 )}
                 content={<p>{this.props.content}</p>}

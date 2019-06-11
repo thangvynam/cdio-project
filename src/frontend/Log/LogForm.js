@@ -1,7 +1,6 @@
 import React, { Component } from "react";
 import "./1.css"
 import { connect } from 'react-redux';
-import axios from 'axios';
 import $ from './../helpers/services'
 import { Form, Button, Input } from 'antd';
 import { SAVE_LOG_DATA, SAVE_COMMENT } from "../Constant/ActionType"
@@ -67,7 +66,7 @@ class LogForm extends Component {
     }
 
     submit = () => {
-        this.props.saveComment(this.props.logReducer.idLog, this.state.value);
+         this.props.saveComment(this.props.logReducer.idLog, this.state.value);
     }
 
     componentDidMount() {
@@ -184,16 +183,14 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch({ type: SAVE_LOG_DATA, data, contentTab, subjectid });
         },
         saveComment: (logID, content) => {
-            console.log(logID)
             const obj = {
                 log_id: logID,
-                id: 0,
-                nguoi_gui: "robot",
+                nguoi_gui: JSON.parse(localStorage.getItem('user')).data.Name,
                 content: content,
                 thoi_gian: getCurrTime(),
             }
-            $.addComment2({ data: obj })
-                // axios.post('/add-comment-2', { data:obj })
+            
+            $.addComment({ data: obj })
                 .then(res => {
                     console.log(res)
                 })

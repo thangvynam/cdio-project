@@ -563,6 +563,7 @@ class Content extends Component {
                             <ExportFile 
                                 monhoc={monhoc} 
                                 tenmonhoc = {subjectName}
+                                id_ctdt = {ctdt}
                             />
                         </div>
                     </React.Fragment>

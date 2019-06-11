@@ -43,6 +43,24 @@ class ExportFile extends Component {
         return { muc_do_1: "", muc_do_2: "", muc_do_3: "" };
     }
 
+    getData2 = (monhoc) => {
+        $.getData2(monhoc)
+            .then(res => {
+                return res.data
+            }).then(resp => {
+                data2 = resp.Description;
+            })
+    }
+
+    getData3 = (monhoc) => {
+        return $.getData3(monhoc).then(res => {
+            console.log(res);
+            return res.data
+          }).then(resp => {
+            console.log(resp);
+        })
+    }
+
     getData4 = (monhoc) => {
         let self = this;
         try {
@@ -276,6 +294,8 @@ class ExportFile extends Component {
     }
 
     loadData = (monhoc) => {
+        this.getData2(monhoc);
+        this.getData3(monhoc);
         this.getData4(monhoc);
         this.getData5(monhoc);
         this.getData6(monhoc);
@@ -360,8 +380,13 @@ class ExportFile extends Component {
 
         this.addDataMap(function (obj) {
             self.setState({ loading: 0 });
-            console.log(obj);
-            $.exportFile(JSON.stringify(obj)).then(res => {
+            
+            let data = {
+                content  : JSON.stringify(obj),
+                nameFile : self.props.tenmonhoc,
+            }
+
+            $.exportFile(JSON.stringify(data)).then(res => {
                 if (res.data == 1) {
                     self.setState({ loading: 1 });
                 }

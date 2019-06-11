@@ -560,7 +560,10 @@ class Content extends Component {
                             </div>
                         </Row>
                         <div className="wrapper-custom-layout">
-                            <ExportFile monhoc={monhoc} />
+                            <ExportFile 
+                                monhoc={monhoc} 
+                                tenmonhoc = {subjectName}
+                            />
                         </div>
                     </React.Fragment>
                 );

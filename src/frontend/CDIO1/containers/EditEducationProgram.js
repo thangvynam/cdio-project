@@ -29,7 +29,8 @@ import {
   isLoadedDataCtdt,
   teacherSubject,
   teacherReviewSubject,
-  isLoadEditMatrix
+  isLoadEditMatrix,
+  cdrCdio
 } from "../../Constant/ActionType";
 //END CDIO-2 api
 class DetailEducationProgramTmp extends Component {
@@ -95,6 +96,11 @@ checkInTeacherReviewSubject = (teacherReviewSubject, idSubject) => {
     this.props.onLoadSubjects();
     this.props.onLoadOutcomeStandards();
     this.props.updateIsLoadEditMatrix("false");
+
+    if(id !== "" && id !== undefined && id !== null) {
+      $.getCDR_CDIO(id)
+    .then(res => this.props.updateCdrCdio(res.data));
+    }
     $.getBlockSubject(id).then(res => {
       let resData = res.data.data;
       let dataSubject = [];
@@ -253,4 +259,5 @@ export default connect(mapStateToProps, {
   updateTeacherSubject: teacherSubject,
   updateTeacherReviewSubject: teacherReviewSubject,
   updateIsLoadEditMatrix: isLoadEditMatrix,
+  updateCdrCdio: cdrCdio,
 })(DetailEducationProgramTmp);

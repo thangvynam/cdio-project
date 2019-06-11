@@ -615,11 +615,9 @@ class CDRTableItem extends Component {
     return -1;
   }
 
-  componentDidMount() {
-    if (this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
-      if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0 && !this.props.isReview) {
-        this.props.updateIsLoadEditMatrix("true");
-        let subjectListId = [];
+  loadEditMatrix = () => {
+    var self = this;
+    let subjectListId = [];
         this.props.subjectList.map(item => {
           subjectListId.push(item.IdSubject);
         })
@@ -630,16 +628,16 @@ class CDRTableItem extends Component {
         $.getStandardMatrix(data).then((res) => {
           let data = [];
           for (let i = 0; i < res.data.length; i++) {
-            let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
+            let index = self.checkIdExist(data, res.data[i].thong_tin_chung_id);
             if (index !== -1) {
-              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+              let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (cdr_cdio !== "") {
                 data[index][cdr_cdio] = res.data[i].muc_do;
               }
             }
             else {
-              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
-              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+              let subjectName = self.getSubjectName(self.props.subjectList, res.data[i].thong_tin_chung_id);
+              let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (subjectName !== "" && cdr_cdio !== "") {
                 data.push({
                   key: res.data[i].thong_tin_chung_id,
@@ -653,8 +651,14 @@ class CDRTableItem extends Component {
 
             }
           }
-          this.props.updateEditMatrix(data);
+          self.props.updateEditMatrix(data);
         })
+  }
+  componentDidMount() {
+    if (this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
+      if (this.props.isLoadEditMatrix === "false" && this.props.subjectList.length > 0 && !this.props.isReview) {
+        this.props.updateIsLoadEditMatrix("true");
+        this.loadEditMatrix();
 
       }
       if(!this.props.isReview)  this.loadGap();
@@ -671,6 +675,11 @@ class CDRTableItem extends Component {
       this.props.updateIsLoad("true");
       if(!this.props.isReview)  this.loadGap();
       this.loadTable();
+    }
+    if (nextProps.isLoadEditMatrix === "false" && this.props.subjectList.length > 0 && !this.props.isReview) {
+      this.props.updateIsLoadEditMatrix("true");
+      this.loadEditMatrix();
+
     }
   }
 

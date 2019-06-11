@@ -15,26 +15,7 @@ import $ from './../../../helpers/services'
 const { Option } = Select;
 
 const confirm = Modal.confirm;
-const standard_item = [
-  "G1.1",
-  "G1.2",
-  "G1.3",
-  "G1.4",
-  "G2.1",
-  "G2.2",
-  "G2.3",
-  "G3.1",
-  "G3.2",
-  "G4.1",
-  "G4.2",
-  "G5.1",
-  "G5.2",
-  "G5.3",
-  "G5.4",
-  "G5.5",
-  "G6.1",
-  "G7.1"
-];
+
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -59,6 +40,20 @@ class EditableCell extends React.Component {
   }
   getInput = () => {
     const childrenStandard = [];
+
+    const standard_item = [];
+    const chuandauraItem = this.props.mapitem.chuandaura;
+    if(chuandauraItem.length > 0){
+      chuandauraItem.forEach(item => {
+        let cdr = item.cdr;
+        if(cdr.length >0 ){
+          cdr.forEach(cdrItem => {
+            standard_item.push(cdrItem.chuan_dau_ra)
+          })
+        }
+      })
+    }
+
     function init() {
       for (let i = 0; i < standard_item.length; i++) {
         childrenStandard.push(
@@ -95,6 +90,7 @@ class EditableCell extends React.Component {
   }
 
   render() {
+
     const {
       editing,
       dataIndex,
@@ -369,6 +365,44 @@ class itemLayout7ReducerItem extends React.Component {
   }
 
   onSelectChange = selectedRowKeys => {
+    let chudeDanhGia = this.props.itemLayout7Reducer.chudeDanhGia;
+    let previewInfo =  this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1)
+    
+    if(selectedRowKeys.length >0){
+     chudeDanhGia.forEach(chude => {
+       selectedRowKeys.forEach(select => {
+
+       })
+     })
+      selectedRowKeys.forEach(select => {
+        chudeDanhGia.forEach(chude => {
+          
+          if(select.length >= chude.ma_chu_de.length && select.substring(0,chude.ma_chu_de.length)===chude.ma_chu_de){
+            let tempArray = selectedRowKeys.filter(element => element.substring(0,chude.ma_chu_de.length)===chude.ma_chu_de 
+            && element.substring(0,chude.ma_chu_de.length).length !== chude.ma_chu_de.length)
+            if(tempArray.length === 1){
+              selectedRowKeys = selectedRowKeys.filter(element => element !== select.substring(0,chude.ma_chu_de)===chude.ma_chu_de)
+            }else{
+              previewInfo.forEach(item => {
+                if(chude.ma_chu_de===item.key.substring(0,chude.ma_chu_de.length)){
+                  if(selectedRowKeys.includes(chude.ma_chu_de) && !selectedRowKeys.includes(item.key)){
+                    selectedRowKeys.push(item.key)                
+                  }else if(!selectedRowKeys.includes(chude.ma_chu_de)){
+                    console.log("HAHHAA")
+                    selectedRowKeys = selectedRowKeys.filter(element => element !==item.key)
+                  }
+                  
+                }
+              })
+            }
+            console.log("HIHI")
+            
+          }
+        })
+      })
+    }
+    console.log(selectedRowKeys)
+    
     this.setState({ selectedRowKeys });
   };
 
@@ -529,7 +563,6 @@ class itemLayout7ReducerItem extends React.Component {
                     tile: '',
                   };
                   let data = {
-                    id: result[j].danhgia.id,
                     key: result[j].danhgia.ma,
                     chude: chude[i].id,
                     standardOutput: result[j].chuandaura,
@@ -542,7 +575,6 @@ class itemLayout7ReducerItem extends React.Component {
                   previewInfo = previewInfo.concat(data);
                 } else {
                   let data = {
-                    id: result[j].danhgia.id,
                     key: result[j].danhgia.ma,
                     chude: chude[i].id,
                     standardOutput: result[j].chuandaura,
@@ -582,7 +614,6 @@ class itemLayout7ReducerItem extends React.Component {
 
     $.getStandardOutput7(this.props.monhoc)
       .then(function (response) {
-        console.log(response.data)
         self.props.onGetCDR(response.data);
       })
       .catch(function (error) {
@@ -724,6 +755,7 @@ class itemLayout7ReducerItem extends React.Component {
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
+          mapitem : this.props.itemLayout7Reducer
         }),
       };
     });

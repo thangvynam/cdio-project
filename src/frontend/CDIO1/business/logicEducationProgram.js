@@ -109,7 +109,7 @@ export const filterSubjects = (e, subjects) => {
     const re = new RegExp(e.query.toLowerCase());
     const results = subjects
       ? subjects.filter(item => {
-        return re.test(item.SubjectName.toLowerCase());
+        return re.test(item.SubjectCode.toLowerCase());
       })
       : [];
     return results;

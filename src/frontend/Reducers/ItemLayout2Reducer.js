@@ -1,4 +1,4 @@
-import {ADD_DATA_LAYOUT_2, SAVE_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG} from '../Constant/ActionType';
+import {ADD_DATA_LAYOUT_2, SAVE_DATA_LAYOUT_2, SAVE_TEMP_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG, RESET_TAB2} from '../Constant/ActionType';
 import $ from './../helpers/services'
 
 const itemLayout2InitialState = {
@@ -9,6 +9,14 @@ const itemLayout2InitialState = {
 }
 const ItemLayout2Reducer = (state = itemLayout2InitialState, action) => {
     switch (action.type) {
+        case RESET_TAB2:{
+            return{
+              ...state,
+              isLoaded:false,
+              tempInfo:itemLayout2InitialState.tempInfo,
+            }
+            
+          }
         case IS_LOADED_2: {
             return {
                 ...state,

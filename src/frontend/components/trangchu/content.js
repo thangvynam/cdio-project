@@ -6,6 +6,8 @@ import {
     isLoad,
     isLoadEditMatrix,
     resetTab,
+    resetTab2,
+    resetTab3,
     changeCDRData,
     selectedVerb,
     updateListSurvey,
@@ -121,6 +123,8 @@ class Content extends Component {
         this.props.isLoaded8(false);    //8
         this.props.updateSubjectId(id);
         this.props.resetTab();
+        this.props.resetTab2();
+        this.props.resetTab3();
         this.props.onChangeCDRData({
             cdr: "",
             level_verb: [],
@@ -996,6 +1000,8 @@ const mapDispatchToProps = dispatch => {
             isLoaded5:isLoaded5,
             isLoaded8: isLoaded8,
             resetTab: resetTab,
+            resetTab2: resetTab2,
+            resetTab3: resetTab3,
             updateIsLoadEditMatrix: isLoadEditMatrix,
             onChangeCDRData: changeCDRData,
             onUpdateVerb: selectedVerb,

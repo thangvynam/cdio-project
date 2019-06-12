@@ -407,7 +407,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveAndContinue: (subjectId) => {
             const myObj = {};
 
-            myObj.key = -1;
+            //myObj.key = -1;
+            myObj.id = -1;
             myObj.titleName = titleName;
             myObj.teachingActs = teachingActs_data;
             myObj.evalActs = evalActs_data;
@@ -418,7 +419,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             if (titleName === '' || standardOutput_data.length === 0) {
                 message.error("Vui lòng điền đầy đủ thông tin");
             } else {
-               
                 //reset
                 titleName = '';
                 teachingActs_data = [];
@@ -461,9 +461,10 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             let newArr = [];
             $.collectData5({data: id})
                 .then(function (response) {
+                    console.log(response);
                     for (let i = 0; i < response.data.length; i++) {
                         let data = {
-                            key: response.data[i].key,
+                            id: response.data[i].id,
                             titleName: response.data[i].titleName,
                             teachingActs: response.data[i].teachingActs,
                             standardOutput: response.data[i].standardOutput,

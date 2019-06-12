@@ -11,7 +11,7 @@ import TextArea from "antd/lib/input/TextArea";
 
 import {
   DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5, REFRESH_DATA,
-  SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD, 
+  SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD,
   COLLECT_DATA_DG, COLLECT_DATA_CDR
 } from '../../../Constant/ActionType';
 import $ from './../../../helpers/services';
@@ -115,6 +115,7 @@ class EditableCell extends React.Component {
   }
 
   getInput = (data) => {
+    console.log("getinput")
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
     const childrenStandard = [];
@@ -288,7 +289,9 @@ class TableItem extends Component {
       title: 'Thao tác',
       key: 'action',
       render: this.props.isReview === true ? null : (text, record) => {
+
         const editable = this.isEditing(record);
+        console.log(editable);
         return (
           <div>
             {editable ? (
@@ -342,7 +345,8 @@ class TableItem extends Component {
   }
 
   isEditing = (record) => {
-    return record.key === this.props.itemLayout5Reducer.changeEditStateState;;
+    console.log(this.props.itemLayout5Reducer.changeEditStateState == record.key)
+    return record.key === this.props.itemLayout5Reducer.changeEditStateState;
   }
 
   cancel() {
@@ -377,8 +381,22 @@ class TableItem extends Component {
     this.setState({ selectedRowKeys: [] });
   }
 
+  setIndexForItem = () => {
+    let previewInfo = [];
+    let data = this.props.itemLayout5Reducer.previewInfo;
+    for (let i = 0; i < data.length; i++) {
+      let temp = data[i];
+      temp.key = i + 1;
+      previewInfo.push(temp);
+    }
+    return (this.dataSource = previewInfo.filter(
+      (item, _) => item.del_flag === 0
+    ));
+  };
+
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
+
     let items = this.props.itemLayout5Reducer.previewInfo;
 
     selectedRow.forEach(id => {
@@ -502,7 +520,7 @@ class TableItem extends Component {
     var self = this;
     console.log("collectDataRequest")
     let newArr = [];
-    
+
     $.collectData5({ data: id })
       .then(function (response) {
         for (let i = 0; i < response.data.length; i++) {
@@ -517,8 +535,9 @@ class TableItem extends Component {
           }
           newArr.push(data);
         }
-
+        console.log(newArr);
         self.props.dispatchRefreshData(newArr);
+        console.log(self.props.itemLayout5Reducer.previewInfo);
         self.setState({ disableSaveall: false })
       })
       .catch(function (error) {
@@ -530,7 +549,7 @@ class TableItem extends Component {
   }
 
   render() {
-    console.log(this.props.itemLayout5Reducer.previewInfo)
+
     var components = {};
     this.props.itemLayout5Reducer.changeEditStateState == ""
       ? (components = {
@@ -598,11 +617,12 @@ class TableItem extends Component {
               this.setState({ disableSaveall: true })
 
               Promise.all([this.props.saveAllData()])
-                    .then(res => {
-                      if (res) {
-                        this.collectDataRequest(this.props.monhoc);
-                      }
-                    })
+                .then(res => {
+                  if (res) {
+                    //this.setState({ disableSaveall: false })
+                    this.collectDataRequest(this.props.monhoc);
+                  }
+                })
 
               notification["success"]({
                 message: "Cập nhật thành công",
@@ -615,13 +635,15 @@ class TableItem extends Component {
             Lưu tất cả
         </Button>
         </div>}
+
         <Table
           components={components}
           bordered
           rowClassName="editable-row"
           rowSelection={this.props.isReview === true ? null : rowSelection}
           columns={this.props.itemLayout5Reducer.changeEditStateState === "" ? this.columns : columns}
-          dataSource={this.props.itemLayout5Reducer.previewInfo.filter(element => element.del_flag == 0)}
+          //dataSource={this.props.itemLayout5Reducer.previewInfo.filter(element => element.del_flag == 0)}
+          dataSource={this.setIndexForItem()}
           style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
           onRow={this.props.isReview === true ? null :
             this.props.itemLayout5Reducer.changeEditStateState === ""
@@ -647,10 +669,12 @@ const mapDispatchToProps = (dispatch) => {
   var self = this;
   return {
     handleEdit: (key) => {
+      console.log(key);
       dispatch({ type: CHANGE_EDITSTATE_5, key: key });
     },
 
     handleDelete: (key) => {
+      console.log(key);
       dispatch({ type: DELETE_DATA_LAYOUT_5, key: key });
     },
 

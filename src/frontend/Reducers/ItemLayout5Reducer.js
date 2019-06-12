@@ -46,6 +46,8 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
         }
 
         case REFRESH_DATA: {
+            console.log(state.previewInfo);
+            console.log(action.data)
             return {
                 ...state,
                 previewInfo: action.data
@@ -99,8 +101,10 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
 
         case ADD_DATA_LAYOUT_5: {
             let temp = "";
+            console.log("hello");
             $.addData5({ data: state.previewInfo })
                 .then(res => {
+                    
                     temp = res.data;
                 })
                 .then(() => {

@@ -29,7 +29,7 @@ class ItemMenu extends Component {
             standardSelectedItem: [],
             previewInfo: [],
             redirectTab7: false,
-            idMon: -1,
+            standard_item: [],
         }
     }
 
@@ -85,7 +85,7 @@ class ItemMenu extends Component {
                 }
             })
 
-            $.getStandardOutput5({data: this.props.monhoc})
+        $.getStandardOutput5({data: this.props.monhoc})
             .then(response => {
                 const data = response.data;
                 let array = [];
@@ -112,7 +112,7 @@ class ItemMenu extends Component {
                     });
                     // this.setState({standard_item:array,standardOutput:map});
                     mapId.standardOutput = map;
-
+                    this.setState({ standard_item: array });    
                     this.props.saveDataValueCDR(array)
                 }
             });
@@ -313,7 +313,9 @@ class ItemMenu extends Component {
                                 </span>
                             )}
                         >
-                            <Cascader options={this.props.itemLayout5Reducer.standardOutputData} onChange={this.onChange}
+                            <Cascader 
+                                options={this.state.standard_item}
+                                onChange={this.onChange}
                                 placeholder="Chọn chuẩn đầu ra" displayRender={this.displayRender} />
 
                         </Form.Item>

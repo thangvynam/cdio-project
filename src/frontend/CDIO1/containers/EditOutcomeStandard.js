@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Container, Row, Col } from "shards-react";
 import { Prompt } from "react-router";
+import { Link } from "react-router-dom";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -104,7 +105,12 @@ class EditOutcomeStandardTmp extends Component {
           </Col>
         </Row>
       </Container>
-      :<Empty />
+      :(
+    <div>
+      <Empty />
+      <h2 align="center">Quay lại tab <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để tải dữ liệu</h2>
+    </div>
+    )
     );
   }
 }

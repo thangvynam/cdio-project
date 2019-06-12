@@ -225,7 +225,7 @@ export default class OutcomeStandardCom extends Component {
             <i className="material-icons">edit</i>
           </Button>
         </Link>
-        <Button
+        {/*<Button
           title="Tạo bản sao"
           hidden={true}
           onClick={() => this.onDuplicate(data.Id)}
@@ -245,7 +245,7 @@ export default class OutcomeStandardCom extends Component {
           >
             <i className="material-icons">delete</i>
           </Button>
-        )}
+        )}*/}
       </div>
     );
   };
@@ -535,7 +535,7 @@ export default class OutcomeStandardCom extends Component {
               />
               <Column
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "3em" }}
+                style={{ textAlign: "center", width: "1em" }}
               />
             </DataTable>
           </Col>

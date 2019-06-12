@@ -673,13 +673,12 @@ class CDRTableItem extends Component {
   componentWillReceiveProps(nextProps) {
     if (nextProps.isLoad === "false") {
       this.props.updateIsLoad("true");
-      if(!this.props.isReview)  this.loadGap();
       this.loadTable();
     }
     if (nextProps.isLoadEditMatrix === "false" && this.props.subjectList.length > 0 && !this.props.isReview) {
       this.props.updateIsLoadEditMatrix("true");
       this.loadEditMatrix();
-
+      if(!this.props.isReview)  this.loadGap();
     }
   }
 

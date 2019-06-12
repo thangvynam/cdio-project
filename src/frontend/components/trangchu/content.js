@@ -9,7 +9,9 @@ import {
     changeCDRData,
     selectedVerb,
     updateListSurvey,
-    updateIdSurvey
+    updateIdSurvey,
+    isLoaded7,
+    isLoaded8
 } from "../../Constant/ActionType";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -112,7 +114,9 @@ class Content extends Component {
     };
 
     onClick = id => {
-        this.props.updateIsLoad("false");
+        this.props.updateIsLoad("false");   //4
+        this.props.isLoaded(false); //7
+        this.props.isLoaded8(false);    //8
         this.props.updateSubjectId(id);
         this.props.resetTab();
         this.props.onChangeCDRData({
@@ -986,6 +990,8 @@ const mapDispatchToProps = dispatch => {
             updateSubjectList: subjectList,
             updateSubjectId: subjectId,
             updateIsLoad: isLoad,
+            isLoaded: isLoaded7,
+            isLoaded8: isLoaded8,
             resetTab: resetTab,
             updateIsLoadEditMatrix: isLoadEditMatrix,
             onChangeCDRData: changeCDRData,

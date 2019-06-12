@@ -65,6 +65,7 @@ class MenuMucTieu extends Component {
         this.props.saveTemp(tempInfo)
     }
     render() {
+        console.log(this.props.itemLayout3Reducer.previewInfo)
         const { getFieldDecorator } = this.props.form;
 
         const cdioStandard = [];
@@ -166,10 +167,16 @@ class MenuMucTieu extends Component {
                                 if (objectName === '' || description === '' || temp.length === 0) {
                                     message.error("Vui lòng điền đầy đủ thông tin");
                                 } else {
-                                    this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc)
-                                    this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc)
+                                    console.log(this.props.itemLayout3Reducer.previewInfo.find(i => i.objectName === objectName))
+                                    if(this.props.itemLayout3Reducer.previewInfo.find(i => i.objectName === objectName) !== undefined) {
+                                        message.error("Mục tiêu đã tồn tại");
+                                    }
+                                    else {
+                                        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc)
+                                        this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
-                                    this.props.saveAndContinue()
+                                        this.props.saveAndContinue()
+                                    }
                                 }
                                 // this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: ${objectName.toUpperCase()}, ${description}, ${temp}`, this.props.logReducer.contentTab, this.props.subjectid)
 

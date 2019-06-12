@@ -4,7 +4,8 @@ import {ADD_DATA_LAYOUT_3, DELETE_DATA_LAYOUT_3,
     IS_LOADED_3,
     ADD_ARRAY_LAYOUT_3,
     SAVE_LOG,
-    SET_CDR} from '../Constant/ActionType';
+    SET_CDR,
+    RESET_TAB3} from '../Constant/ActionType';
     import $ from './../helpers/services'
 
 function getUnique(arr, comp) {
@@ -60,6 +61,14 @@ const itemLayout3InitialState = {
 }
 const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
     switch (action.type) {
+        case RESET_TAB3:{
+            return{
+              ...state,
+              isLoaded:false,
+              tempInfo:itemLayout3InitialState.tempInfo,
+            }
+            
+          }
         case IS_LOADED_3: {
             return {
                 ...state,

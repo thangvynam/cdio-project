@@ -11,7 +11,8 @@ export const SAVE_LOG_DATA= 'SAVE_LOG_DATA';
 export const SAVE_LOG_OBJECT = 'SAVE_LOG_OBJECT'
 
 export const RESET_TAB = 'RESET_TAG';
-
+export const RESET_TAB2 = 'RESET_TAB2';
+export const RESET_TAB3 = 'RESET_TAB3';
 export const SAVE_SURVEY = 'SAVE_SURVEY'
 
 //layout 3
@@ -465,6 +466,18 @@ export function updateContentTab(contentTab){
 export function resetTab(){
     return {
         type: RESET_TAB,
+    }
+}
+
+export function resetTab2(){
+    return {
+        type: RESET_TAB2,
+    }
+}
+
+export function resetTab3(){
+    return {
+        type: RESET_TAB3,
     }
 }
 

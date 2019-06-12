@@ -225,11 +225,6 @@ getUnique(arr, comp) {
    return unique;
 }
 
-componentWillUnmount() {
-  this.props.setFlag(false);
-  this.props.saveAndContinue([])
-}
-
 async componentDidMount() {
   await cellData.push(await this.getCDR());
   await console.log(cellData);
@@ -284,7 +279,7 @@ loadData = () => {
   //}
 }
 
-componentWillReceiveProps(nextProps){
+componentWillMount(){
   if(!this.props.itemLayout3Reducer.isLoaded) {
     this.props.setFlag(true);
     this.loadData();

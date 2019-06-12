@@ -45,7 +45,7 @@ export default class ListSurvey extends Component {
             <div className="section-layout">
                 <div className="time-itu">
                     {!_.isEmpty(this.state.surveyList)? 
-                <Tag color="#f50">{startDate[0]} --- {endDate[0]}</Tag>:null
+                <Tag color="#f50">{startDate[0]} - {endDate[0]}</Tag>:null
                 }
                 </div>
                 <List
@@ -70,7 +70,7 @@ export default class ListSurvey extends Component {
                                             }
     
                                         />
-                                        <div><Icon type="edit" style={{ fontSize: '20px', color: 'white' }} /></div>
+                                        <div><Icon type={item.status===1?"form":"file-done"} style={{ fontSize: '20px', color: 'white' }} /></div>
                                     </List.Item>
                                 </div>
                             </Col>

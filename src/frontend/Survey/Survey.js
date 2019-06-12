@@ -153,10 +153,10 @@ class Survey extends React.Component {
             let response = await $.checkStatus(id)
             let status = response.data.status            
             if (status === 0) {
-                notification["error"]({
-                    message: "Không thể thực hiện khảo sát",
-                    duration: 3
-                })
+                // notification["error"]({
+                //     message: "Không thể thực hiện khảo sát",
+                //     duration: 3
+                // })
                 this.setState({ isDone: true })
             } else if (status === -1) {
                 notification["error"]({
@@ -369,18 +369,7 @@ class Survey extends React.Component {
                             {this.genForm()}
                         </div>
                         <Form.Item {...tailFormItemLayout}>
-                            <div>
-                                <Button 
-                                    disabled={this.state.isDone ? true : false}
-                                    type="primary"
-                                    onClick={() => {
-                                        this.send()
-                                        openNotificationWithIcon('success')
-                                    }}
-                                    style={{ marginLeft: "2em" }}>
-                                    Gửi<Icon type="right" />
-                                    
-                                </Button>
+                            <div>                          
                                 <Button 
                                     disabled={this.state.isDone ? true : false}
                                     type="primary"
@@ -390,6 +379,17 @@ class Survey extends React.Component {
                                     }}
                                     style={{ marginLeft: "2em" }}>
                                     Lưu lại<Icon type="right" />
+                                    
+                                </Button>
+                                <Button 
+                                    disabled={this.state.isDone ? true : false}
+                                    type="primary"
+                                    onClick={() => {
+                                        this.send()
+                                        openNotificationWithIcon('success')
+                                    }}
+                                    style={{ marginLeft: "2em" }}>
+                                    Gửi<Icon type="right" />
                                     
                                 </Button>
                             </div>

@@ -3,6 +3,18 @@ import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
 
+export const onExportSubjectFilePDF = id => {
+  return (dispatch, getState) => {
+    let req = `${links.EXPORT_EDUPROGRAM_SUBJECTS}?ideduprog=${id}`;
+    axios
+      .get(req, {"responseType": "blob"})
+      .then(res => {
+      })
+      .catch(err => {
+      });
+  };
+};
+
 export const loadBlocksSuccess = blocks => ({
   type: cst.LOAD_BLOCKS_SUCCESS,
   blocks
@@ -57,7 +69,6 @@ export const onAddTeacher = (data, id) => {
     let link = links.ADD_TEACHER;
     let params = {};
     params.data = JSON.stringify(data);
-    console.log(data)
     axios
       .post(link, params, {
         headers: {

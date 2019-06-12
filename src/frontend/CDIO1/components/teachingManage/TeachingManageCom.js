@@ -34,7 +34,7 @@ export default class TeachingManageCom extends Component {
   };
 
   onAddTeacher = data => {
-    const iduser = [...this.state.subject.arrayIDUser, data.id];
+    const iduser = [...new Set([...this.state.subject.arrayIDUser, data.id])];
     const idmainteacher =
       data.id === this.state.subject.IdMainTeacher
         ? null
@@ -49,19 +49,14 @@ export default class TeachingManageCom extends Component {
     };
     const thisData = [block];
     this.props.onAddTeacher(thisData, this.props.ctdt);
-    // const subject = this.props.tmpsubjects.filter(
-    //   subject =>
-    //     subject.IdSubject === idsubject &&
-    //     subject.IdSubjectBlock === idsubjectblock
-    // );
-    // if (subject) {
-    //   this.setState({
-    //     subject: subject[0]
-    //   });
-    // }
+    const subject = {
+      IdSubject: idsubject,
+      IdSubjectBlock: idsubjectblock,
+      IdMainTeacher: idmainteacher,
+      arrayIDUser: iduser,
+    }
     this.setState({
-      visible: false,
-      subject: {}
+      subject: subject
     });
   };
 
@@ -80,19 +75,14 @@ export default class TeachingManageCom extends Component {
     };
     const thisData = [block];
     this.props.onAddTeacher(thisData, this.props.ctdt);
-    // const subject = this.props.tmpsubjects.filter(
-    //   subject =>
-    //     subject.IdSubject === idsubject &&
-    //     subject.IdSubjectBlock === idsubjectblock
-    // );
-    // if (subject) {
-    //   this.setState({
-    //     subject: subject[0]
-    //   });
-    // }
+    const subject = {
+      IdSubject: idsubject,
+      IdSubjectBlock: idsubjectblock,
+      IdMainTeacher: idmainteacher,
+      arrayIDUser: iduser,
+    }
     this.setState({
-      visible: false,
-      subject: {}
+      subject: subject
     });
   };
 
@@ -114,19 +104,14 @@ export default class TeachingManageCom extends Component {
     };
     const thisData = [block];
     this.props.onAddTeacher(thisData, this.props.ctdt);
-    // const subject = this.props.tmpsubjects.filter(
-    //   subject =>
-    //     subject.IdSubject === idsubject &&
-    //     subject.IdSubjectBlock === idsubjectblock
-    // );
-    // if (subject) {
-    //   this.setState({
-    //     subject: subject[0]
-    //   });
-    // }
+    const subject = {
+      IdSubject: idsubject,
+      IdSubjectBlock: idsubjectblock,
+      IdMainTeacher: idmainteacher,
+      arrayIDUser: iduser,
+    }
     this.setState({
-      visible: false,
-      subject: {}
+      subject: subject
     });
   };
 
@@ -248,7 +233,9 @@ export default class TeachingManageCom extends Component {
 
     const header = (
       <Row style={{ margin: "0" }}>
-        <i className="material-icons" style={{ margin: "4px 4px 0 0" }}>
+      <Col lg="6" md="6" sm="6">
+        <div style={{ float: "left" }}>
+        <i className="material-icons" style={{ margin: "4px 4px 0 0"}}>
           search
         </i>
         <InputText
@@ -257,6 +244,13 @@ export default class TeachingManageCom extends Component {
           placeholder="Tìm kiếm"
           size="50"
         />
+        </div>
+      </Col>
+      <Col lg="6" md="6" sm="6">
+        <label onClick={()=>this.props.onExportSubjectFilePDF(this.props.ctdt)} style={{float: "right"}} className="exportPDF">
+            <i className="material-icons">save_alt</i> Tạo file PDF
+        </label>
+      </Col>
       </Row>
     );
 

@@ -59,6 +59,7 @@ class TeachingManageTemp extends Component {
               tmpsubjects={tmpsubjects}
               onAddTeacher={this.props.onAddTeacher}
               ctdt={this.props.ctdt}
+              onExportSubjectFilePDF={this.props.onExportSubjectFilePDF}
             />
           </Col>
         </Row>
@@ -78,5 +79,6 @@ export default connect(mapStateToProps, {
   onLoadBlocks: blocksAction.onLoadBlocks,
   onAddTeacher: blocksAction.onAddTeacher,
   onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
-  onLoadUsers: usersAction.onLoadUsers
+  onLoadUsers: usersAction.onLoadUsers,
+  onExportSubjectFilePDF: blocksAction.onExportSubjectFilePDF
 })(TeachingManageTemp);

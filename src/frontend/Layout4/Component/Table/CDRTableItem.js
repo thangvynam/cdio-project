@@ -618,41 +618,41 @@ class CDRTableItem extends Component {
   loadEditMatrix = () => {
     var self = this;
     let subjectListId = [];
-        this.props.subjectList.map(item => {
-          subjectListId.push(item.IdSubject);
-        })
-        let data = {
-          data: subjectListId,
-          idCtdt: this.props.ctdt
-        }
-        $.getStandardMatrix(data).then((res) => {
-          let data = [];
-          for (let i = 0; i < res.data.length; i++) {
-            let index = self.checkIdExist(data, res.data[i].thong_tin_chung_id);
-            if (index !== -1) {
-              let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-              if (cdr_cdio !== "") {
-                data[index][cdr_cdio] = res.data[i].muc_do;
-              }
-            }
-            else {
-              let subjectName = self.getSubjectName(self.props.subjectList, res.data[i].thong_tin_chung_id);
-              let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-              if (subjectName !== "" && cdr_cdio !== "") {
-                data.push({
-                  key: res.data[i].thong_tin_chung_id,
-                  hocky: 1,
-                  hocphan: subjectName,
-                  gvtruongnhom: 'NULL'
-                })
-
-                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-              }
-
-            }
+    this.props.subjectList.map(item => {
+      subjectListId.push(item.IdSubject);
+    })
+    let data = {
+      data: subjectListId,
+      idCtdt: this.props.ctdt
+    }
+    $.getStandardMatrix(data).then((res) => {
+      let data = [];
+      for (let i = 0; i < res.data.length; i++) {
+        let index = self.checkIdExist(data, res.data[i].thong_tin_chung_id);
+        if (index !== -1) {
+          let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+          if (cdr_cdio !== "") {
+            data[index][cdr_cdio] = res.data[i].muc_do;
           }
-          self.props.updateEditMatrix(data);
-        })
+        }
+        else {
+          let subjectName = self.getSubjectName(self.props.subjectList, res.data[i].thong_tin_chung_id);
+          let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+          if (subjectName !== "" && cdr_cdio !== "") {
+            data.push({
+              key: res.data[i].thong_tin_chung_id,
+              hocky: 1,
+              hocphan: subjectName,
+              gvtruongnhom: 'NULL'
+            })
+
+            data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+          }
+
+        }
+      }
+      self.props.updateEditMatrix(data);
+    })
   }
   componentDidMount() {
     if (this.props.monhoc !== null && this.props.monhoc !== undefined && this.props.monhoc !== "") {
@@ -661,25 +661,27 @@ class CDRTableItem extends Component {
         this.loadEditMatrix();
 
       }
-      if(!this.props.isReview)  this.loadGap();
+      
     }
 
     if (this.props.isLoad === "false") {
       this.props.updateIsLoad("true");
       this.loadTable();
+      if (!this.props.isReview) this.loadGap();
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.isLoad === "false") {
       this.props.updateIsLoad("true");
-      if(!this.props.isReview)  this.loadGap();
       this.loadTable();
+      if (!this.props.isReview) this.loadGap();
     }
+    
     if (nextProps.isLoadEditMatrix === "false" && this.props.subjectList.length > 0 && !this.props.isReview) {
       this.props.updateIsLoadEditMatrix("true");
       this.loadEditMatrix();
-
+      
     }
   }
 
@@ -914,7 +916,7 @@ class CDRTableItem extends Component {
 
     $.saveData4({ data: { data: data, thong_tin_chung_id: this.props.monhoc } })
       .then(res => {
-        if(!this.props.isReview)  this.loadGap();
+        if (!this.props.isReview) this.loadGap();
         this.loadTable();
         openNotificationWithIcon('success');
         $.saveLog({ data: this.props.logData })

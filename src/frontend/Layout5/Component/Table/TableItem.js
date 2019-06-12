@@ -115,7 +115,6 @@ class EditableCell extends React.Component {
   }
 
   getInput = (data) => {
-    console.log("getinput")
     const childrenTeachingActs = [];
     const childrenEvalActs = [];
     const childrenStandard = [];
@@ -123,8 +122,6 @@ class EditableCell extends React.Component {
     const standard_item = [...this.props.mapitem.standardOutputData];
     const teachingActs = [...this.props.mapitem.teachingActsData];
     const evalActs = [...this.props.mapitem.evalActsData];
-
-    console.log(standard_item);
 
     for (let i = 0; i < teachingActs.length; i++) {
       childrenTeachingActs.push(
@@ -199,8 +196,6 @@ class EditableCell extends React.Component {
       index,
       ...restProps
     } = this.props;
-
-    console.log(this.props);
 
     return (
       <EditableContext.Consumer>
@@ -289,9 +284,8 @@ class TableItem extends Component {
       title: 'Thao tác',
       key: 'action',
       render: this.props.isReview === true ? null : (text, record) => {
-
         const editable = this.isEditing(record);
-        console.log(editable);
+       
         return (
           <div>
             {editable ? (
@@ -340,12 +334,11 @@ class TableItem extends Component {
     data[hoverIndex] = dragRow;
     data[dragIndex].key = dragIndex + 1;
     data[hoverIndex].key = hoverIndex + 1;
-    console.log(data);
+
     this.props.handleSave(data);
   }
 
   isEditing = (record) => {
-    console.log(this.props.itemLayout5Reducer.changeEditStateState == record.key)
     return record.key === this.props.itemLayout5Reducer.changeEditStateState;
   }
 
@@ -446,7 +439,6 @@ class TableItem extends Component {
   }
 
   getDataHDD = () => {
-    console.log("adbc")
     let mapId = {
       teachingActs: new Map(),
       standardOutput: new Map(),
@@ -518,7 +510,6 @@ class TableItem extends Component {
 
   collectDataRequest = (id) => {
     var self = this;
-    console.log("collectDataRequest")
     let newArr = [];
 
     $.collectData5({ data: id })
@@ -535,9 +526,7 @@ class TableItem extends Component {
           }
           newArr.push(data);
         }
-        console.log(newArr);
         self.props.dispatchRefreshData(newArr);
-        console.log(self.props.itemLayout5Reducer.previewInfo);
         self.setState({ disableSaveall: false })
       })
       .catch(function (error) {
@@ -619,7 +608,7 @@ class TableItem extends Component {
               Promise.all([this.props.saveAllData()])
                 .then(res => {
                   if (res) {
-                    //this.setState({ disableSaveall: false })
+                    this.setState({ disableSaveall: false })
                     this.collectDataRequest(this.props.monhoc);
                   }
                 })
@@ -669,12 +658,10 @@ const mapDispatchToProps = (dispatch) => {
   var self = this;
   return {
     handleEdit: (key) => {
-      console.log(key);
       dispatch({ type: CHANGE_EDITSTATE_5, key: key });
     },
 
     handleDelete: (key) => {
-      console.log(key);
       dispatch({ type: DELETE_DATA_LAYOUT_5, key: key });
     },
 
@@ -683,7 +670,6 @@ const mapDispatchToProps = (dispatch) => {
     },
 
     saveAllData: () => {
-      console.log("saveAllData")
       dispatch({ type: ADD_DATA_LAYOUT_5 });
     },
     saveDataValue: (teachingActs) => {

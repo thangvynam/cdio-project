@@ -11,7 +11,8 @@ import {
     updateListSurvey,
     updateIdSurvey,
     isLoaded7,
-    isLoaded8
+    isLoaded8,
+    isLoaded5
 } from "../../Constant/ActionType";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -114,6 +115,7 @@ class Content extends Component {
     };
 
     onClick = id => {
+        this.props.isLoaded5(false);
         this.props.updateIsLoad("false");   //4
         this.props.isLoaded(false); //7
         this.props.isLoaded8(false);    //8
@@ -991,6 +993,7 @@ const mapDispatchToProps = dispatch => {
             updateSubjectId: subjectId,
             updateIsLoad: isLoad,
             isLoaded: isLoaded7,
+            isLoaded5:isLoaded5,
             isLoaded8: isLoaded8,
             resetTab: resetTab,
             updateIsLoadEditMatrix: isLoadEditMatrix,

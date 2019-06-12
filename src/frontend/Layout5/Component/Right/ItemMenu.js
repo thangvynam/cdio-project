@@ -10,7 +10,7 @@ import { getCurrTime } from '../../../utils/Time';
 
 import {
     ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD, COLLECT_DATA_DG,
-    REFRESH_DATA, COLLECT_DATA_CDR, saveLog, saveLogObject
+    IS_LOADED_5, COLLECT_DATA_CDR, saveLog, saveLogObject,REFRESH_DATA
 } from '../../../Constant/ActionType';
 
 const { Option } = Select;
@@ -28,17 +28,23 @@ class ItemMenu extends Component {
         this.state = {
             standardSelectedItem: [],
             previewInfo: [],
-            redirectTab7: false
+            redirectTab7: false,
+            idMon: -1,
         }
     }
 
     componentDidMount() {
-        if (this.props.itemLayout5Reducer.previewInfo.length == 0) {
+        
+        if(!this.props.itemLayout5Reducer.isLoaded) {
+            this.props.updateIssLoad5(true);
+            // if (this.props.itemLayout5Reducer.previewInfo.length == 0) {
+            this.props.refreshData();    
             this.props.collectDataRequest(this.props.monhoc);
+            // }
+            
         }
-        //this.props.refreshData();
     }
-
+    
     componentWillMount() {
         this.getDataHDD();
     }
@@ -454,14 +460,17 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         },
 
         refreshData: () => {
-            //dispatch({ type: REFRESH_DATA, data: [] })
+            dispatch({type: REFRESH_DATA,data: []});
+        },
+
+        updateIssLoad5: () => {
+            dispatch({type: IS_LOADED_5 , data: true});
         },
 
         collectDataRequest: (id) => {
             let newArr = [];
             $.collectData5({data: id})
                 .then(function (response) {
-                    console.log(response);
                     for (let i = 0; i < response.data.length; i++) {
                         let data = {
                             id: response.data[i].id,

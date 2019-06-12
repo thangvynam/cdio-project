@@ -97,6 +97,7 @@ export const COLLECT_DATA_HDD = "COLLECT_DATA_HDD";
 export const COLLECT_DATA_DG = "COLLECT_DATA_DG";
 export const COLLECT_DATA_CDR = "COLLECT_DATA_CDR";
 export const REFRESH_DATA = "REFRESH_DATA";
+export const IS_LOADED_5 = 'IS_LOADED_5';
 
 // Comment 
 export const SHOW_INPUT_COMMENT = "SHOW_INPUT_COMMENT";
@@ -431,6 +432,13 @@ export function saveLoaiTaiNguyen(loaitainguyen){
 export function isLoaded8(isLoaded){
     return{
         type: IS_LOADED_8,
+        data: isLoaded
+    }
+}
+
+export function isLoaded5(isLoaded){
+    return{
+        type: IS_LOADED_5,
         data: isLoaded
     }
 }

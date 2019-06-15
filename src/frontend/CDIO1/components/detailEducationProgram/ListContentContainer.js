@@ -23,7 +23,8 @@ class ListContentContainer extends React.Component {
     const edu = this.props.contentList.find(edu =>{
       return edu.EduName === e.value.EduName;
     });
-    this.props.onLoadKnowledgeTable(edu.IdDetailPro);
+    const idDetailPro = edu ? edu.IdDetailPro : null;
+    this.props.onLoadKnowledgeTable(idDetailPro);
     
     this.setState({
       optionEdupro: e.value,

@@ -52,7 +52,7 @@ export default class ContentProgramCom extends React.Component {
       // học phần tự do
       descriptionFreePartStudy: "",
       filterDSCFreeStudies: [],
-      creditFreeStudy: 0,
+      creditFreeStudy: 1,
     };
     this.deleteSubject.bind(this);
   }
@@ -371,7 +371,7 @@ export default class ContentProgramCom extends React.Component {
     this.setState({
       isDialogPartStudy: false,
       descriptionFreePartStudy: "",
-      creditFreeStudy: 0
+      creditFreeStudy: 1
     });
   };
 
@@ -893,6 +893,7 @@ export default class ContentProgramCom extends React.Component {
                 <Spinner
                   value={+this.state.creditFreeStudy}
                   onChange={e => this.onChangeCreditFreeStudy(e)}
+                  min={1} max={100}
                 />
               </Col>
             </Row>

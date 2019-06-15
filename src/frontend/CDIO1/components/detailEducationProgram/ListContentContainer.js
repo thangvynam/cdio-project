@@ -20,8 +20,15 @@ class ListContentContainer extends React.Component {
   }
 
   onChangeListEdupros = e => {
+    const edu = this.props.contentList.find(edu =>{
+      return edu.EduName === e.value.EduName;
+    });
+    this.props.onLoadKnowledgeTable(edu.IdDetailPro);
+    
     this.setState({
-      optionEdupro: e.value
+      optionEdupro: e.value,
+      filterKnowledges: this.props.knowledgeTables,
+      optionKnowledge: ""
     });
   }
 
@@ -61,9 +68,7 @@ class ListContentContainer extends React.Component {
     return false;
   }
 
-  filterEdupros = e => {
-    const idDetail = this.props.contentList[0].IdDetailPro;
-    this.props.onLoadKnowledgeTable(idDetail)
+  filterEdupros = e => {  
     const listEdus = [...this.props.contentList];
 
     this.setState({
@@ -109,7 +114,10 @@ class ListContentContainer extends React.Component {
   }
 
   deleteKnowledge = knowledge => {
-
+    const knows = this.state.listKnowledges.filter(know =>{
+      return know.Id !== knowledge.Id;
+    });
+    this.setState({ listKnowledges: knows });
   }
 
   render() {

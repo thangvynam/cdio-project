@@ -19,41 +19,6 @@ const fetchData = (newTTC) => {
     }
 }
 
-// const collectDataRequest = (id) => {
-//     return (dispatch) => {
-        // return axios(`/collect-data/${id}`, {
-        //     method: "GET",
-        //     headers: {
-        //         'Content-Type': 'application/json',
-        //         "token": `${localStorage.getItem('token')}`
-        //     }
-        // })
-        // return $.collectData1(id).then(function (response) {
-        //         dispatch(fetchData(response.data));
-        //     })
-            // .catch(function (error) {
-            //     window.location.href = 'http://localhost:3000/';
-            // });
-//     }
-// }
-
-// const updateTTCRequest = (id, data) => {
-//     return (dispatch) => {
-//         axios({
-//             method: 'post',
-//             url: `/update-data/${id}`,
-//             data
-//         }).then(function (response) {
-//             if (response.data === "SUCCESS") {
-//                 dispatch(fetchData(data));
-//             }
-//         })
-//         .catch(function (error) {
-//             console.log(error);
-//         });
-//     }
-// }
-
 const updateTTCRequest = (id, data) => {
     return (dispatch) => {
         $.updateData1(id, data).then(function (response) {  

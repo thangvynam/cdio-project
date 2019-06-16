@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
 import _ from "lodash";
-import { Table, Icon, Tag, Modal, Button, notification, Row } from "antd";
+import { Spin, Icon, Table, Tag, Modal, Button, notification, Row } from "antd";
 import { connect } from "react-redux";
 import { getDataMatrix } from "./../../Constant/matrix/matrixAction";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
@@ -13,6 +13,7 @@ import {
 } from "../../Constant/ActionType";
 import $ from "./../../helpers/services";
 import PreviewMatrix from "./preview-matrix";
+import LoadingPage from "./loading";
 
 class Matrix extends Component {
   constructor(props) {
@@ -78,10 +79,10 @@ class Matrix extends Component {
 
   getEditMatrix = data1 => {
     var self = this;
-$.getCDR_CDIO(this.props.ctdt).then((res) => {
+    $.getCDR_CDIO(this.props.ctdt).then((res) => {
 
-    self.props.updateCdrCdio(res.data);
-    $.getStandardMatrix(data1).then(res => {
+      self.props.updateCdrCdio(res.data);
+      $.getStandardMatrix(data1).then(res => {
         let data = [];
         for (let i = 0; i < res.data.length; i++) {
           let index = self.checkIdExist(data, res.data[i].thong_tin_chung_id);
@@ -93,7 +94,7 @@ $.getCDR_CDIO(this.props.ctdt).then((res) => {
             if (cdr_cdio !== "") {
               data[index][cdr_cdio] = res.data[i].muc_do;
             }
-            
+
           } else {
             let subjectName = self.getSubjectName(
               self.props.subjectList,
@@ -103,7 +104,7 @@ $.getCDR_CDIO(this.props.ctdt).then((res) => {
               self.props.cdrCdio,
               res.data[i].chuan_dau_ra_cdio_id
             );
-            
+
             if (subjectName !== "" && cdr_cdio !== "") {
               data.push({
                 key: res.data[i].thong_tin_chung_id,
@@ -111,33 +112,33 @@ $.getCDR_CDIO(this.props.ctdt).then((res) => {
                 hocphan: subjectName,
                 gvtruongnhom: "NULL"
               });
-  
+
               data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
             }
           }
         }
-  
+
         self.props.updateEditMatrix(data);
-  
+
         var a = $.getRealityMatrix(data1);
-          a.then(res => self.setState({ matrix: res.data }));
-          var b = $.getCDR_CDIO(data1.idCtdt);
-          Promise.all([a, b])
-            .then(res => {
-              self.props.getDataMatrix(res);
-              self.createData(res);
-              self.setState({
-                isLoading: false
-              });
-            })
-            .catch(err => {
-              console.log(err);
+        a.then(res => self.setState({ matrix: res.data }));
+        var b = $.getCDR_CDIO(data1.idCtdt);
+        Promise.all([a, b])
+          .then(res => {
+            self.props.getDataMatrix(res);
+            self.createData(res);
+            self.setState({
+              isLoading: false
             });
+          })
+          .catch(err => {
+            console.log(err);
+          });
       });
 
     })
-    
-    
+
+
   };
 
   componentWillReceiveProps(nextProps) {
@@ -464,10 +465,10 @@ $.getCDR_CDIO(this.props.ctdt).then((res) => {
         ) {
           table.tHead
             .getElementsByTagName("th")
-            [i].setAttribute(
-              "style",
-              "background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)"
-            );
+          [i].setAttribute(
+            "style",
+            "background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)"
+          );
         }
       }
     }
@@ -493,8 +494,8 @@ $.getCDR_CDIO(this.props.ctdt).then((res) => {
           idCtdt: this.props.ctdt
         };
         if (data1.data.length > 0) {
-            console.log("get roi ma")
-            this.getEditMatrix(data1);
+          console.log("get roi ma")
+          this.getEditMatrix(data1);
         }
       } else {
         notification["error"]({
@@ -506,15 +507,16 @@ $.getCDR_CDIO(this.props.ctdt).then((res) => {
   };
 
   render() {
-    console.log(this.props.editMatrix);
     const { isLoading, isShow } = this.state;
     const style = {
       marginLeft: "20px"
     };
+
     return (
       this.props.isLoadEditMatrix === "true" &&
       this.props.subjectList.length > 0 && (
         <React.Fragment>
+          {isLoading && <LoadingPage />}
           {!isLoading && !_.isEmpty(this.props.dataMatrix) && (
             <div className="exportMatrix" style={{ margin: "20px" }}>
               <div style={{ marginBottom: "10px" }}>

@@ -218,6 +218,7 @@ class Home extends Component {
                     let ctdt = self.props.match.params.ctdt;
                     if (ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
                         $.getBlockSubject(ctdt).then(res => {
+                            console.log(res.data.data)
                             let resData = res.data.data;
                             let dataSubject = [];
                             let dataCtdt = [];

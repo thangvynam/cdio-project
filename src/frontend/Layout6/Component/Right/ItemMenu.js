@@ -80,7 +80,7 @@ class ItemMenu extends Component {
       mapId.evalActs = map;
     });
 
-    $.getStandardOutput6(subjectId).then(response => {
+    $.getStandardOutput6(subjectId, this.props.ctdt).then(response => {
       const data = response.data;
       let array = [];
       let map = new Map();

@@ -106,10 +106,10 @@ class ExportFile extends Component {
         }
     }
 
-    getData4 = (monhoc) => {
+    getData4 = (monhoc, id_ctdt) => {
         let self = this;
         try {
-            $.collectData4({ data: { thong_tin_chung_id: monhoc } })
+            $.collectData4({ data: { thong_tin_chung_id: monhoc, idCtdt: id_ctdt } })
                 .then(function (response) {
                     for (let i = 0; i < response.data.length; i++) {
                         let cdrmdhd = self.getCdrmdhd(self.props.cdrmdhddb, response.data[i].cdrmh_muc_do_hanh_dong_id);
@@ -341,7 +341,7 @@ class ExportFile extends Component {
         this.getData1(monhoc);
         this.getData2(monhoc);
         this.getData3(monhoc);
-        this.getData4(monhoc);
+        this.getData4(monhoc, id_ctdt);
         this.getData5(monhoc,id_ctdt);
         this.getData6(monhoc);
         this.getData7(monhoc);

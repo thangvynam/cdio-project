@@ -1,7 +1,7 @@
 import React from "react";
 import XLSX from "xlsx";
 
-import { Row, Col, Button, FormTextarea } from "shards-react";
+import { Row, Col, Button, FormTextarea, FormInput } from "shards-react";
 import { Accordion, AccordionTab } from "primereact/accordion";
 
 import TargetEducationCom from "../detailEducationProgram/TargetEducationCom";
@@ -42,7 +42,10 @@ export default class DetailEducationProgramCom extends React.Component {
       sumCredit: 0,
       // end states this Component
       // states for cate 6
-      archiNodes: []
+      archiNodes: [],
+      // thisf
+      EduWeight: 0,
+      EduTime: 0
     };
   }
 
@@ -154,6 +157,26 @@ export default class DetailEducationProgramCom extends React.Component {
   };
   // end functions for Title
 
+  handleEduTimeChange = event => {
+    if (event.target.value.length > 2)
+      this.setState({ EduTime: event.target.value.substr(0, 2) });
+    else if (
+      event.target.value.length === 0 ||
+      !isNaN(event.target.value[event.target.value.length - 1])
+    )
+      this.setState({ EduTime: event.target.value });
+  };
+
+  handleEduWeightChange = event => {
+    if (event.target.value.length > 4)
+      this.setState({ EduWeight: event.target.value.substr(0, 4) });
+    else if (
+      event.target.value.length === 0 ||
+      !isNaN(event.target.value[event.target.value.length - 1])
+    )
+      this.setState({ EduWeight: event.target.value });
+  };
+
   // functions for detailEduProgram
   handleEnrollmentChange = event => {
     this.setState({
@@ -256,7 +279,9 @@ export default class DetailEducationProgramCom extends React.Component {
       EduProcess: data.EduProcess,
       GraduatedCon: data.GraduatedCon,
       IdOutcome: data.IdOutcome,
-      OSUsedNode: data.OSUsedNode
+      OSUsedNode: data.OSUsedNode,
+      EduTime: data.EduTime,
+      EduWeight: data.EduWeight
     });
   }
 
@@ -281,7 +306,10 @@ export default class DetailEducationProgramCom extends React.Component {
           </Col>
           <Col lg="6" md="6" sm="6" />
           <Col lg="2" md="2" sm="2">
-            <label onClick={()=>this.props.onExportFilePDF(this.props.ctdt)} className="exportPDF">
+            <label
+              onClick={() => this.props.onExportFilePDF(this.props.ctdt)}
+              className="exportPDF"
+            >
               <i className="material-icons">save_alt</i> Tạo file PDF
             </label>
           </Col>
@@ -326,6 +354,50 @@ export default class DetailEducationProgramCom extends React.Component {
                   OSUsedNode={this.state.OSUsedNode}
                   onSaveOutcomeUsed={this.onSaveOutcomeUsed}
                 />
+              </AccordionTab>
+
+              <AccordionTab header="THỜI GIAN ĐÀO TẠO & KHỐI LƯỢNG KIẾN THỨC">
+                <Row>
+                  <Col lg="1" md="1" sm="1" />
+                  <Col lg="3" md="3" sm="3">
+                    THỜI GIAN ĐÀO TẠO:
+                  </Col>
+                  <Col lg="6" md="6" sm="6">
+                    <FormInput
+                      type="text"
+                      value={this.state.EduTime}
+                      onChange={e => this.handleEduTimeChange(e)}
+                      placeholder="4"
+                      className="mb-2"
+                      readOnly={
+                        !JSON.parse(
+                          localStorage.getItem("user")
+                        ).data.Role.includes("BIEN_SOAN")
+                      }
+                    />
+                  </Col>
+                </Row>
+                <br />
+                <Row>
+                  <Col lg="1" md="1" sm="1" />
+                  <Col lg="3" md="3" sm="3">
+                    KHỐI LƯỢNG KIẾN THỨC:
+                  </Col>
+                  <Col lg="6" md="6" sm="6">
+                    <FormInput
+                      type="text"
+                      value={this.state.EduWeight}
+                      onChange={e => this.handleEduWeightChange(e)}
+                      placeholder="138"
+                      className="mb-2"
+                      readOnly={
+                        !JSON.parse(
+                          localStorage.getItem("user")
+                        ).data.Role.includes("BIEN_SOAN")
+                      }
+                    />
+                  </Col>
+                </Row>
               </AccordionTab>
 
               <AccordionTab header="ĐỐI TƯỢNG TUYỂN SINH">

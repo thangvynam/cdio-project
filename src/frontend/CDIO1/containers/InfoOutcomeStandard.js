@@ -63,7 +63,7 @@ class InfoOutcomeStandard extends Component {
         <hr />
         <Row>
           <Col lg="12" md="12">
-            <h3>
+            <h4>
             {`Chuẩn đầu ra ${infoOutcomeStandard &&
               infoOutcomeStandard.NameOutcomeStandard} đang được sử dụng ở Chương trình đào tạo ${
               this.props.infoEduProgram[0].EduName
@@ -73,7 +73,7 @@ class InfoOutcomeStandard extends Component {
               infoOutcomeStandard.NameFaculty}, hệ ${infoOutcomeStandard &&
               infoOutcomeStandard.NameProgram}, năm học ${infoOutcomeStandard &&
               infoOutcomeStandard.SchoolYear}`}
-            </h3>
+            </h4>
           </Col>
         </Row>
       </Container>

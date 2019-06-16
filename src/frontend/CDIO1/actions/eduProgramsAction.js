@@ -6,12 +6,27 @@ import * as detailEduProgramAction from "./detailEduProgramAction";
 
 export const onExportFilePDF = id => {
   return (dispatch, getState) => {
+    let chirp = {
+          message: `Đang trong quá trình tải file pdf`,
+          isRight: 1
+    };
+    dispatch(message.message(chirp));
     let req = `${links.EXPORT_EDUPROGRAM}?ideduprog=${id}`;
     axios
       .get(req, {"responseType": "blob"})
       .then(res => {
+        let chirp = {
+          message: `Tải file thành công`,
+          isRight: 1
+        };
+        dispatch(message.message(chirp));
       })
       .catch(err => {
+        let chirp = {
+          message: `Lỗi xảy ra, tải file thất bại hoặc file bị lỗi`,
+          isRight: 0
+        };
+        dispatch(message.message(chirp));
       });
   };
 };

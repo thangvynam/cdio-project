@@ -49,6 +49,12 @@ export const receiveProps = nextProps => {
   const OSUsedNode = nextProps.detailEduProgram.OSUsedNode
     ? nextProps.detailEduProgram.OSUsedNode
     : "";
+    const EduTime = nextProps.detailEduProgram.EduTime
+    ? nextProps.detailEduProgram.EduTime
+    : "";
+    const EduWeight = nextProps.detailEduProgram.EduWeight
+    ? nextProps.detailEduProgram.EduWeight
+    : "";
 
   const data = {
     major,
@@ -60,7 +66,9 @@ export const receiveProps = nextProps => {
     EduProcess,
     GraduatedCon,
     IdOutcome,
-    OSUsedNode
+    OSUsedNode,
+    EduWeight,
+    EduTime
   };
   return data;
 };
@@ -89,7 +97,9 @@ export const onSaveDetail = (prop, state) => {
     dateedited: new Date().toISOString(),
     datecreated: new Date().toISOString(),
     idoutcome: state.IdOutcome > 0 ? state.IdOutcome : null,
-    osusednode: state.OSUsedNode
+    osusednode: state.OSUsedNode,
+    edutime: state.EduTime,
+    eduweight: state.EduWeight
   };
   return detailEduProgram;
 };

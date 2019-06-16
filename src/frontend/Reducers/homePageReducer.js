@@ -9,21 +9,21 @@ const initialState = {
         name: "CHUẨN ĐẦU RA",
         role: ["ADMIN", "TEACHER", "BIEN_SOAN"],
         children: [
-            {
-                id: "chinhsua-cdr",
-                name: "Chỉnh sửa chuẩn đầu ra",
-                role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
-            },
+            // {
+            //     id: "chinhsua-cdr",
+            //     name: "Chỉnh sửa chuẩn đầu ra",
+            //     role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
+            // },
             {
                 id: "danhgia-cdr",
                 name: "Đánh giá chuẩn đầu ra",
                 role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
             },
-            {
-                id: "khaosat-cdr",
-                name: "Khảo sát chuẩn đầu ra",
-                role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
-            },
+            // {
+            //     id: "khaosat-cdr",
+            //     name: "Khảo sát chuẩn đầu ra",
+            //     role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
+            // },
         ]
     },
     "phan-cong-giang-day" :{
@@ -147,7 +147,7 @@ const parentState = [
     },
     {
         id: "cdr",
-        name: "CHUẨN ĐẦU RA",
+        name: "DANH SÁCH CHUẨN ĐẦU RA",
         role: ["TEACHER", "BIEN_SOAN"],
     },
     {

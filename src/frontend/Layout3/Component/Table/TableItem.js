@@ -41,26 +41,17 @@ class EditableCell extends React.Component {
     this.setState({ standActs: value });
   }
 
-async componentDidMount() {
-  // let arr = cellData
-  // console.log(arr);
-  
-            // cellData[0].forEach(element => {
-            //     element.KeyRow = element.KeyRow.slice(0, element.KeyRow.length -1)
-            // });
-    this.setState({cdr: cellData[0]})
-}
-
   getInput = () => {
     const childrenStandard = [];
-    
-    let standActs = this.state.cdr
+    let standActs = cellData
 
-    for (let i = 0; i < standActs.length; i++) {
-      childrenStandard.push(
-        <Option key={standActs[i].KeyRow}>{standActs[i].KeyRow}</Option>
-      );
-    }    
+    if (standActs) {
+      for (let i = 0; i < standActs.length; i++) {
+        childrenStandard.push(
+          <Option key={standActs[i].KeyRow}>{standActs[i].KeyRow}</Option>
+        );
+      } 
+    }   
 
     switch (this.props.dataIndex) {
       case "objectName":
@@ -225,9 +216,10 @@ getUnique(arr, comp) {
    return unique;
 }
 
-async componentDidMount() {
-  await cellData.push(await this.getCDR());
-  await console.log(cellData);
+componentDidMount() {
+  this.getCDR().then((res) => {
+    cellData = res
+  })
 }
 
 async getCDR() {

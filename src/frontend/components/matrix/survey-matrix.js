@@ -9,6 +9,7 @@ import './matrix.css'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
 import $ from './../../helpers/services'
+import LoadingPage from './loading';
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -274,18 +275,15 @@ class SurveyMatrix extends Component {
 
   render() {
     const { selectedRowKeys } = this.state;
-    //console.log(selectedRowKeys)
-    //console.log(this.props.dataSurveyMatrix)
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
-      //hideDefaultSelections: true,
-      //onSelection: this.onSelection,
     };
 
     // this.createHeaderMatrix(myData);
     return (
-      !_.isEmpty(this.props.dataSurveyMatrix) && (<div>
+      <React.Fragment>
+      {!_.isEmpty(this.props.dataSurveyMatrix) && (<div>
         <p></p>
         <Button
           onClick={() => {
@@ -307,14 +305,14 @@ class SurveyMatrix extends Component {
           }>
           Lưu
           </Button>
-        <ReactHTMLTableToExcel
+        {/* <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="download-table-xls-button btn btn-outline-warning"
           table="table-to-xls"
           filename="survey-matrix-export"
           sheet="tablexls"
           buttonText="Export"
-        />
+        /> */}
         <Table
           bordered
           rowSelection={rowSelection}
@@ -336,7 +334,9 @@ class SurveyMatrix extends Component {
         //     pageSize: 7,
         // }}
         />
-      </div>)
+      </div>
+      )}
+      </React.Fragment>
     )
   }
 }

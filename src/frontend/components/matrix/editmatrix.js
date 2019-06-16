@@ -532,7 +532,8 @@ class EditMatrix extends Component {
     };
 
     return (
-      columns.length > this.columns.length &&
+      <React.Fragment>
+      {columns.length > this.columns.length &&
       this.props.subjectList.length > 0 &&
       <React.Fragment>
         <div style={{ margin: "10px" }}>
@@ -554,6 +555,7 @@ class EditMatrix extends Component {
           />
           {!_.isEmpty(this.state.rows) && <OutTable data={this.state.rows} columns={this.state.cols} tableClassName="ExcelTable2007" tableHeaderRowClass="heading" />}
         </div>
+      </React.Fragment>}
       </React.Fragment>
     )
   }

@@ -493,6 +493,7 @@ componentWillMount(){
       );
     }
 }
+
 const mapStateToProps = (state, ownProps) => {
   return {
     itemLayout3Reducer: state.itemLayout3Reducer,

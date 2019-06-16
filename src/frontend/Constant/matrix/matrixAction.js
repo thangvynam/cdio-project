@@ -22,8 +22,16 @@ const getDataSurveyMatrix = (newData)=>{
     }
 }
 
+const getNameGV = (newData) => {
+    return {
+        type : Types.GET_NAME_GV,
+        newData
+    }
+}
+
 export {
     getDataMatrix,
     getDataBenchMarkMatrix,
-    getDataSurveyMatrix
+    getDataSurveyMatrix,
+    getNameGV
 }

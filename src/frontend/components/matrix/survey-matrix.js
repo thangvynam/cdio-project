@@ -7,7 +7,7 @@ import { Link } from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
-import { getDataSurveyMatrix } from './../../Constant/matrix/matrixAction';
+import { getDataSurveyMatrix, getNameGV } from './../../Constant/matrix/matrixAction';
 import $ from './../../helpers/services'
 import LoadingPage from './loading';
 
@@ -18,7 +18,8 @@ const openNotificationWithIcon = (type) => {
   });
 };
 
-const href = "/ctdt/ctdt-1/itusurvey/view/2/itusurvey";
+// const href = "/ctdt/ctdt-1/itusurvey/view/2/itusurvey";
+// const href1 = "/ctdt/15/itusurvey/dosurvey/view/66/itusurvey?id=1"
 
 class SurveyMatrix extends Component {
   constructor(props) {
@@ -26,6 +27,7 @@ class SurveyMatrix extends Component {
     this.state = {
       selectedRowKeys: [],
       tempMatrix: [],
+      idCtdt : "",
     }
   }
 
@@ -47,6 +49,32 @@ class SurveyMatrix extends Component {
     $.getMatrixSurvey({ "data": `${id}` }).then((res) => {
       this.props.getDataSurveyMatrix(res.data);
     })
+
+  
+
+    $.getTeacherName(id).then(res => {
+      let listNameGV = [];
+      if(res && res.data.length > 0){
+        res.data.forEach(item => {
+          let obj = {
+            id : item.id,
+            id_mon : item.id_mon,
+            id_giaovien : item.id_giaovien,
+            name : item.name,
+          }
+          listNameGV.push(obj);
+        })
+      }
+
+      this.props.getNameGV(listNameGV)
+    })
+
+    let idCtdt =  await this.getUrlParameter('idCtdt');
+
+    this.setState({
+      idCtdt
+    })
+
   }
 
   //---Create Header---//
@@ -90,6 +118,10 @@ class SurveyMatrix extends Component {
     return dataLink;
   }
 
+  getHref = (subject,idSurvey) => {
+    return `/ctdt/${this.state.idCtdt}/itusurvey/dosurvey/view/${subject}/itusurvey?id=${idSurvey}`
+  }
+
   showitu = (text) => {
     //T*T*T*U*U*U/1*2*3*1*2*3
     let value = "-";
@@ -106,8 +138,15 @@ class SurveyMatrix extends Component {
         const content = (
           <div className="popover">
             {dataLink.map(item => {
-
-              return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+              let name = "" ;
+              let href = "" ; 
+              if(this.props.listNameGV.length > 0){
+                let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
+                 href = this.getHref(selected.id_mon,selected.id)
+                 name = selected.name;
+              }
+              
+              return (<Link to={href}>{name} - {item[1]} </Link>)
             })}
           </div>
         );
@@ -123,7 +162,15 @@ class SurveyMatrix extends Component {
         const content = (
           <div className="popover">
             {dataLink.map(item => {
-              return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+              let name = "" ;
+              let href = "" ; 
+              if(this.props.listNameGV.length > 0){
+                let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
+                 href = this.getHref(selected.id_mon,selected.id)
+                 name = selected.name;
+              }
+              
+              return (<Link to={href}>{name} - {item[1]} </Link>)
             })}
           </div>
         );
@@ -138,7 +185,15 @@ class SurveyMatrix extends Component {
         const content = (
           <div className="popover">
             {dataLink.map(item => {
-              return (<Link to={href + `?id=${item[1]}`}>Tên gv - {item[1]} </Link>)
+              let name = "" ;
+              let href = "" ; 
+              if(this.props.listNameGV.length > 0){
+                let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
+                 href = this.getHref(selected.id_mon,selected.id)
+                 name = selected.name;
+              }
+              
+              return (<Link to={href}>{name} - {item[1]} </Link>)
             })}
           </div>
         );
@@ -215,7 +270,6 @@ class SurveyMatrix extends Component {
         })
       });
     }
-    console.log(header);
     return header;
   }
   //---Create Header---//
@@ -274,6 +328,7 @@ class SurveyMatrix extends Component {
   }
 
   render() {
+    // console.log(this.props.listNameGV)
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
@@ -346,12 +401,14 @@ const mapStateToProps = (state, ownProps) => {
     editMatrix: state.editmatrix,
     cdrCdio: state.cdrcdio,
     dataSurveyMatrix: state.surveyMatrix.previewInfo,
+    listNameGV : state.surveyMatrix.listNameGV,
   }
 }
 
 const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getDataSurveyMatrix: (newData) => dispatch(getDataSurveyMatrix(newData)),
+    getNameGV : (newData) => dispatch(getNameGV(newData)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyMatrix);

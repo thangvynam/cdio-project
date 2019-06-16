@@ -7,7 +7,7 @@ class CDRForm extends Component {
 
     render() {
         return (
-            <WrappedCDRForm monhoc={this.props.monhoc}/>
+            <WrappedCDRForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>
         )
     }
 }

@@ -410,7 +410,7 @@ class CDRTableItem extends Component {
 
   loadGap = () => {
 
-    $.collectMtmhHasCdrCdio({ data: { thong_tin_chung_id: this.props.monhoc } }).then((res) => {
+    $.collectMtmhHasCdrCdio({ data: { thong_tin_chung_id: this.props.monhoc, idCtdt: this.props.ctdt } }).then((res) => {
       if (res.data && res.data.length > 0) {
         //
         $.collectMucdoMtmhHasCdrCdio({ data: res.data }).then((response) => {
@@ -544,7 +544,7 @@ class CDRTableItem extends Component {
 
   loadTable = () => {
     var self = this;
-    $.collectData4({ data: { thong_tin_chung_id: self.props.monhoc } })
+    $.collectData4({ data: { thong_tin_chung_id: self.props.monhoc, idCtdt: self.props.ctdt } })
       .then(function (response) {
         const tableData = {
           previewInfo: []

@@ -217,7 +217,7 @@ class CDRFormItem extends Component {
     if (this.state.isLoaded === false) {
       this.setState({ isLoaded: true });
       var self = this;
-      $.collectMtmh({ data: { thong_tin_chung_id: this.props.monhoc } })
+      $.collectMtmh({ data: { thong_tin_chung_id: this.props.monhoc, idCtdt: this.props.ctdt } })
         .then(function (response) {
           console.log(response.data)
           self.props.updateMtmh(response.data);
@@ -249,7 +249,7 @@ class CDRFormItem extends Component {
 
   componentDidMount() {
     var self = this;
-    $.collectMtmh({ data: { thong_tin_chung_id: this.props.monhoc } })
+    $.collectMtmh({ data: { thong_tin_chung_id: this.props.monhoc, idCtdt: this.props.ctdt } })
       .then(function (response) {
         console.log(response.data)
         self.props.updateMtmh(response.data);

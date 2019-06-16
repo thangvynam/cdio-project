@@ -442,16 +442,10 @@ class Home extends Component {
                         } break;
                     case "cdr":
                         if (this.checkExist(ctdt)) {    //param 2 exists
-                            if (ctdt === "edit") {
-                                if (this.checkExist(type)) {    //param 3 exists
-                                    console.log("param 3 must be null");
-                                    return <Page404 />;
-                                }
-                            }
-                            else {
-                                console.log("wrong param 2");
-                                return <Page404 />;
-                            }
+                            
+                            console.log("wrong param 2");
+                            return <Page404 />;
+                            
                         } break;
                     case "danh-muc":
                         if (!this.checkAdmin(userRole)) {   //user is not admin

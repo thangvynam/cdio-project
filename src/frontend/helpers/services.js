@@ -540,6 +540,11 @@ const updateStatusSurvey = (data) => {
     return $.post(url,data);
 }
 
+const getTeacherName = (params) => {
+    let url = `${_.GET_TEACHER_NAME}/${params}`;
+    return $.get(url);
+}
+
 export default{
     //localStorage
     setStorage,
@@ -647,6 +652,7 @@ export default{
     getSurveyList,
     getSurveyWithIdSurveyList,
     updateStatusSurvey,
+    getTeacherName,
 
     //export file
     exportFile,

@@ -35,7 +35,7 @@ class EditableCell extends React.Component {
       mota: "",
       standardOutput: [],
       tile: "",
-
+      beforeSelected : [],
     };
   }
   getInput = () => {
@@ -358,7 +358,10 @@ class itemLayout7ReducerItem extends React.Component {
     }
     else {
       let temp = previewInfo.findIndex(item => item.key === key);
-      previewInfo[temp].del_flag = 1;
+      if(temp!==-1){
+        previewInfo[temp].del_flag = 1;
+      }
+      
     }
 
     this.props.onAddDGData(previewInfo)
@@ -367,43 +370,74 @@ class itemLayout7ReducerItem extends React.Component {
   onSelectChange = selectedRowKeys => {
     let chudeDanhGia = this.props.itemLayout7Reducer.chudeDanhGia;
     let previewInfo =  this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1)
-    
-    if(selectedRowKeys.length >0){
-     chudeDanhGia.forEach(chude => {
-       selectedRowKeys.forEach(select => {
-
-       })
-     })
-      selectedRowKeys.forEach(select => {
-        chudeDanhGia.forEach(chude => {
-          
-          if(select.length >= chude.ma_chu_de.length && select.substring(0,chude.ma_chu_de.length)===chude.ma_chu_de){
-            let tempArray = selectedRowKeys.filter(element => element.substring(0,chude.ma_chu_de.length)===chude.ma_chu_de 
-            && element.substring(0,chude.ma_chu_de.length).length !== chude.ma_chu_de.length)
-            if(tempArray.length === 1){
-              selectedRowKeys = selectedRowKeys.filter(element => element !== select.substring(0,chude.ma_chu_de)===chude.ma_chu_de)
-            }else{
-              previewInfo.forEach(item => {
-                if(chude.ma_chu_de===item.key.substring(0,chude.ma_chu_de.length)){
-                  if(selectedRowKeys.includes(chude.ma_chu_de) && !selectedRowKeys.includes(item.key)){
-                    selectedRowKeys.push(item.key)                
-                  }else if(!selectedRowKeys.includes(chude.ma_chu_de)){
-                    console.log("HAHHAA")
-                    selectedRowKeys = selectedRowKeys.filter(element => element !==item.key)
-                  }
-                  
-                }
-              })
+    let pushItem = "";
+    if(selectedRowKeys.length !== previewInfo.length){
+      if(selectedRowKeys.length > 0){
+        if(this.state.beforeSelected && this.state.beforeSelected.length > 0){
+          selectedRowKeys.forEach(selected => {
+            if(!this.state.beforeSelected.includes(selected)){
+              pushItem = selected;
             }
-            console.log("HIHI")
-            
-          }
-        })
-      })
+          })
+        }else{
+          pushItem = selectedRowKeys[0];
+        }
+      }
     }
-    console.log(selectedRowKeys)
     
-    this.setState({ selectedRowKeys });
+    console.log(pushItem)
+    // if(pushItem){
+    //   if(this.isExist(pushItem)){
+    //     previewInfo.forEach(item => {
+    //       if(item.key.length > pushItem.length && item.key.substring(0,pushItem.length)===pushItem){
+    //         if(!selectedRowKeys.includes(item.key)){
+    //           selectedRowKeys.push(item.key);
+    //         }
+    //       }
+    //     })
+    //   }else{
+
+    //   }
+    // }
+    // if(selectedRowKeys.length >0){
+    //  chudeDanhGia.forEach(chude => {
+    //    selectedRowKeys.forEach(select => {
+
+    //    })
+    //  })
+    //   selectedRowKeys.forEach(select => {
+    //     chudeDanhGia.forEach(chude => {
+          
+    //       if(select.length >= chude.ma_chu_de.length && select.substring(0,chude.ma_chu_de.length)===chude.ma_chu_de){
+    //         let tempArray = selectedRowKeys.filter(element => element.substring(0,chude.ma_chu_de.length)===chude.ma_chu_de 
+    //         && element.substring(0,chude.ma_chu_de.length).length !== chude.ma_chu_de.length)
+    //         if(tempArray.length === 1){
+    //           selectedRowKeys = selectedRowKeys.filter(element => element !== select.substring(0,chude.ma_chu_de)===chude.ma_chu_de)
+    //         }else{
+    //           previewInfo.forEach(item => {
+    //             if(chude.ma_chu_de===item.key.substring(0,chude.ma_chu_de.length)){
+    //               if(selectedRowKeys.includes(chude.ma_chu_de) && !selectedRowKeys.includes(item.key)){
+    //                 selectedRowKeys.push(item.key)                
+    //               }else if(!selectedRowKeys.includes(chude.ma_chu_de)){
+    //                 console.log("HAHHAA")
+    //                 selectedRowKeys = selectedRowKeys.filter(element => element !==item.key)
+    //               }
+                  
+    //             }
+    //           })
+    //         }
+    //         console.log("HIHI")
+            
+    //       }
+    //     })
+    //   })
+    // }
+    // console.log(selectedRowKeys)
+    
+    this.setState({ 
+      selectedRowKeys,
+      beforeSelected : selectedRowKeys,
+    });
   };
 
   edit(key) {

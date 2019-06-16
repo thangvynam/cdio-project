@@ -7,7 +7,7 @@ import { bindActionCreators } from 'redux';
 import { editMatrix, editMatrixEditState, isLoadEditMatrix, cdrCdio } from '../../Constant/ActionType';
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import $ from './../../helpers/services';
-
+import LoadingPage from "./loading";
 
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -117,7 +117,8 @@ class EditMatrix extends Component {
       tempMatrix: [],
       isLoadMatrix: "false",
       cols: {},
-      rows: {}
+      rows: {},
+      isLoading: false
     }
   }
 
@@ -294,7 +295,7 @@ class EditMatrix extends Component {
 
     if (this.props.subjectList.length > 0 && this.props.isLoadEditMatrix === "false") {
       this.props.updateIsLoadEditMatrix("true");
-
+      this.setState({ isLoading: true });
       $.getCDR_CDIO(this.props.ctdt).then((res) => {
 
         this.props.updateCdrCdio(res.data)
@@ -337,6 +338,7 @@ class EditMatrix extends Component {
             }
           }
           this.props.updateEditMatrix(data);
+          this.setState({ isLoading: false });
         })
       }
 
@@ -347,7 +349,7 @@ class EditMatrix extends Component {
 
     if (nextProps.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
-
+      this.setState({ isLoading: true });
       $.getCDR_CDIO(this.props.ctdt).then((res) => {
 
         this.props.updateCdrCdio(res.data)
@@ -391,6 +393,7 @@ class EditMatrix extends Component {
             }
           }
           this.props.updateEditMatrix(data);
+          this.setState({ isLoading: false });
         })
       }
 
@@ -421,6 +424,7 @@ class EditMatrix extends Component {
   }
 
   render() {
+    let isLoading = this.state.isLoading;
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
       const firstColumn = [];
@@ -533,29 +537,30 @@ class EditMatrix extends Component {
 
     return (
       <React.Fragment>
-      {columns.length > this.columns.length &&
-      this.props.subjectList.length > 0 &&
-      <React.Fragment>
-        <div style={{ margin: "10px" }}>
-          <Button onClick={this.saveAll}>Lưu lại</Button>
-          {/* <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} /> */}
-          <Table bordered
-            components={components}
-            rowClassName={() => 'editable-row'}
-            dataSource={dataSource}
-            columns={columns}
-            scroll={{ x: 1500 }}
-            size="small"
-            pagination={{
-              onChange: page => {
-                console.log(page);
-              },
-              pageSize: 5,
-            }}
-          />
-          {!_.isEmpty(this.state.rows) && <OutTable data={this.state.rows} columns={this.state.cols} tableClassName="ExcelTable2007" tableHeaderRowClass="heading" />}
-        </div>
-      </React.Fragment>}
+        {columns.length > this.columns.length &&
+          this.props.subjectList.length > 0 &&
+          <React.Fragment>
+            {isLoading && <LoadingPage />}
+            <div style={{ margin: "10px" }}>
+              <Button onClick={this.saveAll}>Lưu lại</Button>
+              {/* <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} /> */}
+              <Table bordered
+                components={components}
+                rowClassName={() => 'editable-row'}
+                dataSource={dataSource}
+                columns={columns}
+                scroll={{ x: 1500 }}
+                size="small"
+                pagination={{
+                  onChange: page => {
+                    console.log(page);
+                  },
+                  pageSize: 5,
+                }}
+              />
+              {!_.isEmpty(this.state.rows) && <OutTable data={this.state.rows} columns={this.state.cols} tableClassName="ExcelTable2007" tableHeaderRowClass="heading" />}
+            </div>
+          </React.Fragment>}
       </React.Fragment>
     )
   }

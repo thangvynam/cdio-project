@@ -6,7 +6,7 @@ import {
 } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb, saveLogObject } from '../../../Constant/ActionType';
+import { selectedCDRItem, addCDRData, changeEditState, selectedVerb, cdrmdhd, isLoad, saveLog, changeCDRData, isLoadEditMatrix, editMatrix, cdrmdhddb, saveLogObject, cdrCdio } from '../../../Constant/ActionType';
 import { DragSource, DropTarget } from 'react-dnd';
 import { getCurrTime } from '../../../utils/Time';
 import $ from "../../../helpers/services";
@@ -413,6 +413,7 @@ class CDRTableItem extends Component {
     $.collectMtmhHasCdrCdio({ data: { thong_tin_chung_id: this.props.monhoc, idCtdt: this.props.ctdt } }).then((res) => {
       if (res.data && res.data.length > 0) {
         //
+        console.log(res.data)
         $.collectMucdoMtmhHasCdrCdio({ data: res.data }).then((response) => {
           let arr = [];
           for (let i = 0; i < response.data.length; i++) {
@@ -625,6 +626,10 @@ class CDRTableItem extends Component {
       data: subjectListId,
       idCtdt: this.props.ctdt
     }
+    $.getCDR_CDIO(this.props.ctdt).then((res) => {
+
+      this.props.updateCdrCdio(res.data)
+    })
     $.getStandardMatrix(data).then((res) => {
       let data = [];
       for (let i = 0; i < res.data.length; i++) {
@@ -924,7 +929,6 @@ class CDRTableItem extends Component {
   }
 
   render() {
-    console.log(this.props.cdrtable.previewInfo)
     var components = {};
     this.props.cdreditstate !== '' ?
       components = {
@@ -1088,7 +1092,8 @@ const mapDispatchToProps = (dispatch) => {
     updateCdrmdhd: cdrmdhd,
     updateCdrmdhdDB: cdrmdhddb,
     onSaveLog: saveLog,
-    onSaveReducer: saveLogObject
+    onSaveReducer: saveLogObject,
+    updateCdrCdio: cdrCdio
   }, dispatch);
 }
 

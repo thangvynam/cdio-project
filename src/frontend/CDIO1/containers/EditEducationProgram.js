@@ -102,6 +102,7 @@ class DetailEducationProgramTmp extends Component {
         .then(res => this.props.updateCdrCdio(res.data));
     }
     $.getBlockSubject(id).then(res => {
+      console.log(res.data.data)
       let resData = res.data.data;
       let dataSubject = [];
       let dataCtdt = [];

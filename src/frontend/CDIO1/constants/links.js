@@ -34,8 +34,8 @@ export const ADD_PROGRAM = `${LINK}/program/add/`;
 export const DELETE_PROGRAM = `${LINK}/program/delete/`;
 
 // eduPrograms links
-export const EXPORT_EDUPROGRAM = `${LINK}/exportEduprogram/`;
-export const EXPORT_EDUPROGRAM_SUBJECTS = `${LINK}/exportEduprogram/`;
+export const EXPORT_EDUPROGRAM = `${LINK}/download/getedu/`;
+export const EXPORT_EDUPROGRAM_SUBJECTS = `${LINK}/download/getcourse/`;
 
 export const LOAD_EDUPROGRAMS = `${LINK}/eduprogram/getlist/`;
 export const ADD_EDUPROGRAM = `${LINK}/eduprogram/add/`;

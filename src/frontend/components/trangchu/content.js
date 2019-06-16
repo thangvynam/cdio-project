@@ -875,13 +875,43 @@ class Content extends Component {
                                     ) : action === "chinhsua-cdr" ? (
                                         <EditOutcomeStandard ctdt={ctdt} />
                                     ) : action === "danhgia-cdr" ? (
-                                        <EditOutcomeStandard ctdt={ctdt} />
+                                        <div>
+                                            <Direction
+                                                subjectName={subjectName}
+                                                content_khoi={khoi}
+                                                content_ctdt={ctdt}
+                                                content_parent={parent}
+                                                content_type={type}
+                                                content_action={action}
+                                            />
+                                            <EditOutcomeStandard ctdt={ctdt} />
+                                        </div>
                                     ) : action === "khaosat-cdr" ? (
                                         <div>Khảo sát cdr</div>
                                     ) : type === "chuan-dau-ra" ? (
-                                        <InfoOutcomeStandard ctdt={ctdt} />
+                                        <div>
+                                            <Direction
+                                                subjectName={subjectName}
+                                                content_khoi={khoi}
+                                                content_ctdt={ctdt}
+                                                content_parent={parent}
+                                                content_type={type}
+                                                content_action={action}
+                                            />
+                                            <InfoOutcomeStandard ctdt={ctdt} />
+                                        </div>
                                     ) : type === "phan-cong-giang-day" ? (
-                                        <TeachingManage ctdt={ctdt} />
+                                        <div>
+                                            <Direction
+                                                subjectName={subjectName}
+                                                content_khoi={khoi}
+                                                content_ctdt={ctdt}
+                                                content_parent={parent}
+                                                content_type={type}
+                                                content_action={action}
+                                            />
+                                            <TeachingManage ctdt={ctdt} />
+                                        </div>
                                     ) : type === "khao-sat-chuan-dau-ra" ? (
                                         <OSSurvey />
                                     ) : type === "edit-ctdt" ? (

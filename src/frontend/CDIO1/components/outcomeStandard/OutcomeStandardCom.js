@@ -29,6 +29,13 @@ export default class OutcomeStandardCom extends Component {
     };
   }
 
+  onOutcomeStandardSelect = e => {
+    this.props.history.push({
+      pathname: "/cdr/edit",
+      search: `?id=${e.data.Id}`
+    });
+  }
+
   onOpenAdd = () => {
     this.props.onLoadFaculties();
     this.props.onLoadPrograms();
@@ -512,6 +519,8 @@ export default class OutcomeStandardCom extends Component {
               globalFilter={this.state.globalFilter}
               emptyMessage="No records found"
               value={this.props.outcomeStandards}
+              onRowSelect={this.onOutcomeStandardSelect}
+              selectionMode="single"
             >
               <Column
                 field="NameOutcomeStandard"
@@ -533,10 +542,10 @@ export default class OutcomeStandardCom extends Component {
                 header="Năm học"
                 style={{ width: "1em" }}
               />
-              <Column
+       {/*       <Column
                 body={this.actionTemplate}
                 style={{ textAlign: "center", width: "1em" }}
-              />
+              />*/}
             </DataTable>
           </Col>
         </Row>

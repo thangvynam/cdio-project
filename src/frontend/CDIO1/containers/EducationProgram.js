@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { Container, Row, Col } from "shards-react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -73,11 +74,11 @@ const mapStateToProps = state => ({
   majors: state.majors
 });
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   onLoadEduPrograms: eduProgramsAction.onLoadEduPrograms,
   onAddEduProgram: eduProgramsAction.onAddEduProgram,
   onLoadFaculties: facultiesAction.onLoadFaculties,
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadLevels: levelsAction.onLoadLevels,
   onLoadMajors: majorsAction.onLoadMajors
-})(EducationProgramTmp);
+})(EducationProgramTmp));

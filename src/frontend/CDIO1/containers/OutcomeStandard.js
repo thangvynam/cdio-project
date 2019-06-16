@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { withRouter } from "react-router-dom";
 import { Container, Row, Col } from "shards-react";
 
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -72,7 +73,7 @@ const mapStateToProps = state => ({
   detailOutcomeStandard: state.detailOutcomeStandard
 });
 
-export default connect(mapStateToProps, {
+export default withRouter(connect(mapStateToProps, {
   onLoadFaculties: facultiesAction.onLoadFaculties,
   onLoadPrograms: programsAction.onLoadPrograms,
   onLoadOutcomeStandards: outcomeStandardsAction.onLoadOutcomeStandards,
@@ -80,4 +81,4 @@ export default connect(mapStateToProps, {
   onDeleteOutcomeStandard: outcomeStandardsAction.onDeleteOutcomeStandard,
   onLoadDetailOutcomeStandard:
     detailOutcomeStandardAction.onLoadDetailOutcomeStandard
-})(OutcomeStandardTemp);
+})(OutcomeStandardTemp));

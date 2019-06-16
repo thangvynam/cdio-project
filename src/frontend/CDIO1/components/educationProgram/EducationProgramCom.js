@@ -23,6 +23,10 @@ export default class EduProgramCom extends Component {
     };
   }
 
+  onEduProSelect = e => {
+    this.props.history.push({pathname: `/ctdt/${e.data.Id}/edit-ctdt`});
+  }
+
   onOpenAdd = () => {
     this.props.onLoadFaculties();
     this.props.onLoadPrograms();
@@ -425,6 +429,8 @@ export default class EduProgramCom extends Component {
               globalFilter={this.state.globalFilter}
               emptyMessage="No records found"
               value={this.props.eduPrograms}
+              onRowSelect={this.onEduProSelect}
+              selectionMode="single"
             >
               <Column field="EduName" header="Tên" style={{ width: "5em" }} />
               <Column
@@ -452,10 +458,10 @@ export default class EduProgramCom extends Component {
                 header="Khóa tuyển"
                 style={{ width: "1em" }}
               />
-              <Column
+{/*              <Column
                 body={this.actionTemplate}
                 style={{ textAlign: "center", width: "2em" }}
-              />
+              />*/}
             </DataTable>
           </Col>
         </Row>

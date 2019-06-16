@@ -669,7 +669,7 @@ class TableItem extends Component {
       }
       //axios.post("/save-log", { data: this.props.itemKHGDTH.logData });
       $.saveLog({ data: this.props.itemKHGDTH.logData });
-      this.getDataTable(this.props.monhoc);
+      this.getDataTable(this.props.monhoc, this.props.ctdt);
     });
   };
 

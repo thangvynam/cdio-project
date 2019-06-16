@@ -14,7 +14,7 @@ class Layout5 extends Component {
         return (
             <React.Fragment>
                 <div className="section-layout">
-                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc}/>}
+                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>}
                 </div>
                 <div className="section-layout">
                     <Tooltip placement="topLeft">
@@ -23,7 +23,7 @@ ra chi tiết tương ứng với mỗi chủ đề, <br /> các hoạt động 
                     </Tooltip>
                 </div>
                 <div className="section-layout">
-                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
+                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} ctdt={this.props.ctdt} />
                 </div>
                 <div className="section-layout">
                     <LogForm monhoc={this.props.monhoc} tab={MENUITEM.GIANG_DAY_LY_THUYET} tabIndex={5}/>

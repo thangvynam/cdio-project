@@ -424,9 +424,9 @@ const getStandardOutput5 = (data) => {
     return $.post(url,data);
 }
 
-const collectData5 = (data) => {
+const collectData5 = (data, ctdt) => {
     let url = _.COLLECT_DATA5;
-    return $.post(url,data);
+    return $.post(url,data,ctdt);
 }
 
 const getCDRDanhgia = (data) => {

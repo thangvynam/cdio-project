@@ -508,11 +508,11 @@ class TableItem extends Component {
 
   }
 
-  collectDataRequest = (id) => {
+  collectDataRequest = (id, ctdt) => {
     var self = this;
     let newArr = [];
 
-    $.collectData5({ data: id })
+    $.collectData5({ data: id, ctdt: ctdt })
       .then(function (response) {
         for (let i = 0; i < response.data.length; i++) {
           let data = {
@@ -609,7 +609,7 @@ class TableItem extends Component {
                 .then(res => {
                   if (res) {
                     this.setState({ disableSaveall: false })
-                    this.collectDataRequest(this.props.monhoc);
+                    this.collectDataRequest(this.props.monhoc,this.props.ctdt);
                   }
                 })
 

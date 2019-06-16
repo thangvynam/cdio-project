@@ -8,7 +8,7 @@ import { editMatrix, editMatrixEditState, isLoadEditMatrix, cdrCdio } from '../.
 import { OutTable, ExcelRenderer } from 'react-excel-renderer';
 import $ from './../../helpers/services';
 import LoadingPage from "./loading";
-
+import { Prompt } from 'react-router';
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
 
@@ -424,6 +424,7 @@ class EditMatrix extends Component {
   }
 
   render() {
+    console.log(this.props.subjectList.length)
     let isLoading = this.state.isLoading;
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
@@ -540,6 +541,9 @@ class EditMatrix extends Component {
         {columns.length > this.columns.length &&
           this.props.subjectList.length > 0 &&
           <React.Fragment>
+            <Prompt
+            message='Bạn đã lưu dữ liệu chưa?Rời khỏi?'
+          />
             {isLoading && <LoadingPage />}
             <div style={{ margin: "10px" }}>
               <Button onClick={this.saveAll}>Lưu lại</Button>

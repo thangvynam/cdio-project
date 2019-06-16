@@ -686,7 +686,7 @@ class TableItem extends Component {
       //   const data = response.data;
       //   this.props.onUpdateKHGDTH(data);
       // });
-      this.getDataTable(this.props.monhoc);
+      this.getDataTable(this.props.monhoc, this.props.ctdt);
     }
   }
 
@@ -700,13 +700,13 @@ class TableItem extends Component {
       //   const data = response.data;
       //   this.props.onUpdateKHGDTH(data);
       // });
-      this.getDataTable(this.props.monhoc);
+      this.getDataTable(this.props.monhoc, this.props.ctdt);
     }
   }
 
-  getDataTable = idSubject => {
+  getDataTable = (idSubject, idCtdt) => {
     //axios.get(`/get-data-6/${idSubject}`)
-    $.getData6(idSubject)
+    $.getData6(idSubject, idCtdt)
     .then(response => {
       const data = response.data;
       console.log("data: ", data);

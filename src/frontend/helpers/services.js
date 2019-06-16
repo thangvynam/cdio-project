@@ -224,8 +224,8 @@ const getData3 = (data) => {
     return $.post(url, {data});
 }
 
-const getData6 = (param) => {
-    let url = `${_.GET_DATA_6}/${param}`;
+const getData6 = (param, param2) => {
+    let url = `${_.GET_DATA_6}/${param}/${param2}`;
     return $.get(url);
 }
 
@@ -239,8 +239,8 @@ const getEvalActs6 = (param) => {
     return $.get(url);
 }
 
-const getStandardOutput6 = (param) => {
-    let url = `${_.GET_STANDARD_OUTPUT_6}/${param}`;
+const getStandardOutput6 = (param, param2) => {
+    let url = `${_.GET_STANDARD_OUTPUT_6}/${param}/${param2}`;
     return $.get(url);
 }
 

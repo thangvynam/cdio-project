@@ -39,7 +39,7 @@ class ItemMenu extends Component {
             this.props.updateIssLoad5(true);
             // if (this.props.itemLayout5Reducer.previewInfo.length == 0) {
             this.props.refreshData();    
-            this.props.collectDataRequest(this.props.monhoc);
+            this.props.collectDataRequest(this.props.monhoc, this.props.ctdt);
             // }
             
         }
@@ -84,8 +84,8 @@ class ItemMenu extends Component {
                     this.props.saveDataValueDG(mapId.evalActs)
                 }
             })
-
-        $.getStandardOutput5({data: this.props.monhoc})
+       
+        $.getStandardOutput5({data: this.props.monhoc, idCtdt: this.props.ctdt})
             .then(response => {
                 const data = response.data;
                 let array = [];
@@ -469,9 +469,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch({type: IS_LOADED_5 , data: true});
         },
 
-        collectDataRequest: (id) => {
+        collectDataRequest: (id, ctdt) => {
             let newArr = [];
-            $.collectData5({data: id})
+            $.collectData5({data: id, ctdt: ctdt})
                 .then(function (response) {
                     for (let i = 0; i < response.data.length; i++) {
                         let data = {

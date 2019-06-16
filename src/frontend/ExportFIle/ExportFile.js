@@ -43,49 +43,67 @@ class ExportFile extends Component {
         return { muc_do_1: "", muc_do_2: "", muc_do_3: "" };
     }
 
+    getData1 = (monhoc) => {
+        try {
+            $.collectData1(monhoc).then(function (response) {
+                data1 = response.data;
+            });
+        } catch (e) {
+            console.log("tab1 error : " + e);
+        }
+    }
+
     getData2 = (monhoc) => {
-        $.getData2(monhoc)
-            .then(res => {
-                return res.data
-            }).then(resp => {
-                data2 = resp.Description;
-            })
+        try {
+            $.getData2(monhoc)
+                .then(res => {
+                    return res.data
+                }).then(resp => {
+                    data2 = resp.Description;
+                });
+        } catch (e) {
+            console.log("tab2 error : " + e);
+        }
     }
 
     getData3 = (monhoc) => {
-        let self = this;
-        let saveData = []
-        let standActs = [];
-        
-        let data = {
-            id: monhoc,
-            id_ctdt: self.props.id_ctdt
-        }
+        try {
+            let self = this;
+            let saveData = []
+            let standActs = [];
 
-        $.getData3(data).then(res => {
-            if (res.data.length > 0) {
-                res.data.forEach(element => {
-                    res.data.forEach(element2 => {
-                        if(element2.muc_tieu === element.muc_tieu) {
-                            element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length -1)
-                            element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
-                            standActs.push(element2.KeyRow)
-                        }
-                    });
-
-                    let newObj = {
-                        objectName: element.muc_tieu,
-                        description: element.mo_ta,
-                        standActs: standActs,
-                        del_flag: element.del_flag,
-                        id: element.id,
-                    }        
-                    saveData.push(newObj);        
-                });
+            let data = {
+                id: monhoc,
+                id_ctdt: self.props.id_ctdt
             }
-            saveData = saveData.filter((item) => item.del_flag === 0);
-            data3 = saveData;
-        })
+
+            $.getData3(data).then(res => {
+                if (res.data.length > 0) {
+                    res.data.forEach(element => {
+                        res.data.forEach(element2 => {
+                            if (element2.muc_tieu === element.muc_tieu) {
+                                element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length - 1)
+                                element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
+                                standActs.push(element2.KeyRow)
+                            }
+                        });
+
+                        let newObj = {
+                            objectName: element.muc_tieu,
+                            description: element.mo_ta,
+                            standActs: standActs,
+                            del_flag: element.del_flag,
+                            id: element.id,
+                        }
+                        saveData.push(newObj);
+                    });
+                }
+                saveData = saveData.filter((item) => item.del_flag === 0);
+                data3 = saveData;
+            })
+        } catch (e) {
+            console.log("tab3 error : " + e);
+        }
     }
 
     getData4 = (monhoc) => {
@@ -112,11 +130,10 @@ class ExportFile extends Component {
         }
     }
 
-    getData5 = (monhoc) => {
+    getData5 = (monhoc, id_ctdt) => {
         try {
-            $.collectData5({ data: monhoc })
+            $.collectData5({ data: monhoc, ctdt:id_ctdt })
                 .then(function (response) {
-                    console.log(response.data.length)
                     for (let i = 0; i < response.data.length; i++) {
                         let data = {
                             key: response.data[i].key,
@@ -320,11 +337,12 @@ class ExportFile extends Component {
         }
     }
 
-    loadData = (monhoc) => {
+    loadData = (monhoc,id_ctdt) => {
+        this.getData1(monhoc);
         this.getData2(monhoc);
         this.getData3(monhoc);
         this.getData4(monhoc);
-        this.getData5(monhoc);
+        this.getData5(monhoc,id_ctdt);
         this.getData6(monhoc);
         this.getData7(monhoc);
         this.getData8(monhoc);
@@ -332,8 +350,8 @@ class ExportFile extends Component {
     }
 
     componentWillMount() {
-        this.loadData(this.props.monhoc);
-
+        this.loadData(this.props.monhoc,this.props.id_ctdt);
+        
         plainOptions.forEach((v, i) => {
             this.setState({ [v]: false });
         });
@@ -407,10 +425,10 @@ class ExportFile extends Component {
 
         this.addDataMap(function (obj) {
             self.setState({ loading: 0 });
-            
+
             let data = {
-                content  : JSON.stringify(obj),
-                nameFile : self.props.tenmonhoc,
+                content: JSON.stringify(obj),
+                nameFile: self.props.tenmonhoc,
             }
 
             $.exportFile(JSON.stringify(data)).then(res => {

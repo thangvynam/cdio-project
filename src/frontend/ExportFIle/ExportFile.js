@@ -152,9 +152,9 @@ class ExportFile extends Component {
         }
     }
 
-    getData6 = (monhoc) => {
+    getData6 = (monhoc, id_ctdt) => {
         try {
-            $.getData6(monhoc)
+            $.getData6(monhoc, id_ctdt)
                 .then(response => {
                     data6 = response.data;
                 });
@@ -343,7 +343,7 @@ class ExportFile extends Component {
         this.getData3(monhoc);
         this.getData4(monhoc, id_ctdt);
         this.getData5(monhoc,id_ctdt);
-        this.getData6(monhoc);
+        this.getData6(monhoc, id_ctdt);
         this.getData7(monhoc);
         this.getData8(monhoc);
         this.getData9(monhoc);

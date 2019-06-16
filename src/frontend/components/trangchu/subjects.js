@@ -587,22 +587,33 @@ class Home extends Component {
                                                             }
                                                             else {
                                                                 if (this.checkExist(monhoc)) {  //param 6 exists
-                                                                    if (!this.checkInTeacherSubject(teacherSubject, +monhoc)) { //param 6 not found
-                                                                        console.log("wrong param 6");
-                                                                        return <Page404 />;
+                                                                    if(!this.checkChuNhiem) {
+                                                                        if (!this.checkInTeacherSubject(teacherSubject, +monhoc)) { //param 6 not found
+                                                                            console.log("wrong param 6");
+                                                                            return <Page404 />;
+                                                                        }
                                                                     }
                                                                     else {
-                                                                        if (!this.checkTabExist(MENUITEM, tab)) {   //param 7 not found
-                                                                            console.log("wrong param 7");
+                                                                        if (!this.checkSubjectExist2(subjectList, +monhoc)) { //param 6 not found
+                                                                            console.log("wrong param 6");
                                                                             return <Page404 />;
                                                                         }
                                                                         else {
-                                                                            if (tab !== "itusurvey") {  //param 7 invalid
+                                                                            if (!this.checkTabExist(MENUITEM, tab)) {   //param 7 not found
                                                                                 console.log("wrong param 7");
                                                                                 return <Page404 />;
                                                                             }
+                                                                            else {
+                                                                                if (tab !== "itusurvey") {  //param 7 invalid
+                                                                                    console.log("wrong param 7");
+                                                                                    return <Page404 />;
+                                                                                }
+                                                                            }
                                                                         }
                                                                     }
+
+                                                                
+                                                                    
                                                                 }
                                                                 else {  //param 6 must be exist
                                                                     console.log("param 6 cannot be null");

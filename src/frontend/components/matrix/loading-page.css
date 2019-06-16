@@ -1,0 +1,14 @@
+.loading-page{
+    position: absolute;
+    width: 100%;
+    height: 500px;
+    z-index: 1000;
+}
+
+.loading-page .ant-spin.ant-spin-spinning.ant-spin-show-text {
+    position: relative;
+    left: 50%;
+    margin-left: -40px;
+    top: 50%;
+    margin-top: -40px;
+}

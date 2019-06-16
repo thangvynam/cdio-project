@@ -6,6 +6,7 @@ import { getDataBenchMarkMatrix } from "./../../Constant/matrix/matrixAction";
 import { Bar } from "react-chartjs-2";
 import "./matrix.css";
 import $ from "./../../helpers/services";
+import LoadingPage from './loading';
 
 const myData = {
   I: [
@@ -438,7 +439,8 @@ class BenchMark extends Component {
 
   render() {
     return (
-      !_.isEmpty(this.props.dataBenchMarkMatrix) && (
+      <React.Fragment>
+      {!_.isEmpty(this.props.dataBenchMarkMatrix) && (
         <React.Fragment>
           <Table
             className="benchmark"
@@ -482,7 +484,8 @@ class BenchMark extends Component {
             </div>
           </div>
         </React.Fragment>
-      )
+      )}
+      </React.Fragment>
     );
   }
 }

@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {
-    Collapse, Button, Tag, Row, Col
+    Collapse, Button, Tag, Row, Col , notification
 } from 'antd';
 import { Label } from 'reactstrap'
 import { Link } from "react-router-dom";
+import $ from './../helpers/services'
 
 
 const Panel = Collapse.Panel;
@@ -43,6 +44,24 @@ class ItemVIewSurvey extends Component {
         console.log(tesNode.offsetTop)
     }
 
+    closeSurvey = () => {
+        $.closeSurvey({id : this.props.idSurveyList}).then(res => {
+            if (res.data === 1) {
+                notification["success"]({
+                  message: "Đóng cuộc survey thành công",
+                  duration: 1
+                });
+              }
+              else {
+                notification["error"]({
+                  message: "Đóng cuộc thất bại",
+                  duration: 1
+                });
+              }
+        })
+        this.props.getData();
+    }
+
     componentDidUpdate(){
         window.scrollTo(0, this.state.offsetTop-100);
     }
@@ -63,7 +82,7 @@ class ItemVIewSurvey extends Component {
                     </Col>
                     <Col className="custom-survey-item-button" span={10}>
                         <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}&idCtdt=${this.props.id}`} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
-                        <Button className="view-survey-matrix btn btn-outline-warning" onClick={(e) => console.log("BAM BAM BAM")}>Đóng cuộc Survey</Button>
+                        <Button className="view-survey-matrix btn btn-outline-warning" onClick={() => this.closeSurvey()}>Đóng cuộc Survey</Button>
                     </Col>
                 </Row>
             </React.Fragment>

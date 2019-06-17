@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {
-    Collapse, Button, Tag, Row, Col , notification
+    Collapse, Button, Tag, Row, Col , notification, Modal
 } from 'antd';
 import { Label } from 'reactstrap'
 import { Link } from "react-router-dom";
@@ -31,8 +31,13 @@ class ItemVIewSurvey extends Component {
         super(props);
         this.myRef = React.createRef();
         this.state = {
-            offsetTop:0
+            offsetTop:0,
+            visible : false,
         }
+
+        this.closeSurvey = this.closeSurvey.bind(this)
+        this.hideModal = this.hideModal.bind(this)
+        this.showModal = this.showModal.bind(this)
     }
 
     callback = async () => {
@@ -44,7 +49,7 @@ class ItemVIewSurvey extends Component {
         console.log(tesNode.offsetTop)
     }
 
-    closeSurvey = () => {
+    closeSurvey() {
         $.closeSurvey({id : this.props.idSurveyList}).then(res => {
             if (res.data === 1) {
                 notification["success"]({
@@ -61,6 +66,18 @@ class ItemVIewSurvey extends Component {
         })
         this.props.getData();
     }
+
+    showModal = () => {
+        this.setState({
+          visible: true,
+        });
+      };
+
+    hideModal = () => {
+        this.setState({
+          visible: false,
+        });
+      };
 
     componentDidUpdate(){
         window.scrollTo(0, this.state.offsetTop-100);
@@ -82,13 +99,15 @@ class ItemVIewSurvey extends Component {
                     </Col>
                     <Col className="custom-survey-item-button" span={10}>
                         <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}&idCtdt=${this.props.id}`} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
-                        <Button className="view-survey-matrix btn btn-outline-warning" onClick={() => this.closeSurvey()}>Đóng cuộc Survey</Button>
+                        <Button className="view-survey-matrix btn btn-outline-warning" onClick={this.showModal} disabled={this.props.status === 0 ? true : false}>Đóng cuộc Survey</Button>
                     </Col>
                 </Row>
             </React.Fragment>
         );
     }
     render() {
+        const date = this.props.dateFrom + " <-> " + this.props.dateTo;
+
         return (
             <div>
                 <Collapse ref={this.myRef} onChange={this.callback}>
@@ -100,6 +119,18 @@ class ItemVIewSurvey extends Component {
                     </Panel>
 
                 </Collapse>
+                <Modal
+                title = "Bạn có muốn đóng cuộc Survey này không?" 
+                visible = {this.state.visible}
+                    onOk={this.closeSurvey}
+                    onCancel={this.hideModal}
+                    okText = "Đồng ý"
+                    cancelText = "Không"
+                >
+                    {this.props.title}
+                    <br/>
+                    {date}
+                    </Modal>
             </div>
         );
     }

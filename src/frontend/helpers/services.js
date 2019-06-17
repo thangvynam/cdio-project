@@ -244,8 +244,8 @@ const getStandardOutput6 = (param, param2) => {
     return $.get(url);
 }
 
-const getStandardOutput7 = (param) => {
-    let url = `${_.GET_STANDARD_OUTPUT_7}/${param}`;
+const getStandardOutput7 = (param, param2) => {
+    let url = `${_.GET_STANDARD_OUTPUT_7}/${param}/${param2}`;
     return $.get(url);
 }
 

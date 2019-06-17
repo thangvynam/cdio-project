@@ -556,7 +556,8 @@ class itemLayout7ReducerItem extends React.Component {
             listCDRDGString = listCDRDGString + ',' + item.chuan_dau_ra_mon_hoc_id;
           }
         })
-        $.getCDR_7({ data: listCDRDGString }).then(response3 => {
+        $.getCDR_7({ data: listCDRDGString, idCtdt: this.props.ctdt }).then(response3 => {
+          console.log(response3.data)
           if (response3 === null || response3.data === null || response3.data === undefined || response3.data.length === 0) return;
           listCDR = response3.data;
           for (let i = 0; i < listDG.length; i++) {
@@ -646,8 +647,9 @@ class itemLayout7ReducerItem extends React.Component {
         console.log(error);
       });
 
-    $.getStandardOutput7(this.props.monhoc)
+    $.getStandardOutput7(this.props.monhoc, this.props.ctdt)
       .then(function (response) {
+        console.log(response.data)
         self.props.onGetCDR(response.data);
       })
       .catch(function (error) {
@@ -765,7 +767,7 @@ class itemLayout7ReducerItem extends React.Component {
 
 
   render() {
-
+    console.log(this.props.itemLayout7Reducer.previewInfo)
     const components = {
       body: {
         row: EditableFormRow,

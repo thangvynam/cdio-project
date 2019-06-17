@@ -10,6 +10,7 @@ import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { getDataSurveyMatrix, getNameGV } from './../../Constant/matrix/matrixAction';
 import $ from './../../helpers/services'
 import LoadingPage from './loading';
+import { subjectList } from '../../Constant/ActionType';
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -44,6 +45,25 @@ class SurveyMatrix extends Component {
     }
   };
 
+  getBlockSubjects = (ctdt) => {
+    var self = this;
+    $.getBlockSubject(ctdt).then(res => {
+      let resData = res.data.data;
+      let dataSubject = [];
+      let dataCtdt = [];
+      if (resData !== undefined && resData !== null) {
+          for (let i = 0; i < resData.length; i++) {
+              dataCtdt = dataCtdt.concat(resData[i].block);
+              for (let j = 0; j < resData[i].block.length; j++) {
+                  dataSubject = dataSubject.concat(resData[i].block[j].subjects);
+              }
+          }
+          dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+          self.props.updateSubjectList(dataSubject);
+      }
+  })
+  }
+
   async componentDidMount() {
     let id = await this.getUrlParameter('id');
     $.getMatrixSurvey({ "data": `${id}` }).then((res) => {
@@ -70,7 +90,7 @@ class SurveyMatrix extends Component {
     })
 
     let idCtdt =  await this.getUrlParameter('idCtdt');
-
+    this.getBlockSubjects(idCtdt)
     this.setState({
       idCtdt
     })
@@ -409,6 +429,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
   return {
     getDataSurveyMatrix: (newData) => dispatch(getDataSurveyMatrix(newData)),
     getNameGV : (newData) => dispatch(getNameGV(newData)),
+    updateSubjectList : (newData) => dispatch(subjectList(newData)),
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(SurveyMatrix);

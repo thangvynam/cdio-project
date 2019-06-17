@@ -216,7 +216,7 @@ class Home extends Component {
                     var self = this;
                     let monhoc = self.props.match.params.monhoc;
                     let ctdt = self.props.match.params.ctdt;
-                    if (ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
+                    if (ctdt !== "survey-matrix" && ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
                         $.getBlockSubject(ctdt).then(res => {
                             console.log(res.data.data)
                             let resData = res.data.data;
@@ -319,7 +319,7 @@ class Home extends Component {
                         self.props.updateSubjectId(monhoc)
                     }
 
-                    if(ctdt !== "" && ctdt !== undefined && ctdt !== null) {
+                    if(ctdt !== "" && ctdt !== undefined && ctdt !== null && ctdt !== "survey-matrix") {
                         $.getCDR_CDIO(ctdt)
                     .then(res => this.props.updateCdrCdio(res.data));
                     }

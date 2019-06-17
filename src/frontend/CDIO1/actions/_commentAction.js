@@ -2,6 +2,9 @@ import axios from "axios";
 import * as cst from "../constants";
 import * as links from "../constants/links";
 import * as message from "./message";
+import {
+  onLoadDetailOutcomeStandard
+} from "./detailOutcomeStandardAction";
 
 export const loadCommentSuccess = comments => ({
   type: cst.LOAD_COMMENT_SUCCESS,
@@ -81,6 +84,7 @@ export const onAddComment = data => {
           };
           dispatch(message.message(chirp));
           // dispatch(addCommentSuccess(res));
+          dispatch(onLoadDetailOutcomeStandard(data.idoutcome))
           dispatch(onLoadComments(data.idoutcome));
         } else {
           let chirp = {

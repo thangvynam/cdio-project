@@ -85,7 +85,6 @@ class EditOutcomeStandardTmp extends Component {
         <Row>
           <Col lg="12" md="12">
             <DetailOutcomeStandardCom
-              isFromOSList={isFromOSList}
               revisions={this.props.revisions}
               infoOutcomeStandard={infoOutcomeStandard}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
@@ -101,6 +100,10 @@ class EditOutcomeStandardTmp extends Component {
               comments={this.props.comments}
               onAddComment={this.props.onAddComment}
               onDoneComment={this.props.onDoneComment}
+              detailEduProgram={this.props.detailEduProgram}
+              // the change
+              isFromOSList={isFromOSList}
+              idOutcomeStandard={id}
             />
           </Col>
         </Row>
@@ -108,7 +111,7 @@ class EditOutcomeStandardTmp extends Component {
       :(
     <div>
       <Empty />
-      <h2 align="center">Quay lại tab <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để tải dữ liệu</h2>
+      <h3 align="center">Quay lại tab <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để tải dữ liệu</h3>
     </div>
     )
     );

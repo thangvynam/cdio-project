@@ -80,7 +80,7 @@ class InfoOutcomeStandard extends Component {
     ) : (
     <div>
       <Empty />
-      <h2 align="center">Quay lại tab <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để tải dữ liệu</h2>
+      <h3 align="center">Quay lại tab <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để tải dữ liệu</h3>
     </div>
     );
   }

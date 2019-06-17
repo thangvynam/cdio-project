@@ -519,8 +519,8 @@ export default class OutcomeStandardCom extends Component {
               globalFilter={this.state.globalFilter}
               emptyMessage="No records found"
               value={this.props.outcomeStandards}
-              onRowSelect={this.onOutcomeStandardSelect}
-              selectionMode="single"
+//              onRowSelect={this.onOutcomeStandardSelect}
+//              selectionMode="single"
             >
               <Column
                 field="NameOutcomeStandard"

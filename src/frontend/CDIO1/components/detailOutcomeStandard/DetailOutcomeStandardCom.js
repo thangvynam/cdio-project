@@ -140,7 +140,7 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   onComment = () => {
-    const idoutcome = this.props.infoOutcomeStandard.Id;
+    const idoutcome = this.props.idOutcomeStandard;
     const keyrow = this.state.commentKey;
     const iduser = JSON.parse(localStorage.getItem("user")).data.Id;
     const content = this.state.comment;
@@ -154,7 +154,7 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   onCheck = id => {
-    const idoutcome = this.props.infoOutcomeStandard.Id;
+    const idoutcome = this.props.idOutcomeStandard;
     const iduser = JSON.parse(localStorage.getItem("user")).data.Id;
     const data = { idoutcome, iduser, id };
     this.props.onDoneComment(data);
@@ -198,9 +198,7 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   onDeleteRevision = () => {
-    const idOutcome = this.props.infoOutcomeStandard
-      ? this.props.infoOutcomeStandard.Id
-      : 0;
+    const idOutcome = this.props.idOutcomeStandard;
     this.props.onDeleteRevision(
       this.state.idRevision,
       idOutcome,
@@ -214,9 +212,7 @@ export default class DetailOutcomeStandardCom extends Component {
   };
 
   onOpenOutcomStandard = () => {
-    this.props.onLoadDetailOutcomeStandard(
-      this.props.infoOutcomeStandard ? this.props.infoOutcomeStandard.Id : 0
-    );
+    this.props.onLoadDetailOutcomeStandard(this.props.idOutcomeStandard);
     this.setState({ revisionsVisible: false });
   };
 
@@ -400,11 +396,7 @@ export default class DetailOutcomeStandardCom extends Component {
     let data = [];
     let level = logic.getMaxLevel(this.state.nodes);
     logic.createSaveData(this.state.nodes, data, 1, level);
-    this.props.onSaveDetailOutcomeStandard(
-      data,
-      this.state.nodes,
-      this.props.infoOutcomeStandard ? this.props.infoOutcomeStandard.Id : 0
-    );
+    this.props.onSaveDetailOutcomeStandard(data, this.state.nodes, this.props.idOutcomeStandard);
   };
 
   // on save revision
@@ -412,7 +404,7 @@ export default class DetailOutcomeStandardCom extends Component {
     let data = [];
     let level = logic.getMaxLevel(this.state.nodes);
     logic.createSaveData(this.state.nodes, data, 1, level);
-    let idoutcome = this.props.infoOutcomeStandard.Id;
+    let idoutcome = this.props.idOutcomeStandard;
     let iduser = 1;
     let name = this.state.nameRevision;
     let dateupdated = new Date().toISOString();

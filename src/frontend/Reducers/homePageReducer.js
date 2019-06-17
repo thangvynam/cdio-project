@@ -9,11 +9,11 @@ const initialState = {
         name: "CHUẨN ĐẦU RA",
         role: ["ADMIN", "TEACHER", "BIEN_SOAN"],
         children: [
-            // {
-            //     id: "chinhsua-cdr",
-            //     name: "Chỉnh sửa chuẩn đầu ra",
-            //     role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
-            // },
+            {
+                id: "chinhsua-cdr",
+                name: "Chỉnh sửa chuẩn đầu ra",
+                role: ["ADMIN", "CHUNHIEM", "BIEN_SOAN", "TEACHER"]
+            },
             {
                 id: "danhgia-cdr",
                 name: "Đánh giá chuẩn đầu ra",

@@ -396,7 +396,11 @@ export default class DetailOutcomeStandardCom extends Component {
     let data = [];
     let level = logic.getMaxLevel(this.state.nodes);
     logic.createSaveData(this.state.nodes, data, 1, level);
-    this.props.onSaveDetailOutcomeStandard(data, this.state.nodes, this.props.idOutcomeStandard);
+    this.props.onSaveDetailOutcomeStandard(
+      data,
+      this.state.nodes,
+      this.props.idOutcomeStandard
+    );
   };
 
   // on save revision
@@ -418,43 +422,44 @@ export default class DetailOutcomeStandardCom extends Component {
       <div>
         {JSON.parse(localStorage.getItem("user")).data.Role.includes(
           "BIEN_SOAN"
-        ) && (
-          <React.Fragment>
-            <Button
-              onClick={() => this.onClickDialog(node)}
-              theme="success"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title="Thêm cấp con"
-            >
-              <i className="material-icons">add</i>
-            </Button>
-            <Button
-              onClick={() => this.upSameLevel(node)}
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title="Lên cùng cấp"
-            >
-              <i className="material-icons">arrow_upward</i>
-            </Button>
-            <Button
-              onClick={() => this.downSameLevel(node)}
-              theme="info"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title="Xuống cùng cấp"
-            >
-              <i className="material-icons">arrow_downward</i>
-            </Button>
-            <Button
-              onClick={() => this.onShowDeleteAlert(node)}
-              theme="secondary"
-              style={{ marginRight: ".3em", padding: "8px" }}
-              title={`Xóa cấp ${node.key}`}
-            >
-              <i className="material-icons">delete_sweep</i>
-            </Button>
-          </React.Fragment>
-        )}
-        {!this.props.isFromOSList && (
+        ) &&
+          this.props.isEdition && (
+            <React.Fragment>
+              <Button
+                onClick={() => this.onClickDialog(node)}
+                theme="success"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title="Thêm cấp con"
+              >
+                <i className="material-icons">add</i>
+              </Button>
+              <Button
+                onClick={() => this.upSameLevel(node)}
+                theme="info"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title="Lên cùng cấp"
+              >
+                <i className="material-icons">arrow_upward</i>
+              </Button>
+              <Button
+                onClick={() => this.downSameLevel(node)}
+                theme="info"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title="Xuống cùng cấp"
+              >
+                <i className="material-icons">arrow_downward</i>
+              </Button>
+              <Button
+                onClick={() => this.onShowDeleteAlert(node)}
+                theme="secondary"
+                style={{ marginRight: ".3em", padding: "8px" }}
+                title={`Xóa cấp ${node.key}`}
+              >
+                <i className="material-icons">delete_sweep</i>
+              </Button>
+            </React.Fragment>
+          )}
+        {!this.props.isEdition && (
           <Button
             onClick={() =>
               this.setState({
@@ -578,8 +583,8 @@ export default class DetailOutcomeStandardCom extends Component {
     return (
       <div className="p-grid content-section implementation">
         <Row>
-          <Col lg="1" md="1" sm="1">
-            {!this.props.isFromOSList && (
+          {!this.props.isEdition && (
+            <Col lg="1" md="1" sm="1">
               <Button
                 onClick={() =>
                   this.setState({
@@ -596,41 +601,45 @@ export default class DetailOutcomeStandardCom extends Component {
               >
                 <i className="material-icons">question_answer</i>
               </Button>
-            )}
-          </Col>
-          {JSON.parse(localStorage.getItem("user")).data.Role.includes(
-            "BIEN_SOAN"
-          ) && (
-            <Col lg="6" md="6" sm="6">
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onSave}
-                disabled={this.state.isSaveBtnDisabled}
-              >
-                <i className="material-icons">save</i> Lưu CĐR (bản chính)
-              </Button>
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onSeeRevisions}
-              >
-                <i className="material-icons">history</i> Xem các phiên bản
-              </Button>
-              <Button
-                style={{ margin: "0 10px" }}
-                theme="success"
-                onClick={this.onShowSaveRevision}
-              >
-                <i className="material-icons">change_history</i> Lưu phiên bản
-              </Button>
             </Col>
           )}
-          <Col lg="2" md="2" sm="2">
-            {JSON.parse(localStorage.getItem("user")).data.Role.includes(
-              "BIEN_SOAN"
-            ) && <DataInputCom handleFile={this.handleFile} />}
-          </Col>
+          {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+            "BIEN_SOAN"
+          ) &&
+            this.props.isEdition && (
+              <Col lg="6" md="6" sm="6">
+                <Button
+                  style={{ margin: "0 10px" }}
+                  theme="success"
+                  onClick={this.onSave}
+                  disabled={this.state.isSaveBtnDisabled}
+                >
+                  <i className="material-icons">save</i> Lưu CĐR (bản chính)
+                </Button>
+                <Button
+                  style={{ margin: "0 10px" }}
+                  theme="success"
+                  onClick={this.onSeeRevisions}
+                >
+                  <i className="material-icons">history</i> Xem các phiên bản
+                </Button>
+                <Button
+                  style={{ margin: "0 10px" }}
+                  theme="success"
+                  onClick={this.onShowSaveRevision}
+                >
+                  <i className="material-icons">change_history</i> Lưu phiên bản
+                </Button>
+              </Col>
+            )}
+          {JSON.parse(localStorage.getItem("user")).data.Role.includes(
+            "BIEN_SOAN"
+          ) &&
+            this.props.isEdition && (
+              <Col lg="2" md="2" sm="2">
+                <DataInputCom handleFile={this.handleFile} />
+              </Col>
+            )}
           <Col lg="2" md="2" sm="2">
             <label onClick={this.onShowExportCom} className="export">
               <i className="material-icons">save_alt</i> Tạo file Excel
@@ -646,7 +655,7 @@ export default class DetailOutcomeStandardCom extends Component {
                 editor={
                   JSON.parse(localStorage.getItem("user")).data.Role.includes(
                     "BIEN_SOAN"
-                  )
+                  ) && this.props.isEdition
                     ? this.nameEditor
                     : null
                 }
@@ -656,7 +665,8 @@ export default class DetailOutcomeStandardCom extends Component {
                 header={
                   JSON.parse(localStorage.getItem("user")).data.Role.includes(
                     "BIEN_SOAN"
-                  ) && (
+                  ) &&
+                  this.props.isEdition && (
                     <Button
                       onClick={() => this.onClickDialogRoot()}
                       theme="success"
@@ -666,7 +676,7 @@ export default class DetailOutcomeStandardCom extends Component {
                   )
                 }
                 body={this.actionTemplate}
-                style={{ textAlign: "center", width: "15em" }}
+                style={{ textAlign: "center", width: "12em" }}
               />
             </TreeTable>
           </Col>
@@ -762,6 +772,7 @@ export default class DetailOutcomeStandardCom extends Component {
             />
           </Dialog>
         </div>
+
         <div>
           <Dialog
             header="Thông báo"

@@ -37,11 +37,8 @@ class ItemMenu extends Component {
         
         if(!this.props.itemLayout5Reducer.isLoaded) {
             this.props.updateIssLoad5(true);
-            // if (this.props.itemLayout5Reducer.previewInfo.length == 0) {
             this.props.refreshData();    
             this.props.collectDataRequest(this.props.monhoc, this.props.ctdt);
-            // }
-            
         }
     }
     

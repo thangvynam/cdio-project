@@ -118,7 +118,6 @@ export default class ContentProgramCom extends React.Component {
         this.state.creditFreeStudy
       )
       this.setState({ nodes: data });
-      this.props.onSaveEduProgram();
     }
     this.onHideDialogChild();
   };

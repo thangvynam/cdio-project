@@ -457,7 +457,6 @@ export default class DetailEducationProgramCom extends React.Component {
                 <ContentProgramCom
                   ref={this.ContentProgramCom}
                   subjects={this.props.subjects}
-                  onSaveEduProgram={this.onSave}
                 />
               </AccordionTab>
 

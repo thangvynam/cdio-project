@@ -54,7 +54,7 @@ export const receiveProps = nextProps => {
     : "";
     const EduWeight = nextProps.detailEduProgram.EduWeight
     ? nextProps.detailEduProgram.EduWeight
-    : "";
+    : null;
 
   const data = {
     major,

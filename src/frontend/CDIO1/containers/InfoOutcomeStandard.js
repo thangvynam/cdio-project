@@ -25,8 +25,12 @@ class InfoOutcomeStandard extends Component {
     const idEdu = this.props.ctdt;
     this.props.onLoadEduProgram(+idEdu);
     this.props.onLoadDetailEduProgram(+idEdu);
-    let id = +this.props.detailEduProgram.IdOutcome;
-    this.props.onLoadOutcomeStandard(id);
+    let id = this.props.detailEduProgram
+      ? +this.props.detailEduProgram.IdOutcome
+      : 0;
+    if (id) {
+      this.props.onLoadOutcomeStandard(id);
+    }
   };
 
   render() {

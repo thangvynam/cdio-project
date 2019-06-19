@@ -28,8 +28,8 @@ class EditOutcomeStandardTmp extends Component {
   componentDidMount = () => {
     let id = this.props.detailEduProgram
       ? +this.props.detailEduProgram.IdOutcome
-      : 0;
-    if (id) {
+      : -1;
+    if (id > 0) {
       this.props.onLoadDetailOutcomeStandard(id);
       this.props.onLoadRevisions(id);
       this.props.onLoadOutcomeStandard(id);
@@ -54,10 +54,7 @@ class EditOutcomeStandardTmp extends Component {
     const pathname = window.location.pathname;
     const isEdition = pathname.includes("chinhsua") ? true : false;
 
-    const infoOutcomeStandard = Array.isArray(this.props.infoOutcomeStandard)
-      ? this.props.infoOutcomeStandard[0]
-      : null;
-
+    const infoOutcomeStandard = id > 0 ? this.props.infoOutcomeStandard[0] : null;
     const title = infoOutcomeStandard
       ? `${infoOutcomeStandard.NameOutcomeStandard}`
       : `Chưa tải được`;

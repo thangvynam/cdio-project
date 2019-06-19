@@ -19,9 +19,6 @@ const openNotificationWithIcon = (type) => {
   });
 };
 
-// const href = "/ctdt/ctdt-1/itusurvey/view/2/itusurvey";
-// const href1 = "/ctdt/15/itusurvey/dosurvey/view/66/itusurvey?id=1"
-
 class SurveyMatrix extends Component {
   constructor(props) {
     super(props)
@@ -69,8 +66,6 @@ class SurveyMatrix extends Component {
     $.getMatrixSurvey({ "data": `${id}` }).then((res) => {
       this.props.getDataSurveyMatrix(res.data);
     })
-
-  
 
     $.getTeacherName(id).then(res => {
       let listNameGV = [];
@@ -162,8 +157,10 @@ class SurveyMatrix extends Component {
               let href = "" ; 
               if(this.props.listNameGV.length > 0){
                 let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
-                 href = this.getHref(selected.id_mon,selected.id)
-                 name = selected.name;
+                if(selected){
+                  href = this.getHref(selected.id_mon,selected.id)
+                  name = selected.name;
+                } 
               }
               
               return (<Link to={href}>{name} - {item[1]} </Link>)
@@ -186,8 +183,10 @@ class SurveyMatrix extends Component {
               let href = "" ; 
               if(this.props.listNameGV.length > 0){
                 let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
-                 href = this.getHref(selected.id_mon,selected.id)
-                 name = selected.name;
+                if(selected){
+                  href = this.getHref(selected.id_mon,selected.id)
+                  name = selected.name;
+                } 
               }
               
               return (<Link to={href}>{name} - {item[1]} </Link>)
@@ -209,8 +208,10 @@ class SurveyMatrix extends Component {
               let href = "" ; 
               if(this.props.listNameGV.length > 0){
                 let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
-                 href = this.getHref(selected.id_mon,selected.id)
-                 name = selected.name;
+                if(selected){
+                  href = this.getHref(selected.id_mon,selected.id)
+                  name = selected.name;
+                } 
               }
               
               return (<Link to={href}>{name} - {item[1]} </Link>)

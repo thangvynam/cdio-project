@@ -935,27 +935,13 @@ class Content extends Component {
                                     ) : parent === "danh-muc" ? (
                                         <Danhmuc />
                                     ) : parent === "cdr" ? (
-                                        ctdt === "edit" ? (
-                                            <React.Fragment>
-                                                <EditOutcomeStandard />
-                                            </React.Fragment>
-                                        ) : (
-                                                <React.Fragment>
-                                                    <OutcomeStandard />
-                                                </React.Fragment>
-                                            )
+                                        <OutcomeStandard />
                                     ) : parent === "qlhp" ? (
-                                        <React.Fragment>
-                                            <SubjectManage />
-                                        </React.Fragment>
+                                        <SubjectManage />
                                     ) : parent === "qlkh" ? (
-                                        <React.Fragment>
-                                            <FaProManage />
-                                        </React.Fragment>
+                                        <FaProManage />
                                     ) : parent === "qlnd" ? (
-                                        <React.Fragment>
-                                            <UserManage />
-                                        </React.Fragment>
+                                        <UserManage />
                                     ) : parent === "view-survey" ? (
                                         <React.Fragment>
                                             {/* <Row className="col\-right\-title aa"> */}

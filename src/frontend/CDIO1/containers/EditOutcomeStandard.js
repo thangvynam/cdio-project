@@ -6,7 +6,7 @@ import { Link } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
 
 import { Empty } from "antd";
-    
+
 import DetailOutcomeStandardCom from "../components/detailOutcomeStandard/DetailOutcomeStandardCom";
 import AlertCom from "../components/AlertCom";
 import PageTitle from "../components/PageTitle";
@@ -26,15 +26,15 @@ class EditOutcomeStandardTmp extends Component {
   }
 
   componentDidMount = () => {
-    const urlParams = new URLSearchParams(window.location.search);
-    let id = urlParams.get("id")
-      ? urlParams.get("id")
-      : +this.props.detailEduProgram.IdOutcome;
-    id = id ? id : 0;
-    this.props.onLoadDetailOutcomeStandard(id);
-    this.props.onLoadRevisions(id);
-    this.props.onLoadOutcomeStandard(id);
-    this.props.onLoadComments(id);
+    let id = this.props.detailEduProgram
+      ? +this.props.detailEduProgram.IdOutcome
+      : -1;
+    if (id > 0) {
+      this.props.onLoadDetailOutcomeStandard(id);
+      this.props.onLoadRevisions(id);
+      this.props.onLoadOutcomeStandard(id);
+      this.props.onLoadComments(id);
+    }
     window.addEventListener("beforeunload", this.onUnload);
   };
 
@@ -47,25 +47,20 @@ class EditOutcomeStandardTmp extends Component {
   };
 
   render() {
-    const urlParams = new URLSearchParams(window.location.search);
-    const isFromOSList = urlParams.get("id") ? true : false;
+    let id = this.props.detailEduProgram
+      ? +this.props.detailEduProgram.IdOutcome
+      : -1;
 
-    let id = urlParams.get("id")
-      ? urlParams.get("id")
-      : +this.props.detailEduProgram.IdOutcome;
-    id = id ? id : 0;
+    const pathname = window.location.pathname;
+    const isEdition = pathname.includes("chinhsua") ? true : false;
 
-    const infoOutcomeStandard = Array.isArray(this.props.infoOutcomeStandard)
-      ? this.props.infoOutcomeStandard[0]
-      : null;
-
+    const infoOutcomeStandard = id > 0 ? this.props.infoOutcomeStandard[0] : null;
     const title = infoOutcomeStandard
       ? `${infoOutcomeStandard.NameOutcomeStandard}`
       : `Chưa tải được`;
-    
-    return (
-      id
-      ?<Container fluid className="main-content-container px-4">
+
+    return id > 0 ? (
+      <Container fluid className="main-content-container px-4">
         <Prompt message="Dữ liệu chưa được lưu, bạn thực sự muốn thoát?" />
         <Row noGutters className="page-header py-4">
           <Col lg="8" md="8" sm="8">
@@ -85,7 +80,6 @@ class EditOutcomeStandardTmp extends Component {
         <Row>
           <Col lg="12" md="12">
             <DetailOutcomeStandardCom
-              isFromOSList={isFromOSList}
               revisions={this.props.revisions}
               infoOutcomeStandard={infoOutcomeStandard}
               detailOutcomeStandard={this.props.detailOutcomeStandard}
@@ -101,16 +95,33 @@ class EditOutcomeStandardTmp extends Component {
               comments={this.props.comments}
               onAddComment={this.props.onAddComment}
               onDoneComment={this.props.onDoneComment}
+              detailEduProgram={this.props.detailEduProgram}
+              // the change
+              idOutcomeStandard={id}
+              isEdition={isEdition}
             />
           </Col>
         </Row>
       </Container>
-      :(
-    <div>
-      <Empty />
-      <h2 align="center">Quay lại tab <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để tải dữ liệu</h2>
-    </div>
-    )
+    ) : id === 0 ? (
+      <div>
+        <Empty />
+        <h3 align="center">Chưa sử dụng chuẩn đầu ra</h3>
+        <h3 align="center">
+          Quay lại tab{" "}
+          <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để
+          thêm chuẩn đầu ra cho Chương trình đào tạo
+        </h3>
+      </div>
+    ) : (
+      <div>
+        <Empty />
+        <h3 align="center">
+          Quay lại tab{" "}
+          <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để
+          tải dữ liệu
+        </h3>
+      </div>
     );
   }
 }

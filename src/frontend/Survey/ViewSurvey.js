@@ -37,15 +37,26 @@ class ItemSurvey {
 }
 
 class ViewSurvey extends Component {
-
-    state = {
-        listSurvey: [],
-        idCTDT: '',
-
+    constructor(props){
+        super(props);
+        this.state = {
+            listSurvey: [],
+            idCTDT: '',
+    
+        }
+        this.getData = this.getData.bind(this);
     }
+    
 
     componentWillMount() {
+       this.getData();
+    }
 
+    getData(){
+        this.setState({
+            listSurvey : []
+        })
+        
         let currentDate = new Date();
         currentDate.setHours(0,0,0,0);
         $.updateStatusSurvey({data : parseInt(currentDate.getTime())}).then( res => {
@@ -85,8 +96,6 @@ class ViewSurvey extends Component {
     
             })
         })
-
-       
     }
 
     genForm() {
@@ -104,6 +113,8 @@ class ViewSurvey extends Component {
                     dateTo={survey.rangeTime[1]}
                     status={survey.status}
                     idSurveyList ={survey.idSurveyList}
+                    //
+                    getData = {this.getData}
                 />
             );
         });

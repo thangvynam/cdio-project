@@ -66,6 +66,15 @@ class ExportFile extends Component {
         }
     }
 
+    getUnique(arr, comp) {
+        const unique = arr
+             .map(e => e[comp])
+          .map((e, i, final) => final.indexOf(e) === i && i)
+      
+          .filter(e => arr[e]).map(e => arr[e]);
+         return unique;
+      }
+
     getData3 = (monhoc) => {
         try {
             let self = this;
@@ -81,9 +90,8 @@ class ExportFile extends Component {
                 if (res.data.length > 0) {
                     res.data.forEach(element => {
                         res.data.forEach(element2 => {
-                            if (element2.muc_tieu === element.muc_tieu) {
+                            if (element2.muc_tieu === element.muc_tieu && element2.KeyRow.length === 6) {
                                 element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length - 1)
-                                element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
                                 standActs.push(element2.KeyRow)
                             }
                         });
@@ -95,11 +103,12 @@ class ExportFile extends Component {
                             del_flag: element.del_flag,
                             id: element.id,
                         }
+                        standActs = []
                         saveData.push(newObj);
                     });
                 }
                 saveData = saveData.filter((item) => item.del_flag === 0);
-                data3 = saveData;
+                data3 = this.getUnique(saveData, "objectName")
             })
         } catch (e) {
             console.log("tab3 error : " + e);

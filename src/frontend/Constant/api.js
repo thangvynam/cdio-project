@@ -44,6 +44,7 @@ export default{
     GET_DATA_3: baseUrl + '/get-data-3',
     GET_DATA_6: baseUrl + '/get-data-6',
     GET_DATA_9: baseUrl + '/get-data-9',
+    GET_DATA_7: baseUrl + '/get-data-7',
     //Danh muc
     GET_CHUDE: baseUrl + '/get-chude',
     GET_LOAITAINGUYEN: baseUrl + '/get-loaitainguyen',
@@ -73,7 +74,6 @@ export default{
     GET_EVAL_ACTS_6: baseUrl + '/get-eval-acts-6',
     GET_STANDARD_OUTPUT_6: baseUrl + '/get-standard-output-6',
     GET_STANDARD_OUTPUT_7: baseUrl + '/get-standardoutput-7',
-    GET_DANH_GIA: baseUrl + '/get-danhgia',
     GET_TAINGUYENMONHOC: baseUrl + '/get-tainguyenmonhoc',
     GET_COMMENT: baseUrl + '/get-comment',
 
@@ -106,8 +106,6 @@ export default{
     //tab 7,8
     SAVE_DATA_8 : baseUrl + '/save-tainguyenmonhoc',
     SAVE_DATA_7 : baseUrl + '/save-danhgia',
-    GET_CDR_DANHGIA : baseUrl + '/get-cdrdanhgia',
-    GET_CDR_7 : baseUrl + '/get-cdr-7',
 
     //log
     SAVE_LOG:baseUrl + '/save-log',

@@ -13,7 +13,7 @@ class Layout2 extends Component {
         return (
             <React.Fragment>
                 <div className="section-layout">
-                    {this.props.isReview === true ? null : <FormMoTa monhoc={this.props.monhoc}/>}
+                    {this.props.isReview === true ? null : <FormMoTa monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>}
                 </div>
                 <div className="section-layout">
                 <Tooltip placement="topLeft" >
@@ -21,11 +21,11 @@ class Layout2 extends Component {
                             (Hướng dẫn: một đoạn văn mô tả tóm tắt về nội dung của môn học)
                             </Button>
                     </Tooltip>
-                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
+                    <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>
                 </div>
 
                 <div className="section-layout">
-                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.MO_TA_MON_HOC} tabIndex={2}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.MO_TA_MON_HOC} id_ctdt={this.props.id_ctdt} tabIndex={2}/>
                 </div>
             </React.Fragment>
         );

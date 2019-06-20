@@ -172,7 +172,7 @@ class MenuMucTieu extends Component {
                                         message.error("Mục tiêu đã tồn tại");
                                     }
                                     else {
-                                        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc)
+                                        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt)
                                         this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
                                         this.props.saveAndContinue()
@@ -222,8 +222,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveTemp: (tempInfo) => {
             dispatch({ type: SAVE_TEMP_DATA_LAYOUT_3, tempInfo })
         },
-        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
+        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt) => {
+            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt })
         },
         setCDR: (data) => {
             dispatch({ type: SET_CDR, data })

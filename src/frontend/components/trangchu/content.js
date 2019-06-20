@@ -353,7 +353,7 @@ class Content extends Component {
                             </div>
                         </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout2 monhoc={monhoc} />
+                            <Layout2 monhoc={monhoc} id_ctdt={ctdt}/>
                         </div>
                     </React.Fragment>
                 );

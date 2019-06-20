@@ -65,7 +65,7 @@ class MenuMota extends Component {
                     <Form.Item {...tailFormItemLayout}>
                             <Button type="primary" onClick={() => {
                                 this.props.itemLayout2Reducer.tempInfo = ''
-                                this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.monhoc)
+                                this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt)
                                 this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.monhoc)
                                 this.props.saveAndContinue();
                             }} style={{ marginLeft: "15%" }}>
@@ -101,8 +101,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveTemp: (description) => {
             dispatch({ type: SAVE_TEMP_DATA_LAYOUT_2, description })
         },
-        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
+        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt) => {
+            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt })
         },
         saveReducer: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
             dispatch({ type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })

@@ -169,7 +169,7 @@ class TableItem extends Component {
           ...row,
         });
         this.props.handleSave(newData);
-        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
+        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt);
         this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
         this.props.setFlag2(true);   
         this.setState({ editingKey: "" });
@@ -256,8 +256,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     setFlag: (idLoaded) => {
       dispatch({ type: IS_LOADED_2, idLoaded });         
     },
-    saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-      dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
+    saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt) => {
+      dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt})
     },
     setFlag2: (idLoaded) => {
       dispatch({ type: IS_LOAD_LOG, idLoaded });         

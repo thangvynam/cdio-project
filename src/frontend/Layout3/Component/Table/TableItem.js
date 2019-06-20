@@ -292,7 +292,7 @@ componentWillMount(){
     if (selectedRow.length === this.props.itemLayout3Reducer.previewInfo.length) {
       let data = [];
       this.props.itemLayout3Reducer.previewInfo.forEach(element => {
-        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element.objectName}, Mô tả : ${element.description}, CDR CDIO : ${element.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc);
+        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element.objectName}, Mô tả : ${element.description}, CDR CDIO : ${element.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt);
           this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element.objectName}, Mô tả : ${element.description}, CDR CDIO : ${element.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
       
         element.del_flag = 1;
@@ -312,7 +312,7 @@ componentWillMount(){
     selectedRow.forEach(element => {
       this.props.itemLayout3Reducer.previewInfo.forEach((element2, index) => {
         if(element === index) {
-          this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element2.objectName}, Mô tả : ${element2.description}, CDR CDIO : ${element2.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc);
+          this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element2.objectName}, Mô tả : ${element2.description}, CDR CDIO : ${element2.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt);
           this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu: ${element2.objectName}, Mô tả : ${element2.description}, CDR CDIO : ${element2.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
       
           element2.del_flag = 1;
@@ -340,7 +340,7 @@ componentWillMount(){
 
   delete(key) {
     let deleteData = this.props.itemLayout3Reducer.previewInfo[key]
-    this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu : ${deleteData.objectName},Mô tả: ${deleteData.description},CDR CDIO : ${deleteData.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc);
+    this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu : ${deleteData.objectName},Mô tả: ${deleteData.description},CDR CDIO : ${deleteData.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt);
     this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa mục tiêu môn học: [Mục tiêu : ${deleteData.objectName},Mô tả: ${deleteData.description},CDR CDIO : ${deleteData.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
     this.props.handleDelete(key);
@@ -376,7 +376,7 @@ componentWillMount(){
       });
 
       this.props.handleSave(newItems, key);
-      this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt)
       this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.setState({ editingKey: "" });
@@ -510,8 +510,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
     saveAll: (id) => {
       dispatch({type: SAVE_ALL_DATA_LAYOUT_3, id})
     },
-    saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-      dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id})
+    saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt) => {
+      dispatch({type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt})
     },
     saveReducer: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
       dispatch({ type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })

@@ -698,7 +698,7 @@ class CDRTableItem extends Component {
   OnDelete = (cdrtable, key) => {
     let deleteData = cdrtable.previewInfo[key - 1]
 
-    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.ctdt)
     this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
 
@@ -745,7 +745,7 @@ class CDRTableItem extends Component {
     for (let i = 0; i < cdrselecteditem.length; i++) {
       let deleteData = cdrtable.previewInfo[cdrselecteditem[i] - 1];
 
-      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
 
@@ -839,7 +839,7 @@ class CDRTableItem extends Component {
 
       let message = `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}]` +
         `-> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`;
-      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
 

@@ -6,10 +6,30 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeDGData, addDGData, saveTempDGData, updateChudeDanhGia, updateCDRDanhGia, saveLog, saveLogObject } from '../../../Constant/ActionType';
 import { getCurrTime } from '../../../utils/Time';
+import $ from './../../../helpers/services'
 
 var temp = '';
 
 class DGFormItem extends Component {
+
+  // componentWillMount(){
+  //   var self = this;
+  //   $.getChuDe()
+  //     .then(function (response) {
+  //       self.props.onGetChude(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+
+  //   $.getStandardOutput7(this.props.monhoc, this.props.ctdt)
+  //     .then(function (response) {
+  //       self.props.onGetCDR(response.data);
+  //     })
+  //     .catch(function (error) {
+  //       console.log(error);
+  //     });
+  // }
 
   handleMathanhphanChange = (e) => {
     let a = e.target.value;
@@ -201,7 +221,8 @@ class DGFormItem extends Component {
                       } else {
                         dataReturn = previewInfo.concat(data);
                       }
-                      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc)
+                      console.log(this.props.ctdt)
+                      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
                       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc)
 
                       this.props.onAddDGData(dataReturn);

@@ -74,7 +74,7 @@ class TNFormItem extends Component {
         let newData = {};
         newData = this.props.itemLayout8Reducer.previewInfo.concat(data);
 
-        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
         this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.monhoc)
         
         this.props.onAddTNData(newData);

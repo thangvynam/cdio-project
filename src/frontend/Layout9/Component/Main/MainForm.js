@@ -31,6 +31,7 @@ class MainForm extends Component {
             prevStep={this.prevStep}
             step={step}
             monhoc={this.props.monhoc}
+            ctdt={this.props.ctdt}
           />
         );
     }

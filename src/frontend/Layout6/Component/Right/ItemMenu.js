@@ -172,7 +172,7 @@ class ItemMenu extends Component {
     previewData.evalActs = tempInfo.evalActs;
     previewData.del_flag = 0;
 
-    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
     this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
 
 

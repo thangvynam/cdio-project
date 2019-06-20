@@ -437,7 +437,8 @@ class TableItem extends Component {
           newItems[index].teachingActs
         } ; Hoạt động đánh giá: ${newItems[index].evalActs}]`,
         this.props.logReducer.contentTab,
-        this.props.monhoc
+        this.props.monhoc,
+        this.props.ctdt
       );
       this.props.onSaveReducer(
         `${JSON.parse(localStorage.getItem('user')).data.Name}`,
@@ -492,7 +493,8 @@ class TableItem extends Component {
         newData[index].teachingActs
       } ; Hoạt động đánh giá: ${newData[index].evalActs}`,
       this.props.logReducer.contentTab,
-      this.props.monhoc
+      this.props.monhoc,
+      this.props.ctdt
     );
     this.props.onSaveReducer(
       `${JSON.parse(localStorage.getItem('user')).data.Name}`,
@@ -563,7 +565,8 @@ class TableItem extends Component {
               KHitems[j].teachingActs
             } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
             this.props.logReducer.contentTab,
-            this.props.monhoc
+            this.props.monhoc,
+            this.props.ctdt
           );
           this.props.onSaveReducer(
             `${JSON.parse(localStorage.getItem('user')).data.Name}`,

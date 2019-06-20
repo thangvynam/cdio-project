@@ -107,7 +107,6 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
 
         case ADD_DATA_LAYOUT_5: {
             let temp = "";
-            console.log("hello");
             $.addData5({ data: state.previewInfo })
                 .then(res => {
                     
@@ -162,7 +161,8 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
                     timestamp: action.timestamp,
                     noi_dung: action.noi_dung,
                     muc_de_cuong: action.muc_de_cuong,
-                    thong_tin_chung_id: action.thong_tin_chung_id
+                    thong_tin_chung_id: action.thong_tin_chung_id,
+                    id_ctdt : action.ctdt,
                 }
                 return {
                     ...state,

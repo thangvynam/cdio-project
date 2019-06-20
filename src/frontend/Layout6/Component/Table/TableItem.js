@@ -610,6 +610,7 @@ class TableItem extends Component {
     var body = {};
     body.thong_tin_chung_id = this.props.monhoc;
     body.data = [];
+    body.idCtdt = this.props.ctdt;
     itemKHGDTH.previewInfo.forEach((item, index) => {
       let temp = {};
       temp.id = item.id;

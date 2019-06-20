@@ -33,6 +33,7 @@ export function itemLayout7Reducer(state = addDGDataState, action) {
                 ...state,
                 chudeDanhGia : action.data,
             }
+
         }
         case IS_LOADED_7: {
             return{
@@ -55,7 +56,8 @@ export function itemLayout7Reducer(state = addDGDataState, action) {
                     timestamp: action.timestamp,
                     noi_dung: action.noi_dung,
                     muc_de_cuong: action.muc_de_cuong,
-                    thong_tin_chung_id: action.thong_tin_chung_id
+                    thong_tin_chung_id: action.thong_tin_chung_id,
+                    id_ctdt : action.ctdt,
                 }
                 return {
                     ...state,

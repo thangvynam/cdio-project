@@ -38,7 +38,7 @@ class Layout6 extends Component {
           </Element>
         </div>
         <div className="section-layout">
-          <LogForm monhoc={this.props.monhoc} tab={MENUITEM.GIANG_DAY_THUC_HANH} tabIndex={6}/>
+          <LogForm monhoc={this.props.monhoc} tab={MENUITEM.GIANG_DAY_THUC_HANH} id_ctdt={this.props.ctdt} tabIndex={6}/>
         </div>
 
       </React.Fragment>

@@ -110,14 +110,15 @@ export const CHANGE_VALUE_DESCRIPTION_SURVEY = "CHANGE_VALUE_DESCRIPTION_SURVEY"
 export const UPDATE_LIST_SURVEY = "UPDATE_LIST_SURVEY";
 export const UPDATE_ID_SURVEY = "UPDATE_ID_SURVEY"
 
-export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
-    return {
+export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id,ctdt) {
+    return {    
         type: SAVE_LOG,
         ten: ten,
         timestamp: timestamp,
         noi_dung: noi_dung,
         muc_de_cuong: muc_de_cuong,
-        thong_tin_chung_id: thong_tin_chung_id
+        thong_tin_chung_id: thong_tin_chung_id,
+        ctdt : ctdt,
     };
 }
 

@@ -14,7 +14,7 @@ class Layout7 extends Component {
         return (
             <React.Fragment>
                 <div className="section-layout">
-                    {this.props.isReview === true ? null : <DGForm monhoc={this.props.monhoc}/>}
+                    {this.props.isReview === true ? null : <DGForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>}
                 </div>
                 <div className="section-layout">
                     <Tooltip placement="topLeft">
@@ -25,7 +25,7 @@ class Layout7 extends Component {
                     </Element>
                 </div>
                 <div className="section-layout">
-                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.DANH_GIA} tabIndex={7}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.DANH_GIA} id_ctdt={this.props.ctdt} tabIndex={7}/>
                 </div>
             </React.Fragment>
         );

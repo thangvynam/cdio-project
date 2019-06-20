@@ -14,15 +14,15 @@ class Layout8 extends Component {
         return (
             <React.Fragment>
                 <div className="section-layout">
-                    {this.props.isReview === true ? null : <TNForm monhoc={this.props.monhoc}/>}
+                    {this.props.isReview === true ? null : <TNForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>}
                 </div>
                 <div className="section-layout">
                     <Element name="test1" className="element" >
-                        <TNTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} />
+                        <TNTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>
                     </Element>
                 </div>
                 <div className="section-layout">
-                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.TAI_NGUYEN_MON_HOC} tabIndex={8}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.TAI_NGUYEN_MON_HOC} id_ctdt = {this.props.ctdt} tabIndex={8}/>
                 </div>
             </React.Fragment>
 

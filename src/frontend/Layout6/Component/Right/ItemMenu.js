@@ -69,7 +69,7 @@ class ItemMenu extends Component {
 
     });
 
-    $.getEvalActs6(subjectId).then(response => {
+    $.getEvalActs6(subjectId,this.props.ctdt).then(response => {
       const data = response.data;
       let map = new Map();
       data.forEach((item, index) => {

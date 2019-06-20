@@ -235,8 +235,8 @@ const getData9 = (param) => {
     return $.get(url);
 }
 
-const getEvalActs6 = (param) => {
-    let url = `${_.GET_EVAL_ACTS_6}/${param}`;
+const getEvalActs6 = (param1,param2) => {
+    let url = `${_.GET_EVAL_ACTS_6}/${param1}/${param2}`;
     return $.get(url);
 }
 

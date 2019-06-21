@@ -410,9 +410,9 @@ const deleteDanhmucHDD = (data) => {
     return $.post(url, data);
 }
 
-const getEvalActs5 = (data) => {
+const getEvalActs5 = (data, ctdt) => {
     let url = _.GET_EVAL_ACTS_5;
-    return $.post(url, data);
+    return $.post(url, data, ctdt);
 }
 
 const getStandardOutput5 = (data) => {

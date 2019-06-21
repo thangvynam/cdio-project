@@ -438,75 +438,75 @@ class TableItem extends Component {
     });
   }
 
-  getDataHDD = () => {
-    let mapId = {
-      teachingActs: new Map(),
-      standardOutput: new Map(),
-      evalActs: new Map(),
-    }
+  // getDataHDD = () => {
+  //   let mapId = {
+  //     teachingActs: new Map(),
+  //     standardOutput: new Map(),
+  //     evalActs: new Map(),
+  //   }
 
-    $.getTeachingActs_5().then(response => {
-      const data = response.data;
-      let map = new Map();
+  //   $.getTeachingActs_5().then(response => {
+  //     const data = response.data;
+  //     let map = new Map();
 
-      if (data != null) {
-        data.forEach((item, index) => {
-          map.set(item.hoat_dong, index);
-        });
-        mapId.teachingActs = map;
+  //     if (data != null) {
+  //       data.forEach((item, index) => {
+  //         map.set(item.hoat_dong, index);
+  //       });
+  //       mapId.teachingActs = map;
 
-        this.props.saveDataValue(mapId.teachingActs)
-      }
+  //       this.props.saveDataValue(mapId.teachingActs)
+  //     }
 
-    });
-    $.getEvalActs5({ data: this.props.monhoc })
-      .then(response => {
-        const data = response.data;
-        let map = new Map();
+  //   });
+  //   $.getEvalActs5({ data: this.props.monhoc })
+  //     .then(response => {
+  //       const data = response.data;
+  //       let map = new Map();
 
-        if (data != null) {
-          data.forEach((item, index) => {
-            map.set(index, item.ma);
-          })
-          mapId.evalActs = map;
+  //       if (data != null) {
+  //         data.forEach((item, index) => {
+  //           map.set(index, item.ma);
+  //         })
+  //         mapId.evalActs = map;
 
-          this.props.saveDataValueDG(mapId.evalActs)
-        }
-      })
+  //         this.props.saveDataValueDG(mapId.evalActs)
+  //       }
+  //     })
 
-    $.getStandardOutput5({ data: this.props.monhoc })
-      .then(response => {
-        const data = response.data;
-        let array = [];
-        let map = new Map();
+  //   $.getStandardOutput5({ data: this.props.monhoc })
+  //     .then(response => {
+  //       const data = response.data;
+  //       let array = [];
+  //       let map = new Map();
 
-        if (data != null) {
-          data.forEach((item) => {
-            let temp = {
-              value: item.muc_tieu,
-              label: item.muc_tieu,
-              children: [],
-            }
+  //       if (data != null) {
+  //         data.forEach((item) => {
+  //           let temp = {
+  //             value: item.muc_tieu,
+  //             label: item.muc_tieu,
+  //             children: [],
+  //           }
 
-            item.cdr.forEach((itemCdr, _) => {
-              let tempCdr = {
-                value: itemCdr.chuan_dau_ra,
-                label: itemCdr.chuan_dau_ra
-              }
-              temp.children.push(tempCdr);
-              map.set(itemCdr.chuan_dau_ra, itemCdr.id);
-            })
+  //           item.cdr.forEach((itemCdr, _) => {
+  //             let tempCdr = {
+  //               value: itemCdr.chuan_dau_ra,
+  //               label: itemCdr.chuan_dau_ra
+  //             }
+  //             temp.children.push(tempCdr);
+  //             map.set(itemCdr.chuan_dau_ra, itemCdr.id);
+  //           })
 
-            array.push(temp);
-          });
-          // this.setState({standard_item:array,standardOutput:map});
-          mapId.standardOutput = map;
+  //           array.push(temp);
+  //         });
+  //         // this.setState({standard_item:array,standardOutput:map});
+  //         mapId.standardOutput = map;
 
-          this.props.saveDataValueCDR(array)
-        }
-      });
+  //         this.props.saveDataValueCDR(array)
+  //       }
+  //     });
 
-  }
+  // }
 
   collectDataRequest = (id, ctdt) => {
     var self = this;

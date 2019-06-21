@@ -67,7 +67,7 @@ class ItemMenu extends Component {
             }
             
         });
-        $.getEvalActs5({data: this.props.monhoc})
+        $.getEvalActs5({data: this.props.monhoc,  idCtdt: this.props.ctdt})
             .then(response => {
                 const data = response.data;
                 let map = new Map();

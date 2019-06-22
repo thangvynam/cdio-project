@@ -94,9 +94,11 @@ export default class EduProgramCom extends Component {
       this.setState({ schoolYear: event.target.value.substr(0, 4) });
     else if (
       event.target.value.length === 0 ||
-      !isNaN(event.target.value[event.target.value.length - 1])
+      !isNaN(event.target.value)
     )
       this.setState({ schoolYear: event.target.value });
+    else
+      this.setState({ schoolYear: "" });
   };
 
   onCloseAdd = () => {

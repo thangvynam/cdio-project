@@ -51,9 +51,11 @@ export default class SubjectManageCom extends Component {
       this.setState({ credits: event.target.value.substr(0, 2) });
     else if (
       event.target.value.length === 0 ||
-      !isNaN(event.target.value[event.target.value.length - 1])
+      !isNaN(event.target.value)
     )
       this.setState({ credits: event.target.value });
+    else
+      this.setState({ credits: "" });
   };
 
   handleTheory = event => {
@@ -61,9 +63,11 @@ export default class SubjectManageCom extends Component {
       this.setState({ theory: event.target.value.substr(0, 3) });
     else if (
       event.target.value.length === 0 ||
-      !isNaN(event.target.value[event.target.value.length - 1])
+      !isNaN(event.target.value)
     )
       this.setState({ theory: event.target.value });
+    else
+      this.setState({ theory: ""});
   };
 
   handlePractice = event => {
@@ -71,9 +75,11 @@ export default class SubjectManageCom extends Component {
       this.setState({ practice: event.target.value.substr(0, 3) });
     else if (
       event.target.value.length === 0 ||
-      !isNaN(event.target.value[event.target.value.length - 1])
+      !isNaN(event.target.value)
     )
       this.setState({ practice: event.target.value });
+    else
+      this.setState({ practice: "" });
   };
 
   handleExercise = event => {
@@ -81,9 +87,11 @@ export default class SubjectManageCom extends Component {
       this.setState({ exercise: event.target.value.substr(0, 3) });
     else if (
       event.target.value.length === 0 ||
-      !isNaN(event.target.value[event.target.value.length - 1])
+      !isNaN(event.target.value)
     )
       this.setState({ exercise: event.target.value });
+    else
+      this.setState({ exercise: "" });
   };
 
   handleDescription = event => {

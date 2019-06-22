@@ -341,12 +341,15 @@ class ItemMenu extends Component {
                 </span>
               }
             >
-              <Cascader
+              {getFieldDecorator("standardOutputs", {
+                //initialValue: this.props.itemKHGDTH.tempInfo.titleName
+              })(<Cascader
                 options={this.state.standard_item}
                 onChange={this.onChangeStandar}
                 placeholder="Chọn chuẩn đầu ra"
                 displayRender={this.displayRender}
-              />
+              />)}
+              
             </Form.Item>
 
             <Form.Item {...formItemLayout} label="Kết quả chuẩn đầu ra">

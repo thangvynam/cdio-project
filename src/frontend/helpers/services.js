@@ -450,9 +450,9 @@ const saveData3 = (data) => {
     return $.post(url, data);
 }
 
-const addData5 = (data) => {
+const addData5 = (data, ctdt) => {
     let url = _.ADD_DATA_5;
-    return $.post(url, data);
+    return $.post(url, data, ctdt);
 }
 
 const addDataSurvey = (data) => {

@@ -516,13 +516,14 @@ class TableItem extends Component {
       .then(function (response) {
         for (let i = 0; i < response.data.length; i++) {
           let data = {
-            key: response.data[i].key,
-            titleName: response.data[i].titleName,
-            teachingActs: response.data[i].teachingActs,
+            id:             response.data[i].id,
+            key:            response.data[i].key,
+            titleName:      response.data[i].titleName,
+            teachingActs:   response.data[i].teachingActs,
             standardOutput: response.data[i].standardOutput,
-            evalActs: response.data[i].evalActs,
-            subjectId: response.data[i].subjectId,
-            del_flag: 0
+            evalActs:       response.data[i].evalActs,
+            subjectId:      response.data[i].subjectId,
+            del_flag:       0
           }
           newArr.push(data);
         }
@@ -605,7 +606,7 @@ class TableItem extends Component {
             onClick={() => {
               this.setState({ disableSaveall: true })
 
-              Promise.all([this.props.saveAllData()])
+              Promise.all([this.props.saveAllData(this.props.ctdt)])
                 .then(res => {
                   if (res) {
                     this.setState({ disableSaveall: false })
@@ -669,8 +670,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: SAVE_DATA_LAYOUT_5, data: data });
     },
 
-    saveAllData: () => {
-      dispatch({ type: ADD_DATA_LAYOUT_5 });
+    saveAllData: (ctdt) => {
+      dispatch({ type: ADD_DATA_LAYOUT_5, ctdt: ctdt });
     },
     saveDataValue: (teachingActs) => {
       dispatch({ type: COLLECT_DATA_HDD, data: teachingActs })

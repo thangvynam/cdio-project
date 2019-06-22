@@ -21,9 +21,9 @@ import {
 import { bindActionCreators } from "redux";
 import { DragSource, DropTarget } from "react-dnd";
 import TextArea from "antd/lib/input/TextArea";
-import $ from './../../../helpers/services';
+import $ from "./../../../helpers/services";
 import { getCurrTime } from "../../../utils/Time";
-import DragDropHTML5 from '../../../html5Backend/html5Backend';
+import DragDropHTML5 from "../../../html5Backend/html5Backend";
 
 const { Option } = Select;
 
@@ -242,7 +242,7 @@ class TableItem extends Component {
       selectedRowKeys: [],
       editingKey: "",
       subjectId: -1,
-      isSaveAll:false
+      isSaveAll: false
     };
 
     this.dataSource = [];
@@ -421,7 +421,7 @@ class TableItem extends Component {
       });
 
       this.props.onSaveLog(
-        `${JSON.parse(localStorage.getItem('user')).data.Name}`,
+        `${JSON.parse(localStorage.getItem("user")).data.Name}`,
         getCurrTime(),
         `Chỉnh sửa kế hoạch giảng dạy thực hành:[Chủ đề : ${
           item.titleName
@@ -441,7 +441,7 @@ class TableItem extends Component {
         this.props.ctdt
       );
       this.props.onSaveReducer(
-        `${JSON.parse(localStorage.getItem('user')).data.Name}`,
+        `${JSON.parse(localStorage.getItem("user")).data.Name}`,
         getCurrTime(),
         `Chỉnh sửa kế hoạch giảng dạy thực hành:[Chủ đề : ${
           item.titleName
@@ -483,7 +483,7 @@ class TableItem extends Component {
     newData[index].del_flag = 1;
 
     this.props.onSaveLog(
-      `${JSON.parse(localStorage.getItem('user')).data.Name}`,
+      `${JSON.parse(localStorage.getItem("user")).data.Name}`,
       getCurrTime(),
       `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
         newData[index].titleName
@@ -497,7 +497,7 @@ class TableItem extends Component {
       this.props.ctdt
     );
     this.props.onSaveReducer(
-      `${JSON.parse(localStorage.getItem('user')).data.Name}`,
+      `${JSON.parse(localStorage.getItem("user")).data.Name}`,
       getCurrTime(),
       `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
         newData[index].titleName
@@ -540,49 +540,47 @@ class TableItem extends Component {
     let KHitems = this.props.itemKHGDTH.previewInfo;
     let indexArray = [];
 
-
     for (let i = 0; i < selectedRow.length; i++) {
       let index = 0;
       for (let j = 0; j < KHitems.length; j++) {
-        if(KHitems[j].del_flag === 0) index++;
-        if(index===selectedRow[i]){
+        if (KHitems[j].del_flag === 0) index++;
+        if (index === selectedRow[i]) {
           indexArray.push(j);
         }
       }
     }
-    
+
     for (let i = 0; i < indexArray.length; i++) {
       let j = indexArray[i];
       KHitems[j].del_flag = 1;
-            this.props.onSaveLog(
-            `${JSON.parse(localStorage.getItem('user')).data.Name}`,
-            getCurrTime(),
-            `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
-              KHitems[j].titleName
-            } ; Chuẩn đầu ra : ${
-              KHitems[j].standardOutput
-            } ; Hoạt động dạy/ Hoạt động học : ${
-              KHitems[j].teachingActs
-            } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
-            this.props.logReducer.contentTab,
-            this.props.monhoc,
-            this.props.ctdt
-          );
-          this.props.onSaveReducer(
-            `${JSON.parse(localStorage.getItem('user')).data.Name}`,
-            getCurrTime(),
-            `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
-              KHitems[j].titleName
-            } ; Chuẩn đầu ra : ${
-              KHitems[j].standardOutput
-            } ; Hoạt động dạy/ Hoạt động học : ${
-              KHitems[j].teachingActs
-            } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
-            this.props.logReducer.contentTab,
-            this.props.monhoc
-          );
+      this.props.onSaveLog(
+        `${JSON.parse(localStorage.getItem("user")).data.Name}`,
+        getCurrTime(),
+        `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
+          KHitems[j].titleName
+        } ; Chuẩn đầu ra : ${
+          KHitems[j].standardOutput
+        } ; Hoạt động dạy/ Hoạt động học : ${
+          KHitems[j].teachingActs
+        } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
+        this.props.logReducer.contentTab,
+        this.props.monhoc,
+        this.props.ctdt
+      );
+      this.props.onSaveReducer(
+        `${JSON.parse(localStorage.getItem("user")).data.Name}`,
+        getCurrTime(),
+        `Xóa kế hoạch giảng dạy thực hành: Chủ đề : ${
+          KHitems[j].titleName
+        } ; Chuẩn đầu ra : ${
+          KHitems[j].standardOutput
+        } ; Hoạt động dạy/ Hoạt động học : ${
+          KHitems[j].teachingActs
+        } ; Hoạt động đánh giá: ${KHitems[j].evalActs}`,
+        this.props.logReducer.contentTab,
+        this.props.monhoc
+      );
     }
-
 
     let key = 1;
     for (let i = 0; i < KHitems.length; i++) {
@@ -606,15 +604,16 @@ class TableItem extends Component {
   };
 
   onSaveAll = () => {
-    this.setState({isSaveAll:true});
-
+    this.setState({ isSaveAll: true });
 
     const itemKHGDTH = this.props.itemKHGDTH;
     var body = {};
     body.thong_tin_chung_id = this.props.monhoc;
     body.data = [];
     body.idCtdt = this.props.ctdt;
-    itemKHGDTH.previewInfo.forEach((item, index) => {
+
+    let arrActsNoCategory = [];
+    itemKHGDTH.previewInfo.forEach((item, _) => {
       let temp = {};
       temp.id = item.id;
       temp.week = item.key;
@@ -625,7 +624,7 @@ class TableItem extends Component {
       temp.del_flag = item.del_flag;
 
       if (temp.del_flag === 0) {
-        item.teachingActs.forEach((act, _) => {
+        item.teachingActs.forEach((act, index) => {
           let id = itemKHGDTH.mapIdForValue.teachingActs.get(act);
           if (id === undefined || id === "") {
             // insert hoat_dong_day khong phai danh muc
@@ -633,14 +632,12 @@ class TableItem extends Component {
             let itemAct = {
               hoat_dong: act,
               loai: "TH",
-              danh_muc: 0
+              index: index,
+              danh_muc: 0,
+              indexKHTH: body.data.length
             };
-            // push
-
-            // axios.post(`/add-teachingacts-6`,itemAct).then(response=>{
-
-            //   temp.teachingActs.push(response.data.id);
-            // })
+            arrActsNoCategory.push(itemAct);
+            temp.teachingActs.push(-1);
           } else temp.teachingActs.push(id);
         });
 
@@ -656,24 +653,28 @@ class TableItem extends Component {
       body.data.push(temp);
     });
 
-    //console.log("body", body.data);
-    //axios.post("/add-data-6", body)
-    $.addData6(body)
-    .then(response => {
-      if (response.data === 1) {
-        notification["success"]({
-          message: "Cập nhật thành công",
-          duration: 1
-        });
-      } else {
-        notification["error"]({
-          message: "Cập nhật thất bại",
-          duration: 1
-        });
-      }
-      //axios.post("/save-log", { data: this.props.itemKHGDTH.logData });
-      $.saveLog({ data: this.props.itemKHGDTH.logData });
-      this.getDataTable(this.props.monhoc, this.props.ctdt);
+    $.addTeachingActs6(arrActsNoCategory).then(response => {
+      let ActsNocategory = response.data;
+      ActsNocategory.forEach((item, _) => {
+        body.data[item.indexKHTH].teachingActs[item.index] = item.id;
+      });
+
+      $.addData6(body).then(response => {
+        if (response.data === 1) {
+          notification["success"]({
+            message: "Cập nhật thành công",
+            duration: 1
+          });
+        } else {
+          notification["error"]({
+            message: "Cập nhật thất bại",
+            duration: 1
+          });
+        }
+        //axios.post("/save-log", { data: this.props.itemKHGDTH.logData });
+        $.saveLog({ data: this.props.itemKHGDTH.logData });
+        this.getDataTable(this.props.monhoc, this.props.ctdt);
+      });
     });
   };
 
@@ -695,9 +696,7 @@ class TableItem extends Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (
-      !this.props.itemKHGDTH.isLoaded 
-    ) {
+    if (!this.props.itemKHGDTH.isLoaded) {
       this.props.onChangeIsLoaded(true);
       this.setState({ subjectId: this.props.monhoc });
       // axios.get(`/get-data-6/${nextProps.subjectId}`).then(response => {
@@ -710,12 +709,11 @@ class TableItem extends Component {
 
   getDataTable = (idSubject, idCtdt) => {
     //axios.get(`/get-data-6/${idSubject}`)
-    $.getData6(idSubject, idCtdt)
-    .then(response => {
+    $.getData6(idSubject, idCtdt).then(response => {
       const data = response.data;
       console.log("data: ", data);
       this.props.onUpdateKHGDTH(data);
-      this.setState({isSaveAll:false});
+      this.setState({ isSaveAll: false });
     });
   };
 

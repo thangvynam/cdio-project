@@ -102,6 +102,7 @@ export default{
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',
     ADD_DATA_9:baseUrl + '/add-data-9',
+    ADD_TEACHINGACTS_6:baseUrl + '/add-teachingacts-6',
 
     //tab 7,8
     SAVE_DATA_8 : baseUrl + '/save-tainguyenmonhoc',

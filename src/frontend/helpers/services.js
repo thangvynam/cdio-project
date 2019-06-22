@@ -355,6 +355,11 @@ const addData6 = (data) => {
     return $.post(url, data);
 }
 
+const addTeachingActs6 = (data) => {
+    let url = _.ADD_TEACHINGACTS_6;
+    return $.post(url, data);
+}
+
 const addData9 = (data) => {
     let url = _.ADD_DATA_9;
     return $.post(url, data);
@@ -675,4 +680,5 @@ export default {
     getSubjectWithId,
     getListSurvey,
     getSubjectName,
+    addTeachingActs6,
 }

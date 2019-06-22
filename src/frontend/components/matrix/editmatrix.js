@@ -424,7 +424,6 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.props.subjectList.length)
     let isLoading = this.state.isLoading;
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {

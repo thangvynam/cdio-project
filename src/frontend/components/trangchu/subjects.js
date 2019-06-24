@@ -269,7 +269,7 @@ class Home extends Component {
 
                     $.collectCdrmdhd4()
                         .then(function (response) {
-                            let cdrmdhd = self.props.cdrmdhd;
+                            let cdrmdhd = [];
                             for (let i = 0; i < response.data.length; i++) {
                                 let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
                                 if (index_1 != -1) {
@@ -448,24 +448,12 @@ class Home extends Component {
                             
                         } break;
                     case "danh-muc":
-                        if (!this.checkAdmin(userRole)) {   //user is not admin
-                            console.log("danhmuc admin only");
-                            return <Page404 />;
-                        }
                         if (this.checkExist(ctdt)) {    //param 2 exists
                             console.log("param 2 must be null");
                             return <Page404 />;
                         } break;
-                    // case "ctdt":
-                    //     if (this.checkAdmin(userRole)) {
-                    //         this.errorCase("ctdt not for admin");
-                    //     }break;
+                    
                     case "view-survey":
-                        if (!this.checkChuNhiem(userRole)) {    //user is not chunhiem
-                            console.log("survey chunhiem only");
-                            return <Page404 />;
-                        }
-
                         if (this.checkExist(ctdt)) {
                             if (ctdt !== "survey-matrix") {
                                 console.log("wrong param 2");
@@ -474,10 +462,6 @@ class Home extends Component {
                         }
                         break;
 
-                    // if (this.checkExist(ctdt)) {    //param 2 exists
-                    //     console.log("param 2 must be null");
-                    //     return <Page404 />;
-                    // } break;
                     default: { //ctdt,
                         if (this.checkExist(ctdt)) {    //param 2 exists
                             if (!this.checkCtdtExist(ctdtList, ctdt)) { //param 2 invalid
@@ -581,7 +565,7 @@ class Home extends Component {
                                                             }
                                                             else {
                                                                 if (this.checkExist(monhoc)) {  //param 6 exists
-                                                                    if(!this.checkChuNhiem) {
+                                                                    if(!this.checkChuNhiem(userRole)) {
                                                                         if (!this.checkInTeacherSubject(teacherSubject, +monhoc)) { //param 6 not found
                                                                             console.log("wrong param 6");
                                                                             return <Page404 />;

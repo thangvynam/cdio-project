@@ -32,7 +32,6 @@ class ExportFile extends Component {
 
     state = {
         selectedItem: [],
-        loading: -1,
     }
 
     getCdrmdhd = (state, id) => {
@@ -470,7 +469,6 @@ class ExportFile extends Component {
         let self = this;
 
         this.addDataMap(function (obj) {
-            self.setState({ loading: 0 });
 
             let data = {
                 content: JSON.stringify(obj),
@@ -479,11 +477,7 @@ class ExportFile extends Component {
 
             $.exportFile(JSON.stringify(data)).then(res => {
                 const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-                console.log(pdfBlob)
                 saveAs(pdfBlob, 'generatedDocument.pdf')
-                // if (res.data == 1) {
-                //     self.setState({ loading: 1 });
-                // }
             })
         })
     }
@@ -539,7 +533,7 @@ class ExportFile extends Component {
                     <div className="export-css">
                         <button onClick={this.export} type="button" class="btn btn-success">Xuất file PDF</button>
                         <br /><br /><br />
-                        <Loader loading={this.state.loading} />
+                        
                     </div>
                 </div>
             </React.Fragment>

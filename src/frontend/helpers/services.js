@@ -189,7 +189,7 @@ const addSurveyMatrix = (data, idCtdt) => {
 
 const exportFile = (data) => {
     let url = _.EXPORT_FILE;
-    return $.post(url, { data })
+    return $.post(url, { data },{ responseType: 'blob' })
 }
 
 const saveSurveyQA = (data) => {

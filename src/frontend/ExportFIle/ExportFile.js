@@ -5,6 +5,7 @@ import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import Loader from '../components/loader/loader';
 import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
+import { saveAs } from 'file-saver';
 
 const plainOptions = [
     'Thông tin chung',
@@ -477,9 +478,12 @@ class ExportFile extends Component {
             }
 
             $.exportFile(JSON.stringify(data)).then(res => {
-                if (res.data == 1) {
-                    self.setState({ loading: 1 });
-                }
+                const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+                console.log(pdfBlob)
+                saveAs(pdfBlob, 'generatedDocument.pdf')
+                // if (res.data == 1) {
+                //     self.setState({ loading: 1 });
+                // }
             })
         })
     }

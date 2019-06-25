@@ -477,7 +477,7 @@ class ExportFile extends Component {
 
             $.exportFile(JSON.stringify(data)).then(res => {
                 const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
-                saveAs(pdfBlob, 'generatedDocument.pdf')
+                saveAs(pdfBlob, data.nameFile + '.pdf')
             })
         })
     }

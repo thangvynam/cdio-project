@@ -408,13 +408,13 @@ componentWillMount(){
     //this.props.saveAll(this.props.monhoc)
     $.saveData3({ data: self.props.itemLayout3Reducer.previewInfo, id: self.props.monhoc, id_ctdt: self.props.id_ctdt })
     .then((res) => {
-      if(res.data === 1) {
+      if(res.data === '1') {
         self.loadData()
       }
+      // self.loadData();
     });
     $.saveLog({ data: this.props.itemLayout3Reducer.logData })
     openNotificationWithIcon('success');
-    //this.loadData();
     
   }
 

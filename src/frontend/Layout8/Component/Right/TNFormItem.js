@@ -174,7 +174,7 @@ class TNFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div style={{marginLeft:"15%"}}>
-              <Button type="primary" size="large" icon="plus" onClick={this.addTNData}>Thêm</Button>
+              <Button type="primary" size="large" onClick={this.addTNData}>Thêm</Button>
             </div>
           </Form.Item>
         </Form>

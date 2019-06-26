@@ -319,7 +319,7 @@ class TableItem extends Component {
         )
       },
       {
-        title: "Action",
+        title: "Thao tác",
         key: "action",
         render:
           this.props.isReview === true
@@ -777,7 +777,7 @@ class TableItem extends Component {
               onClick={this.showModal}
               disabled={!hasSelected}
             >
-              Delete
+              Xóa
             </Button>
 
             <span style={{ marginLeft: 8 }}>

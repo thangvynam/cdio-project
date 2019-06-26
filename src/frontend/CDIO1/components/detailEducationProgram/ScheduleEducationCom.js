@@ -207,7 +207,7 @@ export default class ScheduleEducationCom extends React.Component {
           <Column header="Mã Học Phần" rowSpan={2} style={{ width: "3em" }} />
           <Column header="Tên Học Phần" rowSpan={2} style={{ width: "7em" }} />
           <Column header="Loại HP" rowSpan={2} style={{ width: "0.5em" }} />
-          <Column header="Số TC" rowSpan={2} style={{ width: "0.5em" }} />
+          {/*<Column header="Số TC" rowSpan={2} style={{ width: "0.5em" }} />*/}
           <Column header="Số Tiết" colSpan={3} style={{ width: "5em" }} />
           <Column header="Ghi Chú" rowSpan={2} style={{ width: "4em" }} />
           <Column rowSpan={2} style={{ width: "0.5em" }} />
@@ -252,7 +252,7 @@ export default class ScheduleEducationCom extends React.Component {
       >
         <Column field="SubjectCode" />
         <Column field="SubjectName" />
-        <Column field="option" style={{ textAlign: "center" }} />
+        {/*<Column field="option" style={{ textAlign: "center" }} />*/}
         <Column field="Credit" style={{ textAlign: "center" }} />
         <Column field="TheoryPeriod" style={{ textAlign: "center" }} />
         <Column field="PracticePeriod" style={{ textAlign: "center" }} />

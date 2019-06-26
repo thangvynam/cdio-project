@@ -20,6 +20,8 @@ export const onExportFilePDF = id => {
           isRight: 1
         };
         dispatch(message.message(chirp));
+        const win = window.open(req, '_blank');
+        win.focus();
       })
       .catch(err => {
         let chirp = {

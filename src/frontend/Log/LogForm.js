@@ -178,7 +178,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             
             $.addComment({ data: obj })
                 .then(res => {
-                    console.log(res)
                 })
 
             dispatch({ type: SAVE_COMMENT, obj: obj });
@@ -197,7 +196,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                                 content: obj.noi_dung,
                                 thoi_gian: obj.thoi_gian,
                             }
-                            console.log(sample)
                             dispatch({ type: SAVE_COMMENT, obj: sample });
                         }
                     }

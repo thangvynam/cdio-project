@@ -62,10 +62,18 @@ class SurveyMatrix extends Component {
   }
 
   async componentDidMount() {
+   
+    let idCtdt =  await this.getUrlParameter('idCtdt');
+    this.getBlockSubjects(idCtdt)
+    this.setState({
+      idCtdt
+    })
+
     let id = await this.getUrlParameter('id');
-    $.getMatrixSurvey({ "data": `${id}` }).then((res) => {
+    $.getMatrixSurvey({ "data": `${id}`,"idCtdt":`${idCtdt}` }).then((res) => {
       this.props.getDataSurveyMatrix(res.data);
     })
+
 
     $.getTeacherName(id).then(res => {
       let listNameGV = [];
@@ -84,11 +92,7 @@ class SurveyMatrix extends Component {
       this.props.getNameGV(listNameGV)
     })
 
-    let idCtdt =  await this.getUrlParameter('idCtdt');
-    this.getBlockSubjects(idCtdt)
-    this.setState({
-      idCtdt
-    })
+    
 
   }
 

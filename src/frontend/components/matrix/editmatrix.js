@@ -63,7 +63,7 @@ class EditableCell extends React.Component {
                         required: false,
                         message: `${title} is required.`,
                       }],
-                      initialValue: record[dataIndex].split(","),
+                      initialValue: record[dataIndex] && record[dataIndex].length > 0 ? record[dataIndex].split(",") : [],
                     })(
 
                       <Checkbox.Group
@@ -192,9 +192,15 @@ class EditMatrix extends Component {
   }
 
   onClickEdit = (record, key) => {
-    let levels = record[key].split(",");
-    this.sortLevels(levels);
-    this.setState({ levels: levels });
+    if(record[key] && record[key].length > 0) {
+      let levels = record[key].split(",");
+      this.sortLevels(levels);
+      this.setState({ levels: levels });
+      
+    }
+    else {
+      this.setState({ levels: [] });
+    }
     this.props.updateEditMatrixEditState(record.key + "-" + key)
   }
 

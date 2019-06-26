@@ -107,7 +107,7 @@ const itemLayout5Reducer = (state = itemMenuInitialState, action) => {
 
         case ADD_DATA_LAYOUT_5: {
             let temp = "";
-            console.log(state.previewInfo)
+            $.saveLog({data  : state.logData})
             $.addData5({ data: state.previewInfo, ctdt: action.ctdt })
                 .then(res => {
                     

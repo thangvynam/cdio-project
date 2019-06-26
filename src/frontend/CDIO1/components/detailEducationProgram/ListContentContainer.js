@@ -121,6 +121,23 @@ class ListContentContainer extends React.Component {
     this.setState({ listKnowledges: knows });
   }
 
+  handleAdd = () => {
+    const listKnows = this.state.listKnowledges.map(know => {
+      return {...know};
+    });
+    this.props.onAddKnowledgeTable(listKnows, true);
+    this.setState({
+      listKnowledges: []
+    })
+  }
+
+  handleCancel = () =>{
+    this.props.onAddKnowledgeTable(false, false)
+    this.setState({
+      listKnowledges: []
+    })
+  }
+
   render() {
     return (
       <div>
@@ -177,12 +194,12 @@ class ListContentContainer extends React.Component {
           <Col lg="8" md="8" sm="8">
           </Col>
           <Col lg="3" md="3" sm="3" style={{paddingLeft:'15%'}}>
-            <Button onClick={() => this.props.onAddKnowledgeTable(this.state.listKnowledges, true)} theme="success">
+            <Button onClick={()=>this.handleAdd()} theme="success">
               Thêm
           </Button>
           </Col>
           <Col lg="1" md="1" sm="1" style={{paddingLeft:'0%'}}>
-            <Button onClick={() => this.props.onAddKnowledgeTable(false, false)} theme="secondary">
+            <Button onClick={() => this.handleCancel() } theme="secondary">
               Hủy
           </Button>
           </Col>

@@ -258,11 +258,11 @@ class Survey extends React.Component {
     }
 
     saveAll() {
-        $.checkID(this.state.id_survey).then(response => {
-            if (response.data === false) {
-                $.saveSurvey(var1, this.state.id_survey)
-            }
-        })
+        // $.checkID(this.state.id_survey).then(response => {
+        //     if (response.data === false) {
+        //         $.saveSurvey(var1, this.state.id_survey)
+        //     }
+        // })
         
         const dataDescription = this.props.surveyReducer.dataValueDescription;
         const data = this.props.surveyReducer.dataValueITU;
@@ -298,8 +298,10 @@ class Survey extends React.Component {
                     let user = localStorage.getItem('user');
                     let jsonData = JSON.parse(user)
                     $.saveSurvey(dataConvert, this.state.id_survey)
-                        .then(response => {
-                            console.log("response2",response);
+                        .then(response => {console.log(response);
+                            if (response.data === "1") {                                          
+                                openNotificationWithIcon('success')
+                            }
                         });
                 });  
             })
@@ -307,11 +309,11 @@ class Survey extends React.Component {
     }
 
     send = () => {
-        $.checkID(this.state.id_survey).then(response => {
-            if (response.data === false) {
-                $.saveSurvey(var1, this.state.id_survey)
-            }
-        })
+        // $.checkID(this.state.id_survey).then(response => {
+        //     if (response.data === false) {
+        //         $.saveSurvey(var1, this.state.id_survey)
+        //     }
+        // })
         const dataDescription = this.props.surveyReducer.dataValueDescription;
         const data = this.props.surveyReducer.dataValueITU;
         const surveyData = this.props.surveyReducer;
@@ -346,7 +348,9 @@ class Survey extends React.Component {
                 let jsonData = JSON.parse(user)
                 $.saveSurvey(dataConvert, this.state.id_survey)
                     .then(response => {
-
+                        if (response.data === "1") {
+                            openNotificationWithIcon('success')
+                        }
                     });
             });  
         }).then(() => {
@@ -391,7 +395,6 @@ class Survey extends React.Component {
                                     type="primary"
                                     onClick={() => {
                                         this.saveAll()
-                                        openNotificationWithIcon('success')
                                     }}
                                     style={{ marginLeft: "2em" }}>
                                     Lưu lại<Icon type="right" />
@@ -402,7 +405,7 @@ class Survey extends React.Component {
                                     type="primary"
                                     onClick={() => {
                                         this.send()
-                                        openNotificationWithIcon('success')
+                                        
                                     }}
                                     style={{ marginLeft: "2em" }}>
                                     Gửi<Icon type="right" />

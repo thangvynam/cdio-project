@@ -36,9 +36,9 @@ class ItemMenu extends Component {
     componentDidMount() {
         
         if(!this.props.itemLayout5Reducer.isLoaded) {
-            this.props.updateIssLoad5(true);
-            this.props.refreshData();    
-            this.props.collectDataRequest(this.props.monhoc, this.props.ctdt);
+            //this.props.updateIssLoad5(true);
+            // this.props.refreshData();    
+            // this.props.collectDataRequest(this.props.monhoc, this.props.ctdt);
         }
     }
     
@@ -462,9 +462,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch({type: REFRESH_DATA,data: []});
         },
 
-        updateIssLoad5: () => {
-            dispatch({type: IS_LOADED_5 , data: true});
-        },
+        // updateIssLoad5: () => {
+        //     dispatch({type: IS_LOADED_5 , data: true});
+        // },
 
         collectDataRequest: (id, ctdt) => {
             let newArr = [];

@@ -12,7 +12,7 @@ import TextArea from "antd/lib/input/TextArea";
 import {
   DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5, REFRESH_DATA,
   SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD,
-  COLLECT_DATA_DG, COLLECT_DATA_CDR
+  COLLECT_DATA_DG, COLLECT_DATA_CDR, IS_LOADED_5
 } from '../../../Constant/ActionType';
 import $ from './../../../helpers/services';
 
@@ -324,6 +324,13 @@ class TableItem extends Component {
     }
     ];
   };
+  componentDidMount() {
+    if(!this.props.itemLayout5Reducer.isLoaded) {
+        this.props.updateIssLoad5(true);
+        this.props.refreshData();    
+        this.collectDataRequest(this.props.monhoc, this.props.ctdt);
+    }
+  }
 
   moveRow = (dragIndex, hoverIndex) => {
     let data = this.props.itemLayout5Reducer.previewInfo;
@@ -685,7 +692,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatchRefreshData: (data) => {
       dispatch({ type: REFRESH_DATA, data: data });
-    }
+    },
+    updateIssLoad5: () => {
+      dispatch({type: IS_LOADED_5 , data: true});
+    },
+    refreshData: () => {
+      dispatch({type: REFRESH_DATA,data: []});
+    },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropHTML5(TableItem));

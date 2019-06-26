@@ -240,7 +240,7 @@ class CDRTableItem extends Component {
         </span>
       ),
     }, {
-      title: 'Action',
+      title: 'Thao tác',
       key: 'action',
       render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
@@ -1023,7 +1023,7 @@ class CDRTableItem extends Component {
             onClick={this.showModal}
             disabled={!hasSelected}
           >
-            Delete
+            Xóa
           </Button>
           <Modal
             title="Cảnh báo"

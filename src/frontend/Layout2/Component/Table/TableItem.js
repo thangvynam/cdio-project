@@ -113,7 +113,7 @@ class TableItem extends Component {
             ) : (
               <span>
                   <a onClick={() => this.edit(record.key)} href="#a">
-                    Edit
+                    Sửa
                   </a>
                 </span>
             )}

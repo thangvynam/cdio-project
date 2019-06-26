@@ -395,7 +395,7 @@ class CDRFormItem extends Component {
           }}>
             <div>
               <Button type="primary" style={{ marginLeft: "15%" }} onClick={this.addCDRData}>
-              Thêm<Icon type="right" />
+              Thêm
               </Button>
             </div>
           </Form.Item>

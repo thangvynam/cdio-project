@@ -414,7 +414,7 @@ class ItemMenu extends Component {
                   }}
                   style={{ marginLeft: "15%" }}
                 >
-                  Continue
+                  Thêm
                   
                 </Button>
                 <br />

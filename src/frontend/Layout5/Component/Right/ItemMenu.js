@@ -10,7 +10,7 @@ import { getCurrTime } from '../../../utils/Time';
 
 import {
     ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD, COLLECT_DATA_DG,
-    IS_LOADED_5, COLLECT_DATA_CDR, saveLog, saveLogObject,REFRESH_DATA
+    IS_LOADED_5, COLLECT_DATA_CDR, SAVE_LOG_OBJECT,REFRESH_DATA, SAVE_LOG
 } from '../../../Constant/ActionType';
 
 const { Option } = Select;
@@ -384,8 +384,26 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onSaveLog: saveLog,
-        onSaveReducer: saveLogObject,
+        onSaveLog : (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id,ctdt) => {
+            dispatch({
+                type:SAVE_LOG,ten: ten,
+                timestamp: timestamp,
+                noi_dung: noi_dung,
+                muc_de_cuong: muc_de_cuong,
+                thong_tin_chung_id: thong_tin_chung_id,
+                ctdt : ctdt,
+            });
+        },
+        onSaveReducer : (ten,timestamp,noi_dung,muc_de_cuong,thong_tin_chung_id) => {
+            dispatch({
+                type: SAVE_LOG_OBJECT,
+                ten: ten,
+                timestamp: timestamp,
+                noi_dung: noi_dung,
+                muc_de_cuong: muc_de_cuong,
+                thong_tin_chung_id: thong_tin_chung_id,
+            });
+        },
         onChangeData: (titleName, teachingActs_data, standardOutput_data, evalActs_data) => {
             dispatch({
                 type: CHANGE_DATA, titleName: titleName, teachingActs: teachingActs_data,

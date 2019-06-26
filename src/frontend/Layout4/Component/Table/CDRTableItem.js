@@ -255,7 +255,7 @@ class CDRTableItem extends Component {
                       onClick={() => this.save(form, record.key)}
                       style={{ marginRight: 8 }}
                     >
-                      Save
+                      Lưu
                       </a>
                   )}
                 </EditableContext.Consumer>
@@ -263,7 +263,7 @@ class CDRTableItem extends Component {
                   title="Hủy bỏ?"
                   onConfirm={() => this.cancel(record.key)}
                 >
-                  <a href="#a">Cancel</a>
+                  <a href="#a">Hủy</a>
                 </Popconfirm>
               </span>
             ) : (

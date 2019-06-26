@@ -18,8 +18,8 @@ class MenuMota extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.logReducer)
     }
+    
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {

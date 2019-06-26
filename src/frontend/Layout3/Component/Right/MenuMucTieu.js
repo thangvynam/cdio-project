@@ -65,7 +65,6 @@ class MenuMucTieu extends Component {
         this.props.saveTemp(tempInfo)
     }
     render() {
-        console.log(this.props.itemLayout3Reducer.previewInfo)
         const { getFieldDecorator } = this.props.form;
 
         const cdioStandard = [];

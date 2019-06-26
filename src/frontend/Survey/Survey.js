@@ -47,6 +47,7 @@ class Survey extends React.Component {
             isOver: false,
             id_survey: 0,
         }
+        this.saveAll = this.saveAll.bind(this)
     }
 
     async componentWillMount() {
@@ -256,7 +257,11 @@ class Survey extends React.Component {
         return arr;
     }
 
-    saveAll = () => {
+    async saveAll() {
+        let response = await $.checkID(this.state.id_survey)
+        if (response === 'true') {
+            $.saveSurvey(var1, this.state.id_survey)
+        }
         const dataDescription = this.props.surveyReducer.dataValueDescription;
         const data = this.props.surveyReducer.dataValueITU;
         const surveyData = this.props.surveyReducer;
@@ -284,9 +289,9 @@ class Survey extends React.Component {
             id: this.state.id_survey,
             status: 1
         }
-        // console.log(var1);
+        console.log(var1);
         
-        $.saveSurvey(var1, this.state.id_survey).then(res => {
+        // $.saveSurvey(var1, this.state.id_survey).then(res => {
             $.setStatus(body).then(res =>{
                 $.saveSurveyQA(survey)
                 .then((res) => {
@@ -298,7 +303,7 @@ class Survey extends React.Component {
                         });
                 });  
             })
-        }) 
+        // }) 
     }
 
     send = () => {

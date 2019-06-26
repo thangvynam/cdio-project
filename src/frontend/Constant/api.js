@@ -45,6 +45,7 @@ export default{
     GET_DATA_6: baseUrl + '/get-data-6',
     GET_DATA_9: baseUrl + '/get-data-9',
     GET_DATA_7: baseUrl + '/get-data-7',
+    CHECK_ID: baseUrl + '/checkid',
     //Danh muc
     GET_CHUDE: baseUrl + '/get-chude',
     GET_LOAITAINGUYEN: baseUrl + '/get-loaitainguyen',

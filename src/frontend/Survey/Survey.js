@@ -257,11 +257,13 @@ class Survey extends React.Component {
         return arr;
     }
 
-    async saveAll() {
-        let response = await $.checkID(this.state.id_survey)
-        if (response === 'true') {
-            $.saveSurvey(var1, this.state.id_survey)
-        }
+    saveAll() {
+        $.checkID(this.state.id_survey).then(response => {
+            if (response.data === false) {
+                $.saveSurvey(var1, this.state.id_survey)
+            }
+        })
+        
         const dataDescription = this.props.surveyReducer.dataValueDescription;
         const data = this.props.surveyReducer.dataValueITU;
         const surveyData = this.props.surveyReducer;
@@ -288,9 +290,7 @@ class Survey extends React.Component {
         let body = {
             id: this.state.id_survey,
             status: 1
-        }
-        console.log(var1);
-        
+        }        
         // $.saveSurvey(var1, this.state.id_survey).then(res => {
             $.setStatus(body).then(res =>{
                 $.saveSurveyQA(survey)
@@ -299,7 +299,7 @@ class Survey extends React.Component {
                     let jsonData = JSON.parse(user)
                     $.saveSurvey(dataConvert, this.state.id_survey)
                         .then(response => {
-                            
+                            console.log("response2",response);
                         });
                 });  
             })
@@ -307,6 +307,11 @@ class Survey extends React.Component {
     }
 
     send = () => {
+        $.checkID(this.state.id_survey).then(response => {
+            if (response.data === false) {
+                $.saveSurvey(var1, this.state.id_survey)
+            }
+        })
         const dataDescription = this.props.surveyReducer.dataValueDescription;
         const data = this.props.surveyReducer.dataValueITU;
         const surveyData = this.props.surveyReducer;

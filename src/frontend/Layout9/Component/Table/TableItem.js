@@ -391,7 +391,7 @@ class TableItem extends Component {
               disabled={this.state.isSaveAll}
 
             >
-              Lưu thay đổi
+              Lưu tất cả
             </Button>
           </div>
         )}

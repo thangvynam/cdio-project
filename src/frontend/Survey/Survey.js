@@ -19,6 +19,8 @@ const openNotificationWithIcon = (type) => {
     });
   };
 
+  let var1 = []
+
 class Node {
     constructor(data) {
         this.data = data;
@@ -88,7 +90,6 @@ class Survey extends React.Component {
                         NodeData.value = element.nameRow;
                         
                         tree.push(new Node(NodeData));
-                        console.log(tree);
                         break;
                     }
                     case 2: {
@@ -222,7 +223,8 @@ class Survey extends React.Component {
 
                     for (let h = 0; h < elementLv3.children.length; h++) {
                         const elementLv4 = elementLv3.children[h];
-
+                        let var2 = new ITUValue(elementLv4.data.key, ["-"], "");
+                        var1.push(var2)
                         dataChildren.push(elementLv4.data.key + "_" + elementLv4.data.value);
                     }
 
@@ -282,17 +284,21 @@ class Survey extends React.Component {
             id: this.state.id_survey,
             status: 1
         }
-        $.setStatus(body).then(res =>{
-            $.saveSurveyQA(survey)
-            .then((res) => {
-                let user = localStorage.getItem('user');
-                let jsonData = JSON.parse(user)
-                $.saveSurvey(dataConvert, this.state.id_survey)
-                    .then(response => {
-                        
-                    });
-            });  
-        })     
+        // console.log(var1);
+        
+        $.saveSurvey(var1, this.state.id_survey).then(res => {
+            $.setStatus(body).then(res =>{
+                $.saveSurveyQA(survey)
+                .then((res) => {
+                    let user = localStorage.getItem('user');
+                    let jsonData = JSON.parse(user)
+                    $.saveSurvey(dataConvert, this.state.id_survey)
+                        .then(response => {
+                            
+                        });
+                });  
+            })
+        }) 
     }
 
     send = () => {

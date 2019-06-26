@@ -399,7 +399,7 @@ class DGFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div style={{ marginLeft: "15%" }}>
-              <Button type="primary" size="large" icon="plus" onClick={this.addDGData}>Thêm</Button>
+              <Button type="primary" size="large" onClick={this.addDGData}>Thêm</Button>
             </div>
           </Form.Item>
         </Form>

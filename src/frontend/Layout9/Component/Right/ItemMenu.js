@@ -89,7 +89,6 @@ class ItemMenu extends Component {
                 style={{ marginLeft: "15%" }}
               >
                 Thêm
-                <Icon type="plus" />
               </Button>
               <br />
             </div>

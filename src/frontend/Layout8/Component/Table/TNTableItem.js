@@ -91,7 +91,7 @@ class TNTableItem extends Component {
       editable: true,
     },
     {
-      title: 'Action',
+      title: 'Thao tác',
       key: 'action',
       render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);

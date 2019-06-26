@@ -181,7 +181,7 @@ class MenuMucTieu extends Component {
                                 // this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: ${objectName.toUpperCase()}, ${description}, ${temp}`, this.props.logReducer.contentTab, this.props.subjectid)
 
                             }} style={{ marginLeft: "2em" }}>
-                                Thêm<Icon type="right" />
+                                Thêm
                             </Button>
                             <br />
                         </div>

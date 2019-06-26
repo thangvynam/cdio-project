@@ -13,11 +13,7 @@ import { getCurrTime } from '../../../utils/Time';
 import {
   DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5, REFRESH_DATA,
   SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD,
-<<<<<<< HEAD
-  COLLECT_DATA_DG, COLLECT_DATA_CDR, IS_LOADED_5
-=======
-  COLLECT_DATA_DG, COLLECT_DATA_CDR,SAVE_LOG,SAVE_LOG_OBJECT
->>>>>>> 0be23046a79e1854fea43b76cd65f600dd864d60
+  COLLECT_DATA_DG, COLLECT_DATA_CDR, IS_LOADED_5,SAVE_LOG,SAVE_LOG_OBJECT
 } from '../../../Constant/ActionType';
 import $ from './../../../helpers/services';
 

@@ -125,7 +125,8 @@ class ExportFile extends Component {
                         let data = {
                             key: (i + 1).toString(),
                             cdr: response.data[i].chuan_dau_ra,
-                            level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
+                            level_verb :    [cdrmdhd.muc_do_1,"level " + cdrmdhd.muc_do_2],
+                            //level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
                             description: response.data[i].mo_ta,
                             levels: response.data[i].muc_do.split(","),
                             id: response.data[i].id,

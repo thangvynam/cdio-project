@@ -493,7 +493,7 @@ class itemLayout7ReducerItem extends React.Component {
       }
     }
 
-    if (totalTile !== 100 && table.length > 0) {
+    if (totalTile !== 100 && table.filter(item => item.del_flag === 0).length > 0) {
       message.error("Tổng tỉ lệ phải bằng 100% , vui lòng kiểm tra lại!")
     } else {
       console.log(table)

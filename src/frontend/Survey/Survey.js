@@ -19,6 +19,8 @@ const openNotificationWithIcon = (type) => {
     });
   };
 
+  let var1 = []
+
 class Node {
     constructor(data) {
         this.data = data;
@@ -45,6 +47,7 @@ class Survey extends React.Component {
             isOver: false,
             id_survey: 0,
         }
+        this.saveAll = this.saveAll.bind(this)
     }
 
     async componentWillMount() {
@@ -88,7 +91,6 @@ class Survey extends React.Component {
                         NodeData.value = element.nameRow;
                         
                         tree.push(new Node(NodeData));
-                        console.log(tree);
                         break;
                     }
                     case 2: {
@@ -222,7 +224,8 @@ class Survey extends React.Component {
 
                     for (let h = 0; h < elementLv3.children.length; h++) {
                         const elementLv4 = elementLv3.children[h];
-
+                        let var2 = new ITUValue(elementLv4.data.key, ["-"], "");
+                        var1.push(var2)
                         dataChildren.push(elementLv4.data.key + "_" + elementLv4.data.value);
                     }
 
@@ -254,7 +257,13 @@ class Survey extends React.Component {
         return arr;
     }
 
-    saveAll = () => {
+    saveAll() {
+        // $.checkID(this.state.id_survey).then(response => {
+        //     if (response.data === false) {
+        //         $.saveSurvey(var1, this.state.id_survey)
+        //     }
+        // })
+        
         const dataDescription = this.props.surveyReducer.dataValueDescription;
         const data = this.props.surveyReducer.dataValueITU;
         const surveyData = this.props.surveyReducer;
@@ -281,21 +290,30 @@ class Survey extends React.Component {
         let body = {
             id: this.state.id_survey,
             status: 1
-        }
-        $.setStatus(body).then(res =>{
-            $.saveSurveyQA(survey)
-            .then((res) => {
-                let user = localStorage.getItem('user');
-                let jsonData = JSON.parse(user)
-                $.saveSurvey(dataConvert, this.state.id_survey)
-                    .then(response => {
-                        
-                    });
-            });  
-        })     
+        }        
+        // $.saveSurvey(var1, this.state.id_survey).then(res => {
+            $.setStatus(body).then(res =>{
+                $.saveSurveyQA(survey)
+                .then((res) => {
+                    let user = localStorage.getItem('user');
+                    let jsonData = JSON.parse(user)
+                    $.saveSurvey(dataConvert, this.state.id_survey)
+                        .then(response => {console.log(response);
+                            if (response.data === "1") {                                          
+                                openNotificationWithIcon('success')
+                            }
+                        });
+                });  
+            })
+        // }) 
     }
 
     send = () => {
+        // $.checkID(this.state.id_survey).then(response => {
+        //     if (response.data === false) {
+        //         $.saveSurvey(var1, this.state.id_survey)
+        //     }
+        // })
         const dataDescription = this.props.surveyReducer.dataValueDescription;
         const data = this.props.surveyReducer.dataValueITU;
         const surveyData = this.props.surveyReducer;
@@ -330,7 +348,9 @@ class Survey extends React.Component {
                 let jsonData = JSON.parse(user)
                 $.saveSurvey(dataConvert, this.state.id_survey)
                     .then(response => {
-
+                        if (response.data === "1") {
+                            openNotificationWithIcon('success')
+                        }
                     });
             });  
         }).then(() => {
@@ -375,7 +395,6 @@ class Survey extends React.Component {
                                     type="primary"
                                     onClick={() => {
                                         this.saveAll()
-                                        openNotificationWithIcon('success')
                                     }}
                                     style={{ marginLeft: "2em" }}>
                                     Lưu lại<Icon type="right" />
@@ -386,7 +405,7 @@ class Survey extends React.Component {
                                     type="primary"
                                     onClick={() => {
                                         this.send()
-                                        openNotificationWithIcon('success')
+                                        
                                     }}
                                     style={{ marginLeft: "2em" }}>
                                     Gửi<Icon type="right" />

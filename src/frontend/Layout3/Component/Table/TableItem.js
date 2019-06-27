@@ -376,8 +376,10 @@ componentWillMount(){
       });
 
       this.props.handleSave(newItems, key);
-      this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt)
-      this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      let message = `Chỉnh sửa mục tiêu môn học: [Mục tiêu : ${item.objectName.toUpperCase()}, Mô tả : ${item.description}, CĐR CDIO của chương trình: ${item.standActs}]` + 
+      ` -> [Mục tiêu : ${newItems[index].objectName.toUpperCase()}, Mô tả : ${newItems[index].description}, CĐR CDIO của chương trình: ${newItems[index].standActs}]`;
+      this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(),message, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt)
+      this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.setState({ editingKey: "" });
     });

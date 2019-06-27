@@ -133,7 +133,6 @@ class TableItem extends Component {
 
   async componentWillReceiveProps(nextProps){
     let count = this.state.count
-    console.log("loaded",this.props.isLoaded)
     if(!this.props.itemLayout2Reducer.isLoaded) {
       if (count <= 2) {
         this.setState({count: count + 1})
@@ -163,14 +162,19 @@ class TableItem extends Component {
       if (error) {
         return;
       }     
+      
       const newData = [...this.props.itemLayout2Reducer.previewInfo];
+      let item = "";
+      newData.forEach(element => item +=element)
+      
         newData.splice(0, 1, {
           ...newData.key,
           ...row,
         });
         this.props.handleSave(newData);
-        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt);
-        this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa nội dung mô tả môn học thành: ${newData[key].description}`, this.props.logReducer.contentTab, this.props.monhoc);
+        let message = `Chỉnh sửa nội dung mô tả môn học: [${item}] -> [${newData[key].description}]`;
+        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt);
+        this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(),message, this.props.logReducer.contentTab, this.props.monhoc);
         this.props.setFlag2(true);   
         this.setState({ editingKey: "" });
     });

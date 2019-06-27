@@ -551,6 +551,11 @@ const getData7 = (param, param2) => {
     return $.get(url);
 }
 
+const checkID = (param) => {
+    let url = `${_.CHECK_ID}/${param}`;
+    return $.get(url);
+}
+
 export default {
     //localStorage
     setStorage,
@@ -560,7 +565,7 @@ export default {
 
     //edit matrix
     updateStandardMatrix,
-
+    checkID,
     //tab 1
     collectData1,
     updateData1,

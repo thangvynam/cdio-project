@@ -14,15 +14,15 @@ const hrefSurveyMatrix = "/view-survey/survey-matrix?id=";
 const statusValues = [
     {
         id: -1,
-        value: "NOT ACTIVE"
+        value: "CHƯA BẮT ĐẦU"
     },
     {
         id: 0,
-        value: "DONE"
+        value: "ĐÃ KẾT THÚC"
     },
     {
         id: 1,
-        value: "IN PROCESS"
+        value: "ĐANG THỰC HIỆN"
     }
 ]
 

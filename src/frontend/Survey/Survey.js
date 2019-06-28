@@ -299,7 +299,7 @@ class Survey extends React.Component {
                     let jsonData = JSON.parse(user)
                     $.saveSurvey(dataConvert, this.state.id_survey)
                         .then(response => {console.log(response);
-                            if (response.data === "1") {                                          
+                            if (response.data === 1) {                                          
                                 openNotificationWithIcon('success')
                             }
                         });
@@ -348,7 +348,7 @@ class Survey extends React.Component {
                 let jsonData = JSON.parse(user)
                 $.saveSurvey(dataConvert, this.state.id_survey)
                     .then(response => {
-                        if (response.data === "1") {
+                        if (response.data === 1) {
                             openNotificationWithIcon('success')
                         }
                     });

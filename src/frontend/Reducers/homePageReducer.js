@@ -28,7 +28,7 @@ const initialState = {
     },
     "phan-cong-giang-day" :{
         name: "PHÂN CÔNG GIẢNG DẠY",
-        role: ["ADMIN"],
+        role: ["BIEN_SOAN"],
         children: []
     },
     "de-cuong-mon-hoc" :{

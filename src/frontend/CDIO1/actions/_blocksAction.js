@@ -10,25 +10,9 @@ export const onExportSubjectFilePDF = id => {
           isRight: 1
     };
     dispatch(message.message(chirp));
-    let req = `${links.EXPORT_EDUPROGRAM_SUBJECTS}?ideduprog=${id}`;
-    axios
-      .get(req, {"responseType": "blob"})
-      .then(res => {
-        let chirp = {
-          message: `Tải file thành công`,
-          isRight: 1
-        };
-        dispatch(message.message(chirp));
-        const win = window.open(req, '_blank');
-        win.focus();
-      })
-      .catch(err => {
-        let chirp = {
-          message: `Lỗi xảy ra, tải file thất bại hoặc file bị lỗi`,
-          isRight: 0
-        };
-        dispatch(message.message(chirp));
-      });
+    const req = `${links.EXPORT_EDUPROGRAM_SUBJECTS}?ideduprog=${id}`;
+    const win = window.open(req, '_blank');
+    win.focus();
   };
 };
 

@@ -226,6 +226,9 @@ class SurveyMatrix extends Component {
           <Tag style={{ fontSize: "8pt", fontWeight: "bold", color: "lime" }}>{countU}U</Tag>
         </Popover>)
       }
+      if(countI <= 0 && countT <= 0 && countU <= 0){
+        tagRender.push(<div>-</div>)
+      }
       value = tagRender
     }
     return value;
@@ -315,7 +318,7 @@ class SurveyMatrix extends Component {
       })
       data.push(dataSubject);
     }
-    //console.log(data)
+    console.log(data)
     return data;
   }
 

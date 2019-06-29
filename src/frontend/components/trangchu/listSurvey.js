@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Tag, List, Avatar, Row, Col, Icon } from 'antd';
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import $ from "./../../helpers/services";
 import {convertTime} from "./../../utils/Time";
 import _ from 'lodash';
+import { CHANGE_VALUE_ITU_SURVEY2 } from '../../Constant/ActionType';
 
-export default class ListSurvey extends Component {
+class ListSurvey extends Component {
     constructor(props){
         super(props);
 
@@ -16,7 +18,7 @@ export default class ListSurvey extends Component {
 
     }
     componentDidMount(){
-
+        this.props.changeValueITU();
         let currentDate = new Date();
         currentDate.setHours(0,0,0,0);
         $.updateStatusSurvey({data : parseInt(currentDate.getTime())}).then(res=>{
@@ -81,3 +83,13 @@ export default class ListSurvey extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        changeValueITU: () => {
+            dispatch({ type: CHANGE_VALUE_ITU_SURVEY2 })
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ListSurvey);

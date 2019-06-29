@@ -1,5 +1,5 @@
 import { SAVE_SURVEY, CHANGE_VALUE_ITU_SURVEY, 
-    CHANGE_VALUE_DESCRIPTION_SURVEY,UPDATE_LIST_SURVEY} from '../Constant/ActionType';
+    CHANGE_VALUE_DESCRIPTION_SURVEY,UPDATE_LIST_SURVEY, CHANGE_VALUE_ITU_SURVEY2} from '../Constant/ActionType';
 
 const surveyInitialState = {
     tenMH: '',
@@ -105,9 +105,23 @@ const SurveyReducer = (state = surveyInitialState, action) => {
         }
 
         case CHANGE_VALUE_ITU_SURVEY: {
+            if (action.key !== undefined &&  action.value !== undefined) {
+                return {
+                    ...state,
+                    dataValueITU : state.dataValueITU.set(action.key, action.value)
+                }
+            } else {
+                return {
+                    ...state,
+                    dataValueITU : state.dataValueITU
+                }
+            }
+        }
+
+        case CHANGE_VALUE_ITU_SURVEY2: {
             return {
                 ...state,
-                dataValueITU : action.data
+                dataValueITU : new Map()
             }
         }
 

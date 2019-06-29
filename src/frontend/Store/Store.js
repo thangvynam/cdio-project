@@ -48,6 +48,7 @@ import surveyReducer from "../Reducers/surveyReducer";
 import {dataCtdtReducer} from "../Reducers/dataCtdtReducer";
 // start CDIO1 reducers
 import cdio1 from "../CDIO1/reducers/cdio1";
+import { phancongReducer } from "../Reducers/phancongReducer";
 // end CDIO1 reducers
 
 //const middleware = [ thunk, logger ];
@@ -95,6 +96,7 @@ const allReducers = redux.combineReducers({
     authentication: authenticationReducer,
     datactdt: dataCtdtReducer,
     idSurveyReducer: idSurveyReducer,
+    phancongReducer: phancongReducer,
     ...cdio1
 
 });

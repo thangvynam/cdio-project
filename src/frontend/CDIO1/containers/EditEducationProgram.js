@@ -119,7 +119,7 @@ class DetailEducationProgramTmp extends Component {
             if (res.data !== undefined && res.data !== null) {
               this.props.updateTeacherSubject(res.data);
             }
-            $.getTeacherReviewSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id })
+            $.getTeacherReviewSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id, idCtdt: id })
               .then(res => {
                 if (res.data !== undefined && res.data !== null) {
                   this.props.updateTeacherReviewSubject(res.data);

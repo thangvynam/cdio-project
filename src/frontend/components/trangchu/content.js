@@ -80,6 +80,7 @@ import * as majorsAction from "../../CDIO1/actions/majorsAction";
 import Direction from "./direction";
 import $ from "./../../helpers/services";
 import ListSurvey from "./listSurvey";
+import NewPhanCong from "./newphancong";
 
 const EditableContext = React.createContext();
 
@@ -720,7 +721,10 @@ class Content extends Component {
                                 </Col>
                                 <div className="wrapper-custom">
                                     {action !== "" && action !== undefined && action !== null ?
-                                        <List
+                                    (action === "phancong" ? 
+                                    <NewPhanCong idCtdt={ctdt}/>
+                                    : 
+                                        (<List
                                             itemLayout="horizontal"
                                             dataSource={subjectList}
                                             pagination={{
@@ -790,7 +794,7 @@ class Content extends Component {
                                                     </Col>
                                                 </Row>
                                             )}
-                                        /> : <h1 align="center">Chọn menu trái cho chức năng mong muốn</h1>}
+                                        />)) : <h1 align="center">Chọn menu trái cho chức năng mong muốn</h1>}
                                 </div>
                             </React.Fragment>
                         ) : type === "matrix" ? (

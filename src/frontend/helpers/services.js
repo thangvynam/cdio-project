@@ -126,6 +126,11 @@ const getTeacherReviewSubject = (data) => {
     let url = _.GET_TEACHER_REVIEW_SUBJECT;
     return $.post(url, data);
 }
+
+const getReviewList = (data) => {
+    let url = _.GET_REVIEW_LIST;
+    return $.post(url, data);
+}
 //
 const getCDR_CDIO = (data) => {
     let url = _.GET_CDR_CDIO;
@@ -583,6 +588,7 @@ export default {
     addTeacherReview,
     getTeacherSubject,
     getTeacherReviewSubject,
+    getReviewList,
 
     getBenchmarkMatrix,
     getStandardMatrix,

@@ -236,7 +236,7 @@ class Home extends Component {
                                         if (res.data !== undefined && res.data !== null) {
                                             this.props.updateTeacherSubject(res.data);
                                         }
-                                        $.getTeacherReviewSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id })
+                                        $.getTeacherReviewSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id, idCtdt: ctdt })
                                             .then(res => {
                                                 if (res.data !== undefined && res.data !== null) {
                                                     this.props.updateTeacherReviewSubject(res.data);
@@ -493,6 +493,10 @@ class Home extends Component {
                                                         }
                                                         else {
                                                             if (this.checkExist(khoi)) {    //param 5 exists
+                                                                if(action === "phancong") {
+                                                                    console.log("param 5 must be null");
+                                                                    return <Page404 />;
+                                                                }
                                                                 if (!this.checkKhoiExist(dataCtdt, khoi)) { //param 5 not found
                                                                     console.log("wrong param 5");
                                                                     return <Page404 />;

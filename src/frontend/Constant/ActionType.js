@@ -52,6 +52,7 @@ export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 export const CDR_CDIO = 'CDR_CDIO';
 export const TEACHER_SUBJECT = 'TEACHER_SUBJECT';
 export const TEACHER_REVIEW_SUBJECT = 'TEACHER_REVIEW_SUBJECT';
+export const PHAN_CONG = 'PHAN_CONG';
 
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
@@ -306,6 +307,13 @@ export function isLoadEditMatrix(newIsLoadEditMatrix) {
     return {
         type: ISLOAD_EDIT_MATRIX,
         isloadeditmatrix: newIsLoadEditMatrix
+    };
+}
+
+export function phancong(newData) {
+    return {
+        type: PHAN_CONG,
+        data: newData
     };
 }
 

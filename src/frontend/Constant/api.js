@@ -23,6 +23,7 @@ export default{
     ADD_TEACHER_REVIEW: baseUrl + '/add-teacher-review',
     GET_TEACHER_SUBJECT: baseUrl + '/get-teacher-subject',
     GET_TEACHER_REVIEW_SUBJECT: baseUrl + '/get-teacher-review-subject',
+    GET_REVIEW_LIST: baseUrl + '/get-review-list',
     //Subject
     COLLECT_SUBJECT_LIST: baseUrl + '/collect-subjectlist',
     GET_BLOCK_SUBJECT: baseUrl + '/eduprogcontent/getBlockSubjects?id=',

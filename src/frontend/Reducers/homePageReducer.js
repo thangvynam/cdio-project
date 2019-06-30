@@ -37,7 +37,7 @@ const initialState = {
         children: [
             {
                 id: "phancong",
-                name: "Phân công",
+                name: "Phân công Review",
                 role: ["CHUNHIEM"]
             },
             {

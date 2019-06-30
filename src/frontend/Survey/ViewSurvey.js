@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    Select, Form, DatePicker, Button, Icon, message
+    Select, Form, DatePicker, Button, Icon
 } from 'antd';
 import ItemVIewSurvey from './ItemVIewSurvey';
 import $ from './../helpers/services';
 import { updateListSurvey } from '../Constant/ActionType';
 import { bindActionCreators } from 'redux';
 import { formatDate } from "../utils/Time";
+import NotificationHelper from "../helpers/NotificationHelper"
 
 const Option = Select.Option;
 const { RangePicker } = DatePicker;
@@ -49,9 +50,8 @@ class ViewSurvey extends Component {
         let currentDate = new Date();
         currentDate.setHours(0, 0, 0, 0);
         $.updateStatusSurvey({ data: parseInt(currentDate.getTime()) }).then(res => {
-
+            this.getData();
         })
-        this.getData();
     }
 
     getData() {
@@ -70,7 +70,6 @@ class ViewSurvey extends Component {
                     let status = item.status;
                     $.getSurveyId({ data: item.id }).then(res => {
                         if (res.data) {
-                            console.log(res.data)
                             let subjectListId = [];
                             let subjectList = [];
                             res.data.forEach(element => {
@@ -97,9 +96,11 @@ class ViewSurvey extends Component {
         })
     }
 
+
+
     genForm() {
         let htmlDom = []
-
+        this.state.listSurvey.sort((a, b) => parseInt(b.status) - parseInt(a.status));
         this.state.listSurvey.forEach((survey, index) => {
             let title = this.props.ctdt.find(item => item.Id === survey.id);
             htmlDom.push(
@@ -121,35 +122,27 @@ class ViewSurvey extends Component {
         return htmlDom;
     }
 
-    query = (id,callback) => {
-       
-    }
-
-    checkTeacherSubject = async (dataSubject) => {
-        // dataSubject.forEach(item => {
-            let check = [];
-            
-            for(let item of dataSubject){
-                let temp = $.getSubjectTeacher(item.IdSubject).then(res => {
-                    if(res && res.data && res.data.length >0 ){
-                        return true;
+    check = (dataSubject) => {
+        const promiseSubject = dataSubject.map(item => {
+            return new Promise((resolve, reject) => {
+                $.getSubjectTeacher(item.IdSubject).then(res => {
+                    if (res && res.data && res.data.length > 0) {
+                        resolve(true)
+                    } else {
+                        resolve(false)
                     }
-                    return false;
                 })
-
-                check.push(temp)
-               // console.log("dsdsdsds ",this.query(item.IdSubject))
-        }
-        return check;
+            })
+        })
+        return promiseSubject;
     }
-
 
     create = () => {
         if (!idTitle) {
-            message.error("Chưa chọn chương trình đào tạo");
+            NotificationHelper.openNotificationError("Chưa chọn chương trình đào tạo")
         } else {
             if (!rangeTime) {
-                message.error("Chưa chọn thời gian")
+                NotificationHelper.openNotificationError("Chưa chọn thời gian")
             } else {
                 let status;
 
@@ -157,7 +150,7 @@ class ViewSurvey extends Component {
                 let dateTo = new Date(rangeTime[1]).setHours(23, 59, 59, 59);
                 let today = new Date().setHours(0, 0, 0, 0);
                 if (dateFrom < today) {
-                    message.error("Không chọn ngày bắt đầu nhỏ hơn ngày hiện tại")
+                    NotificationHelper.openNotificationError("Không chọn ngày bắt đầu nhỏ hơn ngày hiện tại")
                 } else {
                     if (dateFrom === today) {
                         status = 1;
@@ -171,9 +164,10 @@ class ViewSurvey extends Component {
                         end_date: dateTo,
                         status: status,
                     }
+
                     $.getSurveyCTDTTime(obj).then(res => {
                         if (res !== null && res.data !== null && res.data.length > 0) {
-                            message.error("Trong khoảng thời gian này dã tồn tại cuộc survey")
+                            NotificationHelper.openNotificationError("Trong khoảng thời gian này dã tồn tại cuộc survey")
                         } else {
                             $.getBlockSubject(idTitle).then(res => {
                                 let resData = res.data.data;
@@ -189,52 +183,51 @@ class ViewSurvey extends Component {
                                 }
 
                                 dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+
                                 if (!resData || dataSubject.length === 0) {
-                                    message.error("Chương trình đào tạo không có môn học để thực hiện cuộc survey")
+                                    NotificationHelper.openNotificationError("Chương trình đào tạo không có môn học để thực hiện cuộc survey")
                                 } else {
-                                    // console.log(this.checkTeacherSubject(dataSubject).then(res=>{
-                                    //     console.log("check ccc: ",res.check );
-                                    //     // res = [t,f,t,f,t];
-                                    //     // if()res[i]
+                                    Promise.all(this.check(dataSubject)).then(res => {
+                                        if (res.includes(true)) {
+                                            $.addSurveyList(obj).then(res => {
+                                                if (res.data) {
 
+                                                    let idSurveyList = res.data;
+                                                    dataSubject.map(item => {
 
+                                                        $.getSubjectTeacher(item.IdSubject).then(res => {
+                                                            if (res && res.data && res.data.length > 0) {
+                                                                let listIdUser = [];
+                                                                res.data.forEach(item => {
+                                                                    listIdUser.push(item.IdUser);
+                                                                })
 
-                                    // }))
+                                                                let obj1 = {
+                                                                    id_mon: item.IdSubject,
+                                                                    id_giaovien: listIdUser,
+                                                                    idSurveyList: idSurveyList,
+                                                                    status: status,
+                                                                }
 
-
-                                    $.addSurveyList(obj).then(res => {
-                                        if (res.data) {
-
-                                            let idSurveyList = res.data;
-                                            dataSubject.map(item => {
-                                                $.getSubjectTeacher(item.IdSubject).then(res => {
-                                                    if (res && res.data && res.data.length > 0) {
-                                                        let listIdUser = [];
-                                                        res.data.forEach(item => {
-                                                            listIdUser.push(item.IdUser);
-                                                        })
-
-                                                        let obj1 = {
-                                                            id_mon: item.IdSubject,
-                                                            id_giaovien: listIdUser,
-                                                            idSurveyList: idSurveyList,
-                                                            status: status,
-                                                        }
-
-                                                        $.addSurveyData(obj1).then(res => {
+                                                                $.addSurveyData(obj1).then(res => {
+                                                                })
+                                                            }
 
                                                         })
-                                                    }
-                                                })
+                                                    })
+
+                                                    let obj1 = new ItemSurvey(idTitle, rangeTime, dataSubject, status, idSurveyList);
+                                                    this.setState({
+                                                        listSurvey: [...this.state.listSurvey, obj1],
+                                                    });
+                                                    NotificationHelper.openNotificationSuccess("Tạo cuộc Survey thành công")
+                                                }
                                             })
-
-                                            let obj1 = new ItemSurvey(idTitle, rangeTime, dataSubject, status, idSurveyList);
-                                            this.setState({
-                                                listSurvey: [...this.state.listSurvey, obj1],
-                                            });
-
+                                        } else {
+                                            NotificationHelper.openNotificationError("Không có giảng viên nào trực tiếp giảng dạy các môn học trong chương trình đào tạo này")
                                         }
                                     })
+
                                 }
                             })
 

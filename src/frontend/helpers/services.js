@@ -542,6 +542,11 @@ const updateStatusSurvey = (data) => {
     return $.post(url, data);
 }
 
+const deleteSurvey = (data) => {
+    let url = _.DELETE_SURVEY;
+    return $.post(url,data);
+}
+
 const getTeacherName = (params) => {
     let url = `${_.GET_TEACHER_NAME}/${params}`;
     return $.get(url);
@@ -670,6 +675,7 @@ export default {
     updateStatusSurvey,
     getTeacherName,
     closeSurvey,
+    deleteSurvey,
 
     //export file
     exportFile,

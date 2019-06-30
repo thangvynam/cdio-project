@@ -299,8 +299,7 @@ class EditMatrix extends Component {
 
   componentDidMount() {
 
-    if (this.props.subjectList.length > 0 && this.props.isLoadEditMatrix === "false") {
-      this.props.updateIsLoadEditMatrix("true");
+    if (this.props.allSubjectList.length > 0) {
       this.setState({ isLoading: true });
       $.getCDR_CDIO(this.props.ctdt).then((res) => {
 
@@ -308,7 +307,7 @@ class EditMatrix extends Component {
       })
 
       let subjectListId = [];
-      this.props.subjectList.map(item => {
+      this.props.allSubjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
@@ -328,7 +327,7 @@ class EditMatrix extends Component {
               }
             }
             else {
-              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+              let subjectName = this.getSubjectName(this.props.allSubjectList, res.data[i].thong_tin_chung_id);
               let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (subjectName !== "" && cdr_cdio !== "") {
                 data.push({
@@ -353,7 +352,7 @@ class EditMatrix extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if (nextProps.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+    if (this.props.isLoadEditMatrix === "false" && nextProps.allSubjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
       this.setState({ isLoading: true });
       $.getCDR_CDIO(this.props.ctdt).then((res) => {
@@ -362,7 +361,7 @@ class EditMatrix extends Component {
       })
 
       let subjectListId = [];
-      nextProps.subjectList.map(item => {
+      nextProps.allSubjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
@@ -383,7 +382,7 @@ class EditMatrix extends Component {
               }
             }
             else {
-              let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
+              let subjectName = this.getSubjectName(nextProps.allSubjectList, res.data[i].thong_tin_chung_id);
               let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (subjectName !== "" && cdr_cdio !== "") {
                 data.push({
@@ -544,7 +543,7 @@ class EditMatrix extends Component {
     return (
       <React.Fragment>
         {columns.length > this.columns.length &&
-          this.props.subjectList.length > 0 &&
+          this.props.allSubjectList.length > 0 &&
           <React.Fragment>
             <Prompt
             message='Bạn đã lưu dữ liệu chưa?Rời khỏi?'
@@ -584,6 +583,7 @@ const mapStateToProps = (state) => {
     cdrCdio: state.cdrcdio,
     teacherSubject: state.datactdt.teacherSubject,
     teacherReviewSubject: state.datactdt.teacherReviewSubject,
+    allSubjectList: state.datactdt.allSubjectList
   }
 }
 const mapDispatchToProps = (dispatch) => {

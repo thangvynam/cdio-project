@@ -29,7 +29,8 @@ import {
   teacherSubject,
   teacherReviewSubject,
   isLoadEditMatrix,
-  cdrCdio
+  cdrCdio,
+  allSubjectList
 } from "../../Constant/ActionType";
 //END CDIO-2 api
 class DetailEducationProgramTmp extends Component {
@@ -113,6 +114,10 @@ class DetailEducationProgramTmp extends Component {
           }
         }
         dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+        dataSubject = dataSubject.filter(item =>
+          item.del_flat != 1
+        );
+        this.props.updateAllSubjectList(dataSubject);
 
         $.getTeacherSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id })
           .then(res => {
@@ -255,4 +260,5 @@ export default connect(mapStateToProps, {
   updateTeacherReviewSubject: teacherReviewSubject,
   updateIsLoadEditMatrix: isLoadEditMatrix,
   updateCdrCdio: cdrCdio,
+  updateAllSubjectList: allSubjectList
 })(DetailEducationProgramTmp);

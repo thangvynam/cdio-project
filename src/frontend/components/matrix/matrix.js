@@ -97,7 +97,7 @@ class Matrix extends Component {
 
           } else {
             let subjectName = self.getSubjectName(
-              self.props.subjectList,
+              self.props.allSubjectList,
               res.data[i].thong_tin_chung_id
             );
             let cdr_cdio = self.getCdrCdio(
@@ -143,15 +143,15 @@ class Matrix extends Component {
 
   componentWillReceiveProps(nextProps) {
     if (
-      nextProps.isLoadEditMatrix === "false" &&
-      nextProps.subjectList.length > 0
+      this.props.isLoadEditMatrix === "false" &&
+      nextProps.allSubjectList.length > 0
     ) {
       console.log("receive");
       this.setState({ isLoading: true });
       this.props.updateIsLoadEditMatrix("true");
 
       let subjectListId = [];
-      nextProps.subjectList.map(item => {
+      nextProps.allSubjectList.map(item => {
         subjectListId.push(item.IdSubject);
       });
       let data1 = {
@@ -166,11 +166,11 @@ class Matrix extends Component {
   }
 
   componentDidMount() {
-    if (this.props.subjectList.length > 0) {
+    if (this.props.allSubjectList.length > 0) {
       this.setState({ isLoading: true });
 
       let subjectListId = [];
-      this.props.subjectList.map(item => {
+      this.props.allSubjectList.map(item => {
         subjectListId.push(item.IdSubject);
       });
       let data1 = {
@@ -486,7 +486,7 @@ class Matrix extends Component {
         });
         this.setState({ isSubmit: true });
         let subjectListId = [];
-        this.props.subjectList.map(item => {
+        this.props.allSubjectList.map(item => {
           subjectListId.push(item.IdSubject);
         });
         let data1 = {
@@ -514,7 +514,7 @@ class Matrix extends Component {
 
     return (
       this.props.isLoadEditMatrix === "true" &&
-      this.props.subjectList.length > 0 && (
+      this.props.allSubjectList.length > 0 && (
         <React.Fragment>
           {isLoading && <LoadingPage />}
           {!isLoading && !_.isEmpty(this.props.dataMatrix) && (
@@ -574,7 +574,8 @@ const mapStateToProps = state => {
     isLoadEditMatrix: state.isloadeditmatrix,
     cdrCdio: state.cdrcdio,
     teacherSubject: state.datactdt.teacherSubject,
-    teacherReviewSubject: state.datactdt.teacherReviewSubject
+    teacherReviewSubject: state.datactdt.teacherReviewSubject,
+    allSubjectList: state.datactdt.allSubjectList
   };
 };
 

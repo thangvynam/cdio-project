@@ -101,6 +101,7 @@ export default{
     UPDATE_STATUS_SURVEY : baseUrl + '/update-status-survey',
     GET_TEACHER_NAME : baseUrl + '/get-teachername',
     CLOSE_SURVEY : baseUrl + '/close-survey',
+    
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',
     ADD_DATA_9:baseUrl + '/add-data-9',

@@ -1041,7 +1041,7 @@ class CDRTableItem extends Component {
             disabled={this.state.disableSaveAll}
             onClick={this.saveAll}
           >
-            Lưu lại
+            Lưu tất cả
           </Button>
         </div>}
 

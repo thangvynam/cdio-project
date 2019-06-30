@@ -116,6 +116,7 @@ class ExportFile extends Component {
     }
 
     getData4 = (monhoc, id_ctdt) => {
+        
         let self = this;
         try {
             $.collectData4({ data: { thong_tin_chung_id: monhoc, idCtdt: id_ctdt } })
@@ -364,6 +365,7 @@ class ExportFile extends Component {
     }
 
     getData9 = (monhoc) => {
+        console.log()
         try {
             $.getData9(monhoc)
                 .then(response => {
@@ -395,14 +397,27 @@ class ExportFile extends Component {
         this.getData9(monhoc);
     }
 
-    componentWillMount() {
+    clear = () => {
+        data1 = [];
+        data2 = [];
+        data3 = [];
+        data4 = [];
+        data5 = [];
+        data6 = [];
+        data7 = [];
+        data8 = [];
+        data9 = [];
+    }
+
+    componentDidMount() {
+        this.clear();
         this.loadData(this.props.monhoc,this.props.id_ctdt);
         
         plainOptions.forEach((v, i) => {
             this.setState({ [v]: false });
         });
     }
-
+ 
     returnReducer = (pos) => {
         switch (pos) {
             case 1: {
@@ -475,7 +490,7 @@ class ExportFile extends Component {
                 content: JSON.stringify(obj),
                 nameFile: self.props.tenmonhoc,
             }
-
+            console.log(obj)
             $.exportFile(JSON.stringify(data)).then(res => {
                 const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
                 saveAs(pdfBlob, data.nameFile + '.pdf')

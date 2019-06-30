@@ -99,7 +99,7 @@ class TableItem extends Component {
                       onClick={() => this.save(form, record.key)}
                       style={{ marginRight: 8 }}
                     >
-                      Save
+                      Lưu
                     </a>
                   )}
                 </EditableContext.Consumer>
@@ -107,7 +107,7 @@ class TableItem extends Component {
                   title="Xác nhận hủy?"
                   onConfirm={() => this.cancel(record.key)}
                 >
-                  <a>Cancel</a>
+                  <a>Hủy</a>
                 </Popconfirm>
               </span>
             ) : (

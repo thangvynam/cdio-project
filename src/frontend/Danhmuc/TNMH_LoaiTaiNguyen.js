@@ -187,8 +187,7 @@ class TNMH_LoaiTaiNguyen extends Component {
 
       
       handleDelete = (key) => {
-       $.deleteLoaitainguyenFromTainguyen({ data: [key]}).then(
-          res => {
+       
            $.deleteTainguyen({ data: [key]}).then(
                 res => {
                    $.deleteLoaitainguyen({ data: [key]}).then(
@@ -197,9 +196,9 @@ class TNMH_LoaiTaiNguyen extends Component {
                           this.setState({editstate: ''});
                           this.setState({selecteditem: []});
                           openNotificationWithIcon('success');
-                        });
+                        }); 
                 })
-          });
+          
         
       }
 

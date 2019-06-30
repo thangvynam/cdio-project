@@ -140,6 +140,10 @@ class TNTableItem extends Component {
 
   isEditing = record => record.key === this.state.editingKey;
 
+  cancel = () => {
+    this.setState({ editingKey: '' });
+  };
+
   save(form, key) {
     form.validateFields((error, row) => {
       if (error) {

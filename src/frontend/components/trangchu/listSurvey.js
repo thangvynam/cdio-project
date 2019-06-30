@@ -42,7 +42,7 @@ class ListSurvey extends Component {
         let action = this.props.action;     
         let startDate = convertTime(this.state.surveyList.start_date).split(',');
         let endDate = convertTime(this.state.surveyList.end_date).split(',');
-
+       
         return (
             <div className="section-layout">
                 <div className="time-itu">
@@ -63,7 +63,8 @@ class ListSurvey extends Component {
                         <Row>
                             <div style={{ height: "10px" }}></div>
                             <Col span={22} offset={1} className="col-left">
-                                <div className="list-border" className="wrapper-subject" style={{ borderRadius: "12px" }}>
+                                <div className="list-border" className="wrapper-subject" style={item.status===1?
+                                { borderRadius: "12px" }:{borderRadius:"12px",background:"lightslategrey"}}>
                                     <List.Item>
                                         <List.Item.Meta
                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}

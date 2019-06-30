@@ -203,7 +203,8 @@ class TNMH_LoaiTaiNguyen extends Component {
                 })
           
         
-      }
+      })
+    }
 
       handleOk = () => {
         let data = [];

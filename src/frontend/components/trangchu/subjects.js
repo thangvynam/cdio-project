@@ -8,7 +8,7 @@ import Content from './content';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
-import { MENUITEM, subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject } from '../../Constant/ActionType';
+import { MENUITEM, subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject, allSubjectList } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
 import NewNav from '../decuongmonhoc/index/navbar/newnav';
@@ -230,6 +230,11 @@ class Home extends Component {
                                     }
                                 }
                                 dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+
+                                dataSubject = dataSubject.filter(item =>
+                                    item.del_flat != 1
+                                  );
+                                  this.props.updateAllSubjectList(dataSubject);
 
                                 $.getTeacherSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id })
                                     .then(res => {
@@ -746,7 +751,8 @@ const mapDispatchToProps = (dispatch) => {
         updateDataCtdt: dataCtdt,
         updateIsLoadedDataCtdt: isLoadedDataCtdt,
         updateTeacherSubject: teacherSubject,
-        updateTeacherReviewSubject: teacherReviewSubject
+        updateTeacherReviewSubject: teacherReviewSubject,
+        updateAllSubjectList: allSubjectList
     }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Home);

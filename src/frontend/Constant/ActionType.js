@@ -53,7 +53,7 @@ export const CDR_CDIO = 'CDR_CDIO';
 export const TEACHER_SUBJECT = 'TEACHER_SUBJECT';
 export const TEACHER_REVIEW_SUBJECT = 'TEACHER_REVIEW_SUBJECT';
 export const PHAN_CONG = 'PHAN_CONG';
-
+export const ALL_SUBJECT_LIST = 'ALL_SUBJECT_LIST';
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -265,6 +265,13 @@ export function teacherSubject(newTeacherSubject) {
     return {
         type: TEACHER_SUBJECT,
         data: newTeacherSubject
+    };
+}
+
+export function allSubjectList(newData) {
+    return {
+        type: ALL_SUBJECT_LIST,
+        data: newData
     };
 }
 

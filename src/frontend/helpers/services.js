@@ -97,9 +97,9 @@ const saveData4 = (data) => {
     return $.post(url, data);
 }
 
-const getTeacherList = (data) => {
+const getTeacherList = () => {
     let url = _.GET_TEACHER_LIST;
-    return $.post(url, data);
+    return $.get(url);
 }
 
 const getTeacherListReview = (data) => {
@@ -353,6 +353,7 @@ const deleteLoaitainguyen = (data) => {
 
 const addLoaitainguyen = (data) => {
     let url = _.ADD_LOAITAINGUYEN;
+    return $.post(url, data);
 }
 
 const addData6 = (data) => {

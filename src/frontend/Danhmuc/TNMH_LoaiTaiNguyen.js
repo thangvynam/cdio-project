@@ -187,9 +187,11 @@ class TNMH_LoaiTaiNguyen extends Component {
 
       
       handleDelete = (key) => {
-       $.deleteLoaitainguyenFromTainguyen({ data: [key]}).then(
+       $.deleteLoaitainguyenFromTainguyen({ data: [key]})
+       .then(
           res => {
-           $.deleteTainguyen({ data: [key]}).then(
+           $.deleteTainguyen({ data: [key]})
+           .then(
                 res => {
                    $.deleteLoaitainguyen({ data: [key]}).then(
                         res => {

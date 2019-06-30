@@ -44,7 +44,6 @@ class ItemVIewSurvey extends Component {
             offsetTop: tesNode.offsetTop
         })
         // window.scrollTo(0, tesNode.offsetTop);
-        console.log(tesNode.offsetTop)
     }
 
     closeSurvey() {

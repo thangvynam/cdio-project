@@ -96,11 +96,11 @@ class ViewSurvey extends Component {
         })
     }
 
-    
+
 
     genForm() {
         let htmlDom = []
-        this.state.listSurvey.sort((a,b)=> parseInt(b.status) - parseInt(a.status));
+        this.state.listSurvey.sort((a, b) => parseInt(b.status) - parseInt(a.status));
         this.state.listSurvey.forEach((survey, index) => {
             let title = this.props.ctdt.find(item => item.Id === survey.id);
             htmlDom.push(
@@ -124,20 +124,17 @@ class ViewSurvey extends Component {
 
     check = (dataSubject) => {
         const promiseSubject = dataSubject.map(item => {
-            return new Promise((resolve,reject) => {
+            return new Promise((resolve, reject) => {
                 $.getSubjectTeacher(item.IdSubject).then(res => {
                     if (res && res.data && res.data.length > 0) {
                         resolve(true)
-                    }else{
+                    } else {
                         resolve(false)
                     }
                 })
             })
         })
         return promiseSubject;
-        // Promise.all(promiseSubject).then((res)=>{
-        //     return res;
-        // })
     }
 
     create = () => {
@@ -186,64 +183,51 @@ class ViewSurvey extends Component {
                                 }
 
                                 dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
-                                Promise.all(this.check(dataSubject)).then(res=>{
-                                   if(res.includes(true)){
 
-                                   }else{
-
-                                   }
-                                })
                                 if (!resData || dataSubject.length === 0) {
                                     NotificationHelper.openNotificationError("Chương trình đào tạo không có môn học để thực hiện cuộc survey")
                                 } else {
-                                    
-                                    $.addSurveyList(obj).then(res => {
-                                        if (res.data) {
+                                    Promise.all(this.check(dataSubject)).then(res => {
+                                        if (res.includes(true)) {
+                                            $.addSurveyList(obj).then(res => {
+                                                if (res.data) {
 
-                                            let idSurveyList = res.data;
-                                            const promiseSubject = dataSubject.map(item => {
-                                                return new Promise((resolve,reject) => {
-                                                    $.getSubjectTeacher(item.IdSubject).then(res => {
-                                                        if (res && res.data && res.data.length > 0) {
-                                                            let listIdUser = [];
-                                                            res.data.forEach(item => {
-                                                                listIdUser.push(item.IdUser);
-                                                            })
-    
-                                                            let obj1 = {
-                                                                id_mon: item.IdSubject,
-                                                                id_giaovien: listIdUser,
-                                                                idSurveyList: idSurveyList,
-                                                                status: status,
+                                                    let idSurveyList = res.data;
+                                                    dataSubject.map(item => {
+
+                                                        $.getSubjectTeacher(item.IdSubject).then(res => {
+                                                            if (res && res.data && res.data.length > 0) {
+                                                                let listIdUser = [];
+                                                                res.data.forEach(item => {
+                                                                    listIdUser.push(item.IdUser);
+                                                                })
+
+                                                                let obj1 = {
+                                                                    id_mon: item.IdSubject,
+                                                                    id_giaovien: listIdUser,
+                                                                    idSurveyList: idSurveyList,
+                                                                    status: status,
+                                                                }
+
+                                                                $.addSurveyData(obj1).then(res => {
+                                                                })
                                                             }
-    
-                                                            $.addSurveyData(obj1).then(res => {
-                                                                resolve( res.data);
-                                                            })
-                                                        }
-                                                        resolve( "0")
+
+                                                        })
                                                     })
-                                                })
-                                                
+
+                                                    let obj1 = new ItemSurvey(idTitle, rangeTime, dataSubject, status, idSurveyList);
+                                                    this.setState({
+                                                        listSurvey: [...this.state.listSurvey, obj1],
+                                                    });
+                                                    NotificationHelper.openNotificationSuccess("Tạo cuộc Survey thành công")
+                                                }
                                             })
-                                            
-                                            Promise.all(promiseSubject).then(() =>{
-                                                console.log("KAKAKA")
-                                                $.getSurveyId({data : idSurveyList}).then(res => {
-                                                    console.log(res)
-                                                    if(res && res.data &&res.data.length > 0) {
-                                                        let obj1 = new ItemSurvey(idTitle, rangeTime, dataSubject, status, idSurveyList);
-                                                        this.setState({
-                                                            listSurvey: [...this.state.listSurvey, obj1],
-                                                        });
-                                                    }else{
-                                                        NotificationHelper.openNotificationError("Không có giáo viên nào trực tiếp giảng dạy các môn học trong chương trình đào tạo này")
-                                                        // $.deleteSurvey({id:idSurveyList})
-                                                    }
-                                                })
-                                            })
+                                        } else {
+                                            NotificationHelper.openNotificationError("Không có giảng viên nào trực tiếp giảng dạy các môn học trong chương trình đào tạo này")
                                         }
                                     })
+
                                 }
                             })
 

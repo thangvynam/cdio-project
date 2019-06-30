@@ -11,8 +11,11 @@
 
 .ant-col-19.col-right {
     float: right;
+    min-height: 800px !important;
+
 }
 
 .col-right {
     float: right;
+    /* min-height: 800px !important; */
 }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Tag, Popover, Button, notification } from 'antd';
+import { Table, Tag, Popover, Button, notification, Empty } from 'antd';
 import { connect } from 'react-redux';
 import { pathToFileURL } from 'url';
 import { isUndefined } from 'util';
@@ -366,6 +366,7 @@ class SurveyMatrix extends Component {
     // this.createHeaderMatrix(myData);
     return (
       <React.Fragment>
+      {_.isEmpty(this.props.dataSurveyMatrix) && <Empty/>}
       {!_.isEmpty(this.props.dataSurveyMatrix) && (<div>
         <p></p>
         <Button

@@ -3,10 +3,8 @@ import ReactDOM from 'react-dom';
 import {
     Collapse, Button, Tag, Row, Col , notification, Modal
 } from 'antd';
-import { Label } from 'reactstrap'
 import { Link } from "react-router-dom";
 import $ from './../helpers/services'
-
 
 const Panel = Collapse.Panel;
 const hrefSurveyMatrix = "/view-survey/survey-matrix?id=";

@@ -199,9 +199,9 @@ class TNMH_LoaiTaiNguyen extends Component {
                           this.setState({editstate: ''});
                           this.setState({selecteditem: []});
                           openNotificationWithIcon('success');
-                        });
+                        }); 
                 })
-          });
+          
         
       }
 

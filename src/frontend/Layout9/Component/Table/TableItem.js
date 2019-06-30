@@ -386,7 +386,6 @@ class TableItem extends Component {
 
             <Button
               style={{ float: "right" }}
-              type="primary"
               onClick={this.onSaveAll}
               disabled={this.state.isSaveAll}
 

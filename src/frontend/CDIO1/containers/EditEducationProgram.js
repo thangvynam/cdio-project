@@ -115,7 +115,7 @@ class DetailEducationProgramTmp extends Component {
         }
         dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
         dataSubject = dataSubject.filter(item =>
-          item.del_flat != 1
+          item.del_flat !== 1
         );
         this.props.updateAllSubjectList(dataSubject);
 

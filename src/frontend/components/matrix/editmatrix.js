@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Form, Input, Checkbox, Icon, Tooltip, Button, Tag, Upload, notification } from 'antd';
+import { Table, Form, Checkbox, Icon, Tooltip, Button, Tag, notification } from 'antd';
 import "./matrix.css";
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -20,19 +20,10 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
-const levelsOptions = ["I", "T", "U"];
 class EditableCell extends React.Component {
 
 
   save = (e) => {
-    // const { record, handleSave } = this.props;
-    // this.form.validateFields((error, values) => {
-    //   if (error && error[e.currentTarget.id]) {
-    //     return;
-    //   }
-    //   this.toggleEdit();
-    //   handleSave({ ...record, ...values });
-    // });
   }
 
   render() {
@@ -205,15 +196,12 @@ class EditMatrix extends Component {
   }
 
   getMatrixId = (matrix, thong_tin_chung_id, cdr_cdrio_id) => {
-    //if(matrix !== undefined && matrix !== null) {
-    //console.log("a")
     for (let i = 0; i < matrix.length; i++) {
       if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
 
         return matrix[i].id;
       }
     }
-    //}
 
     return -1;
   }
@@ -378,7 +366,6 @@ class EditMatrix extends Component {
       }
       else {
         //DATA IMPORT
-        console.log(resp.rows);
         this.setState({
           cols: resp.cols,
           rows: resp.rows
@@ -406,7 +393,6 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.state.tempMatrix)
     let isLoading = this.state.isLoading;
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {

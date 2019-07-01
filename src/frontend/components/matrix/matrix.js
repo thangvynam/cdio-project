@@ -1,10 +1,8 @@
 import React, { Component } from "react";
-import ReactDOM from "react-dom";
 import _ from "lodash";
-import { Spin, Icon, Table, Tag, Modal, Button, notification, Row } from "antd";
+import { Icon, Table, Tag, Button, notification } from "antd";
 import { connect } from "react-redux";
 import { getDataMatrix } from "./../../Constant/matrix/matrixAction";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import "./matrix.css";
 import {
   editMatrix,
@@ -29,9 +27,6 @@ class Matrix extends Component {
     this.myRef = React.createRef();
   }
 
-  componentDidUpdate() {
-    //setTimeout(this.addClassExport(), 3000);
-  }
   checkIdExist = (matrix, id) => {
     for (let i = 0; i < matrix.length; i++) {
       if (matrix[i].key.toString() === id.toString()) {
@@ -146,7 +141,6 @@ class Matrix extends Component {
       this.props.isLoadEditMatrix === "false" &&
       nextProps.allSubjectList.length > 0
     ) {
-      console.log("receive");
       this.setState({ isLoading: true });
       this.props.updateIsLoadEditMatrix("true");
 
@@ -443,16 +437,6 @@ class Matrix extends Component {
     return data1;
   };
 
-  addDataCDR = (data, dataMatrix) => {
-    for (let i = 0; i < data.length; i++) {
-      var kkk = "K";
-      var a = {
-        ...data[i],
-        [kkk]: "ss"
-      };
-    }
-  };
-
   addClassExport = () => {
     const table = document.getElementsByTagName("table")[0];
     if (!_.isEmpty(table)) {
@@ -464,8 +448,7 @@ class Matrix extends Component {
           i++
         ) {
           table.tHead
-            .getElementsByTagName("th")
-          [i].setAttribute(
+            .getElementsByTagName("th")[i].setAttribute(
             "style",
             "background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)"
           );
@@ -512,7 +495,7 @@ class Matrix extends Component {
   };
 
   render() {
-    const { isLoading, isShow } = this.state;
+    const { isLoading} = this.state;
     const style = {
       marginLeft: "20px"
     };

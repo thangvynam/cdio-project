@@ -405,11 +405,11 @@ componentWillMount(){
 
   saveAll = () => {
     var self = this;
-    self.setState({disableSaveAll: true})
     //this.props.saveAll(this.props.monhoc)
     $.saveData3({ data: self.props.itemLayout3Reducer.previewInfo, id: self.props.monhoc, id_ctdt: self.props.id_ctdt })
     .then((res) => {
       if(res.data === '1') {
+        self.setState({disableSaveAll: true})
         self.loadData()
       }
       // self.loadData();

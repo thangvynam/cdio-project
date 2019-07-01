@@ -466,11 +466,9 @@ class Matrix extends Component {
         idCtdt: this.props.ctdt
       }).then(response => {
         if (response.data === 1) {
-          notification["success"]({
-            message: "Cập nhật thành công",
-            duration: 1
-          });
-          this.setState({ isSubmit: true });
+          setTimeout(() => {
+            //this.setState({ isLoading: false });
+            this.setState({ isSubmit: true });
           let subjectListId = [];
           this.props.allSubjectList.map(item => {
             subjectListId.push(item.IdSubject);
@@ -483,6 +481,13 @@ class Matrix extends Component {
             console.log("get roi ma")
             this.getEditMatrix(data1);
           }
+            notification["success"]({
+              message: "Cập nhật thành công",
+              duration: 1
+            });
+          }, 240000);
+          
+          
         } else {
           notification["error"]({
             message: "Cập nhật thất bại",

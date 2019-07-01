@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
-  Collapse, Form, Input, Menu, Icon,
-  Button, Dropdown, message, Row, Col,
+  Collapse, Form, Input,
+  Button, message, Row, Col,
   Select, Modal, Table, Tag, Popconfirm,
   Divider, notification
 } from 'antd';
@@ -249,7 +249,6 @@ class MucDoHanhDong extends Component {
 
   handleOk = () => {
     console.log(this.state.selecteditem);
-    let data = [];
     $.deleteCdrmdhdFromCdr({ data: this.state.selecteditem }).then(
       res => {
         $.deleteCdrmdhd({ data: this.state.selecteditem }).then(

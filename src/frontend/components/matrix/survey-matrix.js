@@ -1,15 +1,11 @@
 import React, { Component } from 'react';
 import { Table, Tag, Popover, Button, notification } from 'antd';
 import { connect } from 'react-redux';
-import { pathToFileURL } from 'url';
-import { isUndefined } from 'util';
 import { Link } from "react-router-dom";
 import _ from 'lodash';
 import './matrix.css'
-import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import { getDataSurveyMatrix, getNameGV } from './../../Constant/matrix/matrixAction';
 import $ from './../../helpers/services'
-import LoadingPage from './loading';
 import { subjectList } from '../../Constant/ActionType';
 
 const openNotificationWithIcon = (type) => {
@@ -229,9 +225,7 @@ class SurveyMatrix extends Component {
   createThirdTitleHeader = (group) => {
     let header = [];
     for (const child of group) {
-      let titleChild = child.split('.') || [];
       header.push({
-        //title: _.toNumber(`${titleChild[0]}${titleChild[1]}${titleChild[2]}`),
         title: child,
         dataIndex: `${child}`,
         key: `${child}`,
@@ -310,7 +304,6 @@ class SurveyMatrix extends Component {
       })
       data.push(dataSubject);
     }
-    //console.log(data)
     return data;
   }
 
@@ -348,14 +341,12 @@ class SurveyMatrix extends Component {
   }
 
   render() {
-    // console.log(this.props.listNameGV)
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
 
-    // this.createHeaderMatrix(myData);
     return (
       <React.Fragment>
       {!_.isEmpty(this.props.dataSurveyMatrix) && (<div>
@@ -402,12 +393,6 @@ class SurveyMatrix extends Component {
             },
             pageSize: 5,
           }}
-        //   pagination={{
-        //     onChange: page => {
-        //         console.log(page);
-        //     },
-        //     pageSize: 7,
-        // }}
         />
       </div>
       )}

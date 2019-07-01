@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
-import Loader from '../components/loader/loader';
 import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
 
@@ -410,7 +409,7 @@ class ExportFile extends Component {
 
             const obj = {}
             for (let [k, v] of data) {
-                if (v != "") {
+                if (v !== "") {
                     obj[k] = v
                 }
             }
@@ -430,7 +429,6 @@ class ExportFile extends Component {
                 content: JSON.stringify(obj),
                 nameFile: self.props.tenmonhoc,
             }
-
             $.exportFile(JSON.stringify(data)).then(res => {
                 if (res.data == 1) {
                     self.setState({ loading: 1 });

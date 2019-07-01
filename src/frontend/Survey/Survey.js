@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, Icon, notification } from 'antd';
 
@@ -326,8 +326,6 @@ class Survey extends React.Component {
         $.setStatus(body).then(res =>{
             $.saveSurveyQA(survey)
             .then((res) => {
-                let user = localStorage.getItem('user');
-                let jsonData = JSON.parse(user)
                 $.saveSurvey(dataConvert, this.state.id_survey)
                     .then(response => {
 

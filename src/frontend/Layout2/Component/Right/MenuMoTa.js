@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-    Form, Icon, Button, message
+    Form, Button, message
 } from 'antd';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
@@ -20,6 +20,7 @@ class MenuMota extends Component {
     componentDidMount() {
         console.log(this.props.logReducer)
     }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const formItemLayout = {
@@ -63,13 +64,13 @@ class MenuMota extends Component {
                     </Form.Item>
 
                     <Form.Item {...tailFormItemLayout}>
-                            <Button type="primary" onClick={() => {
-                                this.props.itemLayout2Reducer.tempInfo = ''
-                                this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.monhoc)
-                                this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.monhoc)
-                                this.props.saveAndContinue();
-                            }} style={{ marginLeft: "15%" }}>
-                                Thêm
+                        <Button type="primary" onClick={() => {
+                            this.props.itemLayout2Reducer.tempInfo = ''
+                            this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt)
+                            this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mô tả môn học: ${description}`, this.props.logReducer.contentTab, this.props.monhoc)
+                            this.props.saveAndContinue();
+                        }} style={{ marginLeft: "15%" }}>
+                            Thêm
                             </Button>
                     </Form.Item>
                 </Form>

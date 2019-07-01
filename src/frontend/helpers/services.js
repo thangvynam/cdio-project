@@ -6,14 +6,9 @@ const setStorage = (userObj) => {
     return new Promise((resolve, reject) => {
         let convertObj = JSON.stringify(userObj) || {};
         localStorage.setItem('user', convertObj)
-        //$.defaults.headers.common['Content-Type'] = "application/x-www-form-urlencoded";
-        $.defaults.headers.common['authorization'] = !ld.isEmpty(convertObj) 
-        ? "JWT " + JSON.parse(convertObj).token
-        : "" ;
-        const aa = !ld.isEmpty(convertObj) 
-        ? "JWT " + JSON.parse(convertObj).token
-        : "" ;
-        console.log("Â", aa);
+        $.defaults.headers.common['authorization'] = !ld.isEmpty(convertObj)
+            ? "JWT " + JSON.parse(convertObj).token
+            : "";
         resolve()
     })
 }
@@ -26,9 +21,6 @@ const collectSubjectList = () => {
 
 const getBlockSubject = (id) => {
     let url = _.GET_BLOCK_SUBJECT;
-    //$.headers["username"] = JSON.parse(localStorage.getItem('user')).data.Username;
-    //$.headers["role"]= JSON.parse(localStorage.getItem('user')).data.Role;
-
     let header = {
         username: JSON.parse(localStorage.getItem('user')).data.Username,
         role: JSON.parse(localStorage.getItem('user')).data.Role
@@ -429,16 +421,6 @@ const collectData5 = (data, ctdt) => {
     return $.post(url,data,ctdt);
 }
 
-const getCDRDanhgia = (data) => {
-    let url = _.GET_CDR_DANHGIA;
-    return $.post(url,data);
-}
-
-const getCDR_7 = (data) => {
-    let url = _.GET_CDR_7;
-    return $.post(url,data);
-}
-
 const getLog = (data) => {
     let url = _.GET_LOG;
     return $.post(url,data);
@@ -584,9 +566,7 @@ export default{
     postData2,
     postData3,
     addSurveyMatrix,
-    exportFile,
     saveSurvey,
-    saveSurveyQA,
     getCDR_3,
     getData3,
     getTeachingActs_5,
@@ -669,7 +649,6 @@ export default{
     checkDate,
     checkStatus,
     insertStandardMatrix,
-    checkStatus,
     getIDQA,
     getSurveyITU,
     getSubjectWithId,

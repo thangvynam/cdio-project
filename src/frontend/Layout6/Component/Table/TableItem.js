@@ -625,7 +625,6 @@ class TableItem extends Component {
           let id = itemKHGDTH.mapIdForValue.teachingActs.get(act);
           if (id === undefined || id === "") {
             // insert hoat_dong_day khong phai danh muc
-            console.log("insert ", act);
             let itemAct = {
               hoat_dong: act,
               loai: "TH",
@@ -696,20 +695,13 @@ class TableItem extends Component {
     ) {
       this.props.onChangeIsLoaded(true);
       this.setState({ subjectId: this.props.monhoc });
-      // axios.get(`/get-data-6/${nextProps.subjectId}`).then(response => {
-      //   const data = response.data;
-      //   this.props.onUpdateKHGDTH(data);
-      // });
       this.getDataTable(this.props.monhoc, this.props.ctdt);
     }
   }
 
   getDataTable = (idSubject, idCtdt) => {
-    //axios.get(`/get-data-6/${idSubject}`)
-    $.getData6(idSubject, idCtdt)
-    .then(response => {
+    $.getData6(idSubject, idCtdt).then(response => {
       const data = response.data;
-      console.log("data: ", data);
       this.props.onUpdateKHGDTH(data);
       this.setState({isSaveAll:false});
     });
@@ -797,7 +789,6 @@ class TableItem extends Component {
           columns={this.state.editingKey === "" ? this.columns : columns}
           rowSelection={this.props.isReview === true ? null : rowSelection}
           rowClassName="editable-row"
-          // dataSource={this.props.itemKHGDTH.previewInfo.filter((item,_) => item.del_flag ===0)}
           dataSource={this.setIndexForItem()}
           onRow={
             this.props.isReview === true

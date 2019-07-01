@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Form, Icon, Button, message } from "antd";
-import { Link } from "react-scroll";
+import { Form, Button, message } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { addItemRule, changeTempRules,saveLog,saveLogObject } from "../../../Constant/ActionType";
@@ -32,12 +31,14 @@ class ItemMenu extends Component {
     }
     this.props.onChangeTempRule(temp);
   };
+
   handleContentChange = e => {
     let temp = {
       content: e.target.value,
     }
     this.props.onChangeTempRule(temp);
   };
+
   render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {

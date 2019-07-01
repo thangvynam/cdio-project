@@ -35,9 +35,7 @@ export default class ListSurvey extends Component {
     render() {
         let type = this.props.type;
         let ctdt = this.props.ctdt;
-        let khoi = this.props.khoi;
         let parent = this.props.parent;
-        let action = this.props.action;     
         let startDate = convertTime(this.state.surveyList.start_date).split(',');
         let endDate = convertTime(this.state.surveyList.end_date).split(',');
 

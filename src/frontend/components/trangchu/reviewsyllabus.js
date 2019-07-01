@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import { Table, Divider, Tag, Row, Col, Button, Icon } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import ThongTinChung from '../../Layout1/thong-tin-chung';

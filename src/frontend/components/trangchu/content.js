@@ -10,7 +10,6 @@ import {
     resetTab3,
     changeCDRData,
     selectedVerb,
-    updateListSurvey,
     updateIdSurvey,
     isLoaded7,
     isLoaded8,
@@ -19,25 +18,14 @@ import {
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import {
-    Button,
-    Icon,
-    Modal,
-    message,
     List,
     Avatar,
     Row,
     Col,
-    Popconfirm,
-    Input,
-    Form,
-    notification,
-    Divider
 } from "antd";
 import { Link } from "react-router-dom";
 import Page404 from "../../NotFound/Page404";
-import { subjectListReducer } from "../../Reducers/homePageReducer";
 import "./content.css";
-import { Redirect } from "react-router-dom";
 import ThongTinChung from "../../Layout1/thong-tin-chung";
 import Layout2 from "../../Layout2/Layout2";
 import Layout3 from "../../Layout3/Layout3";
@@ -53,7 +41,6 @@ import Matrix from "../matrix/matrix";
 import EditMatrix from "../matrix/editmatrix";
 import BenchMark from "../matrix/benchmark-matrix";
 import SurveyMatrix from "../matrix/survey-matrix";
-import { nextTick } from "q";
 import Survey from "../../Survey/Survey";
 import ViewSurvey from "../../Survey/ViewSurvey";
 import PhanCong from "./phancong";
@@ -78,17 +65,7 @@ import * as majorsAction from "../../CDIO1/actions/majorsAction";
 //END CDIO1
 
 import Direction from "./direction";
-import $ from "./../../helpers/services";
 import ListSurvey from "./listSurvey";
-
-const EditableContext = React.createContext();
-
-const openNotificationWithIcon = type => {
-    notification[type]({
-        message: "Thông báo",
-        description: "Thêm thành công"
-    });
-};
 
 class Content extends Component {
     constructor(props) {
@@ -131,23 +108,9 @@ class Content extends Component {
             description: "",
             levels: []
         });
-        let ctdt = this.props.content_ctdt;
-        let idUser = JSON.parse(localStorage.getItem("user")).data.Id;
-        let obj = {
-            id_ctdt: ctdt,
-            id_mon: id,
-            id_giaovien: idUser
-        };
-
-        // if (this.props.content_type === "itusurvey") {
-        //     $.getSurveyId(obj).then(res => {
-        //         if (res.data[0]) this.props.onUpdateIdSurvey(res.data[0].id);
-        //     });
-        // }
         this.props.onUpdateVerb({ level: "", childLevel: "", verb: "" });
     };
 
-    //             });
     checkInTeacherSubject = (teacherSubject, idSubject) => {
         for (let i = 0; i < teacherSubject.length; i++) {
             if (teacherSubject[i].IdSubject === idSubject) {
@@ -204,8 +167,6 @@ class Content extends Component {
     };
 
     render() {
-        let fixedCss = "col-right-title header-fixed";
-        let userRole = JSON.parse(localStorage.getItem("user")).data.Role;
         var subjectList = [];
         let type = this.props.content_type;
         let ctdt = this.props.content_ctdt;
@@ -217,29 +178,24 @@ class Content extends Component {
 
         switch (type) {
             case "de-cuong-mon-hoc":
-                {
                     switch (action) {
                         case "phancong":
-                            {
                                 if (khoi !== "" && khoi !== undefined && khoi !== null) {
                                     subjectList = this.props.subjectList.filter(
-                                        item => item.IdSubjectBlock === +khoi && item.del_flat != 1
-                                    );
+                                        item => item.IdSubjectBlock === +khoi && item.del_flat !== 1);
                                 } else {
                                     subjectList = this.props.subjectList.filter(
-                                        item => item.del_flat != 1
+                                        item => item.del_flat !== 1
                                     );
                                 }
-                            }
                             break;
 
                         case "biensoan":
-                            {
                                 if (khoi !== "" && khoi !== undefined && khoi !== null) {
                                     subjectList = this.props.subjectList.filter(
                                         item =>
                                             item.IdSubjectBlock === +khoi &&
-                                            item.del_flat != 1 &&
+                                            item.del_flat !== 1 &&
                                             this.checkInTeacherSubject(
                                                 this.props.teacherSubject,
                                                 item.IdSubject
@@ -248,23 +204,21 @@ class Content extends Component {
                                 } else {
                                     subjectList = this.props.subjectList.filter(
                                         item =>
-                                            item.del_flat != 1 &&
+                                            item.del_flat !== 1 &&
                                             this.checkInTeacherSubject(
                                                 this.props.teacherSubject,
                                                 item.IdSubject
                                             )
                                     );
                                 }
-                            }
                             break;
 
                         case "review-subject":
-                            {
                                 if (khoi !== "" && khoi !== undefined && khoi !== null) {
                                     subjectList = this.props.subjectList.filter(
                                         item =>
                                             item.IdSubjectBlock === +khoi &&
-                                            item.del_flat != 1 &&
+                                            item.del_flat !== 1 &&
                                             this.checkInTeacherReviewSubject(
                                                 this.props.teacherReviewSubject,
                                                 item.IdSubject
@@ -273,33 +227,32 @@ class Content extends Component {
                                 } else {
                                     subjectList = this.props.subjectList.filter(
                                         item =>
-                                            item.del_flat != 1 &&
+                                            item.del_flat !== 1 &&
                                             this.checkInTeacherReviewSubject(
                                                 this.props.teacherReviewSubject,
                                                 item.IdSubject
                                             )
                                     );
                                 }
-                            }
                             break;
 
                         default: {
                             subjectList = [];
                         }
                     }
-                }
+                
                 break;
             case "itusurvey":
-                {
+                
                     subjectList = this.props.subjectList.filter(
                         item =>
-                            item.del_flat != 1 &&
+                            item.del_flat !== 1 &&
                             this.checkInTeacherSubject(
                                 this.props.teacherSubject,
                                 item.IdSubject
                             )
                     );
-                }
+                
                 break;
 
             default: {

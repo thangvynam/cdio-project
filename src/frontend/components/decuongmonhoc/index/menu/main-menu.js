@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Menu, Icon, Tooltip } from "antd";
+import { Menu, Icon, Badge  } from "antd";
 import { Link } from "react-router-dom";
 import {
   MENUITEM,
@@ -11,9 +11,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Redirect } from "react-router-dom";
 import "./menu_css.css";
-import queryString from 'query-string';
 
-const SubMenu = Menu.SubMenu;
 class MenuLeft extends Component {
   state = {
     rdrCount: 0

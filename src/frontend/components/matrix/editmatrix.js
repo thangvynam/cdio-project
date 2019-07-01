@@ -196,15 +196,12 @@ class EditMatrix extends Component {
   }
 
   getMatrixId = (matrix, thong_tin_chung_id, cdr_cdrio_id) => {
-    //if(matrix !== undefined && matrix !== null) {
-    //console.log("a")
     for (let i = 0; i < matrix.length; i++) {
       if (matrix[i].thong_tin_chung_id === thong_tin_chung_id && matrix[i].chuan_dau_ra_cdio_id === cdr_cdrio_id) {
 
         return matrix[i].id;
       }
     }
-    //}
 
     return -1;
   }
@@ -369,7 +366,6 @@ class EditMatrix extends Component {
           let data = [];
           for (let i = 0; i < res.data.length; i++) {
             let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-            //console.log(index)
             if (index !== -1) {
               let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (cdr_cdio !== "") {
@@ -413,7 +409,6 @@ class EditMatrix extends Component {
       }
       else {
         //DATA IMPORT
-        console.log(resp.rows);
         this.setState({
           cols: resp.cols,
           rows: resp.rows
@@ -424,7 +419,6 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.state.tempMatrix)
     let isLoading = this.state.isLoading;
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {

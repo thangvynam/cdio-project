@@ -1,8 +1,10 @@
 import React, { Component } from "react";
+import ReactDOM from "react-dom";
 import _ from "lodash";
-import { Icon, Table, Tag, Button, notification } from "antd";
+import { Spin, Icon, Table, Tag, Modal, Button, notification, Row } from "antd";
 import { connect } from "react-redux";
 import { getDataMatrix } from "./../../Constant/matrix/matrixAction";
+import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import "./matrix.css";
 import {
   editMatrix,
@@ -27,6 +29,9 @@ class Matrix extends Component {
     this.myRef = React.createRef();
   }
 
+  componentDidUpdate() {
+    //setTimeout(this.addClassExport(), 3000);
+  }
   checkIdExist = (matrix, id) => {
     for (let i = 0; i < matrix.length; i++) {
       if (matrix[i].key.toString() === id.toString()) {
@@ -438,6 +443,16 @@ class Matrix extends Component {
     return data1;
   };
 
+  addDataCDR = (data, dataMatrix) => {
+    for (let i = 0; i < data.length; i++) {
+      var kkk = "K";
+      var a = {
+        ...data[i],
+        [kkk]: "ss"
+      };
+    }
+  };
+
   addClassExport = () => {
     const table = document.getElementsByTagName("table")[0];
     if (!_.isEmpty(table)) {
@@ -449,7 +464,8 @@ class Matrix extends Component {
           i++
         ) {
           table.tHead
-            .getElementsByTagName("th")[i].setAttribute(
+            .getElementsByTagName("th")
+          [i].setAttribute(
             "style",
             "background-color: rgb(114, 166, 249); border: 1px solid rgb(242, 244, 247)"
           );
@@ -459,39 +475,44 @@ class Matrix extends Component {
   };
 
   cloneEditMatrix = () => {
-    $.insertStandardMatrix({
-      data: this.state.matrix,
-      idCtdt: this.props.ctdt
-    }).then(response => {
-      if (response.data === 1) {
-        notification["success"]({
-          message: "Cập nhật thành công",
-          duration: 1
-        });
-        this.setState({ isSubmit: true });
-        let subjectListId = [];
-        this.props.allSubjectList.map(item => {
-          subjectListId.push(item.IdSubject);
-        });
-        let data1 = {
-          data: subjectListId,
-          idCtdt: this.props.ctdt
-        };
-        if (data1.data.length > 0) {
-          console.log("get roi ma")
-          this.getEditMatrix(data1);
+    let confirm = window.confirm("Quá trình này mất vài phút, tiếp tục thao tác?");
+    if(confirm === true) {
+      this.setState({ isLoading: true });
+      $.insertStandardMatrix({
+        data: this.state.matrix,
+        idCtdt: this.props.ctdt
+      }).then(response => {
+        if (response.data === 1) {
+          notification["success"]({
+            message: "Cập nhật thành công",
+            duration: 1
+          });
+          this.setState({ isSubmit: true });
+          let subjectListId = [];
+          this.props.allSubjectList.map(item => {
+            subjectListId.push(item.IdSubject);
+          });
+          let data1 = {
+            data: subjectListId,
+            idCtdt: this.props.ctdt
+          };
+          if (data1.data.length > 0) {
+            console.log("get roi ma")
+            this.getEditMatrix(data1);
+          }
+        } else {
+          notification["error"]({
+            message: "Cập nhật thất bại",
+            duration: 1
+          });
         }
-      } else {
-        notification["error"]({
-          message: "Cập nhật thất bại",
-          duration: 1
-        });
-      }
-    });
+      });
+    }
+    
   };
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading, isShow } = this.state;
     const style = {
       marginLeft: "20px"
     };

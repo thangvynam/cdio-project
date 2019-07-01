@@ -80,10 +80,22 @@ class ItemVIewSurvey extends Component {
         window.scrollTo(0, this.state.offsetTop-100);
     }
 
+    getColor = (statusValue) => {
+        switch(statusValue){
+            case -1 : 
+                return "blue";
+            case 0 :
+                return "darkgray";
+            case 1:
+                return "green";
+            default:
+                return "green";
+        }
+    }
+
     genTitle = () => {
         const date = this.props.dateFrom + " <-> " + this.props.dateTo;
         let status = statusValues.filter(item => item.id === this.props.status);
-
         return (
             <React.Fragment>
                 <Row className="custom-survey-item">
@@ -92,10 +104,10 @@ class ItemVIewSurvey extends Component {
                 <Row >
                     <Col className="status-column-survey" span={14}>
                         <Tag color="#f50"> {date}</Tag>
-                        <Tag color="green">Trạng thái: {status[0].value}</Tag>
+                        <Tag color={this.getColor(status[0].id)}>Trạng thái: {status[0].value}</Tag>
                     </Col>
                     <Col className="custom-survey-item-button" span={10}>
-                        <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}&idCtdt=${this.props.id}`} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
+                        <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}&idCtdt=${this.props.id}`} disabled = {status[0].id === -1 ? true : false} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
                         <Button className="view-survey-matrix btn btn-outline-warning" onClick={this.showModal} disabled={this.props.status === 0 ? true : false}>Đóng cuộc Survey</Button>
                     </Col>
                 </Row>

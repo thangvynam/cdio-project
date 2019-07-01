@@ -26,7 +26,7 @@ class NewPhanCong extends Component {
   }
   loadForm = async (subjectList) => {
     let subjectAvaiable = subjectList.filter(item => !this.props.phancongTable.find(element => element.subjectId === item.Id));
-    console.log(subjectAvaiable);
+    // console.log(subjectAvaiable);
     this.setState({ subjectList: subjectAvaiable });
     let teacherList = await $.getTeacherList();
     this.setState({ teacherList: teacherList.data });

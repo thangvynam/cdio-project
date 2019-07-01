@@ -312,7 +312,6 @@ class SurveyMatrix extends Component {
       })
       data.push(dataSubject);
     }
-    console.log(data)
     return data;
   }
 
@@ -350,14 +349,12 @@ class SurveyMatrix extends Component {
   }
 
   render() {
-    // console.log(this.props.listNameGV)
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
       onChange: this.onSelectChange,
     };
 
-    // this.createHeaderMatrix(myData);
     return (
       <React.Fragment>
       {_.isEmpty(this.props.dataSurveyMatrix) && <Empty/>}
@@ -405,12 +402,6 @@ class SurveyMatrix extends Component {
             },
             pageSize: 5,
           }}
-        //   pagination={{
-        //     onChange: page => {
-        //         console.log(page);
-        //     },
-        //     pageSize: 7,
-        // }}
         />
       </div>
       )}

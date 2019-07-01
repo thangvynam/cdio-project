@@ -78,7 +78,6 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
         case ADD_DATA_LAYOUT_3: {
             let data = JSON.parse(action.item)
             let res = checkExist(state.previewInfo, data)
-            console.log(res)
             if (res.exist) {
                 state.previewInfo[res.id] = data;
                 return {
@@ -101,7 +100,6 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
         case DELETE_DATA_LAYOUT_3: {
             // state.previewInfo= state.previewInfo.filter((_, item) => item !== action.key)
             state.previewInfo[action.key].del_flag = 1
-            console.log(state.previewInfo)
             return {
                 ...state,
                 previewInfo: state.previewInfo
@@ -121,7 +119,6 @@ const ItemLayout3Reducer = (state = itemLayout3InitialState, action) => {
             }
         case SAVE_ALL_DATA_LAYOUT_3:
         state.previewInfo = getUnique(state.previewInfo, "objectName")
-        console.log(state.previewInfo)
         $.saveData3({ data: state.previewInfo, id: action.id, id_ctdt: action.id_ctdt })
         $.saveLog({ data: state.logData })
             return {

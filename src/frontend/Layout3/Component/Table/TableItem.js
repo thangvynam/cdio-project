@@ -421,6 +421,7 @@ componentWillMount(){
   }
 
     render() {
+      console.log(this.state.disableSaveAll)
       const components = {
         body: {
           row: EditableFormRow,

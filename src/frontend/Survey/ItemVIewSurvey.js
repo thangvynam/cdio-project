@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {
-    Collapse, Button, Tag, Row, Col , notification, Modal
+    Collapse, Button, Tag, Row, Col, Modal
 } from 'antd';
 import { Link } from "react-router-dom";
 import $ from './../helpers/services'

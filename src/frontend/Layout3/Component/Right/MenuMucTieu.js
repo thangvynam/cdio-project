@@ -166,7 +166,6 @@ class MenuMucTieu extends Component {
                                 if (objectName === '' || description === '' || temp.length === 0) {
                                     message.error("Vui lòng điền đầy đủ thông tin");
                                 } else {
-                                    console.log(this.props.itemLayout3Reducer.previewInfo.find(i => i.objectName === objectName))
                                     if(this.props.itemLayout3Reducer.previewInfo.find(i => i.objectName === objectName) !== undefined) {
                                         message.error("Mục tiêu đã tồn tại");
                                     }

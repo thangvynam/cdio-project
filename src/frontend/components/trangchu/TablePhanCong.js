@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import {
-  Collapse, Form, Input, Menu, Icon,
-  Button, Dropdown, message, Row, Col,
+  Form, Input,  Icon,
+  Button, 
   Select, Modal, Table, Tag, Popconfirm,
   Divider, notification, DatePicker, Tooltip
 } from 'antd';

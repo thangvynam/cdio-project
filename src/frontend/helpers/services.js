@@ -43,6 +43,11 @@ const updateStandardMatrix = (data) => {
     return $.post(url, data);
 }
 
+const deleteEditMatrix = (data) => {
+    let url = _.DELETE_EDIT_MATRIX;
+    return $.post(url, data);
+}
+
 //Matrix
 const getBenchmarkMatrix = (data) => {
     let url = _.GET_BENCHMARK_MATRIX;
@@ -576,6 +581,7 @@ export default {
 
     //edit matrix
     updateStandardMatrix,
+    deleteEditMatrix,
     checkID,
     //tab 1
     collectData1,

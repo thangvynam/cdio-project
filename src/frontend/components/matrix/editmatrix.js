@@ -301,56 +301,60 @@ class EditMatrix extends Component {
     return false;
   }
 
+  loadMatrix = () => {
+    var self = this;
+    $.getCDR_CDIO(self.props.ctdt).then((res) => {
+
+      self.props.updateCdrCdio(res.data)
+    })
+
+    let subjectListId = [];
+    self.props.allSubjectList.map(item => {
+      subjectListId.push(item.IdSubject);
+    })
+    let data = {
+      data: subjectListId,
+      idCtdt: self.props.ctdt
+    }
+    if (data.data.length > 0) {
+      $.getStandardMatrix(data).then((res) => {
+        self.setState({ tempMatrix: res.data });
+        let data = [];
+        for (let i = 0; i < res.data.length; i++) {
+          let index = self.checkIdExist(data, res.data[i].thong_tin_chung_id);
+          if (index !== -1) {
+            let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+            if (cdr_cdio !== "") {
+              data[index][cdr_cdio] = res.data[i].muc_do;
+            }
+          }
+          else {
+            let subjectName = self.getSubjectName(self.props.allSubjectList, res.data[i].thong_tin_chung_id);
+            let cdr_cdio = self.getCdrCdio(self.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
+            if (subjectName !== "" && cdr_cdio !== "") {
+              data.push({
+                key: res.data[i].thong_tin_chung_id,
+                hocky: 1,
+                hocphan: subjectName,
+                gvtruongnhom: 'NULL'
+              })
+
+              data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
+            }
+
+          }
+        }
+        self.props.updateEditMatrix(data);
+        self.setState({ isLoading: false });
+      })
+    }
+  }
+
   componentDidMount() {
 
     if (this.props.allSubjectList.length > 0) {
       this.setState({ isLoading: true });
-      $.getCDR_CDIO(this.props.ctdt).then((res) => {
-
-        this.props.updateCdrCdio(res.data)
-      })
-
-      let subjectListId = [];
-      this.props.allSubjectList.map(item => {
-        subjectListId.push(item.IdSubject);
-      })
-      let data = {
-        data: subjectListId,
-        idCtdt: this.props.ctdt
-      }
-      if (data.data.length > 0) {
-        $.getStandardMatrix(data).then((res) => {
-          this.setState({ tempMatrix: res.data });
-          let data = [];
-          for (let i = 0; i < res.data.length; i++) {
-            let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-            if (index !== -1) {
-              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-              if (cdr_cdio !== "") {
-                data[index][cdr_cdio] = res.data[i].muc_do;
-              }
-            }
-            else {
-              let subjectName = this.getSubjectName(this.props.allSubjectList, res.data[i].thong_tin_chung_id);
-              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-              if (subjectName !== "" && cdr_cdio !== "") {
-                data.push({
-                  key: res.data[i].thong_tin_chung_id,
-                  hocky: 1,
-                  hocphan: subjectName,
-                  gvtruongnhom: 'NULL'
-                })
-
-                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-              }
-
-            }
-          }
-          this.props.updateEditMatrix(data);
-          this.setState({ isLoading: false });
-        })
-      }
-
+      this.loadMatrix();
     }
   }
 
@@ -359,55 +363,7 @@ class EditMatrix extends Component {
     if (this.props.isLoadEditMatrix === "false" && nextProps.allSubjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
       this.setState({ isLoading: true });
-      $.getCDR_CDIO(this.props.ctdt).then((res) => {
-
-        this.props.updateCdrCdio(res.data)
-      })
-
-      let subjectListId = [];
-      nextProps.allSubjectList.map(item => {
-        subjectListId.push(item.IdSubject);
-      })
-      let data = {
-        data: subjectListId,
-        idCtdt: this.props.ctdt
-      }
-      if (data.data.length > 0) {
-        $.getStandardMatrix(data).then((res) => {
-          this.setState({ tempMatrix: res.data });
-          let data = [];
-          for (let i = 0; i < res.data.length; i++) {
-            let index = this.checkIdExist(data, res.data[i].thong_tin_chung_id);
-            //console.log(index)
-            if (index !== -1) {
-              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-              if (cdr_cdio !== "") {
-                data[index][cdr_cdio] = res.data[i].muc_do;
-              }
-            }
-            else {
-              let subjectName = this.getSubjectName(nextProps.allSubjectList, res.data[i].thong_tin_chung_id);
-              let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
-              if (subjectName !== "" && cdr_cdio !== "") {
-                data.push({
-                  key: res.data[i].thong_tin_chung_id,
-                  hocky: 1,
-                  hocphan: subjectName,
-                  gvtruongnhom: 'NULL'
-                })
-
-                data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
-              }
-
-            }
-          }
-          this.props.updateEditMatrix(data);
-          this.setState({ isLoading: false });
-        })
-      }
-
-
-
+      this.loadMatrix();
     }
 
   }
@@ -430,6 +386,23 @@ class EditMatrix extends Component {
       }
     });
 
+  }
+
+  deleteAll = () => {
+    let confirm = window.confirm("Xóa hết dữ liệu?");
+    if(confirm === true) {
+      $.deleteEditMatrix({idCtdt: this.props.ctdt})
+      .then(
+        res => {
+            this.loadMatrix();
+            notification["success"]({
+              message: "Cập nhật thành công",
+              duration: 1
+            })
+          
+        }
+      )
+    }
   }
 
   render() {
@@ -556,6 +529,13 @@ class EditMatrix extends Component {
             {isLoading && <LoadingPage />}
             <div style={{ margin: "10px" }}>
               <Button onClick={this.saveAll}>Lưu lại</Button>
+              <Button
+              style={{ float: "right" }}
+            type="danger"
+            onClick={this.deleteAll}
+          >
+            Delete
+          </Button>
               {/* <input type="file" onChange={this.fileHandler.bind(this)} style={{ "padding": "10px" }} /> */}
               <Table bordered
                 components={components}

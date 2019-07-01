@@ -225,11 +225,15 @@ class EditMatrix extends Component {
     for (let i = 0; i < this.props.editMatrix.length; i++) {
       Object.keys(this.props.editMatrix[i]).map((key, id) => {
 
-        if (Object.keys(this.props.editMatrix[i])[id] !== "key" && Object.keys(this.props.editMatrix[i])[id] !== "hocky"
-          && Object.keys(this.props.editMatrix[i])[id] !== "hocphan" && Object.keys(this.props.editMatrix[i])[id] !== "gvtruongnhom") {
-          let cdr_cdio_id = this.getCdrCdioId(this.props.cdrCdio, Object.keys(this.props.editMatrix[i])[id]);
+        if (key !== "key" && key !== "hocky"
+          && key !== "hocphan" && key !== "gvtruongnhom") {
+          let cdr_cdio_id = this.getCdrCdioId(this.props.cdrCdio, key);
           let matrixId = this.getMatrixId(this.state.tempMatrix, this.props.editMatrix[i].key, cdr_cdio_id);
-          data.push({ id: matrixId, muc_do: this.props.editMatrix[i][Object.keys(this.props.editMatrix[i])[id]] });
+          if(this.props.editMatrix[i][key] !== this.state.tempMatrix.find(item => item.chuan_dau_ra_cdio_id === cdr_cdio_id  && item.thong_tin_chung_id === this.props.editMatrix[i]["key"]).muc_do) {
+            data.push({ id: matrixId, muc_do: this.props.editMatrix[i][key] });
+          }
+          
+          
         }
 
       })

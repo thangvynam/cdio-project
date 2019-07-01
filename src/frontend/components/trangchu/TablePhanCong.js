@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
-   Form, Input,  Icon,
-  Button,
+  Form, Input,  Icon,
+  Button, 
   Select, Modal, Table, Tag, Popconfirm,
   Divider, notification, Tooltip
 } from 'antd';
@@ -76,7 +76,8 @@ class EditableCell extends Component {
                       required: true,
                       message: `Chưa chọn giáo viên!`,
                     }],
-                    initialValue: record[dataIndex],
+                    initialValue: dataIndex === "time" ? record[dataIndex][0] + " đến " + record[dataIndex][1]
+                    : record[dataIndex],
                   })(this.getInput())}
                 </Form.Item>
               ) : restProps.children}

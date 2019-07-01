@@ -412,7 +412,10 @@ componentWillMount(){
     $.saveData3({ data: self.props.itemLayout3Reducer.previewInfo, id: self.props.monhoc, id_ctdt: self.props.id_ctdt })
     .then((res) => {
       if(res.data === 1) {
-        self.loadData()
+        for (let i = 0; i < 2; i++) {
+          self.loadData()
+        }
+        
       }
       // self.loadData();
     });

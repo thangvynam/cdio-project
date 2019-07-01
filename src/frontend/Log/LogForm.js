@@ -2,10 +2,11 @@ import React, { Component } from "react";
 import "./1.css"
 import { connect } from 'react-redux';
 import $ from './../helpers/services'
-import { Form, Button, Input } from 'antd';
+import { Form, Button, Input, Empty } from 'antd';
 import { SAVE_LOG_DATA, SAVE_COMMENT } from "../Constant/ActionType"
 import CommentLog from "../Comment/Comment"
 import { getCurrTime } from "../utils/Time";
+import _ from 'lodash';
 const TextArea = Input.TextArea;
 let firstCollect = false;
 
@@ -79,22 +80,8 @@ class LogForm extends Component {
             id_ctdt: this.props.id_ctdt
         }
 
-        return $.getLog({ data }).then(res => {
-            if(res.data.length === 0){
-                  data = [{
-                    ten : "chunhiem",
-                    timestamp : getCurrTime(),
-                    noi_dung : Init.filter(item => item.tab === contentTab)[0].messageInit,
-                    muc_de_cuong : contentTab,
-                    thong_tin_chung_id : this.props.monhoc,
-                    id_ctdt : this.props.id_ctdt,
-                  }]
-                $.saveLog({data}).then(res =>{
-                    return res.data;
-                })
-            }else{
+        return $.getLog({ data }).then(res => {            
                 return res.data;
-            }
         })
     }
 
@@ -200,11 +187,24 @@ class LogForm extends Component {
             }
         }
         return (
-            <div className="">
-                <div className="center-col">
-                    {LogComment}
-                </div>
-            </div>
+            // <div className="">
+            //     <div className="center-col">
+            //         {LogComment}
+            //     </div>
+            // </div>
+            <React.Fragment>
+                {!_.isEmpty(data) ? <div className="">
+                    <div className="center-col">
+                        {LogComment}
+                    </div>
+                </div> : <Empty
+                        description={
+                            <span>
+                                No Log Data
+                            </span>
+                        }
+                    />}
+            </React.Fragment>
         )
     }
 }

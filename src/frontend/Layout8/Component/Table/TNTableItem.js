@@ -74,7 +74,6 @@ class TNTableItem extends Component {
       title: 'Loại',
       dataIndex: 'loai',
       key: 'loai',
-      editable: true,
     }, {
       title: 'Mô tả',
       dataIndex: 'mota',

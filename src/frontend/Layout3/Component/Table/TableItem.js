@@ -238,6 +238,8 @@ loadData = () => {
    //if (count <= 2) {
       self.setState({count: count + 1})
       self.getData().then((res) => {
+        console.log(res);
+        
         if (res.length > 0) {
           res.forEach(element => {
             res.forEach(element2 => {

@@ -130,11 +130,11 @@ class ItemVIewSurvey extends Component {
                     {this.props.title}
                 </Row>
                 <Row >
-                    <Col className="status-column-survey" span={14}>
+                    <Col className="status-column-survey" span={12}>
                         <Tag color="#f50"> {date}</Tag>
                         <Tag color={this.getColor(status[0].id)}>Trạng thái: {status[0].value}</Tag>
                     </Col>
-                    <Col className="custom-survey-item-button" span={10}>
+                    <Col className="custom-survey-item-button" span={12}>
                         <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}&idCtdt=${this.props.id}`} disabled={status[0].id === -1 ? true : false} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
                         <Button className="view-survey-matrix btn btn-outline-warning" onClick={(e) => this.showModal(e)} disabled={this.props.status === 0 ? true : false}>Đóng cuộc Survey</Button>
                         <Button className="view-survey-matrix btn btn-outline-danger" onClick={(e) => this.showModalDelete(e)}>Xóa cuộc Survey</Button>

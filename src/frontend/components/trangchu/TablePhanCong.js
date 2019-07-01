@@ -1,12 +1,17 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 import {
-   Form, Input,  Icon,
-  Button,
+  Collapse, Form, Input, Menu, Icon,
+  Button, Dropdown, message, Row, Col,
   Select, Modal, Table, Tag, Popconfirm,
-  Divider, notification, Tooltip
+  Divider, notification, DatePicker, Tooltip
 } from 'antd';
 import $ from "./../../helpers/services";
+import { phancong } from '../../Constant/ActionType';
 
+
+const { RangePicker } = DatePicker;
 const Option = Select.Option;
 
 const EditableContext = React.createContext();

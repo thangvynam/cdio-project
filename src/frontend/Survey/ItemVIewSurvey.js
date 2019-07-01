@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {
-    Collapse, Button, Tag, Row, Col, notification, Modal
+    Collapse, Button, Tag, Row, Col , notification, Modal
 } from 'antd';
 import { Link } from "react-router-dom";
 import $ from './../helpers/services'
-
-import NotificationHelper from "../helpers/NotificationHelper"
 
 const Panel = Collapse.Panel;
 const hrefSurveyMatrix = "/view-survey/survey-matrix?id=";
@@ -31,11 +29,11 @@ class ItemVIewSurvey extends Component {
         super(props);
         this.myRef = React.createRef();
         this.state = {
-            offsetTop: 0,
-            visible: false,
-            visibleDelete: false,
+            offsetTop:0,
+            visible : false,
         }
 
+        this.closeSurvey = this.closeSurvey.bind(this)
         this.hideModal = this.hideModal.bind(this)
         this.showModal = this.showModal.bind(this)
     }
@@ -48,82 +46,44 @@ class ItemVIewSurvey extends Component {
         // window.scrollTo(0, tesNode.offsetTop);
     }
 
-    closeSurvey = () => {
-
-        $.closeSurvey({ id: this.props.idSurveyList }).then(res => {
+    closeSurvey() {
+        $.closeSurvey({id : this.props.idSurveyList}).then(res => {
             if (res.data === 1) {
-                NotificationHelper.openNotificationSuccess("Đóng cuộc survey thành công")
-            }
-            else {
-                NotificationHelper.openNotificationError("Đóng cuộc thất bại")
-            }
-
+                notification["success"]({
+                  message: "Đóng cuộc survey thành công",
+                  duration: 1
+                });
+              }
+              else {
+                notification["error"]({
+                  message: "Đóng cuộc thất bại",
+                  duration: 1
+                });
+              }
+        })
         this.props.getData();
-        })
     }
 
-    deleteSurvey = () => {
-        $.deleteSurvey({ id: this.props.idSurveyList }).then(res => {
-            if (res.data === 1) {
-                NotificationHelper.openNotificationSuccess("Xóa cuộc survey thành công")
-            }
-            else {
-                NotificationHelper.openNotificationError("Xóa cuộc thất bại")
-            }
-            
-        this.props.getData();        
-        })
-    }
-
-    showModal = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
+    showModal = () => {
         this.setState({
-            visible: true,
+          visible: true,
         });
-    };
-
-    showModalDelete = (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        this.setState({
-            visibleDelete: true,
-        })
-    }
+      };
 
     hideModal = () => {
         this.setState({
-            visible: false,
+          visible: false,
         });
-    };
+      };
 
-    hideModalDelete = () => {
-        this.setState({
-            visibleDelete: false,
-        })
-    }
-
-    componentDidUpdate() {
-        window.scrollTo(0, this.state.offsetTop - 100);
-    }
-
-    getColor = (statusValue) => {
-        switch (statusValue) {
-            case -1:
-                return "blue";
-            case 0:
-                return "darkgray";
-            case 1:
-                return "green";
-            default:
-                return "green";
-        }
+    componentDidUpdate(){
+        window.scrollTo(0, this.state.offsetTop-100);
     }
 
     genTitle = () => {
         const date = this.props.dateFrom + " <-> " + this.props.dateTo;
         let status = statusValues.filter(item => item.id === this.props.status);
+
         return (
             <React.Fragment>
                 <Row className="custom-survey-item">
@@ -132,12 +92,11 @@ class ItemVIewSurvey extends Component {
                 <Row >
                     <Col className="status-column-survey" span={14}>
                         <Tag color="#f50"> {date}</Tag>
-                        <Tag color={this.getColor(status[0].id)}>Trạng thái: {status[0].value}</Tag>
+                        <Tag color="green">Trạng thái: {status[0].value}</Tag>
                     </Col>
                     <Col className="custom-survey-item-button" span={10}>
-                        <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}&idCtdt=${this.props.id}`} disabled={status[0].id === -1 ? true : false} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
-                        <Button className="view-survey-matrix btn btn-outline-warning" onClick={(e) => this.showModal(e)} disabled={this.props.status === 0 ? true : false}>Đóng cuộc Survey</Button>
-                        <Button className="view-survey-matrix btn btn-outline-danger" onClick={(e) => this.showModalDelete(e)}>Xóa cuộc Survey</Button>
+                        <Link to={hrefSurveyMatrix + `${this.props.idSurveyList}&idCtdt=${this.props.id}`} className="view-survey-matrix btn btn-outline-secondary" >View Survey Matrix</Link>
+                        <Button className="view-survey-matrix btn btn-outline-warning" onClick={this.showModal} disabled={this.props.status === 0 ? true : false}>Đóng cuộc Survey</Button>
                     </Col>
                 </Row>
             </React.Fragment>
@@ -149,36 +108,26 @@ class ItemVIewSurvey extends Component {
         return (
             <div>
                 <Collapse ref={this.myRef} onChange={this.callback}>
-                    <Panel header={this.genTitle()} destroyInactivePanel={false}>
+                    <Panel header={this.genTitle()}>
                         {this.props.subjectList ? this.props.subjectList.map(item => {
-                            return <p key={item.Id}>{item.SubjectName}<br /></p>
+                            return <p>{item.SubjectName}<br /></p>
                         }) : <p></p>}
 
                     </Panel>
 
                 </Collapse>
                 <Modal
-                    title="Bạn có muốn đóng cuộc Survey này không?"
-                    visible={this.state.visible}
-                    onOk={() => this.closeSurvey()}
+                title = "Bạn có muốn đóng cuộc Survey này không?" 
+                visible = {this.state.visible}
+                    onOk={this.closeSurvey}
                     onCancel={this.hideModal}
-                    okText="Đồng ý"
-                    cancelText="Không"
-                >                    {this.props.title}
-                    <br />
+                    okText = "Đồng ý"
+                    cancelText = "Không"
+                >
+                    {this.props.title}
+                    <br/>
                     {date}
-                </Modal>
-                <Modal
-                    title="Bạn có muốn xóa cuộc Survey này không?"
-                    visible={this.state.visibleDelete}
-                    onOk={() => this.deleteSurvey()}
-                    onCancel={() => this.hideModalDelete()}
-                    okText="Đồng ý"
-                    cancelText="Không"
-                >                    {this.props.title}
-                    <br />
-                    {date}
-                </Modal>
+                    </Modal>
             </div>
         );
     }

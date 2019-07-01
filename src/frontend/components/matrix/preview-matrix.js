@@ -3,6 +3,7 @@ import { Table, Modal, Button, Row, Icon } from 'antd';
 import _ from 'lodash';
 import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 import "./matrix.css";
+const confirm = Modal.confirm;
 
 class PreviewMatrix extends Component {
     constructor(props) {

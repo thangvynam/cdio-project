@@ -1,16 +1,19 @@
 import React, { Component } from 'react';
-import { Row, Col} from 'antd';
+import { Row, Col, Icon, Button } from 'antd';
 import './../decuongmonhoc/index/index.css';
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
 import Content from './content';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import Page404 from '../../NotFound/Page404';
-import { MENUITEM, subjectList, subjectId, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject, allSubjectList } from '../../Constant/ActionType';
+import { MENUITEM, subjectList, subjectId, subjectMaso, isLoadEditMatrix, editMatrix, cdrmdhd, cdrmdhddb, cdrCdio, dataCtdt, isLoadedDataCtdt, teacherSubject, teacherReviewSubject, allSubjectList } from '../../Constant/ActionType';
 import * as eduProgramsAction from "../../CDIO1/actions/eduProgramsAction";
 import $ from "./../../helpers/services";
+import NewNav from '../decuongmonhoc/index/navbar/newnav';
+import Direction from './direction';
+import queryString from 'query-string';
 import _ from 'lodash';
 class Home extends Component {
     constructor(props) {
@@ -24,6 +27,27 @@ class Home extends Component {
             isLoad: false
         }
     }
+
+    // componentWillMount(){
+    //     console.log("sadsad");
+    //     if (!_.isNull(localStorage.getItem("user")) ){
+    //       let user = JSON.parse(localStorage.getItem("user"));
+    //       $.authenMe({ "access": user.token }).then(res => {
+    //         if (res.data.status === 200) {
+    //           localStorage.clear();
+    //           $.setStorage(res.data)
+    //         }
+    //         else{
+    //               localStorage.clear();
+    //               this.props.history.push('/')
+    //         }
+    //       })
+    //     }
+    //     else this.props.history.push('/');
+    //   }
+
+
+
 
     updateCollapse = () => {
         this.setState({
@@ -194,6 +218,7 @@ class Home extends Component {
                     let ctdt = self.props.match.params.ctdt;
                     if (ctdt !== "survey-matrix" && ctdt !== "" && ctdt !== undefined && ctdt !== null && this.props.isLoadedDataCtdt === false) {
                         $.getBlockSubject(ctdt).then(res => {
+                            console.log(res.data.data)
                             let resData = res.data.data;
                             let dataSubject = [];
                             let dataCtdt = [];
@@ -207,7 +232,7 @@ class Home extends Component {
                                 dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
 
                                 dataSubject = dataSubject.filter(item =>
-                                    item.del_flat !== 1
+                                    item.del_flat != 1
                                   );
                                   this.props.updateAllSubjectList(dataSubject);
 
@@ -223,13 +248,13 @@ class Home extends Component {
                                                 }
                                                 if (this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
                                                     dataSubject = dataSubject.filter(item =>
-                                                        item.del_flat !== 1
+                                                        item.del_flat != 1
                                                     );
                                                     this.props.updateSubjectList(dataSubject);
                                                 }
                                                 else {
                                                     dataSubject = dataSubject.filter(item =>
-                                                        item.del_flat !== 1
+                                                        item.del_flat != 1
                                                         && (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
                                                             || this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))
                                                     );
@@ -252,9 +277,9 @@ class Home extends Component {
                             let cdrmdhd = [];
                             for (let i = 0; i < response.data.length; i++) {
                                 let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
-                                if (index_1 !== -1) {
+                                if (index_1 != -1) {
                                     let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
-                                    if (index_2 !== -1) {
+                                    if (index_2 != -1) {
                                         cdrmdhd[index_1].children[index_2].children.push({
                                             value: response.data[i].muc_do_3,
                                             label: response.data[i].muc_do_3
@@ -510,6 +535,7 @@ class Home extends Component {
                                                                                     case "itusurvey":
                                                                                         console.log("wrong param 7");
                                                                                         return <Page404 />;
+                                                                                        break;
                                                                                     case "phan-cong":
                                                                                         if (!this.checkChuNhiem(userRole)) {    //user is not chunhiem
                                                                                             console.log("wrong param 7");
@@ -595,6 +621,7 @@ class Home extends Component {
                                             case "survey-matrix":
                                                 console.log("wrong param 3");
                                                 return <Page404 />;
+                                                break;
                                             default:
                                                 if (this.checkExist(khoi)) {    //param 5 exists
                                                     console.log("param 5 must be null");

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Table, Button, Popconfirm, Form, Divider, Modal, notification
+  Table, Button, Popconfirm, Form, Divider, Select, Modal, notification
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
@@ -23,6 +23,9 @@ const EditableRow = ({ form, index, ...props }) => (
 const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
+  constructor(props) {
+    super(props);
+  }
   getInput = () => {
     return <TextArea rows={4} style={{ width: "100%" }} />;
   };

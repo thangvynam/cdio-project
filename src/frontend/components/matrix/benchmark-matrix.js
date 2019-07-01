@@ -1,11 +1,165 @@
 import React, { Component } from "react";
 import _ from "lodash";
 import { connect } from "react-redux";
-import { Table } from "antd";
+import { Table, Icon, Tag, Modal, Button } from "antd";
 import { getDataBenchMarkMatrix } from "./../../Constant/matrix/matrixAction";
 import { Bar } from "react-chartjs-2";
 import "./matrix.css";
 import $ from "./../../helpers/services";
+import LoadingPage from './loading';
+
+const myData = {
+  I: [
+    {
+      cdr: "1.1.1",
+      amount: 10
+    },
+    {
+      cdr: "1.1.2",
+      amount: 11
+    },
+    {
+      cdr: "1.1.3",
+      amount: 12
+    },
+    {
+      cdr: "1.2.1",
+      amount: 120
+    },
+    {
+      cdr: "1.2.2",
+      amount: 121
+    },
+    {
+      cdr: "1.2.3",
+      amount: 122
+    },
+    {
+      cdr: "2.1.1",
+      amount: 20
+    },
+    {
+      cdr: "2.1.2",
+      amount: 21
+    },
+    {
+      cdr: "2.1.3",
+      amount: 22
+    },
+    {
+      cdr: "3.1.1",
+      amount: 30
+    },
+    {
+      cdr: "3.1.2",
+      amount: 31
+    },
+    {
+      cdr: "3.1.3",
+      amount: 32
+    }
+  ],
+  T: [
+    {
+      cdr: "1.1.1",
+      amount: 13
+    },
+    {
+      cdr: "1.1.2",
+      amount: 14
+    },
+    {
+      cdr: "1.1.3",
+      amount: 15
+    },
+    {
+      cdr: "1.2.1",
+      amount: 123
+    },
+    {
+      cdr: "1.2.2",
+      amount: 124
+    },
+    {
+      cdr: "1.2.3",
+      amount: 125
+    },
+    {
+      cdr: "2.1.1",
+      amount: 23
+    },
+    {
+      cdr: "2.1.2",
+      amount: 24
+    },
+    {
+      cdr: "2.1.3",
+      amount: 25
+    },
+    {
+      cdr: "3.1.1",
+      amount: 33
+    },
+    {
+      cdr: "3.1.2",
+      amount: 34
+    },
+    {
+      cdr: "3.1.3",
+      amount: 35
+    }
+  ],
+  U: [
+    {
+      cdr: "1.1.1",
+      amount: 16
+    },
+    {
+      cdr: "1.1.2",
+      amount: 17
+    },
+    {
+      cdr: "1.1.3",
+      amount: 18
+    },
+    {
+      cdr: "1.2.1",
+      amount: 126
+    },
+    {
+      cdr: "1.2.2",
+      amount: 127
+    },
+    {
+      cdr: "1.2.3",
+      amount: 128
+    },
+    {
+      cdr: "2.1.1",
+      amount: 26
+    },
+    {
+      cdr: "2.1.2",
+      amount: 27
+    },
+    {
+      cdr: "2.1.3",
+      amount: 28
+    },
+    {
+      cdr: "3.1.1",
+      amount: 36
+    },
+    {
+      cdr: "3.1.2",
+      amount: 37
+    },
+    {
+      cdr: "3.1.3",
+      amount: 38
+    }
+  ]
+};
 
 class BenchMark extends Component {
   constructor(props) {

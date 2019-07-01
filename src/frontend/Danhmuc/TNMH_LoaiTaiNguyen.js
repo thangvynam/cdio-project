@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Collapse, Form, Input, 
-     Button, message, Row, Col,
-     Modal, Table,  Popconfirm,
+import { Collapse, Form, Input, Menu, Icon,
+     Button, Dropdown, message, Row, Col,
+      Select, Modal, Table, Tag, Popconfirm,
     Divider, notification } from 'antd';
 import $ from './../helpers/services';
 const Panel = Collapse.Panel;
@@ -16,6 +16,7 @@ const formItemLayout = {
     },
 };
 
+const Option = Select.Option;
 const EditableContext = React.createContext();
 
 const EditableRow = ({ form, index, ...props }) => (
@@ -206,6 +207,7 @@ class TNMH_LoaiTaiNguyen extends Component {
     }
 
       handleOk = () => {
+        let data = [];
        $.deleteLoaitainguyenFromTainguyen({ data: this.state.selecteditem}).then(
           res => {
            $.deleteTainguyen({ data: this.state.selecteditem}).then(

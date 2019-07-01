@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import {
-    Form, Input, Select, Button, message
+    Form, Input, Icon, Select, Button, message
 } from 'antd';
+import { Link } from 'react-scroll';
 import 'antd/dist/antd.css';
 import { connect } from 'react-redux';
 import { ADD_DATA_LAYOUT_3, SAVE_TEMP_DATA_LAYOUT_3, SAVE_LOG, SET_CDR, SAVE_LOG_OBJECT } from '../../../Constant/ActionType';
@@ -21,6 +22,13 @@ const myObj = {
 let objectName = '';
 let description = '';
 
+const staActs = [
+    '1.1',
+    '2.2',
+    '2.3',
+    '2.4',
+    '4.1',
+]
 class MenuMucTieu extends Component {
     state = {
         standItems: [],
@@ -34,6 +42,7 @@ class MenuMucTieu extends Component {
     }
 
     async componentDidMount() {
+        console.log(await this.getCDR())
         this.props.setCDR(await this.getCDR())
     }
 

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
+import Loader from '../components/loader/loader';
 import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
 import { saveAs } from 'file-saver';
@@ -364,6 +365,7 @@ class ExportFile extends Component {
     }
 
     getData9 = (monhoc) => {
+        console.log()
         try {
             $.getData9(monhoc)
                 .then(response => {
@@ -469,7 +471,7 @@ class ExportFile extends Component {
 
             const obj = {}
             for (let [k, v] of data) {
-                if (v !== "") {
+                if (v != "") {
                     obj[k] = v
                 }
             }
@@ -488,6 +490,7 @@ class ExportFile extends Component {
                 content: JSON.stringify(obj),
                 nameFile: self.props.tenmonhoc,
             }
+            console.log(obj)
             $.exportFile(JSON.stringify(data)).then(res => {
                 const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
                 saveAs(pdfBlob, data.nameFile + '.pdf')
@@ -523,6 +526,8 @@ class ExportFile extends Component {
     }
 
     render() {
+        console.log(data7)
+        console.log(data4)
         return (
             <React.Fragment>
                 <div className="section-layout">

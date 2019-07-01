@@ -11,6 +11,8 @@ import Layout7 from '../../../../Layout7/Layout7';
 import Layout8 from '../../../../Layout8/Layout8';
 import ExportFile from '../../../../ExportFIle/ExportFile';
 import Page404 from '../../../../NotFound/Page404';
+import { Button, Icon} from 'antd';
+import { Link } from "react-router-dom";
 export default class Content extends Component {
         
     render() {

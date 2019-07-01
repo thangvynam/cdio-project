@@ -1,4 +1,4 @@
-import {SAVE_LOG, ADD_DGDATA, CHANGE_DGDATA, CHUDE_DANHGIA,IS_LOADED_7,CDR_DANHGIA } from '../Constant/ActionType';
+import {SAVE_LOG, ADD_DGDATA, CHANGE_DGDATA, CHUDE_DANHGIA,IS_LOADED_7,CDR_DANHGIA,SAVE_ALL_DATA_LAYOUT_7 } from '../Constant/ActionType';
 
 
 const addDGDataState = {

@@ -9,6 +9,7 @@ import {
   Button,
   message
 } from "antd";
+import { Link } from "react-scroll";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { addItemKHGDTH, changeTempKHGDTH, changeMapKHGDTH, saveLog, saveLogObject } from "../../../Constant/ActionType";

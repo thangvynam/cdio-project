@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Row, Col } from 'antd';
+import { Row, Col, Icon, Button } from 'antd';
 import './../decuongmonhoc/index/index.css';
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
 import MenuLeft from './../decuongmonhoc/index/menu/main-menu';
 import NavBar from './../decuongmonhoc/index/navbar/navbar';
 import $ from "./../../helpers/services";

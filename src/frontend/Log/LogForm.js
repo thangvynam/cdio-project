@@ -23,10 +23,7 @@ class LogForm extends Component {
     async componentWillReceiveProps(nextProps) {
         let count = this.state.count;
         if (count <= 2) {
-            //this.setState({contentTab: nextProps.logReducer.contentTab, count: count + 1},() => console.log(this.state.contentTab)) 
-            //let data = await this.getData(nextProps.logReducer.contentTab);
-            //this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.monhoc);
-            this.setState({ contentTab: this.props.tab, count: count + 1 }, () => console.log(this.state.contentTab))
+            this.setState({ contentTab: this.props.tab, count: count + 1 })
             let data = await this.getData(this.props.tab);
             this.props.saveLoad(data, this.props.tab, this.props.monhoc);
         }
@@ -122,7 +119,7 @@ class LogForm extends Component {
                                 nguoi_gui={itemchilren.nguoi_gui} timestamp={itemchilren.thoi_gian} />;
                         } else return;
                     })
-                    if (itemparent.id == this.props.logReducer.idLog) {
+                    if (itemparent.id === this.props.logReducer.idLog) {
                         con.push(<div>
                             <Form.Item>
                                 <TextArea rows={4} onChange={this.handleChange} />

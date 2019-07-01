@@ -1,15 +1,9 @@
 import React, { Component } from 'react';
 import {
-  Collapse, Form, Input, Menu, Icon,
-  Button, Dropdown, message, Row, Col,
-  Select, Modal, Table, Tag, Popconfirm,
-  Divider, notification, DatePicker, Tooltip
+  Form, Button, message, Row, Col,
+  Select,  notification, DatePicker, Tooltip
 } from 'antd';
 import $ from "./../../helpers/services";
-import { connect } from 'react-redux';
-import { bindActionCreators } from 'redux';
-import { phancong } from '../../Constant/ActionType';
-
 
 const openNotificationWithIcon = (type) => {
   notification[type]({
@@ -30,8 +24,6 @@ const formItemLayout = {
     sm: { span: 12 },
   },
 };
-
-const levelOptions = ["1", "2", "3", "4", "5"];
 const Option = Select.Option;
 
 class FormPhanCong extends Component {

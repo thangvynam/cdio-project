@@ -412,8 +412,6 @@ class CDRTableItem extends Component {
 
     $.collectMtmhHasCdrCdio({ data: { thong_tin_chung_id: this.props.monhoc, idCtdt: this.props.ctdt } }).then((res) => {
       if (res.data && res.data.length > 0) {
-        //
-        console.log(res.data)
         $.collectMucdoMtmhHasCdrCdio({ data: res.data }).then((response) => {
           let arr = [];
           for (let i = 0; i < response.data.length; i++) {
@@ -457,7 +455,8 @@ class CDRTableItem extends Component {
               break;
             }
           }
-          let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
+          let notiArr = [];
+          notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
           let notifications = [];
           for (let i = 0; i < notiArr.length; i++) {
             if (notiArr[i].state === "add") {
@@ -508,7 +507,8 @@ class CDRTableItem extends Component {
             break;
           }
         }
-        let notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
+        let notiArr = [];
+        notiArr = this.createGapNotifications(notiArr, arr, editMatrixArr);
         let notifications = [];
         for (let i = 0; i < notiArr.length; i++) {
           if (notiArr[i].state === "add") {

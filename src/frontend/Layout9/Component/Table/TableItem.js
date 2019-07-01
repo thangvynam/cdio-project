@@ -149,8 +149,6 @@ class TableItem extends Component {
 
   onMultiDelete = () => {
     const selectedRow = this.state.selectedRowKeys;
-    console.log("aa: ",selectedRow,this.dataSource[selectedRow[0]]);
-
     let ruleitems = this.props.itemRule.previewInfo;
 
     for (let i = 0; i < selectedRow.length; i++) {

@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, Select, Input, notification } from 'antd';
 import { connect } from 'react-redux';
-import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, ADD_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3, SAVE_LOG ,SAVE_LOG_OBJECT} from '../../../Constant/ActionType';
+import { DELETE_DATA_LAYOUT_3, SAVE_DATA_LAYOUT_3, SAVE_ALL_DATA_LAYOUT_3, IS_LOADED_3, ADD_ARRAY_LAYOUT_3, SAVE_LOG ,SAVE_LOG_OBJECT} from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 
 import { getCurrTime } from '../../../utils/Time';
 import $ from './../../../helpers/services';
@@ -281,7 +281,6 @@ componentWillMount(){
 
   onMultiDelete = () => { 
     const selectedRow = this.state.selectedRowKeys;
-    console.log(selectedRow[0])
     // delete one
     if (selectedRow.length === 1) {
       this.delete(selectedRow[0]);

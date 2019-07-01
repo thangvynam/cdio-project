@@ -9,12 +9,9 @@ import {
   Modal,
   Popconfirm,
   notification,
-  Icon,
   Select,
   message,
   Tag,
-  Menu,
-  Dropdown
 } from "antd";
 import _ from "lodash";
 import MucDoHanhDong from './MucDoHanhDong';
@@ -34,13 +31,7 @@ const formItemLayout = {
     sm: { span: 16 }
   }
 };
-let itemClick = '';
-let value = '';
-let keyItem = '';
 
-function callback(key) {
-  console.log(key);
-}
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
@@ -188,7 +179,7 @@ class Danhmuc extends Component {
     };
     $.addHDD({data: obj})
       .then(function (response) {
-        if (response.data == 1) {
+        if (response.data === 1) {
           notification["success"]({
             message: "Lưu thành công",
             duration: 1
@@ -362,15 +353,6 @@ class Danhmuc extends Component {
       <div>
         <Collapse defaultActiveKey="1">
           <Panel header="Danh mục hoạt động dạy" key="1">
-            {/* <Form.Item {...formItemLayout} label="Hoạt động dạy">
-              <Input
-                onChange={e => {
-                  this.handleInputChange(e);
-                }}
-                value={this.state.value}
-              />
-            </Form.Item> */}
-
             <Form.Item {...formItemLayout} label="Hoạt động">
               {getFieldDecorator("name", {
                 rules: [
@@ -413,14 +395,6 @@ class Danhmuc extends Component {
                 <span style={{ marginLeft: 8 }}>
                   {hasSelected ? `Đã chọn ${selectedRowKeys.length} mục` : ""}
                 </span>
-
-                {/* <Button
-                  style={{ float: "right" }}
-                  type="primary"
-                  onClick={this.onSaveAll}
-                >
-                  Lưu thay đổi
-                </Button> */}
               </div>
               <Table
                 components={components}

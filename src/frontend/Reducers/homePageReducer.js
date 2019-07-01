@@ -1,4 +1,4 @@
-import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, CTDT, PARENT_ITEM , KTT,UPDATE_ID_SURVEY} from '../Constant/ActionType';
+import { MENU_ITEM, SUBJECT_ID, SUBJECT_LIST, SUBJECT_MASO, CDR_CDIO, PARENT_ITEM ,UPDATE_ID_SURVEY} from '../Constant/ActionType';
 const initialState = {
     "edit-ctdt" :{
         name: "THÔNG TIN",

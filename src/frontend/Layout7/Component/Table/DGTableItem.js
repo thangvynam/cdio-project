@@ -4,7 +4,7 @@ import {
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
 import { changeDGData, addDGData, deleteDGData, isLoaded7, updateChudeDanhGia, updateCDRDanhGia, saveLog, saveLogObject } from '../../../Constant/ActionType';
-import React from 'react';
+import React, { Component } from 'react';
 
 import DragDropHTML5 from '../../../html5Backend/html5Backend';
 import { connect } from 'react-redux';
@@ -325,15 +325,25 @@ class itemLayout7ReducerItem extends React.Component {
           indexChildren++;
         }
       }
+      console.log()
       //vị trí thăngf con cuối cùng
       indexChildren = indexChildren + index;
 
       //nếu chỉ có 1 thằng chủ đề
       if ((index === 0 && indexChildren === previewInfo.length) || previewInfo.length === 1) {
+        // this.props.itemLayout7Reducer.previewInfo = [];
         for (let i = 0; i < previewInfo.length; i++) {
           previewInfo[i].del_flag = 1;
         }
       }
+      // nếu nó là thằng chủ đề đầu tiên trong list hoặc là thằng cuối cùng
+      // else if (index === 0 || indexChildren === previewInfo.length) {
+
+      //   for (let i = index; i < indexChildren; i++) {
+      //     previewInfo[i].del_flag = 1;
+      //   }
+      // }
+      //ngược lại 
       else {
 
         //delete từ vị trí index tới index + indexChildren
@@ -355,6 +365,7 @@ class itemLayout7ReducerItem extends React.Component {
   }
 
   onSelectChange = selectedRowKeys => {
+    let chudeDanhGia = this.props.itemLayout7Reducer.chudeDanhGia;
     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1)
     let pushItem = "";
     if (selectedRowKeys.length !== previewInfo.length) {
@@ -371,6 +382,7 @@ class itemLayout7ReducerItem extends React.Component {
       }
     }
 
+    console.log(pushItem)
     // if(pushItem){
     //   if(this.isExist(pushItem)){
     //     previewInfo.forEach(item => {
@@ -484,7 +496,9 @@ class itemLayout7ReducerItem extends React.Component {
     if (totalTile !== 100 && table.filter(item => item.del_flag === 0).length > 0) {
       message.error("Tổng tỉ lệ phải bằng 100% , vui lòng kiểm tra lại!")
     } else {
+      console.log(table)
       let data = table.filter(item => item.id !== 0);
+      console.log(data);
       let chuandaura = [];
       if (this.props.itemLayout7Reducer.chuandaura) {
         this.props.itemLayout7Reducer.chuandaura.forEach(item => {
@@ -515,6 +529,8 @@ class itemLayout7ReducerItem extends React.Component {
         data: data,
         idCtdt: this.props.ctdt,
       }
+
+      console.log(obj)
 
       $.saveData7(obj)
         .then(response => {

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import TNForm from './Component/Main/TNForm';
 import TNTableItem from './Component/Table/TNTableItem';
+import { Tooltip, Button } from 'antd';
 import { Element } from 'react-scroll';
 import LogForm from '../Log/LogForm';
 import { MENUITEM } from '../Constant/ActionType';

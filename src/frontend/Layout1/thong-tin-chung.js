@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import _ from 'lodash';
 import {
-  Form, Input, notification, Icon
+  Form, Input, Card, Button, notification, Icon, Tooltip
 
 } from 'antd';
 
@@ -62,7 +62,7 @@ class ThongTinChung extends Component {
       },
     };
 
-    const { dataTTC } = this.props;
+    const { dataTTC, tempData } = this.props;
 
     return (
       (!_.isEmpty(dataTTC) && 

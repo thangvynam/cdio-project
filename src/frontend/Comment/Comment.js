@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { Avatar, Comment} from 'antd';
+import { Avatar, Comment ,Form, Button, Input,} from 'antd';
 import { convertTime } from "../utils/Time";
 import { connect } from 'react-redux';
 import {SHOW_INPUT_COMMENT} from '../Constant/ActionType';
 
 class CommentLog extends Component {
+    constructor(props) {
+        super(props);
+    }
 
     render() {
         if (this.props.hasReply) {

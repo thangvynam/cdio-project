@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, Cascader, Button, message
+  Form, Input, Tooltip, Icon, Cascader, Select, Button, message
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -10,7 +10,10 @@ import $ from './../../../helpers/services';
 
 
 class TNFormItem extends Component {
- 
+  constructor(props){
+    super(props);
+  }
+
   handleMotaChange = (value) => {
     let a = value.target.value;
 
@@ -130,7 +133,8 @@ class TNFormItem extends Component {
               { required: true, message: 'Chọn chủ đề' },
             ],
             initialValue: this.props.itemLayout8Reducer.tempInfo.loai
-          })(<Cascader options={this.props.itemLayout8Reducer.loaitainguyen.map(item => {
+          })
+            (<Cascader options={this.props.itemLayout8Reducer.loaitainguyen.map(item => {
               return {value :item.loai,label : item.loai}
             })} onChange={this.handleLoaiChange} placeholder="Loại tài nguyên" />)}
           </Form.Item>

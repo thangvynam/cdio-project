@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import FormMoTa from './Component/Main/FormMoTa';
-import { Tooltip, Button } from 'antd';
+import { Tooltip, Button, Row } from 'antd';
 import TableItem from './Component/Table/TableItem';
 import LogForm from '../Log/LogForm';
 import { MENUITEM } from '../Constant/ActionType';

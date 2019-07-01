@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button, Icon, Popconfirm, Modal, message, DatePicker } from 'antd';
+import { Table, Divider, Tag, Row, Col, Button, Icon, Popconfirm, Modal, message, DatePicker } from 'antd';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import $ from "./../../helpers/services";

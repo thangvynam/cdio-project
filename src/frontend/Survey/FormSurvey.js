@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
-    Form,  Input
+    Form,  Input, Button, Icon
 } from 'antd';
 import TextArea from 'antd/lib/input/TextArea';
 import './FormSurvey.css'
@@ -46,6 +46,19 @@ class FormSurvey extends Component {
         wrapperCol: {
             xs: { span: 24 },
             sm: { span: 16 },
+        },
+    };
+
+    const tailFormItemLayout = {
+        wrapperCol: {
+            xs: {
+                span: 24,
+                offset: 1,
+            },
+            sm: {
+                span: 16,
+                offset: 9,
+            },
         },
     };
 

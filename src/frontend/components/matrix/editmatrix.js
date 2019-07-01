@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Table, Form, Checkbox, Icon, Tooltip, Button, Tag, notification } from 'antd';
+import { Table, Form, Input, Checkbox, Icon, Tooltip, Button, Tag, Upload, notification } from 'antd';
 import "./matrix.css";
 import _ from 'lodash';
 import { connect } from 'react-redux';
@@ -20,10 +20,19 @@ const EditableRow = ({ form, index, ...props }) => (
 
 const EditableFormRow = Form.create()(EditableRow);
 
+const levelsOptions = ["I", "T", "U"];
 class EditableCell extends React.Component {
 
 
   save = (e) => {
+    // const { record, handleSave } = this.props;
+    // this.form.validateFields((error, values) => {
+    //   if (error && error[e.currentTarget.id]) {
+    //     return;
+    //   }
+    //   this.toggleEdit();
+    //   handleSave({ ...record, ...values });
+    // });
   }
 
   render() {

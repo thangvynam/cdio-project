@@ -2,9 +2,10 @@ import React, { Component } from 'react';
 import {
   Form, Select,
   Button, Checkbox,
-  Input, message,
+  Input, message, Icon,
   Cascader
 } from 'antd';
+import { Link } from 'react-scroll';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeCDRData, addCDRData, selectedVerb, selectedCDRItem, mtmh, saveLog, cdrmdhd, cdrmdhddb, saveLogObject } from '../../../Constant/ActionType';
@@ -24,6 +25,7 @@ const formItemLayout = {
 };
 const { TextArea } = Input;
 const { Option } = Select;
+const CDRData = ["G1", "G2", "G3", "G4", "G5"];
 const levelsOptions = ["I", "T", "U"];
 
 class CDRFormItem extends Component {
@@ -97,6 +99,7 @@ class CDRFormItem extends Component {
   }
 
   onDescriptionChange = (e) => {
+    console.log("a");
     let a = e.target.value;
 
     if (a === "" || a === undefined) {
@@ -157,6 +160,7 @@ class CDRFormItem extends Component {
         message.info("Chọn mức độ và động từ!")
       }
       else {
+        console.log("mo ta" + this.props.cdrdata.description)
         if (this.props.cdrdata.description === "" || this.props.cdrdata.description === undefined) {
           message.info("Chưa nhập mô tả!")
         }
@@ -214,9 +218,9 @@ class CDRFormItem extends Component {
         let cdrmdhd = [];
         for (let i = 0; i < response.data.length; i++) {
           let index_1 = self.checkLevel_1_Exist(response.data[i].muc_do_1, cdrmdhd);
-          if (index_1 !== -1) {
+          if (index_1 != -1) {
             let index_2 = self.checkLevel_2_Exist(response.data[i].muc_do_2, cdrmdhd[index_1].children);
-            if (index_2 !== -1) {
+            if (index_2 != -1) {
               cdrmdhd[index_1].children[index_2].children.push({
                 value: response.data[i].muc_do_3,
                 label: response.data[i].muc_do_3
@@ -263,6 +267,7 @@ class CDRFormItem extends Component {
       var self = this;
       $.collectMtmh({ data: { thong_tin_chung_id: this.props.monhoc, idCtdt: this.props.ctdt } })
         .then(function (response) {
+          console.log(response.data)
           self.props.updateMtmh(response.data);
 
         })
@@ -296,6 +301,7 @@ class CDRFormItem extends Component {
     var self = this;
     $.collectMtmh({ data: { thong_tin_chung_id: this.props.monhoc, idCtdt: this.props.ctdt } })
       .then(function (response) {
+        console.log(response.data)
         self.props.updateMtmh(response.data);
 
       })

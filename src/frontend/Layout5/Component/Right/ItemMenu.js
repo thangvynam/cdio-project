@@ -10,7 +10,7 @@ import { getCurrTime } from '../../../utils/Time';
 
 import {
     ADD_DATA, CHANGE_DATA, COLLECT_DATA_HDD, COLLECT_DATA_DG,
-     COLLECT_DATA_CDR, SAVE_LOG_OBJECT,REFRESH_DATA, SAVE_LOG
+    IS_LOADED_5, COLLECT_DATA_CDR, SAVE_LOG_OBJECT,REFRESH_DATA, SAVE_LOG
 } from '../../../Constant/ActionType';
 
 const { Option } = Select;
@@ -341,7 +341,7 @@ class ItemMenu extends Component {
 
                                 <Select
                                     mode="multiple"
-                                    style={{ float: "left", width: '74%' }}
+                                    style={{ width: '100%', float: "left", width: '74%' }}
                                     placeholder="Please select"
                                     onChange={(value) => this.props.handleChangeEvalActs(value)}
                                 >
@@ -507,6 +507,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                     console.log(error);
                 })
                 .finally(function () {
+                    console.log("[Finish] get data by thong_tin_chung_id " + id);
                 })
         }
     }

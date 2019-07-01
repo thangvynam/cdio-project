@@ -3,7 +3,6 @@ import { Checkbox } from 'antd';
 import { connect } from 'react-redux';
 
 import { CHANGE_VALUE_ITU_SURVEY } from '../Constant/ActionType';
-import _ from 'lodash';
 
 const levelsOptions = ["I", "T", "U"];
 

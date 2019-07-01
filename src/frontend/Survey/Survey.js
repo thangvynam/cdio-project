@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Form, Button, Icon, notification } from 'antd';
 
@@ -295,8 +295,6 @@ class Survey extends React.Component {
             $.setStatus(body).then(res =>{
                 $.saveSurveyQA(survey)
                 .then((res) => {
-                    let user = localStorage.getItem('user');
-                    let jsonData = JSON.parse(user)
                     $.saveSurvey(dataConvert, this.state.id_survey)
                         .then(response => {console.log(response);
                             if (response.data === 1) {                                          
@@ -309,11 +307,6 @@ class Survey extends React.Component {
     }
 
     send = () => {
-        // $.checkID(this.state.id_survey).then(response => {
-        //     if (response.data === false) {
-        //         $.saveSurvey(var1, this.state.id_survey)
-        //     }
-        // })
         const dataDescription = this.props.surveyReducer.dataValueDescription;
         const data = this.props.surveyReducer.dataValueITU;
         const surveyData = this.props.surveyReducer;
@@ -344,8 +337,6 @@ class Survey extends React.Component {
         $.setStatus(body).then(res =>{
             $.saveSurveyQA(survey)
             .then((res) => {
-                let user = localStorage.getItem('user');
-                let jsonData = JSON.parse(user)
                 $.saveSurvey(dataConvert, this.state.id_survey)
                     .then(response => {
                         if (response.data === 1) {

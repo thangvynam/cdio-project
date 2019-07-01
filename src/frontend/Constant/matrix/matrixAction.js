@@ -1,5 +1,4 @@
 import * as Types from '../../Constant/matrix/matrixActionType';
-import _ from 'lodash';
 
 const getDataMatrix = (newData)=>{
     return {

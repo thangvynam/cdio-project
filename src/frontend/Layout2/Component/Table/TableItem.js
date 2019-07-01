@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Popconfirm, Tag, Button, Form, Divider, Modal, notification } from 'antd';
+import { Table, Popconfirm, Button, Form, notification } from 'antd';
 import { connect } from 'react-redux';
 import { SAVE_DATA_LAYOUT_2, SAVE_ALL_DATA_LAYOUT_2, ADD_DATA_LAYOUT_2, IS_LOADED_2, SAVE_LOG, IS_LOAD_LOG, SAVE_LOG_OBJECT } from '../../../Constant/ActionType';
 import TextArea from "antd/lib/input/TextArea"; 

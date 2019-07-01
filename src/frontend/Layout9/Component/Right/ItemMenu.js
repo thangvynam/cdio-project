@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Form, Icon, Button, message } from "antd";
-import { Link } from "react-scroll";
+import { Form, Button, message } from "antd";
 import "antd/dist/antd.css";
 import { connect } from "react-redux";
 import { addItemRule, changeTempRules,saveLog,saveLogObject } from "../../../Constant/ActionType";
@@ -21,7 +20,6 @@ class ItemMenu extends Component {
       content: content,
       del_flag:0,
     };
-    console.log(this.props.ctdt)
     this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
     this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.monhoc)
     
@@ -33,15 +31,15 @@ class ItemMenu extends Component {
     }
     this.props.onChangeTempRule(temp);
   };
+
   handleContentChange = e => {
     let temp = {
       content: e.target.value,
     }
     this.props.onChangeTempRule(temp);
   };
-  render() {
-    console.log(this.props.ctdt)
 
+  render() {
     const { getFieldDecorator } = this.props.form;
     const formItemLayout = {
       labelCol: {

@@ -1,8 +1,5 @@
 import * as Types from '../../Constant/thong-tin-chung/actionTypes';
-import _ from 'lodash'
 import $ from './../../helpers/services'
-
-
 
 const collectDataRequest = (id) => {
     return (dispatch) => {

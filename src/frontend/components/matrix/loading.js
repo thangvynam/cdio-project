@@ -7,7 +7,7 @@ class LoadingPage extends Component {
         // <Spin indicator={antIcon} />
         return (
             <div className="loading-page">
-                <Spin  tip="Loading..." indicator={antIcon} />
+                <Spin  tip="Đang tải...Vui lòng không chuyển trang" indicator={antIcon} />
             </div>
         )
     }

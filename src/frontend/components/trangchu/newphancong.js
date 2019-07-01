@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import {
-  Collapse, Form, Input, Menu, Icon,
-  Button, Dropdown, message, Row, Col,
-  Select, Modal, Table, Tag, Popconfirm,
-  Divider, notification, DatePicker, Tooltip
+import {Form,
 } from 'antd';
 import $ from "./../../helpers/services";
 import { phancong } from '../../Constant/ActionType';
@@ -13,20 +9,6 @@ import FormPhanCong from './formPhanCong';
 import TablePhanCong from './TablePhanCong';
 
 const PhanCongForm = Form.create({ name: 'phancong' })(FormPhanCong);
-const formItemLayout = {
-  labelCol: {
-    xs: { span: 12 },
-    sm: { span: 8 },
-  },
-  wrapperCol: {
-    xs: { span: 24 },
-    sm: { span: 12 },
-  },
-};
-
-const { RangePicker } = DatePicker;
-const Option = Select.Option;
-
 
 class NewPhanCong extends Component {
 
@@ -44,7 +26,7 @@ class NewPhanCong extends Component {
   }
   loadForm = async (subjectList) => {
     let subjectAvaiable = subjectList.filter(item => !this.props.phancongTable.find(element => element.subjectId === item.Id));
-    console.log(subjectAvaiable);
+    // console.log(subjectAvaiable);
     this.setState({ subjectList: subjectAvaiable });
     let teacherList = await $.getTeacherList();
     this.setState({ teacherList: teacherList.data });
@@ -52,7 +34,7 @@ class NewPhanCong extends Component {
 
   subjectInArray = (subjectId, dataSource) => {
     for (let i in dataSource) {
-      if (dataSource[i].subjectId == subjectId)
+      if (dataSource[i].subjectId === subjectId)
         return true;
     }
     return false;
@@ -64,7 +46,7 @@ class NewPhanCong extends Component {
         let dataSource = [];
         res.data && res.data.forEach(element => {
           if (this.subjectInArray(element.idTTC, dataSource)) {
-            dataSource[dataSource.findIndex(item => item.subjectId == element.idTTC)].list.push(element.name);
+            dataSource[dataSource.findIndex(item => item.subjectId === element.idTTC)].list.push(element.name);
           }
           else {
             dataSource.push({

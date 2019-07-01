@@ -6,14 +6,9 @@ const setStorage = (userObj) => {
     return new Promise((resolve, reject) => {
         let convertObj = JSON.stringify(userObj) || {};
         localStorage.setItem('user', convertObj)
-        //$.defaults.headers.common['Content-Type'] = "application/x-www-form-urlencoded";
         $.defaults.headers.common['authorization'] = !ld.isEmpty(convertObj)
             ? "JWT " + JSON.parse(convertObj).token
             : "";
-        const aa = !ld.isEmpty(convertObj)
-            ? "JWT " + JSON.parse(convertObj).token
-            : "";
-        console.log("Â", aa);
         resolve()
     })
 }
@@ -26,8 +21,6 @@ const collectSubjectList = () => {
 
 const getBlockSubject = (id) => {
     let url = _.GET_BLOCK_SUBJECT;
-    //$.headers["username"] = JSON.parse(localStorage.getItem('user')).data.Username;
-    //$.headers["role"]= JSON.parse(localStorage.getItem('user')).data.Role;
 
     let header = {
         username: JSON.parse(localStorage.getItem('user')).data.Username,
@@ -40,6 +33,11 @@ const getBlockSubject = (id) => {
 //edit matrix
 const updateStandardMatrix = (data) => {
     let url = _.UPDATE_STANDARD_MATRIX;
+    return $.post(url, data);
+}
+
+const deleteEditMatrix = (data) => {
+    let url = _.DELETE_EDIT_MATRIX;
     return $.post(url, data);
 }
 
@@ -436,11 +434,6 @@ const collectData5 = (data, ctdt) => {
     return $.post(url, data, ctdt);
 }
 
-const getCDR_7 = (data) => {
-    let url = _.GET_CDR_7;
-    return $.post(url, data);
-}
-
 const getLog = (data) => {
     let url = _.GET_LOG;
     return $.post(url, data);
@@ -576,6 +569,7 @@ export default {
 
     //edit matrix
     updateStandardMatrix,
+    deleteEditMatrix,
     checkID,
     //tab 1
     collectData1,
@@ -609,7 +603,6 @@ export default {
     addSurveyMatrix,
     exportFile,
     saveSurvey,
-    saveSurveyQA,
     getCDR_3,
     getData3,
     getTeachingActs_5,
@@ -678,8 +671,6 @@ export default {
     deleteSurvey,
 
     //export file
-    exportFile,
-
     getEvalActs5,
     getStandardOutput5,
     collectData5,
@@ -690,7 +681,6 @@ export default {
     addData5,
 
     checkDate,
-    checkStatus,
     insertStandardMatrix,
     checkStatus,
     getIDQA,

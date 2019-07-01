@@ -1,36 +1,15 @@
 import React, { Component } from 'react';
 import {
-  Form, Input, Tooltip, Icon, Cascader, Select, Button, message, InputNumber
+  Form, Input, Tooltip, Icon, Cascader,  Button, message, InputNumber
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { changeDGData, addDGData, saveTempDGData, updateChudeDanhGia, updateCDRDanhGia, saveLog, saveLogObject } from '../../../Constant/ActionType';
 import { getCurrTime } from '../../../utils/Time';
-import $ from './../../../helpers/services'
 
 var temp = '';
 
 class DGFormItem extends Component {
-
-  // componentWillMount(){
-  //   var self = this;
-  //   $.getChuDe()
-  //     .then(function (response) {
-  //       self.props.onGetChude(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-
-  //   $.getStandardOutput7(this.props.monhoc, this.props.ctdt)
-  //     .then(function (response) {
-  //       self.props.onGetCDR(response.data);
-  //     })
-  //     .catch(function (error) {
-  //       console.log(error);
-  //     });
-  // }
-
   handleMathanhphanChange = (e) => {
     let a = e.target.value;
 
@@ -152,8 +131,6 @@ class DGFormItem extends Component {
               if (this.props.itemLayout7Reducer.tempInfo.tile === "" || this.props.itemLayout7Reducer.tempInfo.tile === undefined) {
                 message.error("Chưa nhập tỉ lệ")
               } else {
-                {
-                  {
                     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
                     let newData = '';
                     let isAdd2Rows = false;
@@ -221,7 +198,6 @@ class DGFormItem extends Component {
                       } else {
                         dataReturn = previewInfo.concat(data);
                       }
-                      console.log(this.props.ctdt)
                       this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
                       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc)
 
@@ -241,9 +217,6 @@ class DGFormItem extends Component {
                       this.props.onSaveTempDGData(tempInfo);
                       this.props.form.resetFields();
                     }
-
-                  }
-                }
               }
 
             }
@@ -286,8 +259,7 @@ class DGFormItem extends Component {
               <span>
                 Tên chủ đề
               </span>
-            )}
-          >{getFieldDecorator('cascader', {
+            )}>{getFieldDecorator('cascader', {
             rules: [
               { required: true, message: 'Chọn chủ đề' },
             ],

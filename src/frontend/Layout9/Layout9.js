@@ -10,7 +10,6 @@ class Layout9 extends Component {
     window.scrollTo(0, 0);
   }
   render() {
-    const items = [...Array(100)].map((val, i) => `Item ${i}`);
     return (
       <React.Fragment>
         <div className="section-layout">

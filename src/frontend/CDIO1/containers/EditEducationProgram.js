@@ -115,7 +115,7 @@ class DetailEducationProgramTmp extends Component {
         }
         dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
         dataSubject = dataSubject.filter(item =>
-          item.del_flat != 1
+          item.del_flat !== 1
         );
         this.props.updateAllSubjectList(dataSubject);
 
@@ -131,14 +131,13 @@ class DetailEducationProgramTmp extends Component {
                 }
                 if (this.checkChuNhiem(JSON.parse(localStorage.getItem('user')).data.Role)) {
                   dataSubject = dataSubject.filter(item =>
-                    item.del_flat != 1
+                    item.del_flat !== 1
                   );
                   this.props.updateSubjectList(dataSubject);
-                  //this.setState({isLoad: false})
                 }
                 else {
                   dataSubject = dataSubject.filter(item =>
-                    item.del_flat != 1
+                    item.del_flat !== 1
                     &&
                     (this.checkInTeacherReviewSubject(this.props.teacherReviewSubject, item.IdSubject)
                       || this.checkInTeacherSubject(this.props.teacherSubject, item.IdSubject))

@@ -352,11 +352,9 @@ class TableItem extends Component {
 
   cancel() {
     this.props.handleEdit('');
-    //this.setState({ editingKey: "" });
   }
 
   edit(key) {
-    //this.setState({ editingKey: key });
     this.props.handleEdit(key);
   }
 
@@ -410,7 +408,7 @@ class TableItem extends Component {
       for (let index = 0; index < items.length; index++) {
         const element = items[index];
 
-        if (element.key == id) {
+        if (element.key === id) {
           this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa kế hoạch giảng dạy lý thuyết: Chủ đề : ${element.titleName} ; Chuẩn đầu ra : ${element.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${element.teachingActs} ; Hoạt động đánh giá: ${element.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
           this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa kế hoạch giảng dạy lý thuyết: Chủ đề : ${element.titleName} ; Chuẩn đầu ra : ${element.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${element.teachingActs} ; Hoạt động đánh giá: ${element.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
                                    
@@ -453,79 +451,8 @@ class TableItem extends Component {
 
       this.props.handleSave(newData);
       this.props.handleEdit('');
-      //this.setState({ editingKey: "" });
     });
   }
-
-  // getDataHDD = () => {
-  //   let mapId = {
-  //     teachingActs: new Map(),
-  //     standardOutput: new Map(),
-  //     evalActs: new Map(),
-  //   }
-
-  //   $.getTeachingActs_5().then(response => {
-  //     const data = response.data;
-  //     let map = new Map();
-
-  //     if (data != null) {
-  //       data.forEach((item, index) => {
-  //         map.set(item.hoat_dong, index);
-  //       });
-  //       mapId.teachingActs = map;
-
-  //       this.props.saveDataValue(mapId.teachingActs)
-  //     }
-
-  //   });
-  //   $.getEvalActs5({ data: this.props.monhoc })
-  //     .then(response => {
-  //       const data = response.data;
-  //       let map = new Map();
-
-  //       if (data != null) {
-  //         data.forEach((item, index) => {
-  //           map.set(index, item.ma);
-  //         })
-  //         mapId.evalActs = map;
-
-  //         this.props.saveDataValueDG(mapId.evalActs)
-  //       }
-  //     })
-
-  //   $.getStandardOutput5({ data: this.props.monhoc })
-  //     .then(response => {
-  //       const data = response.data;
-  //       let array = [];
-  //       let map = new Map();
-
-  //       if (data != null) {
-  //         data.forEach((item) => {
-  //           let temp = {
-  //             value: item.muc_tieu,
-  //             label: item.muc_tieu,
-  //             children: [],
-  //           }
-
-  //           item.cdr.forEach((itemCdr, _) => {
-  //             let tempCdr = {
-  //               value: itemCdr.chuan_dau_ra,
-  //               label: itemCdr.chuan_dau_ra
-  //             }
-  //             temp.children.push(tempCdr);
-  //             map.set(itemCdr.chuan_dau_ra, itemCdr.id);
-  //           })
-
-  //           array.push(temp);
-  //         });
-  //         // this.setState({standard_item:array,standardOutput:map});
-  //         mapId.standardOutput = map;
-
-  //         this.props.saveDataValueCDR(array)
-  //       }
-  //     });
-
-  // }
 
   collectDataRequest = (id, ctdt) => {
     var self = this;
@@ -553,14 +480,13 @@ class TableItem extends Component {
         console.log(error);
       })
       .finally(function () {
-        console.log("[Finish] get data by thong_tin_chung_id " + id);
       })
   }
 
   render() {
 
     var components = {};
-    this.props.itemLayout5Reducer.changeEditStateState == ""
+    this.props.itemLayout5Reducer.changeEditStateState === ""
       ? (components = {
         body: {
           row: DragableBodyRow
@@ -651,7 +577,6 @@ class TableItem extends Component {
           rowClassName="editable-row"
           rowSelection={this.props.isReview === true ? null : rowSelection}
           columns={this.props.itemLayout5Reducer.changeEditStateState === "" ? this.columns : columns}
-          //dataSource={this.props.itemLayout5Reducer.previewInfo.filter(element => element.del_flag == 0)}
           dataSource={this.setIndexForItem()}
           style={{ wordWrap: "break-word", whiteSpace: 'pre-line' }}
           onRow={this.props.isReview === true ? null :
@@ -676,7 +601,6 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  var self = this;
   return {
     onSaveLog : (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id,ctdt) => {
       dispatch({

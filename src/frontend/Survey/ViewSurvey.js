@@ -259,7 +259,7 @@ class ViewSurvey extends Component {
                 >
                     <Select style={{ width: 370 }} onChange={handleChange}>
                         {this.props.ctdt ? this.props.ctdt.map(item => {
-                            return <Option value={item.Id}>{item.EduName}</Option>
+                            return <Option key={item.Id} value={item.Id}>{item.EduName}</Option>
                         }) : <Option></Option>}
                     </Select>
                 </Form.Item>

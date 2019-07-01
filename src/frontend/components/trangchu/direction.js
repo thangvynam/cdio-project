@@ -1,11 +1,8 @@
 import React, { Component } from 'react';
-import { Menu, Icon, Switch, Divider } from 'antd';
-import { Link, Redirect } from "react-router-dom";
+import { Divider } from 'antd';
+import { Link } from "react-router-dom";
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import UserAction from './../../CDIO1/containers/UserAction';
-
-
 
 class Direction extends Component {
 

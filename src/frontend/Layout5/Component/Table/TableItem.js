@@ -484,7 +484,7 @@ class TableItem extends Component {
   }
 
   render() {
-
+    console.log(this.props.isReview)
     var components = {};
     this.props.itemLayout5Reducer.changeEditStateState === ""
       ? (components = {

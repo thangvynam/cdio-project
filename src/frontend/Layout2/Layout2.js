@@ -25,7 +25,7 @@ class Layout2 extends Component {
                 </div>
 
                 <div className="section-layout">
-                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.MO_TA_MON_HOC} id_ctdt={this.props.id_ctdt} tabIndex={2}/>
+                    <LogForm isComment={this.props.isReview} monhoc={this.props.monhoc} tab={MENUITEM.MO_TA_MON_HOC} id_ctdt={this.props.id_ctdt} tabIndex={2}/>
                 </div>
             </React.Fragment>
         );

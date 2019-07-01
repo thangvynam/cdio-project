@@ -26,7 +26,7 @@ const getBlockSubject = (id) => {
         role: JSON.parse(localStorage.getItem('user')).data.Role
     }
 
-    return $.get(url + id,header);
+    return $.get(url + id, header);
 }
 
 //edit matrix
@@ -89,9 +89,9 @@ const saveData4 = (data) => {
     return $.post(url, data);
 }
 
-const getTeacherList = (data) => {
+const getTeacherList = () => {
     let url = _.GET_TEACHER_LIST;
-    return $.post(url, data);
+    return $.get(url);
 }
 
 const getTeacherListReview = (data) => {
@@ -116,6 +116,11 @@ const getTeacherSubject = (data) => {
 
 const getTeacherReviewSubject = (data) => {
     let url = _.GET_TEACHER_REVIEW_SUBJECT;
+    return $.post(url, data);
+}
+
+const getReviewList = (data) => {
+    let url = _.GET_REVIEW_LIST;
     return $.post(url, data);
 }
 //
@@ -176,29 +181,30 @@ const postData3 = (data, id) => {
 
 const addSurveyMatrix = (data, idCtdt) => {
     let url = _.ADD_SURVEY_MATRIX;
-    return $.post(url, {data, idCtdt})
+    return $.post(url, { data, idCtdt })
 }
 
 const exportFile = (data) => {
     let url = _.EXPORT_FILE;
-    return $.post(url, {data})
+    return $.post(url, { data },{ responseType: 'blob' })
 }
 
 const saveSurveyQA = (data) => {
     let url = _.SAVE_SURVEY_QA;
-    return $.post(url, {data})
+    return $.post(url, { data })
 }
 
 const saveSurvey = (dataConvert, id_survey) => {
     let url = _.SAVE_SURVEY;
     return $.post(url, {
         data: dataConvert,
-        id_survey,})
+        id_survey,
+    })
 }
 
 const getSubjectName = (id) => {
     let url = _.GET_SUBJECT_NAME;
-    return $.post(url, {id})
+    return $.post(url, { id })
 }
 
 const checkStatus = (data) => {
@@ -213,7 +219,7 @@ const checkDate = (data) => {
 
 const getData3 = (data) => {
     let url = `${_.GET_DATA_3}`;
-    return $.post(url, {data});
+    return $.post(url, { data });
 }
 
 const getData6 = (param, param2) => {
@@ -226,8 +232,8 @@ const getData9 = (param) => {
     return $.get(url);
 }
 
-const getEvalActs6 = (param) => {
-    let url = `${_.GET_EVAL_ACTS_6}/${param}`;
+const getEvalActs6 = (param1,param2) => {
+    let url = `${_.GET_EVAL_ACTS_6}/${param1}/${param2}`;
     return $.get(url);
 }
 
@@ -238,11 +244,6 @@ const getStandardOutput6 = (param, param2) => {
 
 const getStandardOutput7 = (param, param2) => {
     let url = `${_.GET_STANDARD_OUTPUT_7}/${param}/${param2}`;
-    return $.get(url);
-}
-
-const getDanhGia = (param) => {
-    let url = `${_.GET_DANH_GIA}/${param}`;
     return $.get(url);
 }
 
@@ -258,12 +259,12 @@ const getSurveyQA = (param) => {
 
 const getSurvey = (data) => {
     let url = `${_.GET_SURVEY}`;
-    return $.post(url, {data});
+    return $.post(url, { data });
 }
 
 const getSurveyITU = (data) => {
     let url = `${_.GET_SURVEY_ITU}`;
-    return $.post(url, {data});
+    return $.post(url, { data });
 }
 
 const getDataSurvey = (id_ctdt) => {
@@ -272,8 +273,8 @@ const getDataSurvey = (id_ctdt) => {
 }
 
 const setStatus = (data) => {
-    let url = `${_.SET_STATUS}`    
-    return $.post(url, {data});
+    let url = `${_.SET_STATUS}`
+    return $.post(url, { data });
 }
 
 //danhmuc
@@ -344,51 +345,57 @@ const deleteLoaitainguyen = (data) => {
 
 const addLoaitainguyen = (data) => {
     let url = _.ADD_LOAITAINGUYEN;
+    return $.post(url, data);
 }
 
-const addData6 = (data)=>{
+const addData6 = (data) => {
     let url = _.ADD_DATA_6;
     return $.post(url, data);
 }
 
-const addData9 = (data)=>{
+const addTeachingActs6 = (data) => {
+    let url = _.ADD_TEACHINGACTS_6;
+    return $.post(url, data);
+}
+
+const addData9 = (data) => {
     let url = _.ADD_DATA_9;
     return $.post(url, data);
 }
 
-const saveLog = (data)=>{
+const saveLog = (data) => {
     let url = _.SAVE_LOG;
     return $.post(url, data);
 }
 
 const saveData8 = (data) => {
     let url = _.SAVE_DATA_8;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const saveData7 = (data) => {
     let url = _.SAVE_DATA_7;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const collectData1 = (param) => {
     let url = `${_.COLLECT_DATA1}/${param}`;
     return $.get(url);
-} 
+}
 
 const updateData1 = (param, data) => {
     let url = `${_.UPDATE_DATA1}/${param}`;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const addToEditMatrix = (data) => {
     let url = _.ADD_TO_EDIT_MATRIX;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const addHDD = (data) => {
     let url = _.ADD_HDD;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const getDanhmucHDD = () => {
@@ -398,97 +405,97 @@ const getDanhmucHDD = () => {
 
 const updateDanhmucHDD = (data) => {
     let url = _.UPDATE_HDD;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const deleteDanhmucHDD = (data) => {
     let url = _.DELETE_HDD;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
-const getEvalActs5 = (data) => {
+const getEvalActs5 = (data, ctdt) => {
     let url = _.GET_EVAL_ACTS_5;
-    return $.post(url,data);
+    return $.post(url, data, ctdt);
 }
 
 const getStandardOutput5 = (data) => {
-    let url =_.GET_STANDARD_OUTPUT_5;
-    return $.post(url,data);
+    let url = _.GET_STANDARD_OUTPUT_5;
+    return $.post(url, data);
 }
 
 const collectData5 = (data, ctdt) => {
     let url = _.COLLECT_DATA5;
-    return $.post(url,data,ctdt);
+    return $.post(url, data, ctdt);
 }
 
 const getLog = (data) => {
     let url = _.GET_LOG;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const addComment = (data) => {
     let url = _.ADD_COMMENT;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const saveData2 = (data) => {
     let url = _.SAVE_DATA_2;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const saveData3 = (data) => {
     let url = _.SAVE_DATA_3;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
-const addData5 = (data) => {
+const addData5 = (data, ctdt) => {
     let url = _.ADD_DATA_5;
-    return $.post(url,data);
+    return $.post(url, data, ctdt);
 }
 
-const addDataSurvey =(data) => {
+const addDataSurvey = (data) => {
     let url = _.ADD_DATA_SURVEY;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
-const insertStandardMatrix =(data) => {
+const insertStandardMatrix = (data) => {
     let url = _.INSERT_STANDARD_MATRIX;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const getSubjectTeacher = (param) => {
-    let url =`${_.GET_SUBJECT_TEACHER}/${param}`;
+    let url = `${_.GET_SUBJECT_TEACHER}/${param}`;
     return $.get(url);
 }
 
 const addSurveyData = (data) => {
     let url = _.ADD_SURVEY_DATA;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
-const getSurveyData = () =>{
+const getSurveyData = () => {
     let url = _.GET_ALL_DATA_SURVEY;
     return $.get(url);
 }
 
-const getSurveyId = (data) =>{
+const getSurveyId = (data) => {
     let url = _.GET_SURVEY_ID;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
-const getSurveyCTDTTime = (data) =>{
+const getSurveyCTDTTime = (data) => {
     let url = _.GET_SURVEY_CTDT_TIME;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const addSurveyList = (data) => {
     let url = _.ADD_SURVEY_LIST;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
-const getSurveyCTDTTime2 = (data) =>{
+const getSurveyCTDTTime2 = (data) => {
     let url = _.GET_SURVEY_CTDT_TIME2;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const getIDQA = (id) => {
@@ -496,7 +503,7 @@ const getIDQA = (id) => {
     return $.get(url);
 }
 
-const getSurveyList = () =>{
+const getSurveyList = () => {
     let url = _.GET_SURVEY_LIST;
     return $.get(url);
 }
@@ -508,17 +515,22 @@ const getSurveyWithIdSurveyList = (params) => {
 }
 
 const getSubjectWithId = (data) => {
-    let url =_.GET_SUBJECT_WITH_ID;
-    return $.post(url,data);
+    let url = _.GET_SUBJECT_WITH_ID;
+    return $.post(url, data);
 }
 
 const getListSurvey = (data) => {
     let url = _.GET_LIST_SURVEY;
-    return $.post(url,data);
+    return $.post(url, data);
 }
 
 const updateStatusSurvey = (data) => {
     let url = _.UPDATE_STATUS_SURVEY;
+    return $.post(url, data);
+}
+
+const deleteSurvey = (data) => {
+    let url = _.DELETE_SURVEY;
     return $.post(url,data);
 }
 
@@ -527,7 +539,22 @@ const getTeacherName = (params) => {
     return $.get(url);
 }
 
-export default{
+const closeSurvey = (data) => {
+    let url = _.CLOSE_SURVEY;
+    return $.post(url, data);
+}
+
+const getData7 = (param, param2) => {
+    let url = `${_.GET_DATA_7}/${param}/${param2}`;
+    return $.get(url);
+}
+
+const checkID = (param) => {
+    let url = `${_.CHECK_ID}/${param}`;
+    return $.get(url);
+}
+
+export default {
     //localStorage
     setStorage,
     //subject
@@ -536,7 +563,7 @@ export default{
 
     //edit matrix
     updateStandardMatrix,
-
+    checkID,
     //tab 1
     collectData1,
     updateData1,
@@ -554,6 +581,7 @@ export default{
     addTeacherReview,
     getTeacherSubject,
     getTeacherReviewSubject,
+    getReviewList,
 
     getBenchmarkMatrix,
     getStandardMatrix,
@@ -575,7 +603,6 @@ export default{
     getData6,
     getStandardOutput6,
     getStandardOutput7,
-    getDanhGia,
     getTaiNguyenMonHoc,
     getData9,
     getComment,
@@ -609,14 +636,13 @@ export default{
 
     saveData7,
     saveData8,
-    getCDRDanhgia,
-    getCDR_7,
+    getData7,
 
     saveLog,
     getLog,
 
     authenMe,
-    
+
 
     //survey
     addToEditMatrix,
@@ -633,6 +659,8 @@ export default{
     getSurveyWithIdSurveyList,
     updateStatusSurvey,
     getTeacherName,
+    closeSurvey,
+    deleteSurvey,
 
     //export file
     exportFile,
@@ -654,4 +682,5 @@ export default{
     getSubjectWithId,
     getListSurvey,
     getSubjectName,
+    addTeachingActs6,
 }

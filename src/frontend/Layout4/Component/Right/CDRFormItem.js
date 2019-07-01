@@ -188,7 +188,7 @@ class CDRFormItem extends Component {
             var previewInfo = this.props.cdrtable.previewInfo;
             newData.previewInfo = previewInfo.concat(data);
 
-            this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc)
+            this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc, this.props.ctdt)
             this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm chuẩn đầu ra môn học: Chuẩn đầu ra : ${data.cdr}, Mức độ đạt được : ${data.level_verb}, Mô tả : ${data.description}, Mức độ (I/T/U) : ${data.levels}`, this.props.logReducer.contentTab, this.props.monhoc)
 
             this.props.onAddCDRData(newData);
@@ -269,6 +269,8 @@ class CDRFormItem extends Component {
         .catch(function (error) {
           console.log(error);
         });
+      self.getCdrmdhd(self);
+        
     }
   }
 
@@ -300,7 +302,7 @@ class CDRFormItem extends Component {
       .catch(function (error) {
         console.log(error);
       });
-      
+      self.getCdrmdhd(self);
   }
 
   render() {
@@ -387,7 +389,7 @@ class CDRFormItem extends Component {
           }}>
             <div>
               <Button type="primary" style={{ marginLeft: "15%" }} onClick={this.addCDRData}>
-                Continue
+              Thêm
               </Button>
             </div>
           </Form.Item>

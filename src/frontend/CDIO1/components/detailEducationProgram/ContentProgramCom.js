@@ -118,7 +118,6 @@ export default class ContentProgramCom extends React.Component {
         this.state.creditFreeStudy
       )
       this.setState({ nodes: data });
-      this.props.onSaveEduProgram();
     }
     this.onHideDialogChild();
   };
@@ -495,7 +494,15 @@ export default class ContentProgramCom extends React.Component {
 
   onChangeListSubjects = e => {
     if (typeof e.value === "object") {
+      const subjetcsEdu = logic.listSubjects(this.state.nodes);
       const subject = e.value;
+      const checkAdd = subjetcsEdu.find(item => item.Id === subject.Id);
+      if(checkAdd){
+        const key = checkAdd.parentKey;
+        const keyTable = key.slice(0, key.lastIndexOf('.'));
+        alert("Môn học đã tồn tại tại bảng " + keyTable);
+        return ;
+      }
       subject.nameBlock = this.state.isRequired ? "BB" : "TC";
       subject.isAccumulation = true;
       const subjects = logic.addSubjectInOnchange(

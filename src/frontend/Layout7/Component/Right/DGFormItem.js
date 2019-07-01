@@ -4,7 +4,7 @@ import {
 } from 'antd';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { changeDGData, addDGData, saveTempDGData, updateChudeDanhGia, updateCDRDanhGia,saveLog,saveLogObject } from '../../../Constant/ActionType';
+import { changeDGData, addDGData, saveTempDGData, updateChudeDanhGia, updateCDRDanhGia, saveLog, saveLogObject } from '../../../Constant/ActionType';
 import { getCurrTime } from '../../../utils/Time';
 
 var temp = '';
@@ -36,13 +36,8 @@ class DGFormItem extends Component {
   }
 
   handleTileChange = (e) => {
-  
-    if (e.target.value < 0) e.target.value = 1;
-    if (e.target.value > 100) e.target.value = 100;
-    let a = e.target.value;
-
     let tempInfo = this.props.itemLayout7Reducer.tempInfo;
-    tempInfo["tile"] = a;
+    tempInfo["tile"] = e;
 
     this.props.onSaveTempDGData(tempInfo);
   }
@@ -57,14 +52,14 @@ class DGFormItem extends Component {
   }
 
 
-  getStringFromCDR(CDR){
-    let temp = CDR.substring(0,CDR.length-3);
+  getStringFromCDR(CDR) {
+    let temp = CDR.substring(0, CDR.length - 3);
     return temp;
   }
 
   displayRender = label => {
     if (this.isSubmit) {
-      this.isSubmit = false;  
+      this.isSubmit = false;
       return null;
     }
     if (label.length > 0) return label[0] + label[1];
@@ -133,7 +128,7 @@ class DGFormItem extends Component {
             if (this.props.itemLayout7Reducer.tempInfo.standardOutput === "" || this.props.itemLayout7Reducer.tempInfo.standardOutput === undefined) {
               message.error("Chưa chọn chuẩn đầu ra")
             } else {
-              if(this.props.itemLayout7Reducer.tempInfo.tile === "" || this.props.itemLayout7Reducer.tempInfo.tile === undefined){
+              if (this.props.itemLayout7Reducer.tempInfo.tile === "" || this.props.itemLayout7Reducer.tempInfo.tile === undefined) {
                 message.error("Chưa nhập tỉ lệ")
               } else {
                     let previewInfo = this.props.itemLayout7Reducer.previewInfo.filter(item => item.del_flag !== 1);
@@ -147,18 +142,19 @@ class DGFormItem extends Component {
                     let mota = this.props.itemLayout7Reducer.tempInfo.mota;
                     let tile = this.props.itemLayout7Reducer.tempInfo.tile;
                     let chudeDanhGia = this.props.itemLayout7Reducer.chudeDanhGia;
-                    for(let m = 0 ;m< chudeDanhGia.length;m++){
-                      if(chude === chudeDanhGia[m].ma_chu_de){
+                    for (let m = 0; m < chudeDanhGia.length; m++) {
+                      if (chude === chudeDanhGia[m].ma_chu_de) {
                         let flag = true;
                         mathanhphan = chudeDanhGia[m].ma_chu_de + '#' + mathanhphan;
-                        for(let i=0;i<previewInfo.length;i++){
-                          if(chudeDanhGia[m].ma_chu_de===previewInfo[i].mathanhphan){
+                        for (let i = 0; i < previewInfo.length; i++) {
+                          if (chudeDanhGia[m].ma_chu_de === previewInfo[i].mathanhphan) {
                             flag = false;
                           }
                         }
                         if (flag === true) {
-  
+
                           let dataFather = {
+                            id: 0,
                             key: chudeDanhGia[m].ma_chu_de,
                             chude: this.getIdfromNameChude(chude),
                             standardOutput: [],
@@ -166,16 +162,16 @@ class DGFormItem extends Component {
                             tenthanhphan: chudeDanhGia[m].ten_chu_de,
                             mota: '',
                             tile: '',
-                            del_flag : -1,
+                            del_flag: 0,
                           };
                           newData = previewInfo.concat(dataFather);
                           isAdd2Rows = true;
                         }
                       }
                     }
-                   
+
                     for (let i = 0; i < previewInfo.length; i++) {
-  
+
                       if (mathanhphan === previewInfo[i].key) {
                         iserror = true;
                       }
@@ -183,7 +179,7 @@ class DGFormItem extends Component {
                     if (iserror === true) {
                       message.error("Mã thành phần đã tồn tại!")
                     } else {
-  
+
                       let data = {
                         key: `${mathanhphan}`,
                         chude: this.getIdfromNameChude(chude),
@@ -191,12 +187,12 @@ class DGFormItem extends Component {
                         mathanhphan: mathanhphan,
                         tenthanhphan: tenthanhphan,
                         mota: mota,
-                        tile: tile + '%',
-                        id : -1,
-                        del_flag : 0,
+                        tile: tile,
+                        id: -1,
+                        del_flag: 0,
                       }
                       let dataReturn = {};
-                     
+
                       if (isAdd2Rows === true) {
                         dataReturn = newData.concat(data);
                       } else {
@@ -204,7 +200,7 @@ class DGFormItem extends Component {
                       }
                       this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
                       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm đánh giá: Mã : ${data.key}, Tên : ${data.tenthanhphan}, Mô tả (gợi ý) : ${data.mota} , Các chuẩn đầu ra được đánh giá : ${data.standardOutput}, Tỉ lệ : ${data.tile}`, this.props.logReducer.contentTab, this.props.monhoc)
-                      
+
                       this.props.onAddDGData(dataReturn);
                       message.info("Thêm thành công!");
                       isAdd2Rows = false;
@@ -222,7 +218,7 @@ class DGFormItem extends Component {
                       this.props.form.resetFields();
                     }
               }
-              
+
             }
           }
 
@@ -362,7 +358,10 @@ class DGFormItem extends Component {
               }],
               initialValue: this.props.itemLayout7Reducer.tempInfo.tile
             })(
-              <Input onChange={this.handleTileChange} type="number"/>
+              <InputNumber onChange={this.handleTileChange} min={1}
+                max={100}
+                formatter={value => `${value}%`}
+                parser={value => value.replace('%', '')} />
             )}
 
           </Form.Item>
@@ -371,8 +370,8 @@ class DGFormItem extends Component {
             xs: { span: 24, offset: 0 },
             sm: { span: 16, offset: 8 },
           }}>
-            <div style={{marginLeft:"15%"}}>
-              <Button type="primary" size="large" icon="plus" onClick={this.addDGData}>Thêm</Button>
+            <div style={{ marginLeft: "15%" }}>
+              <Button type="primary" size="large" onClick={this.addDGData}>Thêm</Button>
             </div>
           </Form.Item>
         </Form>
@@ -395,8 +394,8 @@ const mapDispatchToProps = (dispatch) => {
     onSaveTempDGData: saveTempDGData,
     onGetChude: updateChudeDanhGia,
     onGetCDR: updateCDRDanhGia,
-    onSaveLog : saveLog,
-    onSaveReducer : saveLogObject
+    onSaveLog: saveLog,
+    onSaveReducer: saveLogObject
   }, dispatch);
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DGFormItem);

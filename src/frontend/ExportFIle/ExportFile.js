@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import CheckboxGroup from "./CheckboxGroup/CheckboxGroup";
 import { Checkbox, message } from 'antd';
 import $ from './../helpers/services';
+import { saveAs } from 'file-saver';
 
 const plainOptions = [
     'Thông tin chung',
@@ -30,7 +31,6 @@ class ExportFile extends Component {
 
     state = {
         selectedItem: [],
-        loading: -1,
     }
 
     getCdrmdhd = (state, id) => {
@@ -65,6 +65,15 @@ class ExportFile extends Component {
         }
     }
 
+    getUnique(arr, comp) {
+        const unique = arr
+             .map(e => e[comp])
+          .map((e, i, final) => final.indexOf(e) === i && i)
+      
+          .filter(e => arr[e]).map(e => arr[e]);
+         return unique;
+      }
+
     getData3 = (monhoc) => {
         try {
             let self = this;
@@ -80,9 +89,8 @@ class ExportFile extends Component {
                 if (res.data.length > 0) {
                     res.data.forEach(element => {
                         res.data.forEach(element2 => {
-                            if (element2.muc_tieu === element.muc_tieu) {
+                            if (element2.muc_tieu === element.muc_tieu && element2.KeyRow.length === 6) {
                                 element2.KeyRow = element2.KeyRow.slice(0, element2.KeyRow.length - 1)
-                                element2.KeyRow = element2.KeyRow.replace(/-/g, ".")
                                 standActs.push(element2.KeyRow)
                             }
                         });
@@ -94,11 +102,12 @@ class ExportFile extends Component {
                             del_flag: element.del_flag,
                             id: element.id,
                         }
+                        standActs = []
                         saveData.push(newObj);
                     });
                 }
                 saveData = saveData.filter((item) => item.del_flag === 0);
-                data3 = saveData;
+                data3 = this.getUnique(saveData, "objectName")
             })
         } catch (e) {
             console.log("tab3 error : " + e);
@@ -106,6 +115,7 @@ class ExportFile extends Component {
     }
 
     getData4 = (monhoc, id_ctdt) => {
+        
         let self = this;
         try {
             $.collectData4({ data: { thong_tin_chung_id: monhoc, idCtdt: id_ctdt } })
@@ -115,7 +125,8 @@ class ExportFile extends Component {
                         let data = {
                             key: (i + 1).toString(),
                             cdr: response.data[i].chuan_dau_ra,
-                            level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
+                            level_verb :    [cdrmdhd.muc_do_1,"level " + cdrmdhd.muc_do_2],
+                            //level_verb: [cdrmdhd.muc_do_1, cdrmdhd.muc_do_2.toString(), cdrmdhd.muc_do_3],
                             description: response.data[i].mo_ta,
                             levels: response.data[i].muc_do.split(","),
                             id: response.data[i].id,
@@ -162,111 +173,147 @@ class ExportFile extends Component {
         }
     }
 
-    getData7 = (monhoc) => {
+    getData7 = (monhoc, id_ctdt) => {
         try {
             $.getChuDe()
                 .then(function (response) {
                     let chude = response.data;
 
-                    var listDG = [];
-                    var listCDRDG = [];
-                    var listCDR = [];
-                    var result = [];
-
-                    $.getDanhGia(monhoc).then(response => {
-                        if (response === null || response.data === null || response.data === undefined || response.data.length === 0) return;
-                        let listStringId = '';
-                        listDG = response.data;
-                        response.data.forEach(item => {
-                            if (listStringId === '') {
-                                listStringId += item.id
-                            } else {
-                                listStringId = listStringId + ',' + item.id;
+                    $.getData7(monhoc, id_ctdt).then(res => {
+                        var result = res.data;
+                        
+                        var previewInfo = [];
+                        for (let i = 0; i < chude.length; i++) {
+                          let haveFather = false;
+                          for (let j = 0; j < result.length; j++) {
+                            let str = result[j].mathanhphan.substring(0, chude[i].ma_chu_de.length);
+                  
+                            if (str === chude[i].ma_chu_de) {
+                              if (!haveFather) {
+                                haveFather = true;
+                                let dataFather = {
+                                  id: 0,
+                                  key: chude[i].ma_chu_de,
+                                  chude: chude[i].id,
+                                  standardOutput: [],
+                                  mathanhphan: chude[i].ma_chu_de,
+                                  tenthanhphan: chude[i].ten_chu_de,
+                                  mota: '',
+                                  tile: '',
+                                  del_flag: 0,
+                                };
+                                let data = {
+                                  id: result[j].id,
+                                  key: result[j].mathanhphan,
+                                  chude: chude[i].id,
+                                  standardOutput: result[j].standardOutput,
+                                  mathanhphan: "\xa0\xa0\xa0" + result[j].mathanhphan,
+                                  tenthanhphan: result[j].tenthanhphan,
+                                  mota: result[j].mota,
+                                  tile: result[j].tile + "%",
+                                  del_flag: result[j].del_flag,
+                                }
+                                previewInfo = previewInfo.concat(dataFather);
+                                previewInfo = previewInfo.concat(data);
+                              } else {
+                                let data = {
+                                  id: result[j].id,
+                                  key: result[j].mathanhphan,
+                                  chude: chude[i].id,
+                                  standardOutput: result[j].standardOutput,
+                                  mathanhphan: "\xa0\xa0\xa0" + result[j].mathanhphan,
+                                  tenthanhphan: result[j].tenthanhphan,
+                                  mota: result[j].mota,
+                                  tile: result[j].tile + "%",
+                                  del_flag: result[j].del_flag,
+                                }
+                                previewInfo = previewInfo.concat(data);
+                              }
+                  
                             }
-                        })
-
-                        $.getCDRDanhgia({ data: listStringId }).then(response2 => {
-                            if (response2 === null || response2.data === null || response2.data === undefined || response2.data.length === 0) return;
-                            listCDRDG = response2.data
-                            let listCDRDGString = '';
-                            listCDRDG.forEach(item => {
-                                if (listCDRDGString === '') {
-                                    listCDRDGString += item.chuan_dau_ra_mon_hoc_id;
-                                } else {
-                                    listCDRDGString = listCDRDGString + ',' + item.chuan_dau_ra_mon_hoc_id;
+                          }
+                        }
+                  
+                        if (previewInfo === undefined || previewInfo.length === 0) return [];
+    
+                        // cắt khoảng trắng trước các mã thành phần 
+                        for (let i = 0; i < previewInfo.length; i++) {
+                            let flag = false;
+                            for (let j = 0; j < chude.length; j++) {
+                                if (previewInfo[i].mathanhphan === chude[j].ma_chu_de)
+                                  flag =  true;
+                              }
+                          if (!flag && previewInfo[i].mathanhphan[0] === '\xa0') {
+                            previewInfo[i].mathanhphan = previewInfo[i].mathanhphan.slice(3, previewInfo[i].mathanhphan.length);
+                          }
+                        }
+                    
+                        //sort Value theo thứ tự
+                        for (let i = 0; i < previewInfo.length - 1; i++) {
+                          for (let j = i + 1; j < previewInfo.length; j++) {
+                            if (previewInfo[j].mathanhphan < previewInfo[i].mathanhphan) {
+                              let temp = previewInfo[j];
+                              previewInfo[j] = previewInfo[i];
+                              previewInfo[i] = temp;
+                            }
+                          }
+                        }
+                    
+                    
+                        //find vị trí các parent
+                        let index = [];
+                        for (let i = 0; i < previewInfo.length; i++) {
+                            for (let j = 0; j < chude.length; j++) {
+                                if (previewInfo[i].mathanhphan === chude[j].ma_chu_de){
+                                    index.push(i);
                                 }
-                            })
-                            $.getCDR_7({ data: listCDRDGString }).then(response3 => {
-                                if (response3 === null || response3.data === null || response3.data === undefined || response3.data.length === 0) return;
-                                listCDR = response3.data;
-                                for (let i = 0; i < listDG.length; i++) {
+                            }
+                        }
+                    
+                        //nếu chỉ có 1 parent
+                        if (index.length === 1) {
+                    
+                          let totalTile = 0;
+                          for (let j = 1; j < previewInfo.length; j++) {
+                            let newTile = previewInfo[j].tile;
+                            totalTile += parseFloat(newTile);
+                          }
+                    
+                          previewInfo[index[0]].tile = totalTile + "%";
+                        }
+                        //nếu có nhiều parent 
+                        else {
+                          for (let i = 0; i < index.length - 1; i++) {
+                            let totalTile = 0;
+                            for (let j = index[i] + 1; j < index[i + 1]; j++) {
+                              let newTile = previewInfo[j].tile;
+                              totalTile += parseFloat(newTile);
+                            }
+                            previewInfo[index[i]].tile = totalTile + "%";
+                          }
+                          let totalTile = 0;
+                          for (let i = index[index.length - 1] + 1; i < previewInfo.length; i++) {
+                            let newTile = previewInfo[i].tile;
+                            totalTile += parseFloat(newTile);
+                          }
+                    
+                          previewInfo[index[index.length - 1]].tile = totalTile + "%";
+                        }
+                        
+                        for (let i = 0; i < previewInfo.length; i++) {
+                            let flag = false;
+                            for (let j = 0; j < chude.length; j++) {
+                                if (previewInfo[i].mathanhphan === chude[j].ma_chu_de)
+                                  flag =  true;
+                              }
+                              if (!flag) {
+                                previewInfo[i].mathanhphan = '\xa0\xa0\xa0' + previewInfo[i].mathanhphan;
+                              }
+                        }
+                        
 
-                                    let cdrResponse = [];
-                                    for (let j = 0; j < listCDRDG.length; j++) {
-
-                                        if (listDG[i].id === listCDRDG[j].danh_gia_id) {
-
-                                            for (let k = 0; k < listCDR.length; k++) {
-                                                if (listCDRDG[j].chuan_dau_ra_mon_hoc_id === listCDR[k].id) {
-
-                                                    cdrResponse.push(listCDR[k].chuan_dau_ra);
-                                                }
-                                            }
-                                        }
-                                    }
-                                    result.push({ danhgia: listDG[i], chuandaura: cdrResponse });
-                                }
-                                var previewInfo = [];
-                                for (let i = 0; i < chude.length; i++) {
-                                    let haveFather = false;
-                                    for (let j = 0; j < result.length; j++) {
-                                        let str = result[j].danhgia.ma.substring(0, chude[i].ma_chu_de.length);
-
-                                        if (str === chude[i].ma_chu_de) {
-                                            if (!haveFather) {
-                                                haveFather = true;
-                                                let dataFather = {
-
-                                                    key: chude[i].ma_chu_de,
-                                                    chude: chude[i].id,
-                                                    standardOutput: [],
-                                                    mathanhphan: chude[i].ma_chu_de,
-                                                    tenthanhphan: chude[i].ten_chu_de,
-                                                    mota: '',
-                                                    tile: '',
-                                                };
-                                                let data = {
-                                                    key: result[j].danhgia.ma,
-                                                    chude: chude[i].id,
-                                                    standardOutput: result[j].chuandaura,
-                                                    mathanhphan: "\xa0\xa0\xa0" + result[j].danhgia.ma,
-                                                    tenthanhphan: result[j].danhgia.ten,
-                                                    mota: result[j].danhgia.mo_ta,
-                                                    tile: result[j].danhgia.ti_le + "%",
-                                                }
-                                                previewInfo = previewInfo.concat(dataFather);
-                                                previewInfo = previewInfo.concat(data);
-                                            } else {
-                                                let data = {
-                                                    key: result[j].danhgia.ma,
-                                                    chude: chude[i].id,
-                                                    standardOutput: result[j].chuandaura,
-                                                    mathanhphan: "\xa0\xa0\xa0" + result[j].danhgia.ma,
-                                                    tenthanhphan: result[j].danhgia.ten,
-                                                    mota: result[j].danhgia.mo_ta,
-                                                    tile: result[j].danhgia.ti_le + "%",
-                                                }
-                                                previewInfo = previewInfo.concat(data);
-                                            }
-
-                                        }
-                                    }
-                                }
-                                data7 = previewInfo;
-                            })
-                        })
-
-                    })
+                        data7 = previewInfo;
+                      })
                 })
         } catch (e) {
             console.log("tab7 error : " + e);
@@ -343,19 +390,32 @@ class ExportFile extends Component {
         this.getData4(monhoc, id_ctdt);
         this.getData5(monhoc,id_ctdt);
         this.getData6(monhoc, id_ctdt);
-        this.getData7(monhoc);
+        this.getData7(monhoc, id_ctdt);
         this.getData8(monhoc);
         this.getData9(monhoc);
     }
 
-    componentWillMount() {
+    clear = () => {
+        data1 = [];
+        data2 = [];
+        data3 = [];
+        data4 = [];
+        data5 = [];
+        data6 = [];
+        data7 = [];
+        data8 = [];
+        data9 = [];
+    }
+
+    componentDidMount() {
+        this.clear();
         this.loadData(this.props.monhoc,this.props.id_ctdt);
         
         plainOptions.forEach((v, i) => {
             this.setState({ [v]: false });
         });
     }
-
+ 
     returnReducer = (pos) => {
         switch (pos) {
             case 1: {
@@ -423,16 +483,14 @@ class ExportFile extends Component {
         let self = this;
 
         this.addDataMap(function (obj) {
-            self.setState({ loading: 0 });
 
             let data = {
                 content: JSON.stringify(obj),
                 nameFile: self.props.tenmonhoc,
             }
             $.exportFile(JSON.stringify(data)).then(res => {
-                if (res.data == 1) {
-                    self.setState({ loading: 1 });
-                }
+                const pdfBlob = new Blob([res.data], { type: 'application/pdf' });
+                saveAs(pdfBlob, data.nameFile + '.pdf')
             })
         })
     }
@@ -486,7 +544,7 @@ class ExportFile extends Component {
                     <div className="export-css">
                         <button onClick={this.export} type="button" class="btn btn-success">Xuất file PDF</button>
                         <br /><br /><br />
-                        <Loader loading={this.state.loading} />
+                        
                     </div>
                 </div>
             </React.Fragment>

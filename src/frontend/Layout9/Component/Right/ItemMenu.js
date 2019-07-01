@@ -20,7 +20,7 @@ class ItemMenu extends Component {
       content: content,
       del_flag:0,
     };
-    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
     this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm quy định chung: ${rule.content}`, this.props.logReducer.contentTab, this.props.monhoc)
     
     this.props.onAddItemRule(JSON.stringify(rule));
@@ -87,7 +87,6 @@ class ItemMenu extends Component {
                 style={{ marginLeft: "15%" }}
               >
                 Thêm
-                <Icon type="plus" />
               </Button>
               <br />
             </div>

@@ -18,7 +18,6 @@ class MenuMota extends Component {
     }
 
     componentDidMount() {
-        console.log(this.props.logReducer)
     }
 
     render() {
@@ -102,8 +101,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveTemp: (description) => {
             dispatch({ type: SAVE_TEMP_DATA_LAYOUT_2, description })
         },
-        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
+        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt) => {
+            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt })
         },
         saveReducer: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
             dispatch({ type: SAVE_LOG_OBJECT, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })

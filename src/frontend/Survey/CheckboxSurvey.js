@@ -5,12 +5,12 @@ import { connect } from 'react-redux';
 import { CHANGE_VALUE_ITU_SURVEY } from '../Constant/ActionType';
 
 const levelsOptions = ["I", "T", "U"];
-let myMap = new Map();
 
 class CheckboxSurvey extends Component {
     onChange = (value, key) => {
-        myMap.set(key, value);
-        this.props.changeValueITU();
+        if (key !== undefined && value !== undefined) {
+            this.props.changeValueITU(key, value);
+        }
     }
 
     render() {
@@ -58,8 +58,8 @@ const mapStateToProps = (state, ownProps) => {
 
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        changeValueITU: () => {
-            dispatch({ type: CHANGE_VALUE_ITU_SURVEY, data: myMap })
+        changeValueITU: (key, value) => {
+            dispatch({ type: CHANGE_VALUE_ITU_SURVEY, key, value })
         }
     }
 }

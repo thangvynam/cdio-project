@@ -72,25 +72,11 @@ class LogForm extends Component {
 
     }
 
-    async componentDidMount(nextProps) {
-        let count = this.state.count;
-        if (count <= 0) {
-            this.setState({ contentTab: this.props.tab, count: count + 1 }, () => console.log(this.state.contentTab))
-            let data = await this.getData(this.props.tab);
-            this.props.saveLoad(data, this.props.tab, this.props.monhoc);
-            // this.setState({ contentTab: this.props.tab, count: count + 1 }, () => console.log(this.state.contentTab))
-            // let data = await this.getData(nextProps.logReducer.contentTab);
-            // this.props.saveLoad(data, nextProps.logReducer.contentTab, this.props.monhoc);
-        }
-
-    }
-
-
-
     async getData(contentTab) {
         let data = {
             subjectid: this.props.monhoc,
-            contentTab: contentTab
+            contentTab: contentTab,
+            id_ctdt: this.props.id_ctdt
         }
 
         return $.getLog({ data }).then(res => {
@@ -245,7 +231,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             
             $.addComment({ data: obj })
                 .then(res => {
-                    console.log(res)
                 })
 
             dispatch({ type: SAVE_COMMENT, obj: obj });
@@ -264,7 +249,6 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                                 content: obj.noi_dung,
                                 thoi_gian: obj.thoi_gian,
                             }
-                            console.log(sample)
                             dispatch({ type: SAVE_COMMENT, obj: sample });
                         }
                     }

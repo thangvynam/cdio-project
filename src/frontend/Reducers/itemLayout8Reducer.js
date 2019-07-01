@@ -69,7 +69,8 @@ const itemLayout8Reducer = (state = addTNDataState, action) => {
                     timestamp: action.timestamp,
                     noi_dung: action.noi_dung,
                     muc_de_cuong: action.muc_de_cuong,
-                    thong_tin_chung_id: action.thong_tin_chung_id
+                    thong_tin_chung_id: action.thong_tin_chung_id,
+                    id_ctdt : action.ctdt,
                 }
                 return {
                     ...state,

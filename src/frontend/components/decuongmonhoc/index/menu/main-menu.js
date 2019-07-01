@@ -98,7 +98,12 @@ class MenuLeft extends Component {
     >
       <Link style={{ paddingLeft: `${paddingLeft}` }} to={link}>
         <Icon type={`${icon}`} />
-        <span>{span}</span>
+        <span>{span + "     "}</span>
+        {
+          key === "review-subject" && this.props.teacherReviewSubject.length > 0 ? 
+          <Badge count={this.props.teacherReviewSubject.length} style={{ backgroundColor: '#52c41a'}}/>
+          : null
+        }
       </Link>
     </Menu.Item>)
   }
@@ -197,13 +202,14 @@ class MenuLeft extends Component {
                     if (this.props.dataCtdt !== undefined && this.props.dataCtdt !== null) {
                       if (this.props.content_action === this.props.menuItem[key].children[item].id) {
                         for (let j = 0; j < this.props.dataCtdt.length; j++) {
-                          if (this.checkChuNhiem(this.props.menuItem[key].children[item].role)) {
-                            menuItemsCollapse.push(this.menuItem(this.props.dataCtdt[j].Id,
-                              `/${this.props.parentitem[i].id}/${this.props.ctdt[ctdtIndex].Id}/${key}/${this.props.menuItem[key].children[item].id}/${this.props.dataCtdt[j].Id}`,
-                              this.props.dataCtdt[j].NameBlock,
-                              "block", "40px"));
-                          }
-                          else if (this.checkBienSoan(this.props.menuItem[key].children[item].role)) {
+                          // if (this.checkChuNhiem(this.props.menuItem[key].children[item].role)) {
+                          //   menuItemsCollapse.push(this.menuItem(this.props.dataCtdt[j].Id,
+                          //     `/${this.props.parentitem[i].id}/${this.props.ctdt[ctdtIndex].Id}/${key}/${this.props.menuItem[key].children[item].id}/${this.props.dataCtdt[j].Id}`,
+                          //     this.props.dataCtdt[j].NameBlock,
+                          //     "block", "40px"));
+                          // }
+                          // else 
+                          if (this.checkBienSoan(this.props.menuItem[key].children[item].role)) {
                             if (this.checkTeachBlock(this.props.dataCtdt[j])) {
                               menuItemsCollapse.push(this.menuItem(this.props.dataCtdt[j].Id,
                                 `/${this.props.parentitem[i].id}/${this.props.ctdt[ctdtIndex].Id}/${key}/${this.props.menuItem[key].children[item].id}/${this.props.dataCtdt[j].Id}`,

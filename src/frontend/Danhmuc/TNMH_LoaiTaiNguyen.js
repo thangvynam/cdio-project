@@ -111,7 +111,7 @@ class TNMH_LoaiTaiNguyen extends Component {
                               onClick={() => this.save(form, record.key)}
                               style={{ marginRight: 8 }}
                             >
-                              Save
+                              Lưu
                             </a>
                           )}
                         </EditableContext.Consumer>
@@ -119,7 +119,7 @@ class TNMH_LoaiTaiNguyen extends Component {
                           title="Hủy bỏ?"
                           onConfirm={() => this.cancel(record.key)}
                         >
-                          <a href="#a">Cancel</a>
+                          <a href="#a">Hủy</a>
                         </Popconfirm>
                       </span>
                     ) : (
@@ -186,9 +186,11 @@ class TNMH_LoaiTaiNguyen extends Component {
 
       
       handleDelete = (key) => {
-       $.deleteLoaitainguyenFromTainguyen({ data: [key]}).then(
+       $.deleteLoaitainguyenFromTainguyen({ data: [key]})
+       .then(
           res => {
-           $.deleteTainguyen({ data: [key]}).then(
+           $.deleteTainguyen({ data: [key]})
+           .then(
                 res => {
                    $.deleteLoaitainguyen({ data: [key]}).then(
                         res => {
@@ -196,11 +198,12 @@ class TNMH_LoaiTaiNguyen extends Component {
                           this.setState({editstate: ''});
                           this.setState({selecteditem: []});
                           openNotificationWithIcon('success');
-                        });
+                        }); 
                 })
-          });
+          
         
-      }
+      })
+    }
 
       handleOk = () => {
        $.deleteLoaitainguyenFromTainguyen({ data: this.state.selecteditem}).then(

@@ -24,14 +24,14 @@ class ReviewSyllabus extends Component {
         return (
             <div>
                 <ThongTinChung isReview={true} idMH={this.props.idMH} />
-                <Layout2 isReview={true} monhoc={this.props.idMH} />
+                <Layout2 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
                 <Layout3 isReview={true} monhoc={this.props.idMH} id_ctdt={this.props.ctdt}/>
                 <Layout4 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
-                <Layout5 isReview={true} monhoc={this.props.idMH} />
-                <Layout6 isReview={true} monhoc={this.props.idMH} />
-                <Layout7 isReview={true} monhoc={this.props.idMH} />
-                <Layout8 isReview={true} monhoc={this.props.idMH} />
-                <Layout9 isReview={true} monhoc={this.props.idMH} />
+                <Layout5 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
+                <Layout6 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
+                <Layout7 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
+                <Layout8 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
+                <Layout9 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
             </div>)
     }
 }

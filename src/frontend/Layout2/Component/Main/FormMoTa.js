@@ -30,6 +30,7 @@ class FormMoTa extends Component {
                             prevStep={this.prevStep}
                             step={step}
                             monhoc={this.props.monhoc}
+                            id_ctdt={this.props.id_ctdt}
                             />
         }
     }

@@ -17,7 +17,6 @@ import * as detailOutcomeStandardAction from "../actions/detailOutcomeStandardAc
 
 import * as eduProgramsAction from "../actions/eduProgramsAction";
 import * as detailEduProgramAction from "../actions/detailEduProgramAction";
-import * as knowledgeTableAction from "../actions/_knowledgeTableAction";
 
 import { connect } from "react-redux";
 
@@ -30,7 +29,8 @@ import {
   teacherSubject,
   teacherReviewSubject,
   isLoadEditMatrix,
-  cdrCdio
+  cdrCdio,
+  allSubjectList
 } from "../../Constant/ActionType";
 //END CDIO-2 api
 class DetailEducationProgramTmp extends Component {
@@ -114,13 +114,17 @@ class DetailEducationProgramTmp extends Component {
           }
         }
         dataSubject.sort((a, b) => a.IdSubject - b.IdSubject);
+        dataSubject = dataSubject.filter(item =>
+          item.del_flat != 1
+        );
+        this.props.updateAllSubjectList(dataSubject);
 
         $.getTeacherSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id })
           .then(res => {
             if (res.data !== undefined && res.data !== null) {
               this.props.updateTeacherSubject(res.data);
             }
-            $.getTeacherReviewSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id })
+            $.getTeacherReviewSubject({ idUser: JSON.parse(localStorage.getItem('user')).data.Id, idCtdt: id })
               .then(res => {
                 if (res.data !== undefined && res.data !== null) {
                   this.props.updateTeacherReviewSubject(res.data);
@@ -208,9 +212,6 @@ class DetailEducationProgramTmp extends Component {
               contentNodes={this.props.contentNodes}
               scheduleNodes={this.props.scheduleNodes}
               targetNodes={this.props.targetNodes}
-              knowledgeTables={this.props.knowledgeTables}
-              onLoadKnowledgeTable={this.props.onLoadKnowledgeTable}
-              contentList={this.props.contentList}
               ctdt={this.props.ctdt}
               onExportFilePDF={this.props.onExportFilePDF}
             />{" "}
@@ -236,8 +237,6 @@ const mapStateToProps = state => ({
   targetNodes: state.targetNodes,
   teacherSubject: state.datactdt.teacherSubject,
   teacherReviewSubject: state.datactdt.teacherReviewSubject,
-  knowledgeTables: state.knowledgeTables,
-  contentList: state.contentList
 });
 
 export default connect(mapStateToProps, {
@@ -251,7 +250,6 @@ export default connect(mapStateToProps, {
   onSaveEduProgram: eduProgramsAction.onSaveEduProgram,
   onLoadEduProgram: eduProgramsAction.onLoadEduProgram,
   onLoadDetailEduProgram: detailEduProgramAction.onLoadDetailEduProgram,
-  onLoadKnowledgeTable: knowledgeTableAction.onLoadKnowledgeTable,
   onExportFilePDF: eduProgramsAction.onExportFilePDF,
   //cdio-2
   updateSubjectList: subjectList,
@@ -261,4 +259,5 @@ export default connect(mapStateToProps, {
   updateTeacherReviewSubject: teacherReviewSubject,
   updateIsLoadEditMatrix: isLoadEditMatrix,
   updateCdrCdio: cdrCdio,
+  updateAllSubjectList: allSubjectList
 })(DetailEducationProgramTmp);

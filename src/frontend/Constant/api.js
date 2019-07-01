@@ -23,6 +23,7 @@ export default{
     ADD_TEACHER_REVIEW: baseUrl + '/add-teacher-review',
     GET_TEACHER_SUBJECT: baseUrl + '/get-teacher-subject',
     GET_TEACHER_REVIEW_SUBJECT: baseUrl + '/get-teacher-review-subject',
+    GET_REVIEW_LIST: baseUrl + '/get-review-list',
     //Subject
     COLLECT_SUBJECT_LIST: baseUrl + '/collect-subjectlist',
     GET_BLOCK_SUBJECT: baseUrl + '/eduprogcontent/getBlockSubjects?id=',
@@ -44,6 +45,8 @@ export default{
     GET_DATA_3: baseUrl + '/get-data-3',
     GET_DATA_6: baseUrl + '/get-data-6',
     GET_DATA_9: baseUrl + '/get-data-9',
+    GET_DATA_7: baseUrl + '/get-data-7',
+    CHECK_ID: baseUrl + '/checkid',
     //Danh muc
     GET_CHUDE: baseUrl + '/get-chude',
     GET_LOAITAINGUYEN: baseUrl + '/get-loaitainguyen',
@@ -73,7 +76,6 @@ export default{
     GET_EVAL_ACTS_6: baseUrl + '/get-eval-acts-6',
     GET_STANDARD_OUTPUT_6: baseUrl + '/get-standard-output-6',
     GET_STANDARD_OUTPUT_7: baseUrl + '/get-standardoutput-7',
-    GET_DANH_GIA: baseUrl + '/get-danhgia',
     GET_TAINGUYENMONHOC: baseUrl + '/get-tainguyenmonhoc',
     GET_COMMENT: baseUrl + '/get-comment',
 
@@ -98,15 +100,17 @@ export default{
     GET_LIST_SURVEY : baseUrl + '/get-list-survey',
     UPDATE_STATUS_SURVEY : baseUrl + '/update-status-survey',
     GET_TEACHER_NAME : baseUrl + '/get-teachername',
+    CLOSE_SURVEY : baseUrl + '/close-survey',
+    DELETE_SURVEY : baseUrl + '/delete-survey',
+    
     //tab 69
     ADD_DATA_6:baseUrl + '/add-data-6',
     ADD_DATA_9:baseUrl + '/add-data-9',
+    ADD_TEACHINGACTS_6:baseUrl + '/add-teachingacts-6',
 
     //tab 7,8
     SAVE_DATA_8 : baseUrl + '/save-tainguyenmonhoc',
     SAVE_DATA_7 : baseUrl + '/save-danhgia',
-    GET_CDR_DANHGIA : baseUrl + '/get-cdrdanhgia',
-    GET_CDR_7 : baseUrl + '/get-cdr-7',
 
     //log
     SAVE_LOG:baseUrl + '/save-log',

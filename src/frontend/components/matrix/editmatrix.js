@@ -54,7 +54,7 @@ class EditableCell extends React.Component {
                         required: false,
                         message: `${title} is required.`,
                       }],
-                      initialValue: record[dataIndex].split(","),
+                      initialValue: record[dataIndex] && record[dataIndex].length > 0 ? record[dataIndex].split(",") : [],
                     })(
 
                       <Checkbox.Group
@@ -183,9 +183,15 @@ class EditMatrix extends Component {
   }
 
   onClickEdit = (record, key) => {
-    let levels = record[key].split(",");
-    this.sortLevels(levels);
-    this.setState({ levels: levels });
+    if(record[key] && record[key].length > 0) {
+      let levels = record[key].split(",");
+      this.sortLevels(levels);
+      this.setState({ levels: levels });
+      
+    }
+    else {
+      this.setState({ levels: [] });
+    }
     this.props.updateEditMatrixEditState(record.key + "-" + key)
   }
 
@@ -219,11 +225,15 @@ class EditMatrix extends Component {
     for (let i = 0; i < this.props.editMatrix.length; i++) {
       Object.keys(this.props.editMatrix[i]).map((key, id) => {
 
-        if (Object.keys(this.props.editMatrix[i])[id] !== "key" && Object.keys(this.props.editMatrix[i])[id] !== "hocky"
-          && Object.keys(this.props.editMatrix[i])[id] !== "hocphan" && Object.keys(this.props.editMatrix[i])[id] !== "gvtruongnhom") {
-          let cdr_cdio_id = this.getCdrCdioId(this.props.cdrCdio, Object.keys(this.props.editMatrix[i])[id]);
+        if (key !== "key" && key !== "hocky"
+          && key !== "hocphan" && key !== "gvtruongnhom") {
+          let cdr_cdio_id = this.getCdrCdioId(this.props.cdrCdio, key);
           let matrixId = this.getMatrixId(this.state.tempMatrix, this.props.editMatrix[i].key, cdr_cdio_id);
-          data.push({ id: matrixId, muc_do: this.props.editMatrix[i][Object.keys(this.props.editMatrix[i])[id]] });
+          if(this.props.editMatrix[i][key] !== this.state.tempMatrix.find(item => item.chuan_dau_ra_cdio_id === cdr_cdio_id  && item.thong_tin_chung_id === this.props.editMatrix[i]["key"]).muc_do) {
+            data.push({ id: matrixId, muc_do: this.props.editMatrix[i][key] });
+          }
+          
+          
         }
 
       })
@@ -284,8 +294,7 @@ class EditMatrix extends Component {
 
   componentDidMount() {
 
-    if (this.props.subjectList.length > 0 && this.props.isLoadEditMatrix === "false") {
-      this.props.updateIsLoadEditMatrix("true");
+    if (this.props.allSubjectList.length > 0) {
       this.setState({ isLoading: true });
       $.getCDR_CDIO(this.props.ctdt).then((res) => {
 
@@ -293,7 +302,7 @@ class EditMatrix extends Component {
       })
 
       let subjectListId = [];
-      this.props.subjectList.map(item => {
+      this.props.allSubjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
@@ -313,7 +322,7 @@ class EditMatrix extends Component {
               }
             }
             else {
-              let subjectName = this.getSubjectName(this.props.subjectList, res.data[i].thong_tin_chung_id);
+              let subjectName = this.getSubjectName(this.props.allSubjectList, res.data[i].thong_tin_chung_id);
               let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (subjectName !== "" && cdr_cdio !== "") {
                 data.push({
@@ -338,7 +347,7 @@ class EditMatrix extends Component {
 
   componentWillReceiveProps(nextProps) {
 
-    if (nextProps.isLoadEditMatrix === "false" && nextProps.subjectList.length > 0) {
+    if (this.props.isLoadEditMatrix === "false" && nextProps.allSubjectList.length > 0) {
       this.props.updateIsLoadEditMatrix("true");
       this.setState({ isLoading: true });
       $.getCDR_CDIO(this.props.ctdt).then((res) => {
@@ -347,7 +356,7 @@ class EditMatrix extends Component {
       })
 
       let subjectListId = [];
-      nextProps.subjectList.map(item => {
+      nextProps.allSubjectList.map(item => {
         subjectListId.push(item.IdSubject);
       })
       let data = {
@@ -368,7 +377,7 @@ class EditMatrix extends Component {
               }
             }
             else {
-              let subjectName = this.getSubjectName(nextProps.subjectList, res.data[i].thong_tin_chung_id);
+              let subjectName = this.getSubjectName(nextProps.allSubjectList, res.data[i].thong_tin_chung_id);
               let cdr_cdio = this.getCdrCdio(this.props.cdrCdio, res.data[i].chuan_dau_ra_cdio_id);
               if (subjectName !== "" && cdr_cdio !== "") {
                 data.push({
@@ -415,7 +424,6 @@ class EditMatrix extends Component {
   }
 
   render() {
-    console.log(this.props.subjectList.length)
     let isLoading = this.state.isLoading;
     let firstColumnMapped = [];
     if (this.props.cdrCdio.length > 0) {
@@ -530,7 +538,7 @@ class EditMatrix extends Component {
     return (
       <React.Fragment>
         {columns.length > this.columns.length &&
-          this.props.subjectList.length > 0 &&
+          this.props.allSubjectList.length > 0 &&
           <React.Fragment>
             <Prompt
             message='Bạn đã lưu dữ liệu chưa?Rời khỏi?'
@@ -570,6 +578,7 @@ const mapStateToProps = (state) => {
     cdrCdio: state.cdrcdio,
     teacherSubject: state.datactdt.teacherSubject,
     teacherReviewSubject: state.datactdt.teacherReviewSubject,
+    allSubjectList: state.datactdt.allSubjectList
   }
 }
 const mapDispatchToProps = (dispatch) => {

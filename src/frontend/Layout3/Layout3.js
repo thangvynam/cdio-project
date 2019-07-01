@@ -28,7 +28,7 @@ Bloom ở mức độ nhóm. <br />Mỗi mục tiêu môn học được mapping
 
                     <br />
                     <br />
-                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.MUC_TIEU_MON_HOC} tabIndex={3}/>
+                    <LogForm monhoc={this.props.monhoc} tab={MENUITEM.MUC_TIEU_MON_HOC} id_ctdt={this.props.id_ctdt} tabIndex={3}/>
                     <br />
                 </div>
             </React.Fragment>

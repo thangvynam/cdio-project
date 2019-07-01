@@ -151,9 +151,11 @@ export default class DetailEducationProgramCom extends React.Component {
       this.setState({ schoolYear: event.target.value.substr(0, 4) });
     else if (
       event.target.value.length === 0 ||
-      !isNaN(event.target.value[event.target.value.length - 1])
+      !isNaN(event.target.value)
     )
       this.setState({ schoolYear: event.target.value });
+      else
+         this.setState({ schoolYear: "" });
   };
   // end functions for Title
 
@@ -162,9 +164,11 @@ export default class DetailEducationProgramCom extends React.Component {
       this.setState({ EduTime: event.target.value.substr(0, 2) });
     else if (
       event.target.value.length === 0 ||
-      !isNaN(event.target.value[event.target.value.length - 1])
+      !isNaN(event.target.value)
     )
-      this.setState({ EduTime: event.target.value });
+        this.setState({ EduTime: event.target.value });
+      else
+         this.setState({ EduTime: "" });
   };
 
   handleEduWeightChange = event => {
@@ -172,9 +176,11 @@ export default class DetailEducationProgramCom extends React.Component {
       this.setState({ EduWeight: event.target.value.substr(0, 4) });
     else if (
       event.target.value.length === 0 ||
-      !isNaN(event.target.value[event.target.value.length - 1])
+      !isNaN(event.target.value)
     )
-      this.setState({ EduWeight: event.target.value });
+        this.setState({ EduWeight: event.target.value });
+      else
+         this.setState({ EduWeight: "" });
   };
 
   // functions for detailEduProgram
@@ -222,7 +228,7 @@ export default class DetailEducationProgramCom extends React.Component {
   // fuctions for redux
   onSave = () => {
     this.setState({ isSaveBtnDisabled: true });
-    setTimeout(() => this.setState({ isSaveBtnDisabled: false }), 3000);
+    setTimeout(() => this.setState({ isSaveBtnDisabled: false }), 5000);
 
     const infoEduProgram = event.onSaveInfo(this.props, this.state);
     const detailEduProgram = event.onSaveDetail(this.props, this.state);
@@ -457,7 +463,6 @@ export default class DetailEducationProgramCom extends React.Component {
                 <ContentProgramCom
                   ref={this.ContentProgramCom}
                   subjects={this.props.subjects}
-                  onSaveEduProgram={this.onSave}
                 />
               </AccordionTab>
 

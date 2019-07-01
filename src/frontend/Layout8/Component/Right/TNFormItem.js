@@ -71,7 +71,7 @@ class TNFormItem extends Component {
         let newData = {};
         newData = this.props.itemLayout8Reducer.previewInfo.concat(data);
 
-        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.monhoc)
+        this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
         this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm tài nguyên môn học: Loại : ${data.loai}, Mô tả : ${data.mota}, Link liên kết : ${data.link}`, this.props.logReducer.contentTab, this.props.monhoc)
         
         this.props.onAddTNData(newData);
@@ -170,7 +170,7 @@ class TNFormItem extends Component {
             sm: { span: 16, offset: 8 },
           }}>
             <div style={{marginLeft:"15%"}}>
-              <Button type="primary" size="large" icon="plus" onClick={this.addTNData}>Thêm</Button>
+              <Button type="primary" size="large" onClick={this.addTNData}>Thêm</Button>
             </div>
           </Form.Item>
         </Form>

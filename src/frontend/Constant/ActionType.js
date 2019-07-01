@@ -52,7 +52,8 @@ export const ISLOAD_EDIT_MATRIX = 'ISLOAD_EDIT_MATRIX';
 export const CDR_CDIO = 'CDR_CDIO';
 export const TEACHER_SUBJECT = 'TEACHER_SUBJECT';
 export const TEACHER_REVIEW_SUBJECT = 'TEACHER_REVIEW_SUBJECT';
-
+export const PHAN_CONG = 'PHAN_CONG';
+export const ALL_SUBJECT_LIST = 'ALL_SUBJECT_LIST';
 //layout 6
 export const ADD_ITEM_KHGDTH = 'ADD_ITEM_KHGDTH';
 export const UPDATE_KHGDTH = 'UPDATE_KHGDTH';
@@ -106,18 +107,20 @@ export const SAVE_COMMENT = "SAVE_COMMENT";
 
 // Survey
 export const CHANGE_VALUE_ITU_SURVEY = "CHANGE_VALUE_ITU_SURVEY";
+export const CHANGE_VALUE_ITU_SURVEY2 = "CHANGE_VALUE_ITU_SURVEY2";
 export const CHANGE_VALUE_DESCRIPTION_SURVEY = "CHANGE_VALUE_DESCRIPTION_SURVEY";
 export const UPDATE_LIST_SURVEY = "UPDATE_LIST_SURVEY";
 export const UPDATE_ID_SURVEY = "UPDATE_ID_SURVEY"
 
-export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) {
-    return {
+export function saveLog(ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id,ctdt) {
+    return {    
         type: SAVE_LOG,
         ten: ten,
         timestamp: timestamp,
         noi_dung: noi_dung,
         muc_de_cuong: muc_de_cuong,
-        thong_tin_chung_id: thong_tin_chung_id
+        thong_tin_chung_id: thong_tin_chung_id,
+        ctdt : ctdt,
     };
 }
 
@@ -265,6 +268,13 @@ export function teacherSubject(newTeacherSubject) {
     };
 }
 
+export function allSubjectList(newData) {
+    return {
+        type: ALL_SUBJECT_LIST,
+        data: newData
+    };
+}
+
 export function teacherReviewSubject(newTeacherReviewSubject) {
     return {
         type: TEACHER_REVIEW_SUBJECT,
@@ -305,6 +315,13 @@ export function isLoadEditMatrix(newIsLoadEditMatrix) {
     return {
         type: ISLOAD_EDIT_MATRIX,
         isloadeditmatrix: newIsLoadEditMatrix
+    };
+}
+
+export function phancong(newData) {
+    return {
+        type: PHAN_CONG,
+        data: newData
     };
 }
 

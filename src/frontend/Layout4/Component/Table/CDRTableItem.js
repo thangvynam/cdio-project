@@ -240,7 +240,7 @@ class CDRTableItem extends Component {
         </span>
       ),
     }, {
-      title: 'Action',
+      title: 'Thao tác',
       key: 'action',
       render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
@@ -255,7 +255,7 @@ class CDRTableItem extends Component {
                       onClick={() => this.save(form, record.key)}
                       style={{ marginRight: 8 }}
                     >
-                      Save
+                      Lưu
                       </a>
                   )}
                 </EditableContext.Consumer>
@@ -263,7 +263,7 @@ class CDRTableItem extends Component {
                   title="Hủy bỏ?"
                   onConfirm={() => this.cancel(record.key)}
                 >
-                  <a href="#a">Cancel</a>
+                  <a href="#a">Hủy</a>
                 </Popconfirm>
               </span>
             ) : (
@@ -672,8 +672,9 @@ class CDRTableItem extends Component {
     if (this.props.isLoad === "false") {
       this.props.updateIsLoad("true");
       this.loadTable();
-      if (!this.props.isReview) this.loadGap();
+      
     }
+    if (!this.props.isReview) this.loadGap();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -698,7 +699,7 @@ class CDRTableItem extends Component {
   OnDelete = (cdrtable, key) => {
     let deleteData = cdrtable.previewInfo[key - 1]
 
-    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.ctdt)
     this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
 
@@ -745,7 +746,7 @@ class CDRTableItem extends Component {
     for (let i = 0; i < cdrselecteditem.length; i++) {
       let deleteData = cdrtable.previewInfo[cdrselecteditem[i] - 1];
 
-      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${deleteData.cdr}, Mức độ đạt được : ${deleteData.level_verb}, Mô tả : ${deleteData.description}, Mức độ (I/T/U) : ${deleteData.levels}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
 
@@ -839,7 +840,7 @@ class CDRTableItem extends Component {
 
       let message = `Chỉnh sửa chuẩn đầu ra môn học: [Chuẩn đầu ra : ${dataTemp.cdr}, Mức độ đạt được : ${dataTemp.level_verb}, Mô tả : ${dataTemp.description}, Mức độ (I/T/U) : ${dataTemp.levels}]` +
         `-> [Chuẩn đầu ra : ${row.cdr}, Mức độ đạt được : ${row.level_verb}, Mô tả : ${row.description}, Mức độ (I/T/U) : ${row.levels}]`;
-      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
 
@@ -1022,7 +1023,7 @@ class CDRTableItem extends Component {
             onClick={this.showModal}
             disabled={!hasSelected}
           >
-            Delete
+            Xóa
           </Button>
           <Modal
             title="Cảnh báo"
@@ -1040,7 +1041,7 @@ class CDRTableItem extends Component {
             disabled={this.state.disableSaveAll}
             onClick={this.saveAll}
           >
-            Lưu lại
+            Lưu tất cả
           </Button>
         </div>}
 

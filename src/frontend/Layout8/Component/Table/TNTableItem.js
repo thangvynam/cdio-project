@@ -88,7 +88,7 @@ class TNTableItem extends Component {
       editable: true,
     },
     {
-      title: 'Action',
+      title: 'Thao tác',
       key: 'action',
       render: this.props.isReview === true ? null : (text, record) => {
         const editable = this.isEditing(record);
@@ -137,6 +137,10 @@ class TNTableItem extends Component {
 
   isEditing = record => record.key === this.state.editingKey;
 
+  cancel = () => {
+    this.setState({ editingKey: '' });
+  };
+
   save(form, key) {
     form.validateFields((error, row) => {
       if (error) {
@@ -152,7 +156,7 @@ class TNTableItem extends Component {
       });
       let message = `Chỉnh sửa tài nguyên môn học: [Loại : ${item.loai}, Mô tả : ${item.mota}, Link liên kết : ${item.link}] thành [Loại : ${newItems[key].loai}, Mô tả : ${newItems[key].mota}, Link liên kết : ${newItems[key].link}]`;
 
-      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), message, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.props.onAddTNData(newItems);
@@ -173,7 +177,7 @@ class TNTableItem extends Component {
   handleDelete = (index) => {
     let previewInfo  = this.props.itemLayout8Reducer.previewInfo;
     previewInfo[index].del_flag = 1;
-    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa tài nguyên môn học: Loại : ${previewInfo[index].loai}, Mô tả : ${previewInfo[index].mota}, Link liên kết : ${previewInfo[index].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa tài nguyên môn học: Loại : ${previewInfo[index].loai}, Mô tả : ${previewInfo[index].mota}, Link liên kết : ${previewInfo[index].link}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa tài nguyên môn học: Loại : ${previewInfo[index].loai}, Mô tả : ${previewInfo[index].mota}, Link liên kết : ${previewInfo[index].link}`, this.props.logReducer.contentTab, this.props.monhoc)
    this.props.onAddTNData(previewInfo);
    this.setState({selectedRowKeys: [],editingKey : ""});
@@ -187,7 +191,7 @@ class TNTableItem extends Component {
     for (let i = 0; i < selectedRow.length; i++) {
       newData[selectedRow[i]].del_flag = 1;
 
-      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.monhoc)
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
       this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa tài nguyên môn học: Loại : ${newData[selectedRow[i]].loai}, Mô tả : ${newData[selectedRow[i]].mota}, Link liên kết : ${newData[selectedRow[i]].link}`, this.props.logReducer.contentTab, this.props.monhoc)
     }
 

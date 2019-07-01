@@ -109,7 +109,7 @@ export const filterSubjects = (e, subjects) => {
     const re = new RegExp(e.query.toLowerCase());
     const results = subjects
       ? subjects.filter(item => {
-        return re.test(item.SubjectCode.toLowerCase());
+        return re.test(item.SubjectCode.toLowerCase()+item.SubjectName.toLowerCase());
       })
       : [];
     return results;
@@ -632,3 +632,23 @@ export const findCreditByNameBlock = (node, nameBlock) => {
   }
   return 0;
 };
+
+export const listSubjects = (nodes, arr = []) =>{
+  const length = nodes.length;
+  let node = {};
+  for (let i = 0; i < length; i++) {
+    node = nodes[i];
+    if(node.data.credit){
+      return arr;
+    }
+    if(node.data.isTable){
+      node.data.subjects.map(subject =>{
+        arr.push(subject);
+      })
+    }
+    if (node.children.length) {
+      listSubjects(node.children, arr);
+    }
+  }
+  return arr;
+}

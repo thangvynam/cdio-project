@@ -36,12 +36,9 @@ class ItemMenu extends Component {
     componentDidMount() {
         
         if(!this.props.itemLayout5Reducer.isLoaded) {
-            this.props.updateIssLoad5(true);
-            // if (this.props.itemLayout5Reducer.previewInfo.length == 0) {
-            this.props.refreshData();    
-            this.props.collectDataRequest(this.props.monhoc, this.props.ctdt);
-            // }
-            
+            //this.props.updateIssLoad5(true);
+            // this.props.refreshData();    
+            // this.props.collectDataRequest(this.props.monhoc, this.props.ctdt);
         }
     }
     
@@ -70,7 +67,7 @@ class ItemMenu extends Component {
             }
             
         });
-        $.getEvalActs5({data: this.props.monhoc})
+        $.getEvalActs5({data: this.props.monhoc,  idCtdt: this.props.ctdt})
             .then(response => {
                 const data = response.data;
                 let map = new Map();
@@ -364,7 +361,7 @@ class ItemMenu extends Component {
                             <div>
 
                                 <Button type="primary" onClick={() => {
-                                    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
+                                    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
                                     this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy lý thuyết: Chủ đề : ${this.props.itemLayout5Reducer.titleName} ; Chuẩn đầu ra : ${this.props.itemLayout5Reducer.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${this.props.itemLayout5Reducer.teachingActs} ; Hoạt động đánh giá: ${this.props.itemLayout5Reducer.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
                                     this.props.saveAndContinue(this.props.monhoc)
                                 }} style={{ marginLeft: "15%" }}>
@@ -387,8 +384,26 @@ const mapStateToProps = (state) => {
 }
 const mapDispatchToProps = (dispatch, ownProps) => {
     return {
-        onSaveLog: saveLog,
-        onSaveReducer: saveLogObject,
+        onSaveLog : (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id,ctdt) => {
+            dispatch({
+                type:SAVE_LOG,ten: ten,
+                timestamp: timestamp,
+                noi_dung: noi_dung,
+                muc_de_cuong: muc_de_cuong,
+                thong_tin_chung_id: thong_tin_chung_id,
+                ctdt : ctdt,
+            });
+        },
+        onSaveReducer : (ten,timestamp,noi_dung,muc_de_cuong,thong_tin_chung_id) => {
+            dispatch({
+                type: SAVE_LOG_OBJECT,
+                ten: ten,
+                timestamp: timestamp,
+                noi_dung: noi_dung,
+                muc_de_cuong: muc_de_cuong,
+                thong_tin_chung_id: thong_tin_chung_id,
+            });
+        },
         onChangeData: (titleName, teachingActs_data, standardOutput_data, evalActs_data) => {
             dispatch({
                 type: CHANGE_DATA, titleName: titleName, teachingActs: teachingActs_data,
@@ -465,9 +480,9 @@ const mapDispatchToProps = (dispatch, ownProps) => {
             dispatch({type: REFRESH_DATA,data: []});
         },
 
-        updateIssLoad5: () => {
-            dispatch({type: IS_LOADED_5 , data: true});
-        },
+        // updateIssLoad5: () => {
+        //     dispatch({type: IS_LOADED_5 , data: true});
+        // },
 
         collectDataRequest: (id, ctdt) => {
             let newArr = [];

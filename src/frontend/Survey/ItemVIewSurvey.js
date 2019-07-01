@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
 import {
-    Collapse, Button, Tag, Row, Col, notification, Modal
+    Collapse, Button, Tag, Row, Col, Modal
 } from 'antd';
-import { Label } from 'reactstrap'
 import { Link } from "react-router-dom";
+import $ from './../helpers/services'
 
 import NotificationHelper from "../helpers/NotificationHelper"
 
@@ -14,15 +14,15 @@ const hrefSurveyMatrix = "/view-survey/survey-matrix?id=";
 const statusValues = [
     {
         id: -1,
-        value: "NOT ACTIVE"
+        value: "CHƯA BẮT ĐẦU"
     },
     {
         id: 0,
-        value: "DONE"
+        value: "ĐÃ KẾT THÚC"
     },
     {
         id: 1,
-        value: "IN PROCESS"
+        value: "ĐANG THỰC HIỆN"
     }
 ]
 
@@ -46,7 +46,6 @@ class ItemVIewSurvey extends Component {
             offsetTop: tesNode.offsetTop
         })
         // window.scrollTo(0, tesNode.offsetTop);
-        console.log(tesNode.offsetTop)
     }
 
     closeSurvey = () => {
@@ -145,6 +144,8 @@ class ItemVIewSurvey extends Component {
         );
     }
     render() {
+        const date = this.props.dateFrom + " <-> " + this.props.dateTo;
+
         return (
             <div>
                 <Collapse ref={this.myRef} onChange={this.callback}>

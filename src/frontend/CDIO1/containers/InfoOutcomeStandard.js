@@ -25,24 +25,23 @@ class InfoOutcomeStandard extends Component {
     const idEdu = this.props.ctdt;
     this.props.onLoadEduProgram(+idEdu);
     this.props.onLoadDetailEduProgram(+idEdu);
-    let id = +this.props.detailEduProgram.IdOutcome;
-    this.props.onLoadOutcomeStandard(id);
+    let id = this.props.detailEduProgram
+      ? +this.props.detailEduProgram.IdOutcome
+      : -1;
+    if (id > 0) {
+      this.props.onLoadOutcomeStandard(id);
+    }
   };
 
   render() {
-    const infoOutcomeStandard = Array.isArray(this.props.infoOutcomeStandard)
-      ? this.props.infoOutcomeStandard[0]
-      : null;
-
+    let id = this.props.detailEduProgram
+      ? +this.props.detailEduProgram.IdOutcome
+      : -1;
+      
+    const infoOutcomeStandard = id > 0 ? this.props.infoOutcomeStandard[0] : null;
     const title = infoOutcomeStandard
       ? `${infoOutcomeStandard.NameOutcomeStandard}`
       : `Chưa tải được`;
-
-    const urlParams = new URLSearchParams(window.location.search);
-    let id = urlParams.get("id")
-      ? urlParams.get("id")
-      : +this.props.detailEduProgram.IdOutcome;
-    id = id ? id : 0;
 
     return id && infoOutcomeStandard ? (
       <Container fluid className="main-content-container px-4">
@@ -77,11 +76,25 @@ class InfoOutcomeStandard extends Component {
           </Col>
         </Row>
       </Container>
+    ) : id === 0 ? (
+      <div>
+        <Empty />
+        <h3 align="center">Chưa sử dụng chuẩn đầu ra</h3>
+        <h3 align="center">
+          Quay lại tab{" "}
+          <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để
+          thêm chuẩn đầu ra cho Chương trình đào tạo
+        </h3>
+      </div>
     ) : (
-    <div>
-      <Empty />
-      <h3 align="center">Quay lại tab <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để tải dữ liệu</h3>
-    </div>
+      <div>
+        <Empty />
+        <h3 align="center">
+          Quay lại tab{" "}
+          <Link to={`/ctdt/${this.props.ctdt}/edit-ctdt`}>THÔNG TIN</Link> để
+          tải dữ liệu
+        </h3>
+      </div>
     );
   }
 }

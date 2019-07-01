@@ -8,11 +8,12 @@ import { connect } from 'react-redux';
 import { DragSource, DropTarget } from "react-dnd";
 import DragDropHTML5 from '../../../html5Backend/html5Backend';
 import TextArea from "antd/lib/input/TextArea";
+import { getCurrTime } from '../../../utils/Time';
 
 import {
   DELETE_DATA_LAYOUT_5, CHANGE_EDITSTATE_5, REFRESH_DATA,
   SAVE_DATA_LAYOUT_5, ADD_DATA_LAYOUT_5, COLLECT_DATA_HDD,
-  COLLECT_DATA_DG, COLLECT_DATA_CDR
+  COLLECT_DATA_DG, COLLECT_DATA_CDR, IS_LOADED_5,SAVE_LOG,SAVE_LOG_OBJECT
 } from '../../../Constant/ActionType';
 import $ from './../../../helpers/services';
 
@@ -314,7 +315,7 @@ class TableItem extends Component {
             {!editable ? <Divider type="vertical" /> : null}
             {!editable
               ? (
-                <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.props.handleDelete(record.key)}>
+                <Popconfirm title="Xác nhận xóa?" onConfirm={() => this.delete(record.key)}>
                   <a href="#a">Xóa</a>
                 </Popconfirm>
               ) : null}
@@ -324,6 +325,13 @@ class TableItem extends Component {
     }
     ];
   };
+  componentDidMount() {
+    if(!this.props.itemLayout5Reducer.isLoaded) {
+        this.props.updateIssLoad5(true);
+        this.props.refreshData();    
+        this.collectDataRequest(this.props.monhoc, this.props.ctdt);
+    }
+  }
 
   moveRow = (dragIndex, hoverIndex) => {
     let data = this.props.itemLayout5Reducer.previewInfo;
@@ -367,7 +375,13 @@ class TableItem extends Component {
     });
   };
 
-  delete(key) {
+  delete(key) { 
+    const item = this.props.itemLayout5Reducer.previewInfo.filter(element => element.key === key);
+    if(item){
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa kế hoạch giảng dạy lý thuyết: Chủ đề : ${item[0].titleName} ; Chuẩn đầu ra : ${item[0].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${item[0].teachingActs} ; Hoạt động đánh giá: ${item[0].evalActs}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
+      this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Xóa kế hoạch giảng dạy lý thuyết: Chủ đề : ${item[0].titleName} ; Chuẩn đầu ra : ${item[0].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${item[0].teachingActs} ; Hoạt động đánh giá: ${item[0].evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)  
+    }
+                                 
     this.props.handleDelete(key);
     this.setState({ selectedRowKeys: [] });
   }
@@ -431,7 +445,9 @@ class TableItem extends Component {
         })
         let uniqueArr = arr.filter(this.onlyUnique)
         index.standActs = uniqueArr;
-      })
+      })  
+      this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa kế hoạch giảng dạy lý thuyết: [Chủ đề : ${item.titleName} ; Chuẩn đầu ra : ${item.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${item.teachingActs} ; Hoạt động đánh giá: ${item.evalActs}] -> [Chủ đề : ${newData[index].titleName} ; Chuẩn đầu ra : ${newData[index].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${newData[index].teachingActs} ; Hoạt động đánh giá: ${newData[index].evalActs}]`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
+      this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Chỉnh sửa kế hoạch giảng dạy lý thuyết: [Chủ đề : ${item.titleName} ; Chuẩn đầu ra : ${item.standardOutput} ; Hoạt động dạy/ Hoạt động học : ${item.teachingActs} ; Hoạt động đánh giá: ${item.evalActs}] -> [Chủ đề : ${newData[index].titleName} ; Chuẩn đầu ra : ${newData[index].standardOutput} ; Hoạt động dạy/ Hoạt động học : ${newData[index].teachingActs} ; Hoạt động đánh giá: ${newData[index].evalActs}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
       this.props.handleSave(newData);
       this.props.handleEdit('');
@@ -446,13 +462,14 @@ class TableItem extends Component {
       .then(function (response) {
         for (let i = 0; i < response.data.length; i++) {
           let data = {
-            key: response.data[i].key,
-            titleName: response.data[i].titleName,
-            teachingActs: response.data[i].teachingActs,
+            id:             response.data[i].id,
+            key:            response.data[i].key,
+            titleName:      response.data[i].titleName,
+            teachingActs:   response.data[i].teachingActs,
             standardOutput: response.data[i].standardOutput,
-            evalActs: response.data[i].evalActs,
-            subjectId: response.data[i].subjectId,
-            del_flag: 0
+            evalActs:       response.data[i].evalActs,
+            subjectId:      response.data[i].subjectId,
+            del_flag:       0
           }
           newArr.push(data);
         }
@@ -534,7 +551,7 @@ class TableItem extends Component {
             onClick={() => {
               this.setState({ disableSaveall: true })
 
-              Promise.all([this.props.saveAllData()])
+              Promise.all([this.props.saveAllData(this.props.ctdt)])
                 .then(res => {
                   if (res) {
                     this.setState({ disableSaveall: false })
@@ -579,11 +596,32 @@ class TableItem extends Component {
 const mapStateToProps = (state) => {
   return {
     itemLayout5Reducer: state.itemLayout5Reducer,
+    logReducer: state.logReducer,
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    onSaveLog : (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id,ctdt) => {
+      dispatch({
+          type:SAVE_LOG,ten: ten,
+          timestamp: timestamp,
+          noi_dung: noi_dung,
+          muc_de_cuong: muc_de_cuong,
+          thong_tin_chung_id: thong_tin_chung_id,
+          ctdt : ctdt,
+      });
+  },
+  onSaveReducer : (ten,timestamp,noi_dung,muc_de_cuong,thong_tin_chung_id) => {
+      dispatch({
+          type: SAVE_LOG_OBJECT,
+          ten: ten,
+          timestamp: timestamp,
+          noi_dung: noi_dung,
+          muc_de_cuong: muc_de_cuong,
+          thong_tin_chung_id: thong_tin_chung_id,
+      });
+  },
     handleEdit: (key) => {
       dispatch({ type: CHANGE_EDITSTATE_5, key: key });
     },
@@ -596,8 +634,8 @@ const mapDispatchToProps = (dispatch) => {
       dispatch({ type: SAVE_DATA_LAYOUT_5, data: data });
     },
 
-    saveAllData: () => {
-      dispatch({ type: ADD_DATA_LAYOUT_5 });
+    saveAllData: (ctdt) => {
+      dispatch({ type: ADD_DATA_LAYOUT_5, ctdt: ctdt });
     },
     saveDataValue: (teachingActs) => {
       dispatch({ type: COLLECT_DATA_HDD, data: teachingActs })
@@ -611,7 +649,13 @@ const mapDispatchToProps = (dispatch) => {
     },
     dispatchRefreshData: (data) => {
       dispatch({ type: REFRESH_DATA, data: data });
-    }
+    },
+    updateIssLoad5: () => {
+      dispatch({type: IS_LOADED_5 , data: true});
+    },
+    refreshData: () => {
+      dispatch({type: REFRESH_DATA,data: []});
+    },
   }
 }
 export default connect(mapStateToProps, mapDispatchToProps)(DragDropHTML5(TableItem));

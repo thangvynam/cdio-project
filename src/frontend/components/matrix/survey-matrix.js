@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Tag, Popover, Button, notification } from 'antd';
+import { Table, Tag, Popover, Button, notification, Empty } from 'antd';
 import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import _ from 'lodash';
@@ -14,9 +14,6 @@ const openNotificationWithIcon = (type) => {
     description: 'Lưu dữ liệu thành công',
   });
 };
-
-// const href = "/ctdt/ctdt-1/itusurvey/view/2/itusurvey";
-// const href1 = "/ctdt/15/itusurvey/dosurvey/view/66/itusurvey?id=1"
 
 class SurveyMatrix extends Component {
   constructor(props) {
@@ -61,12 +58,18 @@ class SurveyMatrix extends Component {
   }
 
   async componentDidMount() {
+   
+    let idCtdt =  await this.getUrlParameter('idCtdt');
+    this.getBlockSubjects(idCtdt)
+    this.setState({
+      idCtdt
+    })
+
     let id = await this.getUrlParameter('id');
-    $.getMatrixSurvey({ "data": `${id}` }).then((res) => {
+    $.getMatrixSurvey({ "data": `${id}`,"idCtdt":`${idCtdt}` }).then((res) => {
       this.props.getDataSurveyMatrix(res.data);
     })
 
-  
 
     $.getTeacherName(id).then(res => {
       let listNameGV = [];
@@ -85,11 +88,7 @@ class SurveyMatrix extends Component {
       this.props.getNameGV(listNameGV)
     })
 
-    let idCtdt =  await this.getUrlParameter('idCtdt');
-    this.getBlockSubjects(idCtdt)
-    this.setState({
-      idCtdt
-    })
+    
 
   }
 
@@ -158,8 +157,10 @@ class SurveyMatrix extends Component {
               let href = "" ; 
               if(this.props.listNameGV.length > 0){
                 let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
-                 href = this.getHref(selected.id_mon,selected.id)
-                 name = selected.name;
+                if(selected){
+                  href = this.getHref(selected.id_mon,selected.id)
+                  name = selected.name;
+                } 
               }
               
               return (<Link to={href}>{name} - {item[1]} </Link>)
@@ -182,8 +183,10 @@ class SurveyMatrix extends Component {
               let href = "" ; 
               if(this.props.listNameGV.length > 0){
                 let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
-                 href = this.getHref(selected.id_mon,selected.id)
-                 name = selected.name;
+                if(selected){
+                  href = this.getHref(selected.id_mon,selected.id)
+                  name = selected.name;
+                } 
               }
               
               return (<Link to={href}>{name} - {item[1]} </Link>)
@@ -205,8 +208,10 @@ class SurveyMatrix extends Component {
               let href = "" ; 
               if(this.props.listNameGV.length > 0){
                 let selected = this.props.listNameGV.filter(element => element.id === parseInt(item[1]))[0];
-                 href = this.getHref(selected.id_mon,selected.id)
-                 name = selected.name;
+                if(selected){
+                  href = this.getHref(selected.id_mon,selected.id)
+                  name = selected.name;
+                } 
               }
               
               return (<Link to={href}>{name} - {item[1]} </Link>)
@@ -216,6 +221,9 @@ class SurveyMatrix extends Component {
         tagRender.push(<Popover content={content}>
           <Tag style={{ fontSize: "8pt", fontWeight: "bold", color: "lime" }}>{countU}U</Tag>
         </Popover>)
+      }
+      if(countI <= 0 && countT <= 0 && countU <= 0){
+        tagRender.push(<div>-</div>)
       }
       value = tagRender
     }
@@ -349,6 +357,7 @@ class SurveyMatrix extends Component {
 
     return (
       <React.Fragment>
+      {_.isEmpty(this.props.dataSurveyMatrix) && <Empty/>}
       {!_.isEmpty(this.props.dataSurveyMatrix) && (<div>
         <p></p>
         <Button

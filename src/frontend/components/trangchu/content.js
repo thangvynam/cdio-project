@@ -66,6 +66,7 @@ import * as majorsAction from "../../CDIO1/actions/majorsAction";
 
 import Direction from "./direction";
 import ListSurvey from "./listSurvey";
+import NewPhanCong from "./newphancong";
 
 class Content extends Component {
     constructor(props) {
@@ -306,7 +307,7 @@ class Content extends Component {
                             </div>
                         </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout2 monhoc={monhoc} />
+                            <Layout2 monhoc={monhoc} id_ctdt={ctdt}/>
                         </div>
                     </React.Fragment>
                 );
@@ -468,7 +469,7 @@ class Content extends Component {
                             </div>
                         </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout8 monhoc={monhoc} />
+                            <Layout8 monhoc={monhoc} ctdt={ctdt} />
                         </div>
                     </React.Fragment>
                 );
@@ -495,7 +496,7 @@ class Content extends Component {
                             </div>
                         </Row>
                         <div className="wrapper-custom-layout">
-                            <Layout9 monhoc={monhoc} />
+                            <Layout9 monhoc={monhoc} ctdt={ctdt} />
                         </div>
                     </React.Fragment>
                 );
@@ -673,7 +674,10 @@ class Content extends Component {
                                 </Col>
                                 <div className="wrapper-custom">
                                     {action !== "" && action !== undefined && action !== null ?
-                                        <List
+                                    (action === "phancong" ? 
+                                    <NewPhanCong idCtdt={ctdt}/>
+                                    : 
+                                        (<List
                                             itemLayout="horizontal"
                                             dataSource={subjectList}
                                             pagination={{
@@ -743,7 +747,7 @@ class Content extends Component {
                                                     </Col>
                                                 </Row>
                                             )}
-                                        /> : <h1 align="center">Chọn menu trái cho chức năng mong muốn</h1>}
+                                        />)) : <h1 align="center">Chọn menu trái cho chức năng mong muốn</h1>}
                                 </div>
                             </React.Fragment>
                         ) : type === "matrix" ? (

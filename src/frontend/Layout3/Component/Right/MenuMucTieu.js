@@ -56,7 +56,6 @@ class MenuMucTieu extends Component {
         this.props.saveTemp(tempInfo)
     }
     render() {
-        console.log(this.props.itemLayout3Reducer.previewInfo)
         const { getFieldDecorator } = this.props.form;
 
         const cdioStandard = [];
@@ -158,12 +157,11 @@ class MenuMucTieu extends Component {
                                 if (objectName === '' || description === '' || temp.length === 0) {
                                     message.error("Vui lòng điền đầy đủ thông tin");
                                 } else {
-                                    console.log(this.props.itemLayout3Reducer.previewInfo.find(i => i.objectName === objectName))
                                     if(this.props.itemLayout3Reducer.previewInfo.find(i => i.objectName === objectName) !== undefined) {
                                         message.error("Mục tiêu đã tồn tại");
                                     }
                                     else {
-                                        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc)
+                                        this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc, this.props.id_ctdt)
                                         this.props.saveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: [Mục tiêu : ${objectName.toUpperCase()}, Mô tả : ${description}, CĐR CDIO của chương trình: ${temp}]`, this.props.logReducer.contentTab, this.props.monhoc)
 
                                         this.props.saveAndContinue()
@@ -172,7 +170,7 @@ class MenuMucTieu extends Component {
                                 // this.props.saveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm mục tiêu môn học: ${objectName.toUpperCase()}, ${description}, ${temp}`, this.props.logReducer.contentTab, this.props.subjectid)
 
                             }} style={{ marginLeft: "2em" }}>
-                                Thêm<Icon type="right" />
+                                Thêm
                             </Button>
                             <br />
                         </div>
@@ -213,8 +211,8 @@ const mapDispatchToProps = (dispatch, ownProps) => {
         saveTemp: (tempInfo) => {
             dispatch({ type: SAVE_TEMP_DATA_LAYOUT_3, tempInfo })
         },
-        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id) => {
-            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id })
+        saveLog: (ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt) => {
+            dispatch({ type: SAVE_LOG, ten, timestamp, noi_dung, muc_de_cuong, thong_tin_chung_id, id_ctdt })
         },
         setCDR: (data) => {
             dispatch({ type: SET_CDR, data })

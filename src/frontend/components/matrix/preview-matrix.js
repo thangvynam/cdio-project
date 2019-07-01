@@ -65,7 +65,7 @@ class PreviewMatrix extends Component {
         return (
             <div className="survey-matrix-wrap">
                 <Button type="primary" onClick={this.showModal}>
-                    Preview Matrix
+                Preview To Export
                 </Button>
                 <Modal
                     className="wrapper-preview-dialog"

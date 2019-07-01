@@ -159,7 +159,8 @@ class TableItem extends Component {
             getCurrTime(),
             message,
             this.props.logReducer.contentTab,
-            this.props.monhoc
+            this.props.monhoc,
+            this.props.ctdt
           );
           this.props.onSaveReducer(
             `${JSON.parse(localStorage.getItem('user')).data.Name}`,
@@ -196,7 +197,8 @@ class TableItem extends Component {
       getCurrTime(),
       message,
       this.props.logReducer.contentTab,
-      this.props.monhoc
+      this.props.monhoc,
+      this.props.ctdt
     );
     this.props.onSaveReducer(
       `${JSON.parse(localStorage.getItem('user')).data.Name}`,
@@ -233,7 +235,8 @@ class TableItem extends Component {
         getCurrTime(),
         message,
         this.props.logReducer.contentTab,
-        this.props.monhoc
+        this.props.monhoc,
+        this.props.ctdt
       );
       this.props.onSaveReducer(
         `${JSON.parse(localStorage.getItem('user')).data.Name}`,
@@ -284,7 +287,6 @@ class TableItem extends Component {
           duration: 1
         });
       }
-
       $.saveLog({ data: this.props.itemRule.logData });
 
       this.getData(this.props.monhoc);
@@ -336,7 +338,6 @@ class TableItem extends Component {
   }
 
   render() {
-    console.log(this.props.monhoc)
     const components = {
       body: {
         row: EditableFormRow,
@@ -383,12 +384,11 @@ class TableItem extends Component {
 
             <Button
               style={{ float: "right" }}
-              type="primary"
               onClick={this.onSaveAll}
               disabled={this.state.isSaveAll}
 
             >
-              Lưu thay đổi
+              Lưu tất cả
             </Button>
           </div>
         )}

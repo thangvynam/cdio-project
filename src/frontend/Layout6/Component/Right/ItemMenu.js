@@ -68,7 +68,7 @@ class ItemMenu extends Component {
 
     });
 
-    $.getEvalActs6(subjectId).then(response => {
+    $.getEvalActs6(subjectId,this.props.ctdt).then(response => {
       const data = response.data;
       let map = new Map();
       data.forEach((item, index) => {
@@ -171,7 +171,7 @@ class ItemMenu extends Component {
     previewData.evalActs = tempInfo.evalActs;
     previewData.del_flag = 0;
 
-    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
+    this.props.onSaveLog(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc,this.props.ctdt)
     this.props.onSaveReducer(`${JSON.parse(localStorage.getItem('user')).data.Name}`, getCurrTime(), `Thêm kế hoạch giảng dạy thực hành: Chủ đề : ${previewData.titleName} ; Chuẩn đầu ra : ${this.getStringFromCDR(this.showStandard())} ; Hoạt động dạy/ Hoạt động học : ${previewData.teachingActs} ; Hoạt động đánh giá: ${previewData.evalActs}`, this.props.logReducer.contentTab, this.props.monhoc)
 
 
@@ -340,12 +340,15 @@ class ItemMenu extends Component {
                 </span>
               }
             >
-              <Cascader
+              {getFieldDecorator("standardOutputs", {
+                //initialValue: this.props.itemKHGDTH.tempInfo.titleName
+              })(<Cascader
                 options={this.state.standard_item}
                 onChange={this.onChangeStandar}
                 placeholder="Chọn chuẩn đầu ra"
                 displayRender={this.displayRender}
-              />
+              />)}
+              
             </Form.Item>
 
             <Form.Item {...formItemLayout} label="Kết quả chuẩn đầu ra">
@@ -410,7 +413,7 @@ class ItemMenu extends Component {
                   }}
                   style={{ marginLeft: "15%" }}
                 >
-                  Continue
+                  Thêm
                   
                 </Button>
                 <br />

@@ -1,11 +1,13 @@
 import React, { Component } from 'react';
 import { Tag, List, Avatar, Row, Col, Icon } from 'antd';
+import { connect } from 'react-redux';
 import { Link } from "react-router-dom";
 import $ from "./../../helpers/services";
 import {convertTime} from "./../../utils/Time";
 import _ from 'lodash';
+import { CHANGE_VALUE_ITU_SURVEY2 } from '../../Constant/ActionType';
 
-export default class ListSurvey extends Component {
+class ListSurvey extends Component {
     constructor(props){
         super(props);
 
@@ -16,7 +18,7 @@ export default class ListSurvey extends Component {
 
     }
     componentDidMount(){
-
+        this.props.changeValueITU();
         let currentDate = new Date();
         currentDate.setHours(0,0,0,0);
         $.updateStatusSurvey({data : parseInt(currentDate.getTime())}).then(res=>{
@@ -38,7 +40,7 @@ export default class ListSurvey extends Component {
         let parent = this.props.parent;
         let startDate = convertTime(this.state.surveyList.start_date).split(',');
         let endDate = convertTime(this.state.surveyList.end_date).split(',');
-
+       
         return (
             <div className="section-layout">
                 <div className="time-itu">
@@ -59,7 +61,8 @@ export default class ListSurvey extends Component {
                         <Row>
                             <div style={{ height: "10px" }}></div>
                             <Col span={22} offset={1} className="col-left">
-                                <div className="list-border" className="wrapper-subject" style={{ borderRadius: "12px" }}>
+                                <div className="list-border" className="wrapper-subject" style={item.status===1?
+                                { borderRadius: "12px" }:{borderRadius:"12px",background:"lightslategrey"}}>
                                     <List.Item>
                                         <List.Item.Meta
                                             avatar={<Avatar src="https://cdn2.vectorstock.com/i/1000x1000/99/96/book-icon-isolated-on-white-background-vector-19349996.jpg" />}
@@ -79,3 +82,13 @@ export default class ListSurvey extends Component {
         )
     }
 }
+
+const mapDispatchToProps = (dispatch, ownProps) => {
+    return {
+        changeValueITU: () => {
+            dispatch({ type: CHANGE_VALUE_ITU_SURVEY2 })
+        }
+    }
+}
+
+export default connect(null, mapDispatchToProps)(ListSurvey);

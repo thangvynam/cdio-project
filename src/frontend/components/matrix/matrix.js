@@ -141,7 +141,6 @@ class Matrix extends Component {
       this.props.isLoadEditMatrix === "false" &&
       nextProps.allSubjectList.length > 0
     ) {
-      console.log("receive");
       this.setState({ isLoading: true });
       this.props.updateIsLoadEditMatrix("true");
 
@@ -459,39 +458,44 @@ class Matrix extends Component {
   };
 
   cloneEditMatrix = () => {
-    $.insertStandardMatrix({
-      data: this.state.matrix,
-      idCtdt: this.props.ctdt
-    }).then(response => {
-      if (response.data === 1) {
-        notification["success"]({
-          message: "Cập nhật thành công",
-          duration: 1
-        });
-        this.setState({ isSubmit: true });
-        let subjectListId = [];
-        this.props.allSubjectList.map(item => {
-          subjectListId.push(item.IdSubject);
-        });
-        let data1 = {
-          data: subjectListId,
-          idCtdt: this.props.ctdt
-        };
-        if (data1.data.length > 0) {
-          console.log("get roi ma")
-          this.getEditMatrix(data1);
+    let confirm = window.confirm("Quá trình này mất vài phút, tiếp tục thao tác?");
+    if(confirm === true) {
+      this.setState({ isLoading: true });
+      $.insertStandardMatrix({
+        data: this.state.matrix,
+        idCtdt: this.props.ctdt
+      }).then(response => {
+        if (response.data === 1) {
+          notification["success"]({
+            message: "Cập nhật thành công",
+            duration: 1
+          });
+          this.setState({ isSubmit: true });
+          let subjectListId = [];
+          this.props.allSubjectList.map(item => {
+            subjectListId.push(item.IdSubject);
+          });
+          let data1 = {
+            data: subjectListId,
+            idCtdt: this.props.ctdt
+          };
+          if (data1.data.length > 0) {
+            console.log("get roi ma")
+            this.getEditMatrix(data1);
+          }
+        } else {
+          notification["error"]({
+            message: "Cập nhật thất bại",
+            duration: 1
+          });
         }
-      } else {
-        notification["error"]({
-          message: "Cập nhật thất bại",
-          duration: 1
-        });
-      }
-    });
+      });
+    }
+    
   };
 
   render() {
-    const { isLoading } = this.state;
+    const { isLoading} = this.state;
     const style = {
       marginLeft: "20px"
     };

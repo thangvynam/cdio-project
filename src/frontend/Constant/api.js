@@ -5,7 +5,7 @@ export default{
 
     //edit matrix
     UPDATE_STANDARD_MATRIX: baseUrl + '/update-standard-matrix',
-
+    DELETE_EDIT_MATRIX: baseUrl + '/delete-edit-matrix',
     //tab 1
     COLLECT_DATA1: baseUrl + '/collect-data',
     UPDATE_DATA1: baseUrl + '/update-data',

@@ -21,6 +21,7 @@ const collectSubjectList = () => {
 
 const getBlockSubject = (id) => {
     let url = _.GET_BLOCK_SUBJECT;
+
     let header = {
         username: JSON.parse(localStorage.getItem('user')).data.Username,
         role: JSON.parse(localStorage.getItem('user')).data.Role
@@ -32,6 +33,11 @@ const getBlockSubject = (id) => {
 //edit matrix
 const updateStandardMatrix = (data) => {
     let url = _.UPDATE_STANDARD_MATRIX;
+    return $.post(url, data);
+}
+
+const deleteEditMatrix = (data) => {
+    let url = _.DELETE_EDIT_MATRIX;
     return $.post(url, data);
 }
 
@@ -563,6 +569,7 @@ export default {
 
     //edit matrix
     updateStandardMatrix,
+    deleteEditMatrix,
     checkID,
     //tab 1
     collectData1,
@@ -594,6 +601,7 @@ export default {
     postData2,
     postData3,
     addSurveyMatrix,
+    exportFile,
     saveSurvey,
     getCDR_3,
     getData3,
@@ -663,8 +671,6 @@ export default {
     deleteSurvey,
 
     //export file
-    exportFile,
-
     getEvalActs5,
     getStandardOutput5,
     collectData5,
@@ -675,8 +681,8 @@ export default {
     addData5,
 
     checkDate,
-    checkStatus,
     insertStandardMatrix,
+    checkStatus,
     getIDQA,
     getSurveyITU,
     getSubjectWithId,

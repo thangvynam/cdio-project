@@ -238,6 +238,8 @@ loadData = () => {
    //if (count <= 2) {
       self.setState({count: count + 1})
       self.getData().then((res) => {
+        console.log(res);
+        
         if (res.length > 0) {
           res.forEach(element => {
             res.forEach(element2 => {
@@ -406,11 +408,14 @@ componentWillMount(){
   saveAll = () => {
     var self = this;
     //this.props.saveAll(this.props.monhoc)
+    self.setState({disableSaveAll: true})
     $.saveData3({ data: self.props.itemLayout3Reducer.previewInfo, id: self.props.monhoc, id_ctdt: self.props.id_ctdt })
     .then((res) => {
-      if(res.data === '1') {
-        self.setState({disableSaveAll: true})
-        self.loadData()
+      if(res.data === 1) {
+        for (let i = 0; i < 2; i++) {
+          self.loadData()
+        }
+        
       }
       // self.loadData();
     });

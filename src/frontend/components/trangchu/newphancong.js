@@ -47,13 +47,14 @@ class NewPhanCong extends Component {
         res.data && res.data.forEach(element => {
           if (this.subjectInArray(element.idTTC, dataSource)) {
             dataSource[dataSource.findIndex(item => item.subjectId === element.idTTC)].list.push(element.name);
+            dataSource[dataSource.findIndex(item => item.subjectId === element.idTTC)].teacherId.push(element.idTeacher);
           }
           else {
             dataSource.push({
               key: element.idTTC,
               subjectId: element.idTTC,
               subject: element.SubjectName,
-              teacherId: element.idTeacher,
+              teacherId: [element.idTeacher],
               list: [element.name],
               time: [element.start_Date, element.end_Date]
             })

@@ -96,12 +96,12 @@ class FormPhanCong extends Component {
 
     let subjectOptions = [];
     for (let i in subjectList) {
-      subjectOptions.push(<Option key={subjectList[i].Id} value={subjectList[i].SubjectName}><Tooltip title={subjectList[i].SubjectName}>{subjectList[i].SubjectName}</Tooltip></Option>)
+      subjectOptions.push(<Option key={subjectList[i].Id}><Tooltip title={subjectList[i].SubjectName}>{subjectList[i].SubjectName}</Tooltip></Option>)
     }
 
     let teacherOptions = [];
     for (let i in teacherList) {
-      teacherOptions.push(<Option key={teacherList[i].id} value={teacherList[i].name}><Tooltip title={teacherList[i].name}>{teacherList[i].name}</Tooltip></Option>)
+      teacherOptions.push(<Option key={teacherList[i].id}><Tooltip title={teacherList[i].name}>{teacherList[i].name}</Tooltip></Option>)
     }
 
     return (<Row>

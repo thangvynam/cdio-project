@@ -121,9 +121,9 @@ class TablePhanCong extends Component {
       ...this.getColumnSearchProps('list'),
       render: list => (
         <span>
-          {list.map(item => {
+          {list.map((item, id) => {
             let color = 'orange';
-            return <Tag color={color} key={item}>{item.toUpperCase()}</Tag>;
+            return <Tag color={color} key={id}>{item.toUpperCase()}</Tag>;
           })}
         </span>
       )

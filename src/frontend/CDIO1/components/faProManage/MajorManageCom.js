@@ -70,7 +70,9 @@ export default class MajorManageCom extends Component {
       const data = {
         majorcode: this.state.majorCode,
         majorname: this.state.majorName,
-        facultyid: this.state.faculty.Id
+        idfaculty: this.state.faculty.Id,
+        majorengname: ""
+
       };
       this.props.onAddMajor(data);
       this.setState({ visible: false });

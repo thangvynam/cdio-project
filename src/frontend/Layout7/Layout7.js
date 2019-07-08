@@ -13,9 +13,9 @@ class Layout7 extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="section-layout">
-                    {this.props.isReview === true ? null : <DGForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>}
-                </div>
+                {this.props.isReview === true ? null : <div className="section-layout">
+                    <DGForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>
+                </div>}
                 <div className="section-layout">
                     <Tooltip placement="topLeft">
                         <Button style={{ color: "red", margin: "auto", width: "100%", height: "50px" }}>(Mô tả các thành phần bài tập, bài thi, đồ án... dùng để đánh giá kết quả của sinh viên khi tham gia môn học này. <br /> Bên cạnh mỗi nhóm bài tập, bài thi... cần có tỉ lệ % điểm tương ứng) </Button>

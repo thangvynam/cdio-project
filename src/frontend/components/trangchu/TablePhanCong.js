@@ -344,7 +344,7 @@ class TablePhanCong extends Component {
     let teacherOptions = [];
 
     for (let i in teacherList) {
-      teacherOptions.push(<Option key={teacherList[i].id} value={teacherList[i].name}><Tooltip title={teacherList[i].name}>{teacherList[i].name}</Tooltip></Option>)
+      teacherOptions.push(<Option key={teacherList[i].id}><Tooltip title={teacherList[i].name}>{teacherList[i].name}</Tooltip></Option>)
     }
 
     const columns = this.columns.map((col) => {

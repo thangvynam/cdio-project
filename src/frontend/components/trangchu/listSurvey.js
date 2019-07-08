@@ -38,8 +38,8 @@ class ListSurvey extends Component {
         let type = this.props.type;
         let ctdt = this.props.ctdt;
         let parent = this.props.parent;
-        let startDate = convertTime(this.state.surveyList.start_date).split(',');
-        let endDate = convertTime(this.state.surveyList.end_date).split(',');
+        let startDate = this.state.surveyList ? convertTime(this.state.surveyList.start_date).split(',') : '';
+        let endDate = this.state.surveyList ? convertTime(this.state.surveyList.end_date).split(',') : '';
        
         return (
             <div className="section-layout">

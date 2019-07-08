@@ -17,11 +17,11 @@ const dateFormat = 'YYYY-MM-DD';
 const formItemLayout = {
   labelCol: {
     xs: { span: 12 },
-    sm: { span: 8 },
+    sm: { span: 7 },
   },
   wrapperCol: {
     xs: { span: 16 },
-    sm: { span: 12 },
+    sm: { span: 14 },
   },
 };
 const Option = Select.Option;
@@ -166,7 +166,7 @@ class FormPhanCong extends Component {
       </Col>
       <Col span={2}>
         <Form.Item>
-          <Button onClick={this.phanCong} type="primary" style={{ marginLeft: "5em" }}>Phân công</Button>
+          <Button onClick={this.phanCong} type="primary" >Phân công</Button>
         </Form.Item>
       </Col>
     </Row>)

@@ -13,9 +13,9 @@ class Layout5 extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="section-layout">
-                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>}
-                </div>
+                {this.props.isReview === true ? null : <div className="section-layout">
+                    <MainForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>
+                </div>}
                 <div className="section-layout">
                     <Tooltip placement="topLeft">
                         <Button style={{ color: "red", margin: "auto", width: "100%", height: "50px" }}>(Hướng dẫn: Mô tả chi tiết quá trình giảng dạy theo từng chủ đề: tên chủ đề, danh sách các chuẩn đầu

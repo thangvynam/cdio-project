@@ -12,9 +12,9 @@ class Layout8 extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="section-layout">
-                    {this.props.isReview === true ? null : <TNForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>}
-                </div>
+                {this.props.isReview === true ? null : <div className="section-layout">
+                    <TNForm monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>
+                </div>}
                 <div className="section-layout">
                     <Element name="test1" className="element" >
                         <TNTableItem isReview={this.props.isReview} monhoc={this.props.monhoc} ctdt={this.props.ctdt}/>

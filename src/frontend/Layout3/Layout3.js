@@ -12,9 +12,9 @@ class Layout3 extends Component {
     render() {
         return (
             <React.Fragment>
-                <div className="section-layout">
-                    {this.props.isReview === true ? null : <MainForm monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>}
-                </div>
+                {this.props.isReview === true ? null : <div className="section-layout">
+                    <MainForm monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>
+                </div>}
                 <div className="section-layout">
                     <Tooltip placement="topLeft">
                         <Button style={{ color: "red", margin: "auto", width: "100%", height: "50px" }}>

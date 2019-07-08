@@ -143,7 +143,6 @@ class LogForm extends Component {
     }
 
     render() {
-        console.log(this.props.isComment)
         let data = this.getDataReducer()
         let LogComment = <div></div>
         if (this.props.logReducer.renderComment || !this.props.logReducer.renderComment) {
@@ -180,7 +179,7 @@ class LogForm extends Component {
                         </div>
                         );
                     }
-                    return <CommentLog children={con}
+                    return <CommentLog children={con} key={itemparent.id}
                         content={itemparent.noi_dung} timestamp={itemparent.thoi_gian}
                         nguoi_gui={itemparent.nguoi_gui} id={itemparent.id}
                         hasReply={this.props.isComment} />

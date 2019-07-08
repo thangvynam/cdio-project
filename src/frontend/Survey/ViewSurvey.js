@@ -99,9 +99,12 @@ class ViewSurvey extends Component {
 
 
     genForm() {
+        const {listSurvey} = this.state;
         let htmlDom = []
-        this.state.listSurvey.sort((a, b) => parseInt(b.status) - parseInt(a.status));
-        this.state.listSurvey.forEach((survey, index) => {
+        listSurvey.sort((a, b) => parseInt(b.status) - parseInt(a.status));
+        // console.log(listSurvey[0] ? listSurvey[0].rangeTime[0].replace(/-/g,"") : null)
+        listSurvey.sort((a,b) => parseInt(a.rangeTime[0].replace(/-/g,"")) - parseInt(b.rangeTime[0].replace(/-/g,"")))
+        listSurvey.forEach((survey, index) => {
             let title = this.props.ctdt.find(item => item.Id === survey.id);
             htmlDom.push(
                 <ItemVIewSurvey

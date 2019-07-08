@@ -43,18 +43,18 @@ class EditableCell extends Component {
   getInput = () => {
 
     if (this.props.inputType === 'muc_do_1') {
-      return <Input style={{ width: '100%' }} />
+      return <Input style={{ width: '100' }} />
     }
     else if (this.props.inputType === 'muc_do_2') {
       const levelOptions2 = levelOptions.map((item, id) => {
         return <Option key={id} value={item}>{item}</Option>
       });
-      return <Select style={{ width: '100%' }}>
+      return <Select style={{ width: '200' }}>
         {levelOptions2}
       </Select>
     }
     else {
-      return <Input style={{ width: '100%' }} />
+      return <Input style={{ width: '100' }} />
     }
 
   };
@@ -340,9 +340,7 @@ class MucDoHanhDong extends Component {
       <Collapse >
         <Panel header="Danh mục chuẩn đầu ra mức độ hành động" key="1">
           <Row>
-            <Col span={4}>
-            </Col>
-            <Col span={4}>
+            <Col span={6}>
               <Form.Item
                 {...formItemLayout}
                 label="Loại"
@@ -350,7 +348,7 @@ class MucDoHanhDong extends Component {
                 <Input id="input-1" />
               </Form.Item>
             </Col>
-            <Col span={4}>
+            <Col span={6}>
               <Form.Item
                 {...formItemLayout}
                 label="Level"
@@ -360,7 +358,7 @@ class MucDoHanhDong extends Component {
                 </Select>
               </Form.Item>
             </Col>
-            <Col span={4}>
+            <Col span={6}>
               <Form.Item
                 {...formItemLayout}
                 label="Động từ"
@@ -368,7 +366,7 @@ class MucDoHanhDong extends Component {
                 <Input id="input-2" />
               </Form.Item>
             </Col>
-            <Col span={4}>
+            <Col span={6}>
               <Form.Item>
                 <Button onClick={this.addRow} type="primary" style={{ marginLeft: "5em" }}>Thêm</Button>
               </Form.Item>

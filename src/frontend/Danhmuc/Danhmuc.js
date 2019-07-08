@@ -367,7 +367,7 @@ class Danhmuc extends Component {
             <Form.Item {...formItemLayout} label="Loại">
               <Select
                 defaultValue="1"
-                style={{ width: "25%" }}
+                style={{ width: "300" }}
                 onChange={this.onChangeHDD}
               >
                 <Option value="1">Hoạt động dạy lý thuyết</Option>

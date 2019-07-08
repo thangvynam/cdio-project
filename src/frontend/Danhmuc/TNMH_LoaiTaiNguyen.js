@@ -284,7 +284,7 @@ class TNMH_LoaiTaiNguyen extends Component {
                 <Row>
                 <Col span={6}>
                 </Col>
-                    <Col span={6}>
+                    <Col span={8}>
                 <Form.Item
             {...formItemLayout}
             label="Loại tài nguyên: "
@@ -294,9 +294,7 @@ class TNMH_LoaiTaiNguyen extends Component {
           </Col>
 
           <Col span={4}>
-          <Form.Item>
-              <Button onClick={this.addRow} type="primary" style={{ marginLeft: "5em" }}>Thêm</Button>
-          </Form.Item>
+              <Button onClick={this.addRow} type="primary" style={{ float: "left" }}>Thêm</Button>
           </Col>
           </Row>
 

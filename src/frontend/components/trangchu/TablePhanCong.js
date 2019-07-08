@@ -40,6 +40,10 @@ class EditableCell extends Component {
         style={{ width: '100%' }}
         placeholder="Chọn giáo viên"
         onChange={this.props.handleChange}
+        filterOption={(input, option) =>
+
+          option.props.children.props.title.toLowerCase().indexOf(input.toLowerCase()) >= 0
+        }
       >
         {this.props.teacherOptions}
       </Select>

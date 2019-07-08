@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import {
-  Table, Button, Popconfirm, Form, Divider, Modal, notification
+  Table, Button, Popconfirm, Form, Divider, Modal, notification,Select
 } from 'antd';
 import TextArea from "antd/lib/input/TextArea";
 import { bindActionCreators } from 'redux';
@@ -13,6 +13,7 @@ import DragDropHTML5 from '../../../html5Backend/html5Backend';
 const confirm = Modal.confirm;
 const FormItem = Form.Item;
 const EditableContext = React.createContext();
+const {Option} = Select;
 
 const EditableRow = ({ form, index, ...props }) => (
   <EditableContext.Provider value={form}>
@@ -24,7 +25,17 @@ const EditableFormRow = Form.create()(EditableRow);
 
 class EditableCell extends React.Component {
   getInput = () => {
-    return <TextArea rows={4} style={{ width: "100%" }} />;
+    switch(this.props.dataIndex){
+      case "loai" :
+        return <Select>
+          {this.props.mapitem ? this.props.mapitem.map(item => {
+            return <Option key= {item.id} value={item.loai}>{item.loai}</Option>
+          }):null}
+        </Select>
+        default:
+            return <TextArea rows={4} style={{ width: "100%" }} />;
+
+    }
   };
 
   render() {
@@ -74,6 +85,7 @@ class TNTableItem extends Component {
       title: 'Loại',
       dataIndex: 'loai',
       key: 'loai',
+      editable : true,
     }, {
       title: 'Mô tả',
       dataIndex: 'mota',
@@ -186,7 +198,6 @@ class TNTableItem extends Component {
     const selectedRow = this.state.selectedRowKeys;
 
     let newData = this.props.itemLayout8Reducer.previewInfo;
-
     for (let i = 0; i < selectedRow.length; i++) {
       newData[selectedRow[i]].del_flag = 1;
 
@@ -326,6 +337,7 @@ class TNTableItem extends Component {
           dataIndex: col.dataIndex,
           title: col.title,
           editing: this.isEditing(record),
+          mapitem : this.props.itemLayout8Reducer.loaitainguyen,
         }),
       };
     });

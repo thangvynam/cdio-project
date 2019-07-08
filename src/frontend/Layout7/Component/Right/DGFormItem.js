@@ -337,6 +337,7 @@ class DGFormItem extends Component {
                 return { value: item.muc_tieu, label: item.muc_tieu, children: children }
               })}
               onChange={this.onChange}
+              style ={{width : 175}}
               placeholder="Chọn chuẩn đầu ra"
               displayRender={this.displayRender} />)}
           </Form.Item>

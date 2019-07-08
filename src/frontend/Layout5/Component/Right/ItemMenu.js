@@ -313,8 +313,9 @@ class ItemMenu extends Component {
                             <Cascader 
                                 options={this.state.standard_item}
                                 onChange={this.onChange}
+                                style ={{width : 175}}
                                 placeholder="Chọn chuẩn đầu ra" displayRender={this.displayRender} />
-
+                                
                         </Form.Item>
 
                         <Form.Item

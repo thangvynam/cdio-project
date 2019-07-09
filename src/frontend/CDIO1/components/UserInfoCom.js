@@ -3,6 +3,7 @@ import React from "react";
 import { Row, Col, Button } from "shards-react";
 import { Panel } from "primereact/panel";
 import { Password } from "primereact/password";
+import sha256 from "crypto-js/sha256";
 
 export default class UserInfoCom extends React.Component {
   constructor(props) {
@@ -20,7 +21,7 @@ export default class UserInfoCom extends React.Component {
       this.state.password.length > 5
     ) {
       const username = JSON.parse(localStorage.getItem("user")).data.Username;
-      const password = this.state.password;
+      const password = sha256(this.state.password).toString();
       const user = { username, password };
       this.props.onChangePass(user);
     }

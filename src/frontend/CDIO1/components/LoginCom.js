@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Link, Redirect } from "react-router-dom";
-// import sha256 from "crypto-js/sha256";
+import sha256 from "crypto-js/sha256";
 import {
   Button,
   Card,
@@ -57,8 +57,7 @@ export default class LoginCom extends Component {
   onLogIn = () => {
     const user = {
       username: this.state.username,
-      password: this.state.password
-      // password: sha256(this.state.password).toString()
+      password: sha256(this.state.password).toString()
     };
     this.props.onLogIn(user);
   };

@@ -312,7 +312,7 @@ export const deleteUserError = errorMessage => ({
 
 export const onDeleteUser = username => {
   return (dispatch, getState) => {
-    let req = `${links.DELETE_USER}?username=${username}`;
+    let req = `${links.DELETE_USER}?username=` + username;
     axios
       .post(req, {
         headers: {

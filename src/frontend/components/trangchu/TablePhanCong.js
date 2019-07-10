@@ -81,7 +81,7 @@ class EditableCell extends Component {
                       message: `Chưa chọn giáo viên!`,
                     }],
                     initialValue: dataIndex === "time" ? record[dataIndex][0] + " đến " + record[dataIndex][1]
-                    : record[dataIndex],
+                    : dataIndex === "list" ? [] : record[dataIndex],
                   })(this.getInput())}
                 </Form.Item>
               ) : restProps.children}
@@ -109,7 +109,6 @@ class TablePhanCong extends Component {
       dataIndex: 'subject',
       key: 'subject',
       width: "fixed",
-      editable: true,
       align: "left",
       ...this.getColumnSearchProps('subject'),
       render: text => <div >
@@ -136,7 +135,6 @@ class TablePhanCong extends Component {
       dataIndex: 'time',
       key: 'time',
       width: "30%",
-      editable: true,
       align: "center",
       render: item => (
         <Tag color='geekblue'>{item[0]} đến {item[1]}</Tag>

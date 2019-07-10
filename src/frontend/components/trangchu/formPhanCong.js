@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {
   Form, Button, message, Row, Col,
-  Select,  notification, DatePicker, Tooltip
+  Select, notification, DatePicker, Tooltip
 } from 'antd';
 import $ from "./../../helpers/services";
 
@@ -75,15 +75,22 @@ class FormPhanCong extends Component {
       let teacherSelect = this.state.teacherSelect;
       let subjectSelect = this.state.subjectSelect;
 
-      $.addTeacherReview({ idCtdt: this.props.idCtdt, idTeacher: teacherSelect, dateRange: dateString, idTTC: subjectSelect })
-        .then(res => {
-          this.props.loadTable();
-          this.setState({ subjectSelect: "" });
-          this.setState({ teacherSelect: [] });
-          this.setState({ dateString: [] });
-          openNotificationWithIcon('success');
-          this.props.form.resetFields();
-        });
+      $.deleteTeacherReview({ keys: [subjectSelect], idCtdt: this.props.idCtdt })
+        .then(
+          res => {
+            $.addTeacherReview({ idCtdt: this.props.idCtdt, idTeacher: teacherSelect, dateRange: dateString, idTTC: subjectSelect })
+              .then(res => {
+                this.props.loadTable();
+                this.setState({ subjectSelect: "" });
+                this.setState({ teacherSelect: [] });
+                this.setState({ dateString: [] });
+                openNotificationWithIcon('success');
+                this.props.form.resetFields();
+              });
+
+          }
+        )
+
 
     }
 

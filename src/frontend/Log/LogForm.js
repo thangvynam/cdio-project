@@ -73,6 +73,7 @@ class LogForm extends Component {
 
     }
 
+
     async getData(contentTab) {
         let data = {
             subjectid: this.props.monhoc,
@@ -92,7 +93,7 @@ class LogForm extends Component {
     }
 
     submit = () => {
-         this.props.saveComment(this.props.logReducer.idLog, this.state.value);
+        this.props.saveComment(this.props.logReducer.idLog, this.state.value);
     }
 
     componentDidMount() {
@@ -228,7 +229,7 @@ const mapDispatchToProps = (dispatch, ownProps) => {
                 content: content,
                 thoi_gian: getCurrTime(),
             }
-            
+
             $.addComment({ data: obj })
                 .then(res => {
                 })

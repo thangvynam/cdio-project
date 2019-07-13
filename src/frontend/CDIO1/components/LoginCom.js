@@ -5,6 +5,7 @@ import {
   Button,
   Card,
   CardBody,
+  CardHeader,
   CardGroup,
   Col,
   Container,
@@ -25,16 +26,16 @@ export default class LoginCom extends Component {
     };
   }
 
-  componentWillMount(){
-    if (!_.isNull(localStorage.getItem("user"))){
+  componentWillMount() {
+    if (!_.isNull(localStorage.getItem("user"))) {
       let user = JSON.parse(localStorage.getItem("user"));
       $.authenMe({ "access": user.token }).then(res => {
         if (res.data.status === 200) {
           localStorage.clear();
           $.setStorage(res.data)
         }
-        else 
-              localStorage.clear();
+        else
+          localStorage.clear();
       })
     }
   }
@@ -62,6 +63,11 @@ export default class LoginCom extends Component {
     this.props.onLogIn(user);
   };
 
+  onFormSubmit = e => {
+    e.preventDefault();
+    console.log(e.target.value);
+  }
+
   render() {
     if (localStorage.getItem("user")) return <Redirect to="/home" />;
     return (
@@ -69,10 +75,25 @@ export default class LoginCom extends Component {
         <Row className="justify-content-center vertical-align-middle">
           <Col md="8">
             <CardGroup>
+              {/* <Row style={{ backgroundColor: "#1a1a1a", marginRight: "0px !important" }} className="justify-content-center vertical-align-middle">
+              </Row> */}
+              <div className="aaaa" style={{backgroundColor: "#1a1a1a"}}>
+                <img style={{padding:"10px", overflow: "hidden"}} src="./logo.png" height="100" width="120"></img>
+
+              </div>
               <Card className="p-4">
+                <CardHeader >
+                  <img style={{padding:"10px", overflow: "hidden"}} src="./cdio.jpg" height="100" width="120"></img>
+          
+                </CardHeader>
                 <CardBody>
-                  <Form>
-                    <h3>Đăng nhập</h3>
+                  <Form
+                    onKeyPress={event => {
+                      if (event.key === "Enter") {
+                        this.onLogIn();
+                      }
+                    }}>
+                    {/* <h3>HỆ THỐNG QUẢN LÝ CHƯƠNG TRÌNH ĐÀO TẠO CDIO</h3> */}
                     <InputGroup className="mb-3">
                       <FormInput
                         type="text"
@@ -99,6 +120,7 @@ export default class LoginCom extends Component {
                           color="primary"
                           className="px-4"
                           onClick={this.onLogIn}
+                          type="submit"
                         >
                           Đăng nhập
                         </Button>

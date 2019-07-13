@@ -1,0 +1,19 @@
+.login-wrapper .p-4.card {
+    display: flex;
+    margin: 0px !important;
+    padding: 0px !important;
+}
+
+.login-wrapper img {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.login-wrapper .button-login {
+    position: relative;
+    left: 50%;
+    width: 120px;
+    margin-left: -60px;
+}

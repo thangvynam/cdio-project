@@ -16,6 +16,7 @@ import {
 } from "shards-react";
 import $ from './../../helpers/services';
 import _ from 'lodash';
+import './login.css'
 
 export default class LoginCom extends Component {
   constructor() {
@@ -63,29 +64,24 @@ export default class LoginCom extends Component {
     this.props.onLogIn(user);
   };
 
-  onFormSubmit = e => {
-    e.preventDefault();
-    console.log(e.target.value);
-  }
-
   render() {
     if (localStorage.getItem("user")) return <Redirect to="/home" />;
     return (
-      <Container>
+      <Container className="login-wrapper">
         <Row className="justify-content-center vertical-align-middle">
           <Col md="8">
             <CardGroup>
-              {/* <Row style={{ backgroundColor: "#1a1a1a", marginRight: "0px !important" }} className="justify-content-center vertical-align-middle">
-              </Row> */}
-              <div className="aaaa" style={{backgroundColor: "#1a1a1a"}}>
-                <img style={{padding:"10px", overflow: "hidden"}} src="./logo.png" height="100" width="120"></img>
 
+              <div style={{ backgroundColor: "#1a1a1a" }}>
+                <img style={{ padding: "10px", overflow: "hidden" }} src={require("./logo.png")} height="100" width="120"></img>
               </div>
               <Card className="p-4">
-                <CardHeader >
-                  <img style={{padding:"10px", overflow: "hidden"}} src="./cdio.jpg" height="100" width="120"></img>
-          
-                </CardHeader>
+                <img style={{ marginTop: "0px" }} src={require("./cdio.jpg")} height="120" width="80%"></img>
+
+                <div>
+                  <center><h3>Hệ thống quản lý </h3></center>
+                  <center><h3>chương trình đào tạo theo CDIO</h3></center>
+                </div>
                 <CardBody>
                   <Form
                     onKeyPress={event => {
@@ -113,12 +109,12 @@ export default class LoginCom extends Component {
                       />
                     </InputGroup>
                     <Row>
-                      <Col xs="6">
+                      <Col xs="12">
                         <Button
                           tag={Link}
                           to="#"
                           color="primary"
-                          className="px-4"
+                          className="button-login px-4"
                           onClick={this.onLogIn}
                           type="submit"
                         >

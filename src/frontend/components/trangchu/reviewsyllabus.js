@@ -23,15 +23,15 @@ class ReviewSyllabus extends Component {
 
         return (
             <div>
-                <ThongTinChung isReview={true} idMH={this.props.idMH} />
-                <Layout2 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
-                <Layout3 isReview={true} monhoc={this.props.idMH} id_ctdt={this.props.ctdt}/>
-                <Layout4 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
-                <Layout5 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
-                <Layout6 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
-                <Layout7 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
-                <Layout8 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
-                <Layout9 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/>
+                {<div style={{textAlign: "center"}}><h1>Thông tin chung</h1><ThongTinChung isReview={true} idMH={this.props.idMH} /></div>}
+                {<div style={{textAlign: "center"}}><h1>Mô tả</h1><Layout2 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/></div>}
+                {<div style={{textAlign: "center"}}><h1>Mục tiêu môn học</h1><Layout3 isReview={true} monhoc={this.props.idMH} id_ctdt={this.props.ctdt}/></div>}
+                {<div style={{textAlign: "center"}}><h1>Chuẩn đầu ra môn học</h1><Layout4 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/></div>}
+                {<div style={{textAlign: "center"}}><h1>Kế hoạch giảng dạy lý thuyết</h1><Layout5 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/></div>}
+                {<div style={{textAlign: "center"}}><h1>Kế hoạch giảng dạy thực hành</h1><Layout6 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/></div>}
+                {<div style={{textAlign: "center"}}><h1>Đánh giá</h1><Layout7 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/></div>}
+                {<div style={{textAlign: "center"}}><h1>Tài nguyên môn học</h1><Layout8 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/></div>}
+                {<div style={{textAlign: "center"}}><h1>Quy định chung</h1><Layout9 isReview={true} monhoc={this.props.idMH} ctdt={this.props.ctdt}/></div>}
             </div>)
     }
 }

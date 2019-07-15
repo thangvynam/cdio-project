@@ -142,7 +142,7 @@ const parentState = [
     },
     {
         id: "danh-muc",
-        name: "DANH MỤC",
+        name: "DANH MỤC ĐỀ CƯƠNG",
         role: ["ADMIN",],
     },
     {

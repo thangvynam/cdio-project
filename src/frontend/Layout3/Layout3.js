@@ -26,11 +26,10 @@ Bloom ở mức độ nhóm. <br />Mỗi mục tiêu môn học được mapping
 
                     <TableItem isReview={this.props.isReview} monhoc={this.props.monhoc} id_ctdt={this.props.id_ctdt}/>
 
-                    <br />
-                    <br />
-                    <LogForm isComment={this.props.isReview} monhoc={this.props.monhoc} tab={MENUITEM.MUC_TIEU_MON_HOC} id_ctdt={this.props.id_ctdt} tabIndex={3}/>
-                    <br />
                 </div>
+                <div className="section-layout">
+                    <LogForm isComment={this.props.isReview} monhoc={this.props.monhoc} tab={MENUITEM.MUC_TIEU_MON_HOC} id_ctdt={this.props.id_ctdt} tabIndex={3}/>
+                    </div>
             </React.Fragment>
         );
     }

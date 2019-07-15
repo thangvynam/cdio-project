@@ -94,13 +94,7 @@ class EditMatrix extends Component {
     super(props);
     this.columns = [
       {
-        title: 'HK', width: 100, dataIndex: 'hocky', key: 'hocky',
-      },
-      {
         title: 'Học phần', width: 100, dataIndex: 'hocphan', key: 'hocphan',
-      },
-      {
-        title: 'GV trưởng nhóm', width: 100, dataIndex: 'gvtruongnhom', key: 'gvtruongnhom',
       }
     ];
     this.state = {
@@ -323,8 +317,7 @@ class EditMatrix extends Component {
               data.push({
                 key: res.data[i].thong_tin_chung_id,
                 hocky: 1,
-                hocphan: subjectName,
-                gvtruongnhom: 'NULL'
+                hocphan: subjectName
               })
 
               data[data.length - 1][cdr_cdio] = res.data[i].muc_do;
@@ -497,6 +490,7 @@ class EditMatrix extends Component {
       return col;
     });
     const dataSource = this.props.editMatrix;
+    console.log(dataSource)
     const components = {
       body: {
         row: EditableFormRow,

@@ -386,22 +386,10 @@ class Matrix extends Component {
   createColumn = dataMatrix => {
     let result = [
       {
-        title: "HK",
-        width: 100,
-        dataIndex: "hocky",
-        key: "hocky"
-      },
-      {
         title: "Học phần",
         width: 100,
         dataIndex: "hocphan",
         key: "hocphan"
-      },
-      {
-        title: "GV trưởng nhóm",
-        width: 100,
-        dataIndex: "gvtruongnhom",
-        key: "gvtruongnhom"
       }
     ];
 

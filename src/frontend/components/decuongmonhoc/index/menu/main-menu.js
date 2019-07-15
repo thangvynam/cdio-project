@@ -209,7 +209,7 @@ class MenuLeft extends Component {
                           //     "block", "40px"));
                           // }
                           // else 
-                          if (this.checkBienSoan(this.props.menuItem[key].children[item].role)) {
+                          if (this.checkBienSoan(this.props.menuItem[key].children[item].role) && this.props.menuItem[key].children[item].id !== "phancong" ) {
                             if (this.checkTeachBlock(this.props.dataCtdt[j])) {
                               menuItemsCollapse.push(this.menuItem(this.props.dataCtdt[j].Id,
                                 `/${this.props.parentitem[i].id}/${this.props.ctdt[ctdtIndex].Id}/${key}/${this.props.menuItem[key].children[item].id}/${this.props.dataCtdt[j].Id}`,
@@ -218,7 +218,7 @@ class MenuLeft extends Component {
                             }
                           }
                           else {
-                            if (this.checkReviewBlock(this.props.dataCtdt[j])) {
+                            if (this.checkReviewBlock(this.props.dataCtdt[j])  && this.props.menuItem[key].children[item].id !== "phancong" ) {
                               menuItemsCollapse.push(this.menuItem(this.props.dataCtdt[j].Id,
                                 `/${this.props.parentitem[i].id}/${this.props.ctdt[ctdtIndex].Id}/${key}/${this.props.menuItem[key].children[item].id}/${this.props.dataCtdt[j].Id}`,
                                 this.props.dataCtdt[j].NameBlock,

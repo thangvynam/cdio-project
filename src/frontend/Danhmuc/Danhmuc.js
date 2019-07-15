@@ -351,7 +351,8 @@ class Danhmuc extends Component {
 
     return (
       <div>
-        <Collapse defaultActiveKey="1">
+        <MucDoHanhDong />
+        <Collapse >
           <Panel header="Danh mục hoạt động dạy" key="1">
             <Form.Item {...formItemLayout} label="Hoạt động">
               {getFieldDecorator("name", {
@@ -409,7 +410,6 @@ class Danhmuc extends Component {
             </div>
           </Panel>
         </Collapse>
-        <MucDoHanhDong />
         <ChuDeDanhGia />
         <TNMH_LoaiTaiNguyen />
       </div>

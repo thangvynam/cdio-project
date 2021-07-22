@@ -45,7 +45,7 @@
     "shards-react": "^1.0.3",
     "shortid": "^2.2.14",
     "webpack": "4.19.1",
-    "xlsx": "^0.14.2",
+    "xlsx": "^0.17.0",
     "yarn": "^1.16.0"
   },
   "scripts": {
